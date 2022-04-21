@@ -1,0 +1,3 @@
+export enum Constants {
+  CAMPAIGNS_ADD_NEW_CAMPAIGN = 'CAMPAIGNS_ADD_NEW_CAMPAIGN'
+}
