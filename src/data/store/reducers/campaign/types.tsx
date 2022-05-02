@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
-import { TTokenType } from 'types'
+import { TTokenType, TAssetsData } from 'types'
 
 export interface CampaignState {
   title?: string | null,
@@ -10,11 +10,15 @@ export interface CampaignState {
   tokenAddress: string | null,
   campaignAddress?: string | null,
   type: TTokenType | null,
-  assets: null,
+  assets: TAssetsData | null,
 
   loading: boolean,
   
-  decimals: number | null
+  decimals: number | null,
+  symbol: string | null,
+  wallet: string | null,
+
+  proxyContractAddress: string | null
 }
 
 export type CampaignActions = ActionType<typeof actions>;

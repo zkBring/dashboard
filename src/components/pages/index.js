@@ -6,6 +6,7 @@ import CampaignsCreate from './campaigns-create/index.tsx'
 import CampaignsDetails from './campaigns-details/index.tsx'
 import Main from './main/index.tsx'
 import CampaignsCreateInitial from './campaings-create-initial/index'
+import CampaignsCreateApprove from './campaigns-create-approve/index'
 // import ProtectedRoute from './protected-route'
 // import Authorize from './authorize'
 // campaigns
@@ -19,7 +20,8 @@ export {
   CampaignsCreate,
   CampaignsDetails,
   Main,
-  CampaignsCreateInitial
+  CampaignsCreateInitial,
+  CampaignsCreateApprove
 //   ProtectedRoute,
 //   Authorize
 }

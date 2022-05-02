@@ -18,6 +18,8 @@ import InfoBlock from './info-block'
 import PreviewWidget from './preview-widget'
 import TextLink from './text-link'
 import MiniPopup from './mini-popup'
+import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/styled-components'
+import TransactionDetails from './transaction-details'
 
 export {
   Header,
@@ -39,5 +41,10 @@ export {
   InfoBlock,
   PreviewWidget,
   TextLink,
-  MiniPopup
+  MiniPopup,
+  WidgetText,
+  WidgetNote,
+  WidgetTextBlock,
+  TransactionDetails,
+  WidgetData
 }

@@ -14,66 +14,43 @@ export default async function approveERC20(
 	provider: any,
 	tokenAddress: string,
 	userAddress: string,
-	dropAddress: string,
-	ipfsHash: string,
-	title: string,
-	address: string,
 	chainId: number,
-	description: string,
-	logoURL: string,
-	type: TTokenType,
 	decimals: number | null,
 	callback: () => void
 ) {
   dispatch(actionsContract.setLoading(true))
 	try {
 		const signer = await provider.getSigner()
-		const gasPrice = await provider.getGasPrice()
-		const oneGwei = ethers.utils.parseUnits('1', 'gwei')
-		const tokenAmount = 1
-		console.log({ tokenAmount })
-		const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract, signer)
-		let iface = new ethers.utils.Interface(ERC20Contract);
-		const data = await iface.encodeFunctionData('approve', [dropAddress, tokenAmount])
-		await signer.sendTransaction({
-			to: tokenAddress,
-			gasPrice: gasPrice.add(oneGwei),
-			from: userAddress,
-			value: 0,
-			data: data
-		})
+		// const gasPrice = await provider.getGasPrice()
+		// const oneGwei = ethers.utils.parseUnits('1', 'gwei')
+		// const tokenAmount = 1
+		// const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract, signer)
+		// const iface = new ethers.utils.Interface(ERC20Contract);
+		// const data = await iface.encodeFunctionData('approve', [
+		// 	proxyAddress,
+		// 	String(amountFormatted)
+		// ])
+		// await signer.sendTransaction({
+		// 	to: tokenAddress,
+		// 	gasPrice: gasPrice.add(oneGwei),
+		// 	from: userAddress,
+		// 	value: 0,
+		// 	data: data
+		// })
 
-		const transaction = async function (): Promise<boolean> {
-			return new Promise((resolve, reject) => {
-				const checkInterval = setInterval(async () => {
-					const allowed = await contractInstance.allowance(userAddress, dropAddress)
-					// if (allowed >= tokenAmount) {
-					// 	resolve(true)
-					// 	clearInterval(checkInterval)
-					// }
-				}, 3000)
-			})
-		}
-		const finished = await transaction()
-		if (finished) {
-			alert(`DONE: ${ipfsHash}`)
-			// dispatch(actionsDrops.addNewRetroDrop({
-			// 	title,
-			// 	ipfsHash,
-			// 	address,
-			// 	chainId,
-			// 	description,
-			// 	logoURL,
-			// 	status: 'active',
-			// 	tokenAddress,
-			// 	recipients,
-			// 	type,
-			// 	decimals,
-			// 	dropAddress
-			// }))
-			dispatch(newRetroDropDrops.clearNewRetroDrop())
-			if (callback) { callback() }
-		}
+		// const transaction = async function (): Promise<boolean> {
+		// 	return new Promise((resolve, reject) => {
+		// 		// const checkInterval = setInterval(async () => {
+		// 		// 	const allowed = await contractInstance.allowance(userAddress, dropAddress)
+					
+		// 		// }, 3000)
+		// 	})
+		// }
+		// const finished = await transaction()
+		// if (finished) {
+		// 	dispatch(newRetroDropDrops.clearCampaign())
+		// 	if (callback) { callback() }
+		// }
 	} catch (err) {
 		console.log({
 			err

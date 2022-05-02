@@ -1,18 +1,31 @@
 import React, { FC } from 'react'
 import Select from 'react-select'
-
-type OptionType = { value: string | number, label: string }
-type OptionsType = Array<OptionType>
-type ValueType = OptionType
+import { TSelectOption } from 'types'
+type OptionsType = Array<TSelectOption>
 
 interface Props {
   options: OptionsType,
-  value?: ValueType
+  value?: TSelectOption,
+  placeholder?: string,
+  className?: string,
+  onChange: (newValue: TSelectOption) => void
 }
 
 const SelectComponent: FC<Props> = ({
   options,
-  value
-}) => <Select options={options} value={value} />
+  value,
+  placeholder,
+  className,
+  onChange
+}) => <Select
+    options={options}
+    className={className}
+    value={value}
+    onChange={(value) => {
+      if (!value) { return }
+      onChange && onChange(value)
+    }}
+    placeholder={placeholder}
+  />
 
 export default SelectComponent

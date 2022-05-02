@@ -58,7 +58,7 @@ export default async function approveERC721(
 			// 	decimals,
 			// 	dropAddress
 			// }))
-			dispatch(newRetroDropDrops.clearNewRetroDrop())
+			dispatch(newRetroDropDrops.clearCampaign())
 			if (callback) { callback() }
 		}
 	} catch (err) {

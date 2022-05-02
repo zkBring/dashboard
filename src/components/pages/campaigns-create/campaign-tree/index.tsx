@@ -21,9 +21,7 @@ import { buildMerkleTreeERC1155, buildMerkleTreeERC20, buildMerkleTreeERC721 } f
 import { useHistory } from 'react-router-dom'
 
 import {
-  parseDataERC20,
-  parseDataERC1155,
-  parseDataERC721
+
 } from 'helpers'
 
 import * as campaignActions from 'data/store/reducers/campaign/actions'
@@ -124,7 +122,7 @@ const CampaignTree: FC<ReduxType> = ({
     let recipientsData
     let merkleData
     if (type === 'erc1155') {
-      recipientsData = parseDataERC1155(type, recipientsValue)
+      // recipientsData = parseDataERC1155(type, recipientsValue)
       if (!recipientsData) {
         return false
       }
@@ -132,7 +130,7 @@ const CampaignTree: FC<ReduxType> = ({
     }
 
     if (type === 'erc721') {
-      recipientsData = parseDataERC721(type, recipientsValue)
+      // recipientsData = parseDataERC721(type, recipientsValue)
       if (!recipientsData) {
         return false
       }
@@ -140,7 +138,7 @@ const CampaignTree: FC<ReduxType> = ({
     }
 
     if (type === 'erc20' && decimals) {
-      recipientsData = parseDataERC20(type, recipientsValue, decimals)
+      // recipientsData = parseDataERC20(recipientsValue, decimals)
       if (!recipientsData) {
         return false
       }

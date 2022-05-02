@@ -3,18 +3,15 @@ import {
 } from 'types'
 
 const checkRecipientsDataFormat = (type: TTokenType, data: string): boolean => {
-  const recipients = data.split('\n')
+  const links = data.split('\n')
   let isValid = false
-  
-  if (type === 'erc721' || type === 'erc20') {
-    isValid = recipients.every(item => {
-      const itemDivided = item.split(',').map((item: string) => item.trim())
-      return itemDivided.length > 0 && itemDivided.length <= 2
-    })
+  if (!data) { return isValid }
+  if (type === 'erc721') {
+    isValid = links.every(checkERC721Value)
   }
 
   if (type === 'erc1155') {
-    isValid = recipients.every(item => {
+    isValid = links.every(item => {
       const itemDivided = item.split(',').map((item: string) => item.trim())
       return itemDivided.length > 1 && itemDivided.length <= 3
     })
@@ -22,6 +19,35 @@ const checkRecipientsDataFormat = (type: TTokenType, data: string): boolean => {
 
   return isValid
 }
+
+
+const checkERC721Value: (value: string) => boolean = (value) => {
+  const itemDivided = value.split(',')
+        .map((item: string) => item.trim())
+  if (itemDivided.length === 1) {
+    return checkERC721SingleValue(itemDivided[0])
+  }
+
+  if (itemDivided.length === 2) {
+    if (itemDivided[1].includes('-')) { return false }
+    return itemDivided.every(checkERC721SingleValue)
+  }
+  // ['1-10']
+  // ['1-10, 0.001']
+  // ['1']
+  // ['1, 0.001']
+  return false
+}
+
+const checkERC721SingleValue = (value: string): boolean => {
+  if (value.includes('-')) {
+    const valueAndAmount = value.split('-').map((item: string) => item.trim())
+    return valueAndAmount.every(item => Boolean(Number(item))) // ['1-10']
+  } else {
+    return Boolean(Number(value)) // ['1']
+  }
+}
+
 
 export default checkRecipientsDataFormat
 

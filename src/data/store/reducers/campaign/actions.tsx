@@ -1,16 +1,10 @@
 import { action } from 'typesafe-actions';
 import { Constants } from './constants';
-import { TTokenType } from 'types'
+import { TTokenType, TAssetsData } from 'types'
 
-export function setTokenAddress(tokenAddress: string) {
+export function setTokenAddress(tokenAddress: string | null) {
   return action(Constants.CAMPAIGN_SET_TOKEN_ADDRESS, {
     tokenAddress
-  })
-}
-
-export function setMerkleTree(merkleTree: any) {
-  return action(Constants.CAMPAIGN_SET_MERKLE_TREE, {
-    merkleTree
   })
 }
 
@@ -38,12 +32,6 @@ export function setLoading(loading: boolean) {
   })
 }
 
-export function setIPFS(ipfs: string) {
-  return action(Constants.CAMPAIGN_SET_IPFS, {
-    ipfs
-  })
-}
-
 export function setDropAddress(dropAddress: string) {
   return action(Constants.CAMPAIGN_SET_DROP_ADDRESS, {
     dropAddress
@@ -56,18 +44,36 @@ export function setType(type: TTokenType) {
   })
 }
 
-export function setDecimals(decimals: number) {
+export function setDecimals(decimals: number | null) {
   return action(Constants.CAMPAIGN_SET_DECIMALS, {
     decimals
   })
 }
 
-export function setRecipientsValue(recipientsValue: string) {
-  return action(Constants.CAMPAIGN_SET_RECIPIENTS_VALUE, {
-    recipientsValue
+export function setAssets(assets: TAssetsData | null) {
+  return action(Constants.CAMPAIGN_SET_ASSETS, {
+    assets
   })
 }
 
-export function clearNewRetroDrop() {
-  return action(Constants.CAMPAIGN_CLEAR_NEW_RETRODROP)
+export function setSymbol(symbol: string | null) {
+  return action(Constants.CAMPAIGN_SET_SYMBOL, {
+    symbol
+  })
+}
+
+export function setWallet(wallet: string | null) {
+  return action(Constants.CAMPAIGN_SET_WALLET, {
+    wallet
+  })
+}
+
+export function clearCampaign() {
+  return action(Constants.CAMPAIGN_CLEAR)
+}
+
+export function setProxyContractAddress(proxyContractAddress: string | null) {
+  return action(Constants.CAMPAIGN_SET_PROXY_CONTRACT_ADDRESS, {
+    proxyContractAddress
+  })
 }

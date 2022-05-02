@@ -11,7 +11,8 @@ import {
   CampaignsCreate,
   CampaignsDetails,
   Main,
-  CampaignsCreateInitial
+  CampaignsCreateInitial,
+  CampaignsCreateApprove
 //   NotFound,
 //   ProtectedRoute,
 //   Authorize
@@ -64,6 +65,13 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateInitial}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/approve'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateApprove}
         />
 
         <Route path='/' exact={true} render={props => <Main {...props} />} />

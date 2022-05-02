@@ -1,4 +1,4 @@
-const defineNativeTokenSymbol = ({ chainId } : { chainId: number }) => {
+const defineNativeTokenSymbol = ({ chainId } : { chainId: number | null }) => {
   return 'ETH'
 }
 

@@ -5,7 +5,11 @@ const initialState: UserState = {
   address: '',
   loading: false,
   provider: null,
-  chainId: null
+  chainId: null,
+  nativeTokenAmount: null,
+  tokenAmount: null,
+  nativeTokenAmountFormatted: null,
+  tokenAmountFormatted: null
 };
 
 export function userReducer(
@@ -13,15 +17,27 @@ export function userReducer(
   action: UserActions
 ): UserState {
     switch (action.type) {
-        case Constants.USER_SET_ADDRESS:
-          return { ...state, address: action.payload.address }
-        case Constants.USER_SET_LOADING:
-          return {...state, loading: action.payload.loading }
-        case Constants.USER_SET_PROVIDER:
-          return {...state, provider: action.payload.provider }
-        case Constants.USER_SET_CHAIN_ID:
-          return {...state, chainId: action.payload.chainId }
-        default:
-            return state;
+      case Constants.USER_SET_ADDRESS:
+        return { ...state, address: action.payload.address }
+      case Constants.USER_SET_LOADING:
+        return {...state, loading: action.payload.loading }
+      case Constants.USER_SET_PROVIDER:
+        return {...state, provider: action.payload.provider }
+      case Constants.USER_SET_CHAIN_ID:
+        return {...state, chainId: action.payload.chainId }
+      case Constants.USER_SET_TOKEN_AMOUNT:
+        return {
+          ...state,
+          tokenAmount: action.payload.tokenAmount,
+          tokenAmountFormatted: action.payload.tokenAmountFormatted
+        }
+      case Constants.USER_SET_NATIVE_TOKEN_AMOUNT:
+        return {
+          ...state,
+          nativeTokenAmount: action.payload.nativeTokenAmount,
+          nativeTokenAmountFormatted: action.payload.nativeTokenAmountFormatted
+        }
+      default:
+          return state;
     }
 }

@@ -1,10 +1,12 @@
 import TCampaign from './campaign'
 import TCampaignStatus from './campaign-status'
-import TAssetsData, { TERC1155Assets, TERC721Assets, TERC20Assets } from './assets-data'
+import TAssetsData, { TAsset } from './assets-data'
 import TOwners from './owners'
 import TCommunities from './communities'
 import IMetamaskError from './metamask-error'
 import TTokenType from './token-type'
+import TWallet from './wallet'
+import TSelectOption from './select-option'
 
 export {
   TCampaign,
@@ -13,8 +15,8 @@ export {
   TAssetsData,
   TOwners,
   TCommunities,
-  TERC1155Assets,
-  TERC721Assets,
-  TERC20Assets,
-  IMetamaskError
+  TAsset,
+  IMetamaskError,
+  TWallet,
+  TSelectOption
 }

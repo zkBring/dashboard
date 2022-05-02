@@ -6,6 +6,8 @@ import {
   WidgetDataBlock
 } from '../styled-components'
 import { RootState } from 'data/store';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux'
 import {
   Widget,
   DataBlock
@@ -19,8 +21,7 @@ import {
   approveERC721,
   approveERC20
 } from 'data/store/reducers/contract/async-actions'
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux'
+
 import { ContractActions } from 'data/store/reducers/contract/types'
 
 type TProps = {

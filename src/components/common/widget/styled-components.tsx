@@ -19,3 +19,20 @@ export const WidgetTitle = styled.h3`
 export const WidgetContent = styled.div`
   width: 100%;
 `
+
+export const WidgetText = styled.p`
+  font-size: 16px;
+  margin: 0;
+`
+
+export const WidgetData = styled(WidgetText)`
+  font-weight: 700;
+`
+
+export const WidgetNote = styled(WidgetText)`
+  color: ${props => props.theme.additionalTextColor};
+`
+
+export const WidgetTextBlock = styled.div`
+  margin-bottom: 20px;
+`

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Widget } from 'components/common'
+import { Widget, Textarea, Button } from 'components/common'
 
 export const Container = styled.div`
   
@@ -20,7 +20,19 @@ export const WidgetOptions = styled.div`
   padding-right: 40px;
   border-right: 1px solid ${props => props.theme.primaryBorderColor};
 `
+
 export const WidgetAside = styled.div`
   flex: 0 450px;
   padding-left: 40px;
+`
+
+export const WidgetTextarea = styled(Textarea)`
+  margin-bottom: 30px;
+  textarea {
+    min-height: 200px;
+  }
+`
+
+export const WidgetButton = styled(Button)`
+  
 `

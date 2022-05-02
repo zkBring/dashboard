@@ -10,6 +10,9 @@ const initialState: CampaignState = {
   type: null,
   decimals: null,
   assets: null,
+  symbol: null,
+  wallet: null,
+  proxyContractAddress: null
 }
 
 export function newRetroDropReducer(
@@ -31,7 +34,15 @@ export function newRetroDropReducer(
           return {...state, type: action.payload.type }
         case Constants.CAMPAIGN_SET_DECIMALS:
           return {...state, decimals: action.payload.decimals }
-        case Constants.CAMPAIGN_CLEAR_NEW_RETRODROP:
+        case Constants.CAMPAIGN_SET_ASSETS:
+          return {...state, assets: action.payload.assets }
+        case Constants.CAMPAIGN_SET_SYMBOL:
+          return {...state, symbol: action.payload.symbol }
+        case Constants.CAMPAIGN_SET_WALLET:
+          return {...state, wallet: action.payload.wallet }
+        case Constants.CAMPAIGN_SET_PROXY_CONTRACT_ADDRESS:
+          return {...state, proxyContractAddress: action.payload.proxyContractAddress }
+        case Constants.CAMPAIGN_CLEAR:
           return initialState
         default:
           return state;

@@ -37,7 +37,6 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 interface Props {}
 
 const defineTitle: TDefineTitle = (location) => {
-	console.log({ location })
 	switch(location) {
 		case '/campaigns/new/erc20/initial':
 			return 'New ERC20 campaign'

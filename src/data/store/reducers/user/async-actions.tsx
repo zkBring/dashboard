@@ -1,12 +1,17 @@
-import { Dispatch } from 'redux';
-import * as actions from './actions';
-import { UserActions } from './types';
+import { Dispatch } from 'redux'
+import * as actions from './actions'
+import {
+  UserActions,
+  TGetNativeTokenBalance,
+  TGetTokenBalance
+} from './types'
 import { IMetamaskError } from 'types'
-import Web3Modal from "web3modal";
+import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletConnectProvider from "@walletconnect/web3-provider"
 import { toHex } from 'helpers'
 import chains from 'configs/chains'
+import { utils } from 'ethers'
 
 const { REACT_APP_INFURA_ID } = process.env
 
@@ -24,6 +29,7 @@ const supportedNetworkURLs = {
 function sleep(timeout: number) {
   return new Promise((resolve) => setTimeout(() => resolve(true), timeout))
 }
+
 export async function addItemAsync(dispatch: Dispatch<UserActions>, item: string) {
   dispatch(actions.setLoading(true));
   await sleep(1000);
@@ -33,14 +39,14 @@ export async function addItemAsync(dispatch: Dispatch<UserActions>, item: string
 
 export async function connectWallet (dispatch: Dispatch<UserActions>) {
   const providerOptions = {
-    // walletconnect: {
-    //   package: WalletConnectProvider,
-    //   options: {
-    //     infuraId: REACT_APP_INFURA_ID,
-    //     qrcode: true,
-    //     rpc: supportedNetworkURLs
-    //   }
-    // }
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        infuraId: REACT_APP_INFURA_ID,
+        qrcode: true,
+        rpc: supportedNetworkURLs
+      }
+    }
   };
   const web3Modal = new Web3Modal({
     cacheProvider: false, // optional
@@ -60,10 +66,22 @@ export async function connectWallet (dispatch: Dispatch<UserActions>) {
   dispatch(actions.setProvider(providerWeb3))
   dispatch(actions.setAddress(address))
   dispatch(actions.setChainId(chainId))
+  await getNativeTokenAmount(
+    dispatch,
+    chainId,
+    address,
+    providerWeb3
+  )
 
-  provider.on("accountsChanged", (accounts: string[]) => {
+  provider.on("accountsChanged", async (accounts: string[]) => {
     const address = accounts[0] && accounts[0].toLowerCase()
     dispatch(actions.setAddress(address))
+    await getNativeTokenAmount(
+      dispatch,
+      chainId,
+      address,
+      providerWeb3
+    )
   });
   
   // Subscribe to chainId change
@@ -105,4 +123,77 @@ export async function switchWallet (
         }
       }    
   }
+}
+
+
+export const getNativeTokenAmount: TGetNativeTokenBalance = async (
+  dispatch,
+  chainId,
+  address,
+  provider
+) => {
+  try {
+    const nativeTokenAmount = await provider.getBalance(address)
+    const nativeTokenAmountFormatted = utils.formatEther(nativeTokenAmount)
+    console.log({
+      nativeTokenAmount,
+      nativeTokenAmountFormatted
+    })
+    dispatch(actions.setNativeTokenAmount(
+      nativeTokenAmount,
+      nativeTokenAmountFormatted
+    ))
+  } catch (err) {
+    console.log({
+      err
+    })
+  }
+}
+
+export const getTokenAmount: TGetTokenBalance = async (
+  dispatch,
+  address,
+  decimals,
+  contractInstance
+) => {
+  try {
+    const tokenAmount = await contractInstance.balanceOf(address)
+    const tokenAmountFormatted = utils.formatUnits(
+      String(tokenAmount),
+      decimals
+    )
+    console.log({ tokenAmount, tokenAmountFormatted })
+    dispatch(actions.setTokenAmount(
+      tokenAmount,
+      tokenAmountFormatted
+    ))
+  } catch (err) {
+    console.log({
+      err
+    })
+  } 
+}
+
+export const approve: TGetTokenBalance = async (
+  dispatch,
+  address,
+  decimals,
+  contractInstance
+) => {
+  try {
+    const tokenAmount = await contractInstance.balanceOf(address)
+    const tokenAmountFormatted = utils.formatUnits(
+      String(tokenAmount),
+      decimals
+    )
+    console.log({ tokenAmount, tokenAmountFormatted })
+    dispatch(actions.setTokenAmount(
+      tokenAmount,
+      tokenAmountFormatted
+    ))
+  } catch (err) {
+    console.log({
+      err
+    })
+  } 
 }

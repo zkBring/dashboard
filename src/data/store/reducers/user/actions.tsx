@@ -40,3 +40,28 @@ export function setChainId(chainId: number) {
     }
   )
 }
+
+export function setTokenAmount(tokenAmount: string, tokenAmountFormatted: string) {
+  return action(
+    Constants.USER_SET_TOKEN_AMOUNT,
+    // payload
+    {
+      tokenAmount,
+      tokenAmountFormatted
+    }
+  )
+}
+
+export function setNativeTokenAmount(
+  nativeTokenAmount: string,
+  nativeTokenAmountFormatted: string
+) {
+  return action(
+    Constants.USER_SET_NATIVE_TOKEN_AMOUNT,
+    // payload
+    {
+      nativeTokenAmount,
+      nativeTokenAmountFormatted
+    }
+  )
+}
