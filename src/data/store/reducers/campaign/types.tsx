@@ -18,7 +18,8 @@ export interface CampaignState {
   symbol: string | null,
   wallet: string | null,
 
-  proxyContractAddress: string | null
+  proxyContractAddress: string | null,
+  approved: boolean
 }
 
 export type CampaignActions = ActionType<typeof actions>;

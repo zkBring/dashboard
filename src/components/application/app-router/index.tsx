@@ -1,8 +1,7 @@
-import React, { useEffect, FC } from 'react'
+import { FC } from 'react'
 import { Route, Switch, HashRouter } from 'react-router-dom'
-// import { functionalActions } from 'decorators'
 import ProtectedRoute from './protected-route'
-
+import { IAppDispatch } from 'data/store'
 
 import {
   NotFound,
@@ -13,22 +12,15 @@ import {
   Main,
   CampaignsCreateInitial,
   CampaignsCreateApprove
-//   NotFound,
-//   ProtectedRoute,
-//   Authorize
 } from 'components/pages'
 
-import { Dispatch } from 'redux';
-import * as asyncActions from 'data/store/reducers/user/async-actions'
-import { UserActions } from 'data/store/reducers/user/types'
+import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { connect } from 'react-redux';
 import { RootState } from 'data/store';
-import communities from 'configs/communities'
 
-
-const mapDispatcherToProps = (dispatch: Dispatch<UserActions> ) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    connectWallet: () => asyncActions.connectWallet(dispatch),
+    connectWallet: () => userAsyncActions.connectWallet(dispatch),
   }
 }
 
@@ -36,7 +28,6 @@ const mapStateToProps = ({ user: { provider, address } }: RootState) => ({ provi
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
-
   return <HashRouter>
     <Page>
       <Switch>

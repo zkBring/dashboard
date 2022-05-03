@@ -1,6 +1,6 @@
 import TCampaign from './campaign'
 import TCampaignStatus from './campaign-status'
-import TAssetsData, { TAsset } from './assets-data'
+import TAssetsData, { TAsset, TDefineTotalAmountERC20, TTotalAmountERC20 } from './assets-data'
 import TOwners from './owners'
 import TCommunities from './communities'
 import IMetamaskError from './metamask-error'
@@ -18,5 +18,7 @@ export {
   TAsset,
   IMetamaskError,
   TWallet,
-  TSelectOption
+  TSelectOption,
+  TDefineTotalAmountERC20,
+  TTotalAmountERC20
 }

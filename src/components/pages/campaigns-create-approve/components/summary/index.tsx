@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from 'components/common'
+import { WidgetText, WidgetTextBlock, WidgetData } from 'components/common'
 import { Button } from 'components/common'
 import {
   WidgetComponent,
@@ -11,6 +11,8 @@ import {
 
 import { WidgetSummaryData } from './styled-components'
 import Aside from '../aside'
+import { IAppDispatch } from 'data/store'
+import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 
 const mapStateToProps = ({
   user: {
@@ -29,12 +31,21 @@ const mapStateToProps = ({
   assets
 })
 
-type ReduxType = ReturnType<typeof mapStateToProps>
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    approve: () => {
+      dispatch(userAsyncActions.approve())
+    }
+  }
+}
+
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 const Summary: FC<ReduxType> = ({
   assets,
   symbol,
   chainId,
-  decimals
+  decimals,
+  approve
 }) => {
   return <WidgetComponent title='Summary'>
     <WidgetContent>
@@ -59,6 +70,9 @@ const Summary: FC<ReduxType> = ({
         </WidgetTextBlock>
         <Button
           title='Approve'
+          onClick={() => {
+            approve()
+          }}
         />
       </WidgetSummary>
       <Aside
@@ -68,4 +82,4 @@ const Summary: FC<ReduxType> = ({
   </WidgetComponent>
 }
 
-export default connect(mapStateToProps)(Summary)
+export default connect(mapStateToProps, mapDispatcherToProps)(Summary)

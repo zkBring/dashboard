@@ -2,20 +2,18 @@ import { Dispatch } from 'redux';
 import * as actionsCampaign from './actions';
 import { CampaignActions } from './types';
 import { TTokenType } from 'types'
-import { pinataApi } from 'data/api'
 import { ERC20Contract } from 'abi'
-import { ethers, utils } from 'ethers'
+import { ethers } from 'ethers'
 import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
 import { UserActions } from '../user/types'
 import * as userAsyncActions from '../user/async-actions'
+import { RootState, IAppDispatch } from 'data/store'
+
 import {
   defineNativeTokenSymbol
 } from 'helpers'
-type TIPFSResponse = { data: { IpfsHash: string, PinSize: number, Timestamp: string } }
+// type TIPFSResponse = { data: { IpfsHash: string, PinSize: number, Timestamp: string } }
 
-export async function createIPFS(dispatch: Dispatch<CampaignActions>, data: any, title: string, description: string, logoURL: string, tokenAddress: string, chainId: number, type: TTokenType, callback: () => void) {
-  
-}
 
 export async function setTokenContractData(
   dispatch: Dispatch<CampaignActions | UserActions>,
@@ -43,7 +41,7 @@ export async function setTokenContractData(
       if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
 
       } else {
-        const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract, signer)
+        const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
         decimals = await contractInstance.decimals()
         symbol = await contractInstance.symbol()
         
@@ -89,5 +87,17 @@ export async function setAssetsData(
   
   if (callback) {
     callback()
+  }
+}
+
+export const createProxyContract = () => {
+  return async (
+    dispatch: Dispatch<CampaignActions | UserActions>,
+    getState: () => RootState
+  ) => {
+    const { user: { sdk }, campaigns: { campaigns } } = getState()
+    const proxyContractAddress = await sdk?.getProxyAddress(String(campaigns.length))
+    if (!proxyContractAddress) { return }
+    dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
   }
 }

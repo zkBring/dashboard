@@ -1,6 +1,7 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
 import { Dispatch } from 'redux'
+import LinkdropSDK from '@linkdrop/sdk';
 
 export interface UserState {
   address: string
@@ -10,7 +11,8 @@ export interface UserState {
   nativeTokenAmount: string | null,
   nativeTokenAmountFormatted: string | null,
   tokenAmount: string | null,
-  tokenAmountFormatted: string | null
+  tokenAmountFormatted: string | null,
+  sdk: LinkdropSDK | null
 }
 
 export type UserActions = ActionType<typeof actions>;

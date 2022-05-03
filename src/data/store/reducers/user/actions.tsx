@@ -1,3 +1,4 @@
+import LinkdropSDK from '@linkdrop/sdk';
 import { action } from 'typesafe-actions';
 import { Constants } from './constants';
 
@@ -62,6 +63,19 @@ export function setNativeTokenAmount(
     {
       nativeTokenAmount,
       nativeTokenAmountFormatted
+    }
+  )
+}
+
+
+export function setSDK (
+  sdk: LinkdropSDK
+) {
+  return action(
+    Constants.USER_SET_SDK,
+    // payload
+    {
+      sdk
     }
   )
 }

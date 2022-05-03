@@ -28,11 +28,9 @@ import {
   InputTokenAddress,
   SelectComponent
 } from './styled-components'
-import { RootState } from 'data/store';
-import { Dispatch } from 'redux';
+import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
-import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { TTokenType, TAssetsData, TSelectOption } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
@@ -43,9 +41,14 @@ const mapStateToProps = ({
     provider,
     chainId,
     nativeTokenAmountFormatted,
-    tokenAmountFormatted
+    tokenAmountFormatted,
+    loading: userLoading
   },
-  campaign: { loading, decimals, symbol },
+  campaign: {
+    loading,
+    decimals,
+    symbol
+  }
 }: RootState) => ({
   loading,
   address,
@@ -54,9 +57,11 @@ const mapStateToProps = ({
   chainId,
   symbol,
   nativeTokenAmountFormatted,
-  tokenAmountFormatted
+  tokenAmountFormatted,
+  userLoading
 })
-const mapDispatcherToProps = (dispatch: Dispatch<CampaignActions>) => {
+
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     setTokenContractData: (
       provider: any,
@@ -72,7 +77,6 @@ const mapDispatcherToProps = (dispatch: Dispatch<CampaignActions>) => {
       address,
       chainId
     ),
-
     setAssetsData: (
       type: TTokenType,
       assets: TAssetsData,
@@ -85,7 +89,6 @@ const mapDispatcherToProps = (dispatch: Dispatch<CampaignActions>) => {
       String(wallet.value),
       callback
     ),
-
     clearCampaign: () => {
       campaignActions.clearCampaign()
     }
@@ -105,7 +108,8 @@ const Erc20: FC<ReduxType > = ({
   address,
   nativeTokenAmountFormatted,
   tokenAmountFormatted,
-  clearCampaign
+  clearCampaign,
+  userLoading
 }) => {
   const [
     tokenAddress,

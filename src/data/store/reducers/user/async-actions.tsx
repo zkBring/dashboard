@@ -1,26 +1,38 @@
 import { Dispatch } from 'redux'
 import * as actions from './actions'
+import * as campaignActions from 'data/store/reducers/campaign/actions'
 import {
   UserActions,
   TGetNativeTokenBalance,
   TGetTokenBalance
 } from './types'
+import {
+  CampaignActions
+} from 'data/store/reducers/campaign/types'
 import { IMetamaskError } from 'types'
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import WalletConnectProvider from "@walletconnect/web3-provider"
-import { toHex } from 'helpers'
+import {
+  toHex,
+  defineNetworkName,
+  defineJSONRpcUrl,
+  countAssetsTotalAmountERC20
+} from 'helpers'
 import chains from 'configs/chains'
-import { utils } from 'ethers'
-
-const { REACT_APP_INFURA_ID } = process.env
+import { utils, ethers } from 'ethers'
+import LinkdropSDK from '@linkdrop/sdk'
+import { CLAIM_HOST, INFURA_ID } from 'configs/app'
+import { RootState, IAppDispatch } from 'data/store';
+import { ERC20Contract } from 'abi'
+const { REACT_APP_FACTORY_ADDRESS } = process.env
 
 const supportedNetworkURLs = {
-  1: `https://mainnet.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  4: `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  3: `https://ropsten.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  5: `https://goerli.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  42: `https://kovan.infura.io/v3/${REACT_APP_INFURA_ID}`,
+  1: `https://mainnet.infura.io/v3/${INFURA_ID}`,
+  4: `https://rinkeby.infura.io/v3/${INFURA_ID}`,
+  3: `https://ropsten.infura.io/v3/${INFURA_ID}`,
+  5: `https://goerli.infura.io/v3/${INFURA_ID}`,
+  42: `https://kovan.infura.io/v3/${INFURA_ID}`,
   137: 'https://rpc-mainnet.maticvigil.com/',
   80001: 'https://rpc-mumbai.maticvigil.com/v1/f592ae2e5afb3bebe39314e9bd0949de5b74cd2f'
   // 97: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
@@ -37,12 +49,12 @@ export async function addItemAsync(dispatch: Dispatch<UserActions>, item: string
   dispatch(actions.setLoading(false));
 }
 
-export async function connectWallet (dispatch: Dispatch<UserActions>) {
+export async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   const providerOptions = {
     walletconnect: {
       package: WalletConnectProvider,
       options: {
-        infuraId: REACT_APP_INFURA_ID,
+        infuraId: INFURA_ID,
         qrcode: true,
         rpc: supportedNetworkURLs
       }
@@ -66,6 +78,8 @@ export async function connectWallet (dispatch: Dispatch<UserActions>) {
   dispatch(actions.setProvider(providerWeb3))
   dispatch(actions.setAddress(address))
   dispatch(actions.setChainId(chainId))
+  dispatch(initialization(chainId, address))
+
   await getNativeTokenAmount(
     dispatch,
     chainId,
@@ -76,6 +90,7 @@ export async function connectWallet (dispatch: Dispatch<UserActions>) {
   provider.on("accountsChanged", async (accounts: string[]) => {
     const address = accounts[0] && accounts[0].toLowerCase()
     dispatch(actions.setAddress(address))
+    dispatch(initialization(chainId, address))
     await getNativeTokenAmount(
       dispatch,
       chainId,
@@ -85,9 +100,16 @@ export async function connectWallet (dispatch: Dispatch<UserActions>) {
   });
   
   // Subscribe to chainId change
-  provider.on("chainChanged", (chainId: string) => {
+  provider.on("chainChanged", async (chainId: string) => {
     let chainIdConverted = parseInt(chainId, 16);
     dispatch(actions.setChainId(chainIdConverted))
+    dispatch(initialization(Number(chainId), address))
+    await getNativeTokenAmount(
+      dispatch,
+      chainIdConverted,
+      address,
+      providerWeb3
+    )
   });
 }
 
@@ -162,7 +184,6 @@ export const getTokenAmount: TGetTokenBalance = async (
       String(tokenAmount),
       decimals
     )
-    console.log({ tokenAmount, tokenAmountFormatted })
     dispatch(actions.setTokenAmount(
       tokenAmount,
       tokenAmountFormatted
@@ -174,26 +195,113 @@ export const getTokenAmount: TGetTokenBalance = async (
   } 
 }
 
-export const approve: TGetTokenBalance = async (
-  dispatch,
-  address,
-  decimals,
-  contractInstance
+export const approve = (
+  callback?: () => void
 ) => {
-  try {
-    const tokenAmount = await contractInstance.balanceOf(address)
-    const tokenAmountFormatted = utils.formatUnits(
-      String(tokenAmount),
-      decimals
-    )
-    console.log({ tokenAmount, tokenAmountFormatted })
-    dispatch(actions.setTokenAmount(
-      tokenAmount,
-      tokenAmountFormatted
-    ))
-  } catch (err) {
-    console.log({
-      err
+  return async (dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>, getState: () => RootState) => {
+    const {
+      user: {
+        provider,
+        address
+      },
+      campaign: {
+        tokenAddress,
+        assets,
+        symbol,
+        decimals,
+        proxyContractAddress
+      }
+    } = getState()
+
+    try {
+      if (!tokenAddress) {
+        return alert('No token address provided')
+      }
+      if (!assets) {
+        return alert('No assets provided')
+      }
+      if (!symbol) {
+        return alert('No symbol provided')
+      }
+      if (!decimals) {
+        return alert('No decimals provided')
+      }
+      if (!proxyContractAddress) {
+        return alert('No proxy address provided')
+      }
+      if (!address) {
+        return alert('No user address provided')
+      }
+      const signer = await provider.getSigner()
+      const gasPrice = await provider.getGasPrice()
+      const oneGwei = utils.parseUnits('1', 'gwei')
+      const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
+      let iface = new utils.Interface(ERC20Contract.abi)
+      const assetsTotal = countAssetsTotalAmountERC20(assets, symbol)
+      const amountFormatted = assetsTotal.amount
+      const data = await iface.encodeFunctionData('approve', [
+        proxyContractAddress, String(amountFormatted)
+      ])
+
+      await signer.sendTransaction({
+        to: tokenAddress,
+        gasPrice: gasPrice.add(oneGwei),
+        from: address,
+        value: 0,
+        data: data
+      })
+  
+      const transaction = async function (): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+          const checkInterval = setInterval(async () => {
+            const allowed = await contractInstance.allowance(address, proxyContractAddress)
+            if (allowed >= amountFormatted) {
+              resolve(true)
+              clearInterval(checkInterval)
+            }
+          }, 3000)
+        })
+      }
+      const finished = await transaction()
+      if (finished) {
+        dispatch(campaignActions.setApproved(true))
+        if (callback) { callback() }
+      }
+    } catch (err) {
+      console.log({
+        err
+      })
+    }
+  }
+}
+
+export const initialization = (
+  chainId: number | null, address: string
+) => {
+  return async (dispatch: Dispatch<UserActions>, getState: () => RootState) => {
+    if (!REACT_APP_FACTORY_ADDRESS) {
+      return alert('REACT_APP_FACTORY_ADDRESS is not provided in .env file')
+    }
+    if (!CLAIM_HOST) {
+      return alert('CLAIM_HOST is not provided in configs/app file')
+    }
+    if (!chainId) {
+      return alert('Chain is not detected')
+    }
+    if (!INFURA_ID) {
+      return alert('INFURA_ID is not provided in configs/app file')
+    }
+    const networkName = defineNetworkName(chainId)
+    const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: INFURA_ID })
+    const sdk = new LinkdropSDK({
+      claimHost: CLAIM_HOST,
+      factoryAddress: REACT_APP_FACTORY_ADDRESS,
+      chain: networkName,
+      linkdropMasterAddress: address,
+      jsonRpcUrl,
+      apiHost: `https://${networkName}.linkdrop.io`
     })
-  } 
+
+    dispatch(actions.setSDK(sdk))
+  }
 }

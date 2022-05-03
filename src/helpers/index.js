@@ -16,6 +16,7 @@ import parseERC20AssetsData from './parse-erc20-assets-data'
 import parseNativeAssetsData from './parse-native-assets-data'
 import defineAssetsTextareaPlaceholder from './define-assets-textarea-placeholder'
 import getNativeTokenSymbol from './get-native-token-symbol'
+import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
 
 export {
   shortenString,
@@ -35,5 +36,6 @@ export {
   parseERC20AssetsData,
   parseNativeAssetsData,
   defineAssetsTextareaPlaceholder,
-  getNativeTokenSymbol
+  getNativeTokenSymbol,
+  countAssetsTotalAmountERC20
 }
