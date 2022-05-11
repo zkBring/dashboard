@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { Container } from './styled-components'
+import { Container, WidgetComponent } from './styled-components'
 import { Erc20 } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
@@ -31,7 +31,9 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
     createProxyContract()
   }, [])
   return <Container>
-    <Erc20 type='erc20' />
+    <WidgetComponent title='Setup'>
+      <Erc20 type='erc20' />
+    </WidgetComponent>
   </Container>
 }
 

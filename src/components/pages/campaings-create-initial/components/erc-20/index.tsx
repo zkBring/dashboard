@@ -1,7 +1,6 @@
 import { FC, useState, useEffect, useMemo } from 'react'
 import {
   Container,
-  WidgetComponent,
   WidgetContent,
   WidgetOptions,
   WidgetTextarea,
@@ -182,68 +181,65 @@ const Erc20: FC<ReduxType > = ({
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
   return <Container>
-    <WidgetComponent title='Setup'>
-      <WidgetContent>
-        <WidgetOptions>
-          <InputTokenAddress
-            value={tokenAddress}
-            placeholder='0x Address'
-            onChange={value => {
-              setTokenAddress(value)
-              return value
-            }}
-            title='Contract Address'
-          />
-          <UserAssets>
-            <UserAssetNative>
-              Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
-            </UserAssetNative>
-            {symbol && symbol !== nativeTokenSymbol && tokenAmountFormatted && <UserAsset>
-              Balance {symbol}: {tokenAmountFormatted}
-            </UserAsset>}
-          </UserAssets>
-          <WidgetTextarea
-            value={assetsValue}
-            placeholder={defineAssetsTextareaPlaceholder(
-              'erc20',
-              Boolean(symbol),
-              tokenAddress
-            )}
-            disabled={!symbol}
-            onChange={value => {
-              setAssetsValue(value)
-              return value
-            }}
-          />
-          <SelectComponent
-            options={walletsOptions}
-            value={currentWallet}
-            onChange={value => setCurrentWallet(value)}
-            placeholder='Choose wallet'
-          />
-          <WidgetButton
-            title='Next'
-            appearance='action'
-            onClick={() => {
-              setAssetsData(
-                'erc20',
-                assetsParsed,
-                currentWallet,
-                () => {
-                  history.push(`/campaigns/new/${type}/approve`)
-                }
-              )
-            }}
-            disabled={defineIfButtonDisabled()}
-          />
-        </WidgetOptions>
-        <Aside
-          symbol={symbol}
-          assets={assetsParsed}
+    <WidgetContent>
+      <WidgetOptions>
+        <InputTokenAddress
+          value={tokenAddress}
+          placeholder='0x Address'
+          onChange={value => {
+            setTokenAddress(value)
+            return value
+          }}
+          title='Contract Address'
         />
-      </WidgetContent>
-      
-    </WidgetComponent>
+        <UserAssets>
+          <UserAssetNative>
+            Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
+          </UserAssetNative>
+          {symbol && symbol !== nativeTokenSymbol && tokenAmountFormatted && <UserAsset>
+            Balance {symbol}: {tokenAmountFormatted}
+          </UserAsset>}
+        </UserAssets>
+        <WidgetTextarea
+          value={assetsValue}
+          placeholder={defineAssetsTextareaPlaceholder(
+            'erc20',
+            Boolean(symbol),
+            tokenAddress
+          )}
+          disabled={!symbol}
+          onChange={value => {
+            setAssetsValue(value)
+            return value
+          }}
+        />
+        <SelectComponent
+          options={walletsOptions}
+          value={currentWallet}
+          onChange={value => setCurrentWallet(value)}
+          placeholder='Choose wallet'
+        />
+        <WidgetButton
+          title='Next'
+          appearance='action'
+          onClick={() => {
+            setAssetsData(
+              'erc20',
+              assetsParsed,
+              currentWallet,
+              () => {
+                history.push(`/campaigns/new/${type}/approve`)
+              }
+            )
+          }}
+          disabled={defineIfButtonDisabled()}
+        />
+      </WidgetOptions>
+      <Aside
+        symbol={symbol}
+        assets={assetsParsed}
+      />
+    </WidgetContent>      
   </Container>
 }
 

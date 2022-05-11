@@ -7,7 +7,9 @@ import { Summary } from './components'
 
 const CampaignsCreateApprove: FC = () => {
   return <Container>
-    <Summary />
+    <WidgetComponent title='Approve'>
+      <Summary />
+    </WidgetComponent>
   </Container>
 }
 

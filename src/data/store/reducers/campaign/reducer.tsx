@@ -13,7 +13,12 @@ const initialState: CampaignState = {
   symbol: null,
   wallet: null,
   proxyContractAddress: null,
-  approved: false
+  approved: false,
+  id: null,
+  secured: false,
+  privateKey: null,
+  sponsored: false,
+  links: []
 }
 
 export function newRetroDropReducer(
@@ -45,6 +50,16 @@ export function newRetroDropReducer(
           return {...state, proxyContractAddress: action.payload.proxyContractAddress }
         case Constants.CAMPAIGN_SET_APPROVED:
           return {...state, approved: action.payload.approved }
+        case Constants.CAMPAIGN_SET_SECURED:
+          return {...state, secured: action.payload.secured }
+        case Constants.CAMPAIGN_SET_ID:
+          return {...state, id: action.payload.id }
+        case Constants.CAMPAIGN_SET_PRIVATE_KEY:
+          return {...state, privateKey: action.payload.privateKey }
+        case Constants.CAMPAIGN_SET_SPONSORED:
+          return {...state, sponsored: action.payload.sponsored }
+        case Constants.CAMPAIGN_SET_LINKS:
+          return {...state, links: action.payload.links }
         case Constants.CAMPAIGN_CLEAR:
           return initialState
         default:

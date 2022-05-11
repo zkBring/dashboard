@@ -31,8 +31,6 @@ const mapDispatcherToProps = (dispatch: Dispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps>  & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWallet, chainId }) => {
-  
-
   return <div>
     lol
   </div>

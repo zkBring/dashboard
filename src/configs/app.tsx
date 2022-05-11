@@ -1,5 +1,5 @@
 export const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const CLAIM_HOST = 'https://claim.linkdrop.io'
 export const INFURA_ID = '620c738fbe1843a18f47ada0e60e738a'
-export const LINK_PRICE = '0.000000001'
 export const LINK_COMISSION_PRICE = '0.02'
+export const EXPIRATION_DATE = '1900000000000'

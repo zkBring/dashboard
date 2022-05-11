@@ -11,7 +11,9 @@ import {
   CampaignsDetails,
   Main,
   CampaignsCreateInitial,
-  CampaignsCreateApprove
+  CampaignsCreateApprove,
+  CampaignsCreateSecure,
+  CampaignsCreateGenerate
 } from 'components/pages'
 
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
@@ -63,6 +65,20 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateApprove}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/secure'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateSecure}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/generate'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateGenerate}
         />
 
         <Route path='/' exact={true} render={props => <Main {...props} />} />

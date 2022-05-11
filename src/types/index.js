@@ -7,6 +7,7 @@ import IMetamaskError from './metamask-error'
 import TTokenType from './token-type'
 import TWallet from './wallet'
 import TSelectOption from './select-option'
+import TLink from './link'
 
 export {
   TCampaign,
@@ -20,5 +21,6 @@ export {
   TWallet,
   TSelectOption,
   TDefineTotalAmountERC20,
-  TTotalAmountERC20
+  TTotalAmountERC20,
+  TLink
 }

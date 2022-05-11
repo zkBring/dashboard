@@ -11,7 +11,28 @@ declare module '@linkdrop/sdk' {
   class LinkdropSDK implements ISDK {
     constructor(params: ISDK)
     getProxyAddress: (campaignId: string) => string
-    
+    generateLink: ({
+      signingKeyOrWallet,
+      weiAmount,
+      tokenAddress,
+      tokenAmount,
+      expirationTime = 12345678910,
+      campaignId,
+      wallet
+    }: {
+      signingKeyOrWallet: string,
+      weiAmount: string,
+      tokenAddress: string,
+      wallet: string,
+      tokenAmount: string,
+      expirationTime: string,
+      campaignId: string
+    }) => {
+      url: string,
+      linkId: string,
+      linkKey: string,
+      linkdropSignerSignature: string
+    }
   }
   export = LinkdropSDK
 }

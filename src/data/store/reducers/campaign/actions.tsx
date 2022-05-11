@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { Constants } from './constants';
-import { TTokenType, TAssetsData } from 'types'
+import { TTokenType, TAssetsData, TLink } from 'types'
 
 export function setTokenAddress(tokenAddress: string | null) {
   return action(Constants.CAMPAIGN_SET_TOKEN_ADDRESS, {
@@ -81,5 +81,36 @@ export function setProxyContractAddress(proxyContractAddress: string | null) {
 export function setApproved(approved: boolean) {
   return action(Constants.CAMPAIGN_SET_APPROVED, {
     approved
+  })
+}
+
+export function setSecured(secured: boolean) {
+  return action(Constants.CAMPAIGN_SET_SECURED, {
+    secured
+  })
+}
+
+export function setPrivateKey(privateKey: string) {
+  return action(Constants.CAMPAIGN_SET_PRIVATE_KEY, {
+    privateKey
+  })
+}
+
+export function setSponsored(sponsored: boolean) {
+  return action(Constants.CAMPAIGN_SET_SPONSORED, {
+    sponsored
+  })
+}
+
+
+export function setLinks(links: TLink[]) {
+  return action(Constants.CAMPAIGN_SET_LINKS, {
+    links
+  })
+}
+
+export function setId(id: string) {
+  return action(Constants.CAMPAIGN_SET_ID, {
+    id
   })
 }

@@ -11,6 +11,7 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { IMetamaskError } from 'types'
 import Web3Modal from "web3modal"
+import { add, bignumber, multiply, format } from 'mathjs'
 import { Web3Provider } from '@ethersproject/providers'
 import WalletConnectProvider from "@walletconnect/web3-provider"
 import {
@@ -22,9 +23,9 @@ import {
 import chains from 'configs/chains'
 import { utils, ethers } from 'ethers'
 import LinkdropSDK from '@linkdrop/sdk'
-import { CLAIM_HOST, INFURA_ID } from 'configs/app'
+import { CLAIM_HOST, INFURA_ID, LINK_COMISSION_PRICE } from 'configs/app'
 import { RootState, IAppDispatch } from 'data/store';
-import { ERC20Contract } from 'abi'
+import { ERC20Contract, LinkdropFactory, LinkdropMastercopy } from 'abi'
 const { REACT_APP_FACTORY_ADDRESS } = process.env
 
 const supportedNetworkURLs = {
@@ -251,7 +252,7 @@ export const approve = (
         data: data
       })
   
-      const transaction = async function (): Promise<boolean> {
+      const checkTransaction = async function (): Promise<boolean> {
         return new Promise((resolve, reject) => {
           const checkInterval = setInterval(async () => {
             const allowed = await contractInstance.allowance(address, proxyContractAddress)
@@ -262,7 +263,7 @@ export const approve = (
           }, 3000)
         })
       }
-      const finished = await transaction()
+      const finished = await checkTransaction()
       if (finished) {
         dispatch(campaignActions.setApproved(true))
         if (callback) { callback() }
@@ -274,6 +275,116 @@ export const approve = (
     }
   }
 }
+
+export const secure = (
+  sponsored: boolean,
+  callback?: () => void
+) => {
+  return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>, getState: () => RootState) => {
+    const {
+      user: {
+        provider,
+        address
+      },
+      campaign: {
+        proxyContractAddress,
+        id,
+        assets,
+        symbol
+      }
+    } = getState()
+    if (!REACT_APP_FACTORY_ADDRESS) {
+      return alert('REACT_APP_FACTORY_ADDRESS is not provided in .env file')
+    }
+    if (!LINK_COMISSION_PRICE) {
+      return alert('No LINK_COMISSION_PRICE provided')
+    }
+    if (!proxyContractAddress) {
+      return alert('No proxy address provided')
+    }
+    if (!assets) {
+      return alert('No assets provided')
+    }
+    if (!symbol) {
+      return alert('No symbol provided')
+    }
+    const newWallet = ethers.Wallet.createRandom()
+    const { address: wallet, privateKey } = newWallet
+    const signer = await provider.getSigner()
+    const gasPrice = await provider.getGasPrice()
+    const oneGwei = utils.parseUnits('1', 'gwei')
+    const factoryContract = await new ethers.Contract(REACT_APP_FACTORY_ADDRESS, LinkdropFactory.abi, signer)
+    
+    const isDeployed = await factoryContract.isDeployed(address, id)
+    let data
+    let to
+    const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, provider)
+    if (!isDeployed) {
+      let iface = new utils.Interface(LinkdropFactory.abi)
+      data = await iface.encodeFunctionData('deployProxyWithSigner', [
+        id, wallet
+      ])
+      to = REACT_APP_FACTORY_ADDRESS
+    } else {
+      let iface = new utils.Interface(LinkdropMastercopy.abi)
+      data = await iface.encodeFunctionData('addSigner', [
+        wallet
+      ])
+      to = proxyContractAddress
+    }
+    const assetsTotal = countAssetsTotalAmountERC20(assets, symbol)
+    //
+    const comission = bignumber(String(LINK_COMISSION_PRICE))
+    const nativeTokensAmount = !sponsored ? assetsTotal.originalNativeTokensAmount : add(
+      assetsTotal.originalNativeTokensAmount,
+      (multiply(
+        comission,
+        assets.length
+      ))
+    )
+
+    const value = utils.parseEther(String(nativeTokensAmount))
+    console.log({ value: String(value) })
+    const transaction = await signer.sendTransaction({
+      to,
+      gasPrice: gasPrice.add(oneGwei),
+      from: address,
+      value,
+      data: data
+    })
+    console.log({ transaction }) // hash
+
+    // 0xc8378e0281d8efd061e3b3bdfc1d5b37746e84a967e4f4f5e88616024d30ef30
+
+    const checkTransaction = async function (): Promise<boolean> {
+      return new Promise((resolve, reject) => {
+        const checkInterval = setInterval(async () => {
+          const res = await proxyContract.isLinkdropSigner(address)
+          if (res) {
+            resolve(true)
+            clearInterval(checkInterval)
+          }
+          // const receipt = await provider.getTransactionReceipt(transaction.hash)
+          // if (receipt && receipt.status === 0) {
+          //   console.log('waiting')
+          // } else if (receipt && receipt.status === 1 && receipt.confirmations != null && receipt.confirmations > 0) {
+          //   resolve(true)
+          //   clearInterval(checkInterval)
+          // }
+        }, 3000)
+      })
+    }
+    const finished = await checkTransaction()
+    if (finished) {
+      dispatch(campaignActions.setSecured(true))
+      dispatch(campaignActions.setPrivateKey(privateKey))
+      dispatch(campaignActions.setSponsored(sponsored))
+      callback && callback()
+    }
+  }
+}
+
+
 
 export const initialization = (
   chainId: number | null, address: string

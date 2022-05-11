@@ -8,7 +8,7 @@ const themes = {
 		noteTextColor: '#C5C7CD', // note color of text
 		primaryBorderColor: '#e5e5e5',
 		secondaryBorderColor: '#FFF',
-		extraBorderColor: '#252733',
+		extraBorderColor: '#979797',
 		disabledBorderColor: '#C5C7CD',
 		disabledColor: '#DFE0EB',
 		primaryColor: '#F7F8FC', // main color of bg

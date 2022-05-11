@@ -1,21 +1,19 @@
 import { Dispatch } from 'redux';
-import * as actionsCampaign from './actions';
-import { CampaignActions } from './types';
+import * as actionsCampaign from '../actions';
+import { CampaignActions } from '../types';
 import { TTokenType } from 'types'
 import { ERC20Contract } from 'abi'
 import { ethers } from 'ethers'
 import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
-import { UserActions } from '../user/types'
-import * as userAsyncActions from '../user/async-actions'
-import { RootState, IAppDispatch } from 'data/store'
+import { UserActions } from '../../user/types'
+import * as userAsyncActions from '../../user/async-actions'
 
 import {
   defineNativeTokenSymbol
 } from 'helpers'
 // type TIPFSResponse = { data: { IpfsHash: string, PinSize: number, Timestamp: string } }
 
-
-export async function setTokenContractData(
+async function setTokenContractData (
   dispatch: Dispatch<CampaignActions | UserActions>,
   tokenAddress: string,
   provider: any,
@@ -74,30 +72,4 @@ export async function setTokenContractData(
   }
 }
 
-export async function setAssetsData(
-  dispatch: Dispatch<CampaignActions>,
-  type: TTokenType,
-  assets: any,
-  wallet: string,
-  callback?: () => void
-) {
-  dispatch(actionsCampaign.setAssets(assets))
-  dispatch(actionsCampaign.setType(type))
-  dispatch(actionsCampaign.setWallet(wallet))
-  
-  if (callback) {
-    callback()
-  }
-}
-
-export const createProxyContract = () => {
-  return async (
-    dispatch: Dispatch<CampaignActions | UserActions>,
-    getState: () => RootState
-  ) => {
-    const { user: { sdk }, campaigns: { campaigns } } = getState()
-    const proxyContractAddress = await sdk?.getProxyAddress(String(campaigns.length))
-    if (!proxyContractAddress) { return }
-    dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
-  }
-}
+export default setTokenContractData

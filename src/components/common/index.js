@@ -20,6 +20,8 @@ import TextLink from './text-link'
 import MiniPopup from './mini-popup'
 import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/styled-components'
 import TransactionDetails from './transaction-details'
+import Checkbox from './checkbox'
+import ProgressBar from './progress-bar'
 
 export {
   Header,
@@ -46,5 +48,7 @@ export {
   WidgetNote,
   WidgetTextBlock,
   TransactionDetails,
-  WidgetData
+  WidgetData,
+  Checkbox,
+  ProgressBar
 }
