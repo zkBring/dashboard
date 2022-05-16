@@ -2,7 +2,6 @@
 import Page from './page/index.tsx'
 import NotFound from './not-found/index.tsx'
 import Campaigns from './campaigns/index.tsx'
-import CampaignsCreate from './campaigns-create/index.tsx'
 import CampaignsDetails from './campaigns-details/index.tsx'
 import Main from './main/index.tsx'
 import CampaignsCreateInitial from './campaings-create-initial/index'
@@ -20,7 +19,6 @@ export {
   Page,
   NotFound,
   Campaigns,
-  CampaignsCreate,
   CampaignsDetails,
   Main,
   CampaignsCreateInitial,

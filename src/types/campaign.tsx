@@ -1,17 +1,27 @@
 import { TCampaignStatus, TTokenType } from './index.js'
+import { TAssetsData, TLink } from 'types'
 
-type TRetroDrop = {
+type TCampaign = {
   title: string,
-  ipfsHash: string,
-  address: string,
   chainId: number,
+  id: string,
   description: string,
   logoURL: string,
   status: TCampaignStatus,
   tokenAddress: string,
   type: TTokenType,
-  decimals: number | null,
-  dropAddress: string
+  decimals: number,
+  assets: TAssetsData,
+  symbol: string,
+  wallet: string,
+  proxyContractAddress: string,
+  approved: boolean,
+  secured: boolean,
+  privateKey: string,
+  sponsored: boolean,
+  links: TLink[],
+  masterAddress: string,
+  date: string
 }
 
-export default TRetroDrop
+export default TCampaign

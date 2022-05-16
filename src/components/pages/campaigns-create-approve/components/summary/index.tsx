@@ -1,17 +1,18 @@
 import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import { WidgetText, WidgetTextBlock, WidgetData } from 'components/common'
-import { Button } from 'components/common'
+import { WidgetText, WidgetTextBlock, WidgetData, Loader } from 'components/common'
 import {
   WidgetContent,
   WidgetSummary
 } from '../../styled-components'
 import { useHistory } from 'react-router-dom'
-import { WidgetSummaryData } from './styled-components'
-import Aside from '../aside'
+import { WidgetSummaryData, WidgetButton } from './styled-components'
+import { TAsset, TTokenType } from 'types'
 import { IAppDispatch } from 'data/store'
-import * as userAsyncActions from 'data/store/reducers/user/async-actions'
+import { countAssetsTotalAmountERC20, countAssetsTotalAmountERC721, defineNativeTokenSymbol } from 'helpers'
+import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
+import { TransactionAside } from 'components/pages/common'
 
 const mapStateToProps = ({
   user: {
@@ -19,7 +20,7 @@ const mapStateToProps = ({
     provider,
     chainId
   },
-  campaign: { loading, decimals, symbol, assets, type },
+  campaign: { decimals, symbol, assets, type, loading },
 }: RootState) => ({
   loading,
   address,
@@ -33,12 +34,43 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    approve: (callback: () => void) => {
+    approveERC20: (callback: () => void) => {
       dispatch(
-        userAsyncActions.approve(callback)
+        userAsyncActions.approveERC20(callback)
+      )
+    },
+    approveERC721: (callback: () => void) => {
+      dispatch(
+        userAsyncActions.approveERC721(callback)
       )
     }
   }
+}
+
+type TDefineLinksContent = (
+  symbol: string,
+  assets: TAsset[],
+  chainId: number,
+  type: TTokenType
+) => string
+const defineLinksContent: TDefineLinksContent = (
+  symbol,
+  assets,
+  chainId,
+  type
+) => {
+  let assetsTotal
+  if (type === 'erc20') {
+    assetsTotal = countAssetsTotalAmountERC20(assets)
+  } else {
+    assetsTotal = countAssetsTotalAmountERC721(assets)
+  }
+  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
+  if (String(assetsTotal.nativeTokensAmount) === '0') {
+    return symbol
+  }
+  return `${symbol} + ${nativeTokenSymbol}`
+  
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
@@ -46,46 +78,65 @@ const Summary: FC<ReduxType> = ({
   assets,
   symbol,
   chainId,
-  decimals,
-  approve,
+  loading,
+  approveERC20,
+  approveERC721,
   type
 }) => {
   const history = useHistory()
 
   return <WidgetContent>
+    {loading && <Loader withOverlay />}
     <WidgetSummary>
-      <WidgetSummaryData>
-        <div>
+      <WidgetTextBlock>
+        <WidgetSummaryData>
+          <div>
+              <WidgetText>
+                Links to generate
+              </WidgetText>
+              <WidgetData>
+                {assets?.length}
+              </WidgetData>
+          </div>
+          {type && symbol && assets && chainId && <div>
             <WidgetText>
-              Links to generate
+              Links contents
             </WidgetText>
             <WidgetData>
-              {assets?.length}
+              {defineLinksContent(symbol, assets, chainId, type)}
             </WidgetData>
-        </div>
-        <div>
-            
-        </div>
-      </WidgetSummaryData>
+          </div>}
+        </WidgetSummaryData>
+      </WidgetTextBlock>
+      
       <WidgetTextBlock>
         <WidgetText>
           Give Linkdrop contracts permission to transfer tokens from your account to receiver
         </WidgetText>
       </WidgetTextBlock>
-      <Button
+      <WidgetButton
         title='Approve'
+        appearance='action'
         onClick={() => {
-          approve(
-            () => {
-              history.push(`/campaigns/new/${type}/secure`)
-            }
-          )
+          const redirectURL = `/campaigns/new/${type}/secure`
+          if (type === 'erc20') {
+            approveERC20(
+              () => {
+                history.push(redirectURL)
+              }
+            )
+          } else {
+            approveERC721(
+              () => {
+                history.push(redirectURL)
+              }
+            )
+          }
+          
         }}
       />
     </WidgetSummary>
-    <Aside
-
-    />
+    <TransactionAside />
   </WidgetContent>
 }
 

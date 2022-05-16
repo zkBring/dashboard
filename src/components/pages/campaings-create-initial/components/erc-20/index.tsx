@@ -108,6 +108,7 @@ const Erc20: FC<ReduxType > = ({
   nativeTokenAmountFormatted,
   tokenAmountFormatted,
   clearCampaign,
+  decimals,
   userLoading
 }) => {
   const [
@@ -154,12 +155,12 @@ const Erc20: FC<ReduxType > = ({
   }, [tokenAddress, provider])
 
   useEffect(() => {
-    if (!assetsValue ) { return }
+    if (!assetsValue || !decimals) { return }
     let assets
     if (tokenAddress !== NATIVE_TOKEN_ADDRESS) {
-      assets = parseERC20AssetsData(assetsValue, 18)
+      assets = parseERC20AssetsData(assetsValue, decimals)
     } else {
-      assets = parseNativeAssetsData(assetsValue, 18)
+      assets = parseNativeAssetsData(assetsValue, decimals)
     }
     if (!assets) { return }
     
@@ -237,6 +238,7 @@ const Erc20: FC<ReduxType > = ({
       </WidgetOptions>
       <Aside
         symbol={symbol}
+        type={type}
         assets={assetsParsed}
       />
     </WidgetContent>      

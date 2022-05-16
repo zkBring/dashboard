@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 import { Widget, Textarea, Button } from 'components/common'
 
-export const Container = styled.div`
-  
-`
+export const Container = styled.div``
 
 export const WidgetComponent = styled(Widget)`
   max-width: 1280px;
@@ -34,5 +32,5 @@ export const WidgetTextarea = styled(Textarea)`
 `
 
 export const WidgetButton = styled(Button)`
-  
+  padding: 4px 50px;
 `

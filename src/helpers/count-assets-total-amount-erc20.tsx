@@ -1,13 +1,13 @@
 
 import {
   TDefineTotalAmountERC20,
-  TTotalAmountERC20,
+  TTotalAmount,
   TAsset
 } from 'types'
 import { add, bignumber } from 'mathjs'
 
-const countAssetsTotalAmountERC20: TDefineTotalAmountERC20 = (assets, symbol) => {
-  return assets.reduce<TTotalAmountERC20>((sum: TTotalAmountERC20, item: TAsset) => {
+const countAssetsTotalAmountERC20: TDefineTotalAmountERC20 = (assets) => {
+  return assets.reduce<TTotalAmount>((sum: TTotalAmount, item: TAsset) => {
     const { nativeTokensAmount, amount, originalAmount, originalNativeTokensAmount } = item
     return {
       ...sum,

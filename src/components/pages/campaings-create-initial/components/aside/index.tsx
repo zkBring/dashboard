@@ -8,7 +8,11 @@ import {
   TDefineTitle,
   TDefineTotalTitle
 } from './types'
-import { countAssetsTotalAmountERC20 } from 'helpers'
+import {
+  countAssetsTotalAmountERC20,
+  countAssetsTotalAmountERC721
+} from 'helpers'
+import { TDefineAssetsTotalAmount } from 'types'
 
 const renderText: TDefineTitle = (
   symbol,
@@ -16,6 +20,7 @@ const renderText: TDefineTitle = (
   assets
 ) => {
   if (!symbol) { return }
+
   if (symbol === 'ETH') {
     return  <>
       <WidgetText>
@@ -39,49 +44,63 @@ const renderText: TDefineTitle = (
 }
 
 const defineTotalTitle: TDefineTotalTitle = (
-  symbol, totalAmount
+  symbol,
+  totalAmount
 ) => {
-  const originalAmount = String(totalAmount.originalAmount)
-  const originalNativeTokensAmount = String(totalAmount.originalNativeTokensAmount)
-  if (
-    originalAmount !== '0' &&
-    originalNativeTokensAmount !== '0'
-  ) {
-    return `${originalAmount} ${symbol} + ${originalNativeTokensAmount} ETH`
-  }
+  if (totalAmount.originalAmount) {
+    const originalAmount = String(totalAmount.originalAmount)
+    const originalNativeTokensAmount = String(totalAmount.originalNativeTokensAmount)
+    if (
+      originalAmount !== '0' &&
+      originalNativeTokensAmount !== '0'
+    ) {
+      return `${originalAmount} ${symbol} + ${originalNativeTokensAmount} ETH`
+    }
 
-  if (
-    originalAmount !== '0' &&
-    originalNativeTokensAmount === '0'
-  ) {
-    return `${originalAmount} ${symbol}`
-  }
+    if (
+      originalAmount !== '0' &&
+      originalNativeTokensAmount === '0'
+    ) {
+      return `${originalAmount} ${symbol}`
+    }
 
-  if (
-    originalAmount === '0' &&
-    originalNativeTokensAmount !== '0'
-  ) {
-    return `${originalNativeTokensAmount} ETH`
+    if (
+      originalAmount === '0' &&
+      originalNativeTokensAmount !== '0'
+    ) {
+      return `${originalNativeTokensAmount} ETH`
+    }
+  } else {
+    return ''
   }
+  
 
   return ''
 }
 
-
+const countAssetsTotalAmount: TDefineAssetsTotalAmount = (assets, type) => {
+  if (type === 'erc20') {
+    return countAssetsTotalAmountERC20(assets)
+  } else {
+    return countAssetsTotalAmountERC721(assets)
+  }
+}
 
 const Aside: FC<TAside> = ({
   assets,
-  symbol
+  symbol,
+  type
 }) => {
   if (!symbol) {
     return <WidgetAside>
       <WidgetNote>Fill all fields to see the details</WidgetNote>
     </WidgetAside>
   }
-  const myAssets = countAssetsTotalAmountERC20(assets, symbol)
+  const myAssets = countAssetsTotalAmount(assets, type)
+  console.log({ assets })
   return <WidgetAside>
     <WidgetTextBlock>
-      <WidgetText>Total:</WidgetText>
+      <WidgetText>Total: {assets.length} link(s)</WidgetText>
     </WidgetTextBlock>
     <WidgetTextBlock>
       {renderText(

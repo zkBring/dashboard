@@ -1,11 +1,17 @@
 import styled, { keyframes, css } from 'styled-components'
 
-const rotation = keyframes`
+const pulse = keyframes`
   0% {
-    transform: rotate(0deg);
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  33% {
+    transform: scale(1);
+    opacity: 1;
   }
   100% {
-    transform: rotate(360deg);
+    transform: scale(1.4);
+    opacity: 0;
   }
 `
 
@@ -14,59 +20,63 @@ interface LoaderProps {
 }
 
 export const Loader = styled.div<LoaderProps>`
-  display: inline-block;
+  border-radius: 80px;
+  line-height: 100px;
   position: relative;
-  width: 40px;
-  height: 40px;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 80px;
+  height: 80px;
 
   ${props  => props.size === 'large' && css`
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 140px;
+    border-radius: 140px;
   `}
 
   ${props  => props.size === 'small' && css`
-    width: 10px;
-    height: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
   `}
+
+  &:before,
+  &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 1);
+      border-radius: 50px;
+      opacity: 0;
+    }
+    
+    &:before {
+    transform: scale(1);
+    animation: ${pulse} 2s infinite linear;
+  }
+    
+  &:after {
+    animation: ${pulse} 2s 1s infinite linear;
+  }
+
+
 `
 
-const LoaderSegment = styled.div<LoaderProps>`
-  box-sizing: border-box;
-  display: block;
+
+export const LoaderOverlay = styled.div`
+  display: flex;
+  align-items: center;
   position: absolute;
-  width: 32px;
-  height: 32px;
-  margin: 4px;
-  border: 4px solid ${props => props.theme.secondaryBorderColor};
-  border-radius: 50%;
-  animation: ${rotation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: ${props => props.theme.secondaryBorderColor} transparent transparent transparent;
-  ${props  => props.size === 'large' && css`
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border-width: 8px;
-  `}
-  ${props  => props.size === 'small' && css`
-    width: 10px;
-    height: 10px;
-    margin: 0px;
-    border-width: 2px;
-  `}
-`
-
-export const LoaderSegmentA = styled(LoaderSegment)`
-  animation-delay: -0.45s;
-`
-
-export const LoaderSegmentB = styled(LoaderSegment)`
-  animation-delay: -0.3s;
-`
-
-export const LoaderSegmentC = styled(LoaderSegment)`
-  animation-delay: -0.15s;
-`
-
-export const LoaderSegmentD = styled(LoaderSegment)`
-
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, .7);
 `

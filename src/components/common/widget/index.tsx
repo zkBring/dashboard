@@ -8,7 +8,6 @@ const Widget: FC<TProps> = ({ children, className, title }) => {
     <WidgetContent>
       {children}
     </WidgetContent>
-    
   </WidgetComponent>
 }
 

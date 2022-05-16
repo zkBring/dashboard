@@ -1,15 +1,27 @@
 import { TTokenType } from 'types'
 import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
 
-type TDefinePlaceholder = (type: TTokenType, valid: boolean, tokenAddress: string) => string
+type TDefinePlaceholder = (
+  type: TTokenType,
+  valid: boolean,
+  tokenAddress: string
+) => string
 
-const defineAssetsTextareaPlaceholder: TDefinePlaceholder = (type, valid, tokenAddress) => {
+const defineAssetsTextareaPlaceholder: TDefinePlaceholder = (
+  type,
+  valid,
+  tokenAddress
+) => {
   if (!valid) {
     if (type === 'erc20') {
       if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
-        return `Provide valid native token address`
+        return `Provide a valid native token address`
       }
-      return `Provide valid ERC-20 token address`
+      return `Provide a valid ERC-20 token address`
+    }
+
+    if (type === 'erc721') {
+      return `Provide a valid ERC-721 token address`
     }
   }
   if (type === 'erc20') {
@@ -30,6 +42,15 @@ Example:
 0.0001(20)
 0.0001, 1(20)
 and so on
+`
+  }
+  if (type === 'erc721') {
+    return `Be careful and paste info in the following order:
+Token ID, native token amount (if needed). In brackets you can specify an interval of token IDs
+Example:
+1 - will create one link with one nft-token (id: 1)
+[1-10] - will create 10 links with one nft-token in each (IDs from 1 to 10)
+1, 0.0001 - will create 1 links with one nft-token (id: 1) and 0.0001 ETH
 `
   }
   return ''

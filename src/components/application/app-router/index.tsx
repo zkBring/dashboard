@@ -7,7 +7,6 @@ import {
   NotFound,
   Page,
   Campaigns,
-  CampaignsCreate,
   CampaignsDetails,
   Main,
   CampaignsCreateInitial,
@@ -33,13 +32,6 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
   return <HashRouter>
     <Page>
       <Switch>
-
-        <ProtectedRoute
-          path='/campaigns/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreate}
-        />
         <ProtectedRoute
           path='/campaigns/:id'
           exact={true}

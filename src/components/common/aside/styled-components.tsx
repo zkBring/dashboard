@@ -42,6 +42,7 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
   align-items: center;
   text-decoration: none;
   padding: 20px 32px;
+  font-size: 20px;
   line-height: 1;
   cursor: pointer;
   margin-bottom: 6px;
@@ -78,9 +79,10 @@ export const AsideFooter = styled.div`
 
 export const AsideTitle = styled.h2`
   color: ${props => props.theme.primaryTextColor};
-  font-size: 16px;
+  font-size: 26px;
   flex: 1;
   display: flex;
+  font-weight: 400;
   align-items: center;
   margin: 0;
 `

@@ -28,7 +28,7 @@ export default async function approveERC721(
   dispatch(actionsContract.setLoading(true))
 	try {
 		const signer = await provider.getSigner()
-		const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract, signer)
+		const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
 		await contractInstance.setApprovalForAll(dropAddress, true)
 		const checkReceipt = async function (): Promise<boolean> {
 			return new Promise((resolve, reject) => {

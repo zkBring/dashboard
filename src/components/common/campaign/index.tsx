@@ -1,54 +1,89 @@
-import { FC, useEffect, useState } from 'react'
-import { Campaign, CampaignStatus, CampaignTitle, CampaignImage, CampaignButton } from './styled-components'
-import { copyToClipboard } from 'helpers'
-import { useHistory } from 'react-router-dom'
-import { getValidImage } from 'helpers'
+import { FC } from 'react'
+import { Campaign, CampaignRow, CampaignText, CampaignValue, CampaignType, CampaignButtons, CampaignButton } from './styled-components'
+import { countAssetsTotalAmountERC20, formatDate, defineNativeTokenSymbol } from 'helpers'
+import { TAsset, TTokenType } from 'types'
+import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
 
 const { REACT_APP_CLAIM_URL } = process.env
 
-
-
 type TProps = {
-  status: 'active' | 'stopped' | 'draft',
-  title: string,
-  image: string,
-  id: string
+  date: string,
+  assets: TAsset[],
+  id: string,
+  symbol: string,
+  chainId: number,
+  type: TTokenType
+}
+
+type TDefineTitle = (
+  type: TTokenType,
+  assets: TAsset[],
+  symbol: string,
+  chainId: number
+) => string
+
+const defineTitle: TDefineTitle = (
+  type,
+  assets,
+  symbol,
+  chainId
+) => {
+  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
+  const totalAmount = countAssetsTotalAmountERC20(assets)
+  if (type === 'erc20') {
+    if (symbol === nativeTokenSymbol) {
+      // раздача native tokens
+      return `${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+    }
+    if (String(totalAmount.originalAmount) !== '0') {
+      // раздача erc-20 tokens
+      if (String(totalAmount.originalNativeTokensAmount) !== '0') {
+        // раздача erc-20 tokens + native tokens
+        return `${totalAmount.originalAmount} ${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+      }
+      return `${totalAmount.originalAmount} ${symbol}`
+    }
+  }
+  return ''
 }
 
 const CampaignComponent: FC<TProps> = ({
-  title,
-  image,
+  assets,
+  date,
   id,
-  status
+  symbol,
+  chainId,
+  type,
 }) => {
-  const history = useHistory()
-  const [ imageURL, setImageURL ] = useState(image)
-  useEffect(() => {
-    const defineImage = async () => {
-      const image = await getValidImage(imageURL)
-      if (image === imageURL) { return }
-      setImageURL(image)
-    }
-    defineImage()
-  }, [])
-  return <Campaign>
-    <CampaignStatus status={status}>{status}</CampaignStatus>
-    <CampaignImage src={imageURL} />
-    <CampaignTitle>{title}</CampaignTitle>
-    <CampaignButton
-      onClick={() => {
-        history.push(`/campaigns/${id}`)
-        // window.open(`${REACT_APP_CLAIM_URL}/${id}`, '_blank')
-      }}
-      title="Campaign’s Details"
-      appearance='default'
-    />
-    <CampaignButton
-      title='Share Link'
-      onClick={() => copyToClipboard({ value: `${REACT_APP_CLAIM_URL}/${id}` })}
-      appearance='default'
-    />
-      
+  const title = defineTitle(
+    type,
+    assets,
+    symbol,
+    chainId
+  )
+  const dateFormatted = formatDate(date)
+  return <Campaign title={title}>
+    <CampaignType>ERC20</CampaignType>
+    <CampaignRow>
+      <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>2 links / 1 WEENUS + 0 ETH</CampaignText>
+    </CampaignRow>
+    <CampaignButtons>
+      <CampaignButton
+        to={`/campaigns/${id}`}
+        title="Links"
+        appearance='action-inverted'
+      />
+      <CampaignButton
+        title='View Contract'
+        onClick={() => {
+
+        }}
+        appearance='action-inverted'
+      />
+    </CampaignButtons>  
   </Campaign>
 }
 

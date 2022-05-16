@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-@typescript-eslint-eslint-plugin-4.33.0-c24dc7c8069c7706bc40d99f6fa87edcb2005276-integrity/node_modules/@typescript-eslint/eslint-plugin/dist/rules/no-unnecessary-type-arguments.js' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/@typescript-eslint/eslint-plugin/dist/rules/no-unnecessary-type-arguments.js'
+  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-core-js-pure-3.22.1-4d94e0c9a7b710da20dadd727fe98b43543119f0-integrity/node_modules/core-js-pure/features/reflect/define-metadata.js' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/core-js-pure/features/reflect/define-metadata.js'
 
 npm manifest: 
   {

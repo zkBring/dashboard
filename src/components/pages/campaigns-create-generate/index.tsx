@@ -1,9 +1,10 @@
 import { FC, useEffect } from 'react'
-import { ProgressBar } from 'components/common'
-import { Container } from './styled-components'
+import { Container, GenerateProgressBar } from './styled-components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
+import { useHistory } from 'react-router-dom'
+type TCallback = (id: string) => void
 
 const mapStateToProps = ({
   campaign: { assets, type, links },
@@ -15,7 +16,9 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    generate: () => dispatch(campaignAsyncActions.generateERC20Link()),
+    generate: (callback: TCallback) => dispatch(campaignAsyncActions.generateERC20Link({
+      callback
+    })),
   }
 }
 
@@ -27,12 +30,13 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   assets,
   links
 }) => {
+  const history = useHistory()
   useEffect(() => {
-    generate()
+    generate((id) => { history.push(`/campaigns/${id}`) })
   }, [])
-  console.log({ links1: links })
+
   return <Container>
-    <ProgressBar
+    <GenerateProgressBar
       max={(assets || []).length}
       current={(links || []).length}
     />

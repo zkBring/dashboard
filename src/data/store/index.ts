@@ -19,7 +19,7 @@ import { ContractActions } from './reducers/contract/types'
 
 type TActions = CampaignActions & CampaignsActions & UserActions & ContractActions
 export const history = createBrowserHistory()
-setProps(['drops'])
+setProps(['campaigns'])
 
 const reducers = combineReducers({
   user: userReducer,

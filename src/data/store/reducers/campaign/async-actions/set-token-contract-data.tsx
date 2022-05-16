@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import * as actionsCampaign from '../actions';
 import { CampaignActions } from '../types';
 import { TTokenType } from 'types'
-import { ERC20Contract } from 'abi'
+import { ERC20Contract, ERC721Contract } from 'abi'
 import { ethers } from 'ethers'
 import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
 import { UserActions } from '../../user/types'
@@ -35,10 +35,9 @@ async function setTokenContractData (
     if (type === 'erc20') {
       let decimals = 18
       let symbol = defineNativeTokenSymbol({ chainId })
-      console.log('here')
       if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
 
-      } else {
+      } {
         const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
         decimals = await contractInstance.decimals()
         symbol = await contractInstance.symbol()
@@ -50,13 +49,14 @@ async function setTokenContractData (
           contractInstance
         )
       }
-      console.log({ symbol, decimals })
       
       dispatch(actionsCampaign.setDecimals(decimals))
       dispatch(actionsCampaign.setSymbol(symbol))
     }
     if (type === 'erc721') {
-
+      const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
+      const symbol = await contractInstance.symbol()
+      dispatch(actionsCampaign.setSymbol(symbol))
     }
 
     if (type === 'erc1155') {

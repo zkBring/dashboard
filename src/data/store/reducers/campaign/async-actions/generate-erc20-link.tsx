@@ -1,22 +1,31 @@
 import { Dispatch } from 'redux';
 import * as actionsCampaign from '../actions';
+import * as actionsCampaigns from '../../campaigns/actions';
 import { CampaignActions } from '../types';
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
-import { TLink } from 'types'
+import { TLink, TCampaign } from 'types'
 import { EXPIRATION_DATE } from 'configs/app'
+import { CampaignsActions } from '../../campaigns/types';
 function sleep(timeout: number) {
   return new Promise((resolve) => setTimeout(() => resolve(true), timeout))
 }
 
-const generateERC20Link = () => {
+const generateERC20Link = ({
+  callback
+}: { callback?: (id: string) => void  }) => {
   return async (
-    dispatch: Dispatch<CampaignActions | UserActions>,
+    dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions>,
     getState: () => RootState
   ) => {
     const {
       user: {
-        sdk
+        sdk,
+        chainId,
+        address
+      },
+      campaigns: {
+        campaigns
       },
       campaign: {
         id,
@@ -25,7 +34,15 @@ const generateERC20Link = () => {
         tokenAddress,
         wallet,
         symbol,
-        decimals
+        decimals,
+        title,
+        description,
+        logoURL,
+        proxyContractAddress,
+        approved,
+        secured,
+        sponsored,
+        type
       }
     } = getState()
     if (!assets) { return alert('assets are not provided') }
@@ -54,9 +71,34 @@ const generateERC20Link = () => {
         dispatch(actionsCampaign.setLinks(links))
         await sleep(1)
       }
-      
     }
-    
+    if (!decimals || !chainId || !proxyContractAddress || !privateKey || !type || !address) { return }
+
+    const campaign: TCampaign = {
+      id,
+      assets,
+      privateKey,
+      tokenAddress,
+      masterAddress: address,
+      wallet,
+      symbol,
+      decimals,
+      title: title || '',
+      description: description || '',
+      logoURL: logoURL || '',
+      type,
+      chainId,
+      status: 'active',
+      proxyContractAddress,
+      approved,
+      secured,
+      sponsored,
+      links,
+      date: String(new Date())
+    }
+
+    dispatch(actionsCampaigns.addCampaign(campaign))
+    if (callback) { callback(id) }
   }
 }
 

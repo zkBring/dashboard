@@ -1,9 +1,11 @@
 import React, { FC } from 'react'
 // import { connect, ConnectedProps } from 'react-redux'
-import { RootState } from 'data/store';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom'
-import { Dispatch } from 'redux';
+import { RootState } from 'data/store'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { Campaign } from 'components/common'
+import { Container } from './styled-components'
+
 type TProps = {
   connectWallet: () => void
 }
@@ -21,8 +23,6 @@ const mapStateToProps = ({
   chainId
 })
 
-// const getOwnersData
-
 const mapDispatcherToProps = (dispatch: Dispatch) => {
   return {
   }
@@ -31,9 +31,19 @@ const mapDispatcherToProps = (dispatch: Dispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps>  & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWallet, chainId }) => {
-  return <div>
-    lol
-  </div>
+  return <Container>
+    {campaigns.map(campaign => {
+      return <Campaign
+        assets={campaign.assets}
+        date={campaign.date}
+        id={campaign.id}
+        key={campaign.id}
+        chainId={campaign.chainId}
+        type={campaign.type}
+        symbol={campaign.symbol}
+      />
+    })}
+  </Container>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)

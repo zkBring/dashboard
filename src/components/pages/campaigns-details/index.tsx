@@ -4,8 +4,8 @@ import { Breadcrumbs, Button } from 'components/common'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { Link, LinkContainer, LinkValue, LinkTitle, WidgetDataBlock, InfoBlockStyled, WidgetDataSplit, InfoBlockContainer, Description, WidgetContainer } from './styled-components'
-import { copyToClipboard, shortenString } from 'helpers'
+import { WidgetComponent, Container, WidgetButton } from './styled-components'
+import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
 import { defineNetworkName, capitalize, defineEtherscanUrl } from 'helpers'
 import { TTokenType } from 'types'
@@ -44,57 +44,21 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   const [ copied, setCopied ] = useState(false)
   const history = useHistory()
 
-  const currentCampaign = campaigns.find(campaign => campaign.ipfsHash === params.id)
+  const currentCampaign = campaigns.find(campaign => campaign.id === params.id)
   if (!currentCampaign) {
     return null
   }
-  const { ipfsHash, title, chainId, tokenAddress, type, decimals, dropAddress } = currentCampaign
-  const link = `${REACT_APP_CLAIM_URL}/${ipfsHash}`
+  const { chainId, id, tokenAddress, type, decimals, links } = currentCampaign
   
-  
-
-  return <div>
-    <Breadcrumbs
-      path={['My campaigns', currentCampaign.title]}
-      description='Manage your campaign and gain insights into your conversion. Share the link to your claim page.'
-      returnAction={() => history.push('/')}
-    />
-    <InfoBlockContainer>
-
-    </InfoBlockContainer>
-    <Description>
-      <WidgetContainer>
-        <WidgetDataBlock title='Drop’s title' text={title} />
-        <WidgetDataSplit>
-          <WidgetDataBlock title='Network' text={capitalize(defineNetworkName(chainId))} />
-          <WidgetDataBlock title='Type of token' text={type.toUpperCase()} />
-        </WidgetDataSplit>
-        <WidgetDataBlock title='Token address' text={tokenAddress} />
-        {dropAddress && <WidgetDataBlock
-          title='Drop contract'
-          text={dropAddress}
-          link={defineEtherscanUrl(chainId, dropAddress)}
-        />}
-        <WidgetDataBlock title='IPFS hash' text={shortenString(ipfsHash)} link={`${ipfsGatewayUrl}${ipfsHash}`} />
-      </WidgetContainer>
-
-      <LinkContainer>
-        <LinkTitle>Link to claimpage</LinkTitle>
-        <Link>
-          <LinkValue>{link}</LinkValue>
-          <Button
-            title={copied ? 'Copied!' : 'Copy Link'}
-            size='small'
-            appearance='action'
-            onClick={() => {
-              copyToClipboard({ value: link })
-              setCopied(true)
-            }}
-          />
-        </Link>
-      </LinkContainer>
-    </Description>
-  </div>
+  return <Container>
+    <WidgetComponent title='Get the Links'>
+      <WidgetButton
+        appearance='action'
+        onClick={() => downloadLinksAsCSV(links, id)}
+        title='Download CSV'
+      />
+    </WidgetComponent>
+  </Container>
 }
 
 export default withRouter(connect(mapStateToProps)(CampaignDetails))

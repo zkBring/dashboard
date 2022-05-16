@@ -30,7 +30,7 @@ export const parseDataERC1155: TResult<TAsset[]> = (type, data) => {
   //   }
   // }, {})
 
-  return [{ id: '1', amount: '1', nativeTokensAmount: '1'}]
+  return [{ ids: [ 1 ], amount: '1', nativeTokensAmount: '1'}]
 }
 
 
@@ -54,7 +54,7 @@ export const parseDataERC721: TResult<TAsset[]> = (type, data) => {
   //   }
   // }, {})
 
-  return [{ id: '1', nativeTokensAmount: '1'}]
+  return [{ ids: [ 1 ], nativeTokensAmount: '1'}]
 }
 
 export const parseDataERC20: TResultERC20 = (data, decimals) => {

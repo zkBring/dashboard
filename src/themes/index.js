@@ -14,7 +14,7 @@ const themes = {
 		primaryColor: '#F7F8FC', // main color of bg
 		secondaryColor: '#363740', // secondary coplor of bg
 		blankColor: '#f1f3f4', // secondary coplor of bg
-		asideBackgroundColor: '#fff', // secondary coplor of bg
+		asideBackgroundColor: '#fff',
 		menuItemActive: '#3E4049',
 
 		primaryHighlightColor: '#0025ff',

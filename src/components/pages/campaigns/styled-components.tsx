@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   margin-bottom: 36px;
-
-  &:last-child {
-    margin-bottom: 0px;
-  }
+  background: ${props => props.theme.blankColor};
+  display: grid;
+  grid-template-columns: 400px 400px;
+  grid-gap: 30px;
 `
 
 export const Text = styled.p`

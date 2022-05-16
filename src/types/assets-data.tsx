@@ -1,26 +1,26 @@
 import { BigNumber } from 'mathjs'
+import { TTokenType } from 'types'
 
 export type TAsset = {
   amount?: string,
-  id?: string,
+  id?: number,
   nativeTokensAmount?: string,
   originalAmount?: string,
   originalNativeTokensAmount?: string
 }
-
-export type TDefineTotalAmountERC20 = (assets: TAsset[], symbol: string ) => {
-  amount: BigNumber;
+export type TTotalAmount = {
+  ids?: number[];
+  amount?: BigNumber;
+  originalAmount?: BigNumber;
   nativeTokensAmount: BigNumber;
-  originalAmount: BigNumber;
   originalNativeTokensAmount: BigNumber;
 }
 
-export type TTotalAmountERC20 = {
-  amount: BigNumber;
-  nativeTokensAmount: BigNumber;
-  originalAmount: BigNumber;
-  originalNativeTokensAmount: BigNumber;
-}
+export type TDefineTotalAmountERC20 = (assets: TAsset[] ) => TTotalAmount
+
+export type TDefineTotalAmountERC721 = (assets: TAsset[] ) => TTotalAmount
+
+export type TDefineAssetsTotalAmount = (assets: TAsset[], type: TTokenType ) => TTotalAmount
 
 type TAssetsData = TAsset[]
 

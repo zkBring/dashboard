@@ -45,3 +45,7 @@ export const Arrow = styled.div`
   animation: ${cursorMove} infinite 3s;
   right: calc(50%);
 `
+
+export const TransactionDetailsImage = styled.img`
+  max-width: 245px;
+`

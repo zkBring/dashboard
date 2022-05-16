@@ -26,13 +26,14 @@ interface LocationType {
 
 const AsideComponent: FC<AsideProps> = () => {
   const location = useLocation<LocationType>()
+  console.log(location.pathname)
 	return <ThemeProvider theme={themes.light}>
     <Aside>
       <AsideLogoZone>
         <AsideLogoIcon>
           x
         </AsideLogoIcon>
-        <AsideTitle>LinkDrop</AsideTitle>
+        <AsideTitle>Linkdrop</AsideTitle>
         {false && <Icons.LinkdropTextLogo />}
       </AsideLogoZone>
 
@@ -40,7 +41,7 @@ const AsideComponent: FC<AsideProps> = () => {
         <AsideMenuItem to='/' active={location.pathname === '/'}>
           Dashboard
         </AsideMenuItem>
-        <AsideMenuItem to='/campaigns' active={location.pathname === '/campaigns'}>
+        <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
           Campaigns
         </AsideMenuItem>
       </AsideMenu>
@@ -48,16 +49,12 @@ const AsideComponent: FC<AsideProps> = () => {
       <AsideFooter>
         <AsideMenu>
           <AsideMenuItem disabled>
-            <Icons.SupportMenuIcon className={AsideMenuItemIconClassName} />
-            Support
+            <Icons.DocsMenuIcon className={AsideMenuItemIconClassName} />
+            Legal
           </AsideMenuItem>
           <AsideMenuItem disabled>
             <Icons.FaqMenuIcon className={AsideMenuItemIconClassName} />
-            FAQ
-          </AsideMenuItem>
-          <AsideMenuItem disabled>
-            <Icons.DocsMenuIcon className={AsideMenuItemIconClassName} />
-            Legal
+            Contact Us
           </AsideMenuItem>
         </AsideMenu>
       </AsideFooter>

@@ -1,6 +1,12 @@
 import TCampaign from './campaign'
 import TCampaignStatus from './campaign-status'
-import TAssetsData, { TAsset, TDefineTotalAmountERC20, TTotalAmountERC20 } from './assets-data'
+import TAssetsData, {
+  TAsset,
+  TDefineTotalAmountERC20,
+  TDefineTotalAmountERC721,
+  TTotalAmount,
+  TDefineAssetsTotalAmount
+} from './assets-data'
 import TOwners from './owners'
 import TCommunities from './communities'
 import IMetamaskError from './metamask-error'
@@ -8,6 +14,7 @@ import TTokenType from './token-type'
 import TWallet from './wallet'
 import TSelectOption from './select-option'
 import TLink from './link'
+import TFormatDate from './format-date'
 
 export {
   TCampaign,
@@ -21,6 +28,9 @@ export {
   TWallet,
   TSelectOption,
   TDefineTotalAmountERC20,
-  TTotalAmountERC20,
-  TLink
+  TLink,
+  TDefineTotalAmountERC721,
+  TTotalAmount,
+  TFormatDate,
+  TDefineAssetsTotalAmount
 }
