@@ -206,7 +206,8 @@ const Erc20: FC<ReduxType > = ({
           placeholder={defineAssetsTextareaPlaceholder(
             'erc20',
             Boolean(symbol),
-            tokenAddress
+            tokenAddress,
+            nativeTokenSymbol
           )}
           disabled={!symbol}
           onChange={value => {
@@ -236,11 +237,12 @@ const Erc20: FC<ReduxType > = ({
           disabled={defineIfButtonDisabled()}
         />
       </WidgetOptions>
-      <Aside
+      {chainId && <Aside
         symbol={symbol}
         type={type}
         assets={assetsParsed}
-      />
+        chainId={chainId}
+      />}
     </WidgetContent>      
   </Container>
 }

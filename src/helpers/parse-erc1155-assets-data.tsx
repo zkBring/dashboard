@@ -1,14 +1,13 @@
 import { checkRecipientsDataFormat } from './index'
 import {
-  TTokenType,
   TAsset
 } from 'types'
 import { utils } from 'ethers';
+import checkERC1155AssetsData from './check-erc1155-assets-data';
 
-type TResult<TItemType> = (type: TTokenType, data: string) => TItemType | null
-type TResultERC20 = (data: string, decimals: number) => TAsset[] | null
+type TResultERC1155 = (data: string) => TAsset[] | null
 
-const parseERC20AssetsData: TResultERC20 = (data, decimals) => {
+const parseERC1155AssetsData: TResultERC1155 = (data) => {
   // [
   //   '0.002',
   //   '0.002'(20)
@@ -20,7 +19,7 @@ const parseERC20AssetsData: TResultERC20 = (data, decimals) => {
     return null
   }
 
-  const recipientsFormatValid = checkRecipientsDataFormat('erc20', data)
+  const recipientsFormatValid = checkERC1155AssetsData(data)
   if (!recipientsFormatValid) {
     return null
   }
@@ -32,12 +31,12 @@ const parseERC20AssetsData: TResultERC20 = (data, decimals) => {
 
   const recipientsData = links.reduce<TAsset[]>((memo, item: string) => {
     const itemSplit = item.split(',').map((item: string) => item.trim())
+     // ['1', '10']
     let assets: TAsset[] = []
-    if (itemSplit.length === 1) { //['0.002'] + ['0.002'(20)]
-      assets = parseSingleDataERC20(itemSplit[0], decimals)
-    } else if (itemSplit.length === 2) { //['0.001, 0.001(20)'] + ['0.001, 0.001']
-      assets = parseDoubleDataERC20(item, decimals)
-    }
+    if (itemSplit.length === 2) {
+      assets = parseSingleDataERC1155(item)
+    } else if (itemSplit.length === 3)
+      assets = parseSingleDataERC1155WithNative(item)
     return [
       ...memo,
       ...assets
@@ -46,46 +45,54 @@ const parseERC20AssetsData: TResultERC20 = (data, decimals) => {
   return recipientsData
 }
 
-const parseSingleDataERC20: (value: string, decimals: number) => TAsset[] = (value, decimals) => {
+const parseSingleDataERC1155: (value: string) => TAsset[] = (value) => {
   let result = []
+  
   if (value.includes('(') && value.includes(')')) {
-    const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim())
+    // '1, 2(2)'
+    const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim()).filter(item => item)
     
     for (let x = 0; x < Number(valueAndAmount[1]); x++) {
+      const [ id, amount ] = valueAndAmount[0].split(',').map((item: string) => item.trim())
       result.push({
-        amount: String(utils.parseUnits(String(valueAndAmount[0]), decimals)),
+        id: String(id || 0),
+        amount: String(amount || 0),
         nativeTokensAmount: '0'
       })
     }
   } else {
+    // '1, 2'
+    const [ id, amount ] = value.split(',').map((item: string) => item.trim())
     result.push({
-      amount: String(utils.parseUnits(String(value), decimals)),
+      id: String(id || 0),
+      amount: String(amount || 0),
       nativeTokensAmount: '0'
     })
   }
   return result
 }
 
-const parseDoubleDataERC20: (value: string, decimals: number) => TAsset[] = (value, decimals) => {
+const parseSingleDataERC1155WithNative: (value: string) => TAsset[] = (value) => {
   let result = []
   if (value.includes('(') && value.includes(')')) {
-    const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim())
-    
+    const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim()).filter(item => item)
     for (let x = 0; x < Number(valueAndAmount[1]); x++) {
-      const [ tokensValue, nativeTokensAmount ] = valueAndAmount[0].split(',').map(item => item.trim())
+      const [ id, amount, nativeTokensAmount ] = valueAndAmount[0].split(',').map(item => item.trim()).filter(item => item)
       result.push({
-        amount: String(utils.parseUnits(String(tokensValue), decimals)),
+        amount: String(amount || 0),
+        id: String(id || 0),
         nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18))
       })
     }
   } else {
-    const [ tokensValue, nativeTokensAmount ] = value.split(',').map(item => item.trim())
+    const [ id, amount, nativeTokensAmount ] = value.split(',').map(item => item.trim()).filter(item => item)
     result.push({
-      amount: String(utils.parseUnits(String(tokensValue), decimals)),
-      nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18))
+      id: String(id || 0),
+      amount: String(amount || 0),
+      nativeTokensAmount: nativeTokensAmount ? String(utils.parseUnits(String(nativeTokensAmount), 18)) : '0'
     })
   }
   return result
 }
 
-export default parseERC20AssetsData
+export default parseERC1155AssetsData

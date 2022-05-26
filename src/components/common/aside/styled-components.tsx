@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom'
+import TextLink from '../text-link'
 
 export const Aside = styled.aside`
   display: flex;
@@ -16,8 +17,8 @@ export const AsideLogoZone = styled.div`
   padding: 18px 24px 50px;
   min-height: 100px;
 `
-export const AsideLogoIcon = styled.div`
-  margin-right: 16px;
+export const AsideLogoIcon = styled.img`
+  max-width: 100px;
 `
 
 export const AsideMenu = styled.ul`
@@ -73,7 +74,6 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
 export const AsideFooter = styled.div`
   width: 100%;
   margin-top: auto;
-  padding-top: 16px;
   border-top: 1px solid ${props => props.theme.primaryBorderColor};
 `
 
@@ -85,4 +85,29 @@ export const AsideTitle = styled.h2`
   font-weight: 400;
   align-items: center;
   margin: 0;
+`
+
+export const AsideTextLink = styled(TextLink)`
+  display: flex;
+`
+
+export const FooterMenu = styled.div`
+  display: flex;
+  padding: 20px 32px;
+  justify-content: space-between;
+`
+
+export const FooterLink = styled(TextLink)`
+  color: ${props => props.theme.additionalTextColor};
+  text-decoration: none;
+
+  &:visited {
+    color: ${props => props.theme.additionalTextColor};
+  }
+`
+
+export const AsideCopyright = styled.div`
+  color: ${props => props.theme.additionalTextColor};
+  text-decoration: none;
+  padding: 0px 32px 20px;
 `

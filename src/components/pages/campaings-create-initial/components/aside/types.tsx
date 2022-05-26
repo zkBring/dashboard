@@ -8,18 +8,21 @@ import { ReactElement } from 'react'
 export type TAside = {
   assets: TAsset[];
   symbol: string | null;
-  type: TTokenType
+  type: TTokenType;
+  chainId: number
 }
 
 export type TDefineTitle = (
   symbol: string | null,
   totalAmount: TTotalAmount,
-  assets:  TAsset[]
+  assets:  TAsset[],
+  nativeTokenSymbol: string
 ) => ReactElement | undefined
 
 export type TDefineTotalTitle = (
   symbol: string | null,
-  totalAmount: TTotalAmount
+  totalAmount: TTotalAmount,
+  nativeTokenSymbol: string
 ) => string
 
 export type TCountAssetsTotalAmount = (

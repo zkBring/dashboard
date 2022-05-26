@@ -10,10 +10,10 @@ import wallets from 'configs/wallets'
 import Aside from '../aside'
 import { TProps } from './type'
 import {
-  checkERC721AssetsData,
+  checkERC1155AssetsData,
   defineAssetsTextareaPlaceholder,
   defineNativeTokenSymbol,
-  parseERC721AssetsData
+  parseERC1155AssetsData
 } from 'helpers'
 import {
   UserAssets,
@@ -93,7 +93,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps> &
   TProps
 
-const Erc721: FC<ReduxType > = ({
+const Erc1155: FC<ReduxType > = ({
   provider,
   symbol,
   setTokenContractData,
@@ -150,14 +150,14 @@ const Erc721: FC<ReduxType > = ({
 
   useEffect(() => {
     if (!assetsValue ) { return }
-    let assets = parseERC721AssetsData(assetsValue)
+    let assets = parseERC1155AssetsData(assetsValue)
     if (!assets) { return }
     setAssetsParsedValue(assets)
   }, [assetsValue])
 
   const defineIfButtonDisabled = () => {
     if (tokenAddress.length !== 42) { return true }
-    return !checkERC721AssetsData(assetsValue)
+    return !checkERC1155AssetsData(assetsValue)
   }
 
   const history = useHistory()
@@ -187,7 +187,7 @@ const Erc721: FC<ReduxType > = ({
         <WidgetTextarea
           value={assetsValue}
           placeholder={defineAssetsTextareaPlaceholder(
-            'erc721',
+            'erc1155',
             Boolean(symbol),
             tokenAddress,
             nativeTokenSymbol
@@ -208,8 +208,9 @@ const Erc721: FC<ReduxType > = ({
           title='Next'
           appearance='action'
           onClick={() => {
+            console.log({ assetsParsed })
             setAssetsData(
-              'erc721',
+              'erc1155',
               assetsParsed,
               currentWallet,
               () => {
@@ -230,4 +231,4 @@ const Erc721: FC<ReduxType > = ({
   </Container>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)
+export default connect(mapStateToProps, mapDispatcherToProps)(Erc1155)

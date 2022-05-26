@@ -76,6 +76,7 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   
   // Subscribe to chainId change
   provider.on("chainChanged", async (chainId: string) => {
+    console.log('here')
     let chainIdConverted = parseInt(chainId, 16);
     dispatch(actions.setChainId(chainIdConverted))
     dispatch(initialization(Number(chainId), address))

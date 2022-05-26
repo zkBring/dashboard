@@ -1,14 +1,15 @@
-import React, { FC } from 'react'
-
+import { FC } from 'react'
 import {
   Aside,
-  AsideTitle,
   AsideFooter,
   AsideLogoZone,
   AsideMenu,
   AsideMenuItem,
   AsideLogoIcon,
-  AsideMenuItemIconClassName
+  AsideCopyright,
+  FooterMenu,
+  AsideTextLink,
+  FooterLink
 // @ts-ignore
 } from './styled-components.tsx'
 import { useLocation } from 'react-router-dom'
@@ -17,6 +18,7 @@ import { useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
 import Icons from 'icons'
+import LinkDropLogo from 'images/linkdrop-logo.png'
 
 interface AsideProps {}
 
@@ -30,11 +32,9 @@ const AsideComponent: FC<AsideProps> = () => {
 	return <ThemeProvider theme={themes.light}>
     <Aside>
       <AsideLogoZone>
-        <AsideLogoIcon>
-          x
-        </AsideLogoIcon>
-        <AsideTitle>Linkdrop</AsideTitle>
-        {false && <Icons.LinkdropTextLogo />}
+        <AsideTextLink to='/'>
+          <AsideLogoIcon src={LinkDropLogo} />
+        </AsideTextLink>
       </AsideLogoZone>
 
       <AsideMenu>
@@ -47,18 +47,24 @@ const AsideComponent: FC<AsideProps> = () => {
       </AsideMenu>
 
       <AsideFooter>
-        <AsideMenu>
-          <AsideMenuItem disabled>
-            <Icons.DocsMenuIcon className={AsideMenuItemIconClassName} />
+        <FooterMenu>
+          <FooterLink
+            href='https://www.notion.so/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58'
+            target='_blank'
+          >
             Legal
-          </AsideMenuItem>
-          <AsideMenuItem disabled>
-            <Icons.FaqMenuIcon className={AsideMenuItemIconClassName} />
+          </FooterLink>
+          <FooterLink
+            href='https://linkdrop.io/'
+            target='_blank'
+          >
             Contact Us
-          </AsideMenuItem>
-        </AsideMenu>
+          </FooterLink>
+        </FooterMenu>
+        <AsideCopyright>
+          © Linkdrop Labs, Inc
+        </AsideCopyright>
       </AsideFooter>
-
     </Aside>
   </ThemeProvider>
 }

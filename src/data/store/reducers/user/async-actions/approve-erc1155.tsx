@@ -8,7 +8,7 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { ethers } from 'ethers'
 import { RootState } from 'data/store';
-import { ERC721Contract } from 'abi'
+import { ERC1155Contract } from 'abi'
 
 const approve = (
   callback?: () => void
@@ -44,7 +44,7 @@ const approve = (
       }
       dispatch(campaignActions.setLoading(true))
       const signer = await provider.getSigner()
-      const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
+      const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
       await contractInstance.setApprovalForAll(proxyContractAddress, true)
   
       const checkTransaction = async function (): Promise<boolean> {

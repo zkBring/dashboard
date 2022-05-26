@@ -16,9 +16,12 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    generate: (callback: TCallback) => dispatch(campaignAsyncActions.generateERC20Link({
+    generateERC20: (callback: TCallback) => dispatch(campaignAsyncActions.generateERC20Link({
       callback
     })),
+    generateERC721: (callback: TCallback) => dispatch(campaignAsyncActions.generateERC721Link({
+      callback
+    }))
   }
 }
 
@@ -26,13 +29,21 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateGenerate: FC<ReduxType> = ({
-  generate,
+  generateERC20,
+  generateERC721,
   assets,
-  links
+  links,
+  type
 }) => {
   const history = useHistory()
   useEffect(() => {
-    generate((id) => { history.push(`/campaigns/${id}`) })
+    if (!type) { return }
+    if (type === 'erc20') {
+      generateERC20((id) => { history.push(`/campaigns/${id}`) })
+    } else {
+      generateERC721((id) => { history.push(`/campaigns/${id}`) })
+    }
+    
   }, [])
 
   return <Container>

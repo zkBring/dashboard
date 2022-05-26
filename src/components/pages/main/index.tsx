@@ -1,8 +1,54 @@
 import { FC } from 'react'
 import { Widget, Button } from 'components/common'
-import { Container, InvertedWidget, WidgetDescription, WidgetButton } from './styled-components'
+import {
+  Container,
+  InvertedWidget,
+  WidgetDescription,
+  WidgetButton,
+  ContainerCentered,
+  Title
+} from './styled-components'
+import { RootState } from 'data/store'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux';
+import * as asyncUserActions from 'data/store/reducers/user/async-actions'
+import { UserActions } from 'data/store/reducers/user/types'
 
-const Main: FC = () => {
+const mapStateToProps = ({
+  campaigns: { campaigns },
+  user: { address, chainId },
+}: RootState) => ({
+  campaigns,
+  address,
+  chainId
+})
+
+const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
+  return {
+    connectWallet: () => asyncUserActions.connectWallet(dispatch),
+		switchWallet: (provider: any, chainId: number) => asyncUserActions.switchWallet(dispatch, provider, chainId)
+  }
+}
+
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+
+const Main: FC<ReduxType> = ({
+  chainId,
+  address,
+  connectWallet
+}) => {
+  if (!chainId || !address) {
+    return <ContainerCentered>
+      <Title>
+        Sign in with your wallet
+      </Title>
+      <WidgetButton
+        appearance='action'
+        onClick={connectWallet}
+        title='Connect'
+      />
+    </ContainerCentered>
+  }
   return <Container>
     <Widget title='ERC20 Campaign'>
       <WidgetDescription>
@@ -37,6 +83,11 @@ const Main: FC = () => {
       <WidgetDescription>
         ERC1155 + ETH
       </WidgetDescription>
+      <WidgetButton
+        title='Create'
+        appearance='action'
+        to='/campaigns/new/erc1155/initial'
+      />
     </Widget>
     <InvertedWidget title='Need other features?'>
 
@@ -44,4 +95,4 @@ const Main: FC = () => {
   </Container>
 }
 
-export default Main
+export default connect(mapStateToProps, mapDispatcherToProps)(Main)

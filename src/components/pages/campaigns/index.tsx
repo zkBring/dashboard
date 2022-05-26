@@ -10,10 +10,6 @@ type TProps = {
   connectWallet: () => void
 }
 
-interface INameToValueMap {
-  [key: string]: any;
-}
-
 const mapStateToProps = ({
   campaigns: { campaigns },
   user: { address, chainId },
@@ -41,6 +37,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
         chainId={campaign.chainId}
         type={campaign.type}
         symbol={campaign.symbol}
+        links={campaign.links}
       />
     })}
   </Container>

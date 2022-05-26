@@ -3,13 +3,13 @@ import { TTokenType } from 'types'
 
 export type TAsset = {
   amount?: string,
-  id?: number,
+  id?: number | string,
   nativeTokensAmount?: string,
   originalAmount?: string,
   originalNativeTokensAmount?: string
 }
 export type TTotalAmount = {
-  ids?: number[];
+  ids?: (number | string)[];
   amount?: BigNumber;
   originalAmount?: BigNumber;
   nativeTokensAmount: BigNumber;

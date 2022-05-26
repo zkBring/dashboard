@@ -29,7 +29,7 @@ export default async function approveERC1155(
 	try {
 
 		const signer = await provider.getSigner()
-		const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract, signer)
+		const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
 		await contractInstance.setApprovalForAll(dropAddress, true)
 		const checkReceipt = async function (): Promise<boolean> {
 			return new Promise((resolve, reject) => {

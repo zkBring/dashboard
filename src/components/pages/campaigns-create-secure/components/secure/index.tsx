@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { CheckboxComponent, Buttons, WidgetButton } from './styled-components'
-import { Button, WidgetText, WidgetTextBlock, WidgetData } from 'components/common'
+import { WidgetText, WidgetTextBlock, WidgetData, Loader } from 'components/common'
 import {
   WidgetContent,
   WidgetSecure
@@ -24,11 +24,13 @@ type TProps = {
 const mapStateToProps = ({
   campaign: {
     type,
-    assets
+    assets,
+    loading
   },
 }: RootState) => ({
   type,
-  assets
+  assets,
+  loading
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -51,11 +53,13 @@ const Secure: FC<ReduxType> = ({
   sponsored,
   setSponsored,
   nativeTokenSymbol,
-  assets
+  assets,
+  loading
 }) => {
   const history = useHistory()
   if (!LINK_COMISSION_PRICE || !assets) { return null }
   return <WidgetContent>
+    {loading && <Loader withOverlay />}
     <WidgetSecure>
       <WidgetTextBlock>
         <WidgetText>Ether will be stored in Linkdrop Contract to distribute into links.</WidgetText>

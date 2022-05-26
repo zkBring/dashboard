@@ -4,13 +4,15 @@ import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
 type TDefinePlaceholder = (
   type: TTokenType,
   valid: boolean,
-  tokenAddress: string
+  tokenAddress: string,
+  nativeTokenSymbol: string
 ) => string
 
 const defineAssetsTextareaPlaceholder: TDefinePlaceholder = (
   type,
   valid,
-  tokenAddress
+  tokenAddress,
+  nativeTokenSymbol
 ) => {
   if (!valid) {
     if (type === 'erc20') {
@@ -23,14 +25,18 @@ const defineAssetsTextareaPlaceholder: TDefinePlaceholder = (
     if (type === 'erc721') {
       return `Provide a valid ERC-721 token address`
     }
+
+    if (type === 'erc1155') {
+      return `Provide a valid ERC-1155 token address`
+    }
   }
   if (type === 'erc20') {
     if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
       return `Be careful and paste info in the following order:
 Tokens amount, native token amount (if needed). In brackets you can provide an amount of links
 Example:
-0.0001 - will create one link with 0.0001 ETH
-0.0001(20) - will create 20 links with 0.0001 ETH in each
+0.0001 - will create one link with 0.0001 ${nativeTokenSymbol}
+0.0001(20) - will create 20 links with 0.0001 ${nativeTokenSymbol} in each
 and so on
 `
     }
@@ -50,7 +56,18 @@ Token ID, native token amount (if needed). In brackets you can specify an interv
 Example:
 1 - will create one link with one nft-token (id: 1)
 [1-10] - will create 10 links with one nft-token in each (IDs from 1 to 10)
-1, 0.0001 - will create 1 links with one nft-token (id: 1) and 0.0001 ETH
+1, 0.0001 - will create 1 links with one nft-token (id: 1) and 0.0001 ${nativeTokenSymbol}
+`
+  }
+
+  if (type === 'erc1155') {
+    return `Be careful and paste info in the following order:
+Token ID, token amount and native token amount (if needed). In brackets you can specify an amount of links
+Example:
+1, 1 - will create one link with one nft-token (id: 1)
+1, 1(50) - will create 50 links with one nft-token (id: 1) in each link
+1, 1, 0.001 - will create one link with one nft-token (id: 1) and 0.001 ${nativeTokenSymbol}
+1, 1, 0.001(50) - ill create 50 links with one nft-token (id: 1) and 0.001 ${nativeTokenSymbol} in each link 
 `
   }
   return ''

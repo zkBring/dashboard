@@ -11,7 +11,7 @@ function sleep(timeout: number) {
   return new Promise((resolve) => setTimeout(() => resolve(true), timeout))
 }
 
-const generateERC20Link = ({
+const generateERC721Link = ({
   callback
 }: { callback?: (id: string) => void  }) => {
   return async (
@@ -53,14 +53,14 @@ const generateERC20Link = ({
     if (!privateKey) { return alert('privateKey is not provided') }
     let links: Array<TLink> = []
     for (let i = 0; i < assets.length; i++) {
-      const result = await sdk?.generateLink({
-        weiAmount: assets[0].nativeTokensAmount || '0',
-        tokenAddress,
+      const result = await sdk?.generateLinkERC721({
+        nftAddress: tokenAddress,
         wallet,
-        tokenAmount: assets[0].amount || '0',
         expirationTime: EXPIRATION_DATE,
         campaignId: id,
-        signingKeyOrWallet: privateKey
+        signingKeyOrWallet: privateKey,
+        tokenId: assets[0].id || 0,
+        weiAmount: assets[0].nativeTokensAmount || '0'
       })
       if (result) {
         links = [...links, {
@@ -72,7 +72,8 @@ const generateERC20Link = ({
         await sleep(1)
       }
     }
-    if (!decimals || !chainId || !proxyContractAddress || !privateKey || !type || !address) { return }
+  
+    if (!chainId || !proxyContractAddress || !privateKey || !type || !address) { return }
 
     const campaign: TCampaign = {
       id,
@@ -82,7 +83,7 @@ const generateERC20Link = ({
       masterAddress: address,
       wallet,
       symbol,
-      decimals,
+      decimals: 0,
       title: title || '',
       description: description || '',
       logoURL: logoURL || '',
@@ -103,4 +104,4 @@ const generateERC20Link = ({
   }
 }
 
-export default generateERC20Link
+export default generateERC721Link

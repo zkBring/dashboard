@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Campaign, CampaignRow, CampaignText, CampaignValue, CampaignType, CampaignButtons, CampaignButton } from './styled-components'
 import { countAssetsTotalAmountERC20, formatDate, defineNativeTokenSymbol } from 'helpers'
-import { TAsset, TTokenType } from 'types'
+import { TAsset, TTokenType, TLink } from 'types'
 import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
 
 const { REACT_APP_CLAIM_URL } = process.env
@@ -12,7 +12,8 @@ type TProps = {
   id: string,
   symbol: string,
   chainId: number,
-  type: TTokenType
+  type: TTokenType,
+  links: TLink[]
 }
 
 type TDefineTitle = (
@@ -30,6 +31,7 @@ const defineTitle: TDefineTitle = (
 ) => {
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const totalAmount = countAssetsTotalAmountERC20(assets)
+  console.log({ type })
   if (type === 'erc20') {
     if (symbol === nativeTokenSymbol) {
       // раздача native tokens
@@ -44,6 +46,21 @@ const defineTitle: TDefineTitle = (
       return `${totalAmount.originalAmount} ${symbol}`
     }
   }
+  if (type === 'erc721') {
+    if (String(totalAmount.originalNativeTokensAmount) !== '0') {
+      // раздача erc-20 tokens + native tokens
+      return `${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+    }
+    return symbol
+  }
+
+  if (type === 'erc1155') {
+    if (String(totalAmount.originalNativeTokensAmount) !== '0') {
+      // раздача erc-20 tokens + native tokens
+      return `${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+    }
+    return symbol
+  }
   return ''
 }
 
@@ -54,6 +71,7 @@ const CampaignComponent: FC<TProps> = ({
   symbol,
   chainId,
   type,
+  links
 }) => {
   const title = defineTitle(
     type,
@@ -63,18 +81,18 @@ const CampaignComponent: FC<TProps> = ({
   )
   const dateFormatted = formatDate(date)
   return <Campaign title={title}>
-    <CampaignType>ERC20</CampaignType>
+    <CampaignType>{type}</CampaignType>
     <CampaignRow>
       <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>2 links / 1 WEENUS + 0 ETH</CampaignText>
+      <CampaignText>{links.length} link(s) / {title}</CampaignText>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton
         to={`/campaigns/${id}`}
         title="Links"
-        appearance='action-inverted'
+        appearance='action'
       />
       <CampaignButton
         title='View Contract'

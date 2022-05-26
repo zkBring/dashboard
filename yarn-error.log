@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-core-js-pure-3.22.1-4d94e0c9a7b710da20dadd727fe98b43543119f0-integrity/node_modules/core-js-pure/features/reflect/define-metadata.js' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/core-js-pure/features/reflect/define-metadata.js'
+  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-mathjs-10.5.0-f81d0518fe7b4b2a0b85e1125b8ecfc364fb0292-integrity/node_modules/mathjs/examples/node_modules/ajv/lib/refs/json-schema-draft-06.json' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/mathjs/examples/node_modules/ajv/lib/refs/json-schema-draft-06.json'
 
 npm manifest: 
   {

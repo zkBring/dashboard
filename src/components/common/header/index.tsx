@@ -14,7 +14,6 @@ import { Dispatch } from 'redux';
 import { useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
-import Icons from 'icons'
 import { shortenString, defineNetworkName, capitalize } from 'helpers'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
@@ -23,6 +22,7 @@ import { UserActions } from 'data/store/reducers/user/types'
 import MiniPopup from '../mini-popup'
 import chains from 'configs/chains'
 import { TDefineTitle, LocationType } from './types'
+
 const mapStateToProps = ({ user: { chainId, address, provider } }: RootState) => ({ chainId, address, provider })
 
 const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
@@ -37,11 +37,30 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 interface Props {}
 
 const defineTitle: TDefineTitle = (location) => {
+	console.log({ location })
 	switch(location) {
 		case '/campaigns/new/erc20/initial':
-			return 'New ERC20 campaign'
+		case '/campaigns/new/erc20/secure':
+		case '/campaigns/new/erc20/generate':
+		case '/campaigns/new/erc20/approve':
+			return 'New ERC20 Campaign'
+		case '/campaigns/new/erc721/initial':
+		case '/campaigns/new/erc721/secure':
+		case '/campaigns/new/erc721/generate':
+		case '/campaigns/new/erc721/approve':
+			return 'New ERC721 Campaign'
+		case '/campaigns/new/erc1155/initial':
+		case '/campaigns/new/erc1155/secure':
+		case '/campaigns/new/erc1155/generate':
+		case '/campaigns/new/erc1155/approve':
+			return 'New ERC1155 Campaign'
+		case '/campaigns':
+			return 'Campaigns'
+		case '/':
+			return 'Dashboard'
+		
 		default:
-			return 'ERC'
+			return 'Campaign'
 	}
 }
 
