@@ -11,7 +11,7 @@ const createProxyContract = () => {
     getState: () => RootState
   ) => {
     const { user: { sdk }, campaigns: { campaigns } } = getState()
-    const campaignId = String(campaigns.length)
+    const campaignId = String(+(new Date()))
 
     const proxyContractAddress = await sdk?.getProxyAddress(campaignId)
     if (!proxyContractAddress) { return }

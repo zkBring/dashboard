@@ -8,9 +8,9 @@ import {
   defineJSONRpcUrl,
 } from 'helpers'
 import LinkdropSDK from '@linkdrop/sdk'
-import { CLAIM_HOST, INFURA_ID } from 'configs/app'
+import { INFURA_ID } from 'configs/app'
 import { RootState } from 'data/store';
-const { REACT_APP_FACTORY_ADDRESS } = process.env
+const { REACT_APP_FACTORY_ADDRESS, REACT_APP_CLAIM_HOST } = process.env
 
 const initialization = (
   chainId: number | null, address: string
@@ -19,8 +19,8 @@ const initialization = (
     if (!REACT_APP_FACTORY_ADDRESS) {
       return alert('REACT_APP_FACTORY_ADDRESS is not provided in .env file')
     }
-    if (!CLAIM_HOST) {
-      return alert('CLAIM_HOST is not provided in configs/app file')
+    if (!REACT_APP_CLAIM_HOST) {
+      return alert('REACT_APP_CLAIM_HOST is not provided in .env file')
     }
     if (!chainId) {
       return alert('Chain is not detected')
@@ -31,7 +31,7 @@ const initialization = (
     const networkName = defineNetworkName(chainId)
     const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: INFURA_ID })
     const sdk = new LinkdropSDK({
-      claimHost: CLAIM_HOST,
+      claimHost: REACT_APP_CLAIM_HOST,
       factoryAddress: REACT_APP_FACTORY_ADDRESS,
       chain: networkName,
       linkdropMasterAddress: address,
