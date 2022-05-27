@@ -64,7 +64,7 @@ const generateERC721Link = ({
       })
       if (result) {
         links = [...links, {
-          linkId: result?.url,
+          linkId: result?.linkId,
           content: !sponsored ? `${result?.url}&manual=true` : result?.url
         }]
         console.log({ links })
