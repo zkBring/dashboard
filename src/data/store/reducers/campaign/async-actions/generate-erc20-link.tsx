@@ -62,7 +62,7 @@ const generateERC20Link = ({
       if (result) {
         links = [...links, {
           linkId: result?.linkId,
-          content: sponsored ? `${result?.url}&manual=true` : result?.url
+          content: !sponsored ? `${result?.url}&manual=true` : result?.url
         }]
         console.log({ links })
         dispatch(actionsCampaign.setLinks(links))
