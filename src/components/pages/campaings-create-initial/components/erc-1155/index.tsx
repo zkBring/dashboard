@@ -125,6 +125,7 @@ const Erc1155: FC<ReduxType > = ({
       }))
     return options
   }, [chainId])
+  console.log({ walletsOptions })
 
   const [
     currentWallet,

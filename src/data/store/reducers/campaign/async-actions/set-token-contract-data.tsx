@@ -58,7 +58,6 @@ async function setTokenContractData (
       const symbol = await contractInstance.symbol()
       dispatch(actionsCampaign.setSymbol(symbol))
     }
-    console.log('here')
     if (type === 'erc1155') {
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
       // const symbol = await contractInstance.symbol()

@@ -25,8 +25,7 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
   return {
-    connectWallet: () => asyncUserActions.connectWallet(dispatch),
-		switchWallet: (provider: any, chainId: number) => asyncUserActions.switchWallet(dispatch, provider, chainId)
+    connectWallet: () => asyncUserActions.connectWallet(dispatch)
   }
 }
 

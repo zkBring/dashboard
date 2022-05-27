@@ -28,7 +28,7 @@ const mapStateToProps = ({ user: { chainId, address, provider } }: RootState) =>
 const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
   return {
     connectWallet: () => asyncUserActions.connectWallet(dispatch),
-		switchWallet: (provider: any, chainId: number) => asyncUserActions.switchWallet(dispatch, provider, chainId)
+		switchNetwork: (provider: any, chainId: number, address: string) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address)
   }
 }
 
@@ -64,14 +64,14 @@ const defineTitle: TDefineTitle = (location) => {
 	}
 }
 
-const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWallet, switchWallet, provider }) => {
+const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWallet, switchNetwork, provider }) => {
 	const [ showToggleChain, setShowToggleChain ] = useState(false)
 	const location = useLocation<LocationType>()
 	const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
 		{Object.keys(chains).map((chain: string) => {
 			const currentChain = chains[Number(chain)]
 			return <MiniPopupCustomItem onClick={() => {
-				switchWallet(provider, Number(chain))
+				switchNetwork(provider, Number(chain), address)
 			}}>
 				{currentChain.displayName}
 				<NetworkIndicator className={NetworkIndicatorClass} selected={Number(chainId) === Number(chain)} />

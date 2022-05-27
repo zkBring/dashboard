@@ -5,7 +5,7 @@ import initialization from "./initialization"
 import getNativeTokenAmount from "./get-native-token-amount"
 import getTokenAmount from "./get-token-amount"
 import secure from "./secure"
-import switchWallet from "./switch-wallet"
+import switchNetwork from "./switch-network"
 import connectWallet from "./connect-wallet"
 
 export {
@@ -14,7 +14,7 @@ export {
   initialization,
   getTokenAmount,
   secure,
-  switchWallet,
+  switchNetwork,
   connectWallet,
   approveERC721,
   approveERC1155

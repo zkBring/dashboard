@@ -1,10 +1,22 @@
-import { FC } from 'react'
-import { Campaign, CampaignRow, CampaignText, CampaignValue, CampaignType, CampaignButtons, CampaignButton } from './styled-components'
-import { countAssetsTotalAmountERC20, formatDate, defineNativeTokenSymbol } from 'helpers'
+import {
+  FC
+} from 'react'
+import {
+  Campaign,
+  CampaignRow,
+  CampaignText,
+  CampaignValue,
+  CampaignType,
+  CampaignButtons,
+  CampaignButton
+} from './styled-components'
+import {
+  countAssetsTotalAmountERC20,
+  formatDate,
+  defineNativeTokenSymbol,
+  defineEtherscanUrl
+} from 'helpers'
 import { TAsset, TTokenType, TLink } from 'types'
-import { NATIVE_TOKEN_ADDRESS } from 'configs/app'
-
-const { REACT_APP_CLAIM_URL } = process.env
 
 type TProps = {
   date: string,
@@ -13,7 +25,8 @@ type TProps = {
   symbol: string,
   chainId: number,
   type: TTokenType,
-  links: TLink[]
+  links: TLink[],
+  proxyAddress: string
 }
 
 type TDefineTitle = (
@@ -31,7 +44,6 @@ const defineTitle: TDefineTitle = (
 ) => {
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const totalAmount = countAssetsTotalAmountERC20(assets)
-  console.log({ type })
   if (type === 'erc20') {
     if (symbol === nativeTokenSymbol) {
       // раздача native tokens
@@ -71,7 +83,8 @@ const CampaignComponent: FC<TProps> = ({
   symbol,
   chainId,
   type,
-  links
+  links,
+  proxyAddress
 }) => {
   const title = defineTitle(
     type,
@@ -80,6 +93,7 @@ const CampaignComponent: FC<TProps> = ({
     chainId
   )
   const dateFormatted = formatDate(date)
+  const scanUrl = defineEtherscanUrl(chainId, `/address/${proxyAddress}`)
   return <Campaign title={title}>
     <CampaignType>{type}</CampaignType>
     <CampaignRow>
@@ -96,9 +110,8 @@ const CampaignComponent: FC<TProps> = ({
       />
       <CampaignButton
         title='View Contract'
-        onClick={() => {
-
-        }}
+        href={scanUrl}
+        target='_blank'
         appearance='action-inverted'
       />
     </CampaignButtons>  
