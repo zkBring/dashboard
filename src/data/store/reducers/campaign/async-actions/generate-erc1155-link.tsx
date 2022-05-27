@@ -65,7 +65,7 @@ const generateERC1155Link = ({
       if (result) {
         links = [...links, {
           linkId: result?.url,
-          content: result?.linkId
+          content: !sponsored ? `${result?.url}&manual=true` : result?.url
         }]
         dispatch(actionsCampaign.setLinks(links))
         await sleep(1)
