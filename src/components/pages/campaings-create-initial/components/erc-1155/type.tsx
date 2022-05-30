@@ -1,5 +1,6 @@
-import { TTokenType } from 'types'
+import { TTokenType, TCampaign } from 'types'
 
 export type TProps = {
-  type: TTokenType
+  type: TTokenType,
+  campaign?: TCampaign | null
 }

@@ -32,6 +32,7 @@ async function switchNetwork (
       address,
       provider
     )
+    window.location.href = ''
   } catch (err) {
       const switchError = err as IMetamaskError;
       if (switchError.code && switchError.code === 4902) {
@@ -46,13 +47,8 @@ async function switchNetwork (
               method: 'wallet_addEthereumChain',
               params: [data],
             })
-            dispatch(initialization(chainId, address))
-            await getNativeTokenAmount(
-              dispatch,
-              chainId,
-              address,
-              provider
-            )
+
+            window.location.href = ''
           }
         } catch (addError) {
           // handle "add" error

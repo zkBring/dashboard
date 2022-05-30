@@ -13,6 +13,7 @@ import { IAppDispatch } from 'data/store'
 import { countAssetsTotalAmountERC20, countAssetsTotalAmountERC721, defineNativeTokenSymbol } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import { TransactionAside } from 'components/pages/common'
+import { TProps } from './types'
 
 const mapStateToProps = ({
   user: {
@@ -43,6 +44,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispatch(
         userAsyncActions.approveERC721(callback)
       )
+    },
+    approveERC1155: (callback: () => void) => {
+      dispatch(
+        userAsyncActions.approveERC1155(callback)
+      )
     }
   }
 }
@@ -70,18 +76,19 @@ const defineLinksContent: TDefineLinksContent = (
     return symbol
   }
   return `${symbol} + ${nativeTokenSymbol}`
-  
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
-const Summary: FC<ReduxType> = ({
+const Summary: FC<ReduxType & TProps> = ({
   assets,
   symbol,
   chainId,
   loading,
   approveERC20,
   approveERC721,
-  type
+  approveERC1155,
+  type,
+  campaign
 }) => {
   const history = useHistory()
 
@@ -118,21 +125,26 @@ const Summary: FC<ReduxType> = ({
         title='Approve'
         appearance='action'
         onClick={() => {
-          const redirectURL = `/campaigns/new/${type}/secure`
+          const redirectURL = campaign ? `/campaigns/edit/${type}/${campaign.id}/secure` : `/campaigns/new/${type}/secure`
           if (type === 'erc20') {
             approveERC20(
               () => {
                 history.push(redirectURL)
               }
             )
-          } else {
+          } else if (type === 'erc721') {
             approveERC721(
               () => {
                 history.push(redirectURL)
               }
             )
+          } else {
+            approveERC1155(
+              () => {
+                history.push(redirectURL)
+              }
+            )
           }
-          
         }}
       />
     </WidgetSummary>

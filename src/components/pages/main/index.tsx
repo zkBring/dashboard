@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Widget, Button } from 'components/common'
+import { Widget } from 'components/common'
 import {
   Container,
   InvertedWidget,

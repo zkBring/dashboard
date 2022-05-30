@@ -25,6 +25,7 @@ export const Loader = styled.div<LoaderProps>`
   position: relative;
   text-align: center;
   width: 100px;
+  z-index: 100;
   height: 100px;
   text-transform: uppercase;
   letter-spacing: 0.05em;

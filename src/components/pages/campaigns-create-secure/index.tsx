@@ -12,10 +12,15 @@ import {
 } from 'helpers'
 import { LINK_COMISSION_PRICE } from 'configs/app'
 import { add, bignumber, multiply } from 'mathjs'
+import { useParams } from 'react-router-dom'
+import { TLinkParams } from 'types'
 
 const mapStateToProps = ({
   user: {
     chainId
+  },
+  campaigns: {
+    campaigns
   },
   campaign: {
     assets,
@@ -24,15 +29,17 @@ const mapStateToProps = ({
 }: RootState) => ({
   assets,
   symbol,
-  chainId
+  chainId,
+  campaigns
 })
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 const CampaignsCreateSecure: FC<ReduxType> = ({
-  assets, symbol, chainId
+  assets, symbol, chainId, campaigns
 }) => {
   const [ sponsored, setSponsored ] = useState<boolean>(false)
+  const { id } = useParams<TLinkParams>()
   if (!assets || !symbol || !chainId) { return null }
   const assetsTotal = countAssetsTotalAmountERC20(assets)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
@@ -44,6 +51,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       assets.length
     ))
   )
+  
+  const currentCampaign = id ? campaigns.find(campaign => campaign.id === id) : null
   return <Container>
     <WidgetComponent title={`Secure ${nativeTokensAmount} ${nativeTokenSymbol} into Linkdrop Contract`}>
       <Secure
@@ -51,6 +60,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         sponsored={sponsored}
         setSponsored={setSponsored}
         nativeTokenSymbol={nativeTokenSymbol}
+        campaign={currentCampaign}
       />
     </WidgetComponent>
   </Container>

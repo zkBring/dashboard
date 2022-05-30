@@ -4,20 +4,18 @@ import { Breadcrumbs, Button } from 'components/common'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { WidgetComponent, Container, WidgetButton } from './styled-components'
+import {
+  WidgetComponent,
+  Container,
+  WidgetButton,
+  BatchList,
+  BatchTitle
+} from './styled-components'
 import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
-import { defineNetworkName, capitalize, defineEtherscanUrl } from 'helpers'
-import { TTokenType } from 'types'
-const ipfsGatewayUrl = 'https://gateway.pinata.cloud/ipfs/'
-
-const { REACT_APP_CLAIM_URL } = process.env
-
-type TReduceTokens = {
-  [tokenId: string]: number
-}
-
-type TMapTokensIds = string[]
+import {
+  formatDate
+} from 'helpers'
 
 interface MatchParams {
   id: string;
@@ -48,14 +46,33 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   if (!currentCampaign) {
     return null
   }
-  const { chainId, id, tokenAddress, type, decimals, links } = currentCampaign
+  const { chainId, id, tokenAddress, type, decimals, links, date } = currentCampaign
   
   return <Container>
     <WidgetComponent title='Get the Links'>
+      <BatchList>
+        {links.map(batch => {
+          const dateFormatted = formatDate(batch.date)
+          return <>
+            <BatchTitle>
+              {batch.links.length} link(s) - created {dateFormatted}
+            </BatchTitle>
+            <WidgetButton
+              appearance='action'
+              title='Download CSV'
+              onClick={() => {
+                downloadLinksAsCSV(batch.links, id)
+              }}
+            />
+          </>
+        })}
+      </BatchList>
       <WidgetButton
         appearance='action'
-        onClick={() => downloadLinksAsCSV(links, id)}
-        title='Download CSV'
+        title='+ Add more links'
+        onClick={() => {
+          history.push(`/campaigns/edit/${type}/${id}/initial`)
+        }}
       />
     </WidgetComponent>
   </Container>

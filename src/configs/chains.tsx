@@ -27,7 +27,7 @@ const chains: TChains = {
       'https://polygon-rpc.com/'
     ],
     blockExplorerUrls: [
-      'https://matic.network'
+      'https://polygonscan.com'
     ]
   },
   1: {
@@ -58,6 +58,51 @@ const chains: TChains = {
     ],
     blockExplorerUrls: [
       'https://rinkeby.etherscan.io'
+    ]
+  },
+  1313161554: {
+    chainName: 'Aurora Mainnet',
+    displayName: 'Aurora',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    rpcUrls: [
+      'https://mainnet.aurora.dev/'
+    ],
+    blockExplorerUrls: [
+      'https://aurorascan.dev'
+    ]
+  },
+  80001: {
+    chainName: 'Matic(Polygon) Testnet Mumbai',
+    displayName: 'Mumbai',
+    nativeCurrency: {
+      name: 'tMATIC',
+      symbol: 'tMATIC',
+      decimals: 18
+    },
+    rpcUrls: [
+      'https://rpc-mumbai.matic.today'
+    ],
+    blockExplorerUrls: [
+      'https://mumbai.polygonscan.com'
+    ]
+  },
+  100: {
+    chainName: 'xDai',
+    displayName: 'xDai',
+    nativeCurrency: {
+      name: 'xDai',
+      symbol: 'xDai',
+      decimals: 18
+    },
+    rpcUrls: [
+      'https://rpc.xdaichain.com/'
+    ],
+    blockExplorerUrls: [
+      'https://blockscout.com/xdai/mainnet'
     ]
   }
 }

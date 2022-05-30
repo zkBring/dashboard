@@ -10,7 +10,7 @@ import { utils, ethers } from 'ethers'
 import { LINK_COMISSION_PRICE } from 'configs/app'
 import { RootState } from 'data/store';
 import { LinkdropFactory, LinkdropMastercopy } from 'abi'
-const { REACT_APP_FACTORY_ADDRESS } = process.env
+import contracts from 'configs/contracts'
 
 const secure = (
   sponsored: boolean,
@@ -21,7 +21,8 @@ const secure = (
     const {
       user: {
         provider,
-        address
+        address,
+        chainId
       },
       campaign: {
         proxyContractAddress,
@@ -31,9 +32,6 @@ const secure = (
       }
     } = getState()
     try {
-      if (!REACT_APP_FACTORY_ADDRESS) {
-        return alert('REACT_APP_FACTORY_ADDRESS is not provided in .env file')
-      }
       if (!LINK_COMISSION_PRICE) {
         return alert('No LINK_COMISSION_PRICE provided')
       }
@@ -46,13 +44,17 @@ const secure = (
       if (!symbol) {
         return alert('No symbol provided')
       }
+      if (!chainId) {
+        return alert('No chainId provided')
+      }
+      const contract = contracts[chainId]
       dispatch(campaignActions.setLoading(true))
       const newWallet = ethers.Wallet.createRandom()
       const { address: wallet, privateKey } = newWallet
       const signer = await provider.getSigner()
       const gasPrice = await provider.getGasPrice()
       const oneGwei = utils.parseUnits('1', 'gwei')
-      const factoryContract = await new ethers.Contract(REACT_APP_FACTORY_ADDRESS, LinkdropFactory.abi, signer)
+      const factoryContract = await new ethers.Contract(contract.factory, LinkdropFactory.abi, signer)
       const isDeployed = await factoryContract.isDeployed(address, id)
       let data
       let to
@@ -63,8 +65,7 @@ const secure = (
         data = await iface.encodeFunctionData('deployProxyWithSigner', [
           id, wallet
         ])
-        to = REACT_APP_FACTORY_ADDRESS
-        console.log({ REACT_APP_FACTORY_ADDRESS })
+        to = contract.factory
       } else {
         let iface = new utils.Interface(LinkdropMastercopy.abi)
         data = await iface.encodeFunctionData('addSigner', [

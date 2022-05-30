@@ -103,9 +103,10 @@ export function setSponsored(sponsored: boolean) {
 }
 
 
-export function setLinks(links: TLink[]) {
+export function setLinks(links: TLink[], date: string) {
   return action(Constants.CAMPAIGN_SET_LINKS, {
-    links
+    links,
+    date
   })
 }
 

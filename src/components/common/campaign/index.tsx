@@ -25,7 +25,10 @@ type TProps = {
   symbol: string,
   chainId: number,
   type: TTokenType,
-  links: TLink[],
+  links: {
+    links: TLink[],
+    date: string
+  }[],
   proxyAddress: string
 }
 

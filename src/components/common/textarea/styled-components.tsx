@@ -62,3 +62,20 @@ export const TextareaError = styled.div`
   line-height: 16px;
   color: ${props => props.theme.dangerTextColor};
 `
+
+export const TooltipButton = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+`
+
+export const TooltipZone = styled.p`
+  width: 14px;
+  height: 14px;
+  border-radius: 14px;
+  background: ${props => props.theme.primaryTextColor};
+  position: absolute;
+  top: 10px;
+  margin: 0;
+  right: 10px;
+`

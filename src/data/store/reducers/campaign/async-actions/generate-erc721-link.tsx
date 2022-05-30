@@ -12,46 +12,47 @@ function sleep(timeout: number) {
 }
 
 const generateERC721Link = ({
-  callback
-}: { callback?: (id: string) => void  }) => {
+  callback,
+  id: currentCampaignId
+}: { callback?: (id: string) => void, id?: string  }) => {
   return async (
     dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions>,
     getState: () => RootState
   ) => {
-    const {
+    
+    let {
       user: {
         sdk,
         chainId,
         address
       },
-      campaigns: {
-        campaigns
-      },
-      campaign: {
-        id,
-        assets,
-        privateKey,
-        tokenAddress,
-        wallet,
-        symbol,
-        decimals,
-        title,
-        description,
-        logoURL,
-        proxyContractAddress,
-        approved,
-        secured,
-        sponsored,
-        type
-      }
+      campaign,
+      campaigns: { campaigns }
     } = getState()
+    const {
+      id,
+      assets,
+      privateKey,
+      tokenAddress,
+      wallet,
+      symbol,
+      title,
+      description,
+      logoURL,
+      proxyContractAddress,
+      approved,
+      secured,
+      sponsored,
+      type
+    } = campaign
     if (!assets) { return alert('assets are not provided') }
     if (!symbol) { return alert('symbol is not provided') }
     if (!tokenAddress) { return alert('tokenAddress is not provided') }
     if (!wallet) { return alert('wallet is not provided') }
     if (!id) { return alert('campaign id is not provided') }
     if (!privateKey) { return alert('privateKey is not provided') }
-    let links: Array<TLink> = []
+    let newLinks: Array<TLink> = []
+    const date = String(new Date())
     for (let i = 0; i < assets.length; i++) {
       const result = await sdk?.generateLinkERC721({
         nftAddress: tokenAddress,
@@ -63,42 +64,70 @@ const generateERC721Link = ({
         weiAmount: assets[0].nativeTokensAmount || '0'
       })
       if (result) {
-        links = [...links, {
+        newLinks = [...newLinks, {
           linkId: result?.linkId,
           content: !sponsored ? `${result?.url}&manual=true` : result?.url
         }]
-        console.log({ links })
-        dispatch(actionsCampaign.setLinks(links))
+        dispatch(actionsCampaign.setLinks(
+          newLinks,
+          date
+        ))
         await sleep(1)
       }
     }
   
     if (!chainId || !proxyContractAddress || !privateKey || !type || !address) { return }
+    
+    const updatingCampaign = currentCampaignId ? campaigns.find(item => item.id === currentCampaignId) : undefined
+    if (updatingCampaign) {
+      const updatedCampaign = {
+        ...updatingCampaign,
+        links: [
+          ...updatingCampaign.links,
+          {
+            links: newLinks,
+            date
+          }
+        ]
+      }
+      const updatedCampaigns = campaigns.map(item => {
+        if (item.id === updatedCampaign.id) {
+          return updatedCampaign
+        }
+        return item
+      })
 
-    const campaign: TCampaign = {
-      id,
-      assets,
-      privateKey,
-      tokenAddress,
-      masterAddress: address,
-      wallet,
-      symbol,
-      decimals: 0,
-      title: title || '',
-      description: description || '',
-      logoURL: logoURL || '',
-      type,
-      chainId,
-      status: 'active',
-      proxyContractAddress,
-      approved,
-      secured,
-      sponsored,
-      links,
-      date: String(new Date())
+      dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
+
+    } else {
+      const newCampaign: TCampaign = {
+        id,
+        assets,
+        privateKey,
+        tokenAddress,
+        masterAddress: address,
+        wallet,
+        symbol,
+        decimals: 0,
+        title: title || '',
+        description: description || '',
+        logoURL: logoURL || '',
+        type,
+        chainId,
+        status: 'active',
+        proxyContractAddress,
+        approved,
+        secured,
+        sponsored,
+        links: [{
+          links: newLinks,
+          date
+        }],
+        date
+      }
+  
+      dispatch(actionsCampaigns.addCampaign(newCampaign))
     }
-
-    dispatch(actionsCampaigns.addCampaign(campaign))
     dispatch(actionsCampaign.clearCampaign())
     if (callback) { callback(id) }
   }

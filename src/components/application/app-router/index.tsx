@@ -53,7 +53,22 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
         />
 
         <ProtectedRoute
+          path='/campaigns/edit/:type/:id/initial'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateInitial}
+        />
+        
+
+        <ProtectedRoute
           path='/campaigns/new/:type/approve'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateApprove}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/edit/:type/:id/approve'
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateApprove}
@@ -67,7 +82,21 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
         />
 
         <ProtectedRoute
+          path='/campaigns/edit/:type/:id/secure'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateSecure}
+        />  
+
+        <ProtectedRoute
           path='/campaigns/new/:type/generate'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateGenerate}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/edit/:type/:id/generate'
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateGenerate}

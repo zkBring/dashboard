@@ -6,19 +6,19 @@ import {
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import WalletConnectProvider from "@walletconnect/web3-provider"
-import { INFURA_ID } from 'configs/app'
 import { IAppDispatch } from 'data/store';
 import {
   initialization,
   getNativeTokenAmount
  } from './index'
+ const { REACT_APP_INFURA_ID } = process.env
 
 const supportedNetworkURLs = {
-  1: `https://mainnet.infura.io/v3/${INFURA_ID}`,
-  4: `https://rinkeby.infura.io/v3/${INFURA_ID}`,
-  3: `https://ropsten.infura.io/v3/${INFURA_ID}`,
-  5: `https://goerli.infura.io/v3/${INFURA_ID}`,
-  42: `https://kovan.infura.io/v3/${INFURA_ID}`,
+  1: `https://mainnet.infura.io/v3/${REACT_APP_INFURA_ID}`,
+  4: `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_ID}`,
+  3: `https://ropsten.infura.io/v3/${REACT_APP_INFURA_ID}`,
+  5: `https://goerli.infura.io/v3/${REACT_APP_INFURA_ID}`,
+  42: `https://kovan.infura.io/v3/${REACT_APP_INFURA_ID}`,
   137: 'https://rpc-mainnet.maticvigil.com/',
   80001: 'https://rpc-mumbai.maticvigil.com/v1/f592ae2e5afb3bebe39314e9bd0949de5b74cd2f'
   // 97: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
@@ -29,7 +29,7 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
     walletconnect: {
       package: WalletConnectProvider,
       options: {
-        infuraId: INFURA_ID,
+        infuraId: REACT_APP_INFURA_ID,
         qrcode: true,
         rpc: supportedNetworkURLs
       }
@@ -76,7 +76,7 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   
   // Subscribe to chainId change
   provider.on("chainChanged", async (chainId: string) => {
-    console.log('here')
+    console.log('here 111')
     let chainIdConverted = parseInt(chainId, 16);
     dispatch(actions.setChainId(chainIdConverted))
     dispatch(initialization(Number(chainId), address))

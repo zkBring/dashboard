@@ -15,6 +15,7 @@ import TWallet from './wallet'
 import TSelectOption from './select-option'
 import TLink from './link'
 import TFormatDate from './format-date'
+import TLinkParams from './link-params'
 
 export {
   TCampaign,
@@ -32,5 +33,6 @@ export {
   TDefineTotalAmountERC721,
   TTotalAmount,
   TFormatDate,
-  TDefineAssetsTotalAmount
+  TDefineAssetsTotalAmount,
+  TLinkParams
 }

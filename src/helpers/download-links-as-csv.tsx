@@ -25,7 +25,7 @@
 
 import { TLink } from "types"
 
-const convertArrayToCSV = (
+const downloadLinksAsCSV = (
   arr: TLink[],
   id: string
 ) => {
@@ -45,4 +45,4 @@ const convertArrayToCSV = (
   body.removeChild(hiddenElement)
 }
 
-export default convertArrayToCSV
+export default downloadLinksAsCSV

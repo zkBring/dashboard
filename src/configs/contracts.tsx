@@ -1,20 +1,25 @@
-import { TTokenType } from 'types'
-
 type TContracts = {
   [networkId: string | number]: {
-    [key in TTokenType]: string
-  } & {
     factory: string;
   }
 }
 
 const contracts: TContracts = {
   4: {
-    factory: '0x236057383d390DEBC28EAd467BAD3804cA3f6B29',
-    erc721: '0x43FE7F2D3Aa1211D3Be827150F2724DB6E06e683',
-    erc20: '0x209E02C7386B8864400E73f5DbFF1c3f43F15EF3',
-    erc1155: '0xEC83D005C762B9Eca5D719354c4d6E1502e757bC'
-  }
+    factory: '0xadEA4080b6B3cA8CaB081ce839B3693DbBA8d480'
+  }, // rinkeby
+  1: {
+    factory: '0xadEA4080b6B3cA8CaB081ce839B3693DbBA8d480'
+  }, // mainnet
+  137: {
+    factory: '0xadEA4080b6B3cA8CaB081ce839B3693DbBA8d480'
+  }, // polygon
+  1313161554: {
+    factory: '0xe1C9135600e399eE87B4392Fc56ecC9F85C33713'
+  }, // aurora
+  80001: {
+    factory: '0xadEA4080b6B3cA8CaB081ce839B3693DbBA8d480'
+  } // mumbai
 }
 
 export default contracts

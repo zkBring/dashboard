@@ -19,7 +19,10 @@ type TCampaign = {
   secured: boolean,
   privateKey: string,
   sponsored: boolean,
-  links: TLink[],
+  links: {
+    date: string,
+    links: TLink[],
+  }[],
   masterAddress: string,
   date: string
 }

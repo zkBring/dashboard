@@ -13,3 +13,15 @@ export const WidgetComponent = styled(Widget)`
 export const WidgetButton = styled(Button)`
   
 `
+
+export const BatchList = styled.div`
+  display: inline-grid;
+  grid-template-columns: auto 200px;
+  align-items: center;
+  grid-gap: 6px;
+  margin-bottom: 20px;
+`
+
+export const BatchTitle = styled.div`
+  margin-right: 10px;
+`

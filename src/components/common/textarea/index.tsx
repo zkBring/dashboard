@@ -8,25 +8,11 @@ import {
     TextareaFieldContainer,
     TextareaFieldLimit
 } from './styled-components'
-
+import { TProps } from './types'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
 
-// type InputEvent = React.ChangeEvent<HTMLInputElement>;
-
-
-interface Props {
-  title?: string,
-  placeholder?: string,
-  disabled?: boolean,
-  onChange: (value: string) => string,
-  error?: string,
-  value: string,
-  className?: string,
-  limit?: number 
-}
-
-const TextareaComponent: FC<Props> = ({
+const TextareaComponent: FC<TProps> = ({
   placeholder,
   title,
   disabled = false,

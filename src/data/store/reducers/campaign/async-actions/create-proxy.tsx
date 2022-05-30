@@ -5,14 +5,22 @@ import { CampaignActions } from '../types';
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
 
-const createProxyContract = () => {
+const createProxyContract = (id?: string) => {
   return async (
     dispatch: Dispatch<CampaignActions | UserActions>,
     getState: () => RootState
   ) => {
     const { user: { sdk }, campaigns: { campaigns } } = getState()
+    if (id) {
+      const campaign = campaigns.find(campaign => campaign.id === id)
+      if (campaign) {
+        const { proxyContractAddress, id } = campaign
+        dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
+        dispatch(actionsCampaign.setId(id))
+        return
+      }
+    }
     const campaignId = String(+(new Date()))
-
     const proxyContractAddress = await sdk?.getProxyAddress(campaignId)
     if (!proxyContractAddress) { return }
     console.log({ campaignId, proxyContractAddress })

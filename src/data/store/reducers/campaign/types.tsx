@@ -24,7 +24,10 @@ export interface CampaignState {
   secured: boolean,
   privateKey: string | null,
   sponsored: boolean,
-  links: TLink[]
+  links: {
+    date: string,
+    links: TLink[],
+  }[]
 }
 
 export type CampaignActions = ActionType<typeof actions>;

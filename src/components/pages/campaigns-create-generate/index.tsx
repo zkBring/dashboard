@@ -4,6 +4,8 @@ import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import { useHistory } from 'react-router-dom'
+import { TLinkParams } from 'types'
+import { useParams } from 'react-router-dom'
 type TCallback = (id: string) => void
 
 const mapStateToProps = ({
@@ -16,11 +18,17 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    generateERC20: (callback: TCallback) => dispatch(campaignAsyncActions.generateERC20Link({
-      callback
+    generateERC20: (callback: TCallback, id?: string, ) => dispatch(campaignAsyncActions.generateERC20Link({
+      callback,
+      id
     })),
-    generateERC721: (callback: TCallback) => dispatch(campaignAsyncActions.generateERC721Link({
-      callback
+    generateERC721: (callback: TCallback, id?: string) => dispatch(campaignAsyncActions.generateERC721Link({
+      callback,
+      id
+    })),
+    generateERC1155: (callback: TCallback, id?: string) => dispatch(campaignAsyncActions.generateERC1155Link({
+      callback,
+      id
     }))
   }
 }
@@ -31,19 +39,30 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 const CampaignsCreateGenerate: FC<ReduxType> = ({
   generateERC20,
   generateERC721,
+  generateERC1155,
   assets,
   links,
   type
 }) => {
   const history = useHistory()
+  const { id } = useParams<TLinkParams>()
+
   useEffect(() => {
     if (!type) { return }
-    if (type === 'erc20') {
-      generateERC20((id) => { history.push(`/campaigns/${id}`) })
-    } else {
-      generateERC721((id) => { history.push(`/campaigns/${id}`) })
-    }
     
+    if (type === 'erc20') {
+      generateERC20((id) => {
+        history.push(`/campaigns/${id}`)
+      }, id)
+    } else if (type === 'erc721') {
+      generateERC721((id) => {
+        history.push(`/campaigns/${id}`)
+      }, id)
+    } else {
+      generateERC1155((id) => {
+        history.push(`/campaigns/${id}`)
+      }, id)
+    }
   }, [])
 
   return <Container>

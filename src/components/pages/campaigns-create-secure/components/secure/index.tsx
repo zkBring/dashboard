@@ -13,12 +13,14 @@ import { connect } from 'react-redux'
 import { LINK_COMISSION_PRICE } from 'configs/app'
 import { multiply, bignumber } from 'mathjs'
 import { TransactionAside } from 'components/pages/common'
+import { TCampaign } from 'types'
 
 type TProps = {
   amount: string,
   sponsored: boolean,
   setSponsored: (value: boolean) => void,
-  nativeTokenSymbol: string
+  nativeTokenSymbol: string,
+  campaign?: TCampaign | null
 }
 
 const mapStateToProps = ({
@@ -54,7 +56,8 @@ const Secure: FC<ReduxType> = ({
   setSponsored,
   nativeTokenSymbol,
   assets,
-  loading
+  loading,
+  campaign
 }) => {
   const history = useHistory()
   if (!LINK_COMISSION_PRICE || !assets) { return null }
@@ -89,7 +92,8 @@ const Secure: FC<ReduxType> = ({
               sponsored,
               amount,
               () => {
-                history.push(`/campaigns/new/${type}/generate`)
+                const redirectURL = campaign ? `/campaigns/edit/${type}/${campaign.id}/generate` : `/campaigns/new/${type}/generate`
+                history.push(redirectURL)
               }
             )
           }}

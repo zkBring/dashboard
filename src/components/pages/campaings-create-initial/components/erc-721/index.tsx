@@ -103,12 +103,12 @@ const Erc721: FC<ReduxType > = ({
   nativeTokenAmountFormatted,
   tokenAmountFormatted,
   clearCampaign,
-  userLoading
+  campaign
 }) => {
   const [
     tokenAddress,
     setTokenAddress
-  ] = useState('')
+  ] = useState(campaign ? campaign.tokenAddress : '')
 
   useEffect(() => {
     clearCampaign()
@@ -170,6 +170,7 @@ const Erc721: FC<ReduxType > = ({
         <InputTokenAddress
           value={tokenAddress}
           placeholder='0x Address'
+          disabled={Boolean(campaign)}
           onChange={value => {
             setTokenAddress(value)
             return value
@@ -213,6 +214,9 @@ const Erc721: FC<ReduxType > = ({
               assetsParsed,
               currentWallet,
               () => {
+                if (campaign) {
+                  return history.push(`/campaigns/edit/${type}/${campaign.id}/approve`)
+                }
                 history.push(`/campaigns/new/${type}/approve`)
               }
             )

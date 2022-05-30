@@ -59,7 +59,10 @@ export function newRetroDropReducer(
         case Constants.CAMPAIGN_SET_SPONSORED:
           return {...state, sponsored: action.payload.sponsored }
         case Constants.CAMPAIGN_SET_LINKS:
-          return {...state, links: action.payload.links }
+          return {...state, links: [
+            ...state.links,
+            action.payload
+          ]}
         case Constants.CAMPAIGN_CLEAR:
           return initialState
         default:
