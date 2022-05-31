@@ -22,6 +22,8 @@ import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/st
 import TransactionDetails from './transaction-details'
 import Checkbox from './checkbox'
 import ProgressBar from './progress-bar'
+import QR from './qr'
+import Popup from './popup'
 
 export {
   Header,
@@ -50,5 +52,7 @@ export {
   TransactionDetails,
   WidgetData,
   Checkbox,
-  ProgressBar
+  ProgressBar,
+  QR,
+  Popup
 }

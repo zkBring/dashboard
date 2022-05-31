@@ -8,7 +8,7 @@ export const Aside = styled.aside`
   position: relative;
   height: 100%;
   width: 245px;
-  background-color: ${props => props.theme.asideBackgroundColor};
+  background-color: ${props => props.theme.backgroundColor};
 `
 
 export const AsideLogoZone = styled.div`

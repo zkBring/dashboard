@@ -16,6 +16,7 @@ import TSelectOption from './select-option'
 import TLink from './link'
 import TFormatDate from './format-date'
 import TLinkParams from './link-params'
+import { TQRStatus, TQR } from './qr'
 
 export {
   TCampaign,
@@ -34,5 +35,7 @@ export {
   TTotalAmount,
   TFormatDate,
   TDefineAssetsTotalAmount,
-  TLinkParams
+  TLinkParams,
+  TQRStatus,
+  TQR
 }

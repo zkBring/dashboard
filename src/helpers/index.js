@@ -25,6 +25,7 @@ import countAssetsTotalAmountERC721 from './count-assets-total-amount-erc721'
 import countAssetsTotalAmountERC1155 from './count-assets-total-amount-erc1155'
 import downloadLinksAsCSV from './download-links-as-csv'
 import formatDate from './format-date'
+import defineQRStatusName from './define-qr-status-name'
 
 export {
   shortenString,
@@ -53,5 +54,6 @@ export {
   countAssetsTotalAmountERC721,
   checkERC1155AssetsData,
   parseERC1155AssetsData,
-  countAssetsTotalAmountERC1155
+  countAssetsTotalAmountERC1155,
+  defineQRStatusName
 }

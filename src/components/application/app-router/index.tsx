@@ -12,7 +12,9 @@ import {
   CampaignsCreateInitial,
   CampaignsCreateApprove,
   CampaignsCreateSecure,
-  CampaignsCreateGenerate
+  CampaignsCreateGenerate,
+  QRs,
+  QR
 } from 'components/pages'
 
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
@@ -101,6 +103,20 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
           loggedIn={Boolean(address)}
           component={CampaignsCreateGenerate}
         />
+
+        <ProtectedRoute
+          path='/qrs'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={QRs}
+        />
+
+        <ProtectedRoute
+          path='/qrs/:id'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={QR}
+        />  
 
         <Route path='/' exact={true} render={props => <Main {...props} />} />
         <Route path='*' exact={true} render={props => <NotFound

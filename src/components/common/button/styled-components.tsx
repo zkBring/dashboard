@@ -26,7 +26,7 @@ export const Button = styled.button.attrs(props => ({
   className: props.className
 }))<ButtonProps>`
   cursor: pointer;
-  padding: 10px;
+  padding: 8px 20px;
   font-size: 16px;
   height: 40px;
   line-height: 1;
