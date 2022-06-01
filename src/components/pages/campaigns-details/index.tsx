@@ -55,7 +55,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           const dateFormatted = formatDate(batch.date)
           return <>
             <BatchTitle>
-              {batch.links.length} link(s) - created {dateFormatted}
+              {batch.links.length} link(s) - created {dateFormatted} {batch.sponsored ? '(sponsored)' : ''}
             </BatchTitle>
             <WidgetButton
               appearance='action'

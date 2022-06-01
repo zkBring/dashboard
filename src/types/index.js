@@ -17,6 +17,7 @@ import TLink from './link'
 import TFormatDate from './format-date'
 import TLinkParams from './link-params'
 import { TQRStatus, TQR } from './qr'
+import TLinksBatch from './links-batch'
 
 export {
   TCampaign,
@@ -37,5 +38,6 @@ export {
   TDefineAssetsTotalAmount,
   TLinkParams,
   TQRStatus,
-  TQR
+  TQR,
+  TLinksBatch
 }

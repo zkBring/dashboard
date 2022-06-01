@@ -12,11 +12,13 @@ import {
 } from './styled-components'
 import {
   countAssetsTotalAmountERC20,
+  countAssetsTotalAmountERC1155,
+  countAssetsTotalAmountERC721,
   formatDate,
   defineNativeTokenSymbol,
   defineEtherscanUrl
 } from 'helpers'
-import { TAsset, TTokenType, TLink } from 'types'
+import { TAsset, TTokenType, TLinksBatch } from 'types'
 
 type TProps = {
   date: string,
@@ -25,10 +27,7 @@ type TProps = {
   symbol: string,
   chainId: number,
   type: TTokenType,
-  links: {
-    links: TLink[],
-    date: string
-  }[],
+  batches: TLinksBatch[],
   proxyAddress: string
 }
 
@@ -46,8 +45,9 @@ const defineTitle: TDefineTitle = (
   chainId
 ) => {
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-  const totalAmount = countAssetsTotalAmountERC20(assets)
+  
   if (type === 'erc20') {
+    const totalAmount = countAssetsTotalAmountERC20(assets)
     if (symbol === nativeTokenSymbol) {
       // раздача native tokens
       return `${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
@@ -62,6 +62,7 @@ const defineTitle: TDefineTitle = (
     }
   }
   if (type === 'erc721') {
+    const totalAmount = countAssetsTotalAmountERC721(assets)
     if (String(totalAmount.originalNativeTokensAmount) !== '0') {
       // раздача erc-20 tokens + native tokens
       return `${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
@@ -70,6 +71,7 @@ const defineTitle: TDefineTitle = (
   }
 
   if (type === 'erc1155') {
+    const totalAmount = countAssetsTotalAmountERC1155(assets)
     if (String(totalAmount.originalNativeTokensAmount) !== '0') {
       // раздача erc-20 tokens + native tokens
       return `${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
@@ -86,7 +88,7 @@ const CampaignComponent: FC<TProps> = ({
   symbol,
   chainId,
   type,
-  links,
+  batches,
   proxyAddress
 }) => {
   const title = defineTitle(
@@ -103,7 +105,7 @@ const CampaignComponent: FC<TProps> = ({
       <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>{links.length} link(s) / {title}</CampaignText>
+      <CampaignText>{batches.length} batch(es) / {title}</CampaignText>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton

@@ -14,7 +14,7 @@ import { defineQRStatusName } from 'helpers'
 const QR: FC<TQRProps> = ({
   title,
   id,
-  amount,
+  quantity,
   status,
   className,
   onManage
@@ -24,7 +24,7 @@ const QR: FC<TQRProps> = ({
       {title}
     </QRItemTitle>
     <QRItemAmount>
-      <span>{amount}</span> QR(s)
+      <span>{quantity}</span> QR(s)
     </QRItemAmount>
     <QRItemStatus>
       {defineQRStatusName(status)}

@@ -25,7 +25,6 @@ export const Loader = styled.div<LoaderProps>`
   position: relative;
   text-align: center;
   width: 100px;
-  z-index: 100;
   height: 100px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -76,6 +75,7 @@ export const LoaderOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 100;
   right: 0;
   bottom: 0;
   justify-content: center;

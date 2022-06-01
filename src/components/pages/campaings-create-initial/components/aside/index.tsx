@@ -7,7 +7,7 @@ import {
   WidgetNote,
   WidgetTextBlock
 } from 'components/common'
-import { defineNativeTokenSymbol } from 'helpers'
+import { defineNativeTokenSymbol, shortenString } from 'helpers'
 import {
   TAside,
   TDefineTitle,
@@ -56,7 +56,7 @@ const defineTotalTitle: TDefineTotalTitle = (
   totalAmount,
   nativeTokenSymbol
 ) => {
-  if (totalAmount.originalAmount) {
+  if (totalAmount.originalAmount && !totalAmount.ids) {
     const originalAmount = String(totalAmount.originalAmount)
     const originalNativeTokensAmount = String(totalAmount.originalNativeTokensAmount)
     if (
@@ -79,23 +79,28 @@ const defineTotalTitle: TDefineTotalTitle = (
     ) {
       return `${originalNativeTokensAmount} ${nativeTokenSymbol}`
     }
-  } else if (totalAmount.ids) {
+  }
+  if (totalAmount.ids) {
     const originalNativeTokensAmount = String(totalAmount.originalNativeTokensAmount)
+    const idsFormatted = totalAmount.ids.map(id => {
+      if (String(id).length > 6) {
+        return shortenString(String(id))
+      }
+      return id
+    })
     if (!totalAmount.originalAmount) {
       if (originalNativeTokensAmount === '0') {
-        return `ID's: ${totalAmount.ids.join(', ')}`
+        return `ID's: ${idsFormatted.join(', ')}`
       } else {
-        return `${totalAmount.ids.join(', ')} + ${nativeTokenSymbol}`
+        return `ID's: ${idsFormatted.join(', ')} + ${nativeTokenSymbol}`
       }
     } else {
       if (originalNativeTokensAmount === '0') {
-        return `ID's: ${totalAmount.ids.join(', ')}`
+        return `ID's: ${idsFormatted.join(', ')}`
       } else {
-        return `${totalAmount.ids.join(', ')} + ${nativeTokenSymbol}`
+        return `ID's: ${idsFormatted.join(', ')} + ${nativeTokenSymbol}`
       }
     }
-  } else {
-    return ''
   }
   return ''
 }

@@ -3,7 +3,7 @@ export type TQRStatus =
 
 export type TQR = {
   title: string,
-  amount: number,
+  quantity: number,
   status: TQRStatus,
   id: number | string
 }

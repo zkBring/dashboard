@@ -30,6 +30,7 @@ const generateERC20Link = ({
       campaign,
       campaigns: { campaigns }
     } = getState()
+
     const {
       id,
       assets,
@@ -83,11 +84,16 @@ const generateERC20Link = ({
     if (updatingCampaign) {
       const updatedCampaign = {
         ...updatingCampaign,
+        assets: [
+          ...updatingCampaign.assets,
+          ...assets
+        ],
         links: [
           ...updatingCampaign.links,
           {
             links: newLinks,
-            date
+            date,
+            sponsored
           }
         ]
       }
@@ -119,10 +125,10 @@ const generateERC20Link = ({
         proxyContractAddress,
         approved,
         secured,
-        sponsored,
         links: [{
           links: newLinks,
-          date
+          date,
+          sponsored
         }],
         date
       }

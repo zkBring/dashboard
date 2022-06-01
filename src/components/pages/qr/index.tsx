@@ -5,7 +5,7 @@ import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName } from 'helpers'
 import qrStatus from 'configs/qr-status'
-import { Popup } from 'components/common'
+import { QuantityPopup } from './components'
 
 import {
   Container,
@@ -57,22 +57,18 @@ const QR: FC<ReduxType> = ({
   if (!qr) {
     return <Redirect to='/qrs' /> 
   }
-  
-  
-  
-  return <Container>
-    {updateQuantityPopup && <Popup
-      title='Change quantity of QRs needed'
-      onClose={() => {
-        toggleUpdateQuantityPopup(false)
-      }}
-    >
 
-    </Popup>}
+  return <Container>
+    {updateQuantityPopup && <QuantityPopup
+      onClose={() => toggleUpdateQuantityPopup(false)}
+      quantity={qr.quantity}
+      onSubmit={value => console.log({ value })}
+    />}
+
     <WidgetComponent title={qr.title}>
       <WidgetInfo>
         <WidgetSubtitle>
-          Quantity: {qr.amount} QRs
+          Quantity: {qr.quantity} QRs
         </WidgetSubtitle>
         <WidgetValue>
           <Buttons>

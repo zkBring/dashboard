@@ -1,11 +1,9 @@
-import { Widget, Button } from "components/common";
-import styled from "styled-components";
+import { Widget, Button, Input } from "components/common"
+import styled from "styled-components"
 
 export const Container = styled.div``
-export const WidgetComponent = styled(Widget)`
-  
-`
 
+export const WidgetComponent = styled(Widget)``
 
 export const WidgetInfo = styled.div`
   display: grid;
@@ -31,6 +29,18 @@ export const WidgetValue = styled.div``
 export const Buttons = styled.div`
   display: flex;
 `
+
 export const WidgetButton = styled(Button)`
   margin-right: 10px;
+`
+
+export const InputComponent = styled(Input)`
+  margin-bottom: 10px;
+`
+
+export const PopupFormContent = styled.div`
+  margin-bottom: 20px;
+`
+
+export const PopupForm = styled.form`
 `

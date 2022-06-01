@@ -59,7 +59,6 @@ const secure = (
       let data
       let to
       const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, provider)
-      console.log({ isDeployed })
       if (!isDeployed) {
         let iface = new utils.Interface(LinkdropFactory.abi)
         data = await iface.encodeFunctionData('deployProxyWithSigner', [
@@ -77,7 +76,7 @@ const secure = (
       
   
       const value = utils.parseEther(String(amount))
-      console.log({ value: String(value) })
+
       const transaction = await signer.sendTransaction({
         to,
         gasPrice: gasPrice.add(oneGwei),

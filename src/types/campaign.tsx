@@ -1,5 +1,5 @@
 import { TCampaignStatus, TTokenType } from './index.js'
-import { TAssetsData, TLink } from 'types'
+import { TAssetsData, TLinksBatch } from 'types'
 
 type TCampaign = {
   title: string,
@@ -18,11 +18,7 @@ type TCampaign = {
   approved: boolean,
   secured: boolean,
   privateKey: string,
-  sponsored: boolean,
-  links: {
-    date: string,
-    links: TLink[],
-  }[],
+  links: TLinksBatch[],
   masterAddress: string,
   date: string
 }

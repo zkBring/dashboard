@@ -26,9 +26,9 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     addQR: (
       title: string,
-      amount: number,
+      quantity: number,
       callback: (id: string | number) => void
-    ) => dispatch(asyncQRsActions.addQR({ title, amount, callback }))
+    ) => dispatch(asyncQRsActions.addQR({ title, quantity, callback }))
   }
 }
 

@@ -181,9 +181,6 @@ const Erc721: FC<ReduxType > = ({
           <UserAssetNative>
             Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
           </UserAssetNative>
-          {symbol && symbol !== nativeTokenSymbol && tokenAmountFormatted && <UserAsset>
-            Balance {symbol}: {tokenAmountFormatted}
-          </UserAsset>}
         </UserAssets>
         <WidgetTextarea
           value={assetsValue}

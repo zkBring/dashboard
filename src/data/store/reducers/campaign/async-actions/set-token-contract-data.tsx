@@ -35,7 +35,6 @@ async function setTokenContractData (
     if (type === 'erc20') {
       let decimals = 18
       let symbol = defineNativeTokenSymbol({ chainId })
-      console.log({ tokenAddress, NATIVE_TOKEN_ADDRESS })
       if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
 
       } else {

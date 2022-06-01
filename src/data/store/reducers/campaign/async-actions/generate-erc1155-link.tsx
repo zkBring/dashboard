@@ -83,11 +83,16 @@ const generateERC1155Link = ({
     if (updatingCampaign) {
       const updatedCampaign = {
         ...updatingCampaign,
+        assets: [
+          ...updatingCampaign.assets,
+          ...assets
+        ],
         links: [
           ...updatingCampaign.links,
           {
             links: newLinks,
-            date
+            date,
+            sponsored
           }
         ]
       }
@@ -118,10 +123,10 @@ const generateERC1155Link = ({
         proxyContractAddress,
         approved,
         secured,
-        sponsored,
         links: [{
           links: newLinks,
-          date
+          date,
+          sponsored
         }],
         date
       }

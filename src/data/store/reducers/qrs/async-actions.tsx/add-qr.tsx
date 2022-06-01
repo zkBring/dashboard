@@ -6,11 +6,11 @@ import { TQR } from 'types'
 
 const addQR = ({
   title,
-  amount,
+  quantity,
   callback
 }: {
   title: string,
-  amount: number,
+  quantity: number,
   callback?: (id: string | number) => void,
 }) => {
   return async (
@@ -21,7 +21,7 @@ const addQR = ({
     const newQr: TQR = {
       id,
       title,
-      amount,
+      quantity,
       status: 'way_to_warehouse'
     }
     dispatch(actionsQR.addQr(newQr))
