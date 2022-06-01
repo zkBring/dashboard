@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux';
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import { UserActions } from 'data/store/reducers/user/types'
+import { defineNativeTokenSymbol } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -29,6 +30,7 @@ const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
   }
 }
 
+
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Main: FC<ReduxType> = ({
@@ -36,6 +38,7 @@ const Main: FC<ReduxType> = ({
   address,
   connectWallet
 }) => {
+  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId: Number(chainId) })
   if (!chainId || !address) {
     return <ContainerCentered>
       <Title>
@@ -54,7 +57,7 @@ const Main: FC<ReduxType> = ({
         List of links with encoded tokens prepared to distribute
       </WidgetDescription>
       <WidgetDescription>
-        ERC20 + ETH
+        ERC20 + {nativeTokenSymbol}
       </WidgetDescription>
       <WidgetButton
         title='Create'
@@ -67,7 +70,7 @@ const Main: FC<ReduxType> = ({
         List of links with encoded tokens prepared to distribute
       </WidgetDescription>
       <WidgetDescription>
-        ERC721 + ETH
+        ERC721 + {nativeTokenSymbol}
       </WidgetDescription>
       <WidgetButton
         title='Create'
@@ -80,7 +83,7 @@ const Main: FC<ReduxType> = ({
         List of links with encoded tokens prepared to distribute
       </WidgetDescription>
       <WidgetDescription>
-        ERC1155 + ETH
+        ERC1155 + {nativeTokenSymbol}
       </WidgetDescription>
       <WidgetButton
         title='Create'

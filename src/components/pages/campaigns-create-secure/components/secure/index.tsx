@@ -65,7 +65,7 @@ const Secure: FC<ReduxType> = ({
     {loading && <Loader withOverlay />}
     <WidgetSecure>
       <WidgetTextBlock>
-        <WidgetText>Ether will be stored in Linkdrop Contract to distribute into links.</WidgetText>
+        <WidgetText>{nativeTokenSymbol} will be stored in Linkdrop Contract to distribute into links.</WidgetText>
         <WidgetText>You can stop the campaign anytime and get back your {nativeTokenSymbol}.</WidgetText>
       </WidgetTextBlock>
       <WidgetTextBlock>
@@ -80,7 +80,7 @@ const Secure: FC<ReduxType> = ({
       </WidgetTextBlock>
       <WidgetTextBlock>
         <WidgetText>
-          Sponsor claim transactions so that recipients can claim tokens without having ETH in their wallets. Claim transactions are sponosored when gas price is up to 150 GWEI maximum. Alternatively, the recipients must pay for the gas themselves.
+          Sponsor claim transactions so that recipients can claim tokens without having {nativeTokenSymbol} in their wallets. Claim transactions are sponosored when gas price is up to 150 GWEI maximum. Alternatively, the recipients must pay for the gas themselves.
         </WidgetText>
       </WidgetTextBlock>
       <Buttons>

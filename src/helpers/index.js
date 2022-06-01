@@ -19,7 +19,6 @@ import parseERC721AssetsData from './parse-erc721-assets-data'
 import parseERC1155AssetsData from './parse-erc1155-assets-data'
 import parseNativeAssetsData from './parse-native-assets-data'
 import defineAssetsTextareaPlaceholder from './define-assets-textarea-placeholder'
-import getNativeTokenSymbol from './get-native-token-symbol'
 import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
 import countAssetsTotalAmountERC721 from './count-assets-total-amount-erc721'
 import countAssetsTotalAmountERC1155 from './count-assets-total-amount-erc1155'
@@ -45,7 +44,6 @@ export {
   parseERC20AssetsData,
   parseNativeAssetsData,
   defineAssetsTextareaPlaceholder,
-  getNativeTokenSymbol,
   countAssetsTotalAmountERC20,
   downloadLinksAsCSV,
   formatDate,

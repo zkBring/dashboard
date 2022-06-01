@@ -29,7 +29,7 @@ const renderText: TDefineTitle = (
   if (!symbol) { return }
   
 
-  if (symbol === 'ETH') {
+  if (symbol === nativeTokenSymbol) {
     return  <>
       <WidgetText>
         {defineTotalTitle(symbol, totalAmount, nativeTokenSymbol)}
