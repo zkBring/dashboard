@@ -60,8 +60,8 @@ const generateERC721Link = ({
         expirationTime: EXPIRATION_DATE,
         campaignId: id,
         signingKeyOrWallet: privateKey,
-        tokenId: assets[0].id || 0,
-        weiAmount: assets[0].nativeTokensAmount || '0'
+        tokenId: assets[i].id || 0,
+        weiAmount: assets[i].nativeTokensAmount || '0'
       })
       if (result) {
         newLinks = [...newLinks, {

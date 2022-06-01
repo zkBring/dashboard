@@ -57,10 +57,10 @@ const generateERC20Link = ({
     const date = String(new Date())
     for (let i = 0; i < assets.length; i++) {
       const result = await sdk?.generateLink({
-        weiAmount: assets[0].nativeTokensAmount || '0',
+        weiAmount: assets[i].nativeTokensAmount || '0',
         tokenAddress,
         wallet,
-        tokenAmount: assets[0].amount || '0',
+        tokenAmount: assets[i].amount || '0',
         expirationTime: EXPIRATION_DATE,
         campaignId: id,
         signingKeyOrWallet: privateKey

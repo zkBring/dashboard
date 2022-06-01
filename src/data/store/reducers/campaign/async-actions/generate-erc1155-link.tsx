@@ -54,11 +54,12 @@ const generateERC1155Link = ({
     let newLinks: Array<TLink> = []
     const date = String(new Date())
     for (let i = 0; i < assets.length; i++) {
-      const result = await sdk?.generateLink({
-        weiAmount: assets[0].nativeTokensAmount || '0',
-        tokenAddress,
+      const result = await sdk?.generateLinkERC1155({
+        weiAmount: assets[i].nativeTokensAmount || '0',
+        nftAddress: tokenAddress,
         wallet,
-        tokenAmount: assets[0].amount || '0',
+        tokenId: assets[i].id || '0',
+        tokenAmount: assets[i].amount || '0',
         expirationTime: EXPIRATION_DATE,
         campaignId: id,
         signingKeyOrWallet: privateKey
