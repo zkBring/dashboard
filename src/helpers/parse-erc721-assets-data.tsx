@@ -2,7 +2,7 @@ import { checkERC721AssetsData } from './index'
 import {
   TAsset,
 } from 'types'
-import { utils } from 'ethers';
+import { utils } from 'ethers'
 
 type TResultERC721 = (data: string) => TAsset[] | null
 
@@ -29,7 +29,6 @@ const parseERC721AssetsData: TResultERC721 = (data) => {
       .map((item: string) => item.trim())
       .filter(item => item)
     let assets: TAsset[] = []
-    console.log({ itemSplit })
     if (itemSplit.length === 1) { //['1'] + ['[1-5]']
       assets = parseSingleDataERC721(itemSplit[0])
       
@@ -57,14 +56,14 @@ const parseSingleDataERC721: (value: string) => TAsset[] = (value) => {
     
     for (let x = Number(tokenIds[0]); x <= Number(tokenIds[1]); x++) {
       result.push({
-        id: x,
+        id: String(x),
         nativeTokensAmount: '0',
         originalNativeTokensAmount: '0'
       })
     }
   } else {
     result.push({
-      id: Number(value),
+      id: String(value),
       nativeTokensAmount: '0',
       originalNativeTokensAmount: '0'
     })
@@ -85,7 +84,7 @@ const parseDoubleDataERC721: (value: string) => TAsset[] = (value) => {
     const [ intervalStart, intervalFinish ] = idAndAmount[0].split('-').map(item => item.trim())
     for (let x = Number(intervalStart); x <= Number(intervalFinish); x++) {        
       result.push({
-        id: Number(x),
+        id: String(x),
         nativeTokensAmount: String(utils.parseUnits(String(idAndAmount[1]), 18)),
         originalNativeTokensAmount: String(idAndAmount[1])
       })
@@ -93,7 +92,7 @@ const parseDoubleDataERC721: (value: string) => TAsset[] = (value) => {
   } else {
     const [ tokenId, nativeTokensAmount ] = value.split(',').map(item => item.trim())
     result.push({
-      id: Number(tokenId),
+      id: String(tokenId),
       nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
       originalNativeTokensAmount: String(nativeTokensAmount)
     })

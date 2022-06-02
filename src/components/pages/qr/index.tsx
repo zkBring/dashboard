@@ -5,7 +5,7 @@ import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName } from 'helpers'
 import qrStatus from 'configs/qr-status'
-import { QuantityPopup } from './components'
+import { QuantityPopup, LinksPopup } from './components'
 
 import {
   Container,
@@ -42,6 +42,10 @@ const QR: FC<ReduxType> = ({
     updateQuantityPopup,
     toggleUpdateQuantityPopup
   ] = useState<boolean>(false)
+  const [
+    updateLinksPopup,
+    toggleUpdateLinksPopup
+  ] = useState<boolean>(false)
   const selectoOptions: TSelectOption[] = qrStatus.map(status => ({
     label: defineQRStatusName(status),
     value: status
@@ -63,6 +67,11 @@ const QR: FC<ReduxType> = ({
       onClose={() => toggleUpdateQuantityPopup(false)}
       quantity={qr.quantity}
       onSubmit={value => console.log({ value })}
+    />}
+
+    {updateLinksPopup && <LinksPopup
+      onClose={() => toggleUpdateLinksPopup(false)}
+      onSubmit={value => {}}
     />}
 
     <WidgetComponent title={qr.title}>
@@ -99,7 +108,12 @@ const QR: FC<ReduxType> = ({
           Claimable links: No links
         </WidgetSubtitle>
         <WidgetValue>
-          <WidgetButton title='Upload links'/>
+          <WidgetButton
+            title='Upload links'
+            onClick={() => {
+              toggleUpdateLinksPopup(true)
+            }}
+          />
         </WidgetValue>
         <WidgetSubtitle />
         <WidgetValue>

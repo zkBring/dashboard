@@ -16,7 +16,8 @@ interface Props {
   size?: 'default' | 'small',
   href?: string,
   to?: string,
-  target?: '_blank' | '_self' | '_parent' | '_top' 
+  target?: '_blank' | '_self' | '_parent' | '_top',
+  type?: string
 }
 
 const ButtonComponent: FC<Props> = ({

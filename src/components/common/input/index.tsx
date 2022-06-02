@@ -21,8 +21,9 @@ interface Props {
   disabled?: boolean,
   onChange: (value: string) => string,
   error?: string,
-  value: string,
-  className?: string
+  value?: string,
+  className?: string,
+  ref?: { current: any }
 }
 
 const InputComponent: FC<Props> = ({
@@ -34,25 +35,27 @@ const InputComponent: FC<Props> = ({
   error,
   name,
   value = '',
-  className
+  className,
+  ref
 }) => {
-    return <ThemeProvider theme={themes.light}>
-        <InputContainer
-          disabled={disabled}
-          error={error}
-          className={className}
-        >
-          <InputTitle>{title}</InputTitle>
-          <InputField
-            onChange={(evt) => onChange(evt.target.value)}
-            type={type}
-            disabled={disabled}
-            placeholder={placeholder}
-            value={value}
-          />
-        </InputContainer>
-        {error && <InputError>{error}</InputError>}
-    </ThemeProvider>
+  return <ThemeProvider theme={themes.light}>
+    <InputContainer
+      disabled={disabled}
+      error={error}
+      className={className}
+    >
+      <InputTitle>{title}</InputTitle>
+      <InputField
+        ref={ref}
+        onChange={(evt) => onChange(evt.target.value)}
+        type={type}
+        disabled={disabled}
+        placeholder={placeholder}
+        value={value}
+      />
+    </InputContainer>
+    {error && <InputError>{error}</InputError>}
+  </ThemeProvider>
 }
 
 export default InputComponent

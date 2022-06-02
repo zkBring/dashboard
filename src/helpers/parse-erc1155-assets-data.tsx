@@ -1,4 +1,3 @@
-import { checkRecipientsDataFormat } from './index'
 import {
   TAsset
 } from 'types'
