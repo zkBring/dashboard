@@ -75,12 +75,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       type: TTokenType,
       assets: TAssetsData,
       wallet: TSelectOption,
+      title: string,
       callback: () => void
     ) => campaignAsyncActions.setAssetsData(
       dispatch,
       type,
       assets,
       String(wallet.value),
+      title,
       callback
     ),
     clearCampaign: () => {
@@ -110,6 +112,11 @@ const Erc1155: FC<ReduxType > = ({
     tokenAddress,
     setTokenAddress
   ] = useState(campaign ? campaign.tokenAddress : '')
+
+  const [
+    title,
+    setTitle
+  ] = useState(campaign ? campaign.title : '')
 
   useEffect(() => {
     clearCampaign()
@@ -169,6 +176,15 @@ const Erc1155: FC<ReduxType > = ({
     <WidgetContent>
       <WidgetOptions>
         <InputTokenAddress
+          value={title}
+          onChange={value => {
+            setTitle(value)
+            return value
+          }}
+          disabled={Boolean(campaign)}
+          title='Title of campaign'
+        />
+        <InputTokenAddress
           value={tokenAddress}
           placeholder='0x Address'
           disabled={Boolean(campaign)}
@@ -212,6 +228,7 @@ const Erc1155: FC<ReduxType > = ({
               'erc1155',
               assetsParsed,
               currentWallet,
+              title,
               () => {
                 if (campaign) {
                   return history.push(`/campaigns/edit/${type}/${campaign.id}/approve`)

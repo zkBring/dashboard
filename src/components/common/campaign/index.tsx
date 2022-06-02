@@ -28,7 +28,8 @@ type TProps = {
   chainId: number,
   type: TTokenType,
   batches: TLinksBatch[],
-  proxyAddress: string
+  proxyAddress: string,
+  title: string
 }
 
 type TDefineTitle = (
@@ -89,9 +90,10 @@ const CampaignComponent: FC<TProps> = ({
   chainId,
   type,
   batches,
-  proxyAddress
+  proxyAddress,
+  title
 }) => {
-  const title = defineTitle(
+  const description = defineTitle(
     type,
     assets,
     symbol,
@@ -99,13 +101,13 @@ const CampaignComponent: FC<TProps> = ({
   )
   const dateFormatted = formatDate(date)
   const scanUrl = defineEtherscanUrl(chainId, `/address/${proxyAddress}`)
-  return <Campaign title={title}>
+  return <Campaign title={title || 'No name'}>
     <CampaignType>{type}</CampaignType>
     <CampaignRow>
       <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>{batches.length} batch(es) / {title}</CampaignText>
+      <CampaignText>{description}</CampaignText>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton

@@ -9,11 +9,13 @@ async function setAssetsData(
   type: TTokenType,
   assets: any,
   wallet: string,
+  title: string,
   callback?: () => void
 ) {
   dispatch(actionsCampaign.setAssets(assets))
   dispatch(actionsCampaign.setType(type))
   dispatch(actionsCampaign.setWallet(wallet))
+  dispatch(actionsCampaign.setTitle(title))
   
   if (callback) {
     callback()

@@ -31,6 +31,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
     {campaigns.map(campaign => {
       return <Campaign
         assets={campaign.assets}
+        title={campaign.title}
         date={campaign.date}
         id={campaign.id}
         key={campaign.id}

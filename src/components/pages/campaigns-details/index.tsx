@@ -46,10 +46,10 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   if (!currentCampaign) {
     return null
   }
-  const { chainId, id, tokenAddress, type, decimals, links, date } = currentCampaign
+  const { chainId, id, tokenAddress, type, title, decimals, links, date } = currentCampaign
   
   return <Container>
-    <WidgetComponent title='Get the Links'>
+    <WidgetComponent title={title || `Campaign ${id}`}>
       <BatchList>
         {links.map(batch => {
           const dateFormatted = formatDate(batch.date)
