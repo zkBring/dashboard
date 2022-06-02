@@ -9,6 +9,16 @@ export const Container = styled.div`
 
 export const InvertedWidget = styled(Widget)`
   background-color: ${props => props.theme.blankColor};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
 `
 
 export const WidgetDescription = styled.p`
@@ -18,6 +28,11 @@ export const WidgetDescription = styled.p`
 
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;
+`
+
+export const AlignBottomButton = styled(WidgetButton)`
+  align-self: flex-end;
+  margin-top: auto;
 `
 
 export const Title = styled.h3`

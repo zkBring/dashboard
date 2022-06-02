@@ -6,7 +6,8 @@ import {
   WidgetDescription,
   WidgetButton,
   ContainerCentered,
-  Title
+  Title,
+  AlignBottomButton
 } from './styled-components'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -92,7 +93,15 @@ const Main: FC<ReduxType> = ({
       />
     </Widget>
     <InvertedWidget title='Need other features?'>
-
+      <WidgetDescription>
+        Reach out and let us know what other features you are interested in
+      </WidgetDescription>
+      <AlignBottomButton
+        title='Contact us'
+        appearance='action-inverted'
+        href='https://linkdrop.io/'
+      />
+      
     </InvertedWidget>
   </Container>
 }

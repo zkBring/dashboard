@@ -19,7 +19,10 @@ const contracts: TContracts = {
   }, // aurora
   80001: {
     factory: '0xadEA4080b6B3cA8CaB081ce839B3693DbBA8d480'
-  } // mumbai
+  }, // mumbai
+  100: {
+    factory: '0xadEA4080b6B3cA8CaB081ce839B3693DbBA8d480'
+  } // xdai
 }
 
 export default contracts
