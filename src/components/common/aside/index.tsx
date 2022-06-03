@@ -58,7 +58,7 @@ const AsideComponent: FC<AsideProps> = () => {
             Legal
           </FooterLink>
           <FooterLink
-            href='https://linkdrop.io/'
+            href='https://linkdrop.io/contact'
             target='_blank'
           >
             Contact Us

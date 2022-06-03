@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Campaign } from 'components/common'
+import { Campaign, Note, TextLink } from 'components/common'
 import { Container } from './styled-components'
 
 type TProps = {
@@ -31,8 +31,11 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
     return campaign.masterAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
   if (currentAddressCampaigns.length === 0) {
-    return null
+    return <Note>
+      If you don't see the previously created campaigns, <TextLink target='blank' href='https://dashboard.linkdrop.io/'>switch to the old version</TextLink> of the dashboard and check that the correct wallet and network are selected
+    </Note>
   }
+
   return <Container>
     {currentAddressCampaigns.map(campaign => {
       return <Campaign
@@ -52,4 +55,3 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)
-

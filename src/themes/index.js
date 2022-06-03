@@ -33,6 +33,8 @@ const themes = {
 		tagInfoColor: '#0025ff',
 		tagSuccessColor: '#21F142',
 
+		noteDefaultBackgroundColor: 'rgba(0, 37, 255, .2)',
+
 		statusSuccessColor: '#19E46A',
 		statusStoppedColor: '#DFE0EB'
 	},

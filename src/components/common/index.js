@@ -24,6 +24,7 @@ import Checkbox from './checkbox'
 import ProgressBar from './progress-bar'
 import QR from './qr'
 import Popup from './popup'
+import Note from './note'
 
 export {
   Header,
@@ -54,5 +55,6 @@ export {
   Checkbox,
   ProgressBar,
   QR,
-  Popup
+  Popup,
+  Note
 }
