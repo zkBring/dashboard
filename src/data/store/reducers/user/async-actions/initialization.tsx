@@ -9,16 +9,23 @@ import {
 } from 'helpers'
 import LinkdropSDK from '@linkdrop/sdk'
 import contracts from 'configs/contracts'
-import { RootState } from 'data/store';
-const { REACT_APP_CLAIM_HOST, REACT_APP_INFURA_ID } = process.env
+import { RootState } from 'data/store'
+import { CLAIM_APP, CLAIM_APP_AURORA } from 'configs/app'
+
+const { REACT_APP_INFURA_ID } = process.env
 
 const initialization = (
   chainId: number | null, address: string
 ) => {
   return async (dispatch: Dispatch<UserActions>, getState: () => RootState) => {
-    
-    if (!REACT_APP_CLAIM_HOST) {
-      return alert('REACT_APP_CLAIM_HOST is not provided in .env file')
+    if (chainId === 1313161554) {
+      if (!CLAIM_APP_AURORA) {
+        return alert('CLAIM_APP is not provided in .env file')
+      }
+    } else {
+      if (!CLAIM_APP) {
+        return alert('CLAIM_APP is not provided in .env file')
+      }
     }
     if (!chainId) {
       return alert('Chain is not detected')
@@ -29,8 +36,9 @@ const initialization = (
     const contract = contracts[chainId]
     const networkName = defineNetworkName(chainId)
     const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
+    const claimHost = chainId === 1313161554 ? CLAIM_APP_AURORA : CLAIM_APP
     const sdk = new LinkdropSDK({
-      claimHost: REACT_APP_CLAIM_HOST,
+      claimHost,
       factoryAddress: contract.factory,
       chain: networkName,
       linkdropMasterAddress: address,
