@@ -88,8 +88,8 @@ const generateERC1155Link = ({
             ...updatingCampaign.assets,
             ...assets
           ],
-          links: [
-            ...updatingCampaign.links,
+          batches: [
+            ...updatingCampaign.batches,
             {
               links: newLinks,
               date,
@@ -124,7 +124,7 @@ const generateERC1155Link = ({
           proxyContractAddress,
           approved,
           secured,
-          links: [{
+          batches: [{
             links: newLinks,
             date,
             sponsored

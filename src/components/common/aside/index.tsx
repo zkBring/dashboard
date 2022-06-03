@@ -44,9 +44,9 @@ const AsideComponent: FC<AsideProps> = () => {
         <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
           Campaigns
         </AsideMenuItem>
-        {false && <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
+        <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
           QR-manager
-        </AsideMenuItem>}
+        </AsideMenuItem>
       </AsideMenu>
 
       <AsideFooter>

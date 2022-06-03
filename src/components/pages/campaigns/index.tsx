@@ -27,8 +27,14 @@ const mapDispatcherToProps = (dispatch: Dispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps>  & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWallet, chainId }) => {
+  const currentAddressCampaigns = campaigns.filter(campaign => {
+    return campaign.masterAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+  })
+  if (currentAddressCampaigns.length === 0) {
+    return null
+  }
   return <Container>
-    {campaigns.map(campaign => {
+    {currentAddressCampaigns.map(campaign => {
       return <Campaign
         assets={campaign.assets}
         title={campaign.title}
@@ -38,8 +44,8 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
         chainId={campaign.chainId}
         type={campaign.type}
         symbol={campaign.symbol}
-        batches={campaign.links}
-        proxyAddress={campaign.proxyContractAddress}
+        batches={campaign.batches}
+        proxyContractAddress={campaign.proxyContractAddress}
       />
     })}
   </Container>

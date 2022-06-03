@@ -28,6 +28,8 @@ import { useParams, useHistory } from 'react-router-dom'
 import { TTokenType, TAssetsData, TSelectOption } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
+import { CampaignActions } from 'data/store/reducers/campaign/types'
+import { Dispatch } from 'redux'
 
 const mapStateToProps = ({
   user: {
@@ -55,7 +57,7 @@ const mapStateToProps = ({
   userLoading
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
   return {
     setTokenContractData: (
       provider: any,
@@ -86,7 +88,9 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       callback
     ),
     clearCampaign: () => {
-      campaignActions.clearCampaign()
+      dispatch(
+        campaignActions.clearCampaign()
+      )
     }
   }
 }

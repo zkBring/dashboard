@@ -88,8 +88,8 @@ const generateERC20Link = ({
             ...updatingCampaign.assets,
             ...assets
           ],
-          links: [
-            ...updatingCampaign.links,
+          batches: [
+            ...updatingCampaign.batches,
             {
               links: newLinks,
               date,
@@ -125,7 +125,7 @@ const generateERC20Link = ({
           proxyContractAddress,
           approved,
           secured,
-          links: [{
+          batches: [{
             links: newLinks,
             date,
             sponsored

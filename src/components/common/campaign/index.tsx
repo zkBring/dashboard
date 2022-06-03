@@ -28,7 +28,7 @@ type TProps = {
   chainId: number,
   type: TTokenType,
   batches: TLinksBatch[],
-  proxyAddress: string,
+  proxyContractAddress: string,
   title: string
 }
 
@@ -90,7 +90,7 @@ const CampaignComponent: FC<TProps> = ({
   chainId,
   type,
   batches,
-  proxyAddress,
+  proxyContractAddress,
   title
 }) => {
   const description = defineTitle(
@@ -100,7 +100,7 @@ const CampaignComponent: FC<TProps> = ({
     chainId
   )
   const dateFormatted = formatDate(date)
-  const scanUrl = defineEtherscanUrl(chainId, `/address/${proxyAddress}`)
+  const scanUrl = defineEtherscanUrl(chainId, `/address/${proxyContractAddress}`)
   return <Campaign title={title || 'No name'}>
     <CampaignType>{type}</CampaignType>
     <CampaignRow>

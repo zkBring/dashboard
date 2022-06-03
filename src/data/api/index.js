@@ -1,6 +1,5 @@
-import pinataApi from './pinata-api'
-import communities from './communities'
+import authorizationApi from './authorization-api'
 
 export {
-  pinataApi, communities
+  authorizationApi
 }

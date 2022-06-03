@@ -12,7 +12,6 @@ import {
 } from 'helpers'
 import chains from 'configs/chains'
 import { IAppDispatch } from 'data/store';
-import * as actions from '../actions'
 
 async function switchNetwork (
   dispatch: Dispatch<UserActions> & IAppDispatch,
@@ -21,7 +20,7 @@ async function switchNetwork (
   address: string
 ) {
   try {
-    const result = await provider.provider.request({
+    await provider.provider.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: toHex(chainId) }],
     })

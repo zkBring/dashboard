@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux'
 import * as actions from '../actions'
+import * as asyncActions from '../async-actions'
 import {
   UserActions
 } from '../types'
@@ -13,16 +14,16 @@ import {
  } from './index'
  const { REACT_APP_INFURA_ID } = process.env
 
-const supportedNetworkURLs = {
-  1: `https://mainnet.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  4: `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  3: `https://ropsten.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  5: `https://goerli.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  42: `https://kovan.infura.io/v3/${REACT_APP_INFURA_ID}`,
-  137: 'https://rpc-mainnet.maticvigil.com/',
-  80001: 'https://rpc-mumbai.maticvigil.com/v1/f592ae2e5afb3bebe39314e9bd0949de5b74cd2f'
-  // 97: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-}
+// const supportedNetworkURLs = {
+//   1: `https://mainnet.infura.io/v3/${REACT_APP_INFURA_ID}`,
+//   4: `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_ID}`,
+//   3: `https://ropsten.infura.io/v3/${REACT_APP_INFURA_ID}`,
+//   5: `https://goerli.infura.io/v3/${REACT_APP_INFURA_ID}`,
+//   42: `https://kovan.infura.io/v3/${REACT_APP_INFURA_ID}`,
+//   137: 'https://rpc-mainnet.maticvigil.com/',
+//   80001: 'https://rpc-mumbai.maticvigil.com/v1/f592ae2e5afb3bebe39314e9bd0949de5b74cd2f'
+//   // 97: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
+// }
 
 async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   const providerOptions = {
@@ -30,8 +31,7 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
       package: WalletConnectProvider,
       options: {
         infuraId: REACT_APP_INFURA_ID,
-        qrcode: true,
-        rpc: supportedNetworkURLs
+        qrcode: true
       }
     }
   };
@@ -51,10 +51,18 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   const accounts = await providerWeb3.listAccounts()
   const address = accounts[0] && accounts[0].toLowerCase()
   dispatch(actions.setProvider(providerWeb3))
+
+  const result: string | null = await dispatch(asyncActions.authorize(address))
+
+  if (!result) {
+    return alert('authorization was declined')
+  }
+
+
   dispatch(actions.setAddress(address))
   dispatch(actions.setChainId(chainId))
+  
   dispatch(initialization(chainId, address))
-
   await getNativeTokenAmount(
     dispatch,
     chainId,
@@ -64,6 +72,12 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
 
   provider.on("accountsChanged", async (accounts: string[]) => {
     const address = accounts[0] && accounts[0].toLowerCase()
+    dispatch(actions.setAddress(''))
+    const result: string | null = await dispatch(asyncActions.authorize(address))
+    if (!result) {
+      return alert('authorization was declined')
+    }
+
     dispatch(actions.setAddress(address))
     dispatch(initialization(chainId, address))
     await getNativeTokenAmount(
@@ -72,11 +86,10 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
       address,
       providerWeb3
     )
-  });
+  })
   
   // Subscribe to chainId change
   provider.on("chainChanged", async (chainId: string) => {
-    console.log('here 111')
     let chainIdConverted = parseInt(chainId, 16);
     dispatch(actions.setChainId(chainIdConverted))
     dispatch(initialization(Number(chainId), address))
@@ -86,7 +99,13 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
       address,
       providerWeb3
     )
-  });
+  })
 }
+
+// const authorize = async (provider: any) => {
+//   const signer = await provider.getSigner()
+//   const message = await signer.signMessage(`I’m signing this message to login to Linkdrop Dashboard at ${new Date()}`)
+//   console.log({ message })
+// }
 
 export default connectWallet

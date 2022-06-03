@@ -7,6 +7,7 @@ import getTokenAmount from "./get-token-amount"
 import secure from "./secure"
 import switchNetwork from "./switch-network"
 import connectWallet from "./connect-wallet"
+import authorize from "./authorize"
 
 export {
   approveERC20,
@@ -17,5 +18,6 @@ export {
   switchNetwork,
   connectWallet,
   approveERC721,
-  approveERC1155
+  approveERC1155,
+  authorize
 }
