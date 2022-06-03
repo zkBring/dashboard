@@ -30,7 +30,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
 
   return <>
     <Note>
-      If you don't see the previously created campaigns, follow the <TextLink target='blank' href='https://v1-2.dashboard.linkdrop.io/'>link</TextLink> to the old version of the dashboard and check that the correct wallet and network are selected
+      If you don't see the previously created campaigns, <TextLink target='blank' href='https://v1-2.dashboard.linkdrop.io/'>switch to the old version</TextLink> of the dashboard and check that the correct wallet and network are selected
     </Note>
     <Container>
       {campaigns.map(campaign => {
