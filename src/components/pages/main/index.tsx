@@ -99,7 +99,7 @@ const Main: FC<ReduxType> = ({
       <AlignBottomButton
         title='Contact us'
         appearance='action-inverted'
-        href='https://linkdrop.io/'
+        href='https://linkdrop.io/contact'
       />
       
     </InvertedWidget>
