@@ -7,13 +7,15 @@ const authorizationApi = axios.create({
 
 const requests = {
   authorize: (
-    signature: string,
-    timestamp: string,
+    msg: string,
+    timestamp: number,
+    sig: string,
     userAddress: string
   ) => authorizationApi.post('/auth', {
-    signature,
+    sig,
     timestamp,
-    userAddress
+    userAddress,
+    msg
   }),
   logout: () => {}
 }

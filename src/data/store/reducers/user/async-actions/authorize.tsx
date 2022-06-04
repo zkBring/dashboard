@@ -13,7 +13,6 @@ const authorize = (
   address: string
 ) => {
   return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>, getState: () => RootState) => {
-    return '1'
     const {
       user: {
         provider
@@ -22,13 +21,18 @@ const authorize = (
     
     
     dispatch(campaignActions.setLoading(true))
+
+    const timestamp = Date.now()
+    const humanReadable = new Date(timestamp).toUTCString()
+    
     try {
-      const timeStamp = String(new Date())
       const signer = await provider.getSigner()
-      const message = await signer.signMessage(`I’m signing this message to login to Linkdrop Dashboard at ${timeStamp}`)
+      const message = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
+      const sig = await signer.signMessage(message)
       const authResponse = await authorizationApi.authorize(
         message,
-        timeStamp,
+        timestamp,
+        sig,
         address
       )
       console.log({ authResponse })
