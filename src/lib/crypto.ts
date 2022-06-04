@@ -1,5 +1,4 @@
 import * as wccrypto from '@walletconnect/utils/dist/esm'
-// import { generateKeyPair, deriveSymmetricKey, encrypt, decrypt } from '@walletconnect/utils/dist/esm'
 
 interface KeyPair {
     privateKey: string;
