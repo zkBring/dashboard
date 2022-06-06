@@ -12,6 +12,7 @@ export const QRItem = styled(QR)`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `
 
 export const ContainerButton = styled(Button)`
@@ -20,5 +21,4 @@ export const ContainerButton = styled(Button)`
 `
 
 export const InputComponent = styled(Input)`
-
 `

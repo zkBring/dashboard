@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Popup } from 'components/common'
+import { Popup, Loader } from 'components/common'
 import { useHistory } from 'react-router-dom'
 import {
   QRItem,
@@ -13,13 +13,14 @@ import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  qrs: { qrs },
+  qrs: { qrs, loading },
   user: { address, chainId },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  qrs
+  qrs,
+  loading
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -38,7 +39,8 @@ const QRs: FC<ReduxType> = ({
   chainId,
   address,
   addQR,
-  qrs
+  qrs,
+  loading
 }) => {
   const history = useHistory()
   const [ popup, showPopup ] = useState<boolean>(false)
@@ -46,6 +48,7 @@ const QRs: FC<ReduxType> = ({
   const [ amount, setAmount ] = useState<string>('')
   const togglePopup = (state: boolean) : void => showPopup(state)
   return <Container>
+    {loading && <Loader withOverlay />}
     {popup && <Popup
       title='Add new set of QR codes'
       onClose={() => togglePopup(false)}
@@ -63,6 +66,7 @@ const QRs: FC<ReduxType> = ({
       <ContainerButton
         title='Create'
         appearance='action'
+        disabled={loading}
         onClick={() => {
           if(isNaN(Number(amount))) { return alert('Amount is not valid') }
           addQR(
@@ -78,9 +82,9 @@ const QRs: FC<ReduxType> = ({
     {qrs.map(qr => {
       return <QRItem
         {...qr}
-        key={qr.id}
+        key={qr._id}
         onManage={() => {
-          history.push(`/qrs/${qr.id}`)
+          history.push(`/qrs/${qr._id}`)
         }}
       />
     })}

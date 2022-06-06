@@ -8,6 +8,7 @@ export type TAsset = {
   originalAmount?: string,
   originalNativeTokensAmount?: string
 }
+
 export type TTotalAmount = {
   ids?: (number | string)[];
   amount?: BigNumber;

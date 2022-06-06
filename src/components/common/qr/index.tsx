@@ -12,19 +12,19 @@ import { TQRProps } from './types'
 import { defineQRStatusName } from 'helpers'
 
 const QR: FC<TQRProps> = ({
-  title,
-  id,
-  quantity,
+  setName,
+  _id,
+  qrQuantity,
   status,
   className,
   onManage
 }) => {
   return <QRItem className={className}>
     <QRItemTitle>
-      {title}
+      {setName}
     </QRItemTitle>
     <QRItemAmount>
-      <span>{quantity}</span> QR(s)
+      <span>{qrQuantity}</span> QR(s)
     </QRItemAmount>
     <QRItemStatus>
       {defineQRStatusName(status)}

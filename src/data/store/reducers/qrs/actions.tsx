@@ -9,3 +9,7 @@ export function addQr(qr: TQR) {
 export function updateQrs(qrs: TQR[]) {
   return action(Constants.QRS_UPDATE_QRS, qrs)
 }
+
+export function setLoading(loading: boolean) {
+  return action(Constants.QRS_SET_LOADING, loading)
+}

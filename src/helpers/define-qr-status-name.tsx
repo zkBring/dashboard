@@ -1,14 +1,21 @@
 import { TQRStatus } from 'types'
 
 const defineName = (status: TQRStatus) : string => {
+  console.log({ status })
   switch (status) {
-    case 'inserted_to_boxes':
+    case 'BEING_INSERTED_TO_BOXES':
       return 'Being Inserted To Boxes'
-    case 'ready_to_ship':
-      return 'Ready  To Ship'
-    case 'sent_to_printer':
+    case 'READY_TO_SHIP':
+      return 'Ready To Ship'
+    case 'NOT_SENT_TO_PRINTER':
+      return 'Not Sent To Printer'
+    case 'SHIPPED':
+      return 'Shipped'
+    case 'SHIPPING':
+      return 'Shipping'
+    case 'SENT_TO_PRINTER':
       return 'Sent To Printer'
-    case 'way_to_warehouse':
+    case 'ON_ITS_WAY_TO_WAREHOUSE':
       return 'On Its Way To Warehouse'
     default:
       return ''

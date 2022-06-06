@@ -1,9 +1,11 @@
 export type TQRStatus = 
-  'sent_to_printer' | 'way_to_warehouse' | 'inserted_to_boxes' | 'ready_to_ship'
+  'NOT_SENT_TO_PRINTER' | 'SENT_TO_PRINTER' | 'ON_ITS_WAY_TO_WAREHOUSE' | 'BEING_INSERTED_TO_BOXES' | 'READY_TO_SHIP' | 'SHIPPING' | 'SHIPPED'
 
 export type TQR = {
-  title: string,
-  quantity: number,
+  setName: string,
+  qrQuantity: number,
   status: TQRStatus,
-  id: number | string
+  _id?: number | string,
+  creatorAddress: string,
+  createdAt?: string
 }

@@ -33,7 +33,7 @@ const authorize = (
         message,
         timestamp,
         sig,
-        address
+        address.toLocaleUpperCase()
       )
       console.log({ authResponse })
       dispatch(campaignActions.setLoading(false))

@@ -31,6 +31,7 @@ const mapStateToProps = ({ user: { provider, address } }: RootState) => ({ provi
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
+
   return <HashRouter>
     <Page>
       <Switch>

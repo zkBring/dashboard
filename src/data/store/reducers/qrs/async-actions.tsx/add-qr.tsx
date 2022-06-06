@@ -3,6 +3,7 @@ import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
 import { TQR } from 'types'
+import { qrsApi } from 'data/api'
 
 const addQR = ({
   title,
@@ -17,15 +18,25 @@ const addQR = ({
     dispatch: Dispatch<QRsActions>,
     getState: () => RootState
   ) => {
-    const id = +(new Date())
-    const newQr: TQR = {
-      id,
-      title,
-      quantity,
-      status: 'way_to_warehouse'
+    const { user: { address } } = getState()
+    try {
+      dispatch(actionsQR.setLoading(true))
+      const newQr: TQR = {
+        setName: title,
+        qrQuantity: quantity,
+        status: 'NOT_SENT_TO_PRINTER',
+        creatorAddress: address
+      }
+  
+      const result = await qrsApi.create(newQr)
+      if (result.data.success) {
+        dispatch(actionsQR.addQr(newQr))
+        callback && callback(result.data._id)
+      }
+    } catch (err) {
+      console.error(err)
     }
-    dispatch(actionsQR.addQr(newQr))
-    callback && callback(id)
+    dispatch(actionsQR.setLoading(false))
   }
 }
 

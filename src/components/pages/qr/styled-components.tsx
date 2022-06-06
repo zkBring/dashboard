@@ -1,7 +1,9 @@
 import { Widget, Button, Input } from "components/common"
 import styled from "styled-components"
 
-export const Container = styled.div``
+export const Container = styled.div`
+  position: relative;
+`
 
 export const WidgetComponent = styled(Widget)``
 

@@ -1,10 +1,9 @@
 import React, { FC } from 'react'
 import Select from 'react-select'
 import { TSelectOption } from 'types'
-type OptionsType = Array<TSelectOption>
 
 interface Props {
-  options: OptionsType,
+  options: TSelectOption[],
   value?: TSelectOption,
   placeholder?: string,
   className?: string,

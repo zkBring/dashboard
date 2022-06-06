@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
-import { TLinkParams, TSelectOption } from 'types'
+import { TLinkParams, TQRStatus, TSelectOption } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName } from 'helpers'
 import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup } from './components'
+import { Loader } from 'components/common'
 
 import {
   Container,
@@ -21,23 +22,37 @@ import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  qrs: { qrs },
+  qrs: { qrs, loading },
   user: { address, chainId },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  qrs
+  qrs,
+  loading
 })
 
-type ReduxType = ReturnType<typeof mapStateToProps>
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    updateQRStatus: (
+      setId: string | number,
+      newStatus: TQRStatus,
+      callback: () => void
+    ) => dispatch(asyncQRsActions.updateQRStatus({ setId, newStatus, callback }))
+  }
+}
+
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QR: FC<ReduxType> = ({
-  qrs
+  qrs,
+  updateQRStatus,
+  loading
 }) => {
   const { id } = useParams<TLinkParams>()
-  const qr = qrs.find(qr => String(qr.id) === id)
+  const qr = qrs.find(qr => String(qr._id) === id)
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
+
   const [
     updateQuantityPopup,
     toggleUpdateQuantityPopup
@@ -46,38 +61,44 @@ const QR: FC<ReduxType> = ({
     updateLinksPopup,
     toggleUpdateLinksPopup
   ] = useState<boolean>(false)
-  const selectoOptions: TSelectOption[] = qrStatus.map(status => ({
+
+  const selectOptions: TSelectOption<TQRStatus>[] = qrStatus.map(status => ({
     label: defineQRStatusName(status),
     value: status
   })) 
 
   useEffect(() => {
     if (qr) {
-      const option = selectoOptions.find(item => item.value === qr.status)
+      const option = selectOptions.find(item => item.value === qr.status)
       if (!option) { return }
       setStatus(option)
     }
   }, [qr])
+
   if (!qr) {
     return <Redirect to='/qrs' /> 
   }
 
   return <Container>
+    {loading && <Loader withOverlay />}
     {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
-      quantity={qr.quantity}
+      quantity={qr.qrQuantity}
       onSubmit={value => console.log({ value })}
     />}
 
     {updateLinksPopup && <LinksPopup
+      quantity={qr.qrQuantity}
       onClose={() => toggleUpdateLinksPopup(false)}
-      onSubmit={value => {}}
+      onSubmit={links => {
+        // here is request to map links
+      }}
     />}
 
-    <WidgetComponent title={qr.title}>
+    <WidgetComponent title={qr.setName}>
       <WidgetInfo>
         <WidgetSubtitle>
-          Quantity: {qr.quantity} QRs
+          Quantity: {qr.qrQuantity} QRs
         </WidgetSubtitle>
         <WidgetValue>
           <Buttons>
@@ -95,9 +116,16 @@ const QR: FC<ReduxType> = ({
         </WidgetSubtitle>
         <WidgetValue>
           <Select
-            options={selectoOptions}
+            options={selectOptions}
             value={status ? status : undefined}
-            onChange={option => setStatus(option)}
+            onChange={option => {
+              if (!id) { return }
+              updateQRStatus(
+                id,
+                option.value as TQRStatus,
+                () => { setStatus(option) }
+              )
+            }}
             placeholder='Choose wallet'
           />
         </WidgetValue>
@@ -125,4 +153,4 @@ const QR: FC<ReduxType> = ({
   </Container>
 }
 
-export default connect(mapStateToProps)(QR)
+export default connect(mapStateToProps, mapDispatcherToProps)(QR)

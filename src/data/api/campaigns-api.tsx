@@ -6,10 +6,10 @@ const campaignsApi = axios.create({
 })
 
 const requests = {
-  create: (campaign: any) => campaignsApi.post('/dashboard/linkdrop/campaigns', {
+  create: (campaign: any) => campaignsApi.post('/linkdrop/campaigns', {
     campaign
-  }),
-  get: () => {},
+  }, { withCredentials: true }),
+  get: (creatorAddress: string) => campaignsApi.get(`/linkdrop/campaigns?creatorAddress=${creatorAddress}`, { withCredentials: true }),
   getOne: () => {},
   logout: () => {},
   saveLinks: () => {},

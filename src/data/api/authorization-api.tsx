@@ -16,7 +16,7 @@ const requests = {
     timestamp,
     userAddress,
     msg
-  }),
+  }, { withCredentials: true }),
   logout: () => {}
 }
 
