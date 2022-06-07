@@ -16,7 +16,11 @@ import TSelectOption from './select-option'
 import TLink from './link'
 import TFormatDate from './format-date'
 import TLinkParams from './link-params'
-import { TQRStatus, TQR } from './qr'
+import {
+  TQRStatus,
+  TQRSet,
+  TQRItem
+} from './qr'
 import TLinksBatch from './links-batch'
 
 export {
@@ -38,6 +42,7 @@ export {
   TDefineAssetsTotalAmount,
   TLinkParams,
   TQRStatus,
-  TQR,
+  TQRSet,
+  TQRItem,
   TLinksBatch
 }

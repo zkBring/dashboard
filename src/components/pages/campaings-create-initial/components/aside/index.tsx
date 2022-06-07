@@ -56,9 +56,9 @@ const defineTotalTitle: TDefineTotalTitle = (
   totalAmount,
   nativeTokenSymbol
 ) => {
-  if (totalAmount.originalAmount && !totalAmount.ids) {
-    const originalAmount = String(totalAmount.originalAmount)
-    const originalNativeTokensAmount = String(totalAmount.originalNativeTokensAmount)
+  if (totalAmount.original_amount && !totalAmount.ids) {
+    const originalAmount = String(totalAmount.original_amount)
+    const originalNativeTokensAmount = String(totalAmount.original_native_tokens_amount)
     if (
       originalAmount !== '0' &&
       originalNativeTokensAmount !== '0'
@@ -81,14 +81,14 @@ const defineTotalTitle: TDefineTotalTitle = (
     }
   }
   if (totalAmount.ids) {
-    const originalNativeTokensAmount = String(totalAmount.originalNativeTokensAmount)
+    const originalNativeTokensAmount = String(totalAmount.original_native_tokens_amount)
     const idsFormatted = totalAmount.ids.map(id => {
       if (String(id).length > 6) {
         return shortenString(String(id))
       }
       return id
     })
-    if (!totalAmount.originalAmount) {
+    if (!totalAmount.original_amount) {
       if (originalNativeTokensAmount === '0') {
         return `ID's: ${idsFormatted.join(', ')}`
       } else {

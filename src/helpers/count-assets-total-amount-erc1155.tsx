@@ -8,7 +8,7 @@ import { add, bignumber } from 'mathjs'
 
 const countAssetsTotalAmountERC1155: TDefineTotalAmountERC721 = (assets) => {
   return assets.reduce<TTotalAmount>((sum: TTotalAmount, item: TAsset) => {
-    const { nativeTokensAmount, originalNativeTokensAmount, id, amount, originalAmount } = item
+    const { native_tokens_amount, original_native_tokens_amount, id, amount, original_amount } = item
     return {
       ...sum,
       ids: id ? [...(sum.ids || []), id] : sum.ids,
@@ -16,25 +16,25 @@ const countAssetsTotalAmountERC1155: TDefineTotalAmountERC721 = (assets) => {
         bignumber(item.amount),
         bignumber(sum.amount)
       ) : sum.amount,
-      originalAmount: originalAmount ? add(
-        bignumber(item.originalAmount),
-        bignumber(sum.originalAmount)
-      ) : sum.originalAmount,
-      nativeTokensAmount: nativeTokensAmount ? add(
-        bignumber(item.nativeTokensAmount),
-        bignumber(sum.nativeTokensAmount)
-      ) : sum.nativeTokensAmount,
-      originalNativeTokensAmount: originalNativeTokensAmount ? add(
-        bignumber(item.originalNativeTokensAmount),
-        bignumber(sum.originalNativeTokensAmount)
-      ) : sum.originalNativeTokensAmount
+      original_amount: original_amount ? add(
+        bignumber(item.original_amount),
+        bignumber(sum.original_amount)
+      ) : sum.original_amount,
+      native_tokens_amount: native_tokens_amount ? add(
+        bignumber(item.native_tokens_amount),
+        bignumber(sum.native_tokens_amount)
+      ) : sum.native_tokens_amount,
+      original_native_tokens_amount: original_native_tokens_amount ? add(
+        bignumber(item.original_native_tokens_amount),
+        bignumber(sum.original_native_tokens_amount)
+      ) : sum.original_native_tokens_amount
     }  
   }, {
-    nativeTokensAmount: bignumber('0'),
+    native_tokens_amount: bignumber('0'),
     ids: [],
-    originalNativeTokensAmount: bignumber('0'),
+    original_native_tokens_amount: bignumber('0'),
     amount: bignumber('0'),
-    originalAmount: bignumber('0')
+    original_amount: bignumber('0')
   })
 }
 

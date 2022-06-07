@@ -1,9 +1,9 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
-import { TQR } from 'types'
+import { TQRSet } from 'types'
 
 export interface QRsState {
-  qrs: TQR[],
+  qrs: TQRSet[],
   loading: boolean
 }
 

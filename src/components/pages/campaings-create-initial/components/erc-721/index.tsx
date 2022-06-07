@@ -113,7 +113,7 @@ const Erc721: FC<ReduxType > = ({
   const [
     tokenAddress,
     setTokenAddress
-  ] = useState(campaign ? campaign.tokenAddress : '')
+  ] = useState(campaign ? campaign.token_address : '')
 
   const [
     title,

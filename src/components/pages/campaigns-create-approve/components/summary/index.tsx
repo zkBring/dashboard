@@ -72,7 +72,7 @@ const defineLinksContent: TDefineLinksContent = (
     assetsTotal = countAssetsTotalAmountERC721(assets)
   }
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-  if (String(assetsTotal.nativeTokensAmount) === '0') {
+  if (String(assetsTotal.native_tokens_amount) === '0') {
     return symbol
   }
   return `${symbol} + ${nativeTokenSymbol}`

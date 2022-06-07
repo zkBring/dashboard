@@ -51,31 +51,31 @@ const defineTitle: TDefineTitle = (
     const totalAmount = countAssetsTotalAmountERC20(assets)
     if (symbol === nativeTokenSymbol) {
       // раздача native tokens
-      return `${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+      return `${totalAmount.original_native_tokens_amount} ${nativeTokenSymbol}`
     }
-    if (String(totalAmount.originalAmount) !== '0') {
+    if (String(totalAmount.original_amount) !== '0') {
       // раздача erc-20 tokens
-      if (String(totalAmount.originalNativeTokensAmount) !== '0') {
+      if (String(totalAmount.original_native_tokens_amount) !== '0') {
         // раздача erc-20 tokens + native tokens
-        return `${totalAmount.originalAmount} ${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+        return `${totalAmount.original_amount} ${symbol} + ${totalAmount.original_native_tokens_amount} ${nativeTokenSymbol}`
       }
-      return `${totalAmount.originalAmount} ${symbol}`
+      return `${totalAmount.original_amount} ${symbol}`
     }
   }
   if (type === 'erc721') {
     const totalAmount = countAssetsTotalAmountERC721(assets)
-    if (String(totalAmount.originalNativeTokensAmount) !== '0') {
+    if (String(totalAmount.original_native_tokens_amount) !== '0') {
       // раздача erc-20 tokens + native tokens
-      return `${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+      return `${symbol} + ${totalAmount.original_native_tokens_amount} ${nativeTokenSymbol}`
     }
     return symbol
   }
 
   if (type === 'erc1155') {
     const totalAmount = countAssetsTotalAmountERC1155(assets)
-    if (String(totalAmount.originalNativeTokensAmount) !== '0') {
+    if (String(totalAmount.original_native_tokens_amount) !== '0') {
       // раздача erc-20 tokens + native tokens
-      return `${symbol} + ${totalAmount.originalNativeTokensAmount} ${nativeTokenSymbol}`
+      return `${symbol} + ${totalAmount.original_native_tokens_amount} ${nativeTokenSymbol}`
     }
     return symbol
   }

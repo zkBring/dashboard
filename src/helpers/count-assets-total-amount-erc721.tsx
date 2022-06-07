@@ -8,23 +8,23 @@ import { add, bignumber } from 'mathjs'
 
 const countAssetsTotalAmountERC721: TDefineTotalAmountERC721 = (assets) => {
   return assets.reduce<TTotalAmount>((sum: TTotalAmount, item: TAsset) => {
-    const { nativeTokensAmount, originalNativeTokensAmount, id } = item
+    const { native_tokens_amount, original_native_tokens_amount, id } = item
     return {
       ...sum,
       ids: id ? [...(sum.ids || []), id] : sum.ids,
-      nativeTokensAmount: nativeTokensAmount ? add(
-        bignumber(item.nativeTokensAmount),
-        bignumber(sum.nativeTokensAmount)
-      ) : sum.nativeTokensAmount,
-      originalNativeTokensAmount: originalNativeTokensAmount ? add(
-        bignumber(item.originalNativeTokensAmount),
-        bignumber(sum.originalNativeTokensAmount)
-      ) : sum.originalNativeTokensAmount
+      native_tokens_amount: native_tokens_amount ? add(
+        bignumber(item.native_tokens_amount),
+        bignumber(sum.native_tokens_amount)
+      ) : sum.native_tokens_amount,
+      originalNativeTokensAmount: original_native_tokens_amount ? add(
+        bignumber(item.original_native_tokens_amount),
+        bignumber(sum.original_native_tokens_amount)
+      ) : sum.original_native_tokens_amount
     }  
   }, {
-    nativeTokensAmount: bignumber('0'),
+    native_tokens_amount: bignumber('0'),
     ids: [],
-    originalNativeTokensAmount: bignumber('0')
+    original_native_tokens_amount: bignumber('0')
   })
 }
 

@@ -46,7 +46,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   if (!currentCampaign) {
     return null
   }
-  const { chainId, id, tokenAddress, type, title, decimals, batches, date } = currentCampaign
+  const { chain_id: chainId, id, token_address: tokenAddress, type, title, decimals, batches, date } = currentCampaign
   
   return <Container>
     <WidgetComponent title={title || `Campaign ${id}`}>

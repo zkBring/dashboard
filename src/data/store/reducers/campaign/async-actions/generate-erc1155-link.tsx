@@ -56,7 +56,7 @@ const generateERC1155Link = ({
       const date = String(new Date())
       for (let i = 0; i < assets.length; i++) {
         const result = await sdk?.generateLinkERC1155({
-          weiAmount: assets[i].nativeTokensAmount || '0',
+          weiAmount: assets[i].native_tokens_amount || '0',
           nftAddress: tokenAddress,
           wallet,
           tokenId: assets[i].id || '0',
@@ -109,21 +109,16 @@ const generateERC1155Link = ({
         const newCampaign: TCampaign = {
           id,
           assets,
-          privateKey,
-          tokenAddress,
-          masterAddress: address,
+          signer_key: privateKey,
+          token_address: tokenAddress,
+          creator_address: address,
           wallet,
           symbol,
           decimals: 0,
           title: title || '',
-          description: description || '',
-          logoURL: logoURL || '',
           type,
-          chainId,
-          status: 'active',
-          proxyContractAddress,
-          approved,
-          secured,
+          chain_id: chainId,
+          proxy_contract_address: proxyContractAddress,
           batches: [{
             links: newLinks,
             date,

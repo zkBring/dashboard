@@ -1,12 +1,12 @@
 import { action } from 'typesafe-actions';
 import { Constants } from './constants';
-import { TQR } from 'types'
+import { TQRSet } from 'types'
 
-export function addQr(qr: TQR) {
+export function addQr(qr: TQRSet) {
   return action(Constants.QRS_ADD_NEW_QR, qr)
 }
 
-export function updateQrs(qrs: TQR[]) {
+export function updateQrs(qrs: TQRSet[]) {
   return action(Constants.QRS_UPDATE_QRS, qrs)
 }
 

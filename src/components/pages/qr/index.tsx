@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
-import { TLinkParams, TQRStatus, TSelectOption } from 'types'
+import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName } from 'helpers'
@@ -34,11 +34,17 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    updateQRStatus: (
+    updateQRSetStatus: (
       setId: string | number,
       newStatus: TQRStatus,
       callback: () => void
-    ) => dispatch(asyncQRsActions.updateQRStatus({ setId, newStatus, callback }))
+    ) => dispatch(asyncQRsActions.updateQRSetStatus({ setId, newStatus, callback })),
+    mapQRsToLinks: (
+      setId: string,
+      links: TLink[],
+      qrs: TQRItem[],
+      callback?: () => void,
+    ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback }))
   }
 }
 
@@ -46,11 +52,12 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 
 const QR: FC<ReduxType> = ({
   qrs,
-  updateQRStatus,
-  loading
+  updateQRSetStatus,
+  loading,
+  mapQRsToLinks 
 }) => {
   const { id } = useParams<TLinkParams>()
-  const qr = qrs.find(qr => String(qr._id) === id)
+  const qr: TQRSet | undefined = qrs.find(qr => String(qr._id) === id)
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
 
   const [
@@ -83,22 +90,24 @@ const QR: FC<ReduxType> = ({
     {loading && <Loader withOverlay />}
     {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
-      quantity={qr.qrQuantity}
+      quantity={qr.qr_quantity}
       onSubmit={value => console.log({ value })}
     />}
 
     {updateLinksPopup && <LinksPopup
-      quantity={qr.qrQuantity}
+      quantity={qr.qr_quantity}
       onClose={() => toggleUpdateLinksPopup(false)}
       onSubmit={links => {
-        // here is request to map links
+        if (!id || !qr.qr_array) { return }
+        mapQRsToLinks(id, links, qr.qr_array, () => {})
+        console.log({ links })
       }}
     />}
 
-    <WidgetComponent title={qr.setName}>
+    <WidgetComponent title={qr.set_name}>
       <WidgetInfo>
         <WidgetSubtitle>
-          Quantity: {qr.qrQuantity} QRs
+          Quantity: {qr.qr_quantity} QRs
         </WidgetSubtitle>
         <WidgetValue>
           <Buttons>
@@ -120,7 +129,7 @@ const QR: FC<ReduxType> = ({
             value={status ? status : undefined}
             onChange={option => {
               if (!id) { return }
-              updateQRStatus(
+              updateQRSetStatus(
                 id,
                 option.value as TQRStatus,
                 () => { setStatus(option) }

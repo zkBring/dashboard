@@ -26,7 +26,13 @@ const LinksPopup: FC<TProps> = ({
         return alert('Invalid file. File should be downloaded from campaigns page')
       }
       lines.shift()
-      const links = lines.map(item => item.split(',')[1])
+      const links = lines.map(item => {
+        const [ linkId, content ] = item.split(',')
+        return {
+          linkId,
+          content
+        }
+      })
       if (links.length !== quantity) {
         return alert(`Amount of links should be equal to an amount of QRs. Number of links is ${links.length}, but ${quantity} needed`)
       }

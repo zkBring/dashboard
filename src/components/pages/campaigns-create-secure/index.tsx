@@ -44,8 +44,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const assetsTotal = countAssetsTotalAmountERC20(assets)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const comission = bignumber(String(LINK_COMISSION_PRICE))
-  const nativeTokensAmount = !sponsored ? assetsTotal.originalNativeTokensAmount : add(
-    assetsTotal.originalNativeTokensAmount,
+  const nativeTokensAmount = !sponsored ? assetsTotal.original_native_tokens_amount : add(
+    assetsTotal.original_native_tokens_amount,
     (multiply(
       comission,
       assets.length

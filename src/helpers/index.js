@@ -3,7 +3,8 @@ import defineNetworkName from './define-network-name'
 import capitalize from './capitalize'
 import defineJSONRpcUrl from './define-json-rpc-url'
 import copyToClipboard from './copy-to-clipboard'
-import getCSV from './get-csv'
+import downloadLinksAsCSV from './download-links-as-csv'
+import prepareQRArray from './prepare-qr-array'
 import checkRecipientsDataFormat from './check-recipients-data-format'
 import hexlifyIpfsHash from './hexlify-ipfs-hash'
 import getValidImage from './get-valid-image'
@@ -22,16 +23,15 @@ import defineAssetsTextareaPlaceholder from './define-assets-textarea-placeholde
 import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
 import countAssetsTotalAmountERC721 from './count-assets-total-amount-erc721'
 import countAssetsTotalAmountERC1155 from './count-assets-total-amount-erc1155'
-import downloadLinksAsCSV from './download-links-as-csv'
 import formatDate from './format-date'
 import defineQRStatusName from './define-qr-status-name'
+import mapQRsWithLinks from './map-qrs-with-links'
 
 export {
   shortenString,
   defineNetworkName,
   capitalize,
   defineJSONRpcUrl,
-  getCSV,
   copyToClipboard,
   checkRecipientsDataFormat,
   hexlifyIpfsHash,
@@ -53,5 +53,7 @@ export {
   checkERC1155AssetsData,
   parseERC1155AssetsData,
   countAssetsTotalAmountERC1155,
-  defineQRStatusName
+  defineQRStatusName,
+  prepareQRArray,
+  mapQRsWithLinks
 }

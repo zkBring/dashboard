@@ -4,17 +4,17 @@ import { TTokenType } from 'types'
 export type TAsset = {
   amount?: string,
   id?: number | string,
-  nativeTokensAmount?: string,
-  originalAmount?: string,
-  originalNativeTokensAmount?: string
+  native_tokens_amount?: string,
+  original_amount?: string,
+  original_native_tokens_amount?: string
 }
 
 export type TTotalAmount = {
   ids?: (number | string)[];
   amount?: BigNumber;
-  originalAmount?: BigNumber;
-  nativeTokensAmount: BigNumber;
-  originalNativeTokensAmount: BigNumber;
+  original_amount?: BigNumber;
+  native_tokens_amount: BigNumber;
+  original_native_tokens_amount: BigNumber;
 }
 
 export type TDefineTotalAmountERC20 = (assets: TAsset[] ) => TTotalAmount

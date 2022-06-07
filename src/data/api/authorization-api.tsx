@@ -14,10 +14,12 @@ const requests = {
   ) => authorizationApi.post('/auth', {
     sig,
     timestamp,
-    userAddress,
+    user_address: userAddress,
     msg
   }, { withCredentials: true }),
-  logout: () => {}
+  logout: () => {
+    
+  }
 }
 
 export default requests

@@ -28,7 +28,7 @@ type ReduxType = ReturnType<typeof mapStateToProps>  & ReturnType<typeof mapDisp
 
 const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWallet, chainId }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
-    return campaign.masterAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+    return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
   if (currentAddressCampaigns.length === 0) {
     return <Note>
@@ -44,11 +44,11 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
         date={campaign.date}
         id={campaign.id}
         key={campaign.id}
-        chainId={campaign.chainId}
+        chainId={campaign.chain_id}
         type={campaign.type}
         symbol={campaign.symbol}
         batches={campaign.batches}
-        proxyContractAddress={campaign.proxyContractAddress}
+        proxyContractAddress={campaign.proxy_contract_address}
       />
     })}
   </Container>

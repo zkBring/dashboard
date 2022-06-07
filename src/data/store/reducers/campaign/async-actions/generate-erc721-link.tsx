@@ -62,7 +62,7 @@ const generateERC721Link = ({
           campaignId: id,
           signingKeyOrWallet: privateKey,
           tokenId: assets[i].id || 0,
-          weiAmount: assets[i].nativeTokensAmount || '0'
+          weiAmount: assets[i].native_tokens_amount || '0'
         })
         if (result) {
           newLinks = [...newLinks, {
@@ -109,21 +109,16 @@ const generateERC721Link = ({
         const newCampaign: TCampaign = {
           id,
           assets,
-          privateKey,
-          tokenAddress,
-          masterAddress: address,
+          signer_key: privateKey,
+          token_address: tokenAddress,
+          creator_address: address,
           wallet,
           symbol,
           decimals: 0,
           title: title || '',
-          description: description || '',
-          logoURL: logoURL || '',
           type,
-          chainId,
-          status: 'active',
-          proxyContractAddress,
-          approved,
-          secured,
+          chain_id: chainId,
+          proxy_contract_address: proxyContractAddress,
           batches: [{
             links: newLinks,
             date,

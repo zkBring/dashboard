@@ -5,7 +5,7 @@ import { RootState } from 'data/store'
 import { TQRStatus } from 'types'
 import { qrsApi } from 'data/api'
 
-const updateQRStatus = ({
+const updateQRSetStatus = ({
   setId,
   newStatus,
   callback
@@ -43,4 +43,4 @@ const updateQRStatus = ({
 }
 
 
-export default updateQRStatus
+export default updateQRSetStatus

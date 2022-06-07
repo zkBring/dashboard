@@ -9,7 +9,7 @@ const requests = {
   create: (campaign: any) => campaignsApi.post('/linkdrop/campaigns', {
     campaign
   }, { withCredentials: true }),
-  get: (creatorAddress: string) => campaignsApi.get(`/linkdrop/campaigns?creatorAddress=${creatorAddress}`, { withCredentials: true }),
+  get: (creator_address: string) => campaignsApi.get(`/linkdrop/campaigns?creator_address=${creator_address}`, { withCredentials: true }),
   getOne: () => {},
   logout: () => {},
   saveLinks: () => {},

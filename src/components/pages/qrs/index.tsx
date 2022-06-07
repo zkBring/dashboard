@@ -25,11 +25,11 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    addQR: (
+    addQRSet: (
       title: string,
       quantity: number,
       callback: (id: string | number) => void
-    ) => dispatch(asyncQRsActions.addQR({ title, quantity, callback }))
+    ) => dispatch(asyncQRsActions.addQRSet({ title, quantity, callback }))
   }
 }
 
@@ -38,7 +38,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 const QRs: FC<ReduxType> = ({
   chainId,
   address,
-  addQR,
+  addQRSet,
   qrs,
   loading
 }) => {
@@ -69,7 +69,7 @@ const QRs: FC<ReduxType> = ({
         disabled={loading}
         onClick={() => {
           if(isNaN(Number(amount))) { return alert('Amount is not valid') }
-          addQR(
+          addQRSet(
             title,
             Number(amount),
             (id) => {

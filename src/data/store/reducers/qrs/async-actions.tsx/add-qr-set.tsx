@@ -2,10 +2,11 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQR } from 'types'
+import { TQRSet } from 'types'
 import { qrsApi } from 'data/api'
+import { prepareQRArray } from 'helpers'
 
-const addQR = ({
+const addQRSet = ({
   title,
   quantity,
   callback
@@ -21,11 +22,13 @@ const addQR = ({
     const { user: { address } } = getState()
     try {
       dispatch(actionsQR.setLoading(true))
-      const newQr: TQR = {
-        setName: title,
-        qrQuantity: quantity,
+      const qrArray = prepareQRArray(quantity)
+      const newQr: TQRSet = {
+        set_name: title,
+        qr_quantity: quantity,
         status: 'NOT_SENT_TO_PRINTER',
-        creatorAddress: address
+        creator_address: address,
+        qr_array: qrArray
       }
   
       const result = await qrsApi.create(newQr)
@@ -40,4 +43,4 @@ const addQR = ({
   }
 }
 
-export default addQR
+export default addQRSet

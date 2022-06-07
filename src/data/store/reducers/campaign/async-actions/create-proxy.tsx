@@ -14,8 +14,8 @@ const createProxyContract = (id?: string) => {
     if (id) {
       const campaign = campaigns.find(campaign => campaign.id === id)
       if (campaign) {
-        const { proxyContractAddress, id } = campaign
-        dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
+        const { proxy_contract_address, id } = campaign
+        dispatch(actionsCampaign.setProxyContractAddress(proxy_contract_address))
         dispatch(actionsCampaign.setId(id))
         return
       }
