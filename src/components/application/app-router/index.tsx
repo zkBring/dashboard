@@ -120,7 +120,7 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
         />  
 
         <Route path='/' exact={true} render={props => <Main {...props} />} />
-        <Route path='*' exact={true} render={props => <NotFound
+        <Route path='*' render={props => <NotFound
           {...props}
         />} />
       </Switch>

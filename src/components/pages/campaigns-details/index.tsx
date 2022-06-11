@@ -1,6 +1,4 @@
-import { FC, useState } from 'react'
-import { Breadcrumbs, Button } from 'components/common'
-// import { connect, ConnectedProps } from 'react-redux'
+import { FC } from 'react'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -16,14 +14,7 @@ import { useHistory } from 'react-router-dom'
 import {
   formatDate
 } from 'helpers'
-
-interface MatchParams {
-  id: string;
-}
-
-interface IProps extends RouteComponentProps<MatchParams> {
-  connectWallet: () => void;
-}
+import { IProps } from './types'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -39,29 +30,30 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
   const { campaigns, match: { params } } = props
-  const [ copied, setCopied ] = useState(false)
   const history = useHistory()
 
   const currentCampaign = campaigns.find(campaign => campaign.id === params.id)
+  console.log({ currentCampaign })
   if (!currentCampaign) {
     return null
   }
-  const { chain_id: chainId, id, token_address: tokenAddress, type, title, decimals, batches, date } = currentCampaign
+  const { id, type, title, batches } = currentCampaign
   
   return <Container>
     <WidgetComponent title={title || `Campaign ${id}`}>
       <BatchList>
         {batches.map(batch => {
+          return null
           const dateFormatted = formatDate(batch.date)
           return <>
             <BatchTitle>
-              {batch.links.length} link(s) - created {dateFormatted} {batch.sponsored ? '(sponsored)' : ''}
+            {batch.batch_description} / {batch.claim_links.length} link(s). Created {dateFormatted} {batch.sponsored ? '(sponsored)' : ''}
             </BatchTitle>
             <WidgetButton
               appearance='action'
               title='Download CSV'
               onClick={() => {
-                downloadLinksAsCSV(batch.links, id)
+                downloadLinksAsCSV(batch.claim_links, id)
               }}
             />
           </>
@@ -79,4 +71,3 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
 }
 
 export default withRouter(connect(mapStateToProps)(CampaignDetails))
-

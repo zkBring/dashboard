@@ -8,12 +8,16 @@ import {
 } from '../../styled-components'
 import { useHistory } from 'react-router-dom'
 import { WidgetSummaryData, WidgetButton } from './styled-components'
-import { TAsset, TTokenType } from 'types'
 import { IAppDispatch } from 'data/store'
-import { countAssetsTotalAmountERC20, countAssetsTotalAmountERC721, defineNativeTokenSymbol } from 'helpers'
+import {
+  countAssetsTotalAmountERC20,
+  countAssetsTotalAmountERC721,
+  countAssetsTotalAmountERC1155,
+  defineNativeTokenSymbol
+} from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import { TransactionAside } from 'components/pages/common'
-import { TProps } from './types'
+import { TProps, TDefineLinksContent } from './types'
 
 const mapStateToProps = ({
   user: {
@@ -53,12 +57,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
-type TDefineLinksContent = (
-  symbol: string,
-  assets: TAsset[],
-  chainId: number,
-  type: TTokenType
-) => string
+
 const defineLinksContent: TDefineLinksContent = (
   symbol,
   assets,
@@ -68,8 +67,10 @@ const defineLinksContent: TDefineLinksContent = (
   let assetsTotal
   if (type === 'erc20') {
     assetsTotal = countAssetsTotalAmountERC20(assets)
-  } else {
+  } else if (type === 'erc721') {
     assetsTotal = countAssetsTotalAmountERC721(assets)
+  } else {
+    assetsTotal = countAssetsTotalAmountERC1155(assets)
   }
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   if (String(assetsTotal.native_tokens_amount) === '0') {
@@ -126,24 +127,15 @@ const Summary: FC<ReduxType & TProps> = ({
         appearance='action'
         onClick={() => {
           const redirectURL = campaign ? `/campaigns/edit/${type}/${campaign.id}/secure` : `/campaigns/new/${type}/secure`
+          const callback = () => {
+            history.push(redirectURL)
+          }
           if (type === 'erc20') {
-            approveERC20(
-              () => {
-                history.push(redirectURL)
-              }
-            )
+            approveERC20(callback)
           } else if (type === 'erc721') {
-            approveERC721(
-              () => {
-                history.push(redirectURL)
-              }
-            )
+            approveERC721(callback)
           } else {
-            approveERC1155(
-              () => {
-                history.push(redirectURL)
-              }
-            )
+            approveERC1155(callback)
           }
         }}
       />

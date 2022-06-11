@@ -35,28 +35,26 @@ const defineAssetsTextareaPlaceholder: TDefinePlaceholder = (
       return `Be careful and paste info in the following order:
 Tokens amount, native token amount (if needed). In brackets you can provide an amount of links
 Example:
-0.0001 - will create one link with 0.0001 ${nativeTokenSymbol}
-0.0001(20) - will create 20 links with 0.0001 ${nativeTokenSymbol} in each
-and so on
+0.1 - one link with 0.1 ${nativeTokenSymbol}
+0.1(20) - 20 links with 0.1 ${nativeTokenSymbol} in each
 `
     }
     return `Be careful and paste info in the following order:
-Tokens amount, native token amount (if needed). In brackets you can provide an amount of links
+Token amount, native token amount (if needed). In brackets you can provide an amount of links
 Example:
-0.0001
-0.0001, 1
-0.0001(20)
-0.0001, 1(20)
-and so on
+0.1 - one link with 0.0001 of token amount
+0.1, 0.2 - one link with 0.1 of token amount and 0.2 ${nativeTokenSymbol}
+0.1(2) - 2 links with 0.1 of token amount in each
+0.1, 0.2(2) - 2 links with 0.1 of token amount and 0.2 ${nativeTokenSymbol} in each
 `
   }
   if (type === 'erc721') {
     return `Be careful and paste info in the following order:
 Token ID, native token amount (if needed). In brackets you can specify an interval of token IDs
 Example:
-1 - will create one link with one nft-token (id: 1)
-[1-10] - will create 10 links with one nft-token in each (IDs from 1 to 10)
-1, 0.0001 - will create 1 links with one nft-token (id: 1) and 0.0001 ${nativeTokenSymbol}
+1 - one link with one nft-token (id: 1)
+[1-10] - 10 links with one nft-token in each (IDs from 1 to 10)
+1, 0.1 - 1 links with one nft-token (id: 1) and 0.1 ${nativeTokenSymbol}
 `
   }
 
@@ -64,14 +62,13 @@ Example:
     return `Be careful and paste info in the following order:
 Token ID, token amount and native token amount (if needed). In brackets you can specify an amount of links
 Example:
-1, 1 - will create one link with one nft-token (id: 1)
-1, 1(50) - will create 50 links with one nft-token (id: 1) in each link
-1, 1, 0.001 - will create one link with one nft-token (id: 1) and 0.001 ${nativeTokenSymbol}
-1, 1, 0.001(50) - ill create 50 links with one nft-token (id: 1) and 0.001 ${nativeTokenSymbol} in each link 
+1, 1 - one link with one nft-token (id: 1)
+1, 1(2) - 2 links with one nft-token (id: 1) in each link
+1, 1, 0.1 - one link with one nft-token (id: 1) and 0.1 ${nativeTokenSymbol}
+1, 1, 0.1(2) - 2 links with one nft-token (id: 1) and 0.1 ${nativeTokenSymbol} in each link 
 `
   }
   return ''
-  
 }
 
 export default defineAssetsTextareaPlaceholder

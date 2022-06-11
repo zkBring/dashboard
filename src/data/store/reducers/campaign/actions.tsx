@@ -90,9 +90,15 @@ export function setSecured(secured: boolean) {
   })
 }
 
-export function setPrivateKey(privateKey: string) {
-  return action(Constants.CAMPAIGN_SET_PRIVATE_KEY, {
-    privateKey
+export function setSignerKey(signerKey: string) {
+  return action(Constants.CAMPAIGN_SET_SIGNER_KEY, {
+    signerKey
+  })
+}
+
+export function setSignerAddress(signerAddress: string) {
+  return action(Constants.CAMPAIGN_SET_SIGNER_ADDRESS, {
+    signerAddress
   })
 }
 

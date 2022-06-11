@@ -1,12 +1,14 @@
-import { Dispatch } from 'redux';
-import * as actionsCampaign from '../actions';
-import * as actionsCampaigns from '../../campaigns/actions';
-import { CampaignActions } from '../types';
+import { Dispatch } from 'redux'
+import * as actionsCampaign from '../actions'
+import * as actionsCampaigns from '../../campaigns/actions'
+import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
 import { TLink, TCampaign } from 'types'
 import { EXPIRATION_DATE } from 'configs/app'
-import { CampaignsActions } from '../../campaigns/types';
+import { CampaignsActions } from '../../campaigns/types'
+import { defineBatchPreviewContents } from 'helpers'
+
 function sleep(timeout: number) {
   return new Promise((resolve) => setTimeout(() => resolve(true), timeout))
 }
@@ -33,16 +35,13 @@ const generateERC1155Link = ({
       const {
         id,
         assets,
-        privateKey,
+        signerKey,
         tokenAddress,
         wallet,
         symbol,
         title,
-        description,
-        logoURL,
+        signerAddress,
         proxyContractAddress,
-        approved,
-        secured,
         sponsored,
         type
       } = campaign
@@ -51,7 +50,8 @@ const generateERC1155Link = ({
       if (!tokenAddress) { return alert('tokenAddress is not provided') }
       if (!wallet) { return alert('wallet is not provided') }
       if (!id) { return alert('campaign id is not provided') }
-      if (!privateKey) { return alert('privateKey is not provided') }
+      if (!signerKey) { return alert('signerKey is not provided') }
+      if (!signerAddress) { return alert('signerAddress is not provided') }
       let newLinks: Array<TLink> = []
       const date = String(new Date())
       for (let i = 0; i < assets.length; i++) {
@@ -63,12 +63,12 @@ const generateERC1155Link = ({
           tokenAmount: assets[i].amount || '0',
           expirationTime: EXPIRATION_DATE,
           campaignId: id,
-          signingKeyOrWallet: privateKey
+          signingKeyOrWallet: signerKey
         })
         if (result) {
           newLinks = [...newLinks, {
-            linkId: result?.linkId,
-            content: !sponsored ? `${result?.url}&manual=true` : result?.url
+            link_id: result?.linkId,
+            encrypted_link: !sponsored ? `${result?.url}&manual=true` : result?.url
           }]
           dispatch(actionsCampaign.setLinks(
             newLinks,
@@ -78,23 +78,27 @@ const generateERC1155Link = ({
         }
       }
   
-      if (!chainId || !proxyContractAddress || !privateKey || !type || !address) { return }
+      if (!chainId || !proxyContractAddress || !signerKey || !type || !address) { return }
   
       const updatingCampaign = currentCampaignId ? campaigns.find(item => item.id === currentCampaignId) : undefined
+      const batchPreviewContents = defineBatchPreviewContents(
+        type,
+        assets,
+        symbol,
+        chainId
+      )
+      const batch = {
+        claim_links: newLinks,
+        date,
+        sponsored,
+        batch_description: batchPreviewContents
+      }
       if (updatingCampaign) {
         const updatedCampaign = {
           ...updatingCampaign,
-          assets: [
-            ...updatingCampaign.assets,
-            ...assets
-          ],
           batches: [
             ...updatingCampaign.batches,
-            {
-              links: newLinks,
-              date,
-              sponsored
-            }
+            batch
           ]
         }
         const updatedCampaigns = campaigns.map(item => {
@@ -108,22 +112,18 @@ const generateERC1155Link = ({
       } else {
         const newCampaign: TCampaign = {
           id,
-          assets,
-          signer_key: privateKey,
+          signer_key: signerKey,
           token_address: tokenAddress,
           creator_address: address,
           wallet,
           symbol,
+          signer_address: signerAddress,
           decimals: 0,
           title: title || '',
           type,
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
-          batches: [{
-            links: newLinks,
-            date,
-            sponsored
-          }],
+          batches: [batch],
           date
         }
     

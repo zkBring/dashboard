@@ -1,6 +1,6 @@
 type TLink = {
-  linkId: string,
-  content: string
+  link_id: string,
+  encrypted_link: string
 }
 
 export default TLink

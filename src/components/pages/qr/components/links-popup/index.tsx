@@ -27,10 +27,10 @@ const LinksPopup: FC<TProps> = ({
       }
       lines.shift()
       const links = lines.map(item => {
-        const [ linkId, content ] = item.split(',')
+        const [ link_id, encrypted_link ] = item.split(',')
         return {
-          linkId,
-          content
+          link_id,
+          encrypted_link
         }
       })
       if (links.length !== quantity) {

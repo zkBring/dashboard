@@ -15,8 +15,8 @@ const requests = {
       status: newStatus
     }, { withCredentials: true })
   },
-  get: (creator_address: string) => {
-    return qrsSetApi.get(`/QR/sets?creator_address=${creator_address}`, { withCredentials: true })
+  get: () => {
+    return qrsSetApi.get('/QR/sets', { withCredentials: true })
   },
   getOne: (id: string) => {
     return qrsSetApi.get(`/QR/sets/${id}`, { withCredentials: true })

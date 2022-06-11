@@ -13,15 +13,7 @@ import { connect } from 'react-redux'
 import { LINK_COMISSION_PRICE } from 'configs/app'
 import { multiply, bignumber } from 'mathjs'
 import { TransactionAside } from 'components/pages/common'
-import { TCampaign } from 'types'
-
-type TProps = {
-  amount: string,
-  sponsored: boolean,
-  setSponsored: (value: boolean) => void,
-  nativeTokenSymbol: string,
-  campaign?: TCampaign | null
-}
+import { TProps } from './types'
 
 const mapStateToProps = ({
   campaign: {
@@ -46,7 +38,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps> & TProps
-
 
 const Secure: FC<ReduxType> = ({
   type,

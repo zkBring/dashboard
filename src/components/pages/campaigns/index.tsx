@@ -1,14 +1,10 @@
 import React, { FC } from 'react'
-// import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Campaign, Note, TextLink } from 'components/common'
 import { Container } from './styled-components'
-
-type TProps = {
-  connectWallet: () => void
-}
+import { TProps } from './types'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -39,7 +35,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
   return <Container>
     {currentAddressCampaigns.map(campaign => {
       return <Campaign
-        assets={campaign.assets}
         title={campaign.title}
         date={campaign.date}
         id={campaign.id}

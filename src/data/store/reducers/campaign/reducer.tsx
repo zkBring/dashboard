@@ -4,8 +4,6 @@ import { Constants } from './constants';
 const initialState: CampaignState = {
   title: '',
   tokenAddress: '',
-  logoURL: '',
-  description: '',
   loading: false,
   type: null,
   decimals: null,
@@ -16,7 +14,8 @@ const initialState: CampaignState = {
   approved: false,
   id: null,
   secured: false,
-  privateKey: null,
+  signerKey: null,
+  signerAddress: null,
   sponsored: false,
   links: []
 }
@@ -30,10 +29,6 @@ export function newRetroDropReducer(
           return {...state, tokenAddress: action.payload.tokenAddress }
         case Constants.CAMPAIGN_SET_TITLE:
           return {...state, title: action.payload.title }
-        case Constants.CAMPAIGN_SET_DESCRIPTION:
-          return {...state, description: action.payload.description }
-        case Constants.CAMPAIGN_SET_LOGO_URL:
-          return {...state, logoURL: action.payload.logoURL }
         case Constants.CAMPAIGN_SET_LOADING:
           return {...state, loading: action.payload.loading }
         case Constants.CAMPAIGN_SET_TYPE:
@@ -54,8 +49,10 @@ export function newRetroDropReducer(
           return {...state, secured: action.payload.secured }
         case Constants.CAMPAIGN_SET_ID:
           return {...state, id: action.payload.id }
-        case Constants.CAMPAIGN_SET_PRIVATE_KEY:
-          return {...state, privateKey: action.payload.privateKey }
+        case Constants.CAMPAIGN_SET_SIGNER_KEY:
+          return {...state, signerKey: action.payload.signerKey }
+        case Constants.CAMPAIGN_SET_SIGNER_ADDRESS:
+          return {...state, signerAddress: action.payload.signerAddress }
         case Constants.CAMPAIGN_SET_SPONSORED:
           return {...state, sponsored: action.payload.sponsored }
         case Constants.CAMPAIGN_SET_LINKS:

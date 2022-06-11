@@ -26,6 +26,7 @@ import countAssetsTotalAmountERC1155 from './count-assets-total-amount-erc1155'
 import formatDate from './format-date'
 import defineQRStatusName from './define-qr-status-name'
 import mapQRsWithLinks from './map-qrs-with-links'
+import defineBatchPreviewContents from './define-batch-preview-contents'
 
 export {
   shortenString,
@@ -55,5 +56,6 @@ export {
   countAssetsTotalAmountERC1155,
   defineQRStatusName,
   prepareQRArray,
-  mapQRsWithLinks
+  mapQRsWithLinks,
+  defineBatchPreviewContents
 }

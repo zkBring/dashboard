@@ -1,17 +1,11 @@
 import React, { FC } from 'react'
-// import { functionalActions } from 'decorators'
 import { Header, Aside } from 'components/common'
 import { Page, MainContent, Content } from './styled-components'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
+import { TProps } from './types'
 
-interface PageProps {
-  account?: string,
-  chainId?: number
-}
-
-const PageComponent: FC<PageProps> = ({ children, account, chainId }) => {
-  
+const PageComponent: FC<TProps> = ({ children }) => {
   return (
     <ThemeProvider theme={themes.light}>
       <Page>

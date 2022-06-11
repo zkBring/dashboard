@@ -1,8 +1,11 @@
-import React from 'react'
-import { Redirect } from 'react-router'
+import { Title } from 'components/common'
+import { Container, ErrorCode } from './styled-components'
 
-const NotFound = () => <div>
-  <Redirect to='/' />
-</div> 
+const NotFound = () => {
+  return <Container>
+    <Title>Page not found</Title>
+    <ErrorCode>404</ErrorCode>
+  </Container>
+}
 
 export default NotFound

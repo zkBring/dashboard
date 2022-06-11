@@ -31,7 +31,6 @@ const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
   }
 }
 
-
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Main: FC<ReduxType> = ({

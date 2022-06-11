@@ -27,7 +27,6 @@ const secure = (
       campaign: {
         proxyContractAddress,
         id,
-        assets,
         symbol
       }
     } = getState()
@@ -37,9 +36,6 @@ const secure = (
       }
       if (!proxyContractAddress) {
         return alert('No proxy address provided')
-      }
-      if (!assets) {
-        return alert('No assets provided')
       }
       if (!symbol) {
         return alert('No symbol provided')
@@ -114,7 +110,8 @@ const secure = (
       const finished = await checkTransaction()
       if (finished) {
         dispatch(campaignActions.setSecured(true))
-        dispatch(campaignActions.setPrivateKey(privateKey))
+        dispatch(campaignActions.setSignerKey(privateKey))
+        dispatch(campaignActions.setSignerAddress(privateKey))
         dispatch(campaignActions.setSponsored(sponsored))
         callback && callback()
       }

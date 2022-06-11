@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux'
 import * as userActions from '../actions'
+import { TQRSet, TCampaign } from 'types'
 import * as qrsActions from '../../qrs/actions'
 import {
   UserActions,
@@ -38,9 +39,9 @@ const initialization = (
     if (!REACT_APP_INFURA_ID) {
       return alert('REACT_APP_INFURA_ID is not provided in .env file')
     }
-    const campaigns = await campaignsApi.get(address)
-    const qrs = await qrsApi.get(address)
-    dispatch(qrsActions.updateQrs(qrs.data.qrSets))
+    const campaigns: { data: { campaigns: TCampaign[] } } = await campaignsApi.get()
+    const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
+    dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
 
     const contract = contracts[chainId]
     const networkName = defineNetworkName(chainId)

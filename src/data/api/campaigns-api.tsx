@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { TCampaign, TLink } from 'types'
+
 const { REACT_APP_SERVER_URL } = process.env
 
 const campaignsApi = axios.create({
@@ -6,14 +8,40 @@ const campaignsApi = axios.create({
 })
 
 const requests = {
-  create: (campaign: any) => campaignsApi.post('/linkdrop/campaigns', {
-    campaign
+  create: (
+    campaign: TCampaign
+  ) => campaignsApi.post('/linkdrop/campaigns', {
+    ...campaign
   }, { withCredentials: true }),
-  get: (creator_address: string) => campaignsApi.get(`/linkdrop/campaigns?creator_address=${creator_address}`, { withCredentials: true }),
-  getOne: () => {},
-  logout: () => {},
-  saveLinks: () => {},
-  getLinks: () => {}
+  get: () => {
+    return campaignsApi.get(`/linkdrop/campaigns`, { withCredentials: true })
+  },
+  getOne: (
+    campaign_id: string | number
+  ) => {
+    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}`, { withCredentials: true })
+  },
+  saveBatch: (
+    campaign_id: string | number,
+    claim_links: TLink[],
+    sponsored: boolean,
+    batch_description: string
+  ) => {
+    return campaignsApi.post(
+      `/linkdrop/campaigns/${campaign_id}/save-batch`,
+      {
+        claim_links,
+        sponsored,
+        batch_description
+      },
+      { withCredentials: true }
+    )
+  },
+  getBatches: (
+    campaign_id: string | number
+  ) => {
+    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}/batches`, { withCredentials: true })
+  }
 }
 
 export default requests

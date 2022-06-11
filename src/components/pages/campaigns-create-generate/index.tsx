@@ -6,7 +6,7 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import { useHistory } from 'react-router-dom'
 import { TLinkParams } from 'types'
 import { useParams } from 'react-router-dom'
-type TCallback = (id: string) => void
+import { TCallback } from './types'
 
 const mapStateToProps = ({
   campaign: { assets, type, links },

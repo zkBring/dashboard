@@ -20,5 +20,7 @@ export type TQRSet = {
   _id?: number | string,
   creator_address: string,
   created_at?: string,
-  qr_array?: TQRItem[]
+  qr_array?: TQRItem[],
+  links_uploaded?: boolean,
+  updated_at?: string
 }
