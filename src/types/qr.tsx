@@ -17,7 +17,7 @@ export type TQRSet = {
   set_name: string,
   qr_quantity: number,
   status: TQRStatus,
-  _id?: number | string,
+  set_id?: number | string,
   creator_address: string,
   created_at?: string,
   qr_array?: TQRItem[],

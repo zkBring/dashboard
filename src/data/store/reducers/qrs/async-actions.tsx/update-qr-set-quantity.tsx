@@ -2,16 +2,16 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRStatus } from 'types'
 import { qrsApi } from 'data/api'
+import { prepareQRArray } from 'helpers'
 
-const updateQRSetStatus = ({
+const updateQRSetQuantity = ({
   setId,
-  newStatus,
+  quantity,
   callback
 }: {
   setId: string | number,
-  newStatus: TQRStatus,
+  quantity: number,
   callback?: () => void,
 }) => {
   return async (
@@ -21,13 +21,15 @@ const updateQRSetStatus = ({
     const { qrs: { qrs } } = getState()
     try {
       dispatch(actionsQR.setLoading(true))
-      const result = await qrsApi.updateStatus(setId, newStatus)
-      if (result.data.success) {
+      const qrArray = prepareQRArray(quantity)
+      const result = await qrsApi.updateQuantity(setId, qrArray, quantity)
+      if (result && result.data && result.data.success) {
         const qrsUpdated = qrs.map(item => {
           if (item.set_id === setId) {
             return {
               ...item,
-              status: newStatus
+              qr_array: result.data.qr_array,
+              qr_quantity: quantity
             }
           }
           return item
@@ -43,4 +45,4 @@ const updateQRSetStatus = ({
 }
 
 
-export default updateQRSetStatus
+export default updateQRSetQuantity

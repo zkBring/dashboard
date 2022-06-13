@@ -3,11 +3,10 @@ import { useParams, Redirect } from 'react-router-dom'
 import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import { defineQRStatusName } from 'helpers'
+import { defineQRStatusName, convertLinksToBase64, downloadBase64FilesAsZip } from 'helpers'
 import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup } from './components'
 import { Loader } from 'components/common'
-
 import {
   Container,
   WidgetComponent,
@@ -15,7 +14,8 @@ import {
   WidgetSubtitle,
   WidgetValue,
   Buttons,
-  WidgetButton
+  WidgetButton,
+  LinksIndicator
 } from './styled-components'
 import { Select } from 'components/common'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
@@ -39,12 +39,21 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       newStatus: TQRStatus,
       callback: () => void
     ) => dispatch(asyncQRsActions.updateQRSetStatus({ setId, newStatus, callback })),
+
+    updateQRSetQuantity: (
+      setId: string | number,
+      quantity: number,
+      callback: () => void
+    ) => dispatch(asyncQRsActions.updateQRSetQuantity({ setId, quantity, callback })),
+
     mapQRsToLinks: (
       setId: string,
       links: TLink[],
       qrs: TQRItem[],
       callback?: () => void,
-    ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback }))
+    ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback })),
+
+    getQRsArray: (setId: string | number) => dispatch(asyncQRsActions.getQRs({ setId })),
   }
 }
 
@@ -54,10 +63,12 @@ const QR: FC<ReduxType> = ({
   qrs,
   updateQRSetStatus,
   loading,
-  mapQRsToLinks 
+  mapQRsToLinks,
+  updateQRSetQuantity,
+  getQRsArray
 }) => {
   const { id } = useParams<TLinkParams>()
-  const qr: TQRSet | undefined = qrs.find(qr => String(qr._id) === id)
+  const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
 
   const [
@@ -75,12 +86,17 @@ const QR: FC<ReduxType> = ({
   })) 
 
   useEffect(() => {
-    if (qr) {
-      const option = selectOptions.find(item => item.value === qr.status)
+    if (!qr) { return }
+    const option = selectOptions.find(item => item.value === qr.status)
       if (!option) { return }
       setStatus(option)
-    }
   }, [qr])
+
+  useEffect(() => {
+    if (!qr) { return }
+    if (!qr.set_id) { return }
+    getQRsArray(qr.set_id)
+  }, [])
 
   if (!qr) {
     return <Redirect to='/qrs' /> 
@@ -91,7 +107,14 @@ const QR: FC<ReduxType> = ({
     {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
       quantity={qr.qr_quantity}
-      onSubmit={value => console.log({ value })}
+      onSubmit={value => {
+        if (!id) { return }
+        updateQRSetQuantity(
+          id,
+          Number(value),
+          () => { toggleUpdateQuantityPopup(false) }
+        )}
+      }
     />}
 
     {updateLinksPopup && <LinksPopup
@@ -99,8 +122,9 @@ const QR: FC<ReduxType> = ({
       onClose={() => toggleUpdateLinksPopup(false)}
       onSubmit={links => {
         if (!id || !qr.qr_array) { return }
-        mapQRsToLinks(id, links, qr.qr_array, () => {})
-        console.log({ links })
+        mapQRsToLinks(id, links, qr.qr_array, () => {
+          toggleUpdateLinksPopup(false)
+        })
       }}
     />}
 
@@ -117,7 +141,15 @@ const QR: FC<ReduxType> = ({
                 toggleUpdateQuantityPopup(true)
               }}
             />
-            <WidgetButton title='Download' appearance='action' /> 
+            <WidgetButton
+              title='Download'
+              appearance='action'
+              onClick={() => {
+                if (!qr.qr_array) { return }
+                const qrs: string[] = convertLinksToBase64('image/png', qr.qr_array)
+                downloadBase64FilesAsZip('image/png', qrs)
+              }}
+            /> 
           </Buttons>
         </WidgetValue>
         <WidgetSubtitle>
@@ -142,11 +174,14 @@ const QR: FC<ReduxType> = ({
 
       <WidgetInfo>
         <WidgetSubtitle>
-          Claimable links: No links
+          Claimable links:
+          <LinksIndicator>
+            {qr.links_uploaded ? `${qr.qr_quantity} link(s) <--> ${qr.qr_array?.length} QR(s)` : 'No links uploaded'}
+          </LinksIndicator>
         </WidgetSubtitle>
         <WidgetValue>
           <WidgetButton
-            title='Upload links'
+            title={qr.links_uploaded ? 'Change links' : 'Upload links'}
             onClick={() => {
               toggleUpdateLinksPopup(true)
             }}
@@ -158,6 +193,7 @@ const QR: FC<ReduxType> = ({
           equivalent to a number of QR codes
         </WidgetValue>
       </WidgetInfo>
+          
     </WidgetComponent>
   </Container>
 }

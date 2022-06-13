@@ -27,6 +27,8 @@ import formatDate from './format-date'
 import defineQRStatusName from './define-qr-status-name'
 import mapQRsWithLinks from './map-qrs-with-links'
 import defineBatchPreviewContents from './define-batch-preview-contents'
+import convertLinksToBase64 from './convert-links-to-base64'
+import downloadBase64FilesAsZip from './download-base64-files-as-zip'
 
 export {
   shortenString,
@@ -57,5 +59,7 @@ export {
   defineQRStatusName,
   prepareQRArray,
   mapQRsWithLinks,
-  defineBatchPreviewContents
+  defineBatchPreviewContents,
+  convertLinksToBase64,
+  downloadBase64FilesAsZip
 }

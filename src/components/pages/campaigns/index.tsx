@@ -36,7 +36,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
     {currentAddressCampaigns.map(campaign => {
       return <Campaign
         title={campaign.title}
-        date={campaign.date}
+        created_at={campaign.created_at}
         id={campaign.id}
         key={campaign.id}
         chainId={campaign.chain_id}

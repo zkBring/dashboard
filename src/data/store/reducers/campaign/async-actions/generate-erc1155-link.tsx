@@ -118,13 +118,11 @@ const generateERC1155Link = ({
           wallet,
           symbol,
           signer_address: signerAddress,
-          decimals: 0,
           title: title || '',
           type,
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
-          batches: [batch],
-          date
+          batches: [batch]
         }
     
         dispatch(actionsCampaigns.addCampaign(newCampaign))

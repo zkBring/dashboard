@@ -11,6 +11,7 @@ import { ReactComponent as GoBackIcon } from './go-back-icon.svg';
 import { ReactComponent as DownloadIcon } from './download-icon.svg'
 import { ReactComponent as ExternalLinkIcon } from './external-link-icon.svg'
 import { ReactComponent as ArrowIcon } from './arrow-icon.svg'
+import { ReactComponent as CloseIcon } from './close-icon.svg'
 
 const Icons = {
   EthereumLogo,
@@ -25,7 +26,8 @@ const Icons = {
   GoBackIcon,
   DownloadIcon,
   ExternalLinkIcon,
-  ArrowIcon
+  ArrowIcon,
+  CloseIcon
 }
 
 export default Icons

@@ -18,14 +18,25 @@ const mapQRsWithLinksAction = ({
   callback?: () => void,
 }) => {
   return async (
-    dispatch: Dispatch<QRsActions>
+    dispatch: Dispatch<QRsActions>,
+    getState: () => RootState
   ) => {
+    const { qrs: { qrs: qrSets } } = getState()
     try {
       dispatch(actionsQR.setLoading(true))
       const qrArrayMapped = mapQRsWithLinks(qrs, links)
       const result = await qrsApi.mapLinks(setId, qrArrayMapped)
       if (result.data.success) {
-        console.log(result.data)
+        const qrsUpdated = qrSets.map(item => {
+          if (item.set_id === setId) {
+            return {
+              ...item,
+              links_uploaded: true
+            }
+          }
+          return item
+        })
+        dispatch(actionsQR.updateQrs(qrsUpdated))
         callback && callback()
       }
     } catch (err) {

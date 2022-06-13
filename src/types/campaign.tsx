@@ -7,7 +7,6 @@ type TCampaign = {
   id: string, // айдишник на основе которого создается прокси
   token_address: string,
   type: TTokenType, // erc-721, ...
-  decimals: number,
   symbol: string, // символ кампании
   wallet: string, // какой воллет в урле прописан (по умолчанию metamask)
   proxy_contract_address: string,
@@ -15,7 +14,7 @@ type TCampaign = {
   signer_address: string,
   batches: TLinksBatch[], // батчи линков
   creator_address: string, // публичный ключ мастера
-  date: string // дата создания кампании
+  created_at?: string // дата создания кампании
 }
 
 export default TCampaign

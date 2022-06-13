@@ -118,13 +118,11 @@ const generateERC721Link = ({
           creator_address: address,
           wallet,
           symbol,
-          decimals: 0,
           title: title || '',
           type,
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
-          batches: [batch],
-          date
+          batches: [batch]
         }
     
         dispatch(actionsCampaigns.addCampaign(newCampaign))

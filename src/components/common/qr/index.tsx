@@ -13,7 +13,7 @@ import { defineQRStatusName } from 'helpers'
 
 const QR: FC<TQRProps> = ({
   set_name,
-  _id,
+  set_id,
   qr_quantity,
   status,
   className,

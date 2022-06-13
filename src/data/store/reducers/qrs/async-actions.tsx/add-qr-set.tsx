@@ -33,7 +33,7 @@ const addQRSet = ({
   
       const result = await qrsApi.create(newQr)
       if (result.data.success) {
-        dispatch(actionsQR.addQr(newQr))
+        dispatch(actionsQR.addQr(result.data.qr_set))
         callback && callback(result.data._id)
       }
     } catch (err) {

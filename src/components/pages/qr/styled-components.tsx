@@ -46,3 +46,7 @@ export const PopupFormContent = styled.div`
 
 export const PopupForm = styled.form`
 `
+
+export const LinksIndicator = styled.div`
+  
+`

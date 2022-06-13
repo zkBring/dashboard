@@ -37,26 +37,38 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 interface Props {}
 
 const defineTitle: TDefineTitle = (location) => {
-  console.log({ location })
-  switch(location) {
-    case '/campaigns/new/erc20/initial':
-    case '/campaigns/new/erc20/secure':
-    case '/campaigns/new/erc20/generate':
-    case '/campaigns/new/erc20/approve':
+  switch(true) {
+    case location.includes('/campaigns/new/erc20/initial'):
+    case location.includes('/campaigns/new/erc20/secure'):
+    case location.includes('/campaigns/new/erc20/generate'):
+    case location.includes('/campaigns/new/erc20/approve'):
       return 'New ERC20 Campaign'
-    case '/campaigns/new/erc721/initial':
-    case '/campaigns/new/erc721/secure':
-    case '/campaigns/new/erc721/generate':
-    case '/campaigns/new/erc721/approve':
+    case location.includes('/campaigns/new/erc721/initial'):
+    case location.includes('/campaigns/new/erc721/secure'):
+    case location.includes('/campaigns/new/erc721/generate'):
+    case location.includes('/campaigns/new/erc721/approve'):
       return 'New ERC721 Campaign'
-    case '/campaigns/new/erc1155/initial':
-    case '/campaigns/new/erc1155/secure':
-    case '/campaigns/new/erc1155/generate':
-    case '/campaigns/new/erc1155/approve':
+    case location.includes('/campaigns/new/erc1155/initial'):
+    case location.includes('/campaigns/new/erc1155/secure'):
+    case location.includes('/campaigns/new/erc1155/generate'):
+    case location.includes('/campaigns/new/erc1155/approve'):
       return 'New ERC1155 Campaign'
-    case '/campaigns':
+    
+    case location.includes('/campaigns/edit/erc20'):
+      return 'Edition of ERC20 Campaign'
+    case location.includes('/campaigns/edit/erc721'):
+      return 'Edition of ERC721 Campaign'
+    case location.includes('/campaigns/edit/erc1155'):
+      return 'Edition of ERC1155 Campaign'
+    
+      case location.includes('/qrs/'):
+      return "QR Campaign"
+    case location.includes('/qrs'):
+      return "Your QR Campaigns"
+    
+    case location.includes('/campaigns'):
       return 'Campaigns'
-    case '/':
+    case location.includes('/'):
       return 'Dashboard'
     default:
       return ''

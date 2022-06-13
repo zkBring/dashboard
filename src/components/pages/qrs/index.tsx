@@ -60,7 +60,7 @@ const QRs: FC<ReduxType> = ({
       />
       <InputComponent
         value={amount}
-        title='Name of QR codes'
+        title='Quantity of QR codes'
         onChange={value => { setAmount(value); return value }}
       />
       <ContainerButton
@@ -82,9 +82,9 @@ const QRs: FC<ReduxType> = ({
     {qrs.map(qr => {
       return <QRItem
         {...qr}
-        key={qr._id}
+        key={qr.set_id}
         onManage={() => {
-          history.push(`/qrs/${qr._id}`)
+          history.push(`/qrs/${qr.set_id}`)
         }}
       />
     })}

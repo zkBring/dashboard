@@ -2,9 +2,11 @@ import { FC, UIEvent } from 'react'
 import {
   PopupWrapper,
   Popup,
-  PopupTitle
+  PopupTitle,
+  CloseButton
 } from './styled-components'
 import { TProps } from './types'
+import Icons from 'icons'
 
 const PopupComponent: FC<TProps> = ({
   title,
@@ -22,6 +24,9 @@ const PopupComponent: FC<TProps> = ({
   return <PopupWrapper onClick={onClick}>
     <Popup>
       {title && <PopupTitle>{title}</PopupTitle>}
+      <CloseButton onClick={() => { onClose && onClose() }}>
+        <Icons.CloseIcon />
+      </CloseButton>
       {children}
     </Popup>
   </PopupWrapper>

@@ -10,22 +10,34 @@ const requests = {
   create: (qr_set: TQRSet) => {
     return qrsSetApi.post('/QR/sets', qr_set, { withCredentials: true })
   },
-  updateStatus: (setId: number | string, newStatus: TQRStatus) => {
-    return qrsSetApi.patch(`QR/sets/${setId}/update-status`, {
+  updateStatus: (set_id: number | string, newStatus: TQRStatus) => {
+    return qrsSetApi.patch(`QR/sets/${set_id}/update-status`, {
       status: newStatus
+    }, { withCredentials: true })
+  },
+  updateQuantity: (
+      set_id: number | string,
+      qr_array: TQRItem[],
+      qr_quantity: number
+    ) => {
+    return qrsSetApi.patch(`QR/sets/${set_id}/update-quantity`, {
+      qr_array,
+      qr_quantity
     }, { withCredentials: true })
   },
   get: () => {
     return qrsSetApi.get('/QR/sets', { withCredentials: true })
   },
-  getOne: (id: string) => {
+  getOne: (id: string | number) => {
     return qrsSetApi.get(`/QR/sets/${id}`, { withCredentials: true })
   },
-  getQRs: (id: string) => {
+  getQRs: (id: string | number) => {
     return qrsSetApi.get(`/QR/sets/${id}/QRs`, { withCredentials: true })
   },
-  mapLinks: (id: string, qrs: TQRItem[]) => {
-    return qrsSetApi.post(`/QR/sets/${id}/map-links`, { withCredentials: true })
+  mapLinks: (id: string | number, qrs: TQRItem[]) => {
+    return qrsSetApi.patch(`/QR/sets/${id}/map-links`, {
+      mapping: qrs
+    }, { withCredentials: true })
   }
 }
 

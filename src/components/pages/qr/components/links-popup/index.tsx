@@ -33,7 +33,7 @@ const LinksPopup: FC<TProps> = ({
           encrypted_link
         }
       })
-      if (links.length !== quantity) {
+      if (links.length !== Number(quantity)) {
         return alert(`Amount of links should be equal to an amount of QRs. Number of links is ${links.length}, but ${quantity} needed`)
       }
       onSubmit(links)

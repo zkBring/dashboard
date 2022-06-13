@@ -17,6 +17,7 @@ export const PopupWrapper = styled.div`
 
 export const Popup = styled.div`
   max-width: 500px;
+  position: relative;
   width: 100%;
   background: ${props => props.theme.backgroundColor};
   border-radius: 8px;
@@ -26,4 +27,12 @@ export const Popup = styled.div`
 export const PopupTitle = styled.h3`
   margin: 0 0 14px;
   font-size: 18px;
+  padding-right: 30px;
+`
+
+export const CloseButton = styled.div`
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  top: 20px;
 `
