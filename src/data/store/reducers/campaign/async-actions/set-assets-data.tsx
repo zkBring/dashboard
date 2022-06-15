@@ -6,14 +6,14 @@ import { TTokenType } from 'types'
 
 async function setAssetsData(
   dispatch: Dispatch<CampaignActions>,
-  type: TTokenType,
+  tokenStandard: TTokenType,
   assets: any,
   wallet: string,
   title: string,
   callback?: () => void
 ) {
   dispatch(actionsCampaign.setAssets(assets))
-  dispatch(actionsCampaign.setType(type))
+  dispatch(actionsCampaign.setTokenStandard(tokenStandard))
   dispatch(actionsCampaign.setWallet(wallet))
   dispatch(actionsCampaign.setTitle(title))
   

@@ -9,3 +9,7 @@ export function addCampaign(campaign: TCampaign) {
 export function updateCampaigns(campaigns: TCampaign[]) {
   return action(Constants.CAMPAIGNS_UPDATE_CAMPAIGNS, campaigns)
 }
+
+export function setLoading(loading: boolean) {
+  return action(Constants.CAMPAIGNS_SET_LOADING, loading)
+}

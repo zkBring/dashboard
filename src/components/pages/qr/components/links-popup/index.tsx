@@ -22,15 +22,15 @@ const LinksPopup: FC<TProps> = ({
     reader.readAsBinaryString(file.files[0])
     reader.onloadend = function () {
       const lines = (reader.result as string).split('\n')
-      if (lines[0] !== "linkId,content") {
+      if (lines[0] !== "link_id,encrypted_claim_link") {
         return alert('Invalid file. File should be downloaded from campaigns page')
       }
       lines.shift()
       const links = lines.map(item => {
-        const [ link_id, encrypted_link ] = item.split(',')
+        const [ link_id, encrypted_claim_link ] = item.split(',')
         return {
           link_id,
-          encrypted_link
+          encrypted_claim_link
         }
       })
       if (links.length !== Number(quantity)) {

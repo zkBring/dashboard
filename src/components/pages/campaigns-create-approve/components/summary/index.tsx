@@ -25,7 +25,7 @@ const mapStateToProps = ({
     provider,
     chainId
   },
-  campaign: { decimals, symbol, assets, type, loading },
+  campaign: { decimals, symbol, assets, tokenStandard, loading },
 }: RootState) => ({
   loading,
   address,
@@ -34,7 +34,7 @@ const mapStateToProps = ({
   chainId,
   symbol,
   assets,
-  type
+  tokenStandard
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -65,9 +65,9 @@ const defineLinksContent: TDefineLinksContent = (
   type
 ) => {
   let assetsTotal
-  if (type === 'erc20') {
+  if (type === 'ERC20') {
     assetsTotal = countAssetsTotalAmountERC20(assets)
-  } else if (type === 'erc721') {
+  } else if (type === 'ERC721') {
     assetsTotal = countAssetsTotalAmountERC721(assets)
   } else {
     assetsTotal = countAssetsTotalAmountERC1155(assets)
@@ -88,7 +88,7 @@ const Summary: FC<ReduxType & TProps> = ({
   approveERC20,
   approveERC721,
   approveERC1155,
-  type,
+  tokenStandard,
   campaign
 }) => {
   const history = useHistory()
@@ -106,12 +106,12 @@ const Summary: FC<ReduxType & TProps> = ({
                 {assets?.length}
               </WidgetData>
           </div>
-          {type && symbol && assets && chainId && <div>
+          {tokenStandard && symbol && assets && chainId && <div>
             <WidgetText>
               Links contents
             </WidgetText>
             <WidgetData>
-              {defineLinksContent(symbol, assets, chainId, type)}
+              {defineLinksContent(symbol, assets, chainId, tokenStandard)}
             </WidgetData>
           </div>}
         </WidgetSummaryData>
@@ -126,13 +126,13 @@ const Summary: FC<ReduxType & TProps> = ({
         title='Approve'
         appearance='action'
         onClick={() => {
-          const redirectURL = campaign ? `/campaigns/edit/${type}/${campaign.id}/secure` : `/campaigns/new/${type}/secure`
+          const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
           const callback = () => {
             history.push(redirectURL)
           }
-          if (type === 'erc20') {
+          if (tokenStandard === 'ERC20') {
             approveERC20(callback)
-          } else if (type === 'erc721') {
+          } else if (tokenStandard === 'ERC721') {
             approveERC721(callback)
           } else {
             approveERC1155(callback)

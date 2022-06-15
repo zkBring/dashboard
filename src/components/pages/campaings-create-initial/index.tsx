@@ -10,14 +10,14 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 
 const mapStateToProps = ({
   campaign: {
-    type,
+    tokenStandard,
     loading
   },
   campaigns: {
     campaigns
   }
 }: RootState) => ({
-  type,
+  tokenStandard,
   loading,
   campaigns
 })
@@ -38,18 +38,19 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 type TDefineComponent = (type: TTokenType, campaign?: TCampaign | null) => React.ReactNode
 
 const defineComponent: TDefineComponent = (type, campaign) => {
-  if (type === 'erc20') {
-    return <Erc20
+  switch(type.toUpperCase()) {
+    case 'ERC20':
+      return <Erc20
       type={type}
       campaign={campaign}
     />
-  } else if (type === 'erc721') {
-    return <Erc721
-      type={type}
-      campaign={campaign}
-    />
-  } else {
-    return <Erc1155
+    case 'ERC721':
+      return <Erc721
+        type={type}
+        campaign={campaign}
+      />
+    default:
+      return <Erc1155
       type={type}
       campaign={campaign}
     />
@@ -63,10 +64,10 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
 }) => {
   
   const { type, id } = useParams<TLinkParams>()
-  const currentCampaign = id ? campaigns.find(campaign => campaign.id === id) : null
+  const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const content = defineComponent(type, currentCampaign)
   useEffect(() => {
-    createProxyContract(id)
+    createProxyContract(currentCampaign?.campaign_number)
   }, [])
   
   return <Container>

@@ -55,6 +55,7 @@ const secure = (
       let data
       let to
       const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, provider)
+      
       if (!isDeployed) {
         let iface = new utils.Interface(LinkdropFactory.abi)
         data = await iface.encodeFunctionData('deployProxyWithSigner', [
@@ -69,7 +70,6 @@ const secure = (
         to = proxyContractAddress
         console.log({ proxyContractAddress })
       }
-      
   
       const value = utils.parseEther(String(amount))
 
@@ -111,7 +111,7 @@ const secure = (
       if (finished) {
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setSignerKey(privateKey))
-        dispatch(campaignActions.setSignerAddress(privateKey))
+        dispatch(campaignActions.setSignerAddress(wallet))
         dispatch(campaignActions.setSponsored(sponsored))
         callback && callback()
       }

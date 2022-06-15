@@ -2,7 +2,8 @@ import { CampaignsState, CampaignsActions } from './types';
 import { Constants } from './constants';
 
 const initialState: CampaignsState = {
-  campaigns: []
+  campaigns: [],
+  loading: false
 }
 
 export function campaignsReducer(
@@ -12,6 +13,8 @@ export function campaignsReducer(
     switch (action.type) {
       case Constants.CAMPAIGNS_ADD_NEW_CAMPAIGN:
         return {...state, campaigns: [ ...state.campaigns, action.payload ] }
+      case Constants.CAMPAIGNS_SET_LOADING:
+        return {...state, loading: action.payload }
       case Constants.CAMPAIGNS_UPDATE_CAMPAIGNS:
         return {...state, campaigns: action.payload }
       default:

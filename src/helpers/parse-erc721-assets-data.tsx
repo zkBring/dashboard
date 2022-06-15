@@ -12,7 +12,6 @@ const parseERC721AssetsData: TResultERC721 = (data) => {
   }
 
   const recipientsFormatValid = checkERC721AssetsData(data)
-  console.log({ recipientsFormatValid })
   if (!recipientsFormatValid) {
     return null
   }
@@ -57,15 +56,15 @@ const parseSingleDataERC721: (value: string) => TAsset[] = (value) => {
     for (let x = Number(tokenIds[0]); x <= Number(tokenIds[1]); x++) {
       result.push({
         id: String(x),
-        nativeTokensAmount: '0',
-        originalNativeTokensAmount: '0'
+        native_tokens_amount: '0',
+        original_native_tokens_amount: '0'
       })
     }
   } else {
     result.push({
       id: String(value),
-      nativeTokensAmount: '0',
-      originalNativeTokensAmount: '0'
+      native_tokens_amount: '0',
+      original_native_tokens_amount: '0'
     })
   }
   return result
@@ -85,16 +84,16 @@ const parseDoubleDataERC721: (value: string) => TAsset[] = (value) => {
     for (let x = Number(intervalStart); x <= Number(intervalFinish); x++) {        
       result.push({
         id: String(x),
-        nativeTokensAmount: String(utils.parseUnits(String(idAndAmount[1]), 18)),
-        originalNativeTokensAmount: String(idAndAmount[1])
+        native_tokens_amount: String(utils.parseUnits(String(idAndAmount[1]), 18)),
+        original_native_tokens_amount: String(idAndAmount[1])
       })
     }
   } else {
     const [ tokenId, nativeTokensAmount ] = value.split(',').map(item => item.trim())
     result.push({
       id: String(tokenId),
-      nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
-      originalNativeTokensAmount: String(nativeTokensAmount)
+      native_tokens_amount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
+      original_native_tokens_amount: String(nativeTokensAmount)
     })
   }
   return result

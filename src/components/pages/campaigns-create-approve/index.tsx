@@ -24,7 +24,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   campaigns
 }) => {
   const { id } = useParams<TLinkParams>()
-  const currentCampaign = id ? campaigns.find(campaign => campaign.id === id) : null
+  const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   return <Container>
     <WidgetComponent title='Approve'>
       <Summary campaign={currentCampaign} />

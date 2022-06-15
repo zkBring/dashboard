@@ -6,11 +6,11 @@ const checkRecipientsDataFormat = (type: TTokenType, data: string): boolean => {
   const links = data.split('\n')
   let isValid = false
   if (!data) { return isValid }
-  if (type === 'erc721') {
+  if (type === 'ERC721') {
     isValid = links.every(checkERC721Value)
   }
 
-  if (type === 'erc1155') {
+  if (type === 'ERC1155') {
     isValid = links.every(item => {
       const itemDivided = item.split(',').map((item: string) => item.trim())
       return itemDivided.length > 1 && itemDivided.length <= 3

@@ -15,22 +15,22 @@ const defineAssetsTextareaPlaceholder: TDefinePlaceholder = (
   nativeTokenSymbol
 ) => {
   if (!valid) {
-    if (type === 'erc20') {
+    if (type.toUpperCase() === 'ERC20') {
       if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
         return `Provide a valid native token address`
       }
       return `Provide a valid ERC-20 token address`
     }
 
-    if (type === 'erc721') {
+    if (type.toUpperCase() === 'ERC721') {
       return `Provide a valid ERC-721 token address`
     }
 
-    if (type === 'erc1155') {
+    if (type.toUpperCase() === 'ERC1155') {
       return `Provide a valid ERC-1155 token address`
     }
   }
-  if (type === 'erc20') {
+  if (type.toUpperCase() === 'ERC20') {
     if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
       return `Be careful and paste info in the following order:
 Tokens amount, native token amount (if needed). In brackets you can provide an amount of links
@@ -48,7 +48,7 @@ Example:
 0.1, 0.2(2) - 2 links with 0.1 of token amount and 0.2 ${nativeTokenSymbol} in each
 `
   }
-  if (type === 'erc721') {
+  if (type.toUpperCase() === 'ERC721') {
     return `Be careful and paste info in the following order:
 Token ID, native token amount (if needed). In brackets you can specify an interval of token IDs
 Example:
@@ -58,7 +58,7 @@ Example:
 `
   }
 
-  if (type === 'erc1155') {
+  if (type.toUpperCase() === 'ERC1155') {
     return `Be careful and paste info in the following order:
 Token ID, token amount and native token amount (if needed). In brackets you can specify an amount of links
 Example:

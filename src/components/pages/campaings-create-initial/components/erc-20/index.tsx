@@ -227,7 +227,7 @@ const Erc20: FC<ReduxType > = ({
         <WidgetTextarea
           value={assetsValue}
           placeholder={defineAssetsTextareaPlaceholder(
-            'erc20',
+            'ERC20',
             Boolean(symbol),
             tokenAddress,
             nativeTokenSymbol
@@ -249,19 +249,19 @@ const Erc20: FC<ReduxType > = ({
           appearance='action'
           onClick={() => {
             setAssetsData(
-              'erc20',
+              'ERC20',
               assetsParsed,
               currentWallet,
               title,
               () => {
                 if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
                   if (campaign) {
-                    return history.push(`/campaigns/edit/${type}/${campaign.id}/secure`)
+                    return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/secure`)
                   }
                   return history.push(`/campaigns/new/${type}/secure`)
                 }
                 if (campaign) {
-                  return history.push(`/campaigns/edit/${type}/${campaign.id}/approve`)
+                  return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
                 }
                 history.push(`/campaigns/new/${type}/approve`)
               }

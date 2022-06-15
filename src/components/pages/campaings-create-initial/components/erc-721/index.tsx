@@ -205,7 +205,7 @@ const Erc721: FC<ReduxType > = ({
         <WidgetTextarea
           value={assetsValue}
           placeholder={defineAssetsTextareaPlaceholder(
-            'erc721',
+            'ERC721',
             Boolean(symbol),
             tokenAddress,
             nativeTokenSymbol
@@ -227,13 +227,13 @@ const Erc721: FC<ReduxType > = ({
           appearance='action'
           onClick={() => {
             setAssetsData(
-              'erc721',
+              'ERC721',
               assetsParsed,
               currentWallet,
               title,
               () => {
                 if (campaign) {
-                  return history.push(`/campaigns/edit/${type}/${campaign.id}/approve`)
+                  return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
                 }
                 history.push(`/campaigns/new/${type}/approve`)
               }

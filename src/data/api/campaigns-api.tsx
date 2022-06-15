@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { TCampaign, TLink } from 'types'
+import { TLink, TCampaignNew } from 'types'
 
 const { REACT_APP_SERVER_URL } = process.env
 
@@ -9,7 +9,7 @@ const campaignsApi = axios.create({
 
 const requests = {
   create: (
-    campaign: TCampaign
+    campaign: TCampaignNew
   ) => campaignsApi.post('/linkdrop/campaigns', {
     ...campaign
   }, { withCredentials: true }),

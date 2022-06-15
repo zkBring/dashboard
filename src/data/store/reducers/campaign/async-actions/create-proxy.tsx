@@ -12,9 +12,9 @@ const createProxyContract = (id?: string) => {
   ) => {
     const { user: { sdk }, campaigns: { campaigns } } = getState()
     if (id) {
-      const campaign = campaigns.find(campaign => campaign.id === id)
+      const campaign = campaigns.find(campaign => campaign.campaign_number === id)
       if (campaign) {
-        const { proxy_contract_address, id } = campaign
+        const { proxy_contract_address } = campaign
         dispatch(actionsCampaign.setProxyContractAddress(proxy_contract_address))
         dispatch(actionsCampaign.setId(id))
         return
@@ -23,7 +23,6 @@ const createProxyContract = (id?: string) => {
     const campaignId = String(+(new Date()))
     const proxyContractAddress = await sdk?.getProxyAddress(campaignId)
     if (!proxyContractAddress) { return }
-    console.log({ campaignId, proxyContractAddress })
     dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
     dispatch(actionsCampaign.setId(campaignId))
   }

@@ -32,7 +32,6 @@ const QR: FC<TQRProps> = ({
     <QRItemControls>
       <QRItemButton
         title='Manage'
-        appearance='action'
         onClick={onManage}
       />
     </QRItemControls>

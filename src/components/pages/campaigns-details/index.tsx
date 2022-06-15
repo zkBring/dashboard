@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
+import { Loader } from 'components/common'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   WidgetComponent,
@@ -11,40 +12,55 @@ import {
 } from './styled-components'
 import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
+import { getCampaignBatches } from 'data/store/reducers/campaigns/async-actions'
 import {
   formatDate
 } from 'helpers'
 import { IProps } from './types'
+import { IAppDispatch } from 'data/store'
 
 const mapStateToProps = ({
-  campaigns: { campaigns },
+  campaigns: { campaigns, loading },
   user: { address },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
   address,
   decimals,
+  loading
 })
 
-type ReduxType = ReturnType<typeof mapStateToProps>
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    getCampaignBatches: (campaign_id: string | number) => {
+      dispatch(
+        getCampaignBatches({ campaign_id })
+      )
+    }
+  }
+}
+
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
-  const { campaigns, match: { params } } = props
+  const { campaigns, match: { params }, getCampaignBatches, loading } = props
   const history = useHistory()
+  useEffect(() => {
+    getCampaignBatches(params.id)
+  }, [])
 
-  const currentCampaign = campaigns.find(campaign => campaign.id === params.id)
-  console.log({ currentCampaign })
+  const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
   if (!currentCampaign) {
     return null
   }
-  const { id, type, title, batches } = currentCampaign
-  
+  const { campaign_id, token_standard, title, batches } = currentCampaign
+    
   return <Container>
-    <WidgetComponent title={title || `Campaign ${id}`}>
+    <WidgetComponent title={title || `Campaign ${campaign_id}`}>
+      {loading && <Loader withOverlay />}
       <BatchList>
-        {batches.map(batch => {
-          return null
-          const dateFormatted = formatDate(batch.date)
+        {batches && batches.map(batch => {
+          const dateFormatted = formatDate(batch.created_at || '')
           return <>
             <BatchTitle>
             {batch.batch_description} / {batch.claim_links.length} link(s). Created {dateFormatted} {batch.sponsored ? '(sponsored)' : ''}
@@ -53,7 +69,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               appearance='action'
               title='Download CSV'
               onClick={() => {
-                downloadLinksAsCSV(batch.claim_links, id)
+                downloadLinksAsCSV(batch.claim_links, campaign_id)
               }}
             />
           </>
@@ -63,11 +79,11 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         appearance='action'
         title='+ Add more links'
         onClick={() => {
-          history.push(`/campaigns/edit/${type}/${id}/initial`)
+          history.push(`/campaigns/edit/${token_standard}/${campaign_id}/initial`)
         }}
       />
     </WidgetComponent>
   </Container>
 }
 
-export default withRouter(connect(mapStateToProps)(CampaignDetails))
+export default withRouter(connect(mapStateToProps, mapDispatcherToProps)(CampaignDetails))

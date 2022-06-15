@@ -23,6 +23,7 @@ import {
 } from './qr'
 import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
+import TCampaignNew from './campaign-new'
 
 export {
   TCampaign,
@@ -46,5 +47,6 @@ export {
   TQRSet,
   TQRItem,
   TLinksBatch,
-  TBase64File
+  TBase64File,
+  TCampaignNew
 }

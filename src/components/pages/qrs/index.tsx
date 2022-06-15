@@ -79,6 +79,11 @@ const QRs: FC<ReduxType> = ({
         }}
       />
     </Popup>}
+    <ContainerButton
+      title='Add QRs'
+      appearance='action'
+      onClick={() => togglePopup(true)}
+    />
     {qrs.map(qr => {
       return <QRItem
         {...qr}
@@ -88,10 +93,7 @@ const QRs: FC<ReduxType> = ({
         }}
       />
     })}
-    <ContainerButton
-      title='Add QRs'
-      onClick={() => togglePopup(true)}
-    />
+    
   </Container>
 }
 

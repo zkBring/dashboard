@@ -106,9 +106,9 @@ const defineTotalTitle: TDefineTotalTitle = (
 }
 
 const countAssetsTotalAmount: TDefineAssetsTotalAmount = (assets, type) => {
-  if (type === 'erc20') {
+  if (type === 'ERC20') {
     return countAssetsTotalAmountERC20(assets)
-  } else if (type === 'erc721') {
+  } else if (type === 'ERC721') {
     return countAssetsTotalAmountERC721(assets)
   } else {
     return countAssetsTotalAmountERC1155(assets)

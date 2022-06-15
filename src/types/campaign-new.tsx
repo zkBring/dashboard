@@ -1,10 +1,9 @@
 import { TTokenType } from './index.js'
-import { TLinksBatch } from 'types'
+import { TLink } from 'types'
 
 type TCampaign = {
   title: string,
   chain_id: number,
-  campaign_id: string,
   campaign_number: string,
   token_address: string,
   token_standard: TTokenType,
@@ -13,7 +12,9 @@ type TCampaign = {
   proxy_contract_address: string,
   signer_key: string,
   signer_address: string,
-  batches: TLinksBatch[],
+  claim_links: TLink[],
+  sponsored?: boolean,
+  batch_description: string,
   creator_address: string,
   created_at?: string
 }

@@ -16,7 +16,7 @@ const countAssetsTotalAmountERC721: TDefineTotalAmountERC721 = (assets) => {
         bignumber(item.native_tokens_amount),
         bignumber(sum.native_tokens_amount)
       ) : sum.native_tokens_amount,
-      originalNativeTokensAmount: original_native_tokens_amount ? add(
+      original_native_tokens_amount: original_native_tokens_amount ? add(
         bignumber(item.original_native_tokens_amount),
         bignumber(sum.original_native_tokens_amount)
       ) : sum.original_native_tokens_amount

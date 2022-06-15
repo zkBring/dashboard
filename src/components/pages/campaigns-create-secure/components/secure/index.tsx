@@ -17,12 +17,12 @@ import { TProps } from './types'
 
 const mapStateToProps = ({
   campaign: {
-    type,
+    tokenStandard,
     assets,
     loading
   },
 }: RootState) => ({
-  type,
+  tokenStandard,
   assets,
   loading
 })
@@ -40,7 +40,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps> & TProps
 
 const Secure: FC<ReduxType> = ({
-  type,
+  tokenStandard,
   amount,
   secure,
   sponsored,
@@ -83,7 +83,7 @@ const Secure: FC<ReduxType> = ({
               sponsored,
               amount,
               () => {
-                const redirectURL = campaign ? `/campaigns/edit/${type}/${campaign.id}/generate` : `/campaigns/new/${type}/generate`
+                const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
                 history.push(redirectURL)
               }
             )

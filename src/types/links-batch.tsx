@@ -1,10 +1,10 @@
 import { TLink } from './index'
 
 type TLinksBatch = {
-  date: string,
   claim_links: TLink[],
   sponsored?: boolean,
-  batch_description: string
+  batch_description: string,
+  created_at?: string
 }
 
 export default TLinksBatch

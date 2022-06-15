@@ -6,7 +6,7 @@ export interface CampaignState {
   title?: string | null,
   tokenAddress: string | null,
   campaignAddress?: string | null,
-  type: TTokenType | null,
+  tokenStandard: TTokenType | null,
   assets: TAssetsData | null,
   loading: boolean,
   decimals: number | null,

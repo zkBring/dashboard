@@ -38,9 +38,9 @@ export function setDropAddress(dropAddress: string) {
   })
 }
 
-export function setType(type: TTokenType) {
-  return action(Constants.CAMPAIGN_SET_TYPE, {
-    type
+export function setTokenStandard(tokenStandard: TTokenType) {
+  return action(Constants.CAMPAIGN_SET_TOKEN_STANDARD, {
+    tokenStandard
   })
 }
 

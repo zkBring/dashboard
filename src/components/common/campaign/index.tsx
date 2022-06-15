@@ -14,7 +14,7 @@ import {
   formatDate,
   defineEtherscanUrl
 } from 'helpers'
-import { TTokenType, TLinksBatch } from 'types'
+import { TTokenType } from 'types'
 
 type TProps = {
   created_at?: string,
@@ -22,7 +22,6 @@ type TProps = {
   symbol: string,
   chainId: number,
   type: TTokenType,
-  batches: TLinksBatch[],
   proxyContractAddress: string,
   title: string
 }
@@ -33,7 +32,6 @@ const CampaignComponent: FC<TProps> = ({
   symbol,
   chainId,
   type,
-  batches,
   proxyContractAddress,
   title
 }) => {
@@ -45,7 +43,6 @@ const CampaignComponent: FC<TProps> = ({
       <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>{batches.length} batch(es)</CampaignText>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton

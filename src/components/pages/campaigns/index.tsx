@@ -37,12 +37,11 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
       return <Campaign
         title={campaign.title}
         created_at={campaign.created_at}
-        id={campaign.id}
-        key={campaign.id}
+        id={campaign.campaign_id}
+        key={campaign.campaign_id}
         chainId={campaign.chain_id}
-        type={campaign.type}
+        type={campaign.token_standard}
         symbol={campaign.symbol}
-        batches={campaign.batches}
         proxyContractAddress={campaign.proxy_contract_address}
       />
     })}

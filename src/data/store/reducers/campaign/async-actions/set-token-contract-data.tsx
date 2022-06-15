@@ -32,7 +32,7 @@ async function setTokenContractData (
     dispatch(actionsCampaign.setTokenAddress(tokenAddress))
     const signer = await provider.getSigner()
     dispatch(actionsCampaign.setLoading(true))
-    if (type === 'erc20') {
+    if (type.toUpperCase() === 'ERC20') {
       let decimals = 18
       let symbol = defineNativeTokenSymbol({ chainId })
       if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
@@ -53,12 +53,12 @@ async function setTokenContractData (
       dispatch(actionsCampaign.setDecimals(decimals))
       dispatch(actionsCampaign.setSymbol(symbol))
     }
-    if (type === 'erc721') {
+    if (type.toUpperCase() === 'ERC721') {
       const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
       const symbol = await contractInstance.symbol()
       dispatch(actionsCampaign.setSymbol(symbol))
     }
-    if (type === 'erc1155') {
+    if (type.toUpperCase() === 'ERC1155') {
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
       // const symbol = await contractInstance.symbol()
       dispatch(actionsCampaign.setSymbol('ERC1155'))

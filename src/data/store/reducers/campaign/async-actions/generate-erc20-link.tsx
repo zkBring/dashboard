@@ -4,10 +4,11 @@ import * as actionsCampaigns from '../../campaigns/actions';
 import { CampaignActions } from '../types';
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
-import { TLink, TCampaign } from 'types'
+import { TLink, TCampaignNew } from 'types'
 import { EXPIRATION_DATE } from 'configs/app'
 import { CampaignsActions } from '../../campaigns/types'
 import { defineBatchPreviewContents } from 'helpers'
+import { campaignsApi } from 'data/api'
 
 function sleep(timeout: number) {
   return new Promise((resolve) => setTimeout(() => resolve(true), timeout))
@@ -44,7 +45,7 @@ const generateERC20Link = ({
         title,
         proxyContractAddress,
         sponsored,
-        type
+        tokenStandard
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -68,7 +69,7 @@ const generateERC20Link = ({
         if (result) {
           newLinks = [...newLinks, {
             link_id: result?.linkId,
-            encrypted_link: !sponsored ? `${result?.url}&manual=true` : result?.url
+            encrypted_claim_link: !sponsored ? `${result?.url}&manual=true` : result?.url
           }]
           dispatch(actionsCampaign.setLinks(
             newLinks,
@@ -77,57 +78,60 @@ const generateERC20Link = ({
           await sleep(1)
         }
       }
-      if (!decimals || !chainId || !proxyContractAddress || !signerKey || !type || !address) { return }
-      const updatingCampaign = currentCampaignId ? campaigns.find(item => item.id === currentCampaignId) : undefined
+      if (!decimals || !chainId || !proxyContractAddress || !signerKey || !tokenStandard || !address) { return }
+      const updatingCampaign = currentCampaignId ? campaigns.find(item => item.campaign_id === currentCampaignId) : undefined
       const batchPreviewContents = defineBatchPreviewContents(
-        type,
+        tokenStandard,
         assets,
         symbol,
         chainId
       )
-      const batch = {
-        claim_links: newLinks,
-        date,
-        sponsored,
-        batch_description: batchPreviewContents
-      }
-      if (updatingCampaign) {
-        const updatedCampaign = {
-          ...updatingCampaign,
-          batches: [
-            ...updatingCampaign.batches,
-            batch
-          ]
+      
+      if (updatingCampaign && currentCampaignId) {
+        const result = await campaignsApi.saveBatch(
+          currentCampaignId,
+          newLinks,
+          sponsored,
+          batchPreviewContents
+        )
+
+        if (result.data.success) {
+          const { campaign_id } = result.data
+          if (callback) { callback(campaign_id) }
         }
-        const updatedCampaigns = campaigns.map(item => {
-          if (item.id === updatedCampaign.id) {
-            return updatedCampaign
-          }
-          return item
-        })
   
-        dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
+        // dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
   
       } else {
-        const newCampaign: TCampaign = {
-          id,
+        const batch = {
+          claim_links: newLinks,
+          sponsored,
+          batch_description: batchPreviewContents
+        }
+        const newCampaign: TCampaignNew = {
+          campaign_number: id,
           signer_key: signerKey,
-          token_address: tokenAddress,
           signer_address: signerAddress,
+          token_address: tokenAddress,
           creator_address: address,
           wallet,
           symbol,
           title: title || '',
-          type,
+          token_standard: tokenStandard,
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
-          batches: [batch]
+          ...batch
         }
-    
-        dispatch(actionsCampaigns.addCampaign(newCampaign))
+
+        const result = await campaignsApi.create(newCampaign)
+        if (result.data.success) {
+          const { campaign } = result.data
+
+          dispatch(actionsCampaigns.addCampaign(campaign))
+          if (callback) { callback(campaign.campaign_id) }
+        }
       }
       dispatch(actionsCampaign.clearCampaign())
-      if (callback) { callback(id) }
     } catch (err) {
       console.error('Some error occured', err)
     }

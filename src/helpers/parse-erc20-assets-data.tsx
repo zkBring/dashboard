@@ -55,17 +55,17 @@ const parseSingleDataERC20: (value: string, decimals: number) => TAsset[] = (val
     for (let x = 0; x < Number(valueAndAmount[1]); x++) {
       result.push({
         amount: String(utils.parseUnits(String(valueAndAmount[0]), decimals)),
-        originalAmount: String(valueAndAmount[0]),
-        nativeTokensAmount: '0',
-        originalNativeTokensAmount: '0'
+        original_amount: String(valueAndAmount[0]),
+        native_tokens_amount: '0',
+        original_native_tokens_amount: '0'
       })
     }
   } else {
     result.push({
       amount: String(utils.parseUnits(String(value), decimals)),
-      originalAmount: String(value),
-      nativeTokensAmount: '0',
-      originalNativeTokensAmount: '0'
+      original_amount: String(value),
+      native_tokens_amount: '0',
+      original_native_tokens_amount: '0'
     })
   }
   return result
@@ -80,18 +80,18 @@ const parseDoubleDataERC20: (value: string, decimals: number) => TAsset[] = (val
       const [ tokensValue, nativeTokensAmount ] = valueAndAmount[0].split(',').map(item => item.trim())
       result.push({
         amount: String(utils.parseUnits(String(tokensValue), decimals)),
-        originalAmount: String(tokensValue),
-        nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
-        originalNativeTokensAmount: String(nativeTokensAmount)
+        original_amount: String(tokensValue),
+        native_tokens_amount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
+        original_native_tokens_amount: String(nativeTokensAmount)
       })
     }
   } else {
     const [ tokensValue, nativeTokensAmount ] = value.split(',').map(item => item.trim())
     result.push({
       amount: String(utils.parseUnits(String(tokensValue), decimals)),
-      originalAmount: String(tokensValue),
-      nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
-      originalNativeTokensAmount: String(nativeTokensAmount)
+      original_amount: String(tokensValue),
+      native_tokens_amount: String(utils.parseUnits(String(nativeTokensAmount), 18)),
+      original_native_tokens_amount: String(nativeTokensAmount)
     })
   }
   return result

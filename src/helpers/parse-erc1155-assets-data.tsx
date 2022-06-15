@@ -56,7 +56,7 @@ const parseSingleDataERC1155: (value: string) => TAsset[] = (value) => {
       result.push({
         id: String(id || 0),
         amount: String(amount || 0),
-        nativeTokensAmount: '0'
+        native_tokens_amount: '0'
       })
     }
   } else {
@@ -65,7 +65,7 @@ const parseSingleDataERC1155: (value: string) => TAsset[] = (value) => {
     result.push({
       id: String(id || 0),
       amount: String(amount || 0),
-      nativeTokensAmount: '0'
+      native_tokens_amount: '0'
     })
   }
   return result
@@ -80,7 +80,7 @@ const parseSingleDataERC1155WithNative: (value: string) => TAsset[] = (value) =>
       result.push({
         amount: String(amount || 0),
         id: String(id || 0),
-        nativeTokensAmount: String(utils.parseUnits(String(nativeTokensAmount), 18))
+        native_tokens_amount: String(utils.parseUnits(String(nativeTokensAmount), 18))
       })
     }
   } else {
@@ -88,7 +88,7 @@ const parseSingleDataERC1155WithNative: (value: string) => TAsset[] = (value) =>
     result.push({
       id: String(id || 0),
       amount: String(amount || 0),
-      nativeTokensAmount: nativeTokensAmount ? String(utils.parseUnits(String(nativeTokensAmount), 18)) : '0'
+      native_tokens_amount: nativeTokensAmount ? String(utils.parseUnits(String(nativeTokensAmount), 18)) : '0'
     })
   }
   return result

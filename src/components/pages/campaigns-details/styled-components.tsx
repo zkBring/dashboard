@@ -8,6 +8,7 @@ export const Container = styled.div`
 export const WidgetComponent = styled(Widget)`
   max-width: 1280px;
   width: 100%;
+  position: relative;
 `
 
 export const WidgetButton = styled(Button)`

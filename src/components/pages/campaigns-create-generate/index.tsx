@@ -9,10 +9,10 @@ import { useParams } from 'react-router-dom'
 import { TCallback } from './types'
 
 const mapStateToProps = ({
-  campaign: { assets, type, links },
+  campaign: { assets, tokenStandard, links },
 }: RootState) => ({
   assets,
-  type,
+  tokenStandard,
   links
 })
 
@@ -42,19 +42,19 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   generateERC1155,
   assets,
   links,
-  type
+  tokenStandard
 }) => {
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
 
   useEffect(() => {
-    if (!type) { return }
+    if (!tokenStandard) { return }
     
-    if (type === 'erc20') {
+    if (tokenStandard === 'ERC20') {
       generateERC20((id) => {
         history.push(`/campaigns/${id}`)
       }, id)
-    } else if (type === 'erc721') {
+    } else if (tokenStandard === 'ERC721') {
       generateERC721((id) => {
         history.push(`/campaigns/${id}`)
       }, id)
