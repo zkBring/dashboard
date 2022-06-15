@@ -6,13 +6,6 @@ export const Campaign = styled(Widget)`
   position: relative;
 `
 
-export const CampaignTitle = styled.h3`
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  margin: 0 0 24px;
-`
-
 export const CampaignButton = styled(Button)`
   width: 152px;
   min-height: 36px;
@@ -48,4 +41,11 @@ export const CampaignType = styled.div`
   text-transform: uppercase;
   right: 40px;
   line-height: 1;
+`
+
+export const CampaignTitle = styled.h3`
+  font-size: 24px;
+  margin: 0 0 20px;
+  font-weight: 400;
+  padding-right: 82px;
 `

@@ -8,7 +8,8 @@ import {
   CampaignValue,
   CampaignType,
   CampaignButtons,
-  CampaignButton
+  CampaignButton,
+  CampaignTitle
 } from './styled-components'
 import {
   formatDate,
@@ -37,12 +38,11 @@ const CampaignComponent: FC<TProps> = ({
 }) => {
   const dateFormatted = created_at && formatDate(created_at)
   const scanUrl = defineEtherscanUrl(chainId, `/address/${proxyContractAddress}`)
-  return <Campaign title={title || 'No name'}>
+  return <Campaign>
+    <CampaignTitle>{title || 'No name'}</CampaignTitle>
     <CampaignType>{type}</CampaignType>
     <CampaignRow>
       <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
-    </CampaignRow>
-    <CampaignRow>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton

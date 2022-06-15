@@ -137,6 +137,7 @@ const QR: FC<ReduxType> = ({
           <Buttons>
             <WidgetButton
               title='Change quantity'
+              disabled={qr.links_uploaded}
               onClick={() => {
                 toggleUpdateQuantityPopup(true)
               }}
@@ -144,10 +145,10 @@ const QR: FC<ReduxType> = ({
             <WidgetButton
               title='Download'
               appearance='action'
-              onClick={() => {
+              onClick={async () => {
                 if (!qr.qr_array) { return }
-                const qrs: string[] = convertLinksToBase64('image/png', qr.qr_array)
-                downloadBase64FilesAsZip('image/png', qrs)
+                const qrs: Blob[] = await convertLinksToBase64('png', qr.qr_array)
+                downloadBase64FilesAsZip('png', qrs)
               }}
             /> 
           </Buttons>

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Widget, Button } from 'components/common'
 
 export const Container = styled.div`
   margin-bottom: 36px;
@@ -14,10 +15,20 @@ export const Text = styled.p`
   font-size: 16px;
 `
 
-export const Campaigns = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 100%;
-  grid-gap: 20px;
-  margin-bottom: 24px;
+export const InvertedWidget = styled(Widget)`
+  background-color: ${props => props.theme.blankColor};
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+`
+
+export const WidgetDescription = styled.p`
+  font-size: 16px;
+  margin: 0 0 40px;
+`
+
+export const WidgetButton = styled(Button)`
+  padding: 4px 50px;
 `

@@ -54,9 +54,6 @@ const Main: FC<ReduxType> = ({
   return <Container>
     <Widget title='ERC20 Campaign'>
       <WidgetDescription>
-        List of links with encoded tokens prepared to distribute
-      </WidgetDescription>
-      <WidgetDescription>
         ERC20 + {nativeTokenSymbol}
       </WidgetDescription>
       <WidgetButton
@@ -67,9 +64,6 @@ const Main: FC<ReduxType> = ({
     </Widget>
     <Widget title='ERC721 Campaign'>
       <WidgetDescription>
-        List of links with encoded tokens prepared to distribute
-      </WidgetDescription>
-      <WidgetDescription>
         ERC721 + {nativeTokenSymbol}
       </WidgetDescription>
       <WidgetButton
@@ -79,9 +73,6 @@ const Main: FC<ReduxType> = ({
       />
     </Widget>
     <Widget title='ERC1155 Campaign'>
-      <WidgetDescription>
-        List of links with encoded tokens prepared to distribute
-      </WidgetDescription>
       <WidgetDescription>
         ERC1155 + {nativeTokenSymbol}
       </WidgetDescription>

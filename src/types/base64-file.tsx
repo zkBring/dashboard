@@ -1,3 +1,3 @@
-type TBase64File = 'image/jpeg' | 'image/png' | 'image/svg+xml' | 'image/jpg'
+type TBase64File = 'jpeg' | 'png' | 'svg'
 
 export default TBase64File

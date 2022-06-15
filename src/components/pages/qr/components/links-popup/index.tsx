@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent } from 'react'
-import { Popup } from 'components/common'
+import { Popup, Note } from 'components/common'
 import { TProps } from './types'
 import { InputComponent, PopupForm, WidgetButton, PopupFormContent } from '../../styled-components'
 
@@ -58,10 +58,13 @@ const LinksPopup: FC<TProps> = ({
           }}
           placeholder='Quantity'
         />
+        <Note>
+          You will not be able to change quantity of QR's after upload of links
+        </Note>
       </PopupFormContent>
       <WidgetButton
         type='submit'
-        title='Change'
+        title='Upload'
       />
     </PopupForm>
   </Popup>
