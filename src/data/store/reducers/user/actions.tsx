@@ -22,6 +22,16 @@ export function setLoading(loading: boolean) {
   )
 }
 
+export function setDashboardKey(dashboardKey: string) {
+  return action(
+    Constants.USER_SET_DASHBOARD_KEY,
+    // payload
+    {
+      dashboardKey
+    }
+  )
+}
+
 export function setProvider(provider: any) {
   return action(
     Constants.USER_SET_PROVIDER,

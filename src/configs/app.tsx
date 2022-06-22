@@ -4,3 +4,4 @@ export const EXPIRATION_DATE = '1900000000000'
 export const CLAIM_APP = 'https://v1-2.claim.linkdrop.io'
 export const CLAIM_APP_AURORA = 'https://aurora-claim.linkdrop.io'
 export const CLAIM_APP_QR = 'https://v1-2.claim.linkdrop.io'
+export const IPFS_GATEWAY_URL = "https://gateway.pinata.cloud/ipfs/"

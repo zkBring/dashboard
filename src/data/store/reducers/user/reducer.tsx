@@ -10,7 +10,8 @@ const initialState: UserState = {
   tokenAmount: null,
   nativeTokenAmountFormatted: null,
   tokenAmountFormatted: null,
-  sdk: null
+  sdk: null,
+  dashboardKey: null
 };
 
 export function userReducer(
@@ -28,6 +29,8 @@ export function userReducer(
         return {...state, chainId: action.payload.chainId }
       case Constants.USER_SET_SDK:
         return {...state, sdk: action.payload.sdk }
+      case Constants.USER_SET_DASHBOARD_KEY:
+        return {...state, dashboardKey: action.payload.dashboardKey }
       case Constants.USER_SET_TOKEN_AMOUNT:
         return {
           ...state,

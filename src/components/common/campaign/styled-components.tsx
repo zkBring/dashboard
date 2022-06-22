@@ -48,4 +48,7 @@ export const CampaignTitle = styled.h3`
   margin: 0 0 20px;
   font-weight: 400;
   padding-right: 82px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `

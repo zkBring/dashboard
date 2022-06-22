@@ -23,10 +23,10 @@
 
 // export {}
 
-import { TLink } from "types"
+import { TLinkDecrypted } from "types"
 
 const downloadLinksAsCSV = (
-  arr: TLink[],
+  arr: TLinkDecrypted[],
   id: string
 ) => {
   const header = Object.keys(arr[0]).join(",")

@@ -24,6 +24,7 @@ import {
 import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
 import TCampaignNew from './campaign-new'
+import TLinkDecrypted from './link-decrypted'
 
 export {
   TCampaign,
@@ -48,5 +49,6 @@ export {
   TQRItem,
   TLinksBatch,
   TBase64File,
-  TCampaignNew
+  TCampaignNew,
+  TLinkDecrypted
 }

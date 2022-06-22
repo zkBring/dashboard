@@ -83,14 +83,16 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       assets: TAssetsData,
       wallet: TSelectOption,
       title: string,
+      tokenAddress: string,
       callback: () => void
-    ) => campaignAsyncActions.setAssetsData(
-      dispatch,
-      type,
-      assets,
-      String(wallet.value),
-      title,
-      callback
+    ) => dispatch(campaignAsyncActions.setAssetsData(
+        type,
+        assets,
+        String(wallet.value),
+        title,
+        tokenAddress,
+        callback
+      )
     ),
     clearCampaign: () => {
       dispatch(
@@ -253,6 +255,7 @@ const Erc20: FC<ReduxType > = ({
               assetsParsed,
               currentWallet,
               title,
+              tokenAddress,
               () => {
                 if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
                   if (campaign) {

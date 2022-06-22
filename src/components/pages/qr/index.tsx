@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
-import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem } from 'types'
+import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem, TLinkDecrypted } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName, convertLinksToBase64, downloadBase64FilesAsZip } from 'helpers'
@@ -23,13 +23,14 @@ import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 const mapStateToProps = ({
   campaigns: { campaigns },
   qrs: { qrs, loading },
-  user: { address, chainId },
+  user: { address, chainId, dashboardKey },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
   qrs,
-  loading
+  loading,
+  dashboardKey
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -48,7 +49,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
     mapQRsToLinks: (
       setId: string,
-      links: TLink[],
+      links: TLinkDecrypted[],
       qrs: TQRItem[],
       callback?: () => void,
     ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback })),
@@ -65,7 +66,8 @@ const QR: FC<ReduxType> = ({
   loading,
   mapQRsToLinks,
   updateQRSetQuantity,
-  getQRsArray
+  getQRsArray,
+  dashboardKey
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -146,8 +148,9 @@ const QR: FC<ReduxType> = ({
               title='Download'
               appearance='action'
               onClick={async () => {
-                if (!qr.qr_array) { return }
-                const qrs: Blob[] = await convertLinksToBase64('png', qr.qr_array)
+                if (!dashboardKey) { return alert('dashboardKey is not provided') }
+                if (!qr.qr_array) { return alert('qr_array is not provided') }
+                const qrs: Blob[] = await convertLinksToBase64('png', qr.qr_array, dashboardKey)
                 downloadBase64FilesAsZip('png', qrs)
               }}
             /> 

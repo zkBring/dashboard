@@ -1,7 +1,7 @@
-import { TLink } from 'types'
+import { TLinkDecrypted } from 'types'
 
 export type TProps = {
   onClose: () => void,
-  onSubmit: (links: TLink[]) => void,
+  onSubmit: (links: TLinkDecrypted[]) => void,
   quantity: number
 }

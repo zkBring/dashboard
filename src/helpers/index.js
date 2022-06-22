@@ -29,6 +29,8 @@ import mapQRsWithLinks from './map-qrs-with-links'
 import defineBatchPreviewContents from './define-batch-preview-contents'
 import convertLinksToBase64 from './convert-links-to-base64'
 import downloadBase64FilesAsZip from './download-base64-files-as-zip'
+import replaceIPFS from './replace-ipfs'
+import decryptLinks from './decrypt-links'
 
 export {
   shortenString,
@@ -61,5 +63,7 @@ export {
   mapQRsWithLinks,
   defineBatchPreviewContents,
   convertLinksToBase64,
-  downloadBase64FilesAsZip
+  downloadBase64FilesAsZip,
+  replaceIPFS,
+  decryptLinks
 }

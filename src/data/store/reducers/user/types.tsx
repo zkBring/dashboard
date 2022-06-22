@@ -12,7 +12,8 @@ export interface UserState {
   nativeTokenAmountFormatted: string | null,
   tokenAmount: string | null,
   tokenAmountFormatted: string | null,
-  sdk: LinkdropSDK | null
+  sdk: LinkdropSDK | null,
+  dashboardKey: null | string
 }
 
 export type UserActions = ActionType<typeof actions>;

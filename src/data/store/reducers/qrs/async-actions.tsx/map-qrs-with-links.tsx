@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRSet, TQRItem, TLink } from 'types'
+import { TQRItem, TLinkDecrypted } from 'types'
 import { qrsApi } from 'data/api'
 import { mapQRsWithLinks } from 'helpers'
 
@@ -13,7 +13,7 @@ const mapQRsWithLinksAction = ({
   callback
 }: {
   setId: string,
-  links: TLink[],
+  links: TLinkDecrypted[],
   qrs: TQRItem[],
   callback?: () => void,
 }) => {
@@ -21,10 +21,13 @@ const mapQRsWithLinksAction = ({
     dispatch: Dispatch<QRsActions>,
     getState: () => RootState
   ) => {
-    const { qrs: { qrs: qrSets } } = getState()
+    const { qrs: { qrs: qrSets }, user: { dashboardKey } } = getState()
     try {
+      if (!dashboardKey) {
+        throw new Error('dashboardKey is not provided')
+      }
       dispatch(actionsQR.setLoading(true))
-      const qrArrayMapped = mapQRsWithLinks(qrs, links)
+      const qrArrayMapped = mapQRsWithLinks(qrs, links, dashboardKey)
       const result = await qrsApi.mapLinks(setId, qrArrayMapped)
       if (result.data.success) {
         const qrsUpdated = qrSets.map(item => {

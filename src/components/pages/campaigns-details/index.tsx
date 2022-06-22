@@ -14,20 +14,22 @@ import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
 import { getCampaignBatches } from 'data/store/reducers/campaigns/async-actions'
 import {
-  formatDate
+  formatDate,
+  decryptLinks
 } from 'helpers'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
-  user: { address },
+  user: { address, dashboardKey },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
   address,
   decimals,
-  loading
+  loading,
+  dashboardKey
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -43,7 +45,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
-  const { campaigns, match: { params }, getCampaignBatches, loading } = props
+  const { campaigns, dashboardKey, match: { params }, getCampaignBatches, loading } = props
   const history = useHistory()
   useEffect(() => {
     getCampaignBatches(params.id)
@@ -69,7 +71,10 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               appearance='action'
               title='Download CSV'
               onClick={() => {
-                downloadLinksAsCSV(batch.claim_links, campaign_id)
+                if (!dashboardKey) { return alert ('dashboardKey is not provided') }
+                const decryptedLinks = decryptLinks(batch.claim_links, dashboardKey)
+                console.log({ decryptedLinks })
+                downloadLinksAsCSV(decryptedLinks, campaign_id)
               }}
             />
           </>

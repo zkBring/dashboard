@@ -1,15 +1,17 @@
 import { TQRItem, TBase64File } from "types"
 import QRCodeStyling from 'qr-code-styling'
-import LedgerLogo from 'images/ledger.png'
+import { decrypt } from 'lib/crypto'
 
 const convertLinksToBase64 = async (
   type: TBase64File,  
-  qr_array: TQRItem[]
+  qr_array: TQRItem[],
+  dashboard_key: string
 ) : Promise<Blob[]> => {
   const qrs: Blob[] = []
   for (let i = 0; i < qr_array.length; i++) {
+    const decrypted_qr_secret = decrypt(qr_array[i].encrypted_qr_secret, dashboard_key)
     const currentQr = new QRCodeStyling({
-      data: qr_array[i].qr_id,
+      data: `https://google.com/qrs/${decrypted_qr_secret}`,
       width: 200,
       height: 200,
       margin: 5,

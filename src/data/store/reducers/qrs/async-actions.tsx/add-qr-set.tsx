@@ -19,10 +19,12 @@ const addQRSet = ({
     dispatch: Dispatch<QRsActions>,
     getState: () => RootState
   ) => {
-    const { user: { address } } = getState()
+    const { user: { address, dashboardKey } } = getState()
     try {
+      if (!dashboardKey) { throw new Error('No dashboardKey found') }
       dispatch(actionsQR.setLoading(true))
-      const qrArray = prepareQRArray(quantity)
+      
+      const qrArray = prepareQRArray(quantity, dashboardKey)
       const newQr: TQRSet = {
         set_name: title,
         qr_quantity: quantity,

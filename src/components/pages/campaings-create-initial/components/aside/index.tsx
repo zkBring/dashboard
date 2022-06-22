@@ -56,7 +56,8 @@ const defineTotalTitle: TDefineTotalTitle = (
   totalAmount,
   nativeTokenSymbol
 ) => {
-  if (totalAmount.original_amount && !totalAmount.ids) {
+  console.log({ totalAmount })
+  if (totalAmount.original_amount && (!totalAmount.ids || totalAmount.ids.length === 0)) {
     const originalAmount = String(totalAmount.original_amount)
     const originalNativeTokensAmount = String(totalAmount.original_native_tokens_amount)
     if (
@@ -80,7 +81,7 @@ const defineTotalTitle: TDefineTotalTitle = (
       return `${originalNativeTokensAmount} ${nativeTokenSymbol}`
     }
   }
-  if (totalAmount.ids) {
+  if (totalAmount.ids && totalAmount.ids.length > 0) {
     const originalNativeTokensAmount = String(totalAmount.original_native_tokens_amount)
     const idsFormatted = totalAmount.ids.map(id => {
       if (String(id).length > 6) {

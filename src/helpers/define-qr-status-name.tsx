@@ -1,7 +1,6 @@
 import { TQRStatus } from 'types'
 
 const defineName = (status: TQRStatus) : string => {
-  console.log({ status })
   switch (status) {
     case 'BEING_INSERTED_TO_BOXES':
       return 'Being Inserted To Boxes'

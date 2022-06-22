@@ -78,14 +78,16 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       assets: TAssetsData,
       wallet: TSelectOption,
       title: string,
+      tokenAddress: string,
       callback: () => void
-    ) => campaignAsyncActions.setAssetsData(
-      dispatch,
-      type,
-      assets,
-      String(wallet.value),
-      title,
-      callback
+    ) => dispatch(campaignAsyncActions.setAssetsData(
+        type,
+        assets,
+        String(wallet.value),
+        title,
+        tokenAddress,
+        callback
+      )
     ),
     clearCampaign: () => {
       dispatch(
@@ -228,11 +230,13 @@ const Erc1155: FC<ReduxType > = ({
           appearance='action'
           onClick={() => {
             console.log({ assetsParsed })
+            
             setAssetsData(
               'ERC1155',
               assetsParsed,
               currentWallet,
               title,
+              tokenAddress,
               () => {
                 if (campaign) {
                   return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)

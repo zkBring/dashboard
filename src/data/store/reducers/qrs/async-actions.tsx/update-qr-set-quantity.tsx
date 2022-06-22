@@ -18,10 +18,11 @@ const updateQRSetQuantity = ({
     dispatch: Dispatch<QRsActions>,
     getState: () => RootState
   ) => {
-    const { qrs: { qrs } } = getState()
+    const { qrs: { qrs }, user: { dashboardKey } } = getState()
     try {
+      if (!dashboardKey) { throw new Error('No dashboardKey found') }
       dispatch(actionsQR.setLoading(true))
-      const qrArray = prepareQRArray(quantity)
+      const qrArray = prepareQRArray(quantity, dashboardKey)
       const result = await qrsApi.updateQuantity(setId, qrArray, quantity)
       if (result && result.data && result.data.success) {
         const qrsUpdated = qrs.map(item => {
