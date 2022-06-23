@@ -118,7 +118,7 @@ const generateERC1155Link = ({
         }
         const newCampaign: TCampaignNew = {
           campaign_number: id,
-          signer_key: signerKey,
+          signer_key: encrypt(signerKey, dashboardKey),
           signer_address: signerAddress,
           token_address: tokenAddress,
           creator_address: address,
