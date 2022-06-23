@@ -55,6 +55,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback })),
 
     getQRsArray: (setId: string | number) => dispatch(asyncQRsActions.getQRs({ setId })),
+
+    downloadQRs: (
+      qrsArray: TQRItem[]
+    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray }))
   }
 }
 
@@ -67,7 +71,7 @@ const QR: FC<ReduxType> = ({
   mapQRsToLinks,
   updateQRSetQuantity,
   getQRsArray,
-  dashboardKey
+  downloadQRs
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -103,6 +107,8 @@ const QR: FC<ReduxType> = ({
   if (!qr) {
     return <Redirect to='/qrs' /> 
   }
+
+  console.log({ loading })
 
   return <Container>
     {loading && <Loader withOverlay />}
@@ -148,10 +154,8 @@ const QR: FC<ReduxType> = ({
               title='Download'
               appearance='action'
               onClick={async () => {
-                if (!dashboardKey) { return alert('dashboardKey is not provided') }
                 if (!qr.qr_array) { return alert('qr_array is not provided') }
-                const qrs: Blob[] = await convertLinksToBase64('png', qr.qr_array, dashboardKey)
-                downloadBase64FilesAsZip('png', qrs)
+                downloadQRs(qr.qr_array)
               }}
             /> 
           </Buttons>
