@@ -12,7 +12,7 @@ const convertLinksToBase64 = async (
   for (let i = 0; i < qr_array.length; i++) {
     const decrypted_qr_secret = decrypt(qr_array[i].encrypted_qr_secret, dashboard_key)
     const currentQr = new QRCodeStyling({
-      data: `${CLAIM_APP_QR}/qr/${decrypted_qr_secret}`,
+      data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
       width: 200,
       height: 200,
       margin: 5,
