@@ -32,8 +32,8 @@ const downloadQRs = ({
         const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
         const currentQr = new QRCodeStyling({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
-          width: 150,
-          height: 150,
+          width: 200,
+          height: 200,
           margin: 5,
           cornersSquareOptions: {
             type: 'extra-rounded'
