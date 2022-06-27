@@ -7,7 +7,6 @@ import { newRetroDropReducer } from './reducers/campaign/reducer'
 import { campaignsReducer } from './reducers/campaigns/reducer'
 import { qrsReducer } from './reducers/qrs/reducer'
 
-import { setProps, getLocalStore, setLocalStore } from './local-storage-redux'
 import { UserState } from './reducers/user/types';
 import { ContractState } from './reducers/contract/types';
 import { CampaignState } from './reducers/campaign/types';
@@ -23,7 +22,6 @@ import { QRsActions } from './reducers/qrs/types'
 
 type TActions = CampaignActions & CampaignsActions & UserActions & ContractActions & QRsActions
 export const history = createBrowserHistory()
-setProps(['campaigns'])
 
 const reducers = combineReducers({
   user: userReducer,
@@ -51,7 +49,6 @@ export interface RootState {
 
 const store = createStore<RootState, any, any, any>(
   reducers,
-  getLocalStore(),
   composeEnhancers(
     applyMiddleware<IAppDispatch, any>(
       thunkMiddleware as ThunkMiddleware<IAppState, TActions, any>,
@@ -59,11 +56,5 @@ const store = createStore<RootState, any, any, any>(
   ),
   
 )
-
-function init () {
-  setLocalStore(store)
-}
-store.subscribe(init)
-init()
 
 export default store;

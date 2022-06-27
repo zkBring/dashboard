@@ -8,6 +8,8 @@ import secure from "./secure"
 import switchNetwork from "./switch-network"
 import connectWallet from "./connect-wallet"
 import authorize from "./authorize"
+import logout from "./logout"
+import checkIfApproved from "./check-if-approved"
 
 export {
   approveERC20,
@@ -19,5 +21,7 @@ export {
   connectWallet,
   approveERC721,
   approveERC1155,
-  authorize
+  authorize,
+  logout,
+  checkIfApproved
 }

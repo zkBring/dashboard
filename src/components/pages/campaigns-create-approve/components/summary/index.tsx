@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { WidgetText, WidgetTextBlock, WidgetData, Loader } from 'components/common'
@@ -18,6 +18,7 @@ import {
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import { TransactionAside } from 'components/pages/common'
 import { TProps, TDefineLinksContent } from './types'
+import { TTokenType } from 'types'
 
 const mapStateToProps = ({
   user: {
@@ -52,6 +53,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     approveERC1155: (callback: () => void) => {
       dispatch(
         userAsyncActions.approveERC1155(callback)
+      )
+    },
+    checkIfApproved: (
+      callback: () => void,
+    ) => {
+      dispatch(
+        userAsyncActions.checkIfApproved(callback)
       )
     }
   }
@@ -89,9 +97,16 @@ const Summary: FC<ReduxType & TProps> = ({
   approveERC721,
   approveERC1155,
   tokenStandard,
-  campaign
+  campaign,
+  checkIfApproved
 }) => {
   const history = useHistory()
+  const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
+
+  useEffect(() => {
+    if (tokenStandard === 'ERC20' || !campaign) { return } // always show
+    checkIfApproved(() => history.push(redirectURL))
+  }, [])
 
   return <WidgetContent>
     {loading && <Loader withOverlay />}
@@ -126,7 +141,7 @@ const Summary: FC<ReduxType & TProps> = ({
         title='Approve'
         appearance='action'
         onClick={() => {
-          const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
+          
           const callback = () => {
             history.push(redirectURL)
           }

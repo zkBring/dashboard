@@ -3,7 +3,7 @@ import { useParams, Redirect } from 'react-router-dom'
 import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem, TLinkDecrypted } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import { defineQRStatusName, convertLinksToBase64, downloadBase64FilesAsZip } from 'helpers'
+import { defineQRStatusName } from 'helpers'
 import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup } from './components'
 import { Loader } from 'components/common'
@@ -55,10 +55,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback })),
 
     getQRsArray: (setId: string | number) => dispatch(asyncQRsActions.getQRs({ setId })),
-
-    downloadQRs: (
-      qrsArray: TQRItem[]
-    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray }))
   }
 }
 
@@ -70,8 +66,7 @@ const QR: FC<ReduxType> = ({
   loading,
   mapQRsToLinks,
   updateQRSetQuantity,
-  getQRsArray,
-  downloadQRs
+  getQRsArray
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -108,8 +103,6 @@ const QR: FC<ReduxType> = ({
     return <Redirect to='/qrs' /> 
   }
 
-  console.log({ loading })
-
   return <Container>
     {loading && <Loader withOverlay />}
     {updateQuantityPopup && <QuantityPopup
@@ -145,7 +138,7 @@ const QR: FC<ReduxType> = ({
           <Buttons>
             <WidgetButton
               title='Change quantity'
-              disabled={qr.links_uploaded}
+              disabled={qr.links_uploaded || qr.status === 'SENT_TO_PRINTER'}
               onClick={() => {
                 toggleUpdateQuantityPopup(true)
               }}
@@ -153,10 +146,7 @@ const QR: FC<ReduxType> = ({
             <WidgetButton
               title='Download'
               appearance='action'
-              onClick={async () => {
-                if (!qr.qr_array) { return alert('qr_array is not provided') }
-                downloadQRs(qr.qr_array)
-              }}
+              to={`/qrs/${id}/download`}
             /> 
           </Buttons>
         </WidgetValue>

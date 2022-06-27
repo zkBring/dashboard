@@ -28,7 +28,8 @@ const mapStateToProps = ({ user: { chainId, address, provider } }: RootState) =>
 const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
   return {
     connectWallet: () => asyncUserActions.connectWallet(dispatch),
-    switchNetwork: (provider: any, chainId: number, address: string) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address)
+    switchNetwork: (provider: any, chainId: number, address: string) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address),
+    logout: () => asyncUserActions.logout()
   }
 }
 
@@ -77,6 +78,7 @@ const defineTitle: TDefineTitle = (location) => {
 
 const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWallet, switchNetwork, provider }) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
+  const [ showUserOptions, setShowUserOptions ] = useState(false)
   const location = useLocation<LocationType>()
   console.log({ location })
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
@@ -91,6 +93,15 @@ const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWalle
     })}
   </MiniPopup>
 
+
+const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowUserOptions(false) }}>
+    <MiniPopupCustomItem onClick={() => {
+      // ...
+    }}>
+      Logout
+    </MiniPopupCustomItem>
+  </MiniPopup>
+
   return <ThemeProvider theme={themes.light}>
       <Header>
         <HeaderTitle>
@@ -103,9 +114,12 @@ const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWalle
             {capitalize(defineNetworkName(chainId))}
             {chainsPopup}
           </HeaderUserInfo>}
-          {address && <HeaderUserInfo>
+          {address && <HeaderUserInfo onClick={() => {
+            setShowUserOptions(!showUserOptions)
+          }}>
             <ConnectionIndicator />
             {shortenString(address)}
+            {userOptionsPopup}
           </HeaderUserInfo>}
           {!address && <HeaderUserInfo onClick={connectWallet}>
             Connect

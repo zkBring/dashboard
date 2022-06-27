@@ -10,10 +10,7 @@ import { CampaignsActions } from '../../campaigns/types'
 import { defineBatchPreviewContents } from 'helpers'
 import { campaignsApi } from 'data/api'
 import { encrypt } from 'lib/crypto'
-
-function sleep(timeout: number) {
-  return new Promise((resolve) => setTimeout(() => resolve(true), timeout))
-}
+import { sleep } from 'helpers'
 
 const generateERC20Link = ({
   callback,

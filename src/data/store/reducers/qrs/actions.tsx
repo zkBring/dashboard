@@ -13,3 +13,7 @@ export function updateQrs(qrs: TQRSet[]) {
 export function setLoading(loading: boolean) {
   return action(Constants.QRS_SET_LOADING, loading)
 }
+
+export function setDownloadItems(downloadItems: Blob[]) {
+  return action(Constants.QRS_SET_DOWNLOAD_ITEMS, downloadItems)
+}

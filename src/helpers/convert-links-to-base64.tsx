@@ -19,7 +19,6 @@ const convertLinksToBase64 = async (
       cornersSquareOptions: {
         type: 'extra-rounded'
       },
-      image: 'https://play-lh.googleusercontent.com/mHjR3KaAMw3RGA15-t8gXNAy_Onr4ZYUQ07Z9fG2vd51IXO5rd7wtdqEWbNMPTgdqrk=w480-h960-rw',
       imageOptions: {
         margin: 5,
         imageSize: 0.6,

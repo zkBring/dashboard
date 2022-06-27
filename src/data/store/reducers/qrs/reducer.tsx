@@ -3,7 +3,8 @@ import { Constants } from './constants'
 
 const initialState: QRsState = {
   qrs: [],
-  loading: false
+  loading: false,
+  downloadItems: []
 }
 
 export function qrsReducer(
@@ -17,6 +18,8 @@ export function qrsReducer(
         return {...state, qrs: action.payload }
       case Constants.QRS_SET_LOADING:
         return {...state, loading: action.payload }
+      case Constants.QRS_SET_DOWNLOAD_ITEMS:
+        return {...state, downloadItems: action.payload }
       default:
           return state;
     }

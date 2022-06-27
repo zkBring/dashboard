@@ -17,9 +17,7 @@ const requests = {
     user_address: userAddress,
     msg
   }, { withCredentials: true }),
-  logout: () => {
-    
-  }
+  logout: () => authorizationApi.post('/logout', {}, { withCredentials: true })
 }
 
 export default requests

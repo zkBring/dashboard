@@ -55,7 +55,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   if (!currentCampaign) {
     return null
   }
-  const { campaign_id, token_standard, title, batches } = currentCampaign
+  const { campaign_id, token_standard, title, batches, created_at } = currentCampaign
     
   return <Container>
     <WidgetComponent title={title || `Campaign ${campaign_id}`}>
@@ -73,8 +73,11 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               onClick={() => {
                 if (!dashboardKey) { return alert ('dashboardKey is not provided') }
                 const decryptedLinks = decryptLinks(batch.claim_links, dashboardKey)
-                console.log({ decryptedLinks })
-                downloadLinksAsCSV(decryptedLinks, campaign_id)
+                downloadLinksAsCSV(
+                  decryptedLinks,
+                  title,
+                  created_at
+                )
               }}
             />
           </>

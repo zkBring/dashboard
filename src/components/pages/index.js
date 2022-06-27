@@ -9,6 +9,7 @@ import CampaignsCreateApprove from './campaigns-create-approve/index'
 import CampaignsCreateSecure from './campaigns-create-secure/index'
 import CampaignsCreateGenerate from './campaigns-create-generate/index'
 import QR from './qr/index'
+import QRDownload from './qr-download/index'
 
 export {
   Page,
@@ -21,5 +22,6 @@ export {
   CampaignsCreateSecure,
   CampaignsCreateGenerate,
   QRs,
-  QR
+  QR,
+  QRDownload
 }

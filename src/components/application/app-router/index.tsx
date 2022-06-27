@@ -14,7 +14,8 @@ import {
   CampaignsCreateSecure,
   CampaignsCreateGenerate,
   QRs,
-  QR
+  QR,
+  QRDownload
 } from 'components/pages'
 
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
@@ -117,6 +118,12 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={QR}
+        />
+        <ProtectedRoute
+          path='/qrs/:id/download'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={QRDownload}
         />  
 
         <Route path='/' exact={true} render={props => <Main {...props} />} />
