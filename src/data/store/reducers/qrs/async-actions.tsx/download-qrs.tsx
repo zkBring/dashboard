@@ -7,7 +7,6 @@ import { TQRItem } from "types"
 import QRCodeStyling from 'qr-code-styling'
 import { decrypt } from 'lib/crypto'
 import { CLAIM_APP_QR } from 'configs/app'
-import LedgerLogo from 'images/ledger.png'
 
 const downloadQRs = ({
   qrsArray,
@@ -33,13 +32,13 @@ const downloadQRs = ({
         const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
         const currentQr = new QRCodeStyling({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
-          width: 200,
-          height: 200,
+          width: 150,
+          height: 150,
           margin: 5,
           cornersSquareOptions: {
             type: 'extra-rounded'
           },
-          image: LedgerLogo,
+          image: 'https://play-lh.googleusercontent.com/mHjR3KaAMw3RGA15-t8gXNAy_Onr4ZYUQ07Z9fG2vd51IXO5rd7wtdqEWbNMPTgdqrk=w480-h960-rw',
           imageOptions: {
             margin: 5,
             imageSize: 0.6,
