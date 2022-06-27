@@ -7,6 +7,7 @@ import { TQRItem } from "types"
 import QRCodeStyling from 'qr-code-styling'
 import { decrypt } from 'lib/crypto'
 import { CLAIM_APP_QR } from 'configs/app'
+import LedegerImage from 'images/ledger.png'
 
 const downloadQRs = ({
   qrsArray,
@@ -38,7 +39,7 @@ const downloadQRs = ({
           cornersSquareOptions: {
             type: 'extra-rounded'
           },
-          image: 'https://play-lh.googleusercontent.com/mHjR3KaAMw3RGA15-t8gXNAy_Onr4ZYUQ07Z9fG2vd51IXO5rd7wtdqEWbNMPTgdqrk=w480-h960-rw',
+          image: LedegerImage,
           imageOptions: {
             margin: 5,
             imageSize: 0.6,
