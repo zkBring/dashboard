@@ -138,7 +138,7 @@ const QR: FC<ReduxType> = ({
           <Buttons>
             <WidgetButton
               title='Change quantity'
-              disabled={qr.links_uploaded || qr.status === 'SENT_TO_PRINTER'}
+              disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
               onClick={() => {
                 toggleUpdateQuantityPopup(true)
               }}
