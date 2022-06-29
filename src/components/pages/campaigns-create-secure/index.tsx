@@ -54,7 +54,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   return <Container>
-    <WidgetComponent title={`Secure ${nativeTokensAmount} ${nativeTokenSymbol} into Linkdrop Contract`}>
+    <WidgetComponent title='Additional options'>
       <Secure
         amount={String(nativeTokensAmount)}
         sponsored={sponsored}

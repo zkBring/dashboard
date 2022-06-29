@@ -58,20 +58,28 @@ const Secure: FC<ReduxType> = ({
      
       <WidgetTextBlock>
         <WidgetData>
-          Transactions sponsorship option
+          Native tokens to be secured on the contract: {amount} {nativeTokenSymbol}
+        </WidgetData>
+        <WidgetText>
+          Native tokens would be secured if you have selected an option to add native tokens on the previous steps
+        </WidgetText>
+      </WidgetTextBlock>
+      <WidgetTextBlock>
+        <WidgetData>
+          Transaction sponsorship
         </WidgetData>
         <CheckboxComponent
-          label='Sponsor claim transactions'
+          label='Select to sponsor claim transactions'
           value={sponsored}
           onChange={value => setSponsored(value)}
         />
       </WidgetTextBlock>
       <WidgetTextBlock>
         <WidgetText>
-        Sponsor claim transactions so that users can claim tokens without having {nativeTokenSymbol} in their wallets. You will have to initiate a transaction with {LINK_COMISSION_PRICE} Matic to enable this feature.
+          Sponsor claim transactions so that users can claim tokens without having {nativeTokenSymbol} in their wallets.
         </WidgetText>
         <WidgetText>
-        By enabling this feature, gas would be paid by Linkdrop, and Ledger shall be responsible for monthly reimbursement to Company of all transaction and/or gas fees accrued. Please refer to Services Fees and Exhibit D in the signed SaaS Agreement for more details.
+          By enabling this feature, gas would be paid by Linkdrop, and Ledger shall be responsible for monthly reimbursement to Company of all transaction and/or gas fees accrued. Please refer to Services Fees and Exhibit D in the signed SaaS Agreement for more details.
         </WidgetText>
       </WidgetTextBlock>
       <Buttons>
