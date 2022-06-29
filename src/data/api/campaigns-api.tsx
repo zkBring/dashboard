@@ -13,8 +13,8 @@ const requests = {
   ) => campaignsApi.post('/linkdrop/campaigns', {
     ...campaign
   }, { withCredentials: true }),
-  get: () => {
-    return campaignsApi.get(`/linkdrop/campaigns`, { withCredentials: true })
+  get: (chain_id: number | string) => {
+    return campaignsApi.get(`/linkdrop/campaigns?chain_id=${chain_id}`, { withCredentials: true })
   },
   getOne: (
     campaign_id: string | number

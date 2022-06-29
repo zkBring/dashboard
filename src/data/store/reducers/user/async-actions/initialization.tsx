@@ -44,7 +44,7 @@ const initialization = (
     if (!REACT_APP_INFURA_ID) {
       return alert('REACT_APP_INFURA_ID is not provided in .env file')
     }
-    const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get()
+    const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
     const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
     dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
     dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))

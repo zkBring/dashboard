@@ -55,23 +55,23 @@ const Secure: FC<ReduxType> = ({
   return <WidgetContent>
     {loading && <Loader withOverlay />}
     <WidgetSecure>
-      <WidgetTextBlock>
-        <WidgetText>{nativeTokenSymbol} will be stored in Linkdrop Contract to distribute into links.</WidgetText>
-        <WidgetText>You can stop the campaign anytime and get back your {nativeTokenSymbol}.</WidgetText>
-      </WidgetTextBlock>
+     
       <WidgetTextBlock>
         <WidgetData>
-          Sponsor claim transactions
+          Transactions sponsorship option
         </WidgetData>
         <CheckboxComponent
-          label={`${LINK_COMISSION_PRICE} ${nativeTokenSymbol} * ${assets?.length} claims (=${multiply(bignumber(LINK_COMISSION_PRICE), assets?.length)} ${nativeTokenSymbol})`}
+          label='Sponsor claim transactions'
           value={sponsored}
           onChange={value => setSponsored(value)}
         />
       </WidgetTextBlock>
       <WidgetTextBlock>
         <WidgetText>
-          Sponsor claim transactions so that recipients can claim tokens without having {nativeTokenSymbol} in their wallets. Claim transactions are sponosored when gas price is up to 150 GWEI maximum. Alternatively, the recipients must pay for the gas themselves.
+        Sponsor claim transactions so that users can claim tokens without having {nativeTokenSymbol} in their wallets. You will have to initiate a transaction with {LINK_COMISSION_PRICE} Matic to enable this feature.
+        </WidgetText>
+        <WidgetText>
+        By enabling this feature, gas would be paid by Linkdrop, and Ledger shall be responsible for monthly reimbursement to Company of all transaction and/or gas fees accrued. Please refer to Services Fees and Exhibit D in the signed SaaS Agreement for more details.
         </WidgetText>
       </WidgetTextBlock>
       <Buttons>

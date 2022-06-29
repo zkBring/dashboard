@@ -76,7 +76,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 downloadLinksAsCSV(
                   decryptedLinks,
                   title,
-                  created_at
+                  batch.created_at || ''
                 )
               }}
             />

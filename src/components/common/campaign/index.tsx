@@ -37,7 +37,7 @@ const CampaignComponent: FC<TProps> = ({
   title
 }) => {
   const dateFormatted = created_at && formatDate(created_at)
-  const scanUrl = defineEtherscanUrl(chainId, `/address/${proxyContractAddress}`)
+  const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
   return <Campaign>
     <CampaignTitle>{title || 'No name'}</CampaignTitle>
     <CampaignType>{type}</CampaignType>
