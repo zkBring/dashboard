@@ -11,7 +11,7 @@ type TCampaign = {
   symbol: string,
   wallet: string,
   proxy_contract_address: string,
-  signer_key: string,
+  encrypted_signer_key: string,
   signer_address: string,
   batches: TLinksBatch[],
   creator_address: string,

@@ -14,7 +14,7 @@ const logout = () => {
     dispatch(userActions.setLoading(true))
     try {
       const logout = await authorizationApi.logout()
-      if (logout.data.success) {
+      if (logout.statusText === 'OK') {
         window.location.reload()
       }
       

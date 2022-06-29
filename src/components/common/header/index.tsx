@@ -10,7 +10,6 @@ import {
     NetworkIndicatorClass
     // @ts-ignore
 } from './styled-components.tsx'
-import { Dispatch } from 'redux';
 import { useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
@@ -18,18 +17,18 @@ import { shortenString, defineNetworkName, capitalize } from 'helpers'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
-import { UserActions } from 'data/store/reducers/user/types'
 import MiniPopup from '../mini-popup'
 import chains from 'configs/chains'
 import { TDefineTitle, LocationType } from './types'
+import { IAppDispatch } from 'data/store'
 
 const mapStateToProps = ({ user: { chainId, address, provider } }: RootState) => ({ chainId, address, provider })
 
-const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     connectWallet: () => asyncUserActions.connectWallet(dispatch),
     switchNetwork: (provider: any, chainId: number, address: string) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address),
-    logout: () => asyncUserActions.logout()
+    logout: () => dispatch(asyncUserActions.logout())
   }
 }
 
@@ -76,7 +75,7 @@ const defineTitle: TDefineTitle = (location) => {
   }
 }
 
-const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWallet, switchNetwork, provider }) => {
+const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWallet, switchNetwork, provider, logout }) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
   const [ showUserOptions, setShowUserOptions ] = useState(false)
   const location = useLocation<LocationType>()
@@ -96,7 +95,7 @@ const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWalle
 
 const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowUserOptions(false) }}>
     <MiniPopupCustomItem onClick={() => {
-      // ...
+      logout()
     }}>
       Logout
     </MiniPopupCustomItem>

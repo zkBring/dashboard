@@ -18,7 +18,6 @@ import {
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import { TransactionAside } from 'components/pages/common'
 import { TProps, TDefineLinksContent } from './types'
-import { TTokenType } from 'types'
 
 const mapStateToProps = ({
   user: {

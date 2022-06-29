@@ -113,7 +113,7 @@ const generateERC721Link = ({
         }
         const newCampaign: TCampaignNew = {
           campaign_number: id,
-          signer_key: encrypt(signerKey, dashboardKey),
+          encrypted_signer_key: encrypt(signerKey, dashboardKey),
           signer_address: signerAddress,
           token_address: tokenAddress,
           creator_address: address,

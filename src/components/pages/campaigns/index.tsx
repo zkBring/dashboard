@@ -41,9 +41,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
   </InvertedWidget>  
 
     return <>
-      <Note>
-        If you don't see the previously created campaigns, <TextLink target='blank' href='https://dashboard.linkdrop.io/'>switch to the old version</TextLink> of the dashboard and check that the correct wallet and network are selected
-      </Note>
       <Container>
         {createNewCampaignWidget}
         {currentAddressCampaigns.map(campaign => {
