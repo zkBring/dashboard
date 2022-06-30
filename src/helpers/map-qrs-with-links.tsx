@@ -11,6 +11,7 @@ const mapQRsWithLinks = (
     const decrypted_qr_secret = decrypt(qrArray[i].encrypted_qr_secret, dashboard_key)
     const claim_link = links[i].claim_link
     qrArray[i].encrypted_claim_link = encrypt(claim_link, decrypted_qr_secret)
+    qrArray[i].claim_link_id = links[i].link_id
   }
   
   return qrArray

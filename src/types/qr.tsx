@@ -11,6 +11,7 @@ export type TQRItem = {
   qr_id: string,
   encrypted_qr_secret: string,
   encrypted_claim_link?: string,
+  claim_link_id?: string
 }
 
 export type TQRSet = {

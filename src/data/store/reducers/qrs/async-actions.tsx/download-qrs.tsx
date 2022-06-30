@@ -46,7 +46,7 @@ const downloadQRs = ({
             crossOrigin: 'anonymous'
           }
         })
-        const blob = await currentQr.getRawData('png')
+        const blob = await currentQr.getRawData('svg')
         if (!blob) { continue }
 
         qrs = [...qrs, blob]
@@ -54,7 +54,7 @@ const downloadQRs = ({
         await sleep(1)
       }
 
-      downloadBase64FilesAsZip('png', qrs, qrSetName)
+      downloadBase64FilesAsZip('svg', qrs, qrSetName)
       dispatch(actionsQR.setDownloadItems([]))
       callback && callback()
     } catch (err) {
