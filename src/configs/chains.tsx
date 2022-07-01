@@ -24,7 +24,7 @@ const chains: TChains = {
       decimals: 18
     },
     rpcUrls: [
-      'https://polygon-rpc.com/'
+      'https://poly-rpc.gateway.pokt.network/'
     ],
     blockExplorerUrls: [
       'https://polygonscan.com'
