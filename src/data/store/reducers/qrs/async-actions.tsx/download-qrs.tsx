@@ -39,14 +39,14 @@ const downloadQRs = ({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
           width,
           height,
-          margin: 5,
+          margin: 2,
           type: 'svg',
           cornersSquareOptions: {
             type: 'extra-rounded'
           },
           image: LedegerImage,
           imageOptions: {
-            margin: 5,
+            margin: 2,
             imageSize: 0.5,
             crossOrigin: 'anonymous'
           }
