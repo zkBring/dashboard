@@ -12,10 +12,14 @@ import LedegerImage from 'images/ledger-logo.svg'
 const downloadQRs = ({
   qrsArray,
   qrSetName,
+  width,
+  height,
   callback
 }: {
   qrsArray: TQRItem[],
   qrSetName: string,
+  width: number,
+  height: number,
   callback?: () => void
 }) => {
   return async (
@@ -24,7 +28,7 @@ const downloadQRs = ({
   ) => {
     dispatch(actionsQR.setLoading(true))
     dispatch(actionsQR.setDownloadItems([]))
-    const { user: { dashboardKey }, qrs: { downloadItems } } = getState()
+    const { user: { dashboardKey } } = getState()
     try {
       if (!dashboardKey) { return alert('dashboardKey is not provided') }
       if (!qrsArray) { return alert('qrsArray is not provided') }
@@ -33,8 +37,8 @@ const downloadQRs = ({
         const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
         const currentQr = new QRCodeStyling({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
-          width: 1024,
-          height: 1024,
+          width,
+          height,
           margin: 5,
           type: 'svg',
           cornersSquareOptions: {

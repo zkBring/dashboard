@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react'
-import { useParams, Redirect } from 'react-router-dom'
-import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem, TLinkDecrypted } from 'types'
+import { FC, useEffect } from 'react'
+import { useParams, Redirect, useLocation } from 'react-router-dom'
+import { TLinkParams, TQRSet, TQRItem } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -30,8 +30,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     downloadQRs: (
       qrsArray: TQRItem[],
       qrSetName: string,
+      width: number,
+      height: number,
       callback: () => void
-    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray, qrSetName, callback }))
+    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray, qrSetName, width, height, callback }))
   }
 }
 
@@ -45,9 +47,14 @@ const QR: FC<ReduxType> = ({
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
   const history = useHistory()
+  let { search } = useLocation();
+
+  const query = new URLSearchParams(search)
   useEffect(() => {
+    const width = query.get('width')
+    const height = query.get('height')
     if (!qr || !qr.qr_array) { return alert('qr_array is not provided') }
-    downloadQRs(qr.qr_array, qr.set_name, () => {
+    downloadQRs(qr.qr_array, qr.set_name, Number(width), Number(height), () => {
       history.push(`/qrs/${id}`)
     })
   }, [])
