@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
-import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TLink, TQRItem, TLinkDecrypted } from 'types'
+import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TQRItem, TLinkDecrypted } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName } from 'helpers'
 import qrStatus from 'configs/qr-status'
-import { QuantityPopup, LinksPopup } from './components'
+import { QuantityPopup, LinksPopup, DownloadPopup } from './components'
 import { Loader } from 'components/common'
 import {
   Container,
@@ -80,6 +80,10 @@ const QR: FC<ReduxType> = ({
     updateLinksPopup,
     toggleUpdateLinksPopup
   ] = useState<boolean>(false)
+  const [
+    downloadPopup,
+    toggleDownloadPopup
+  ] = useState<boolean>(false)
 
   const selectOptions: TSelectOption<TQRStatus>[] = qrStatus.map(status => ({
     label: defineQRStatusName(status),
@@ -129,6 +133,12 @@ const QR: FC<ReduxType> = ({
       }}
     />}
 
+    {id && downloadPopup && <DownloadPopup
+      id={id}  
+      onClose={() => toggleDownloadPopup(false)}
+
+    />}
+
     <WidgetComponent title={qr.set_name}>
       <WidgetInfo>
         <WidgetSubtitle>
@@ -146,7 +156,10 @@ const QR: FC<ReduxType> = ({
             <WidgetButton
               title='Download'
               appearance='action'
-              to={`/qrs/${id}/download`}
+              
+              onClick={() => {
+                toggleDownloadPopup(true)
+              }}
             /> 
           </Buttons>
         </WidgetValue>
