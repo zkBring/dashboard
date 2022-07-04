@@ -7,7 +7,7 @@ import { TQRItem } from "types"
 import QRCodeStyling from 'qr-code-styling'
 import { decrypt } from 'lib/crypto'
 import { CLAIM_APP_QR } from 'configs/app'
-import LedegerImage from 'images/ledger.png'
+import LedegerImage from 'images/ledger-logo.svg'
 
 const downloadQRs = ({
   qrsArray,
@@ -33,20 +33,21 @@ const downloadQRs = ({
         const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
         const currentQr = new QRCodeStyling({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
-          width: 200,
-          height: 200,
+          width: 1024,
+          height: 1024,
           margin: 5,
+          type: 'svg',
           cornersSquareOptions: {
             type: 'extra-rounded'
           },
           image: LedegerImage,
           imageOptions: {
             margin: 5,
-            imageSize: 0.6,
+            imageSize: 0.5,
             crossOrigin: 'anonymous'
           }
         })
-        const blob = await currentQr.getRawData('svg')
+        const blob = await currentQr.getRawData('png')
         if (!blob) { continue }
 
         qrs = [...qrs, blob]
@@ -54,7 +55,7 @@ const downloadQRs = ({
         await sleep(1)
       }
 
-      downloadBase64FilesAsZip('svg', qrs, qrSetName)
+      downloadBase64FilesAsZip('png', qrs, qrSetName)
       dispatch(actionsQR.setDownloadItems([]))
       callback && callback()
     } catch (err) {
