@@ -16,7 +16,7 @@ const initialState: CampaignState = {
   secured: false,
   signerKey: null,
   signerAddress: null,
-  sponsored: false,
+  sponsored: true,
   links: []
 }
 
