@@ -33,16 +33,21 @@ async function switchNetwork (
     )
     window.location.href = ''
   } catch (err) {
-      const switchError = err as IMetamaskError;
+      const switchError = err as IMetamaskError
+      console.log(switchError.code)
       if (switchError.code && switchError.code === 4902) {
         try {
           const chainObj = chains[chainId]
           if (chainObj) {
             const data = {
-              ...chainObj,
-              chainId: `0x${toHex(chainId)}`
+              chainName: chainObj.chainName,
+              nativeCurrency: chainObj.nativeCurrency,
+              rpcUrls: chainObj.rpcUrls,
+              blockExplorerUrls: chainObj.blockExplorerUrls,
+              chainId: toHex(chainId)
             }
-            await provider.request({
+
+            await provider.provider.request({
               method: 'wallet_addEthereumChain',
               params: [data],
             })

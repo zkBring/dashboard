@@ -38,7 +38,7 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 const CampaignsCreateSecure: FC<ReduxType> = ({
   assets, symbol, chainId, campaigns
 }) => {
-  const [ sponsored, setSponsored ] = useState<boolean>(false)
+  const [ sponsored, setSponsored ] = useState<boolean>(true)
   const { id } = useParams<TLinkParams>()
   if (!assets || !symbol || !chainId) { return null }
   const assetsTotal = countAssetsTotalAmountERC20(assets)
