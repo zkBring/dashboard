@@ -2,9 +2,7 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRSet } from 'types'
 import { qrsApi } from 'data/api'
-import { prepareQRArray } from 'helpers'
 
 const getQRs = ({
   setId
