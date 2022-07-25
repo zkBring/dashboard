@@ -39,7 +39,7 @@ const downloadQRs = ({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
           width,
           height,
-          margin: 2,
+          margin: 10,
           type: 'svg',
           cornersSquareOptions: {
             type: 'extra-rounded'
