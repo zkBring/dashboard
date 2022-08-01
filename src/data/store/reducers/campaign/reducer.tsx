@@ -17,6 +17,7 @@ const initialState: CampaignState = {
   signerKey: null,
   signerAddress: null,
   sponsored: true,
+  claimPattern: 'mint',
   links: []
 }
 
@@ -55,6 +56,8 @@ export function newRetroDropReducer(
           return {...state, signerAddress: action.payload.signerAddress }
         case Constants.CAMPAIGN_SET_SPONSORED:
           return {...state, sponsored: action.payload.sponsored }
+        case Constants.CAMPAIGN_SET_CLAIM_PATTERN:
+          return {...state, claimPattern: action.payload.claimPattern }
         case Constants.CAMPAIGN_SET_LINKS:
           return {...state, links: [
             ...state.links,

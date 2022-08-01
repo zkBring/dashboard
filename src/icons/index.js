@@ -12,6 +12,7 @@ import { ReactComponent as DownloadIcon } from './download-icon.svg'
 import { ReactComponent as ExternalLinkIcon } from './external-link-icon.svg'
 import { ReactComponent as ArrowIcon } from './arrow-icon.svg'
 import { ReactComponent as CloseIcon } from './close-icon.svg'
+import { ReactComponent as CheckboxIcon } from './checkbox-icon.svg'
 
 const Icons = {
   EthereumLogo,
@@ -27,7 +28,8 @@ const Icons = {
   DownloadIcon,
   ExternalLinkIcon,
   ArrowIcon,
-  CloseIcon
+  CloseIcon,
+  CheckboxIcon
 }
 
 export default Icons

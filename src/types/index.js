@@ -25,9 +25,11 @@ import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
 import TCampaignNew from './campaign-new'
 import TLinkDecrypted from './link-decrypted'
+import TClaimPattern from './claim-pattern'
 
 export {
   TCampaign,
+  TClaimPattern,
   TTokenType,
   TCampaignStatus,
   TAssetsData,

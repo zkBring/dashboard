@@ -1,6 +1,14 @@
 import { FC } from 'react'
 import TCheckbox from './type'
-import { CheckboxContainer, CheckboxInput, CheckboxLabel } from './styled-components'
+import Icons from 'icons'
+import {
+  CheckboxContainer,
+  CheckboxInput,
+  CheckboxLabel,
+  CheckboxMark,
+  CheckboxContent,
+  CustomCheckboxClassName
+} from './styled-components'
 
 const Checkbox: FC<TCheckbox> = ({
   label,
@@ -8,10 +16,15 @@ const Checkbox: FC<TCheckbox> = ({
   value
 }) => {
   return <CheckboxContainer onClick={() => onChange && onChange(!value)}>
-    <CheckboxInput
-      type='checkbox'
-      checked={value}
-    />
+    <CheckboxContent>
+      <CheckboxInput
+        type='checkbox'
+        checked={value}
+      />
+      <CheckboxMark className={CustomCheckboxClassName}>
+        <Icons.CheckboxIcon />
+      </CheckboxMark>
+    </CheckboxContent>
     {label && <CheckboxLabel>
       {label}
     </CheckboxLabel>}

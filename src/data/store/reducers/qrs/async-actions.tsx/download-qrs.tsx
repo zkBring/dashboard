@@ -9,6 +9,10 @@ import { decrypt } from 'lib/crypto'
 import { CLAIM_APP_QR } from 'configs/app'
 import LedegerImage from 'images/ledger-logo.svg'
 
+type tplotOptions = {
+  [key: string]: any
+}
+
 const downloadQRs = ({
   qrsArray,
   qrSetName,
@@ -51,7 +55,27 @@ const downloadQRs = ({
             crossOrigin: 'anonymous'
           }
         })
-        const blob = await currentQr.getRawData('png')
+        currentQr.applyExtension((svg, options) => {
+          const border = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+          const { width, height } = options;
+          const size = Math.min(width || 0, height || 0);
+          const textAttributes: tplotOptions = {
+            "fill": "none",
+            "x": ((width || 0) - size + 40) / 2,
+            "y": ((height || 0) - size + 40) / 2,
+            "width": size - 40,
+            "height": size - 40,
+            "stroke": 'black',
+            "stroke-width": 40,
+            "rx": 100
+          }
+          Object.keys(textAttributes).forEach(attribute => {
+            border.setAttribute(attribute, textAttributes[attribute]);
+          })
+          border.textContent = 'Hello world!'
+          svg.appendChild(border)
+        })
+        const blob = await currentQr.getRawData('svg')
         if (!blob) { continue }
 
         qrs = [...qrs, blob]
@@ -59,7 +83,7 @@ const downloadQRs = ({
         await sleep(1)
       }
 
-      downloadBase64FilesAsZip('png', qrs, qrSetName)
+      downloadBase64FilesAsZip('svg', qrs, qrSetName)
       dispatch(actionsQR.setDownloadItems([]))
       callback && callback()
     } catch (err) {

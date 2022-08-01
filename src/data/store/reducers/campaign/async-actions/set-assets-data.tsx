@@ -2,7 +2,7 @@
 import { Dispatch } from 'redux';
 import * as actionsCampaign from '../actions';
 import { CampaignActions } from '../types';
-import { TTokenType, TAssetsData } from 'types'
+import { TTokenType, TAssetsData, TClaimPattern } from 'types'
 import { ethers } from 'ethers'
 import { ERC1155Contract } from 'abi'
 import { replaceIPFS } from 'helpers'
@@ -15,6 +15,7 @@ function setAssetsData(
   wallet: string,
   title: string,
   tokenAddress: string,
+  claimPattern: TClaimPattern,
   callback?: () => void
 ) {
   return async (
@@ -25,6 +26,7 @@ function setAssetsData(
     dispatch(actionsCampaign.setTokenStandard(tokenStandard))
     dispatch(actionsCampaign.setWallet(wallet))
     dispatch(actionsCampaign.setTitle(title))
+    dispatch(actionsCampaign.setClaimPattern(claimPattern))
     const { user: { provider } } = getState()
     try {
       if (tokenStandard === 'ERC1155') {
