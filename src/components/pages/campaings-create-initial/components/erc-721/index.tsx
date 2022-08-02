@@ -160,7 +160,7 @@ const Erc721: FC<ReduxType > = ({
     setAssetsParsedValue
   ] = useState<TAssetsData>([])
 
-  const [ radio, setRadio ] = useState<TClaimPattern>(claimPattern)
+  const [ radio, setRadio ] = useState<TClaimPattern>(campaign ? campaign.claim_pattern : claimPattern)
 
   useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
@@ -227,6 +227,7 @@ const Erc721: FC<ReduxType > = ({
         />
         <StyledRadio
           label='Claim pattern'
+          disabled={Boolean(campaign)}
           radios={[
             { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
             { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }

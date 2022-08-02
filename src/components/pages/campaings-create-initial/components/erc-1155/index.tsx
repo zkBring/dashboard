@@ -155,7 +155,7 @@ const Erc1155: FC<ReduxType > = ({
     setAssetsValue
   ] = useState('')
 
-  const [ radio, setRadio ] = useState<TClaimPattern>(claimPattern)
+  const [ radio, setRadio ] = useState<TClaimPattern>(campaign ? campaign.claim_pattern : claimPattern)
 
 
   const [
@@ -227,6 +227,7 @@ const Erc1155: FC<ReduxType > = ({
         />
         <StyledRadio
           label='Claim pattern'
+          disabled={Boolean(campaign)}
           radios={[
             { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
             { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }

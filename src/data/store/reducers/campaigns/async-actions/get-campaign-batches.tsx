@@ -2,7 +2,6 @@ import { Dispatch } from 'redux'
 import * as actionsCampaigns from '../actions'
 import { CampaignsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRSet } from 'types'
 import { campaignsApi } from 'data/api'
 
 const getCampaignBatches = ({

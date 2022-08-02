@@ -8,9 +8,11 @@ export type TProps = {
   radios: TRadio[],
   label: string,
   className?: string,
+  disabled?: boolean,
   onChange: (value: any) => void
 }
 
 export type TRadioItem = {
-  active: boolean
+  active: boolean,
+  disabled?: boolean
 }

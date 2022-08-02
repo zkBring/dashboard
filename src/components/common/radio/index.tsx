@@ -14,12 +14,17 @@ const RadioButtons: FC<TProps> = ({
   value,
   label,
   onChange,
-  className
+  className,
+  disabled
 }) => {
   return <RadioButtonsContainer className={className}>
     <RadioButtonsLabel>{label}</RadioButtonsLabel>
     {radios.map(item => <RadioItem
-      onClick={() => onChange(item.value)}
+      disabled={disabled}
+      onClick={() => {
+        if (disabled) { return }
+        onChange(item.value)
+      }}
       active={value === item.value}
     >
       <RadioButtonController className={RadioButtonControllerClassName}/>

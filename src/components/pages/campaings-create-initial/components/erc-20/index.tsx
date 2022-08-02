@@ -135,7 +135,7 @@ const Erc20: FC<ReduxType > = ({
     setTitle
   ] = useState(campaign ? campaign.title : '')
 
-  const [ radio, setRadio ] = useState<TClaimPattern>(claimPattern)
+  const [ radio, setRadio ] = useState<TClaimPattern>(campaign ? campaign.claim_pattern : claimPattern)
 
   useEffect(() => {
     clearCampaign()
@@ -248,6 +248,7 @@ const Erc20: FC<ReduxType > = ({
           }}
         />
         <StyledRadio
+          disabled={Boolean(campaign)}
           label='Claim pattern'
           radios={[
             { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },

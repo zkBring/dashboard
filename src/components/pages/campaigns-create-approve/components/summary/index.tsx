@@ -25,7 +25,7 @@ const mapStateToProps = ({
     provider,
     chainId
   },
-  campaign: { decimals, symbol, assets, tokenStandard, loading },
+  campaign: { decimals, symbol, assets, tokenStandard, loading, claimPattern },
 }: RootState) => ({
   loading,
   address,
@@ -34,7 +34,8 @@ const mapStateToProps = ({
   chainId,
   symbol,
   assets,
-  tokenStandard
+  tokenStandard,
+  claimPattern
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -54,13 +55,26 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         userAsyncActions.approveERC1155(callback)
       )
     },
+    grantRole: (callback: () => void) => {
+      dispatch(
+        userAsyncActions.grantRole(callback)
+      )
+    },
     checkIfApproved: (
       callback: () => void,
     ) => {
       dispatch(
         userAsyncActions.checkIfApproved(callback)
       )
-    }
+    },
+    checkIfGranted: (
+      callback: () => void,
+    ) => {
+      dispatch(
+        userAsyncActions.checkIfGranted(callback)
+      )
+    },
+
   }
 }
 
@@ -97,13 +111,22 @@ const Summary: FC<ReduxType & TProps> = ({
   approveERC1155,
   tokenStandard,
   campaign,
-  checkIfApproved
+  checkIfApproved,
+  checkIfGranted,
+  claimPattern,
+  grantRole
 }) => {
   const history = useHistory()
   const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
 
   useEffect(() => {
-    if (tokenStandard === 'ERC20' || !campaign) { return } // always show
+    if (!campaign) {
+      return
+    }
+    if (campaign && campaign.claim_pattern === 'mint') {
+      return checkIfGranted(() => history.push(redirectURL))
+    }
+    if (tokenStandard === 'ERC20') { return } // always show when transfer
     checkIfApproved(() => history.push(redirectURL))
   }, [])
 
@@ -143,6 +166,9 @@ const Summary: FC<ReduxType & TProps> = ({
           
           const callback = () => {
             history.push(redirectURL)
+          }
+          if (claimPattern === 'mint') {
+            return grantRole(callback)
           }
           if (tokenStandard === 'ERC20') {
             approveERC20(callback)

@@ -21,6 +21,11 @@ export const RadioItem = styled.div<TRadioItem>`
   cursor: pointer;
   margin-bottom: 4px;
 
+  ${props => props.disabled && css`
+    cursor: not-allowed;
+    opacity: 0.3;
+  `}
+
   .${RadioButtonControllerClassName} {
     background-color: ${props => {
       if (props.active) {

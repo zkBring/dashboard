@@ -31,11 +31,13 @@ import downloadBase64FilesAsZip from './download-base64-files-as-zip'
 import replaceIPFS from './replace-ipfs'
 import decryptLinks from './decrypt-links'
 import sleep from './sleep'
+import defineContract from './define-contract'
 
 export {
   shortenString,
   defineNetworkName,
   capitalize,
+  defineContract,
   defineJSONRpcUrl,
   copyToClipboard,
   checkRecipientsDataFormat,
