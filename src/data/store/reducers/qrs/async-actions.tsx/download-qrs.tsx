@@ -55,26 +55,26 @@ const downloadQRs = ({
             crossOrigin: 'anonymous'
           }
         })
-        currentQr.applyExtension((svg, options) => {
-          const border = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-          const { width, height } = options;
-          const size = Math.min(width || 0, height || 0);
-          const textAttributes: tplotOptions = {
-            "fill": "none",
-            "x": ((width || 0) - size + 40) / 2,
-            "y": ((height || 0) - size + 40) / 2,
-            "width": size - 40,
-            "height": size - 40,
-            "stroke": 'black',
-            "stroke-width": 40,
-            "rx": 100
-          }
-          Object.keys(textAttributes).forEach(attribute => {
-            border.setAttribute(attribute, textAttributes[attribute]);
-          })
-          border.textContent = 'Hello world!'
-          svg.appendChild(border)
-        })
+        // currentQr.applyExtension((svg, options) => {
+        //   const border = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        //   const { width, height } = options;
+        //   const size = Math.min(width || 0, height || 0);
+        //   const textAttributes: tplotOptions = {
+        //     "fill": "none",
+        //     "x": ((width || 0) - size + 40) / 2,
+        //     "y": ((height || 0) - size + 40) / 2,
+        //     "width": size - 40,
+        //     "height": size - 40,
+        //     "stroke": 'black',
+        //     "stroke-width": 40,
+        //     "rx": 100
+        //   }
+        //   Object.keys(textAttributes).forEach(attribute => {
+        //     border.setAttribute(attribute, textAttributes[attribute]);
+        //   })
+        //   border.textContent = 'Hello world!'
+        //   svg.appendChild(border)
+        // })
         const blob = await currentQr.getRawData('svg')
         if (!blob) { continue }
 

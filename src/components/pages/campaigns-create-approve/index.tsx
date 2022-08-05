@@ -12,21 +12,26 @@ import { TLinkParams } from 'types'
 const mapStateToProps = ({
   campaigns: {
     campaigns
+  },
+  campaign: {
+    claimPattern
   }
 }: RootState) => ({
-  campaigns
+  campaigns,
+  claimPattern
 })
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 
 const CampaignsCreateApprove: FC<ReduxType> = ({
-  campaigns
+  campaigns,
+  claimPattern
 }) => {
   const { id } = useParams<TLinkParams>()
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   return <Container>
-    <WidgetComponent title='Approve'>
+    <WidgetComponent title={claimPattern === 'transfer' ? 'Approve' : 'Grant Minter Role'}>
       <Summary campaign={currentCampaign} />
     </WidgetComponent>
   </Container>

@@ -156,14 +156,13 @@ const Summary: FC<ReduxType & TProps> = ({
       
       <WidgetTextBlock>
         <WidgetText>
-          Give Linkdrop contracts permission to transfer tokens from your account to receiver
+          {claimPattern === 'transfer' ? 'Give Linkdrop contracts permission to transfer tokens from your account to receiver' : 'Give Linkdrop contracts permission to mint tokens from your contract to receiver'}
         </WidgetText>
       </WidgetTextBlock>
       <WidgetButton
-        title='Approve'
+        title={claimPattern === 'transfer' ? 'Approve' : 'Grant Role'}
         appearance='action'
         onClick={() => {
-          
           const callback = () => {
             history.push(redirectURL)
           }
