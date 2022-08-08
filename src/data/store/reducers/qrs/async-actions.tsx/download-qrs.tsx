@@ -43,7 +43,7 @@ const downloadQRs = ({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
           width,
           height,
-          margin: 10,
+          margin: 40,
           type: 'svg',
           cornersSquareOptions: {
             type: 'extra-rounded'
@@ -59,6 +59,17 @@ const downloadQRs = ({
           const border = document.createElementNS("http://www.w3.org/2000/svg", "rect");
           const { width, height } = options;
           const size = Math.min(width || 0, height || 0);
+          console.log({ width, height, size })
+          const borderAttributes: tplotOptions = {
+            "fill": "none",
+            "x": ((width || 0) - size + 40) / 2,
+            "y": ((height || 0) - size + 40) / 2,
+            "width": size - 40,
+            "height": size - 40,
+            "stroke": 'black',
+            "stroke-width": 40,
+            "rx": 40
+          }
           const textAttributes: tplotOptions = {
             "fill": "none",
             "x": ((width || 0) - size + 40) / 2,
@@ -67,10 +78,10 @@ const downloadQRs = ({
             "height": size - 40,
             "stroke": 'black',
             "stroke-width": 40,
-            "rx": 100
+            "rx": 40
           }
-          Object.keys(textAttributes).forEach(attribute => {
-            border.setAttribute(attribute, textAttributes[attribute]);
+          Object.keys(borderAttributes).forEach(attribute => {
+            border.setAttribute(attribute, borderAttributes[attribute]);
           })
           border.textContent = 'Hello world!'
           svg.appendChild(border)
