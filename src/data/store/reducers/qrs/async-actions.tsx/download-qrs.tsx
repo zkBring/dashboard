@@ -43,7 +43,7 @@ const downloadQRs = ({
           data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
           width,
           height,
-          margin: 40,
+          margin: 60,
           type: 'svg',
           cornersSquareOptions: {
             type: 'extra-rounded'
@@ -56,35 +56,41 @@ const downloadQRs = ({
           }
         })
         currentQr.applyExtension((svg, options) => {
-          const border = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-          const { width, height } = options;
-          const size = Math.min(width || 0, height || 0);
-          console.log({ width, height, size })
+          const border = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text")
+          const { width, height } = options
+          const size = Math.min(width || 0, height || 0)
+
           const borderAttributes: tplotOptions = {
             "fill": "none",
-            "x": ((width || 0) - size + 40) / 2,
-            "y": ((height || 0) - size + 40) / 2,
-            "width": size - 40,
-            "height": size - 40,
+            "x": ((width || 0) - size + 60),
+            "y": ((height || 0) - size + 60),
+            "width": size - 120,
+            "height": size - 120,
             "stroke": 'black',
-            "stroke-width": 40,
-            "rx": 40
+            "stroke-width": size / 20,
+            "rx": size / 20
           }
-          const textAttributes: tplotOptions = {
-            "fill": "none",
-            "x": ((width || 0) - size + 40) / 2,
-            "y": ((height || 0) - size + 40) / 2,
-            "width": size - 40,
-            "height": size - 40,
-            "stroke": 'black',
-            "stroke-width": 40,
-            "rx": 40
-          }
+
+          // const textAttributes: tplotOptions = {
+          //   "fill": "#000000",
+          //   "x": (width || 0) / 2,
+          //   "y": ((height || 0) - 24),
+          //   "stroke": "#000000",
+          //   "font-size": "24px",
+          //   "text-anchor": "middle",
+          //   "font-family": "Inter, Arial, Helvetica, sans-serif"
+          // }
+
           Object.keys(borderAttributes).forEach(attribute => {
             border.setAttribute(attribute, borderAttributes[attribute]);
           })
-          border.textContent = 'Hello world!'
+          // Object.keys(textAttributes).forEach(attribute => {
+          //   text.setAttribute(attribute, textAttributes[attribute]);
+          // })
+          text.textContent = 'Hello world!'
           svg.appendChild(border)
+          svg.appendChild(text)
         })
 
         const blob = await currentQr.getRawData('svg')
