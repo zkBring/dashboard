@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Widget, Textarea, Button } from 'components/common'
+import { Widget, Textarea, Button, Radio } from 'components/common'
 
 export const Container = styled.div`
 `
@@ -35,4 +35,8 @@ export const WidgetTextarea = styled(Textarea)`
 
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;
+`
+
+export const StyledRadio = styled(Radio)`
+  margin-bottom: 20px;
 `

@@ -27,7 +27,8 @@ const secure = (
       campaign: {
         proxyContractAddress,
         id,
-        symbol
+        symbol,
+        claimPattern
       }
     } = getState()
     try {
@@ -59,7 +60,7 @@ const secure = (
       if (!isDeployed) {
         let iface = new utils.Interface(LinkdropFactory.abi)
         data = await iface.encodeFunctionData('deployProxyWithSigner', [
-          id, wallet
+          id, wallet, claimPattern === 'mint' ? 1 : 0
         ])
         to = contract.factory
       } else {

@@ -43,7 +43,8 @@ const generateERC1155Link = ({
         signerAddress,
         proxyContractAddress,
         sponsored,
-        tokenStandard
+        tokenStandard,
+        claimPattern
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -125,6 +126,7 @@ const generateERC1155Link = ({
           token_standard: tokenStandard,
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
+          claim_pattern: claimPattern,
           ...batch
         }
 

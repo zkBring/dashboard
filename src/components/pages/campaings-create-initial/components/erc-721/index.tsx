@@ -5,6 +5,7 @@ import {
   WidgetOptions,
   WidgetTextarea,
   WidgetButton,
+  StyledRadio
 } from '../../styled-components'
 import wallets from 'configs/wallets'
 import Aside from '../aside'
@@ -24,7 +25,7 @@ import {
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
-import { TTokenType, TAssetsData, TSelectOption } from 'types'
+import { TTokenType, TAssetsData, TSelectOption, TClaimPattern } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
@@ -42,12 +43,14 @@ const mapStateToProps = ({
   campaign: {
     loading,
     decimals,
-    symbol
+    symbol,
+    claimPattern
   }
 }: RootState) => ({
   loading,
   address,
   provider,
+  claimPattern,
   decimals,
   chainId,
   symbol,
@@ -78,6 +81,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       wallet: TSelectOption,
       title: string,
       tokenAddress: string,
+      claimPattern: TClaimPattern,
       callback: () => void
     ) => dispatch(campaignAsyncActions.setAssetsData(
         type,
@@ -85,6 +89,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
         String(wallet.value),
         title,
         tokenAddress,
+        claimPattern,
         callback
       )
     ),
@@ -108,7 +113,7 @@ const Erc721: FC<ReduxType > = ({
   chainId,
   address,
   nativeTokenAmountFormatted,
-  tokenAmountFormatted,
+  claimPattern,
   clearCampaign,
   campaign
 }) => {
@@ -154,6 +159,8 @@ const Erc721: FC<ReduxType > = ({
     assetsParsed,
     setAssetsParsedValue
   ] = useState<TAssetsData>([])
+
+  const [ radio, setRadio ] = useState<TClaimPattern>(campaign ? campaign.claim_pattern : claimPattern)
 
   useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
@@ -218,6 +225,16 @@ const Erc721: FC<ReduxType > = ({
             return value
           }}
         />
+        <StyledRadio
+          label='Claim pattern'
+          disabled={Boolean(campaign)}
+          radios={[
+            { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
+            { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }
+          ]}
+          value={radio}
+          onChange={value => setRadio(value)}
+        />
         <SelectComponent
           options={walletsOptions}
           value={currentWallet}
@@ -234,6 +251,7 @@ const Erc721: FC<ReduxType > = ({
               currentWallet,
               title,
               tokenAddress,
+              radio,
               () => {
                 if (campaign) {
                   return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)

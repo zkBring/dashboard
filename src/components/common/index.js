@@ -25,6 +25,7 @@ import ProgressBar from './progress-bar'
 import QR from './qr'
 import Popup from './popup'
 import Note from './note'
+import Radio from './radio'
 
 export {
   Header,
@@ -56,5 +57,6 @@ export {
   ProgressBar,
   QR,
   Popup,
-  Note
+  Note,
+  Radio
 }

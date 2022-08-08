@@ -1,5 +1,5 @@
 import { TTokenType } from './index.js'
-import { TLink } from 'types'
+import { TLink, TClaimPattern } from 'types'
 
 type TCampaign = {
   title: string,
@@ -16,7 +16,8 @@ type TCampaign = {
   sponsored?: boolean,
   batch_description: string,
   creator_address: string,
-  created_at?: string
+  created_at?: string,
+  claim_pattern: TClaimPattern
 }
 
 export default TCampaign

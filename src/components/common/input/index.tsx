@@ -1,17 +1,16 @@
 import React, { FC } from 'react'
 
 import {
-    InputContainer,
-    InputField,
-    InputTitle,
-    InputError
+  InputContainer,
+  InputField,
+  InputTitle,
+  InputError
 } from './styled-components'
 
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
 
 // type InputEvent = React.ChangeEvent<HTMLInputElement>;
-
 
 interface Props {
   title?: string,

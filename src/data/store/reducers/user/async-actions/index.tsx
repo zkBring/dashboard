@@ -10,6 +10,8 @@ import connectWallet from "./connect-wallet"
 import authorize from "./authorize"
 import logout from "./logout"
 import checkIfApproved from "./check-if-approved"
+import checkIfGranted from "./check-if-granted"
+import grantRole from "./grant-role"
 
 export {
   approveERC20,
@@ -23,5 +25,7 @@ export {
   approveERC1155,
   authorize,
   logout,
-  checkIfApproved
+  checkIfApproved,
+  checkIfGranted,
+  grantRole
 }
