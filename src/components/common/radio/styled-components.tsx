@@ -20,6 +20,7 @@ export const RadioItem = styled.div<TRadioItem>`
   display: flex;
   cursor: pointer;
   margin-bottom: 4px;
+  align-items: center;
 
   ${props => props.disabled && css`
     cursor: not-allowed;
@@ -37,8 +38,8 @@ export const RadioItem = styled.div<TRadioItem>`
 `
 
 export const RadioButtonController = styled.div`
-  width: 20px;
-  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   border-radius: 20px;
   display: flex;
   align-items: center;

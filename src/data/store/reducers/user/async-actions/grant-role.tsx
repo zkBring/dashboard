@@ -26,9 +26,6 @@ const grantRole = (
       },
       campaign: {
         tokenAddress,
-        assets,
-        symbol,
-        decimals,
         proxyContractAddress,
         tokenStandard
       }
@@ -37,18 +34,6 @@ const grantRole = (
     try {
       if (!tokenAddress) {
         return alert('No token address provided')
-      }
-
-      if (!assets) {
-        return alert('No assets provided')
-      }
-
-      if (!symbol) {
-        return alert('No symbol provided')
-      }
-
-      if (!decimals) {
-        return alert('No decimals provided')
       }
 
       if (!proxyContractAddress) {
@@ -75,6 +60,9 @@ const grantRole = (
       const contractABI = (defineContract(tokenStandard)).abi
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI, signer)
       let iface = new utils.Interface(contractABI)
+      console.log({
+        minter_role: contract.minter_role, proxyContractAddress
+      })
       const data = await iface.encodeFunctionData('grantRole', [
         contract.minter_role, proxyContractAddress
       ])

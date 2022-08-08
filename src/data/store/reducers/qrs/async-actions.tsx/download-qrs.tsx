@@ -86,6 +86,7 @@ const downloadQRs = ({
           border.textContent = 'Hello world!'
           svg.appendChild(border)
         })
+
         const blob = await currentQr.getRawData('svg')
         if (!blob) { continue }
 
