@@ -32,6 +32,7 @@ import replaceIPFS from './replace-ipfs'
 import decryptLinks from './decrypt-links'
 import sleep from './sleep'
 import defineContract from './define-contract'
+import metadataUrlResolve from './metadata-url-resolve'
 
 export {
   shortenString,
@@ -67,5 +68,6 @@ export {
   downloadBase64FilesAsZip,
   replaceIPFS,
   decryptLinks,
-  sleep
+  sleep,
+  metadataUrlResolve
 }
