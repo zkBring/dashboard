@@ -53,6 +53,10 @@ function setAssetsData(
       }
     } catch (err) {
       console.error({ err })
+      dispatch(actionsCampaign.setSymbol('ERC1155'))
+      if (callback) {
+        callback()
+      }
     }
   }
 }
