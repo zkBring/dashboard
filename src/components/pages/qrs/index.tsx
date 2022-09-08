@@ -47,6 +47,11 @@ const QRs: FC<ReduxType> = ({
   const [ title, setTitle ] = useState<string>('')
   const [ amount, setAmount ] = useState<string>('')
   const togglePopup = (state: boolean) : void => showPopup(state)
+
+  const defineIfPopupDisabled = () => {
+    return loading || !title || !amount || !Number(amount) || isNaN(Number(amount)) || Number(amount) % 1 !== 0
+  }
+
   return <Container>
     {loading && <Loader withOverlay />}
     {popup && <Popup
@@ -66,7 +71,7 @@ const QRs: FC<ReduxType> = ({
       <ContainerButton
         title='Create'
         appearance='action'
-        disabled={loading}
+        disabled={defineIfPopupDisabled()}
         onClick={() => {
           if(isNaN(Number(amount))) { return alert('Amount is not valid') }
           addQRSet(
