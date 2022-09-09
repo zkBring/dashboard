@@ -9,7 +9,7 @@ import {
   AsideCopyright,
   FooterMenu,
   AsideTextLink,
-  FooterLink
+  FooterButton
 // @ts-ignore
 } from './styled-components.tsx'
 import { useLocation } from 'react-router-dom'
@@ -51,22 +51,9 @@ const AsideComponent: FC<AsideProps> = () => {
 
       <AsideFooter>
         <FooterMenu>
-          <FooterLink
-            href='https://www.notion.so/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58'
-            target='_blank'
-          >
-            Legal
-          </FooterLink>
-          <FooterLink
-            href='https://linkdrop.io/contact'
-            target='_blank'
-          >
-            Contact Us
-          </FooterLink>
+          <FooterButton>Go to old version</FooterButton>
+          <FooterButton>Contact us</FooterButton>
         </FooterMenu>
-        <AsideCopyright>
-          © Linkdrop Labs, Inc
-        </AsideCopyright>
       </AsideFooter>
     </Aside>
   </ThemeProvider>

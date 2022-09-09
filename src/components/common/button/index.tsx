@@ -30,7 +30,8 @@ const ButtonComponent: FC<Props> = ({
   size,
   href,
   target,
-  to
+  to,
+  children
 }) => {
     if (href) {
       return <Anchor href={href} target={target}>
@@ -40,7 +41,7 @@ const ButtonComponent: FC<Props> = ({
           className={className}
           size={size}
         >
-          {title}
+          {title || children}
         </Button>
       </Anchor>
     }
@@ -52,7 +53,7 @@ const ButtonComponent: FC<Props> = ({
           className={className}
           size={size}
         >
-          {title}
+          {title || children}
         </Button>
       </ButtonLink>
     }
@@ -64,7 +65,7 @@ const ButtonComponent: FC<Props> = ({
       className={className}
       size={size}
     >
-      {loading && <ButtonLoader size='small' />}{title}
+      {loading && <ButtonLoader size='small' />}{title || children}
     </Button>
 }
 

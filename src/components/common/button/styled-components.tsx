@@ -27,14 +27,14 @@ export const Button = styled.button.attrs(props => ({
 }))<ButtonProps>`
   cursor: pointer;
   padding: 8px 20px;
-  font-size: 16px;
+  font-size: 14px;
   height: 40px;
   line-height: 1;
   display: flex;
   align-items: center;
   font-weight: 400;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 100px;
   //default
   transition: color .3s, background-color .3s, border-color .3s;
   background-color: ${props => props.theme.buttonDefaultBackgroundColor};

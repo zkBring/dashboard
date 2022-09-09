@@ -2,20 +2,23 @@ const themes = {
 	light: {
 		primaryTextColor: '#000', // main ccolor of text
 		secondaryTextColor: '#FFF', // secondary color of text
-		additionalTextColor: '#979797', // secondary color of text
+		additionalTextColor: '#9D9D9D', // secondary color of text
+		linkTextColor: '#0C5EFF',
 		disabledTextColor: '#979797', // disabled color of text
 		dangerTextColor: '#FF2C2C', // danger color of text
 		noteTextColor: '#C5C7CD', // note color of text
-		primaryBorderColor: '#e5e5e5',
+
+		primaryBorderColor: '#E4E4E4',
 		secondaryBorderColor: '#FFF',
 		extraBorderColor: '#979797',
 		disabledBorderColor: '#C5C7CD',
+
 		disabledColor: '#DFE0EB',
 		primaryColor: '#F7F8FC', // main color of bg
 		secondaryColor: '#363740', // secondary coplor of bg
 		blankColor: '#f1f3f4', // secondary coplor of bg
 		backgroundColor: '#FFF',
-		menuItemActive: '#3E4049',
+		menuItemActive: '#E4EDFF',
 
 		primaryHighlightColor: '#0025ff',
 		secondaryHighlightColor: '#4047EC',
