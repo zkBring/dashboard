@@ -6,10 +6,10 @@ import {
   AsideMenu,
   AsideMenuItem,
   AsideLogoIcon,
-  AsideCopyright,
   FooterMenu,
   AsideTextLink,
-  FooterButton
+  FooterButton,
+  AsideLogoText
 // @ts-ignore
 } from './styled-components.tsx'
 import { useLocation } from 'react-router-dom'
@@ -34,6 +34,7 @@ const AsideComponent: FC<AsideProps> = () => {
       <AsideLogoZone>
         <AsideTextLink to='/'>
           <AsideLogoIcon src={LinkDropLogo} />
+          <AsideLogoText>LinkDrop</AsideLogoText>
         </AsideTextLink>
       </AsideLogoZone>
 
