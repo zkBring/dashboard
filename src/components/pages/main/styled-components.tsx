@@ -28,6 +28,7 @@ export const WidgetDescription = styled.p`
 
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;
+  width: 100%;
 `
 
 export const AlignBottomButton = styled(WidgetButton)`
@@ -36,16 +37,26 @@ export const AlignBottomButton = styled(WidgetButton)`
 `
 
 export const Title = styled.h3`
+  font-size: 24px;
+  margin: 0 0 24px;
+  font-size: 600;
+  line-height: 32px;
+
   
 `
 
 export const ContainerCentered = styled.div`
   display: flex;
-  min-height: 500px;
+  max-width: 358px;
   align-items: center;
   justify-content: center;
+  border-radius: 28px;
+  padding: 24px;
+  margin: 0 auto;
   width: 100%;
   flex-direction: column;
+  background: ${props => props.theme.backgroundColor};
+
 `
 
 export const ConnectWalletContainer = styled.div`

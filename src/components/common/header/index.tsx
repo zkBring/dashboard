@@ -4,16 +4,14 @@ import {
     HeaderTitle,
     HeaderInfo,
     HeaderUserInfo,
-    ConnectionIndicator,
+    HeaderUserInfoAddress,
     MiniPopupCustomItem,
     NetworkIndicator,
     NetworkIndicatorClass
     // @ts-ignore
 } from './styled-components.tsx'
 import { useLocation, useHistory } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
-import themes from 'themes'
-import { shortenString, defineNetworkName, capitalize } from 'helpers'
+import { shortenString, defineNetworkName, capitalize, defineNativeTokenSymbol } from 'helpers'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
@@ -68,8 +66,6 @@ const defineTitle: TDefineTitle = (location) => {
     
     case location.includes('/campaigns'):
       return 'Campaigns'
-    case location.includes('/'):
-      return 'Dashboard'
     default:
       return ''
   }
@@ -101,31 +97,26 @@ const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowU
     </MiniPopupCustomItem>
   </MiniPopup>
 
-  return <ThemeProvider theme={themes.light}>
-      <Header>
-        <HeaderTitle>
-          {defineTitle(location.pathname)}
-        </HeaderTitle>
-        <HeaderInfo>
-          {chainId && <HeaderUserInfo onClick={() => {
-            setShowToggleChain(!showToggleChain)
-          }}>
-            {capitalize(defineNetworkName(chainId))}
-            {chainsPopup}
-          </HeaderUserInfo>}
-          {address && <HeaderUserInfo onClick={() => {
-            setShowUserOptions(!showUserOptions)
-          }}>
-            <ConnectionIndicator />
-            {shortenString(address)}
-            {userOptionsPopup}
-          </HeaderUserInfo>}
-          {!address && <HeaderUserInfo onClick={connectWallet}>
-            Connect
-          </HeaderUserInfo>}
-        </HeaderInfo>
-      </Header>
-  </ThemeProvider>
+  return <Header>
+    <HeaderTitle>
+      {defineTitle(location.pathname)}
+    </HeaderTitle>
+    <HeaderInfo>
+      {chainId && <HeaderUserInfo onClick={() => {
+        setShowToggleChain(!showToggleChain)
+      }}>
+        {capitalize(defineNetworkName(chainId))}
+        {chainsPopup}
+      </HeaderUserInfo>}
+      {address && <HeaderUserInfo onClick={() => {
+        setShowUserOptions(!showUserOptions)
+      }}>
+        {defineNativeTokenSymbol({ chainId })}
+        <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>
+        {userOptionsPopup}
+      </HeaderUserInfo>}
+    </HeaderInfo>
+  </Header>
 }
 
 

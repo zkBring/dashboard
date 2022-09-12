@@ -42,12 +42,12 @@ const Main: FC<ReduxType> = ({
   if (!chainId || !address) {
     return <ContainerCentered>
       <Title>
-        Sign in with your wallet
+        Sign in
       </Title>
       <WidgetButton
         appearance='action'
         onClick={connectWallet}
-        title='Connect'
+        title='Sign in'
       />
     </ContainerCentered>
   }

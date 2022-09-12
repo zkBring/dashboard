@@ -48,14 +48,16 @@ export const HeaderInfo = styled.div`
 export const HeaderUserInfo = styled.div`
   display: flex;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   min-width: 152px;
-  border-radius: 20px;
-  font-weight: 700;
+  border-radius: 36px;
+  font-weight: 400;
+  padding: 0 0 0 24px;
   min-height: 36px;
   position: relative;
   text-align: center;
   user-select: none;
+  background: ${props => props.theme.backgroundColor};
   justify-content: center;
   margin-right: 16px;
   border: 1px solid ${props => props.theme.primaryBorderColor};
@@ -69,6 +71,16 @@ export const HeaderUserInfo = styled.div`
   }
 `
 
+export const HeaderUserInfoAddress = styled.div`
+  height: 28px;
+  border-radius: 36px;
+  margin-left: 16px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  background: ${props => props.theme.additionalBackgroundColor};
+`
+
 export const HeaderNetworkIcon = styled.span`
   display: flex;
   align-items: center;
@@ -77,7 +89,6 @@ export const HeaderNetworkIcon = styled.span`
   height: 44px;
   border-radius: 100%;
   background: #FFF;
-  
 `
 export const HeaderNetworkIconImg = styled.img`
 
