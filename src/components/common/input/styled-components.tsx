@@ -19,16 +19,13 @@ export const InputContainer = styled.div.attrs(props => ({
   margin-bottom: 24px;
 `
 
-
 export const InputTitle = styled.h3<InputTitleProps>`
   margin-bottom: 4px;
   font-weight: 700;
-  font-size: 12px;
-  line-height: 16px;
-  margin-top: 0px;
+  font-size: 16px;
+  margin: 0 0 12px;
   color: ${props => props.theme.primaryTextColor};
 `
-
 
 export const InputField = styled.input<InputFieldProps>`
   color: ${props => props.theme.primaryTextColor};
@@ -36,7 +33,7 @@ export const InputField = styled.input<InputFieldProps>`
   width: 100%;
   line-height: 1;
   padding: 12px 16px;
-  border: 2px solid;
+  border: 1px solid;
   border-color: ${props => props.theme.primaryBorderColor};
   border-radius: 8px;
   transition: border-color .3s;

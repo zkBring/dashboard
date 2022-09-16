@@ -1,27 +1,19 @@
 import { FC, useState, useEffect, useMemo } from 'react'
 import {
-  Container,
-  WidgetContent,
-  WidgetOptions,
-  WidgetTextarea,
-  WidgetButton,
-  StyledRadio
+  InputsContainer,
+  InputStyled,
+  ButtonStyled
 } from '../../styled-components'
 import wallets from 'configs/wallets'
-import Aside from '../aside'
 import { TProps } from './type'
 import {
-  checkERC1155AssetsData,
-  defineAssetsTextareaPlaceholder,
   defineNativeTokenSymbol,
-  parseERC1155AssetsData
 } from 'helpers'
 import {
-  UserAssets,
-  UserAssetNative,
-  InputTokenAddress,
-  SelectComponent
+  Container
 } from './styled-components'
+import { TLinksContent, TLinkContent } from '../../types'
+import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
@@ -117,15 +109,8 @@ const Erc1155: FC<ReduxType > = ({
   clearCampaign,
   campaign
 }) => {
-  const [
-    tokenAddress,
-    setTokenAddress
-  ] = useState(campaign ? campaign.token_address : '')
 
-  const [
-    title,
-    setTitle
-  ] = useState(campaign ? campaign.title : '')
+  const { type } = useParams<{ type: TTokenType }>()
 
   useEffect(() => {
     clearCampaign()
@@ -144,134 +129,75 @@ const Erc1155: FC<ReduxType > = ({
   }, [chainId])
 
   const [
-    currentWallet,
-    setCurrentWallet
-  ] = useState<TSelectOption>(walletsOptions[0])
+    formData,
+    setFormData
+  ] = useState<TLinkContent>({
+    linksAmount: '',
+    tokenId: '',
+    tokenAmount: ''
+  })
 
-  const { type } = useParams<{ type: TTokenType }>()
-
-  const [
-    assetsValue,
-    setAssetsValue
-  ] = useState('')
-
-  const [ radio, setRadio ] = useState<TClaimPattern>(campaign ? campaign.claim_pattern : claimPattern)
-
+  const [ data, setData ] = useState<TLinksContent>([])
 
   const [
     assetsParsed,
     setAssetsParsedValue
   ] = useState<TAssetsData>([])
 
-  useEffect(() => {
-    if (!tokenAddress.length || !chainId) { return }
-    setTokenContractData(provider, tokenAddress, type, address, chainId)
-  }, [tokenAddress, provider])
+  // export type TAsset = {
+  //   amount?: string,
+  //   id?: number | string,
+  //   native_tokens_amount?: string,
+  //   original_amount?: string,
+  //   original_native_tokens_amount?: string
+  // }
 
-  useEffect(() => {
-    if (!assetsValue ) { return }
-    let assets = parseERC1155AssetsData(assetsValue)
-    if (!assets) { return }
-    setAssetsParsedValue(assets)
-  }, [assetsValue])
-
-  const defineIfButtonDisabled = () => {
-    if (tokenAddress.length !== 42) { return true }
-    return !checkERC1155AssetsData(assetsValue)
-  }
 
   const history = useHistory()
 
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
   return <Container>
-    <WidgetContent>
-      <WidgetOptions>
-        <InputTokenAddress
-          value={title}
-          onChange={value => {
-            setTitle(value)
-            return value
-          }}
-          disabled={Boolean(campaign)}
-          title='Title of campaign'
-        />
-        <InputTokenAddress
-          value={tokenAddress}
-          placeholder='0x Address'
-          disabled={Boolean(campaign)}
-          onChange={value => {
-            setTokenAddress(value)
-            return value
-          }}
-          title='Contract Address'
-        />
-        <UserAssets>
-          <UserAssetNative>
-            Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
-          </UserAssetNative>
-        </UserAssets>
-        <WidgetTextarea
-          value={assetsValue}
-          placeholder={defineAssetsTextareaPlaceholder(
-            'ERC1155',
-            Boolean(symbol),
-            tokenAddress,
-            nativeTokenSymbol
-          )}
-          disabled={!symbol}
-          onChange={value => {
-            setAssetsValue(value)
-            return value
-          }}
-        />
-        <StyledRadio
-          label='Claim pattern'
-          disabled={Boolean(campaign)}
-          radios={[
-            { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
-            { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }
-          ]}
-          value={radio}
-          onChange={value => setRadio(value)}
-        />
-        <SelectComponent
-          options={walletsOptions}
-          value={currentWallet}
-          onChange={value => setCurrentWallet(value)}
-          placeholder='Choose wallet'
-        />
-        <WidgetButton
-          title='Next'
-          appearance='action'
-          onClick={() => {
-            console.log({ assetsParsed })
-            
-            setAssetsData(
-              'ERC1155',
-              assetsParsed,
-              currentWallet,
-              title,
-              tokenAddress,
-              radio,
-              () => {
-                if (campaign) {
-                  return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
-                }
-                history.push(`/campaigns/new/${type}/approve`)
-              }
-            )
-          }}
-          disabled={defineIfButtonDisabled()}
-        />
-      </WidgetOptions>
-      {chainId && <Aside
-        symbol={symbol}
-        type={type}
-        assets={assetsParsed}
-        chainId={chainId}
-      />}
-    </WidgetContent>      
+    <LinksContents
+      type={type}
+      data={data}
+    />
+    <InputsContainer>
+      <InputStyled
+        value={formData.tokenId}
+        placeholder='Token ID'
+        onChange={value => {
+          setFormData({ ...formData, tokenId: value })
+          return value
+        }}
+      />
+      <InputStyled
+        value={formData.tokenAmount}
+        placeholder='Copies per link'
+        onChange={value => {
+          setFormData({ ...formData, tokenAmount: value })
+          return value
+        }}
+      />
+      <InputStyled
+        value={formData.linksAmount}
+        placeholder='Number of links'
+        onChange={value => {
+          setFormData({ ...formData, linksAmount: value })
+          return value
+        }}
+      />
+
+      <ButtonStyled
+        size='small'
+        appearance='additional'
+        onClick={() => {
+          setData([...data, formData])
+        }}
+      >
+        + Add
+      </ButtonStyled>
+    </InputsContainer>
   </Container>
 }
 

@@ -36,7 +36,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
     <WidgetButton
       title='Create'
       appearance='action'
-      to='/'
+      to='/campaigns/new'
     />
   </InvertedWidget>  
 

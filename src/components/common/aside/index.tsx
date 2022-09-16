@@ -39,9 +39,6 @@ const AsideComponent: FC<AsideProps> = () => {
       </AsideLogoZone>
 
       <AsideMenu>
-        <AsideMenuItem to='/' active={location.pathname === '/'}>
-          Dashboard
-        </AsideMenuItem>
         <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
           Campaigns
         </AsideMenuItem>

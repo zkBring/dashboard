@@ -6,7 +6,7 @@ type TRadio = {
 export type TProps = {
   value?: any,
   radios: TRadio[],
-  label: string,
+  label?: string,
   className?: string,
   disabled?: boolean,
   onChange: (value: any) => void

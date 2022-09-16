@@ -8,13 +8,14 @@ import {
   Page,
   Campaigns,
   CampaignsDetails,
-  Main,
   CampaignsCreateInitial,
   CampaignsCreateApprove,
   CampaignsCreateSecure,
   CampaignsCreateGenerate,
   QRs,
   QR,
+  Main,
+  CampaignsNew,
   QRDownload
 } from 'components/pages'
 
@@ -36,18 +37,29 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
   return <HashRouter>
     <Page>
       <Switch>
+
+        <ProtectedRoute
+          path='/campaigns/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsNew}
+        />
+
         <ProtectedRoute
           path='/campaigns/:id'
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsDetails}
         />
+
         <ProtectedRoute
           path='/campaigns'
           exact={true}
           loggedIn={Boolean(address)}
           component={Campaigns}
         />
+
+
 
         <ProtectedRoute
           path='/campaigns/new/:type/initial'
@@ -124,9 +136,12 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={QRDownload}
-        />  
+        />
 
-        <Route path='/' exact={true} render={props => <Main {...props} />} />
+        <Route path='/' exact={true}>
+          <Main />
+        </Route>
+
         <Route path='*' render={props => <NotFound
           {...props}
         />} />

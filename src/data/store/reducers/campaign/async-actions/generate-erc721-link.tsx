@@ -44,7 +44,8 @@ const generateERC721Link = ({
         sponsored,
         tokenStandard,
         signerAddress,
-        claimPattern
+        claimPattern,
+        distributionPattern
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -125,6 +126,7 @@ const generateERC721Link = ({
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
           claim_pattern: claimPattern,
+          distribution_pattern: distributionPattern,
           ...batch
         }
 

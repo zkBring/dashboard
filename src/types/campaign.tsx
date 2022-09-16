@@ -1,5 +1,5 @@
 import { TTokenType } from './index.js'
-import { TLinksBatch, TClaimPattern } from 'types'
+import { TLinksBatch, TClaimPattern, TDistributionPattern } from 'types'
 
 type TCampaign = {
   title: string,
@@ -16,7 +16,8 @@ type TCampaign = {
   batches: TLinksBatch[],
   creator_address: string,
   created_at?: string,
-  claim_pattern: TClaimPattern
+  claim_pattern: TClaimPattern,
+  distribution_pattern: TDistributionPattern
 }
 
 export default TCampaign

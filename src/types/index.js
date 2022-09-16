@@ -26,6 +26,7 @@ import TBase64File from './base64-file'
 import TCampaignNew from './campaign-new'
 import TLinkDecrypted from './link-decrypted'
 import TClaimPattern from './claim-pattern'
+import TDistributionPattern from './distribution-pattern'
 
 export {
   TCampaign,
@@ -52,5 +53,6 @@ export {
   TLinksBatch,
   TBase64File,
   TCampaignNew,
-  TLinkDecrypted
+  TLinkDecrypted,
+  TDistributionPattern
 }

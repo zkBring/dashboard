@@ -15,7 +15,7 @@ export const UserAssetNative = styled(UserAsset)`
 `
 
 
-export const InputTokenAddress = styled(Input)`
+export const InputStyled = styled(Input)`
   margin-bottom: 6px;
 `
 

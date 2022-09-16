@@ -1,14 +1,7 @@
 import styled, { css } from 'styled-components';
 import Loader from '../loader'
 import { Link } from 'react-router-dom'
-
-interface ButtonProps {
-  disabled: boolean,
-  loading?: boolean,
-  appearance: 'action' | 'action-inverted' | 'default' | 'default-inverted',
-  className?: string,
-  size?: 'default' | 'small'
-}
+import { TProps } from './types'
 
 export const ButtonLink = styled(Link)`
   text-decoration: none;
@@ -24,7 +17,7 @@ export const ButtonLoader = styled(Loader)`
 
 export const Button = styled.button.attrs(props => ({
   className: props.className
-}))<ButtonProps>`
+}))<TProps>`
   cursor: pointer;
   padding: 8px 20px;
   font-size: 14px;
@@ -57,6 +50,7 @@ export const Button = styled.button.attrs(props => ({
   ${props => props.size === 'small' && css`
     padding: 4px 8px;
     height: 24px;
+    border-radius: 8px;
     min-width: 74px;
   `}
 
@@ -80,6 +74,17 @@ export const Button = styled.button.attrs(props => ({
         background-color: ${props.theme.buttonActionBackgroundColor};
       } 
     `}
+
+    ${props.disabled && css`
+      background-color: ${props.theme.disabledColor};
+      color: ${props => props.theme.disabledTextColor};
+    `}
+  `}
+
+  ${props => props.appearance === 'additional' && css`
+    border: none; 
+    background-color: ${props => props.theme.buttonAdditionalBackgroundColor};
+    color: ${props => props.theme.primaryHighlightColor};
 
     ${props.disabled && css`
       background-color: ${props.theme.disabledColor};

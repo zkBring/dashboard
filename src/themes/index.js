@@ -21,20 +21,20 @@ const themes = {
 		additionalBackgroundColor: '#F7F8FA',
 		menuItemActive: '#E4EDFF',
 
-		primaryHighlightColor: '#0025ff',
+		primaryHighlightColor: '#0C5EFF',
 		secondaryHighlightColor: '#4047EC',
 		invertedCommunityColor: '#4B2FF5',
-
-		buttonActionBackgroundColor: '#0025ff',
-
+	
+		buttonActionBackgroundColor: '#0C5EFF',
 		buttonDefaultBackgroundColor: 'transparent',
 		buttonDefaultBackgroundHoverColor: 'transparent',
+		buttonAdditionalBackgroundColor: '#E4EDFF',
 
 		buttonGradient: 'linear-gradient(to right, #00B2FF 0%, #FA00FF 50%, #00B2FF 100%)',
 
 		tagDefaultColor: '#DFE0EB',
 		tagErrorColor: '#FF2C2C',
-		tagInfoColor: '#0025ff',
+		tagInfoColor: '#0C5EFF',
 		tagSuccessColor: '#21F142',
 
 		noteDefaultBackgroundColor: 'rgba(0, 37, 255, .2)',

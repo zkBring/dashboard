@@ -20,7 +20,19 @@ import chains from 'configs/chains'
 import { TDefineTitle, LocationType } from './types'
 import { IAppDispatch } from 'data/store'
 
-const mapStateToProps = ({ user: { chainId, address, provider } }: RootState) => ({ chainId, address, provider })
+const mapStateToProps = ({
+  user: {
+    chainId, 
+    address, 
+    provider, 
+    nativeTokenAmountFormatted
+  }
+}: RootState) => ({
+  chainId,
+  address,
+  provider,
+  nativeTokenAmountFormatted
+})
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
@@ -36,17 +48,16 @@ interface Props {}
 
 const defineTitle: TDefineTitle = (location) => {
   switch(true) {
-    case location.includes('/campaigns/new/erc20/initial'):
+    case location.includes('/campaigns/new/initial'):
+      return 'New campaign'
     case location.includes('/campaigns/new/erc20/secure'):
     case location.includes('/campaigns/new/erc20/generate'):
     case location.includes('/campaigns/new/erc20/approve'):
       return 'New ERC20 Campaign'
-    case location.includes('/campaigns/new/erc721/initial'):
     case location.includes('/campaigns/new/erc721/secure'):
     case location.includes('/campaigns/new/erc721/generate'):
     case location.includes('/campaigns/new/erc721/approve'):
       return 'New ERC721 Campaign'
-    case location.includes('/campaigns/new/erc1155/initial'):
     case location.includes('/campaigns/new/erc1155/secure'):
     case location.includes('/campaigns/new/erc1155/generate'):
     case location.includes('/campaigns/new/erc1155/approve'):
@@ -71,7 +82,14 @@ const defineTitle: TDefineTitle = (location) => {
   }
 }
 
-const HeaderComponent: FC<Props & ReduxType> = ({ chainId, address, connectWallet, switchNetwork, provider, logout }) => {
+const HeaderComponent: FC<Props & ReduxType> = ({
+  chainId,
+  address,
+  nativeTokenAmountFormatted,
+  switchNetwork,
+  provider,
+  logout
+}) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
   const [ showUserOptions, setShowUserOptions ] = useState(false)
   const location = useLocation<LocationType>()
@@ -111,7 +129,7 @@ const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowU
       {address && <HeaderUserInfo onClick={() => {
         setShowUserOptions(!showUserOptions)
       }}>
-        {defineNativeTokenSymbol({ chainId })}
+        {nativeTokenAmountFormatted !== null ? parseFloat(Number((nativeTokenAmountFormatted)).toFixed(3)) : 0} {defineNativeTokenSymbol({ chainId })}
         <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>
         {userOptionsPopup}
       </HeaderUserInfo>}

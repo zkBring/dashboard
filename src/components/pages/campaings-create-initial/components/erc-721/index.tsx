@@ -1,14 +1,8 @@
 import { FC, useState, useEffect, useMemo } from 'react'
 import {
-  Container,
-  WidgetContent,
-  WidgetOptions,
-  WidgetTextarea,
-  WidgetButton,
-  StyledRadio
+
 } from '../../styled-components'
 import wallets from 'configs/wallets'
-import Aside from '../aside'
 import { TProps } from './type'
 import {
   checkERC721AssetsData,
@@ -183,94 +177,95 @@ const Erc721: FC<ReduxType > = ({
 
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
-  return <Container>
-    <WidgetContent>
-      <WidgetOptions>
+  return null
+  // return <Container>
+  //   <WidgetContent>
+  //     <WidgetOptions>
 
-        <InputTokenAddress
-          value={title}
-          onChange={value => {
-            setTitle(value)
-            return value
-          }}
-          disabled={Boolean(campaign)}
-          title='Title of campaign'
-        />
-        <InputTokenAddress
-          value={tokenAddress}
-          placeholder='0x Address'
-          disabled={Boolean(campaign)}
-          onChange={value => {
-            setTokenAddress(value)
-            return value
-          }}
-          title='Contract Address'
-        />
-        <UserAssets>
-          <UserAssetNative>
-            Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
-          </UserAssetNative>
-        </UserAssets>
-        <WidgetTextarea
-          value={assetsValue}
-          placeholder={defineAssetsTextareaPlaceholder(
-            'ERC721',
-            Boolean(symbol),
-            tokenAddress,
-            nativeTokenSymbol
-          )}
-          disabled={!symbol}
-          onChange={value => {
-            setAssetsValue(value)
-            return value
-          }}
-        />
-        <StyledRadio
-          label='Claim pattern'
-          disabled={Boolean(campaign)}
-          radios={[
-            { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
-            { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }
-          ]}
-          value={radio}
-          onChange={value => setRadio(value)}
-        />
-        <SelectComponent
-          options={walletsOptions}
-          value={currentWallet}
-          onChange={value => setCurrentWallet(value)}
-          placeholder='Choose wallet'
-        />
-        <WidgetButton
-          title='Next'
-          appearance='action'
-          onClick={() => {
-            setAssetsData(
-              'ERC721',
-              assetsParsed,
-              currentWallet,
-              title,
-              tokenAddress,
-              radio,
-              () => {
-                if (campaign) {
-                  return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
-                }
-                history.push(`/campaigns/new/${type}/approve`)
-              }
-            )
-          }}
-          disabled={defineIfButtonDisabled()}
-        />
-      </WidgetOptions>
-      {chainId && <Aside
-        symbol={symbol}
-        type={type}
-        assets={assetsParsed}
-        chainId={chainId}
-      />}
-    </WidgetContent>      
-  </Container>
+  //       <InputTokenAddress
+  //         value={title}
+  //         onChange={value => {
+  //           setTitle(value)
+  //           return value
+  //         }}
+  //         disabled={Boolean(campaign)}
+  //         title='Title of campaign'
+  //       />
+  //       <InputTokenAddress
+  //         value={tokenAddress}
+  //         placeholder='0x Address'
+  //         disabled={Boolean(campaign)}
+  //         onChange={value => {
+  //           setTokenAddress(value)
+  //           return value
+  //         }}
+  //         title='Contract Address'
+  //       />
+  //       <UserAssets>
+  //         <UserAssetNative>
+  //           Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
+  //         </UserAssetNative>
+  //       </UserAssets>
+  //       <WidgetTextarea
+  //         value={assetsValue}
+  //         placeholder={defineAssetsTextareaPlaceholder(
+  //           'ERC721',
+  //           Boolean(symbol),
+  //           tokenAddress,
+  //           nativeTokenSymbol
+  //         )}
+  //         disabled={!symbol}
+  //         onChange={value => {
+  //           setAssetsValue(value)
+  //           return value
+  //         }}
+  //       />
+  //       <StyledRadio
+  //         label='Claim pattern'
+  //         disabled={Boolean(campaign)}
+  //         radios={[
+  //           { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
+  //           { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }
+  //         ]}
+  //         value={radio}
+  //         onChange={value => setRadio(value)}
+  //       />
+  //       <SelectComponent
+  //         options={walletsOptions}
+  //         value={currentWallet}
+  //         onChange={value => setCurrentWallet(value)}
+  //         placeholder='Choose wallet'
+  //       />
+  //       <WidgetButton
+  //         title='Next'
+  //         appearance='action'
+  //         onClick={() => {
+  //           setAssetsData(
+  //             'ERC721',
+  //             assetsParsed,
+  //             currentWallet,
+  //             title,
+  //             tokenAddress,
+  //             radio,
+  //             () => {
+  //               if (campaign) {
+  //                 return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
+  //               }
+  //               history.push(`/campaigns/new/${type}/approve`)
+  //             }
+  //           )
+  //         }}
+  //         disabled={defineIfButtonDisabled()}
+  //       />
+  //     </WidgetOptions>
+  //     {chainId && <Aside
+  //       symbol={symbol}
+  //       type={type}
+  //       assets={assetsParsed}
+  //       chainId={chainId}
+  //     />}
+  //   </WidgetContent>      
+  // </Container>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)

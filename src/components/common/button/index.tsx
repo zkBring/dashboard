@@ -5,22 +5,9 @@ import {
     Anchor,
     ButtonLink
 } from './styled-components'
+import { TProps } from './types'
 
-interface Props {
-  title: string,
-  disabled?: boolean,
-  loading?: boolean,
-  onClick?: () => void,
-  appearance?: 'action' | 'action-inverted' | 'default' | 'default-inverted',
-  className?: string,
-  size?: 'default' | 'small',
-  href?: string,
-  to?: string,
-  target?: '_blank' | '_self' | '_parent' | '_top',
-  type?: string
-}
-
-const ButtonComponent: FC<Props> = ({
+const ButtonComponent: FC<TProps> = ({
   title,
   disabled = false,
   loading = false,

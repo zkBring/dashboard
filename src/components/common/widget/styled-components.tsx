@@ -6,14 +6,13 @@ export const WidgetComponent = styled.div<TProps>`
   background: #FFF;
   width: 100%;
   border-radius: 8px;
-  border: 1px solid ${props => props.theme.primaryBorderColor};
-  padding: 40px;
+  padding: 24px;
 `
 
 export const WidgetTitle = styled.h3`
-  font-size: 24px;
-  margin: 0 0 20px;
-  font-weight: 400;
+  font-size: 22px;
+  margin: 0 0 16px;
+  font-weight: 700;
 `
 
 export const WidgetContent = styled.div`

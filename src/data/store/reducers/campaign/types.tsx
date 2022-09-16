@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
-import { TTokenType, TClaimPattern, TAssetsData, TLink } from 'types'
+import { TTokenType, TClaimPattern, TAssetsData, TLink, TDistributionPattern } from 'types'
 
 export interface CampaignState {
   title?: string | null,
@@ -20,6 +20,7 @@ export interface CampaignState {
   signerAddress: string | null,
   sponsored: boolean,
   claimPattern: TClaimPattern,
+  distributionPattern: TDistributionPattern,
   links: {
     date: string,
     links: TLink[],

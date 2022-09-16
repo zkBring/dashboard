@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { Constants } from './constants';
-import { TTokenType, TAssetsData, TLink, TClaimPattern } from 'types'
+import { TTokenType, TAssetsData, TLink, TClaimPattern, TDistributionPattern } from 'types'
 
 export function setTokenAddress(tokenAddress: string | null) {
   return action(Constants.CAMPAIGN_SET_TOKEN_ADDRESS, {
@@ -125,6 +125,12 @@ export function setId(id: string) {
 export function setClaimPattern(claimPattern: TClaimPattern) {
   return action(Constants.CAMPAIGN_SET_CLAIM_PATTERN, {
     claimPattern
+  })
+}
+
+export function setDistributionPattern(distributionPattern: TDistributionPattern) {
+  return action(Constants.CAMPAIGN_SET_DISTRIBUTION_PATTERN, {
+    distributionPattern
   })
 }
 

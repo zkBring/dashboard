@@ -10,9 +10,8 @@ export const RadioButtonsContainer = styled.div`
 export const RadioButtonsLabel = styled.h3`
   margin-bottom: 4px;
   font-weight: 700;
-  font-size: 12px;
-  line-height: 16px;
-  margin-top: 0px;
+  font-size: 16px;
+  margin: 0 0 12px;
   color: ${props => props.theme.primaryTextColor};
 `
 
@@ -21,6 +20,7 @@ export const RadioItem = styled.div<TRadioItem>`
   cursor: pointer;
   margin-bottom: 4px;
   align-items: center;
+  min-height: 30px;
 
   ${props => props.disabled && css`
     cursor: not-allowed;
@@ -28,19 +28,22 @@ export const RadioItem = styled.div<TRadioItem>`
   `}
 
   .${RadioButtonControllerClassName} {
-    background-color: ${props => {
-      if (props.active) {
-        return props.theme.primaryHighlightColor
-      }
-      return props.theme.primaryColor
-    }}
+    &:after {
+      background-color: ${props => {
+        if (props.active) {
+          return props.theme.primaryHighlightColor
+        }
+        return props.theme.primaryColor
+      }}
+    }
+    
   }
 `
 
 export const RadioButtonController = styled.div`
-  min-width: 20px;
-  min-height: 20px;
-  border-radius: 20px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,7 +56,7 @@ export const RadioButtonController = styled.div`
     width: 10px;
     height: 10px;
     background-color: ${props => props.theme.blankColor};
-    border-radius: 10px;
+    border-radius: 3px;
   }
 `
 

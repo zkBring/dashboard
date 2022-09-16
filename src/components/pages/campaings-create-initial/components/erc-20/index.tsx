@@ -1,14 +1,8 @@
 import { FC, useState, useEffect, useMemo } from 'react'
 import {
-  Container,
-  WidgetContent,
-  WidgetOptions,
-  WidgetTextarea,
-  WidgetButton,
   StyledRadio
 } from '../../styled-components'
 import wallets from 'configs/wallets'
-import Aside from '../aside'
 import { TProps } from './type'
 import {
   NATIVE_TOKEN_ADDRESS
@@ -25,7 +19,6 @@ import {
   UserAssets,
   UserAsset,
   UserAssetNative,
-  InputTokenAddress,
   SelectComponent
 } from './styled-components'
 import { RootState, IAppDispatch } from 'data/store';
@@ -81,24 +74,20 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       address,
       chainId
     ),
-    setAssetsData: (
-      type: TTokenType,
-      assets: TAssetsData,
-      wallet: TSelectOption,
-      title: string,
-      tokenAddress: string,
-      claimPattern: TClaimPattern,
-      callback: () => void
-    ) => dispatch(campaignAsyncActions.setAssetsData(
-        type,
-        assets,
-        String(wallet.value),
-        title,
-        tokenAddress,
-        claimPattern,
-        callback
-      )
-    ),
+    // setAssetsData: (
+    //   type: TTokenType,
+    //   assets: TAssetsData,
+    //   wallet: TSelectOption,
+    //   claimPattern: TClaimPattern,
+    //   callback: () => void
+    // ) => dispatch(campaignAsyncActions.setAssetsData(
+    //     type,
+    //     assets,
+    //     String(wallet.value),
+    //     claimPattern,
+    //     callback
+    //   )
+    // ),
     clearCampaign: () => {
       dispatch(
         campaignActions.clearCampaign()
@@ -115,7 +104,7 @@ const Erc20: FC<ReduxType > = ({
   provider,
   symbol,
   setTokenContractData,
-  setAssetsData,
+  // setAssetsData,
   chainId,
   address,
   nativeTokenAmountFormatted,
@@ -201,104 +190,66 @@ const Erc20: FC<ReduxType > = ({
   const history = useHistory()
 
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
+  return null
+  // return <Container>
+  //   <WidgetContent>
+  //     <WidgetOptions>
 
-  return <Container>
-    <WidgetContent>
-      <WidgetOptions>
-        <InputTokenAddress
-          value={title}
-          onChange={value => {
-            setTitle(value)
-            return value
-          }}
-          disabled={Boolean(campaign)}
-          title='Title of campaign'
-        />
-
-        <InputTokenAddress
-          value={tokenAddress}
-          placeholder='0x Address'
-          onChange={value => {
-            setTokenAddress(value)
-            return value
-          }}
-          disabled={Boolean(campaign)}
-          title='Contract Address'
-        />
-        <UserAssets>
-          <UserAssetNative>
-            Balance: {nativeTokenAmountFormatted} {nativeTokenSymbol}
-          </UserAssetNative>
-          {symbol && symbol !== nativeTokenSymbol && tokenAmountFormatted && <UserAsset>
-            Balance {symbol}: {tokenAmountFormatted}
-          </UserAsset>}
-        </UserAssets>
-        <WidgetTextarea
-          value={assetsValue}
-          placeholder={defineAssetsTextareaPlaceholder(
-            'ERC20',
-            Boolean(symbol),
-            tokenAddress,
-            nativeTokenSymbol
-          )}
-          disabled={!symbol}
-          onChange={value => {
-            setAssetsValue(value)
-            return value
-          }}
-        />
-        <StyledRadio
-          disabled={Boolean(campaign)}
-          label='Claim pattern'
-          radios={[
-            { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
-            { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }
-          ]}
-          value={radio}
-          onChange={value => setRadio(value)}
-        />
-        <SelectComponent
-          options={walletsOptions}
-          value={currentWallet}
-          onChange={value => setCurrentWallet(value)}
-          placeholder='Choose wallet'
-        />
-        <WidgetButton
-          title='Next'
-          appearance='action'
-          onClick={() => {
-            setAssetsData(
-              'ERC20',
-              assetsParsed,
-              currentWallet,
-              title,
-              tokenAddress,
-              radio,
-              () => {
-                if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
-                  if (campaign) {
-                    return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/secure`)
-                  }
-                  return history.push(`/campaigns/new/${type}/secure`)
-                }
-                if (campaign) {
-                  return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
-                }
-                history.push(`/campaigns/new/${type}/approve`)
-              }
-            )
-          }}
-          disabled={defineIfButtonDisabled()}
-        />
-      </WidgetOptions>
-      {chainId && <Aside
-        symbol={symbol}
-        type={type}
-        assets={assetsParsed}
-        chainId={chainId}
-      />}
-    </WidgetContent>      
-  </Container>
+  //       {/* <UserAssets>
+  //         {symbol && symbol !== nativeTokenSymbol && tokenAmountFormatted && <UserAsset>
+  //           Balance {symbol}: {tokenAmountFormatted}
+  //         </UserAsset>}
+  //       </UserAssets> */}
+        
+  //       <StyledRadio
+  //         disabled={Boolean(campaign)}
+  //         label='Claim pattern'
+  //         radios={[
+  //           { label: 'Mint (tokens will be minted to user address at claim)', value: 'mint' },
+  //           { label: 'Transfer (tokens should be preminted, and will be transferred to user address at claim)', value: 'transfer' }
+  //         ]}
+  //         value={radio}
+  //         onChange={value => setRadio(value)}
+  //       />
+  //       <SelectComponent
+  //         options={walletsOptions}
+  //         value={currentWallet}
+  //         onChange={value => setCurrentWallet(value)}
+  //         placeholder='Choose wallet'
+  //       />
+  //       <WidgetButton
+  //         title='Next'
+  //         appearance='action'
+  //         onClick={() => {
+  //           // setAssetsData(
+  //           //   assetsParsed,
+  //           //   currentWallet,
+  //           //   radio,
+  //           //   () => {
+  //           //     if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
+  //           //       if (campaign) {
+  //           //         return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/secure`)
+  //           //       }
+  //           //       return history.push(`/campaigns/new/${type}/secure`)
+  //           //     }
+  //           //     if (campaign) {
+  //           //       return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
+  //           //     }
+  //           //     history.push(`/campaigns/new/${type}/approve`)
+  //           //   }
+  //           // )
+  //         }}
+  //         disabled={defineIfButtonDisabled()}
+  //       />
+  //     </WidgetOptions>
+  //     {chainId && <Aside
+  //       symbol={symbol}
+  //       type={type}
+  //       assets={assetsParsed}
+  //       chainId={chainId}
+  //     />}
+  //   </WidgetContent>      
+  // </Container>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(Erc20)

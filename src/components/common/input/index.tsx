@@ -43,7 +43,7 @@ const InputComponent: FC<Props> = ({
       error={error}
       className={className}
     >
-      <InputTitle>{title}</InputTitle>
+      {title && <InputTitle>{title}</InputTitle>}
       <InputField
         ref={ref}
         onChange={(evt) => onChange(evt.target.value)}

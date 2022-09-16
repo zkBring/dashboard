@@ -18,7 +18,7 @@ const RadioButtons: FC<TProps> = ({
   disabled
 }) => {
   return <RadioButtonsContainer className={className}>
-    <RadioButtonsLabel>{label}</RadioButtonsLabel>
+    {label && <RadioButtonsLabel>{label}</RadioButtonsLabel>}
     {radios.map(item => <RadioItem
       disabled={disabled}
       onClick={() => {
