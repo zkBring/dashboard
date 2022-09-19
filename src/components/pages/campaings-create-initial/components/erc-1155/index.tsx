@@ -128,16 +128,17 @@ const Erc1155: FC<ReduxType > = ({
     return options
   }, [chainId])
 
+  const [ data, setData ] = useState<TLinksContent>([])
+
   const [
     formData,
     setFormData
   ] = useState<TLinkContent>({
     linksAmount: '',
     tokenId: '',
-    tokenAmount: ''
+    tokenAmount: '',
+    id: data.length
   })
-
-  const [ data, setData ] = useState<TLinksContent>([])
 
   const [
     assetsParsed,
@@ -161,6 +162,7 @@ const Erc1155: FC<ReduxType > = ({
     <LinksContents
       type={type}
       data={data}
+      onRemove={(id) => console.log({ id })}
     />
     <InputsContainer>
       <InputStyled
@@ -193,6 +195,12 @@ const Erc1155: FC<ReduxType > = ({
         appearance='additional'
         onClick={() => {
           setData([...data, formData])
+          setFormData({
+            linksAmount: '',
+            tokenId: '',
+            tokenAmount: '',
+            id: data.length
+          })
         }}
       >
         + Add
