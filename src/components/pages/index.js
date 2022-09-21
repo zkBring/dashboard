@@ -9,7 +9,7 @@ import CampaignsCreateSecure from './campaigns-create-secure/index'
 import CampaignsCreateGenerate from './campaigns-create-generate/index'
 import QR from './qr/index'
 import QRDownload from './qr-download/index'
-import CampaignsNew from './campaigns-new'
+import CampaignsCreateNew from './campaigns-create-new'
 import Main from './main'
 
 export {
@@ -22,7 +22,7 @@ export {
   CampaignsCreateSecure,
   CampaignsCreateGenerate,
   QRs,
-  CampaignsNew,
+  CampaignsCreateNew,
   QR,
   QRDownload,
   Main

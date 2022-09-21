@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TCampaign, TTokenType, TLinkParams, TDistributionPattern } from 'types'
 import { Loader } from 'components/common'
+import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent,
@@ -47,9 +48,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
-type TDefineComponent = (type: TTokenType, campaign?: TCampaign | null) => React.ReactNode
 
-const defineComponent: TDefineComponent = (type, campaign) => {
+const defineComponent: TDefineComponent = (type, assetsData, setAssetsData, campaign) => {
   switch(type.toUpperCase()) {
     case 'ERC20':
       return <Erc20
@@ -65,6 +65,8 @@ const defineComponent: TDefineComponent = (type, campaign) => {
       return <Erc1155
       type={type}
       campaign={campaign}
+      assetsData={assetsData}
+      setAssetsData={setAssetsData}
     />
   }
 }
@@ -80,11 +82,13 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const history = useHistory()
   const { type, id } = useParams<TLinkParams>()
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-  const content = defineComponent(type, currentCampaign)
-  const [ radio, setRadio ] = useState<TDistributionPattern>(currentCampaign ? currentCampaign.distribution_pattern : distributionPattern)
+  
+  const [ distributionType, setDistributionType ] = useState<TDistributionPattern>(currentCampaign ? currentCampaign.distribution_pattern : distributionPattern)
+  const [ data, setData ] = useState<TLinksContent>([])
+  const content = defineComponent(type, data, setData, currentCampaign)
 
   const defineIfNextDisabled = () => {
-    return false
+    return !data.length && distributionType === 'manual'
   }
 
   useEffect(() => {
@@ -102,15 +106,18 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
             { label: 'Manual (Select token IDs to generate links)', value: 'manual' },
             { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: 'sdk' }
           ]}
-          value={radio}
-          onChange={value => setRadio(value)}
+          value={distributionType}
+          onChange={value => {
+            setData([])
+            setDistributionType(value)
+          }}
         />
         {false && content}
       </WidgetComponent>
 
-      <WidgetComponent title='Select tokens'>
+      {distributionType !== 'sdk' && <WidgetComponent title='Select tokens'>
         {content}
-      </WidgetComponent>
+      </WidgetComponent>}
     </WidgetContainer>
 
     <Aside

@@ -3,13 +3,22 @@ import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import { Loader } from 'components/common'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+
+import {
+  Header,
+  WidgetButton,
+  BatchList,
+  BatchListLabel,
+  BatchListValue,
+  WidgetTitleStyled
+} from './styled-components'
+
 import {
   WidgetComponent,
   Container,
-  WidgetButton,
-  BatchList,
-  BatchTitle
-} from './styled-components'
+  Aside
+} from 'components/pages/common'
+
 import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
 import { getCampaignBatches } from 'data/store/reducers/campaigns/async-actions'
@@ -58,18 +67,40 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   const { campaign_id, token_standard, title, batches, created_at } = currentCampaign
     
   return <Container>
-    <WidgetComponent title={title || `Campaign ${campaign_id}`}>
+    <WidgetComponent>
+      <Header>
+        <WidgetTitleStyled>{title || `Campaign ${campaign_id}`}</WidgetTitleStyled>
+        <WidgetButton
+          appearance='action'
+          size='small'
+          title='+ Add'
+          onClick={() => {
+            history.push(`/campaigns/edit/${token_standard}/${campaign_id}/initial`)
+          }}
+        />
+      </Header>
       {loading && <Loader withOverlay />}
       <BatchList>
+        <BatchListLabel>Batch</BatchListLabel>
+        <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Date created</BatchListLabel>
+        <BatchListLabel></BatchListLabel>
         {batches && batches.map(batch => {
           const dateFormatted = formatDate(batch.created_at || '')
           return <>
-            <BatchTitle>
-            {batch.batch_description} / {batch.claim_links.length} link(s). Created {dateFormatted} {batch.sponsored ? '(sponsored)' : ''}
-            </BatchTitle>
+            <BatchListValue>
+            {batch.batch_description}
+            </BatchListValue>
+            <BatchListValue>
+              {batch.claim_links.length} link(s)
+            </BatchListValue>
+            <BatchListValue>
+              {dateFormatted}
+            </BatchListValue>
             <WidgetButton
               appearance='action'
-              title='Download CSV'
+              size='small'
+              title='Download'
               onClick={() => {
                 if (!dashboardKey) { return alert ('dashboardKey is not provided') }
                 const decryptedLinks = decryptLinks(batch.claim_links, dashboardKey)
@@ -83,14 +114,12 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           </>
         })}
       </BatchList>
-      <WidgetButton
-        appearance='action'
-        title='+ Add more links'
-        onClick={() => {
-          history.push(`/campaigns/edit/${token_standard}/${campaign_id}/initial`)
-        }}
-      />
     </WidgetComponent>
+    <Aside
+      title="Title"
+      subtitle="Subtitle"
+    >
+    </Aside>
   </Container>
 }
 

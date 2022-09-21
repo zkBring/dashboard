@@ -1,8 +1,4 @@
 import { FC, useState } from 'react'
-import {
-  Container,
-  WidgetComponent,
-} from './styled-components'
 import { Secure } from './components'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -14,6 +10,11 @@ import { LINK_COMISSION_PRICE } from 'configs/app'
 import { add, bignumber, multiply } from 'mathjs'
 import { useParams } from 'react-router-dom'
 import { TLinkParams } from 'types'
+import {
+  WidgetComponent,
+  Container,
+  Aside
+} from 'components/pages/common'
 
 const mapStateToProps = ({
   user: {
@@ -62,7 +63,36 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         nativeTokenSymbol={nativeTokenSymbol}
         campaign={currentCampaign}
       />
+      {/* <WidgetButton
+        title='Send'
+        appearance='action'
+        onClick={() => {
+          secure(
+            sponsored,
+            amount,
+            () => {
+              const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
+              history.push(redirectURL)
+            }
+          )
+        }}
+      /> */}
     </WidgetComponent>
+    <Aside
+      back={{
+        action: () => {}
+      }}
+      next={{
+        action: () => {
+          // const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
+          //       history.push(redirectURL)
+        },
+        disabled: false
+      }}
+      title="Summary"
+      subtitle="Check your campaign’s details before going next"
+    >
+    </Aside>
   </Container>
 }
 

@@ -67,24 +67,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       address,
       chainId
     ),
-    setAssetsData: (
-      type: TTokenType,
-      assets: TAssetsData,
-      wallet: TSelectOption,
-      title: string,
-      tokenAddress: string,
-      claimPattern: TClaimPattern,
-      callback: () => void
-    ) => dispatch(campaignAsyncActions.setAssetsData(
-        type,
-        assets,
-        String(wallet.value),
-        title,
-        tokenAddress,
-        claimPattern,
-        callback
-      )
-    ),
     clearCampaign: () => {
       dispatch(
         campaignActions.clearCampaign()
@@ -98,16 +80,11 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   TProps
 
 const Erc1155: FC<ReduxType > = ({
-  provider,
-  symbol,
   setTokenContractData,
-  setAssetsData,
   chainId,
-  address,
-  nativeTokenAmountFormatted,
-  claimPattern,
   clearCampaign,
-  campaign
+  setAssetsData,
+  assetsData
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -115,30 +92,20 @@ const Erc1155: FC<ReduxType > = ({
   useEffect(() => {
     clearCampaign()
   }, [])
-  
-  const walletsOptions = useMemo(() => {
-    const options = wallets
-      .filter(wallet => {
-        return chainId && wallet.chains.includes(String(chainId))
-      })
-      .map(wallet => ({
-        label: wallet.name,
-        value: wallet.id
-      }))
-    return options
-  }, [chainId])
 
-  const [ data, setData ] = useState<TLinksContent>([])
+  const getDefaultValues = () => {
+    return {
+      linksAmount: '',
+      tokenId: '',
+      tokenAmount: '',
+      id: assetsData.length
+    }
+  }
 
   const [
     formData,
     setFormData
-  ] = useState<TLinkContent>({
-    linksAmount: '',
-    tokenId: '',
-    tokenAmount: '',
-    id: data.length
-  })
+  ] = useState<TLinkContent>(getDefaultValues())
 
   const [
     assetsParsed,
@@ -161,8 +128,10 @@ const Erc1155: FC<ReduxType > = ({
   return <Container>
     <LinksContents
       type={type}
-      data={data}
-      onRemove={(id) => console.log({ id })}
+      data={assetsData}
+      onRemove={(id) => {
+        setAssetsData(assetsData.filter(item => item.id !== id))
+      }}
     />
     <InputsContainer>
       <InputStyled
@@ -194,13 +163,8 @@ const Erc1155: FC<ReduxType > = ({
         size='small'
         appearance='additional'
         onClick={() => {
-          setData([...data, formData])
-          setFormData({
-            linksAmount: '',
-            tokenId: '',
-            tokenAmount: '',
-            id: data.length
-          })
+          setAssetsData([ ...assetsData, formData ])
+          setFormData(getDefaultValues())
         }}
       >
         + Add

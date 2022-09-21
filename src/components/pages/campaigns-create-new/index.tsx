@@ -86,7 +86,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
-const CampaignsNew: FC<ReduxType> = ({
+const CampaignsCreateNew: FC<ReduxType> = ({
   createProxyContract,
   symbol,
   chainId,
@@ -150,7 +150,7 @@ const CampaignsNew: FC<ReduxType> = ({
         value={type}
         radios={types}
         onChange={(value) => { setType(value) }}
-      />  
+      />
 
       <InputStyled
         value={tokenAddress}
@@ -180,4 +180,4 @@ const CampaignsNew: FC<ReduxType> = ({
   </Container>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsNew)
+export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateNew)

@@ -30,10 +30,10 @@ const Aside: FC<TProps> = ({
       <WidgetTitle>Summary</WidgetTitle>
       <WidgetSubtitle>Check your campaign’s details before going next</WidgetSubtitle>
       {children}
-      <ButtonsContainer>
-        <ButtonStyled disabled={Boolean(backDisabled)} onClick={backAction}>{backTitle}</ButtonStyled>
-        <ButtonStyled disabled={Boolean(nextDisabled)} appearance='action' onClick={nextAction}>{nextTitle}</ButtonStyled>
-      </ButtonsContainer>
+      {(backAction || nextAction) && <ButtonsContainer>
+        {backAction && <ButtonStyled disabled={Boolean(backDisabled)} onClick={backAction}>{backTitle}</ButtonStyled>}
+        {nextAction && <ButtonStyled disabled={Boolean(nextDisabled)} appearance='action' onClick={nextAction}>{nextTitle}</ButtonStyled>}
+      </ButtonsContainer>}
     </WidgetComponent>
   </WidgetAside>
 }

@@ -31,7 +31,7 @@ export const ButtonsContainer = styled.div`
 
 export const WidgetTitle = styled.h3`
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   margin: 0 0 16px;
   color: ${props => props.theme.primaryTextColor};
 `

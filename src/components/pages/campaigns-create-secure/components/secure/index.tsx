@@ -55,48 +55,8 @@ const Secure: FC<ReduxType> = ({
   return <WidgetContent>
     {loading && <Loader withOverlay />}
     <WidgetSecure>
-     
-      <WidgetTextBlock>
-        <WidgetData>
-          Native tokens to be secured on the contract: {amount} {nativeTokenSymbol}
-        </WidgetData>
-        <WidgetText>
-          Native tokens would be secured if you have selected an option to add native tokens on the previous steps
-        </WidgetText>
-      </WidgetTextBlock>
-      <WidgetTextBlock>
-        <WidgetData>
-          Transaction sponsorship
-        </WidgetData>
-        <CheckboxComponent
-          label='Select to sponsor claim transactions'
-          value={sponsored}
-          onChange={value => setSponsored(value)}
-        />
-      </WidgetTextBlock>
-      <WidgetTextBlock>
-        <WidgetText>
-          Sponsor claim transactions so that users can claim tokens without having {nativeTokenSymbol} in their wallets.
-        </WidgetText>
-        <WidgetText>
-          By enabling this feature, gas would be paid by Linkdrop, and Ledger shall be responsible for monthly reimbursement to Company of all transaction and/or gas fees accrued. Please refer to Services Fees and Exhibit D in the signed SaaS Agreement for more details.
-        </WidgetText>
-      </WidgetTextBlock>
       <Buttons>
-        <WidgetButton
-          title='Send'
-          appearance='action'
-          onClick={() => {
-            secure(
-              sponsored,
-              amount,
-              () => {
-                const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
-                history.push(redirectURL)
-              }
-            )
-          }}
-        />
+       
       </Buttons>
     </WidgetSecure>
     <TransactionAside />

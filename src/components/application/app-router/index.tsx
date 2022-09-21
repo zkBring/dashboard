@@ -15,7 +15,7 @@ import {
   QRs,
   QR,
   Main,
-  CampaignsNew,
+  CampaignsCreateNew,
   QRDownload
 } from 'components/pages'
 
@@ -42,7 +42,7 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
           path='/campaigns/new'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CampaignsNew}
+          component={CampaignsCreateNew}
         />
 
         <ProtectedRoute
