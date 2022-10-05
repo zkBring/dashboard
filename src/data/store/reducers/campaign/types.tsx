@@ -21,6 +21,7 @@ export interface CampaignState {
   sponsored: boolean,
   claimPattern: TClaimPattern,
   distributionPattern: TDistributionPattern,
+  nativeTokensPerLink: string,
   links: {
     date: string,
     links: TLink[],

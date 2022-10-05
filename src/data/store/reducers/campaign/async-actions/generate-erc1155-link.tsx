@@ -45,7 +45,8 @@ const generateERC1155Link = ({
         sponsored,
         tokenStandard,
         claimPattern,
-        distributionPattern
+        distributionPattern,
+        nativeTokensPerLink
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -60,7 +61,7 @@ const generateERC1155Link = ({
       const date = String(new Date())
       for (let i = 0; i < assets.length; i++) {
         const result = await sdk?.generateLinkERC1155({
-          weiAmount: assets[i].native_tokens_amount || '0',
+          weiAmount: nativeTokensPerLink || '0',
           nftAddress: tokenAddress,
           wallet,
           tokenId: assets[i].id || '0',

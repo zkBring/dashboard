@@ -134,3 +134,9 @@ export function setDistributionPattern(distributionPattern: TDistributionPattern
   })
 }
 
+export function setNativeTokensPerLink(nativeTokensPerLink: string) {
+  return action(Constants.CAMPAIGN_SET_NATIVE_TOKENS_PER_LINK, {
+    nativeTokensPerLink
+  })
+}
+

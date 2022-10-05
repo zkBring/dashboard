@@ -45,7 +45,8 @@ const generateERC721Link = ({
         tokenStandard,
         signerAddress,
         claimPattern,
-        distributionPattern
+        distributionPattern,
+        nativeTokensPerLink
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -65,7 +66,7 @@ const generateERC721Link = ({
           campaignId: id,
           signingKeyOrWallet: signerKey,
           tokenId: assets[i].id || 0,
-          weiAmount: assets[i].native_tokens_amount || '0'
+          weiAmount: nativeTokensPerLink || '0'
         })
         if (result) {
           const newLink = !sponsored ? `${result?.url}&manual=true` : result?.url

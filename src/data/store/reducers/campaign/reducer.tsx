@@ -19,7 +19,8 @@ const initialState: CampaignState = {
   sponsored: true,
   claimPattern: 'mint',
   distributionPattern: 'manual',
-  links: []
+  links: [],
+  nativeTokensPerLink: '0'
 }
 
 export function newRetroDropReducer(
@@ -61,6 +62,8 @@ export function newRetroDropReducer(
           return {...state, sponsored: action.payload.sponsored }
         case Constants.CAMPAIGN_SET_CLAIM_PATTERN:
           return {...state, claimPattern: action.payload.claimPattern }
+        case Constants.CAMPAIGN_SET_NATIVE_TOKENS_PER_LINK:
+          return {...state, nativeTokensPerLink: action.payload.nativeTokensPerLink }
         case Constants.CAMPAIGN_SET_LINKS:
           return {...state, links: [
             ...state.links,

@@ -4,50 +4,54 @@ import { Widget } from '../index'
 
 export const Campaign = styled(Widget)`
   position: relative;
+  padding: 24px 16px;
 `
 
 export const CampaignButton = styled(Button)`
-  width: 152px;
+  width: 100%;
   min-height: 36px;
+`
+
+export const Divider = styled.div`
+  height: 1px;
+  background-color: ${props => props.theme.primaryBorderColor};
+  width: 100%;
+  margin: 4px 0;
 `
 
 export const CampaignButtons = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
   margin-top: 40px;
+
+  a {
+    width: 100%;
+  }
 `
 
 export const CampaignText = styled.span`
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
-  color: ${props => props.theme.primaryTextColor};
+  color: ${props => props.theme.additionalTextColor};
 `
 
 export const CampaignValue = styled(CampaignText)`
-  color: ${props => props.theme.additionalTextColor};
+  font-size: 14px;
+  color: ${props => props.theme.primaryTextColor};
 `
 
 export const CampaignRow = styled.div`
-  margin-bottom: 8px;
-`
-
-export const CampaignType = styled.div`
-  position: absolute;
-  top: 40px;
-  background: ${props => props.theme.blankColor};
-  color: ${props => props.theme.additionalTextColor};
-  padding: 6px 8px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  right: 40px;
-  line-height: 1;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 export const CampaignTitle = styled.h3`
-  font-size: 24px;
-  margin: 0 0 20px;
-  font-weight: 400;
-  padding-right: 82px;
+  font-size: 16px;
+  margin: 0 0 16px;
+  font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

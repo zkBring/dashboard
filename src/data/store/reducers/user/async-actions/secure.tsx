@@ -14,7 +14,8 @@ import contracts from 'configs/contracts'
 
 const secure = (
   sponsored: boolean,
-  amount: string,
+  totalNativeTokensAmountToSecure: string,
+  nativeTokensPerLink: string,
   callback?: () => void
 ) => {
   return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>, getState: () => RootState) => {
@@ -72,7 +73,7 @@ const secure = (
         console.log({ proxyContractAddress })
       }
   
-      const value = utils.parseEther(String(amount))
+      const value = utils.parseEther(String(totalNativeTokensAmountToSecure))
 
       const transaction = await signer.sendTransaction({
         to,
@@ -111,6 +112,15 @@ const secure = (
       const finished = await checkTransaction()
       if (finished) {
         dispatch(campaignActions.setSecured(true))
+        dispatch(campaignActions.setNativeTokensPerLink(
+          String(
+            utils.parseEther(
+              String(
+                nativeTokensPerLink
+              )
+            )
+          )
+        ))
         dispatch(campaignActions.setSignerKey(privateKey))
         dispatch(campaignActions.setSignerAddress(wallet))
         dispatch(campaignActions.setSponsored(sponsored))

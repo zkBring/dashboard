@@ -1,22 +1,18 @@
 import React, { FC } from 'react'
 import Select from 'react-select'
-import { TSelectOption } from 'types'
+import { IProps } from './types'
+import { Container, SelectTitle } from './styled-components'
 
-interface Props {
-  options: TSelectOption[],
-  value?: TSelectOption,
-  placeholder?: string,
-  className?: string,
-  onChange: (newValue: TSelectOption) => void
-}
-
-const SelectComponent: FC<Props> = ({
+const SelectComponent: FC<IProps> = ({
   options,
   value,
   placeholder,
   className,
-  onChange
-}) => <Select
+  onChange,
+  title
+}) => <Container>
+  {title && <SelectTitle>{title}</SelectTitle>}
+  <Select
     options={options}
     className={className}
     value={value}
@@ -26,5 +22,6 @@ const SelectComponent: FC<Props> = ({
     }}
     placeholder={placeholder}
   />
+</Container>
 
 export default SelectComponent

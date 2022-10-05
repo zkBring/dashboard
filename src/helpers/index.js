@@ -33,6 +33,7 @@ import decryptLinks from './decrypt-links'
 import sleep from './sleep'
 import defineContract from './define-contract'
 import metadataUrlResolve from './metadata-url-resolve'
+import convertLinksContent from './convert-links-content'
 
 export {
   shortenString,
@@ -40,6 +41,7 @@ export {
   capitalize,
   defineContract,
   defineJSONRpcUrl,
+  convertLinksContent,
   copyToClipboard,
   checkRecipientsDataFormat,
   hexlifyIpfsHash,

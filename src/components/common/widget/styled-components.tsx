@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { TProps } from './types'
 
-
 export const WidgetComponent = styled.div<TProps>`
   background: #FFF;
   width: 100%;

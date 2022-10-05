@@ -1,13 +1,5 @@
-import { TTokenType, TCampaign } from 'types'
-import { Dispatch } from 'redux'
-import { SetStateAction } from 'react'
+import { TTokenType, TCampaign, TLinkContent } from 'types'
 
-export type TLinkContent = {
-  tokenId?: string,
-  tokenAmount: string,
-  linksAmount: string,
-  id: number
-}
 export type TLinksContent = TLinkContent[]
 
 export type TDefineComponent = (

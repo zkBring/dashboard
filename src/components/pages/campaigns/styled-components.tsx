@@ -5,8 +5,13 @@ export const Container = styled.div`
   margin-bottom: 36px;
   background: ${props => props.theme.blankColor};
   display: grid;
-  grid-template-columns: 400px 400px;
+  grid-template-columns: repeat(3, 260px);
   grid-gap: 30px;
+`
+
+export const Title = styled.h2`
+  margin: 0 0 24px;
+  font-size: 24px;
 `
 
 export const Text = styled.p`

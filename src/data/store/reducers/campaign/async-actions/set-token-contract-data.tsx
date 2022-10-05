@@ -21,6 +21,7 @@ async function setTokenContractData (
   address: string,
   chainId: number
 ) {
+  console.log({ tokenAddress })
   if (!tokenAddress || tokenAddress.length !== 42) {
     dispatch(actionsCampaign.setTokenAddress(null))
     dispatch(actionsCampaign.setDecimals(null))
@@ -29,6 +30,7 @@ async function setTokenContractData (
   }
   try {
     dispatch(actionsCampaign.setLoading(true))
+    console.log('added', { tokenAddress })
     dispatch(actionsCampaign.setTokenAddress(tokenAddress))
     const signer = await provider.getSigner()
     dispatch(actionsCampaign.setLoading(true))

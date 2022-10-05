@@ -27,10 +27,12 @@ import TCampaignNew from './campaign-new'
 import TLinkDecrypted from './link-decrypted'
 import TClaimPattern from './claim-pattern'
 import TDistributionPattern from './distribution-pattern'
+import { TLinkContent } from './link-contents'
 
 export {
   TCampaign,
   TClaimPattern,
+  TLinkContent,
   TTokenType,
   TCampaignStatus,
   TAssetsData,

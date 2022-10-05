@@ -6,16 +6,9 @@ import wallets from 'configs/wallets'
 import { TProps } from './type'
 import {
   checkERC721AssetsData,
-  defineAssetsTextareaPlaceholder,
   defineNativeTokenSymbol,
   parseERC721AssetsData
 } from 'helpers'
-import {
-  UserAssets,
-  UserAssetNative,
-  InputTokenAddress,
-  SelectComponent
-} from './styled-components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
@@ -78,12 +71,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       claimPattern: TClaimPattern,
       callback: () => void
     ) => dispatch(campaignAsyncActions.setAssetsData(
-        type,
         assets,
-        String(wallet.value),
-        title,
-        tokenAddress,
-        claimPattern,
         callback
       )
     ),

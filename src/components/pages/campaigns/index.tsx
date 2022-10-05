@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Campaign, Note, TextLink } from 'components/common'
-import { Container, InvertedWidget, WidgetDescription, WidgetButton } from './styled-components'
+import { Campaign } from 'components/common'
+import { Container, InvertedWidget, Title, WidgetDescription, WidgetButton } from './styled-components'
 import { TProps } from './types'
+import { TLinksBatch } from 'types'
 import { defineNativeTokenSymbol } from 'helpers'
 
 const mapStateToProps = ({
@@ -15,6 +16,15 @@ const mapStateToProps = ({
   address,
   chainId
 })
+
+const countLinks: (batches: TLinksBatch[]) => number = (batches) => {
+  if (!batches) { return 0 }
+  return batches
+    .map(batch => batch.claim_links.length)
+    .reduce<number>((sum, item) => {
+      return sum + item
+    }, 0)
+}
 
 const mapDispatcherToProps = (dispatch: Dispatch) => {
   return {
@@ -30,19 +40,20 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
   const createNewCampaignWidget = <InvertedWidget title='Create Campaign'>
-    <WidgetDescription>
-      ERC20 / ERC721 / ERC1155 + {nativeTokenSymbol}
-    </WidgetDescription>
-    <WidgetButton
-      title='Create'
-      appearance='action'
-      to='/campaigns/new'
-    />
-  </InvertedWidget>  
+      <WidgetDescription>
+        ERC20 / ERC721 / ERC1155 + {nativeTokenSymbol}
+      </WidgetDescription>
+      <WidgetButton
+        title='Create'
+        appearance='action'
+        to='/campaigns/new'
+      />
+    </InvertedWidget>  
 
     return <>
+      {createNewCampaignWidget}
+      <Title>Campaigns</Title>
       <Container>
-        {createNewCampaignWidget}
         {currentAddressCampaigns.map(campaign => {
           return <Campaign
             title={campaign.title}
@@ -52,7 +63,9 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
             chainId={campaign.chain_id}
             type={campaign.token_standard}
             symbol={campaign.symbol}
+            linksAmount={countLinks(campaign.batches)}
             proxyContractAddress={campaign.proxy_contract_address}
+            claimPattern={campaign.claim_pattern}
           />
         })}
       </Container>

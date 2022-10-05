@@ -9,23 +9,9 @@ import {
 
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
+import { IProps } from './types'
 
-// type InputEvent = React.ChangeEvent<HTMLInputElement>;
-
-interface Props {
-  title?: string,
-  placeholder?: string,
-  type?: string,
-  name?: string,
-  disabled?: boolean,
-  onChange: (value: string) => string,
-  error?: string,
-  value?: string,
-  className?: string,
-  ref?: { current: any }
-}
-
-const InputComponent: FC<Props> = ({
+const InputComponent: FC<IProps> = ({
   placeholder,
   title,
   disabled = false,

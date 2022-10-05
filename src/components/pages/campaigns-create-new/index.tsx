@@ -16,6 +16,9 @@ import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import { TTokenType } from 'types'
 import { useHistory } from 'react-router-dom'
+import * as campaignActions from 'data/store/reducers/campaign/actions'
+import { CampaignActions } from 'data/store/reducers/campaign/types'
+import { Dispatch } from 'redux'
 
 const mapStateToProps = ({
   campaign: {
@@ -48,7 +51,7 @@ const mapStateToProps = ({
   tokenAddress
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
   return {
     createProxyContract: (
       id?: string
@@ -79,7 +82,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         title,
         callback
       )
-    )
+    ),
+    clearCampaign: () => {
+      dispatch(
+        campaignActions.clearCampaign()
+      )
+    }
   }
 }
 
@@ -93,8 +101,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   provider,
   address,
   setTokenContractData,
+  setInitialData,
   title: campaignTitle,
-  tokenAddress: campaignTokenAddress
+  tokenAddress: campaignTokenAddress,
+  clearCampaign
 }) => {
 
   const history = useHistory()
@@ -117,16 +127,14 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   ]
 
   useEffect(() => {
-    createProxyContract()
-  }, [])
-
-  useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
-    console.log({
-      provider, tokenAddress, type, address, chainId
-    })
     setTokenContractData(provider, tokenAddress, type as TTokenType, address, chainId)
   }, [tokenAddress, provider])
+
+
+  useEffect(() => {
+    clearCampaign()
+  }, [])
 
 
   const defineIfNextDisabled = () => {
@@ -169,7 +177,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
       }}
       next={{
         action: () => {
-          history.push(`/campaigns/new/${type}/initial`)
+          setInitialData(type as TTokenType, title, () => { history.push(`/campaigns/new/${type}/initial`) })
         },
         disabled: defineIfNextDisabled()
       }}

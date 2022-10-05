@@ -12,16 +12,14 @@ import {
 import {
   Container
 } from './styled-components'
-import { TLinksContent, TLinkContent } from '../../types'
+import { TLinksContent } from '../../types'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
-import { TTokenType, TAssetsData, TSelectOption, TClaimPattern } from 'types'
+import { TTokenType, TAssetsData, TLinkContent } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import * as campaignActions from 'data/store/reducers/campaign/actions'
-import { CampaignActions } from 'data/store/reducers/campaign/types'
-import { Dispatch } from 'redux'
+
 
 const mapStateToProps = ({
   user: {
@@ -51,7 +49,7 @@ const mapStateToProps = ({
   claimPattern
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     setTokenContractData: (
       provider: any,
@@ -66,12 +64,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       type,
       address,
       chainId
-    ),
-    clearCampaign: () => {
-      dispatch(
-        campaignActions.clearCampaign()
-      )
-    }
+    )
   }
 }
 
@@ -82,16 +75,11 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 const Erc1155: FC<ReduxType > = ({
   setTokenContractData,
   chainId,
-  clearCampaign,
   setAssetsData,
   assetsData
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
-
-  useEffect(() => {
-    clearCampaign()
-  }, [])
 
   const getDefaultValues = () => {
     return {
@@ -106,11 +94,6 @@ const Erc1155: FC<ReduxType > = ({
     formData,
     setFormData
   ] = useState<TLinkContent>(getDefaultValues())
-
-  const [
-    assetsParsed,
-    setAssetsParsedValue
-  ] = useState<TAssetsData>([])
 
   // export type TAsset = {
   //   amount?: string,

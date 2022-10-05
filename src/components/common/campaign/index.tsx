@@ -6,26 +6,19 @@ import {
   CampaignRow,
   CampaignText,
   CampaignValue,
-  CampaignType,
   CampaignButtons,
   CampaignButton,
-  CampaignTitle
+  CampaignTitle,
+  Divider
 } from './styled-components'
 import {
   formatDate,
-  defineEtherscanUrl
+  defineEtherscanUrl,
+  shortenString,
+  defineNetworkName,
+  capitalize
 } from 'helpers'
-import { TTokenType } from 'types'
-
-type TProps = {
-  created_at?: string,
-  id: string,
-  symbol: string,
-  chainId: number,
-  type: TTokenType,
-  proxyContractAddress: string,
-  title: string
-}
+import { TProps } from './types'
 
 const CampaignComponent: FC<TProps> = ({
   created_at,
@@ -34,28 +27,51 @@ const CampaignComponent: FC<TProps> = ({
   chainId,
   type,
   proxyContractAddress,
-  title
+  title,
+  linksAmount,
+  claimPattern
 }) => {
   const dateFormatted = created_at && formatDate(created_at)
   const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
+  const networkName = defineNetworkName(Number(chainId))
   return <Campaign>
     <CampaignTitle>{title || 'No name'}</CampaignTitle>
-    <CampaignType>{type}</CampaignType>
     <CampaignRow>
-      <CampaignText>Created: </CampaignText><CampaignValue>{dateFormatted}</CampaignValue>
+      <CampaignText>Contract</CampaignText>
+      <CampaignValue>{shortenString(proxyContractAddress)}</CampaignValue>
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>Network</CampaignText>
+      <CampaignValue>{capitalize(networkName)}</CampaignValue>
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>Type</CampaignText>
+      <CampaignValue>{type}</CampaignValue>
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>Links</CampaignText>
+      <CampaignValue>{linksAmount}</CampaignValue>
+    </CampaignRow>
+    <Divider />
+    <CampaignRow>
+      <CampaignText>Claim pattern</CampaignText>
+      <CampaignValue>{capitalize(claimPattern)}</CampaignValue>
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>Date created</CampaignText>
+      <CampaignValue>{dateFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton
         to={`/campaigns/${id}`}
-        title="Links"
-        appearance='action'
+        title="Details"
       />
-      <CampaignButton
+      {/* <CampaignButton
         title='View Contract'
         href={scanUrl}
         target='_blank'
         appearance='action-inverted'
-      />
+      /> */}
     </CampaignButtons>  
   </Campaign>
 }

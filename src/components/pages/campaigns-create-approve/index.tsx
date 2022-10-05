@@ -87,7 +87,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const history = useHistory()
   const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
-  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>('transfer')
+  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>('mint')
   useEffect(() => {
     if (!campaign) {
       return
@@ -102,7 +102,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   return <Container>
     <WidgetComponent title='Claim pattern'>
       <StyledRadio
-        label='Token Standard'
+        label='Claim pattern'
         value={claimPattern}
         radios={patterns}
         onChange={(value) => { setClaimPattern(value) }}

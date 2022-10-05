@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { TProps } from './types'
 import {
   LinkContentsItem,
   LinkContentsData,
@@ -8,8 +7,9 @@ import {
   LinksContentDataLabel,
   LinksContentDataValue
 } from './styled-components'
-import { TLinkContent } from '../../types'
-import { TOnRemove } from './types'
+import { TOnRemove, TProps} from './types'
+import { shortenString } from 'helpers'
+import { TLinkContent } from 'types'
 import {
   ButtonStyled
 } from '../../styled-components'
@@ -28,7 +28,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
           ID
         </LinksContentDataLabel>
         <LinksContentDataValue>
-          {tokenId}
+          {shortenString(tokenId)}
         </LinksContentDataValue>
       </LinksContentDataItem>
       <LinksContentDataItem>

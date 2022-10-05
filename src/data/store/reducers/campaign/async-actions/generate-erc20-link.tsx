@@ -45,7 +45,8 @@ const generateERC20Link = ({
         sponsored,
         tokenStandard,
         claimPattern,
-        distributionPattern
+        distributionPattern,
+        nativeTokensPerLink
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -59,7 +60,7 @@ const generateERC20Link = ({
       const date = String(new Date())
       for (let i = 0; i < assets.length; i++) {
         const result = await sdk?.generateLink({
-          weiAmount: assets[i].native_tokens_amount || '0',
+          weiAmount: nativeTokensPerLink || '0',
           tokenAddress,
           wallet,
           tokenAmount: assets[i].amount || '0',

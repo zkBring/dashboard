@@ -4,7 +4,7 @@ import { Erc20, Erc721, Erc1155 } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TCampaign, TTokenType, TLinkParams, TDistributionPattern } from 'types'
+import { TTokenType, TAssetsData, TSelectOption, TClaimPattern, TLinkParams, TDistributionPattern } from 'types'
 import { Loader } from 'components/common'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
@@ -16,13 +16,22 @@ import {
   WidgetContainer
 } from 'components/pages/common'
 import { useHistory } from 'react-router-dom'
+import * as campaignActions from 'data/store/reducers/campaign/actions'
+import { Dispatch } from 'redux'
+import { CampaignActions } from 'data/store/reducers/campaign/types'
+import {
+  NATIVE_TOKEN_ADDRESS
+} from 'configs/app'
+import { convertLinksContent } from 'helpers'
 
 const mapStateToProps = ({
   campaign: {
     tokenStandard,
     loading,
     claimPattern,
-    distributionPattern
+    distributionPattern,
+    tokenAddress,
+    decimals
   },
   campaigns: {
     campaigns
@@ -32,18 +41,48 @@ const mapStateToProps = ({
   loading,
   campaigns,
   claimPattern,
-  distributionPattern
+  distributionPattern,
+  tokenAddress,
+  decimals
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
   return {
     createProxyContract: (
       id?: string
     ) => dispatch(
       campaignAsyncActions.createProxyContract(id)
-    )
+    ),
+    setTokenContractData: (
+      provider: any,
+      tokenAddress: string,
+      type: TTokenType,
+      address: string,
+      chainId: number
+    ) => campaignAsyncActions.setTokenContractData(
+      dispatch,
+      tokenAddress,
+      provider,
+      type,
+      address,
+      chainId
+    ),
+    setAssetsData: (
+      assets: TAssetsData,
+      callback: () => void
+    ) => dispatch(campaignAsyncActions.setAssetsData(
+        assets,
+        callback
+      )
+    ),
+    clearCampaign: () => {
+      dispatch(
+        campaignActions.clearCampaign()
+      )
+    }
   }
 }
+
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
@@ -76,8 +115,16 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   loading,
   campaigns,
   claimPattern,
-  distributionPattern
+  distributionPattern,
+  setAssetsData,
+  tokenAddress,
+  decimals
 }) => {
+
+  const [
+    assetsParsed,
+    setAssetsParsedValue
+  ] = useState<TAssetsData>([])
 
   const history = useHistory()
   const { type, id } = useParams<TLinkParams>()
@@ -88,12 +135,19 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const content = defineComponent(type, data, setData, currentCampaign)
 
   const defineIfNextDisabled = () => {
-    return !data.length && distributionType === 'manual'
+    return (!data.length || !assetsParsed) && distributionType === 'manual'
   }
 
   useEffect(() => {
     createProxyContract(currentCampaign?.campaign_number)
   }, [])
+
+  useEffect(() => {
+    if (!data || !decimals) { return setAssetsParsedValue([]) }
+    let assets = convertLinksContent(data, decimals)
+    if (!assets) { return setAssetsParsedValue([]) }
+    setAssetsParsedValue(assets)
+  }, [data])
   
   return <Container>
     <WidgetContainer>
@@ -108,11 +162,10 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
           ]}
           value={distributionType}
           onChange={value => {
-            setData([])
+            // setData([])
             setDistributionType(value)
           }}
         />
-        {false && content}
       </WidgetComponent>
 
       {distributionType !== 'sdk' && <WidgetComponent title='Select tokens'>
@@ -126,7 +179,21 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
       }}
       next={{
         action: () => {
-          history.push(`/campaigns/new/${type}/initial`)
+          setAssetsData(
+            assetsParsed,
+            () => {
+              if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
+                if (currentCampaign) {
+                  return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/secure`)
+                }
+                return history.push(`/campaigns/new/${type}/secure`)
+              }
+              if (currentCampaign) {
+                return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/approve`)
+              }
+              history.push(`/campaigns/new/${type}/approve`)
+            }
+          )
         },
         disabled: defineIfNextDisabled()
       }}
