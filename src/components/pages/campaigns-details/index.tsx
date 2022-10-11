@@ -8,7 +8,6 @@ import {
   AsideText,
   AsideValue
 } from 'components/pages/common'
-
 import {
   Header,
   WidgetButton,
