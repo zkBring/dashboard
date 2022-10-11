@@ -28,7 +28,6 @@ interface LocationType {
 
 const AsideComponent: FC<AsideProps> = () => {
   const location = useLocation<LocationType>()
-  console.log(location.pathname)
 	return <ThemeProvider theme={themes.light}>
     <Aside>
       <AsideLogoZone>

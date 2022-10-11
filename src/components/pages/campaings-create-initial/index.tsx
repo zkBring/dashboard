@@ -4,8 +4,7 @@ import { Erc20, Erc721, Erc1155 } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TAssetsData, TSelectOption, TClaimPattern, TLinkParams, TDistributionPattern } from 'types'
-import { Loader } from 'components/common'
+import { TTokenType, TAssetsData, TLinkContent, TClaimPattern, TLinkParams, TDistributionPattern } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
@@ -13,8 +12,13 @@ import {
   Container,
   Aside,
   WidgetSubtitle,
-  WidgetContainer
+  WidgetContainer,
+  AsideDivider,
+  AsideRow,
+  AsideText,
+  AsideValue
 } from 'components/pages/common'
+
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { Dispatch } from 'redux'
@@ -22,7 +26,12 @@ import { CampaignActions } from 'data/store/reducers/campaign/types'
 import {
   NATIVE_TOKEN_ADDRESS
 } from 'configs/app'
-import { convertLinksContent } from 'helpers'
+import {
+  convertLinksContent,
+  shortenString,
+  defineNetworkName
+} from 'helpers'
+
 
 const mapStateToProps = ({
   campaign: {
@@ -31,10 +40,16 @@ const mapStateToProps = ({
     claimPattern,
     distributionPattern,
     tokenAddress,
-    decimals
+    decimals,
+    proxyContractAddress,
+    title
   },
   campaigns: {
     campaigns
+  },
+  user: {
+    address,
+    chainId
   }
 }: RootState) => ({
   tokenStandard,
@@ -42,8 +57,12 @@ const mapStateToProps = ({
   campaigns,
   claimPattern,
   distributionPattern,
+  proxyContractAddress,
   tokenAddress,
-  decimals
+  decimals,
+  address,
+  chainId,
+  title
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
@@ -69,9 +88,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
     ),
     setAssetsData: (
       assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
       callback: () => void
     ) => dispatch(campaignAsyncActions.setAssetsData(
         assets,
+        assetsOriginal,
         callback
       )
     ),
@@ -99,14 +120,16 @@ const defineComponent: TDefineComponent = (type, assetsData, setAssetsData, camp
       return <Erc721
         type={type}
         campaign={campaign}
+        assetsData={assetsData}
+        setAssetsData={setAssetsData}
       />
     default:
       return <Erc1155
-      type={type}
-      campaign={campaign}
-      assetsData={assetsData}
-      setAssetsData={setAssetsData}
-    />
+        type={type}
+        campaign={campaign}
+        assetsData={assetsData}
+        setAssetsData={setAssetsData}
+      />
   }
 }
 
@@ -114,11 +137,15 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   createProxyContract,
   loading,
   campaigns,
-  claimPattern,
+  address,
   distributionPattern,
   setAssetsData,
   tokenAddress,
-  decimals
+  decimals,
+  proxyContractAddress,
+  chainId,
+  tokenStandard,
+  title
 }) => {
 
   const [
@@ -129,7 +156,13 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const history = useHistory()
   const { type, id } = useParams<TLinkParams>()
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-  
+
+  const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
+  const currentProxyContractAddress = currentCampaign ? currentCampaign.proxy_contract_address : proxyContractAddress
+  const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
+  const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
+  const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
+
   const [ distributionType, setDistributionType ] = useState<TDistributionPattern>(currentCampaign ? currentCampaign.distribution_pattern : distributionPattern)
   const [ data, setData ] = useState<TLinksContent>([])
   const content = defineComponent(type, data, setData, currentCampaign)
@@ -143,8 +176,9 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   }, [])
 
   useEffect(() => {
-    if (!data || !decimals) { return setAssetsParsedValue([]) }
+    if (!data || decimals === null) { return setAssetsParsedValue([]) }
     let assets = convertLinksContent(data, decimals)
+    console.log({ assets })
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
@@ -152,7 +186,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   return <Container>
     <WidgetContainer>
       <WidgetComponent title='Distribution'>
-        {loading && <Loader withOverlay />}
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign)}
@@ -181,6 +214,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
         action: () => {
           setAssetsData(
             assetsParsed,
+            data,
             () => {
               if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
                 if (currentCampaign) {
@@ -197,9 +231,33 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
         },
         disabled: defineIfNextDisabled()
       }}
-      title="Title"
-      subtitle="Subtitle"
+      title="Summary"
+      subtitle="Check your campaign’s details before going next"
     >
+      <AsideRow>
+        <AsideText>Title of campaign</AsideText>
+        <AsideValue>{currentCampaignTitle}</AsideValue>
+      </AsideRow>
+
+      {currentTokenAddress && <AsideRow>
+        <AsideText>Token address</AsideText>
+        <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
+      </AsideRow>}
+
+      {<AsideRow>
+        <AsideText>Token Name</AsideText>
+        <AsideValue>Coming soon</AsideValue>
+      </AsideRow>}
+
+      {currentCampaignTokenStandard && <AsideRow>
+        <AsideText>Token standard</AsideText>
+        <AsideValue>{currentCampaignTokenStandard}</AsideValue>
+      </AsideRow>}
+
+      {currentCampaignChainId && <AsideRow>
+        <AsideText>Network</AsideText>
+        <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
+      </AsideRow>}
     </Aside>
     
   </Container>

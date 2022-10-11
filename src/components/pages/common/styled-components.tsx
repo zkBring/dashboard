@@ -5,6 +5,7 @@ export const Container = styled.div`
   display: flex;
   width: 100%;
   max-width: 1122px;
+  align-items: flex-start;
 `
 
 export const WidgetContainer = styled.div`
@@ -40,4 +41,28 @@ export const WidgetSubtitle = styled.p`
   font-size: 16px;
   margin: 0 0 36px;
   color: ${props => props.theme.additionalTextColor};
+`
+
+export const AsideText = styled.span`
+  font-size: 14px;
+  margin: 0;
+  color: ${props => props.theme.additionalTextColor};
+`
+
+export const AsideValue = styled(AsideText)`
+  color: ${props => props.theme.primaryTextColor};
+`
+
+export const AsideRow = styled.div`
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const AsideDivider = styled.div`
+  height: 1px;
+  background-color: ${props => props.theme.primaryBorderColor};
+  width: 100%;
+  margin: 10px 0;
 `

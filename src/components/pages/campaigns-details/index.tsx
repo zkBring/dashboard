@@ -1,8 +1,13 @@
 import { FC, useEffect } from 'react'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
-import { Loader } from 'components/common'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import {
+  AsideDivider,
+  AsideRow,
+  AsideText,
+  AsideValue
+} from 'components/pages/common'
 
 import {
   Header,
@@ -12,6 +17,11 @@ import {
   BatchListValue,
   WidgetTitleStyled
 } from './styled-components'
+
+import {
+  shortenString,
+  defineNetworkName
+} from 'helpers'
 
 import {
   WidgetComponent,
@@ -64,7 +74,18 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   if (!currentCampaign) {
     return null
   }
-  const { campaign_id, token_standard, title, batches, created_at } = currentCampaign
+  const {
+    campaign_id,
+    token_standard,
+    title,
+    batches,
+    created_at,
+    creator_address,
+    token_address,
+    proxy_contract_address,
+    claim_pattern,
+    chain_id
+  } = currentCampaign
     
   return <Container>
     <WidgetComponent>
@@ -79,17 +100,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           }}
         />
       </Header>
-      {loading && <Loader withOverlay />}
       <BatchList>
         <BatchListLabel>Batch</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel></BatchListLabel>
-        {batches && batches.map(batch => {
+        {batches && batches.map((batch, idx) => {
           const dateFormatted = formatDate(batch.created_at || '')
           return <>
             <BatchListValue>
-            {batch.batch_description}
+              #{idx + 1}
             </BatchListValue>
             <BatchListValue>
               {batch.claim_links.length} link(s)
@@ -116,9 +136,57 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       </BatchList>
     </WidgetComponent>
     <Aside
-      title="Title"
-      subtitle="Subtitle"
+      title="Campaign"
     >
+      <AsideRow>
+        <AsideText>Created by</AsideText>
+        <AsideValue>{shortenString(creator_address)}</AsideValue>
+      </AsideRow>
+      <AsideRow>
+        <AsideText>Status</AsideText>
+        <AsideValue>Active</AsideValue>
+      </AsideRow>
+
+      <AsideDivider />
+
+      <AsideRow>
+        <AsideText>Token address</AsideText>
+        <AsideValue>{shortenString(token_address)}</AsideValue>
+      </AsideRow>
+      <AsideRow>
+        <AsideText>Campaign contract</AsideText>
+        <AsideValue>{shortenString(proxy_contract_address)}</AsideValue>
+      </AsideRow>
+      <AsideRow>
+        <AsideText>Gas sponsor balance</AsideText>
+        <AsideValue>COMING SOON</AsideValue>
+      </AsideRow>
+
+      <AsideDivider />
+
+      <AsideRow>
+        <AsideText>Claim pattern</AsideText>
+        <AsideValue>{claim_pattern}</AsideValue>
+      </AsideRow>
+
+      <AsideDivider />
+
+      <AsideRow>
+        <AsideText>Network</AsideText>
+        <AsideValue>{defineNetworkName(Number(chain_id))}</AsideValue>
+      </AsideRow>
+      <AsideRow>
+        <AsideText>Token standard</AsideText>
+        <AsideValue>{token_standard}</AsideValue>
+      </AsideRow>
+      <AsideRow>
+        <AsideText>Links</AsideText>
+        <AsideValue>COMING SOON</AsideValue>
+      </AsideRow>
+      <AsideRow>
+        <AsideText>Claims</AsideText>
+        <AsideValue>COMING SOON</AsideValue>
+      </AsideRow>
     </Aside>
   </Container>
 }

@@ -51,10 +51,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       sponsored: boolean,
       totalNativeTokensAmountToSecure: string,
       nativeTokensPerLink: string,
+      walletApp: string,
       callback: () => void
     ) => {
       dispatch(
-        userAsyncActions.secure(sponsored, totalNativeTokensAmountToSecure, nativeTokensPerLink, callback)
+        userAsyncActions.secure(sponsored, totalNativeTokensAmountToSecure, nativeTokensPerLink, walletApp, callback)
       )
     }
   }
@@ -142,7 +143,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         action: () => {
           const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
           const totalNativeTokensAmount = multiply(
-            number(nativeTokensAmount),
+            bignumber(nativeTokensAmount),
             assets.length
           )
           const totalNativeTokensAmountToSecure = !sponsored ? totalNativeTokensAmount : add(
@@ -156,6 +157,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             sponsored,
             String(totalNativeTokensAmountToSecure),
             nativeTokensAmount,
+            String(currentWallet.value),
             () => history.push(redirectURL)
           )
         },

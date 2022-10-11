@@ -109,7 +109,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   const history = useHistory()
 
-  const [ type, setType ] = useState<string>('erc20')
+  const [ type, setType ] = useState<string>('ERC20')
   const [
     tokenAddress,
     setTokenAddress
@@ -121,9 +121,9 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   ] = useState<string>(campaignTitle || '')
 
   const types = [
-    { value: 'erc20', label: 'ERC20' },
-    { value: 'erc721', label: 'ERC721' },
-    { value: 'erc1155', label: 'ERC1155' }
+    { value: 'ERC20', label: 'ERC20' },
+    { value: 'ERC721', label: 'ERC721' },
+    { value: 'ERC1155', label: 'ERC1155' }
   ]
 
   useEffect(() => {
@@ -181,9 +181,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         },
         disabled: defineIfNextDisabled()
       }}
-      title="Title"
-      subtitle="Subtitle"
+      title="Summary"
+      subtitle="Check your campaign’s details before going next"
     >
+      
     </Aside>
   </Container>
 }

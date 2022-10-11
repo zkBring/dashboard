@@ -42,14 +42,12 @@ const parseSingleDataNative: (value: string, decimals: number) => TAsset[] = (va
     const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim())
     for (let x = 0; x < Number(valueAndAmount[1]); x++) {
       result.push({
-        original_native_tokens_amount: String(valueAndAmount[0]),
-        native_tokens_amount: String(utils.parseUnits(String(valueAndAmount[0]), decimals))
+        
       })
     }
   } else {
     result.push({
-      original_native_tokens_amount: String(value),
-      native_tokens_amount: String(utils.parseUnits(String(value), decimals))
+      
     })
   }
   return result

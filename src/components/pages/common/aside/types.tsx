@@ -2,13 +2,15 @@ export type TProps = {
   back?: {
     action?: () => void,
     title?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    loading?: boolean
   },
   next?: {
     action?: () => void,
     title?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    loading?: boolean
   },
-  title: string,
-  subtitle: string
+  title?: string,
+  subtitle?: string
 }

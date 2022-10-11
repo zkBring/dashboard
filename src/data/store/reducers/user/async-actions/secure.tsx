@@ -16,6 +16,7 @@ const secure = (
   sponsored: boolean,
   totalNativeTokensAmountToSecure: string,
   nativeTokensPerLink: string,
+  walletApp: string,
   callback?: () => void
 ) => {
   return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>, getState: () => RootState) => {
@@ -124,6 +125,7 @@ const secure = (
         dispatch(campaignActions.setSignerKey(privateKey))
         dispatch(campaignActions.setSignerAddress(wallet))
         dispatch(campaignActions.setSponsored(sponsored))
+        dispatch(campaignActions.setWallet(walletApp))
         callback && callback()
       }
       dispatch(campaignActions.setLoading(false))

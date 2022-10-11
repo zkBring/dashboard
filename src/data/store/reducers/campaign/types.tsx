@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
-import { TTokenType, TClaimPattern, TAssetsData, TLink, TDistributionPattern } from 'types'
+import { TTokenType, TLinkContent, TClaimPattern, TAssetsData, TLink, TDistributionPattern } from 'types'
 
 export interface CampaignState {
   title?: string | null,
@@ -8,6 +8,7 @@ export interface CampaignState {
   campaignAddress?: string | null,
   tokenStandard: TTokenType | null,
   assets: TAssetsData | null,
+  assetsOriginal: TLinkContent[] | null,
   loading: boolean,
   decimals: number | null,
   symbol: string | null,

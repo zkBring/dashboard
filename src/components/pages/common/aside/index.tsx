@@ -15,24 +15,26 @@ const Aside: FC<TProps> = ({
   back: {
     action: backAction,
     disabled: backDisabled,
-    title: backTitle = "Back"
+    title: backTitle = "Back",
+    loading: backLoading = false
   } = {},
   next: {
     action: nextAction,
     disabled: nextDisabled,
-    title: nextTitle = "Next"
+    title: nextTitle = "Next",
+    loading: nextLoading = false
   } = {},
   title,
   subtitle,
 }) => {
   return <WidgetAside>
     <WidgetComponent>
-      <WidgetTitle>Summary</WidgetTitle>
-      <WidgetSubtitle>Check your campaign’s details before going next</WidgetSubtitle>
+      <WidgetTitle>{title}</WidgetTitle>
+      {subtitle && <WidgetSubtitle>{subtitle}</WidgetSubtitle>}
       {children}
       {(backAction || nextAction) && <ButtonsContainer>
-        {backAction && <ButtonStyled disabled={Boolean(backDisabled)} onClick={backAction}>{backTitle}</ButtonStyled>}
-        {nextAction && <ButtonStyled disabled={Boolean(nextDisabled)} appearance='action' onClick={nextAction}>{nextTitle}</ButtonStyled>}
+        {backAction && <ButtonStyled loading={backLoading} disabled={Boolean(backDisabled)} onClick={backAction}>{backTitle}</ButtonStyled>}
+        {nextAction && <ButtonStyled loading={nextLoading} disabled={Boolean(nextDisabled)} appearance='action' onClick={nextAction}>{nextTitle}</ButtonStyled>}
       </ButtonsContainer>}
     </WidgetComponent>
   </WidgetAside>

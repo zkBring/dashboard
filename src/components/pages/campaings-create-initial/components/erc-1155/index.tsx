@@ -1,25 +1,19 @@
-import { FC, useState, useEffect, useMemo } from 'react'
+import { FC, useState } from 'react'
 import {
   InputsContainer,
   InputStyled,
   ButtonStyled
 } from '../../styled-components'
-import wallets from 'configs/wallets'
 import { TProps } from './type'
-import {
-  defineNativeTokenSymbol,
-} from 'helpers'
 import {
   Container
 } from './styled-components'
-import { TLinksContent } from '../../types'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
-import { TTokenType, TAssetsData, TLinkContent } from 'types'
+import { useParams } from 'react-router-dom'
+import { TTokenType, TLinkContent } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-
 
 const mapStateToProps = ({
   user: {
@@ -34,7 +28,8 @@ const mapStateToProps = ({
     loading,
     decimals,
     symbol,
-    claimPattern
+    claimPattern,
+    tokenStandard
   }
 }: RootState) => ({
   loading,
@@ -46,7 +41,8 @@ const mapStateToProps = ({
   nativeTokenAmountFormatted,
   tokenAmountFormatted,
   userLoading,
-  claimPattern
+  claimPattern,
+  tokenStandard
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -73,8 +69,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   TProps
 
 const Erc1155: FC<ReduxType > = ({
-  setTokenContractData,
-  chainId,
+  tokenStandard,
   setAssetsData,
   assetsData
 }) => {
@@ -86,7 +81,8 @@ const Erc1155: FC<ReduxType > = ({
       linksAmount: '',
       tokenId: '',
       tokenAmount: '',
-      id: assetsData.length
+      id: assetsData.length,
+      tokenType: tokenStandard || 'ERC1155'
     }
   }
 
@@ -95,18 +91,9 @@ const Erc1155: FC<ReduxType > = ({
     setFormData
   ] = useState<TLinkContent>(getDefaultValues())
 
-  // export type TAsset = {
-  //   amount?: string,
-  //   id?: number | string,
-  //   native_tokens_amount?: string,
-  //   original_amount?: string,
-  //   original_native_tokens_amount?: string
-  // }
-
-
-  const history = useHistory()
-
-  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
+  const checkIfDisabled = () => {
+    return !formData.tokenId || !formData.linksAmount || !formData.tokenAmount
+  }
 
   return <Container>
     <LinksContents
@@ -144,6 +131,7 @@ const Erc1155: FC<ReduxType > = ({
 
       <ButtonStyled
         size='small'
+        disabled={checkIfDisabled()}
         appearance='additional'
         onClick={() => {
           setAssetsData([ ...assetsData, formData ])

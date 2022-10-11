@@ -7,7 +7,11 @@ import {
   ButtonsContainer,
   WidgetSubtitle,
   WidgetTitle,
-  WidgetContainer
+  WidgetContainer,
+  AsideDivider,
+  AsideRow,
+  AsideText,
+  AsideValue
 } from './styled-components'
 
 export {
@@ -19,5 +23,9 @@ export {
   Aside,
   WidgetContainer,
   WidgetSubtitle,
-  WidgetTitle
+  WidgetTitle,
+  AsideDivider,
+  AsideRow,
+  AsideText,
+  AsideValue
 }

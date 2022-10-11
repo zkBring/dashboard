@@ -12,12 +12,6 @@ export const CampaignButton = styled(Button)`
   min-height: 36px;
 `
 
-export const Divider = styled.div`
-  height: 1px;
-  background-color: ${props => props.theme.primaryBorderColor};
-  width: 100%;
-  margin: 4px 0;
-`
 
 export const CampaignButtons = styled.div`
   display: flex;
@@ -46,6 +40,13 @@ export const CampaignRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+
+export const Divider = styled.div`
+  height: 1px;
+  background-color: ${props => props.theme.primaryBorderColor};
+  width: 100%;
+  margin: 4px 0;
 `
 
 export const CampaignTitle = styled.h3`

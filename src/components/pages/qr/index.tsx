@@ -108,7 +108,6 @@ const QR: FC<ReduxType> = ({
   }
 
   return <Container>
-    {loading && <Loader withOverlay />}
     {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
       quantity={qr.qr_quantity}
