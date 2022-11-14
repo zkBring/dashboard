@@ -28,9 +28,11 @@ import TLinkDecrypted from './link-decrypted'
 import TClaimPattern from './claim-pattern'
 import TDistributionPattern from './distribution-pattern'
 import { TLinkContent } from './link-contents'
+import TQRImageOptions from './qr-image-options'
 
 export {
   TCampaign,
+  TQRImageOptions,
   TClaimPattern,
   TLinkContent,
   TTokenType,
