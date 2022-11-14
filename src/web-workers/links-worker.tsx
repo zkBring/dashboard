@@ -125,7 +125,7 @@ export class LinksWorker {
         let result
         if (type === 'ERC20') {
           result = await this.createERC20Link(
-            assets[i].native_tokens_amount || '0',
+            '0',
             tokenAddress,
             wallet,
             assets[i].amount || '0',
@@ -135,7 +135,7 @@ export class LinksWorker {
           )
         } else if (type === 'ERC721') {
           result = await this.createERC721Link(
-            assets[i].native_tokens_amount || '0',
+            '0',
             tokenAddress,
             wallet,
             String(assets[i].id || '0'),
@@ -145,7 +145,7 @@ export class LinksWorker {
           )
         } else {
           result = await this.createERC1155Link(
-            assets[i].native_tokens_amount || '0',
+            '0',
             tokenAddress,
             wallet,
             String(assets[i].id || '0'),
