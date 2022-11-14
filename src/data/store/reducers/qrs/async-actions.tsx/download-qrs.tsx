@@ -2,16 +2,22 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { downloadBase64FilesAsZip, sleep } from 'helpers'
+import { downloadBase64FilesAsZip } from 'helpers'
 import { TQRItem } from "types"
-import QRCodeStyling from 'qr-code-styling'
-import { decrypt } from 'lib/crypto'
-import { CLAIM_APP_QR } from 'configs/app'
-import LedegerImage from 'images/ledger-logo.svg'
+import {
+  sleep,
+  loadImage,
+  createDataGroups,
+  createWorkers,
+  terminateWorkers
+} from 'helpers'
+import LedgerIcon from 'images/ledger-logo.png'
+import { Remote } from 'comlink';
+import { QRsWorker } from 'web-workers/qrs-worker'
 
-type tplotOptions = {
-  [key: string]: any
-}
+const {
+  REACT_APP_CLAIM_APP
+} = process.env
 
 const downloadQRs = ({
   qrsArray,
@@ -32,79 +38,69 @@ const downloadQRs = ({
   ) => {
     dispatch(actionsQR.setLoading(true))
     dispatch(actionsQR.setDownloadItems([]))
-    const { user: { dashboardKey } } = getState()
+    const { user: { dashboardKey, workersCount } } = getState()
+    let currentPercentage = 0
     try {
+      const neededWorkersCount = qrsArray.length <= 1000 ? 1 : workersCount
       if (!dashboardKey) { return alert('dashboardKey is not provided') }
       if (!qrsArray) { return alert('qrsArray is not provided') }
-      let qrs: Blob[] = []
-      for (let i = 0; i < qrsArray.length; i++) {
-        const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
-        const currentQr = new QRCodeStyling({
-          data: `${CLAIM_APP_QR}/#/qr/${decrypted_qr_secret}`,
-          width,
-          height,
-          margin: 60,
-          type: 'svg',
-          cornersSquareOptions: {
-            type: 'extra-rounded'
-          },
-          image: LedegerImage,
-          imageOptions: {
-            margin: 2,
-            imageSize: 0.5,
-            crossOrigin: 'anonymous'
-          }
-        })
-        currentQr.applyExtension((svg, options) => {
-          const border = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-          const text = document.createElementNS("http://www.w3.org/2000/svg", "text")
-          const { width, height } = options
-          const size = Math.min(width || 0, height || 0)
-
-          const borderAttributes: tplotOptions = {
-            "fill": "none",
-            "x": ((width || 0) - size + 60),
-            "y": ((height || 0) - size + 60),
-            "width": size - 120,
-            "height": size - 120,
-            "stroke": 'black',
-            "stroke-width": size / 20,
-            "rx": size / 20
-          }
-
-          // const textAttributes: tplotOptions = {
-          //   "fill": "#000000",
-          //   "x": (width || 0) / 2,
-          //   "y": ((height || 0) - 24),
-          //   "stroke": "#000000",
-          //   "font-size": "24px",
-          //   "text-anchor": "middle",
-          //   "font-family": "Inter, Arial, Helvetica, sans-serif"
-          // }
-
-          Object.keys(borderAttributes).forEach(attribute => {
-            border.setAttribute(attribute, borderAttributes[attribute]);
-          })
-          // Object.keys(textAttributes).forEach(attribute => {
-          //   text.setAttribute(attribute, textAttributes[attribute]);
-          // })
-          text.textContent = 'Hello world!'
-          svg.appendChild(border)
-          svg.appendChild(text)
-        })
-
-        const blob = await currentQr.getRawData('svg')
-        if (!blob) { continue }
-
-        qrs = [...qrs, blob]
-        dispatch(actionsQR.setDownloadItems(qrs))
+      const start = +(new Date())
+      
+      const updateProgressbar = async (value: number) => {
+        if (value === currentPercentage || value < currentPercentage) { return }
+        currentPercentage = value
+        dispatch(actionsQR.setDownloadLoader(currentPercentage))
         await sleep(1)
       }
 
-      downloadBase64FilesAsZip('svg', qrs, qrSetName)
+      const resp = await fetch(LedgerIcon)
+      const blob = await resp.blob()
+      const img = await createImageBitmap(blob as ImageBitmapSource)
+
+      const qrImageOptions = {
+        margin: 1,
+        imageSize: 0.5,
+        crossOrigin: 'anonymous',
+      }
+
+      const logoImageLoaded = await loadImage(
+        qrImageOptions,
+        LedgerIcon
+      )
+
+      const linkGroups = createDataGroups(qrsArray, neededWorkersCount)
+      console.log({ linkGroups })
+      const workers = await createWorkers(linkGroups, 'qrs', updateProgressbar)
+      console.log({ workers })
+      const result = await Promise.all(workers.map(({
+        worker,
+        data
+      }) => (worker as Remote<QRsWorker>).downloadQRs(
+        data,
+        width, // qr width
+        height, // qr height
+        dashboardKey,
+        qrImageOptions,
+        logoImageLoaded.width,
+        logoImageLoaded.height,
+        img, // image bitmap to render in canvas
+        REACT_APP_CLAIM_APP
+      )))
+
+      console.log((+ new Date()) - start)
+
+      await downloadBase64FilesAsZip('png', result.flat(), qrSetName)
+      currentPercentage = 0
+      terminateWorkers(workers)
+      dispatch(actionsQR.setDownloadLoader(0))
       dispatch(actionsQR.setDownloadItems([]))
       callback && callback()
     } catch (err) {
+      currentPercentage = 0
+      dispatch(actionsQR.setDownloadLoader(0))
+      dispatch(actionsQR.setDownloadItems([]))
+      callback && callback()
+      alert('Some error occured, check console for more information')
       console.error(err)
     }
     dispatch(actionsQR.setLoading(false))
