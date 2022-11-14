@@ -50,15 +50,13 @@ const parseSingleDataERC1155: (value: string) => TAsset[] = (value) => {
   if (value.includes('(') && value.includes(')')) {
     // '1, 2(2)'
     const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim()).filter(item => item)
-    
-    for (let x = 0; x < Number(valueAndAmount[1]); x++) {
-      const [ id, amount ] = valueAndAmount[0].split(',').map((item: string) => item.trim())
-      result.push({
-        id: String(id || 0),
-        amount: String(amount || 0),
-        native_tokens_amount: '0'
-      })
-    }
+    const [ id, amount ] = valueAndAmount[0].split(',').map((item: string) => item.trim())
+    result = new Array(Number(valueAndAmount[1])).fill({
+      id: String(id || 0),
+      amount: String(amount || 0),
+      native_tokens_amount: '0'
+    })
+
   } else {
     // '1, 2'
     const [ id, amount ] = value.split(',').map((item: string) => item.trim())
@@ -75,14 +73,12 @@ const parseSingleDataERC1155WithNative: (value: string) => TAsset[] = (value) =>
   let result = []
   if (value.includes('(') && value.includes(')')) {
     const valueAndAmount = value.replace(/\)/i, '').split('(').map((item: string) => item.trim()).filter(item => item)
-    for (let x = 0; x < Number(valueAndAmount[1]); x++) {
-      const [ id, amount, nativeTokensAmount ] = valueAndAmount[0].split(',').map(item => item.trim()).filter(item => item)
-      result.push({
-        amount: String(amount || 0),
-        id: String(id || 0),
-        native_tokens_amount: String(utils.parseUnits(String(nativeTokensAmount), 18))
-      })
-    }
+    const [ id, amount, nativeTokensAmount ] = valueAndAmount[0].split(',').map(item => item.trim()).filter(item => item)
+    result = new Array(Number(valueAndAmount[1])).fill({
+      amount: String(amount || 0),
+      id: String(id || 0),
+      native_tokens_amount: String(utils.parseUnits(String(nativeTokensAmount), 18))
+    })
   } else {
     const [ id, amount, nativeTokensAmount ] = value.split(',').map(item => item.trim()).filter(item => item)
     result.push({
