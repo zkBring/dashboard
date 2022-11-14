@@ -60,7 +60,8 @@ const generateERC1155Link = ({
         proxyContractAddress,
         sponsored,
         tokenStandard,
-        claimPattern
+        claimPattern,
+        distributionPattern
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -159,6 +160,7 @@ const generateERC1155Link = ({
         }
         const newCampaign: TCampaignNew = {
           campaign_number: id,
+          distribution_pattern: distributionPattern,
           encrypted_signer_key: encrypt(signerKey, dashboardKey),
           signer_address: signerAddress,
           token_address: tokenAddress,

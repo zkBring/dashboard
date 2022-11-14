@@ -61,7 +61,8 @@ const generateERC20Link = ({
         proxyContractAddress,
         sponsored,
         tokenStandard,
-        claimPattern
+        claimPattern,
+        distributionPattern
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!chainId) { return alert('assets are not provided') }
@@ -162,6 +163,7 @@ const generateERC20Link = ({
           token_address: tokenAddress,
           creator_address: address,
           wallet,
+          distribution_pattern: distributionPattern,
           symbol,
           title: title || '',
           token_standard: tokenStandard,
