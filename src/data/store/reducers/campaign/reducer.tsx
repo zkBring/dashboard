@@ -21,7 +21,8 @@ const initialState: CampaignState = {
   claimPattern: 'mint',
   distributionPattern: 'manual',
   links: [],
-  nativeTokensPerLink: '0'
+  nativeTokensPerLink: '0',
+  linksGenerateLoader: 0
 }
 
 export function newRetroDropReducer(
