@@ -43,9 +43,11 @@ import {
   terminateWorkers,
   createQuantityGroups
 } from './create-workers'
+import convertLinksContent from './convert-links-content'
 
 export {
   shortenString,
+  convertLinksContent,
   checkERC721AssetsDataForMint,
   loadImage,
   getBignumberInterval,
