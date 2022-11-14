@@ -73,6 +73,8 @@ export function newRetroDropReducer(
             ...state.links,
             action.payload
           ]}
+        case Constants.CAMPAIGN_SET_LINKS_GENERATE_LOADER:
+          return {...state, linksGenerateLoader: action.payload.linksGenerateLoader }
         case Constants.CAMPAIGN_CLEAR:
           return initialState
         default:

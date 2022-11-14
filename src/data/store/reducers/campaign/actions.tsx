@@ -146,3 +146,8 @@ export function setNativeTokensPerLink(nativeTokensPerLink: string) {
   })
 }
 
+export function setLinksGenerateLoader(linksGenerateLoader: number) {
+  return action(Constants.CAMPAIGN_SET_LINKS_GENERATE_LOADER, {
+    linksGenerateLoader
+  })
+}
