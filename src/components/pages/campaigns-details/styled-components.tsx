@@ -23,22 +23,3 @@ export const WidgetComponent = styled(Widget)`
 export const WidgetButton = styled(Button)`
   
 `
-
-export const BatchList = styled.div`
-  display: inline-grid;
-  grid-template-columns: auto auto auto 120px;
-  align-items: center;
-  grid-gap: 6px;
-  margin-bottom: 20px;
-  width: 100%;
-`
-
-export const BatchListLabel = styled.div`
-  font-size: 14px;
-  color: ${props => props.theme.additionalTextColor};
-`
-
-export const BatchListValue = styled.div`
-  font-size: 14px;
-  color: ${props => props.theme.primaryTextColor};
-`

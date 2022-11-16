@@ -11,7 +11,10 @@ import {
   AsideDivider,
   AsideRow,
   AsideText,
-  AsideValue
+  AsideValue,
+  BatchList,
+  BatchListLabel,
+  BatchListValue
 } from './styled-components'
 
 export {
@@ -19,6 +22,9 @@ export {
   Container,
   WidgetComponent,
   WidgetAside,
+  BatchList,
+  BatchListLabel,
+  BatchListValue,
   ButtonsContainer,
   Aside,
   WidgetContainer,

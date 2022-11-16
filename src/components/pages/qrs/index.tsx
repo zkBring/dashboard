@@ -1,12 +1,18 @@
 import { FC, useState } from 'react'
-import { Popup, Loader } from 'components/common'
+import { Popup } from 'components/common'
 import { useHistory } from 'react-router-dom'
 import {
-  QRItem,
   Container,
   ContainerButton,
-  InputComponent
+  InputComponent,
+  BatchListStyled
 } from './styled-components'
+
+import {
+  BatchListLabel,
+  BatchListValue
+} from 'components/pages/common'
+
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
@@ -88,14 +94,16 @@ const QRs: FC<ReduxType> = ({
       appearance='action'
       onClick={() => togglePopup(true)}
     />
+    <BatchListStyled>
+        <BatchListLabel>Name of set</BatchListLabel>
+        <BatchListLabel>Quantity</BatchListLabel>
+        <BatchListLabel>Date created</BatchListLabel>
+        <BatchListLabel>Claim links</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
+        <BatchListLabel></BatchListLabel>
+    </BatchListStyled>
     {qrs.map(qr => {
-      return <QRItem
-        {...qr}
-        key={qr.set_id}
-        onManage={() => {
-          history.push(`/qrs/${qr.set_id}`)
-        }}
-      />
+      return null
     })}
     
   </Container>

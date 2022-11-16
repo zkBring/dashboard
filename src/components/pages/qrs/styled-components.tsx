@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import {
-  QR,
   Button,
   Input
-} from 'components/common' 
+} from 'components/common'
 
-export const QRItem = styled(QR)`
-  margin-bottom: 10px;
-`
+import {
+  BatchList
+} from 'components/pages/common'
+
 
 export const Container = styled.div`
   display: flex;
@@ -21,4 +21,8 @@ export const ContainerButton = styled(Button)`
 `
 
 export const InputComponent = styled(Input)`
+`
+
+export const BatchListStyled = styled(BatchList)`
+  grid-template-columns: auto auto auto auto auto 180px;
 `

@@ -6,14 +6,15 @@ import {
   AsideDivider,
   AsideRow,
   AsideText,
-  AsideValue
+  AsideValue,
+  BatchList,
+  BatchListLabel,
+  BatchListValue
 } from 'components/pages/common'
+
 import {
   Header,
   WidgetButton,
-  BatchList,
-  BatchListLabel,
-  BatchListValue,
   WidgetTitleStyled
 } from './styled-components'
 
