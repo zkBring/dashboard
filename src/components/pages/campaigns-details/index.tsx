@@ -31,7 +31,7 @@ import {
 
 import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
-import { getCampaignBatches } from 'data/store/reducers/campaigns/async-actions'
+import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
 import {
   formatDate,
   decryptLinks
@@ -57,6 +57,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispatch(
         getCampaignBatches({ campaign_id })
       )
+    },
+    downloadLinks: (batch_id: string | number, campaign_id: string | number, title: string) => {
+      dispatch(
+        downloadLinks(batch_id, campaign_id, title)
+      )
     }
   }
 }
@@ -64,7 +69,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
-  const { campaigns, dashboardKey, match: { params }, getCampaignBatches, loading } = props
+  const {
+    campaigns,
+    dashboardKey,
+    match: { params },
+    getCampaignBatches,
+    loading,
+    downloadLinks
+  } = props
   const history = useHistory()
   useEffect(() => {
     getCampaignBatches(params.id)
@@ -112,7 +124,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               #{idx + 1}
             </BatchListValue>
             <BatchListValue>
-              {batch.claim_links.length} link(s)
+              {batch.claim_links_count} link(s)
             </BatchListValue>
             <BatchListValue>
               {dateFormatted}
@@ -122,13 +134,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               size='small'
               title='Download'
               onClick={() => {
-                if (!dashboardKey) { return alert ('dashboardKey is not provided') }
-                const decryptedLinks = decryptLinks(batch.claim_links, dashboardKey)
-                downloadLinksAsCSV(
-                  decryptedLinks,
-                  title,
-                  batch.created_at || ''
-                )
+                downloadLinks(batch.batch_id, campaign_id, title)
               }}
             />
           </>

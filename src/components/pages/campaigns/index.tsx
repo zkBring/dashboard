@@ -20,7 +20,7 @@ const mapStateToProps = ({
 const countLinks: (batches: TLinksBatch[]) => number = (batches) => {
   if (!batches) { return 0 }
   return batches
-    .map(batch => batch.claim_links.length)
+    .map(batch => batch.claim_links_count)
     .reduce<number>((sum, item) => {
       return sum + item
     }, 0)

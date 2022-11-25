@@ -5,12 +5,15 @@ import {
   Container,
   ContainerButton,
   InputComponent,
-  BatchListStyled
+  BatchListStyled,
+  Header,
+  WidgetTitleStyled
 } from './styled-components'
 
 import {
   BatchListLabel,
-  BatchListValue
+  BatchListValue,
+  WidgetComponent
 } from 'components/pages/common'
 
 import { RootState, IAppDispatch } from 'data/store'
@@ -89,22 +92,36 @@ const QRs: FC<ReduxType> = ({
         }}
       />
     </Popup>}
-    <ContainerButton
-      title='Add QRs'
-      appearance='action'
-      onClick={() => togglePopup(true)}
-    />
-    <BatchListStyled>
+    <WidgetComponent>
+      <Header>
+        <WidgetTitleStyled>My QR sets</WidgetTitleStyled>
+        <ContainerButton
+          title='Add QRs'
+          appearance='action'
+          onClick={() => togglePopup(true)}
+        />
+      </Header>
+    
+      <BatchListStyled>
         <BatchListLabel>Name of set</BatchListLabel>
         <BatchListLabel>Quantity</BatchListLabel>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Claim links</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
-    </BatchListStyled>
-    {qrs.map(qr => {
-      return null
-    })}
+        {qrs.map(qr => {
+          return <>
+            <BatchListValue>{qr.set_name}</BatchListValue>
+            <BatchListValue>{qr.qr_quantity}</BatchListValue>
+            <BatchListValue>{qr.created_at}</BatchListValue>
+            <BatchListValue>{qr.links_uploaded ? 'Uploaded' : 'Not uploaded'}</BatchListValue>
+            <BatchListValue>{qr.status}</BatchListValue>
+            <BatchListValue></BatchListValue>
+          </>
+        })}
+      </BatchListStyled>
+    </WidgetComponent>
+    
     
   </Container>
 }

@@ -3,6 +3,7 @@ import {
   Button,
   Input
 } from 'components/common'
+import { WidgetTitle } from 'components/pages/common'
 
 import {
   BatchList
@@ -25,4 +26,16 @@ export const InputComponent = styled(Input)`
 
 export const BatchListStyled = styled(BatchList)`
   grid-template-columns: auto auto auto auto auto 180px;
+`
+
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const WidgetTitleStyled = styled(WidgetTitle)`
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `

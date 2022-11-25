@@ -78,10 +78,12 @@ export const BatchList = styled.div`
 
 export const BatchListLabel = styled.div`
   font-size: 14px;
+  padding: 12px 0;
   color: ${props => props.theme.additionalTextColor};
 `
 
 export const BatchListValue = styled.div`
   font-size: 14px;
   color: ${props => props.theme.primaryTextColor};
+  padding: 14px 0;
 `
