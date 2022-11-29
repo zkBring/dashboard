@@ -1,5 +1,11 @@
 import { FC, useEffect } from 'react'
-import { Container, GenerateProgressBar, GenerateTitle, GenerateSubtitle } from './styled-components'
+import {
+  Container,
+  GenerateProgressBar,
+  GenerateTitle,
+  GenerateSubtitle,
+  GenerateProgress
+} from './styled-components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
@@ -58,23 +64,24 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
     
     if (tokenStandard === 'ERC20') {
       generateERC20((id) => {
-        return;
         history.push(`/campaigns/${id}`)
       }, id)
     } else if (tokenStandard === 'ERC721') {
       generateERC721((id) => {
-        return;
         history.push(`/campaigns/${id}`)
       }, id)
     } else {
       generateERC1155((id) => {
-        return;
         history.push(`/campaigns/${id}`)
       }, id)
     }
   }, [])
 
   return <Container>
+
+    <GenerateProgress>
+      {Math.ceil(linksGenerateLoader * 100)}%
+    </GenerateProgress>
 
     <GenerateTitle>
       Links generating

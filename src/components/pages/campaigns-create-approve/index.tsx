@@ -20,11 +20,13 @@ const mapStateToProps = ({
     campaigns
   },
   campaign: {
-    tokenStandard
+    tokenStandard,
+    loading
   }
 }: RootState) => ({
   campaigns,
-  tokenStandard
+  tokenStandard,
+  loading
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -81,7 +83,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   grantRole,
   approveERC20,
   approveERC721,
-  approveERC1155
+  approveERC1155,
+  loading
 }) => {
   const { id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -129,7 +132,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             approveERC1155(callback)
           }
         },
-        disabled: false
+        disabled: loading,
+        loading
       }}
       title="Summary"
       subtitle="Check your campaign’s details before going next"
