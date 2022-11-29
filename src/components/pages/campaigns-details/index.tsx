@@ -108,7 +108,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           size='small'
           title='+ Add'
           onClick={() => {
-            history.push(`/campaigns/edit/${token_standard}/${campaign_id}/initial`)
+            history.push(`/campaigns/edit/${token_standard}/${campaign_id}/new`)
           }}
         />
       </Header>

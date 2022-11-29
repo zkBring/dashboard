@@ -88,9 +88,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 }) => {
   const { id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  console.log({ campaign })
   const history = useHistory()
   const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
-  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>('mint')
+  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
   useEffect(() => {
     if (!campaign) {
       return
@@ -108,7 +109,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         label='Claim pattern'
         value={claimPattern}
         radios={patterns}
-        onChange={(value) => { setClaimPattern(value) }}
+        onChange={(value) => {
+          console.log({ value })
+          setClaimPattern(value)
+        }}
       />
     </WidgetComponent>
     <Aside

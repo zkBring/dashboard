@@ -46,6 +46,13 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
         />
 
         <ProtectedRoute
+          path='/campaigns/edit/:type/:id/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateNew}
+        />
+
+        <ProtectedRoute
           path='/campaigns/:id'
           exact={true}
           loggedIn={Boolean(address)}

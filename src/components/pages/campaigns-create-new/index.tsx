@@ -3,6 +3,7 @@ import {
   StyledRadio,
   InputStyled
 } from './styled-components'
+import { useParams } from 'react-router-dom'
 
 import {
   WidgetComponent,
@@ -14,7 +15,7 @@ import {
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import { TTokenType } from 'types'
+import { TTokenType, TLinkParams } from 'types'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
@@ -100,25 +101,28 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   chainId,
   provider,
   address,
+  campaigns,
   setTokenContractData,
   setInitialData,
-  title: campaignTitle,
-  tokenAddress: campaignTokenAddress,
   clearCampaign
 }) => {
 
   const history = useHistory()
+  const { type, id } = useParams<TLinkParams>()
 
-  const [ type, setType ] = useState<string>('ERC20')
+  const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  
   const [
     tokenAddress,
     setTokenAddress
-  ] = useState<string>(campaignTokenAddress || '')
+  ] = useState<string>(currentCampaign?.token_address || '')
 
   const [
     title,
     setTitle
-  ] = useState<string>(campaignTitle || '')
+  ] = useState<string>(currentCampaign?.title || '')
+
+  const [ currentType, setCurrentType ] = useState<string>(currentCampaign?.token_standard || 'ERC20')
 
   const types = [
     { value: 'ERC20', label: 'ERC20' },
@@ -128,7 +132,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
-    setTokenContractData(provider, tokenAddress, type as TTokenType, address, chainId)
+    console.log('here', tokenAddress)
+    setTokenContractData(provider, tokenAddress, currentType as TTokenType, address, chainId)
   }, [tokenAddress, provider])
 
 
@@ -146,6 +151,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
       <WidgetSubtitle>Fill out all fields to finish setup campaign</WidgetSubtitle>
       <InputStyled
         value={title}
+        disabled={Boolean(currentCampaign)}
         onChange={(value: string) => {
           setTitle(value)
           return value
@@ -155,14 +161,16 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
       <StyledRadio
         label='Token Standard'
-        value={type}
+        disabled={Boolean(currentCampaign)}
+        value={currentType}
         radios={types}
-        onChange={(value) => { setType(value) }}
+        onChange={(value) => { setCurrentType(value) }}
       />
 
       <InputStyled
         value={tokenAddress}
         placeholder='0x Address'
+        disabled={Boolean(currentCampaign)}
         onChange={(value: string) => {
           setTokenAddress(value)
           return value
@@ -177,7 +185,16 @@ const CampaignsCreateNew: FC<ReduxType> = ({
       }}
       next={{
         action: () => {
-          setInitialData(type as TTokenType, title, () => { history.push(`/campaigns/new/${type}/initial`) })
+          setInitialData(
+            type as TTokenType,
+            title,
+            () => {
+              if (currentCampaign) {
+                return history.push(`/campaigns/edit/${currentType}/${currentCampaign.campaign_id}/initial`)
+              }
+              history.push(`/campaigns/new/${currentType}/initial`)
+            }
+          )
         },
         disabled: defineIfNextDisabled()
       }}

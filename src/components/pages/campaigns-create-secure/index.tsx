@@ -35,14 +35,16 @@ const mapStateToProps = ({
   campaign: {
     assets,
     symbol,
-    tokenStandard
+    tokenStandard,
+    loading
   },
 }: RootState) => ({
   assets,
   symbol,
   chainId,
   campaigns,
-  tokenStandard
+  tokenStandard,
+  loading
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -74,7 +76,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   chainId,
   campaigns,
   secure,
-  tokenStandard
+  tokenStandard,
+  loading
 }) => {
   const walletsOptions = useMemo(() => {
     const options = wallets
@@ -161,7 +164,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             () => history.push(redirectURL)
           )
         },
-        disabled: false
+        disabled: loading,
+        loading
       }}
       title="Summary"
       subtitle="Check your campaign’s details before going next"

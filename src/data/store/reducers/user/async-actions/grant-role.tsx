@@ -53,6 +53,7 @@ const grantRole = (
       }
 
       dispatch(campaignActions.setLoading(true))
+      dispatch(campaignActions.setClaimPattern('mint'))
       const contract = contracts[chainId]
       const signer = await provider.getSigner()
       const gasPrice = await provider.getGasPrice()

@@ -54,6 +54,7 @@ const approve = (
         return alert('No user address provided')
       }
       dispatch(campaignActions.setLoading(true))
+      dispatch(campaignActions.setClaimPattern('transfer'))
       const signer = await provider.getSigner()
       const gasPrice = await provider.getGasPrice()
       const oneGwei = utils.parseUnits('1', 'gwei')
