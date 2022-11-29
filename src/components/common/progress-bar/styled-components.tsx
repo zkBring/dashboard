@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 export const ProgressBarContainer = styled.div`
   max-width: 500px;
-  height: 40px;
-  border-radius: 5px;
+  height: 8px;
+  border-radius: 24px;
   position: relative;
-  border: 1px solid ${props => props.theme.primaryBorderColor};
+  background: ${props => props.theme.primaryBorderColor};
 `
 
 export const Bar = styled.div`
@@ -13,16 +13,6 @@ export const Bar = styled.div`
   top: 0;
   background: ${props => props.theme.primaryHighlightColor};
   left: 0;
-  height: 100%;
-`
-
-export const Data = styled.div`
-  position: absolute;
-  right: 15px;
-  top: 0;
-  display: flex;
-  color: ${props => props.theme.primaryTextColor};
-  text-align: left;
-  align-items: center;
+  border-radius: 24px;
   height: 100%;
 `

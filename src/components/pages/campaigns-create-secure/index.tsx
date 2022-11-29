@@ -142,7 +142,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       next={{
         action: () => {
           const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
-          const totalNativeTokensAmount = multiply(
+          const totalNativeTokensAmount = nativeTokensAmount === '' || nativeTokensAmount === '0' ? 0 : multiply(
             bignumber(nativeTokensAmount),
             assets.length
           )

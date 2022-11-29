@@ -10,5 +10,12 @@ export const Container = styled.div`
 `
 
 export const GenerateProgressBar = styled(ProgressBar)`
-  min-width: 500px;
+  min-width: 200px;
 `
+
+export const GenerateTitle = styled.h2`
+  text-align: center;
+  font-size: 22px;
+  margin: 0 0 16px;
+`
+

@@ -20,8 +20,9 @@ export const Text = styled.p`
   font-size: 16px;
 `
 
-export const InvertedWidget = styled(Widget)`
-  background-color: ${props => props.theme.blankColor};
+export const StyledWidget = styled(Widget)`
+  max-width: 260px;
+  margin-bottom: 56px;
   & > div {
     display: flex;
     flex-direction: column;
@@ -30,7 +31,7 @@ export const InvertedWidget = styled(Widget)`
 `
 
 export const WidgetDescription = styled.p`
-  font-size: 16px;
+  font-size: 12px;
   margin: 0 0 40px;
 `
 

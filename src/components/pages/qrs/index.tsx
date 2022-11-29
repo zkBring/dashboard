@@ -16,6 +16,8 @@ import {
   WidgetComponent
 } from 'components/pages/common'
 
+import { defineQRStatusName } from 'helpers'
+
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
@@ -115,7 +117,7 @@ const QRs: FC<ReduxType> = ({
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at}</BatchListValue>
             <BatchListValue>{qr.links_uploaded ? 'Uploaded' : 'Not uploaded'}</BatchListValue>
-            <BatchListValue>{qr.status}</BatchListValue>
+            <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
             <BatchListValue></BatchListValue>
           </>
         })}

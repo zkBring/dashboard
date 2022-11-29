@@ -1,23 +1,18 @@
-import { FC, useState, useEffect, useMemo } from 'react'
+import { FC, useState } from 'react'
 import {
   InputsContainer,
   InputStyled,
   ButtonStyled
 } from '../../styled-components'
-import wallets from 'configs/wallets'
 import { TProps } from './type'
-import {
-  defineNativeTokenSymbol,
-} from 'helpers'
 import {
   Container
 } from './styled-components'
-import { TLinksContent } from '../../types'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
-import { TTokenType, TAssetsData, TLinkContent } from 'types'
+import { useParams } from 'react-router-dom'
+import { TTokenType, TLinkContent } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 
 

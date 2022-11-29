@@ -25,13 +25,13 @@ export const CampaignButtons = styled.div`
 `
 
 export const CampaignText = styled.span`
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
   color: ${props => props.theme.additionalTextColor};
 `
 
 export const CampaignValue = styled(CampaignText)`
-  font-size: 14px;
+  font-size: 13px;
   color: ${props => props.theme.primaryTextColor};
 `
 

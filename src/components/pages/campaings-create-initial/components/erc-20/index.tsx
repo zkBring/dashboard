@@ -1,34 +1,19 @@
-import { FC, useState, useEffect, useMemo } from 'react'
+import { FC, useState } from 'react'
 import {
-  StyledRadio
+  InputsContainer,
+  InputStyled,
+  ButtonStyled
 } from '../../styled-components'
-import wallets from 'configs/wallets'
 import { TProps } from './type'
 import {
-  NATIVE_TOKEN_ADDRESS
-} from 'configs/app'
-import {
-  checkERC20AssetsData,
-  parseERC20AssetsData,
-  checkNativeAssetsData,
-  parseNativeAssetsData,
-  defineAssetsTextareaPlaceholder,
-  defineNativeTokenSymbol
-} from 'helpers'
-import {
-  UserAssets,
-  UserAsset,
-  UserAssetNative,
-  SelectComponent
+  Container
 } from './styled-components'
+import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
-import { TTokenType, TAssetsData, TSelectOption, TClaimPattern } from 'types'
+import { useParams } from 'react-router-dom'
+import { TTokenType, TLinkContent } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import * as campaignActions from 'data/store/reducers/campaign/actions'
-import { CampaignActions } from 'data/store/reducers/campaign/types'
-import { Dispatch } from 'redux'
 
 const mapStateToProps = ({
   user: {
@@ -43,7 +28,8 @@ const mapStateToProps = ({
     loading,
     decimals,
     symbol,
-    claimPattern
+    claimPattern,
+    tokenStandard
   }
 }: RootState) => ({
   loading,
@@ -52,13 +38,14 @@ const mapStateToProps = ({
   decimals,
   chainId,
   symbol,
+  tokenStandard,
   nativeTokenAmountFormatted,
   tokenAmountFormatted,
   userLoading,
   claimPattern
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     setTokenContractData: (
       provider: any,
@@ -73,26 +60,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       type,
       address,
       chainId
-    ),
-    // setAssetsData: (
-    //   type: TTokenType,
-    //   assets: TAssetsData,
-    //   wallet: TSelectOption,
-    //   claimPattern: TClaimPattern,
-    //   callback: () => void
-    // ) => dispatch(campaignAsyncActions.setAssetsData(
-    //     type,
-    //     assets,
-    //     String(wallet.value),
-    //     claimPattern,
-    //     callback
-    //   )
-    // ),
-    clearCampaign: () => {
-      dispatch(
-        campaignActions.clearCampaign()
-      )
-    }
+    )
   }
 }
 
@@ -101,96 +69,71 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   TProps
 
 const Erc20: FC<ReduxType > = ({
-  provider,
-  symbol,
-  setTokenContractData,
-  // setAssetsData,
-  chainId,
-  address,
-  nativeTokenAmountFormatted,
-  tokenAmountFormatted,
-  clearCampaign,
-  decimals,
-  campaign,
-  claimPattern
+  tokenStandard,
+  setAssetsData,
+  assetsData
 }) => {
-  const [
-    tokenAddress,
-    setTokenAddress
-  ] = useState(campaign ? campaign.token_address : '')
-
-  const [
-    title,
-    setTitle
-  ] = useState(campaign ? campaign.title : '')
-
-  const [ radio, setRadio ] = useState<TClaimPattern>(campaign ? campaign.claim_pattern : claimPattern)
-
-  useEffect(() => {
-    clearCampaign()
-  }, [])
-  
-  const walletsOptions = useMemo(() => {
-    const options = wallets
-      .filter(wallet => {
-        return chainId && wallet.chains.includes(String(chainId))
-      })
-      .map(wallet => ({
-        label: wallet.name,
-        value: wallet.id
-      }))
-    return options
-  }, [chainId])
-
-  const [
-    currentWallet,
-    setCurrentWallet
-  ] = useState<TSelectOption>(walletsOptions[0])
 
   const { type } = useParams<{ type: TTokenType }>()
 
-  const [
-    assetsValue,
-    setAssetsValue
-  ] = useState('')
-
-  const [
-    assetsParsed,
-    setAssetsParsedValue
-  ] = useState<TAssetsData>([])
-
-  useEffect(() => {
-    if (!tokenAddress.length || !chainId) { return }
-    setTokenContractData(provider, tokenAddress, type, address, chainId)
-  }, [tokenAddress, provider])
-
-  useEffect(() => {
-    if (!assetsValue || !decimals) { return }
-    let assets
-    if (tokenAddress !== NATIVE_TOKEN_ADDRESS) {
-      assets = parseERC20AssetsData(assetsValue, decimals)
-    } else {
-      assets = parseNativeAssetsData(assetsValue, decimals)
-    }
-    if (!assets) { return }
-    
-    setAssetsParsedValue(assets)
-  }, [assetsValue])
-
-  const defineIfButtonDisabled = () => {
-    if (tokenAddress.length !== 42) { return true }
-    if (tokenAddress !== NATIVE_TOKEN_ADDRESS) {
-      return !checkERC20AssetsData(assetsValue)
-    }
-    if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
-      return !checkNativeAssetsData(assetsValue)
+  const getDefaultValues = () => {
+    return {
+      linksAmount: '',
+      tokenId: '',
+      tokenAmount: '',
+      id: assetsData.length,
+      tokenType: tokenStandard || 'ERC20'
     }
   }
 
-  const history = useHistory()
+  const [
+    formData,
+    setFormData
+  ] = useState<TLinkContent>(getDefaultValues())
 
-  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-  return null
+  const checkIfDisabled = () => {
+    return !formData.tokenAmount || !formData.linksAmount
+  }
+
+  return <Container>
+    <LinksContents
+      type={type}
+      data={assetsData}
+      onRemove={(id) => {
+        setAssetsData(assetsData.filter(item => item.id !== id))
+      }}
+    />
+    <InputsContainer>
+    <InputStyled
+        value={formData.tokenAmount}
+        placeholder='Copies per link'
+        onChange={value => {
+          setFormData({ ...formData, tokenAmount: value })
+          return value
+        }}
+      />
+      <InputStyled
+        value={formData.linksAmount}
+        placeholder='Number of links'
+        onChange={value => {
+          setFormData({ ...formData, linksAmount: value })
+          return value
+        }}
+      />
+
+      <ButtonStyled
+        size='small'
+        appearance='additional'
+        disabled={checkIfDisabled()}
+        onClick={() => {
+          setAssetsData([ ...assetsData, formData ])
+          setFormData(getDefaultValues())
+        }}
+      >
+        + Add
+      </ButtonStyled>
+    </InputsContainer>
+  </Container>
   // return <Container>
   //   <WidgetContent>
   //     <WidgetOptions>

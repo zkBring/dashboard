@@ -3,7 +3,7 @@ import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Campaign } from 'components/common'
-import { Container, InvertedWidget, Title, WidgetDescription, WidgetButton } from './styled-components'
+import { Container, StyledWidget, Title, WidgetDescription, WidgetButton } from './styled-components'
 import { TProps } from './types'
 import { TLinksBatch } from 'types'
 import { defineNativeTokenSymbol } from 'helpers'
@@ -39,16 +39,16 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
   })
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
-  const createNewCampaignWidget = <InvertedWidget title='Create Campaign'>
+  const createNewCampaignWidget = <StyledWidget title='Create Campaign'>
       <WidgetDescription>
-        ERC20 / ERC721 / ERC1155 + {nativeTokenSymbol}
+        Distribute your NFTs via claimable links {nativeTokenSymbol}
       </WidgetDescription>
-      <WidgetButton
-        title='Create'
+      <WidgetButton 
+        title='Generate'
         appearance='action'
         to='/campaigns/new'
       />
-    </InvertedWidget>  
+    </StyledWidget>  
 
     return <>
       {createNewCampaignWidget}

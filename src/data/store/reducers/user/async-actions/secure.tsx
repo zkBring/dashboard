@@ -91,6 +91,7 @@ const secure = (
         return new Promise((resolve, reject) => {
           const checkInterval = setInterval(async () => {
             try {
+              console.log({ wallet })
               const res = await proxyContract.isLinkdropSigner(wallet)
               if (res) {
                 resolve(true)
@@ -112,12 +113,13 @@ const secure = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        console.log({ nativeTokensPerLink })
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setNativeTokensPerLink(
           String(
             utils.parseEther(
               String(
-                nativeTokensPerLink
+                nativeTokensPerLink || 0
               )
             )
           )

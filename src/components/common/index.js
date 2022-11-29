@@ -22,7 +22,6 @@ import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/st
 import TransactionDetails from './transaction-details'
 import Checkbox from './checkbox'
 import ProgressBar from './progress-bar'
-import QR from './qr'
 import Popup from './popup'
 import Note from './note'
 import Radio from './radio'
@@ -55,7 +54,6 @@ export {
   WidgetData,
   Checkbox,
   ProgressBar,
-  QR,
   Popup,
   Note,
   Radio

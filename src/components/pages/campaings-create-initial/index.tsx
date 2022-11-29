@@ -113,8 +113,10 @@ const defineComponent: TDefineComponent = (type, assetsData, setAssetsData, camp
   switch(type.toUpperCase()) {
     case 'ERC20':
       return <Erc20
-      type={type}
-      campaign={campaign}
+        type={type}
+        campaign={campaign}
+        assetsData={assetsData}
+        setAssetsData={setAssetsData}
     />
     case 'ERC721':
       return <Erc721

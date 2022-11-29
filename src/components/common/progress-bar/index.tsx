@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { ProgressBarContainer, Data, Bar } from './styled-components'
+import { ProgressBarContainer, Bar } from './styled-components'
 
 type TProps = {
   className?: string,
@@ -17,9 +17,6 @@ const ProgressBar: FC<TProps> = ({
     <Bar style={{
       width: `${value}%`
     }} />
-    <Data>
-      <span>{current}</span> / <span>{max}</span>
-    </Data>
   </ProgressBarContainer>
 }
 
