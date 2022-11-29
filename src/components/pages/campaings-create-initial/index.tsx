@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
-import { StyledRadio } from './styled-components'
+import { StyledRadio, AsideValueShorten } from './styled-components'
 import { Erc20, Erc721, Erc1155 } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TAssetsData, TLinkContent, TClaimPattern, TLinkParams, TDistributionPattern } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLinkParams, TDistributionPattern } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
@@ -13,7 +13,6 @@ import {
   Aside,
   WidgetSubtitle,
   WidgetContainer,
-  AsideDivider,
   AsideRow,
   AsideText,
   AsideValue
@@ -238,7 +237,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
     >
       <AsideRow>
         <AsideText>Title of campaign</AsideText>
-        <AsideValue>{currentCampaignTitle}</AsideValue>
+        <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
       </AsideRow>
 
       {currentTokenAddress && <AsideRow>

@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Radio, Input, Button } from 'components/common'
-
+import {
+  AsideValue
+} from 'components/pages/common'
 
 export const StyledRadio = styled(Radio)`
   margin-bottom: 20px;
@@ -18,4 +20,11 @@ export const InputStyled = styled(Input)`
 
 export const ButtonStyled = styled(Button)`
   
+`
+
+export const AsideValueShorten = styled(AsideValue)`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px;
 `
