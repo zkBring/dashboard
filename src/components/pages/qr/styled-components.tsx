@@ -3,6 +3,7 @@ import styled from "styled-components"
 import {
   WidgetSubtitle
 } from 'components/pages/common'
+import { Select } from 'components/common'
 
 export const WidgetInfo = styled.div`
   display: grid;
@@ -24,9 +25,16 @@ export const WidgetValue = styled.div`
 
 export const Buttons = styled.div`
   display: flex;
+  justify-content: end;
+
+  & > button {
+    margin-left: 16px;
+  }
+  
 `
 
 export const WidgetButton = styled(Button)`
+
 `
 
 export const InputComponent = styled(Input)`
@@ -51,4 +59,8 @@ export const WidgetSubtitleStyled = styled(WidgetSubtitle)`
 export const StyledProgressBar = styled(ProgressBar)`
   min-width: 100%;
   margin-bottom: 20px;
+`
+
+export const StyledSelect = styled(Select)`
+  margin-bottom: 24px;
 `

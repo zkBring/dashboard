@@ -3,7 +3,7 @@ import { useParams, Redirect } from 'react-router-dom'
 import { TLinkParams, TQRSet, TQRStatus, TSelectOption, TQRItem, TLinkDecrypted } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import { defineQRStatusName } from 'helpers'
+import { defineQRStatusName, downloadQRsAsCSV } from 'helpers'
 import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup, DownloadPopup } from './components'
 import { Loader } from 'components/common'
@@ -13,6 +13,7 @@ import {
   Buttons,
   WidgetButton,
   LinksIndicator,
+  StyledSelect,
   WidgetSubtitleStyled
 } from './styled-components'
 import {
@@ -21,7 +22,6 @@ import {
   Aside,
   WidgetSubtitle
 } from 'components/pages/common'
-import { Select } from 'components/common'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
@@ -73,7 +73,8 @@ const QR: FC<ReduxType> = ({
   updateQRSetQuantity,
   getQRsArray,
   mappingLoader,
-  uploadLoader
+  uploadLoader,
+  dashboardKey
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -112,6 +113,10 @@ const QR: FC<ReduxType> = ({
 
   if (!qr) {
     return <Redirect to='/qrs' /> 
+  }
+
+  const defineIfDisabled = () => {
+    return !qr.qr_array || !dashboardKey || loading
   }
 
   return <Container>
@@ -166,7 +171,7 @@ const QR: FC<ReduxType> = ({
           }}
         />
       </WidgetInfo>
-      <Select
+      <StyledSelect
         options={selectOptions}
         title='Status'
         value={status ? status : undefined}
@@ -180,6 +185,30 @@ const QR: FC<ReduxType> = ({
         }}
         placeholder='Status'
       />
+      <Buttons>
+        <WidgetButton
+          title='Download'
+          appearance='action'
+          
+          onClick={() => {
+            toggleDownloadPopup(true)
+          }}
+        /> 
+        <WidgetButton
+          title='Download (as CSV)'
+          appearance='action'
+          disabled={defineIfDisabled()}
+          onClick={() => {
+            if (!qr.qr_array || !dashboardKey) { return }
+            downloadQRsAsCSV(
+              qr.qr_array,
+              qr.set_name,
+              dashboardKey,
+              qr.created_at
+            )
+          }}
+        />
+      </Buttons>
     </WidgetComponent>
     <Aside
       title="Connect to claim links"

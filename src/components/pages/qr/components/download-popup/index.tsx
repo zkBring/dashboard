@@ -30,16 +30,10 @@ const DownloadPopup: FC<TProps> = ({
     }}>
       <PopupFormContent>
         <InputComponent
-          title='Width (inches)'
+          title='Width and width (inches)'
           value={String(formSize)}
           onChange={value => { setFormSize(value); return value }}
           placeholder='Width (inches)'
-        />
-        <InputComponent
-          title='Height (inches)'
-          value={String(formSize)}
-          onChange={value => { setFormSize(value); return value }}
-          placeholder='Height (inches)'
         />
       </PopupFormContent>
       <WidgetButton
