@@ -1,5 +1,4 @@
 /* gobal OffscreenCanvas */
-
 import { expose } from 'comlink'
 import { TQRItem, TLinkDecrypted, TQRImageOptions } from 'types'
 import * as wccrypto from '@walletconnect/utils/dist/esm'

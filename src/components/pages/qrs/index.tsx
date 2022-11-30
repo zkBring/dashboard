@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Popup } from 'components/common'
+import { Popup, Button } from 'components/common'
 import { useHistory } from 'react-router-dom'
 import {
   Container,
@@ -99,6 +99,7 @@ const QRs: FC<ReduxType> = ({
         <WidgetTitleStyled>My QR sets</WidgetTitleStyled>
         <ContainerButton
           title='Add QRs'
+          size='small'
           appearance='action'
           onClick={() => togglePopup(true)}
         />
@@ -118,7 +119,14 @@ const QRs: FC<ReduxType> = ({
             <BatchListValue>{qr.created_at}</BatchListValue>
             <BatchListValue>{qr.links_uploaded ? 'Uploaded' : 'Not uploaded'}</BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
-            <BatchListValue></BatchListValue>
+            <BatchListValue>
+              <Button
+                appearance='action'
+                size='small'
+                title='Manage'
+                to={`/qrs/${qr.set_id}`}
+              />
+            </BatchListValue>
           </>
         })}
       </BatchListStyled>

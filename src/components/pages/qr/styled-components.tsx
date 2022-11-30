@@ -1,39 +1,32 @@
-import { Widget, Button, Input } from "components/common"
+import { Button, Input } from "components/common"
 import styled from "styled-components"
-
-export const Container = styled.div`
-  position: relative;
-`
-
-export const WidgetComponent = styled(Widget)``
+import {
+  WidgetSubtitle
+} from 'components/pages/common'
 
 export const WidgetInfo = styled.div`
   display: grid;
   max-width: 600px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto;
   grid-gap: 10px;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 26px;
 
   &:last-child {
     margin-bottom: 0;
   }
 `
 
-export const WidgetSubtitle = styled.h4`
-  margin: 0;
-  text-align: right;
-  font-size: 16px;
+export const WidgetValue = styled.div`
+  font-weight: 700;
+  font-size: 32px;
 `
-
-export const WidgetValue = styled.div``
 
 export const Buttons = styled.div`
   display: flex;
 `
 
 export const WidgetButton = styled(Button)`
-  margin-right: 10px;
 `
 
 export const InputComponent = styled(Input)`
@@ -48,5 +41,9 @@ export const PopupForm = styled.form`
 `
 
 export const LinksIndicator = styled.div`
-  
+`
+
+export const WidgetSubtitleStyled = styled(WidgetSubtitle)`
+  color: ${props => props.theme.primaryTextColor};
+  margin-bottom: 12px;
 `

@@ -16,6 +16,7 @@ export class LinksWorker {
     this.cb = cb
   }
 
+
   private createSDK (
     linkdropMasterAddress: string,
     factoryAddress: string,

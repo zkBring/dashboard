@@ -8,15 +8,19 @@ import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup, DownloadPopup } from './components'
 import { Loader } from 'components/common'
 import {
-  Container,
-  WidgetComponent,
   WidgetInfo,
-  WidgetSubtitle,
   WidgetValue,
   Buttons,
   WidgetButton,
-  LinksIndicator
+  LinksIndicator,
+  WidgetSubtitleStyled
 } from './styled-components'
+import {
+  WidgetComponent,
+  Container,
+  Aside,
+  WidgetSubtitle
+} from 'components/pages/common'
 import { Select } from 'components/common'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
@@ -108,7 +112,7 @@ const QR: FC<ReduxType> = ({
   }
 
   return <Container>
-    {updateQuantityPopup && <QuantityPopup
+   {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
       quantity={qr.qr_quantity}
       onSubmit={value => {
@@ -135,77 +139,109 @@ const QR: FC<ReduxType> = ({
     {id && downloadPopup && <DownloadPopup
       id={id}  
       onClose={() => toggleDownloadPopup(false)}
-
     />}
-
-    <WidgetComponent title={qr.set_name}>
+    <WidgetComponent title='Campaign setup'>
+      <WidgetSubtitle>Fill out all fields to finish setup campaign</WidgetSubtitle>
+      <WidgetSubtitleStyled>
+        Quantity of QRs
+      </WidgetSubtitleStyled>
       <WidgetInfo>
-        <WidgetSubtitle>
-          Quantity: {qr.qr_quantity} QRs
-        </WidgetSubtitle>
         <WidgetValue>
-          <Buttons>
-            <WidgetButton
-              title='Change quantity'
-              disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
-              onClick={() => {
-                toggleUpdateQuantityPopup(true)
-              }}
-            />
-            <WidgetButton
-              title='Download'
-              appearance='action'
-              
-              onClick={() => {
-                toggleDownloadPopup(true)
-              }}
-            /> 
-          </Buttons>
+          {qr.qr_quantity}
         </WidgetValue>
-        <WidgetSubtitle>
-          Status
-        </WidgetSubtitle>
-        <WidgetValue>
-          <Select
-            options={selectOptions}
-            value={status ? status : undefined}
-            onChange={option => {
-              if (!id) { return }
-              updateQRSetStatus(
-                id,
-                option.value as TQRStatus,
-                () => { setStatus(option) }
-              )
-            }}
-            placeholder='Choose wallet'
-          />
-        </WidgetValue>
+        <WidgetButton
+          title='Change quantity'
+          size='small'
+          appearance='action'
+          disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
+          onClick={() => {
+            toggleUpdateQuantityPopup(true)
+          }}
+        />
       </WidgetInfo>
 
-      <WidgetInfo>
-        <WidgetSubtitle>
-          Claimable links:
-          <LinksIndicator>
-            {qr.links_uploaded ? `${qr.qr_quantity} link(s) <--> ${qr.qr_array?.length} QR(s)` : 'No links uploaded'}
-          </LinksIndicator>
-        </WidgetSubtitle>
-        <WidgetValue>
-          <WidgetButton
-            title={qr.links_uploaded ? 'Change links' : 'Upload links'}
-            onClick={() => {
-              toggleUpdateLinksPopup(true)
-            }}
-          />
-        </WidgetValue>
-        <WidgetSubtitle />
-        <WidgetValue>
-          Upload a CSV file with links, file should include number of rows 
-          equivalent to a number of QR codes
-        </WidgetValue>
-      </WidgetInfo>
-          
+
     </WidgetComponent>
+    <Aside
+      title="Connect to claim links"
+      subtitle="Upload a CSV file with links, file should include number of rows equivalent to a number of QR codes"
+    >
+      
+    </Aside>
   </Container>
+
+
+  // return <Container>
+  
+
+  //   <WidgetComponent title={qr.set_name}>
+  //     <WidgetInfo>
+  //       <WidgetSubtitle>
+  //         Quantity: {qr.qr_quantity} QRs
+  //       </WidgetSubtitle>
+  //       <WidgetValue>
+  //         <Buttons>
+  //           <WidgetButton
+  //             title='Change quantity'
+  //             disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
+  //             onClick={() => {
+  //               toggleUpdateQuantityPopup(true)
+  //             }}
+  //           />
+  //           <WidgetButton
+  //             title='Download'
+  //             appearance='action'
+              
+  //             onClick={() => {
+  //               toggleDownloadPopup(true)
+  //             }}
+  //           /> 
+  //         </Buttons>
+  //       </WidgetValue>
+  //       <WidgetSubtitle>
+  //         Status
+  //       </WidgetSubtitle>
+  //       <WidgetValue>
+  //         <Select
+  //           options={selectOptions}
+  //           value={status ? status : undefined}
+  //           onChange={option => {
+  //             if (!id) { return }
+  //             updateQRSetStatus(
+  //               id,
+  //               option.value as TQRStatus,
+  //               () => { setStatus(option) }
+  //             )
+  //           }}
+  //           placeholder='Choose wallet'
+  //         />
+  //       </WidgetValue>
+  //     </WidgetInfo>
+
+  //     <WidgetInfo>
+  //       <WidgetSubtitle>
+  //         Claimable links:
+  //         <LinksIndicator>
+  //           {qr.links_uploaded ? `${qr.qr_quantity} link(s) <--> ${qr.qr_array?.length} QR(s)` : 'No links uploaded'}
+  //         </LinksIndicator>
+  //       </WidgetSubtitle>
+  //       <WidgetValue>
+  //         <WidgetButton
+  //           title={qr.links_uploaded ? 'Change links' : 'Upload links'}
+  //           onClick={() => {
+  //             toggleUpdateLinksPopup(true)
+  //           }}
+  //         />
+  //       </WidgetValue>
+  //       <WidgetSubtitle />
+  //       <WidgetValue>
+  //         Upload a CSV file with links, file should include number of rows 
+  //         equivalent to a number of QR codes
+  //       </WidgetValue>
+  //     </WidgetInfo>
+          
+  //   </WidgetComponent>
+  // </Container>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(QR)
