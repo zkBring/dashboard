@@ -131,16 +131,14 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   ]
 
   useEffect(() => {
+    clearCampaign()
+  }, [])
+
+  useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
     console.log('here', tokenAddress)
     setTokenContractData(provider, tokenAddress, currentType as TTokenType, address, chainId)
   }, [tokenAddress, provider])
-
-
-  useEffect(() => {
-    clearCampaign()
-  }, [])
-
 
   const defineIfNextDisabled = () => {
     return !title || !tokenAddress || !symbol
