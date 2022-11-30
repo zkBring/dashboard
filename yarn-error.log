@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-mathjs-10.5.0-f81d0518fe7b4b2a0b85e1125b8ecfc364fb0292-integrity/node_modules/mathjs/examples/node_modules/webpack/hot/lazy-compilation-node.js' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/mathjs/examples/node_modules/webpack/hot/lazy-compilation-node.js'
+  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-@types-node-17.0.25-527051f3c2f77aa52e5dc74e45a3da5fb2301448-integrity/node_modules/@types/node/string_decoder.d.ts' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/@types/graceful-fs/node_modules/@types/node/string_decoder.d.ts'
 
 npm manifest: 
   {

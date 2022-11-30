@@ -108,7 +108,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 }) => {
 
   const history = useHistory()
-  const { type, id } = useParams<TLinkParams>()
+  const { id } = useParams<TLinkParams>()
 
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   
@@ -184,7 +184,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
       next={{
         action: () => {
           setInitialData(
-            type as TTokenType,
+            currentType as TTokenType,
             title,
             () => {
               if (currentCampaign) {

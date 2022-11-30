@@ -14,6 +14,7 @@ function setInitialData(
     dispatch: Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
   ) => {
+    console.log({ tokenStandard })
     dispatch(actionsCampaign.setTokenStandard(tokenStandard))
     dispatch(actionsCampaign.setTitle(title))
     if (callback) {

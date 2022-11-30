@@ -156,6 +156,7 @@ const generateERC20Link = ({
           sponsored,
           batch_description: batchPreviewContents
         }
+
         const newCampaign: TCampaignNew = {
           campaign_number: id,
           encrypted_signer_key: encrypt(signerKey, dashboardKey),
