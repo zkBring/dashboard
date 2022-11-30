@@ -1,14 +1,17 @@
 import { FC, useState } from 'react'
 import { Popup } from 'components/common'
 import { TProps } from './types'
-import { InputComponent, PopupForm, WidgetButton, PopupFormContent } from '../../styled-components'
+import { InputComponent, StyledProgressBar, PopupForm, WidgetButton, PopupFormContent } from '../../styled-components'
 
 const QuantityPopup: FC<TProps> = ({
   onClose,
   onSubmit,
-  quantity
+  quantity,
+  loader,
+  loading
 }) => {
   const [ formQuantity, setFormQuantity ] = useState(quantity || '0')
+  console.log({ loader })
   return <Popup
     title='Change quantity of QRs needed'
     onClose={() => {
@@ -22,11 +25,23 @@ const QuantityPopup: FC<TProps> = ({
       <PopupFormContent>
         <InputComponent
           value={String(formQuantity)}
-          onChange={value => { setFormQuantity(value); return value }}
+          onChange={value => {
+            if (/^[0-9]+$/.test(value) || value === '') {
+              setFormQuantity(value)
+            }
+            return value
+          }}
           placeholder='Quantity'
         />
       </PopupFormContent>
+
+      {loading && <StyledProgressBar
+        current={Math.ceil(loader * 100)}
+        max={100}
+      />}
+
       <WidgetButton
+        disabled={loading}
         title='Change'
       />
     </PopupForm>

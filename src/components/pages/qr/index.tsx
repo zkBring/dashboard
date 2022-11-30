@@ -26,7 +26,7 @@ import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  qrs: { qrs, loading },
+  qrs: { qrs, loading, mappingLoader, uploadLoader },
   user: { address, chainId, dashboardKey },
 }: RootState) => ({
   campaigns,
@@ -34,7 +34,8 @@ const mapStateToProps = ({
   chainId,
   qrs,
   loading,
-  dashboardKey
+  dashboardKey,
+  mappingLoader, uploadLoader
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -70,7 +71,9 @@ const QR: FC<ReduxType> = ({
   loading,
   mapQRsToLinks,
   updateQRSetQuantity,
-  getQRsArray
+  getQRsArray,
+  mappingLoader,
+  uploadLoader
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -115,6 +118,8 @@ const QR: FC<ReduxType> = ({
    {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
       quantity={qr.qr_quantity}
+      loading={loading}
+      loader={uploadLoader}
       onSubmit={value => {
         if (!id) { return }
         updateQRSetQuantity(
@@ -127,6 +132,8 @@ const QR: FC<ReduxType> = ({
 
     {updateLinksPopup && <LinksPopup
       quantity={qr.qr_quantity}
+      loader={mappingLoader}
+      loading={loading}
       onClose={() => toggleUpdateLinksPopup(false)}
       onSubmit={links => {
         if (!id || !qr.qr_array) { return }

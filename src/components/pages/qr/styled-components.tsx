@@ -1,4 +1,4 @@
-import { Button, Input } from "components/common"
+import { Button, Input, ProgressBar } from "components/common"
 import styled from "styled-components"
 import {
   WidgetSubtitle
@@ -46,4 +46,9 @@ export const LinksIndicator = styled.div`
 export const WidgetSubtitleStyled = styled(WidgetSubtitle)`
   color: ${props => props.theme.primaryTextColor};
   margin-bottom: 12px;
+`
+
+export const StyledProgressBar = styled(ProgressBar)`
+  min-width: 100%;
+  margin-bottom: 20px;
 `
