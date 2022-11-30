@@ -159,8 +159,20 @@ const QR: FC<ReduxType> = ({
           }}
         />
       </WidgetInfo>
-
-
+      <Select
+        options={selectOptions}
+        title='Status'
+        value={status ? status : undefined}
+        onChange={option => {
+          if (!id) { return }
+          updateQRSetStatus(
+            id,
+            option.value as TQRStatus,
+            () => { setStatus(option) }
+          )
+        }}
+        placeholder='Status'
+      />
     </WidgetComponent>
     <Aside
       title="Connect to claim links"
@@ -202,19 +214,7 @@ const QR: FC<ReduxType> = ({
   //         Status
   //       </WidgetSubtitle>
   //       <WidgetValue>
-  //         <Select
-  //           options={selectOptions}
-  //           value={status ? status : undefined}
-  //           onChange={option => {
-  //             if (!id) { return }
-  //             updateQRSetStatus(
-  //               id,
-  //               option.value as TQRStatus,
-  //               () => { setStatus(option) }
-  //             )
-  //           }}
-  //           placeholder='Choose wallet'
-  //         />
+  //        
   //       </WidgetValue>
   //     </WidgetInfo>
 
