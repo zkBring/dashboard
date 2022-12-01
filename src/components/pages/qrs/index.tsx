@@ -1,10 +1,8 @@
-import { FC, useState } from 'react'
-import { Popup, Button } from 'components/common'
-import { useHistory } from 'react-router-dom'
+import { FC } from 'react'
+import { Button } from 'components/common'
 import {
   Container,
   ContainerButton,
-  InputComponent,
   BatchListStyled,
   Header,
   WidgetTitleStyled
@@ -53,47 +51,7 @@ const QRs: FC<ReduxType> = ({
   qrs,
   loading
 }) => {
-  const history = useHistory()
-  const [ popup, showPopup ] = useState<boolean>(false)
-  const [ title, setTitle ] = useState<string>('')
-  const [ amount, setAmount ] = useState<string>('')
-  const togglePopup = (state: boolean) : void => showPopup(state)
-
-  const defineIfPopupDisabled = () => {
-    return loading || !title || !amount || !Number(amount) || isNaN(Number(amount)) || Number(amount) % 1 !== 0
-  }
-
   return <Container>
-    {popup && <Popup
-      title='Add new set of QR codes'
-      onClose={() => togglePopup(false)}
-    >
-      <InputComponent
-        value={title}
-        title='Name of the set'
-        onChange={value => { setTitle(value); return value }}
-      />
-      <InputComponent
-        value={amount}
-        title='Quantity of QR codes'
-        onChange={value => { setAmount(value); return value }}
-      />
-      <ContainerButton
-        title='Create'
-        appearance='action'
-        disabled={defineIfPopupDisabled()}
-        onClick={() => {
-          if(isNaN(Number(amount))) { return alert('Amount is not valid') }
-          addQRSet(
-            title,
-            Number(amount),
-            (id) => {
-              togglePopup(false)
-            }
-          )
-        }}
-      />
-    </Popup>}
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>My QR sets</WidgetTitleStyled>
@@ -101,7 +59,7 @@ const QRs: FC<ReduxType> = ({
           title='Add QRs'
           size='small'
           appearance='action'
-          onClick={() => togglePopup(true)}
+          to='/qrs/new'
         />
       </Header>
     

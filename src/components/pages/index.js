@@ -11,6 +11,7 @@ import QR from './qr/index'
 import QRDownload from './qr-download/index'
 import CampaignsCreateNew from './campaigns-create-new'
 import Main from './main'
+import QRCreate from './qr-create'
 
 export {
   Page,
@@ -25,5 +26,6 @@ export {
   CampaignsCreateNew,
   QR,
   QRDownload,
-  Main
+  Main,
+  QRCreate
 }

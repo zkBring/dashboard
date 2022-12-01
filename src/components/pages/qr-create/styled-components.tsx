@@ -14,6 +14,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  max-width: 740px;
 `
 
 export const ContainerButton = styled(Button)`
@@ -22,4 +23,13 @@ export const ContainerButton = styled(Button)`
 `
 
 export const InputComponent = styled(Input)`
+`
+
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: end;
+
+  & > button {
+    margin-left: 16px;
+  }
 `
