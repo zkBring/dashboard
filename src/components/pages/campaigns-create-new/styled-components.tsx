@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 import { Button, Radio, Input } from 'components/common'
+import {
+  AsideValue
+} from 'components/pages/common'
 
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;

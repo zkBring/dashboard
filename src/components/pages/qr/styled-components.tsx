@@ -30,7 +30,6 @@ export const Buttons = styled.div`
   & > button {
     margin-left: 16px;
   }
-  
 `
 
 export const WidgetButton = styled(Button)`

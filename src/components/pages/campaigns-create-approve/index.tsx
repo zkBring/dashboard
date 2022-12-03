@@ -12,8 +12,15 @@ import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import {
   WidgetComponent,
   Container,
-  Aside
+  Aside,
+  AsideRow,
+  AsideText,
+  AsideValue,
+  AsideContent,
+  AsideValueShorten,
+  AsideDivider
 } from 'components/pages/common'
+import { shortenString, defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: {
@@ -21,12 +28,20 @@ const mapStateToProps = ({
   },
   campaign: {
     tokenStandard,
-    loading
+    loading,
+    title,
+    tokenAddress
+  },
+  user: {
+    chainId
   }
 }: RootState) => ({
   campaigns,
   tokenStandard,
-  loading
+  loading,
+  title,
+  tokenAddress,
+  chainId
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -84,11 +99,18 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   approveERC20,
   approveERC721,
   approveERC1155,
-  loading
+  loading,
+  title,
+  tokenAddress,
+  chainId
 }) => {
   const { id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-  console.log({ campaign })
+  const currentCampaignTitle = campaign ? campaign.title : title
+  const currentTokenAddress = campaign ? campaign.token_address : tokenAddress
+  const currentCampaignChainId = campaign ? campaign.chain_id : chainId
+  const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
+
   const history = useHistory()
   const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
@@ -142,6 +164,40 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       title="Summary"
       subtitle="Check your campaign’s details before going next"
     >
+      <AsideContent>
+        <AsideRow>
+          <AsideText>Title of campaign</AsideText>
+          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
+        </AsideRow>
+
+        {currentTokenAddress && <AsideRow>
+          <AsideText>Token address</AsideText>
+          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
+        </AsideRow>}
+
+        <AsideRow>
+          <AsideText>Token Name</AsideText>
+          <AsideValue>Coming soon</AsideValue>
+        </AsideRow>
+
+        {currentCampaignTokenStandard && <AsideRow>
+          <AsideText>Token standard</AsideText>
+          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
+        </AsideRow>}
+
+        {currentCampaignChainId && <AsideRow>
+          <AsideText>Network</AsideText>
+          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
+        </AsideRow>}
+
+        <AsideDivider />
+
+        <AsideRow>
+          <AsideText>Claim pattern</AsideText>
+          <AsideValue>{claimPattern}</AsideValue>
+        </AsideRow>
+
+      </AsideContent>
     </Aside>
   </Container>
 }

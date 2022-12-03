@@ -1,6 +1,5 @@
 import { TLinkContent, TAssetsData } from 'types'
 import { utils } from 'ethers'
-import { map } from 'mathjs'
 
 // export type TAsset = {
 //   amount?: string,
@@ -38,6 +37,14 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals) => {
       } else {
         result.push({
           id: item.tokenId
+        })
+      }
+    } else {
+      const amountOfLinks = Number(item.linksAmount)
+      for (let i = 0; i < amountOfLinks; i++) {
+        result.push({
+          amount: String(utils.parseUnits(String(item.tokenAmount), decimals)),
+          original_amount: item.tokenAmount
         })
       }
     }

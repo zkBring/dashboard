@@ -4,15 +4,20 @@ import { TLinkParams, TQRSet, TQRItem } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+
 import {
   Container,
-  DownloadProgressBar
+  GenerateProgressBar,
+  GenerateTitle,
+  GenerateSubtitle,
+  GenerateProgress
 } from './styled-components'
+
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  qrs: { qrs, loading, downloadItems },
+  qrs: { qrs, loading, downloadItems, downloadLoader },
   user: { address, chainId, dashboardKey },
 }: RootState) => ({
   campaigns,
@@ -21,12 +26,12 @@ const mapStateToProps = ({
   qrs,
   loading,
   dashboardKey,
-  downloadItems
+  downloadItems,
+  downloadLoader
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    getQRsArray: (setId: string | number) => dispatch(asyncQRsActions.getQRs({ setId })),
     downloadQRs: (
       qrsArray: TQRItem[],
       qrSetName: string,
@@ -42,7 +47,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 const QR: FC<ReduxType> = ({
   qrs,
   downloadQRs,
-  downloadItems
+  downloadLoader
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -50,6 +55,7 @@ const QR: FC<ReduxType> = ({
   let { search } = useLocation();
 
   const query = new URLSearchParams(search)
+
   useEffect(() => {
     const width = query.get('width')
     const height = query.get('height')
@@ -59,17 +65,26 @@ const QR: FC<ReduxType> = ({
     })
   }, [])
 
-
   if (!qr) {
     return <Redirect to='/qrs' /> 
   }
 
   return <Container>
-    <DownloadProgressBar
-      max={qr && qr.qr_quantity}
-      current={(downloadItems || []).length}
-    />
+    <GenerateProgress>
+      {Math.ceil(downloadLoader * 100)}%
+    </GenerateProgress>
 
+    <GenerateTitle>
+      QRs download
+    </GenerateTitle>
+    <GenerateSubtitle>
+      Don’t close this window until all QRs are successfully downloaded
+    </GenerateSubtitle>
+    
+    <GenerateProgressBar
+      max={100}
+      current={Math.ceil(downloadLoader * 100)}
+    />
   </Container>
 }
 

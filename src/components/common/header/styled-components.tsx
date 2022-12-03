@@ -6,15 +6,16 @@ export const Header = styled.div`
   align-items: center;
   justify-items: space-between;
   width: 100%;
-  height: 68px;
+  height: 80px;
   padding: 0 20px;
 `;
 
 export const HeaderTitle = styled.h2`
   color: ${props => props.theme.primaryTextColor};
-  font-size: 16px;
+  font-size: 24px;
   flex: 1;
   display: flex;
+  font-weight: 400;
   align-items: center;
 `
 

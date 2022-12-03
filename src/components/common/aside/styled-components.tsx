@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import TextLink from '../text-link'
 import Button from '../button'
 import { Link } from 'react-router-dom'
+
 export const Aside = styled.aside`
   display: flex;
   flex-direction: column;
@@ -15,7 +16,6 @@ export const AsideLogoZone = styled.div`
   display: flex;
   align-items: center;
   padding: 28px 12px;
-  min-height: 100px;
 `
 
 export const AsideLogoIcon = styled.img`

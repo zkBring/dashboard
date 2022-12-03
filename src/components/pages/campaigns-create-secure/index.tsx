@@ -13,7 +13,13 @@ import {
   Container,
   Aside,
   WidgetContainer,
-  WidgetSubtitle
+  WidgetSubtitle,
+  AsideRow,
+  AsideText,
+  AsideValue,
+  AsideContent,
+  AsideValueShorten,
+  AsideDivider
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
 import {
@@ -24,6 +30,7 @@ import {
 import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { useHistory } from 'react-router-dom'
+import { shortenString, defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({
   user: {
@@ -36,15 +43,21 @@ const mapStateToProps = ({
     assets,
     symbol,
     tokenStandard,
-    loading
+    loading,
+    title,
+    tokenAddress,
+    claimPattern
   },
 }: RootState) => ({
   assets,
   symbol,
+  title,
   chainId,
+  tokenAddress,
   campaigns,
   tokenStandard,
-  loading
+  loading,
+  claimPattern
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -77,8 +90,12 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   campaigns,
   secure,
   tokenStandard,
-  loading
+  loading,
+  tokenAddress,
+  title,
+  claimPattern
 }) => {
+  
   const walletsOptions = useMemo(() => {
     const options = wallets
       .filter(wallet => {
@@ -104,6 +121,12 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const comission = bignumber(String(LINK_COMISSION_PRICE))
 
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
+  const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
+  const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
+  const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
+  const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
+
   return <Container>
     <WidgetContainer>
       <WidgetComponent title='Transaction sponsorship'>
@@ -170,6 +193,40 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       title="Summary"
       subtitle="Check your campaign’s details before going next"
     >
+      <AsideContent>
+        <AsideRow>
+          <AsideText>Title of campaign</AsideText>
+          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
+        </AsideRow>
+
+        {currentTokenAddress && <AsideRow>
+          <AsideText>Token address</AsideText>
+          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
+        </AsideRow>}
+
+        <AsideRow>
+          <AsideText>Token Name</AsideText>
+          <AsideValue>Coming soon</AsideValue>
+        </AsideRow>
+
+        {currentCampaignTokenStandard && <AsideRow>
+          <AsideText>Token standard</AsideText>
+          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
+        </AsideRow>}
+
+        {currentCampaignChainId && <AsideRow>
+          <AsideText>Network</AsideText>
+          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
+        </AsideRow>}
+
+        <AsideDivider />
+
+        <AsideRow>
+          <AsideText>Claim pattern</AsideText>
+          <AsideValue>{currentCampaignClaimPattern}</AsideValue>
+        </AsideRow>
+
+      </AsideContent>
     </Aside>
   </Container>
 }

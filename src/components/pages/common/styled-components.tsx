@@ -51,6 +51,10 @@ export const AsideText = styled.span`
 
 export const AsideValue = styled(AsideText)`
   color: ${props => props.theme.primaryTextColor};
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `
 
 export const AsideRow = styled.div`
@@ -60,11 +64,21 @@ export const AsideRow = styled.div`
   justify-content: space-between;
 `
 
+export const AsideContent = styled.div`
+  margin-bottom: 36px;
+`
+
 export const AsideDivider = styled.div`
   height: 1px;
   background-color: ${props => props.theme.primaryBorderColor};
   width: 100%;
   margin: 10px 0;
+`
+export const AsideValueShorten = styled(AsideValue)`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px;
 `
 
 export const BatchList = styled.div`

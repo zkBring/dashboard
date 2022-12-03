@@ -9,7 +9,12 @@ import {
   WidgetComponent,
   Container,
   Aside,
-  WidgetSubtitle
+  WidgetSubtitle,
+  AsideRow,
+  AsideText,
+  AsideValue,
+  AsideContent,
+  AsideValueShorten
 } from 'components/pages/common'
 
 import { RootState, IAppDispatch } from 'data/store';
@@ -20,6 +25,7 @@ import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
+import { defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({
   campaign: {
@@ -34,9 +40,6 @@ const mapStateToProps = ({
   },
   user: {
     chainId,
-    nativeTokenAmountFormatted,
-    tokenAmountFormatted,
-    loading: userLoading,
     provider,
     address
   }
@@ -104,7 +107,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   campaigns,
   setTokenContractData,
   setInitialData,
-  clearCampaign
+  clearCampaign,
+  loading
 }) => {
 
   const history = useHistory()
@@ -141,7 +145,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   }, [tokenAddress, provider])
 
   const defineIfNextDisabled = () => {
-    return !title || !tokenAddress || !symbol
+    return !title || !tokenAddress || !symbol || loading
   }
   
   return <Container>
@@ -194,12 +198,28 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             }
           )
         },
+        loading,
         disabled: defineIfNextDisabled()
       }}
       title="Summary"
       subtitle="Check your campaign’s details before going next"
     >
-      
+      <AsideContent>
+        {title && <AsideRow>
+          <AsideText>Title of campaign</AsideText>
+          <AsideValueShorten>{title}</AsideValueShorten>
+        </AsideRow>}
+
+        <AsideRow>
+          <AsideText>Token Standard</AsideText>
+          <AsideValue>{currentType}</AsideValue>
+        </AsideRow>
+
+        <AsideRow>
+          <AsideText>Network</AsideText>
+          <AsideValue>{defineNetworkName(chainId)}</AsideValue>
+        </AsideRow>
+      </AsideContent>
     </Aside>
   </Container>
 }

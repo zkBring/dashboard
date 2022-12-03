@@ -21,10 +21,3 @@ export const InputStyled = styled(Input)`
 export const ButtonStyled = styled(Button)`
   
 `
-
-export const AsideValueShorten = styled(AsideValue)`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 200px;
-`

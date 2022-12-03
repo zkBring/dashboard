@@ -1,5 +1,7 @@
 import TransactionAside from "./transaction-aside"
 import Aside from './aside'
+import AssetsList from './assets-list'
+
 import {
   Container,
   WidgetComponent,
@@ -14,7 +16,9 @@ import {
   AsideValue,
   BatchList,
   BatchListLabel,
-  BatchListValue
+  BatchListValue,
+  AsideContent,
+  AsideValueShorten
 } from './styled-components'
 
 export {
@@ -22,6 +26,7 @@ export {
   Container,
   WidgetComponent,
   WidgetAside,
+  AsideContent,
   BatchList,
   BatchListLabel,
   BatchListValue,
@@ -32,6 +37,8 @@ export {
   WidgetTitle,
   AsideDivider,
   AsideRow,
+  AsideValueShorten,
   AsideText,
-  AsideValue
+  AsideValue,
+  AssetsList
 }
