@@ -120,6 +120,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const history = useHistory()
   const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
+
   useEffect(() => {
     if (!campaign) {
       return
@@ -135,6 +136,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     <WidgetComponent title='Claim pattern'>
       <StyledRadio
         label='Claim pattern'
+        disabled={Boolean(campaign) || loading}
         value={claimPattern}
         radios={patterns}
         onChange={(value) => {

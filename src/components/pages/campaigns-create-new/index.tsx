@@ -153,7 +153,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
       <WidgetSubtitle>Fill in all fields to continue to the next step</WidgetSubtitle>
       <InputStyled
         value={title}
-        disabled={Boolean(currentCampaign)}
+        disabled={Boolean(currentCampaign) || loading}
         onChange={(value: string) => {
           setTitle(value)
           return value
@@ -163,7 +163,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
       <StyledRadio
         label='Token Standard'
-        disabled={Boolean(currentCampaign)}
+        disabled={Boolean(currentCampaign) || loading}
         value={currentType}
         radios={types}
         onChange={(value) => { setCurrentType(value) }}
@@ -172,7 +172,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
       <InputStyled
         value={tokenAddress}
         placeholder='0x Address'
-        disabled={Boolean(currentCampaign)}
+        disabled={Boolean(currentCampaign) || loading}
         onChange={(value: string) => {
           setTokenAddress(value)
           return value

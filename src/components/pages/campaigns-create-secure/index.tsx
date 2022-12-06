@@ -148,7 +148,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       <WidgetComponent title='Transaction sponsorship'>
         <WidgetSubtitle>Select to secure tokens to sponsor claim transactions, so users can claim tokens without having {nativeTokenSymbol} in their wallets. </WidgetSubtitle>
         <StyledRadio
-          disabled={Boolean(currentCampaign)}
+          disabled={Boolean(currentCampaign) || loading}
           radios={isSponsored}
           value={sponsored}
           onChange={value => {
@@ -161,6 +161,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         <StyledInput
           title={`${nativeTokenSymbol} to include`}
           value={nativeTokensAmount}
+          disabled={loading}
           onChange={value => {
             if (/^[0-9.]+$/.test(value) || value === '') {
               setNativeTokensAmount(value)
