@@ -150,7 +150,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   
   return <Container>
     <WidgetComponent title='Campaign setup'>
-      <WidgetSubtitle>Fill out all fields to finish setup campaign</WidgetSubtitle>
+      <WidgetSubtitle>Fill in all fields to continue to the next step</WidgetSubtitle>
       <InputStyled
         value={title}
         disabled={Boolean(currentCampaign)}
@@ -182,9 +182,6 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     </WidgetComponent>
 
     <Aside
-      back={{
-        action: () => {}
-      }}
       next={{
         action: () => {
           setInitialData(
@@ -202,7 +199,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         disabled: defineIfNextDisabled()
       }}
       title="Summary"
-      subtitle="Check your campaign’s details before going next"
+      subtitle="Check and confirm details"
     >
       <AsideContent>
         {title && <AsideRow>

@@ -1,6 +1,7 @@
-import LinkdropSDK from '@linkdrop/sdk';
-import { action } from 'typesafe-actions';
-import { Constants } from './constants';
+import LinkdropSDK from '@linkdrop/sdk'
+import { action } from 'typesafe-actions'
+import { Constants } from './constants'
+import { TAuthorizationStep } from 'types'
 
 export function setAddress(address: string) {
   return action(
@@ -18,6 +19,16 @@ export function setLoading(loading: boolean) {
     // payload
     {
       loading
+    }
+  )
+}
+
+export function setAuthorizationStep (authorizationStep: TAuthorizationStep) {
+  return action(
+    Constants.USER_SET_AUTHORIZATION_STEP,
+    // payload
+    {
+      authorizationStep
     }
   )
 }

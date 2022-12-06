@@ -1,7 +1,8 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
 import { Dispatch } from 'redux'
-import LinkdropSDK from '@linkdrop/sdk';
+import LinkdropSDK from '@linkdrop/sdk'
+import { TAuthorizationStep } from 'types'
 
 export interface UserState {
   address: string
@@ -14,7 +15,8 @@ export interface UserState {
   tokenAmountFormatted: string | null,
   sdk: LinkdropSDK | null,
   dashboardKey: null | string,
-  workersCount: number
+  workersCount: number,
+  authorizationStep: TAuthorizationStep
 }
 
 export type UserActions = ActionType<typeof actions>;

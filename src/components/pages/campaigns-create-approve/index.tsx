@@ -18,7 +18,7 @@ import {
   AsideValue,
   AsideContent,
   AsideValueShorten,
-  AsideDivider
+  AssetsList
 } from 'components/pages/common'
 import { shortenString, defineNetworkName } from 'helpers'
 
@@ -30,7 +30,9 @@ const mapStateToProps = ({
     tokenStandard,
     loading,
     title,
-    tokenAddress
+    tokenAddress,
+    assetsOriginal,
+    assets
   },
   user: {
     chainId
@@ -41,7 +43,9 @@ const mapStateToProps = ({
   loading,
   title,
   tokenAddress,
-  chainId
+  chainId,
+  assetsOriginal,
+  assets
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -102,7 +106,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   loading,
   title,
   tokenAddress,
-  chainId
+  chainId,
+  assetsOriginal,
+  assets
 }) => {
   const { id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -139,7 +145,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     </WidgetComponent>
     <Aside
       back={{
-        action: () => {}
+        action: () => {
+          history.goBack()
+        }
       }}
       next={{
         title: claimPattern === 'transfer' ? 'Approve' : 'Grant Role',
@@ -190,7 +198,12 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
         </AsideRow>}
 
-        <AsideDivider />
+        {currentCampaignTokenStandard && assetsOriginal && <AssetsList data={assetsOriginal} type={currentCampaignTokenStandard} />}
+
+        {assets && <AsideRow>
+          <AsideText>Total links</AsideText>
+          <AsideValue>{assets.length}</AsideValue>
+        </AsideRow>}
 
         <AsideRow>
           <AsideText>Claim pattern</AsideText>

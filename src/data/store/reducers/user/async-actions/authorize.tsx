@@ -23,9 +23,10 @@ const authorize = (
         provider
       }
     } = getState()
+    dispatch(userActions.setAuthorizationStep('login'))
     
     
-    dispatch(campaignActions.setLoading(true))
+    dispatch(userActions.setLoading(true))
 
     const timestamp = Date.now()
     const humanReadable = new Date(timestamp).toUTCString()
@@ -34,12 +35,14 @@ const authorize = (
       const signer = await provider.getSigner()
       const message = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
       const sig = await signer.signMessage(message)
-      const authResponse = await authorizationApi.authorize(
+      await authorizationApi.authorize(
         message,
         timestamp,
         sig,
         address.toLocaleUpperCase()
       )
+
+      dispatch(userActions.setAuthorizationStep('store-key'))
 
       // dashboard key 
       const dashboardKeyData = await dashboardKeyApi.get()
@@ -75,11 +78,12 @@ const authorize = (
       }
 
       //
-      dispatch(campaignActions.setLoading(false))
+      dispatch(userActions.setLoading(false))
       return message
     } catch (err) {
+      dispatch(userActions.setAuthorizationStep('connect'))
       console.error({ err })
-      dispatch(campaignActions.setLoading(false))
+      dispatch(userActions.setLoading(false))
       return null
     }
   }

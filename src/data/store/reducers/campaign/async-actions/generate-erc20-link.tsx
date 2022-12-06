@@ -134,7 +134,7 @@ const generateERC20Link = ({
         symbol,
         chainId
       )
-      
+
       if (updatingCampaign && currentCampaignId) {
         const result = await campaignsApi.saveBatch(
           currentCampaignId,

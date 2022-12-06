@@ -19,6 +19,7 @@ import {
   AsideValue,
   AsideContent,
   AsideValueShorten,
+  AssetsList,
   AsideDivider
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
@@ -46,7 +47,8 @@ const mapStateToProps = ({
     loading,
     title,
     tokenAddress,
-    claimPattern
+    claimPattern,
+    assetsOriginal
   },
 }: RootState) => ({
   assets,
@@ -57,6 +59,7 @@ const mapStateToProps = ({
   campaigns,
   tokenStandard,
   loading,
+  assetsOriginal,
   claimPattern
 })
 
@@ -93,7 +96,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   loading,
   tokenAddress,
   title,
-  claimPattern
+  claimPattern,
+  assetsOriginal
 }) => {
   
   const walletsOptions = useMemo(() => {
@@ -127,6 +131,18 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
 
+  const totalNativeTokensAmount = nativeTokensAmount === '' || nativeTokensAmount === '0' ? 0 : multiply(
+    bignumber(nativeTokensAmount),
+    assets.length
+  )
+  const totalNativeTokensAmountToSecure = !sponsored ? totalNativeTokensAmount : add(
+    totalNativeTokensAmount,
+    (multiply(
+      comission,
+      assets.length
+    ))
+  )
+
   return <Container>
     <WidgetContainer>
       <WidgetComponent title='Transaction sponsorship'>
@@ -145,8 +161,10 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         <StyledInput
           title={`${nativeTokenSymbol} to include`}
           value={nativeTokensAmount}
-          onChange={(value) => {
-            setNativeTokensAmount(value)
+          onChange={value => {
+            if (/^[0-9.]+$/.test(value) || value === '') {
+              setNativeTokensAmount(value)
+            }
             return value
           }}
         />
@@ -163,22 +181,13 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       
     <Aside
       back={{
-        action: () => {}
+        action: () => {
+          history.goBack()
+        }
       }}
       next={{
         action: () => {
           const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
-          const totalNativeTokensAmount = nativeTokensAmount === '' || nativeTokensAmount === '0' ? 0 : multiply(
-            bignumber(nativeTokensAmount),
-            assets.length
-          )
-          const totalNativeTokensAmountToSecure = !sponsored ? totalNativeTokensAmount : add(
-            totalNativeTokensAmount,
-            (multiply(
-              comission,
-              assets.length
-            ))
-          )
           secure(
             sponsored,
             String(totalNativeTokensAmountToSecure),
@@ -187,6 +196,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             () => history.push(redirectURL)
           )
         },
+        title: 'Launch campaign',
         disabled: loading,
         loading
       }}
@@ -219,12 +229,25 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
         </AsideRow>}
 
-        <AsideDivider />
+        {currentCampaignTokenStandard && assetsOriginal && <AssetsList data={assetsOriginal} type={currentCampaignTokenStandard} />}
+
+        {assets && <AsideRow>
+          <AsideText>Total links</AsideText>
+          <AsideValue>{assets.length}</AsideValue>
+        </AsideRow>}
 
         <AsideRow>
           <AsideText>Claim pattern</AsideText>
           <AsideValue>{currentCampaignClaimPattern}</AsideValue>
         </AsideRow>
+
+        <AsideDivider />
+
+        <AsideRow>
+          <AsideText>To be secured</AsideText>
+          <AsideValue>{String(totalNativeTokensAmountToSecure)}</AsideValue>
+        </AsideRow>
+
 
       </AsideContent>
     </Aside>

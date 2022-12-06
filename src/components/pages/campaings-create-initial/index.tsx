@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { StyledRadio } from './styled-components'
 import { Erc20, Erc721, Erc1155 } from './components'
 import { RootState, IAppDispatch } from 'data/store';
@@ -18,7 +18,6 @@ import {
   AsideValue,
   AsideContent,
   AsideValueShorten,
-  AsideDivider,
   AssetsList
 } from 'components/pages/common'
 
@@ -209,7 +208,9 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
 
     <Aside
       back={{
-        action: () => {}
+        action: () => {
+          history.goBack()
+        }
       }}
       next={{
         action: () => {

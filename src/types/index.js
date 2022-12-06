@@ -29,12 +29,14 @@ import TClaimPattern from './claim-pattern'
 import TDistributionPattern from './distribution-pattern'
 import { TLinkContent } from './link-contents'
 import TQRImageOptions from './qr-image-options'
+import TAuthorizationStep from './authorization-step'
 
 export {
   TCampaign,
   TQRImageOptions,
   TClaimPattern,
   TLinkContent,
+  TAuthorizationStep,
   TTokenType,
   TCampaignStatus,
   TAssetsData,

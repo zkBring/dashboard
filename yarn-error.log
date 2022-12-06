@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-@types-node-17.0.25-527051f3c2f77aa52e5dc74e45a3da5fb2301448-integrity/node_modules/@types/node/string_decoder.d.ts' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/@types/graceful-fs/node_modules/@types/node/string_decoder.d.ts'
+  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-jsdom-16.7.0-918ae71965424b197c819f8183a754e18977b710-integrity/node_modules/jsdom/lib/jsdom/virtual-console.js' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/jsdom/lib/jsdom/virtual-console.js'
 
 npm manifest: 
   {

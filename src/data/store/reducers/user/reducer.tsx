@@ -12,7 +12,8 @@ const initialState: UserState = {
   tokenAmountFormatted: null,
   sdk: null,
   dashboardKey: null,
-  workersCount: (navigator && navigator.hardwareConcurrency) || 4 
+  workersCount: (navigator && navigator.hardwareConcurrency) || 4,
+  authorizationStep: 'connect'
 };
 
 export function userReducer(
@@ -32,6 +33,8 @@ export function userReducer(
         return {...state, sdk: action.payload.sdk }
       case Constants.USER_SET_DASHBOARD_KEY:
         return {...state, dashboardKey: action.payload.dashboardKey }
+      case Constants.USER_SET_AUTHORIZATION_STEP:
+        return {...state, authorizationStep: action.payload.authorizationStep }
       case Constants.USER_SET_TOKEN_AMOUNT:
         return {
           ...state,
