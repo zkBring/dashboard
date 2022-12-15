@@ -7,6 +7,7 @@ import {
   AsideValue
 } from '../index'
 import { TLinkContent, TTokenType } from 'types'
+import { shortenString } from 'helpers'
 
 const AssetsList: FC<TProps> = ({
   data,
@@ -33,7 +34,7 @@ const AssetsList: FC<TProps> = ({
             ID
           </AsideText>
           <AsideValue>
-            {item.tokenId}
+            {shortenString(item.tokenId)}
           </AsideValue>
         </>
       case 'ERC1155':
@@ -42,7 +43,7 @@ const AssetsList: FC<TProps> = ({
             ID/Copies
           </AsideText>
           <AsideValue>
-            {item.tokenId} / {item.tokenAmount} copies / {item.linksAmount} link(s)
+            {shortenString(item.tokenId)} / {item.tokenAmount} copies / {item.linksAmount} link(s)
           </AsideValue>
         </>
     }

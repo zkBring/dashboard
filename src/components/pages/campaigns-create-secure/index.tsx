@@ -135,12 +135,15 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     bignumber(nativeTokensAmount),
     assets.length
   )
+
+  const totalComission = sponsored ? multiply(
+    comission,
+    assets.length
+  ) : 0
+
   const totalNativeTokensAmountToSecure = !sponsored ? totalNativeTokensAmount : add(
     totalNativeTokensAmount,
-    (multiply(
-      comission,
-      assets.length
-    ))
+    totalComission
   )
 
   return <Container>
@@ -171,6 +174,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         />
         <StyledSelect
           options={walletsOptions}
+          disabled={loading}
           value={currentWallet}
           onChange={value => setCurrentWallet(value)}
           placeholder='Preferred wallet'
@@ -245,8 +249,20 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         <AsideDivider />
 
         <AsideRow>
-          <AsideText>To be secured</AsideText>
-          <AsideValue>{String(totalNativeTokensAmountToSecure)}</AsideValue>
+          <AsideText>To be secured (sponsorship)</AsideText>
+          <AsideValue>{String(totalComission)} {nativeTokenSymbol}</AsideValue>
+        </AsideRow>
+
+        <AsideRow>
+          <AsideText>Included into the links</AsideText>
+          <AsideValue>{String(totalNativeTokensAmount)} {nativeTokenSymbol}</AsideValue>
+        </AsideRow>
+
+        <AsideDivider />
+
+        <AsideRow>
+          <AsideText>Total amount</AsideText>
+          <AsideValue>{String(totalNativeTokensAmountToSecure)} {nativeTokenSymbol}</AsideValue>
         </AsideRow>
 
 

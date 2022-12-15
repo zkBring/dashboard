@@ -37,7 +37,6 @@ const downloadQRs = ({
     getState: () => RootState
   ) => {
     dispatch(actionsQR.setLoading(true))
-    dispatch(actionsQR.setDownloadItems([]))
     const { user: { dashboardKey, workersCount } } = getState()
     let currentPercentage = 0
     try {
@@ -89,16 +88,19 @@ const downloadQRs = ({
 
       console.log((+ new Date()) - start)
 
-      await downloadBase64FilesAsZip('png', result.flat(), qrSetName)
+      for (let y = 0; y < result.length; y++) {
+        console.log(`started download of ${y + 1} part of result`)
+        await downloadBase64FilesAsZip('png', result[y], `${qrSetName}-${y + 1}`, y * result[0].length)
+        console.log(`finished download of ${y + 1} part of result`)
+      }
+  
       currentPercentage = 0
       terminateWorkers(workers)
       dispatch(actionsQR.setDownloadLoader(0))
-      dispatch(actionsQR.setDownloadItems([]))
       callback && callback()
     } catch (err) {
       currentPercentage = 0
       dispatch(actionsQR.setDownloadLoader(0))
-      dispatch(actionsQR.setDownloadItems([]))
       callback && callback()
       alert('Some error occured, check console for more information')
       console.error(err)

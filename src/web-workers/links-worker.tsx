@@ -9,7 +9,6 @@ export class LinksWorker {
   private sdk?: LinkdropSDK | null
   private cb: (value: number) => void;
   private currentPercentageFinished: number = 0;
-
   public constructor(
     cb: (value: number) => void
   ) {

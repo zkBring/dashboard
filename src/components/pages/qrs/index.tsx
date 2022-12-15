@@ -63,7 +63,7 @@ const QRs: FC<ReduxType> = ({
         />
       </Header>
     
-      <BatchListStyled>
+      {qrs.length > 0 && <BatchListStyled>
         <BatchListLabel>Name of set</BatchListLabel>
         <BatchListLabel>Quantity</BatchListLabel>
         <BatchListLabel>Date created</BatchListLabel>
@@ -87,7 +87,7 @@ const QRs: FC<ReduxType> = ({
             </BatchListValue>
           </>
         })}
-      </BatchListStyled>
+      </BatchListStyled>}
     </WidgetComponent>
     
     

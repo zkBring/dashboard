@@ -18,7 +18,7 @@ export const Container = styled.div`
 
 export const ContainerButton = styled(Button)`
   align-self: end;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 `
 
 export const InputComponent = styled(Input)`
@@ -38,4 +38,5 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 0;
 `

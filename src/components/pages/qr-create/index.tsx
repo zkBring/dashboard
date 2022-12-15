@@ -58,11 +58,13 @@ const QRCreate: FC<ReduxType> = ({
       <WidgetSubtitle>Type the name of your qr set and necessary quantity of codes.</WidgetSubtitle>
       <InputComponent
         value={title}
+        disabled={loading}
         title='Name of the set'
         onChange={value => { setTitle(value); return value }}
       />
       <InputComponent
         value={amount}
+        disabled={loading}
         title='Quantity of QR codes'
         onChange={value => {
           if (/^[0-9]+$/.test(value) || value === '') {

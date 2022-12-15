@@ -9,12 +9,14 @@ const SelectComponent: FC<IProps> = ({
   placeholder,
   className,
   onChange,
-  title
+  title,
+  disabled
 }) => <Container>
   {title && <SelectTitle>{title}</SelectTitle>}
   <Select
     options={options}
     className={className}
+    isDisabled={disabled}
     value={value}
     onChange={(value) => {
       if (!value) { return }

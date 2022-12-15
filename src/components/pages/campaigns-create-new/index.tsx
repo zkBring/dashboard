@@ -142,7 +142,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     if (!tokenAddress.length || !chainId) { return }
     console.log('here', tokenAddress)
     setTokenContractData(provider, tokenAddress, currentType as TTokenType, address, chainId)
-  }, [tokenAddress, provider])
+  }, [tokenAddress, provider, currentType])
 
   const defineIfNextDisabled = () => {
     return !title || !tokenAddress || !symbol || loading
