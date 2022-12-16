@@ -81,7 +81,6 @@ const Erc1155: FC<ReduxType > = ({
       linksAmount: '',
       tokenId: '',
       tokenAmount: '',
-      id: assetsData.length,
       tokenType: tokenStandard || 'ERC1155'
     }
   }
@@ -134,8 +133,12 @@ const Erc1155: FC<ReduxType > = ({
         disabled={checkIfDisabled()}
         appearance='additional'
         onClick={() => {
-          setAssetsData([ ...assetsData, formData ])
+          setAssetsData([ ...assetsData, {
+            ...formData,
+            id: assetsData.length
+          }])
           setFormData(getDefaultValues())
+          console.log({ formData, assetsData })
         }}
       >
         + Add

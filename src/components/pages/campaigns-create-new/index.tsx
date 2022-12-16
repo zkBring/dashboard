@@ -158,7 +158,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           setTitle(value)
           return value
         }}
-        title='Title of campaign'
+        title='Title of the campaign'
       />
 
       <StyledRadio
@@ -171,7 +171,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
       <InputStyled
         value={tokenAddress}
-        placeholder='0x Address'
+        placeholder='0x... address'
         disabled={Boolean(currentCampaign) || loading}
         onChange={(value: string) => {
           setTokenAddress(value)
@@ -197,6 +197,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         },
         loading,
         disabled: defineIfNextDisabled()
+      }}
+      back={{
+        action: () => {
+          history.push(`/campaigns`)
+        },
       }}
       title="Summary"
       subtitle="Check and confirm details"

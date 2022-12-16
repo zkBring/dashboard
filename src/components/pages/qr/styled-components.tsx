@@ -63,3 +63,9 @@ export const StyledProgressBar = styled(ProgressBar)`
 export const StyledSelect = styled(Select)`
   margin-bottom: 24px;
 `
+
+export const Paragraph = styled.p`
+  margin: 0 0 24px;
+  font-size: 16px;
+
+`

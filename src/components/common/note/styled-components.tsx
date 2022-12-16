@@ -6,6 +6,6 @@ export const NoteWrapper = styled.div`
   padding: 18px 20px;
   color: ${props => props.theme.primaryHighlightColor};
   position: relative;
-  border-radius: 5px;
+  border-radius: 16px;
   margin-bottom: 30px;
 `

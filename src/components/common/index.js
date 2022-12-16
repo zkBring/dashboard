@@ -25,10 +25,12 @@ import ProgressBar from './progress-bar'
 import Popup from './popup'
 import Note from './note'
 import Radio from './radio'
+import CheckListItem from './check-list-item'
 
 export {
   Header,
   Aside,
+  CheckListItem,
   Button,
   LaunchButton,
   Input,

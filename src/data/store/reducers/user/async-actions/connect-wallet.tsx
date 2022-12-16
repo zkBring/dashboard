@@ -15,15 +15,7 @@ import {
  const { REACT_APP_INFURA_ID } = process.env
 
 async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
-  const providerOptions = {
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        infuraId: REACT_APP_INFURA_ID,
-        qrcode: true
-      }
-    }
-  };
+  const providerOptions = {};
   const web3Modal = new Web3Modal({
     cacheProvider: false, // optional
     providerOptions // required
@@ -40,7 +32,7 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   const accounts = await providerWeb3.listAccounts()
   const address = accounts[0] && accounts[0].toLowerCase()
   dispatch(actions.setProvider(providerWeb3))
-
+  dispatch(actions.setAuthorizationStep('login'))
   const result: string | null = await dispatch(asyncActions.authorize(address))
 
   if (!result) {

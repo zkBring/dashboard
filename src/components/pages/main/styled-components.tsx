@@ -11,6 +11,9 @@ export const IconContainer = styled.div`
   margin-bottom: 30px;
 `
 
+export const Contents = styled.div`
+`
+
 export const InvertedWidget = styled(Widget)`
   background-color: ${props => props.theme.blankColor};
   display: flex;

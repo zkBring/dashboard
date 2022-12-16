@@ -7,7 +7,8 @@ import {
   AsideValue
 } from '../index'
 import { TLinkContent, TTokenType } from 'types'
-import { shortenString } from 'helpers'
+import { shortenString, downloadAssetsAsCSV } from 'helpers'
+import { Link } from './styled-components'
 
 const AssetsList: FC<TProps> = ({
   data,
@@ -55,6 +56,16 @@ const AssetsList: FC<TProps> = ({
         {createItemValue(item, type)}
       </AsideRow>
     })}
+    {data.length > 4 && <AsideRow>
+      <AsideText>
+        Only 4 IDs are displayed. <Link onClick={() => {
+          downloadAssetsAsCSV(
+            data,
+            'assets'
+          )
+        }}>Download</Link> csv to see all IDs
+      </AsideText>
+    </AsideRow>}
     <AsideDivider />
   </>
 }

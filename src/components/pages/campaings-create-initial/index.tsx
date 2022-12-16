@@ -188,13 +188,15 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
       <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
-          disabled={Boolean(currentCampaign)}
+          // disabled={Boolean(currentCampaign)}
+          disabled
           radios={[
             { label: 'Manual (Select token IDs to generate links)', value: 'manual' },
             { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: 'sdk' }
           ]}
           value={distributionType}
           onChange={value => {
+            return
             // setData([])
             setDistributionType(value)
           }}

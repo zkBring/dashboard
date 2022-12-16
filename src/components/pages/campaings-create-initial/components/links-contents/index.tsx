@@ -55,6 +55,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
         size='small'
         appearance='additional'
         onClick={() => {
+          if (id === undefined) { return }
           onRemove(id)
         }}
       >

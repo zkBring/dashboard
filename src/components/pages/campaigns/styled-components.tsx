@@ -37,4 +37,5 @@ export const WidgetDescription = styled.p`
 
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;
+  width: 100%;
 `

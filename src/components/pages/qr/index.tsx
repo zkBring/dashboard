@@ -14,13 +14,16 @@ import {
   WidgetButton,
   LinksIndicator,
   StyledSelect,
-  WidgetSubtitleStyled
+  WidgetSubtitleStyled,
+  Paragraph
 } from './styled-components'
 import {
   WidgetComponent,
   Container,
   Aside,
-  WidgetSubtitle
+  WidgetSubtitle,
+  AsideRow,
+  AsideValue
 } from 'components/pages/common'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
@@ -119,6 +122,40 @@ const QR: FC<ReduxType> = ({
     return !qr.qr_array || !dashboardKey || loading
   }
 
+  const defineAsideContent = (uploaded?: boolean) => {
+    if (!uploaded) {
+      return <>
+        <Paragraph>
+          Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
+        </Paragraph>
+        <Paragraph>
+          If you haven’t created claim links yet, then do it in Campaigns
+        </Paragraph>
+      </>
+    }
+    return <>
+      <Paragraph>
+        Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
+      </Paragraph>
+      <AsideRow>
+        <AsideValue>
+          .csv
+        </AsideValue>
+        <AsideValue>
+          <WidgetButton
+            size='small'
+            disabled={false}
+            appearance='additional'
+            title='Change file'
+            onClick={() => {
+              toggleUpdateLinksPopup(true)
+            }}
+          />
+        </AsideValue>
+      </AsideRow>
+    </>
+  }
+
   return <Container>
    {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
@@ -152,8 +189,8 @@ const QR: FC<ReduxType> = ({
       id={id}  
       onClose={() => toggleDownloadPopup(false)}
     />}
-    <WidgetComponent title='Campaign setup'>
-      <WidgetSubtitle>Fill out all fields to finish setup campaign</WidgetSubtitle>
+    <WidgetComponent title='Manage set'>
+      <WidgetSubtitle>Manage the quantity of QR codes and track their status</WidgetSubtitle>
       <WidgetSubtitleStyled>
         Quantity of QRs
       </WidgetSubtitleStyled>
@@ -212,9 +249,15 @@ const QR: FC<ReduxType> = ({
     </WidgetComponent>
     <Aside
       title="Connect to claim links"
-      subtitle="Upload a CSV file with links, file should include number of rows equivalent to a number of QR codes"
+      back={{}}
+      next={qr.links_uploaded ? {} : {
+        title: 'Upload file',
+        action: () => {
+          toggleUpdateLinksPopup(true)
+        }
+      }}
     >
-      
+      {defineAsideContent(qr.links_uploaded)}
     </Aside>
   </Container>
 

@@ -13,6 +13,7 @@ export const PopupWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(2px);
 `
 
 export const Popup = styled.div`
@@ -36,3 +37,4 @@ export const CloseButton = styled.div`
   cursor: pointer;
   top: 20px;
 `
+

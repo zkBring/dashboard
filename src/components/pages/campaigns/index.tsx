@@ -39,12 +39,12 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
   })
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
-  const createNewCampaignWidget = <StyledWidget title='Create Campaign'>
+  const createNewCampaignWidget = <StyledWidget title='New campaign'>
       <WidgetDescription>
-        Distribute your NFTs via claimable links {nativeTokenSymbol}
+        Create a campaign to distribute your NFTs via claim links
       </WidgetDescription>
       <WidgetButton 
-        title='Generate'
+        title='Create'
         appearance='action'
         to='/campaigns/new'
       />

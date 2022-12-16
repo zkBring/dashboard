@@ -4,7 +4,11 @@ import {
   ContainerCentered,
   Title,
   IconContainer,
+  Contents,
 } from './styled-components'
+import {
+  CheckListItem
+} from 'components/common' 
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux';
@@ -43,6 +47,8 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
       return 'Sign in'
     case 'store-key':
       return 'Sign'
+    default:
+      return ''
   }
 }
 
@@ -64,8 +70,13 @@ const Main: FC<ReduxType> = ({
     </IconContainer>
     
     <Title>
-      Sign in
+      Welcome to Linkdrop
     </Title>
+    <Contents>
+      <CheckListItem title='Connect wallet' id='connect' checked={authorizationStep === 'login' || authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
+      <CheckListItem title='Sign message to login to the dashboard' id='login' checked={authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
+      <CheckListItem title='Sign message to store data securely' id='store-key' checked={authorizationStep === 'authorized'} />
+    </Contents>
     <WidgetButton
       loading={loading}
       appearance='action'

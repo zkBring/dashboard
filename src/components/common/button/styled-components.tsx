@@ -86,6 +86,19 @@ export const Button = styled.button.attrs(props => ({
     background-color: ${props => props.theme.buttonAdditionalBackgroundColor};
     color: ${props => props.theme.primaryHighlightColor};
 
+    ${!props.disabled && css`
+      &:hover {
+        opacity: .8;
+        background-color: ${props => props.theme.buttonAdditionalBackgroundColor};
+        color: ${props => props.theme.primaryHighlightColor};
+      }
+      &:active {
+        opacity: .8;
+        background-color: ${props => props.theme.buttonAdditionalBackgroundColor};
+        color: ${props => props.theme.primaryHighlightColor};
+      } 
+    `}
+
     ${props.disabled && css`
       background-color: ${props.theme.disabledColor};
       color: ${props => props.theme.disabledTextColor};

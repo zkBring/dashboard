@@ -128,6 +128,7 @@ const Erc20: FC<ReduxType > = ({
         onClick={() => {
           setAssetsData([ ...assetsData, formData ])
           setFormData(getDefaultValues())
+          console.log({ formData,  })
         }}
       >
         + Add

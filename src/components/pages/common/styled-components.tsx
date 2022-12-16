@@ -22,7 +22,7 @@ export const WidgetComponent = styled(Widget)`
 export const WidgetAside = styled.div`
   flex: 0 450px;
   min-width: 450px;
-  padding-left: 24px;
+  margin-left: 24px;
 `
 
 export const ButtonsContainer = styled.div`

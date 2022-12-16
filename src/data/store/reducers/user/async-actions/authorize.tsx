@@ -13,6 +13,7 @@ import { authorizationApi, dashboardKeyApi } from 'data/api'
 import { ethers } from 'ethers'
 import { encrypt, decrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
+import { sleep } from 'helpers'
 
 const authorize = (
   address: string
@@ -23,9 +24,6 @@ const authorize = (
         provider
       }
     } = getState()
-    dispatch(userActions.setAuthorizationStep('login'))
-    
-    
     dispatch(userActions.setLoading(true))
 
     const timestamp = Date.now()
@@ -76,6 +74,8 @@ const authorize = (
 
         dispatch(userActions.setDashboardKey(decrypted_dashboard_key))
       }
+      dispatch(userActions.setAuthorizationStep('authorized'))
+      await sleep(2000)
 
       //
       dispatch(userActions.setLoading(false))
