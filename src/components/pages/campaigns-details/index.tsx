@@ -9,7 +9,10 @@ import {
   AsideValue,
   BatchList,
   BatchListLabel,
-  BatchListValue
+  BatchListValue,
+  WidgetComponent,
+  Container,
+  Aside
 } from 'components/pages/common'
 
 import {
@@ -20,14 +23,10 @@ import {
 
 import {
   shortenString,
-  defineNetworkName
+  defineNetworkName,
+  defineEtherscanUrl
 } from 'helpers'
-
-import {
-  WidgetComponent,
-  Container,
-  Aside
-} from 'components/pages/common'
+import { TextLink } from 'components/common'
 
 import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
@@ -98,13 +97,15 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     claim_pattern,
     chain_id
   } = currentCampaign
-    
+  const tokenUrl = defineEtherscanUrl(chain_id, `/address/${token_address || ''}`)
+  const ownerUrl = defineEtherscanUrl(chain_id, `/address/${creator_address || ''}`)
+  const contractUrl = defineEtherscanUrl(chain_id, `/address/${proxy_contract_address || ''}`)
   return <Container>
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>{title || `Campaign ${campaign_id}`}</WidgetTitleStyled>
         <WidgetButton
-          appearance='action'
+          appearance='additional'
           size='small'
           title='+ Add'
           onClick={() => {
@@ -130,7 +131,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               {dateFormatted}
             </BatchListValue>
             <WidgetButton
-              appearance='action'
+              appearance='additional'
               size='small'
               title='Download'
               onClick={() => {
@@ -146,7 +147,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     >
       <AsideRow>
         <AsideText>Created by</AsideText>
-        <AsideValue>{shortenString(creator_address)}</AsideValue>
+        <AsideValue><TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink></AsideValue>
       </AsideRow>
       <AsideRow>
         <AsideText>Status</AsideText>
@@ -157,11 +158,11 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
 
       <AsideRow>
         <AsideText>Token address</AsideText>
-        <AsideValue>{shortenString(token_address)}</AsideValue>
+        <AsideValue><TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink></AsideValue>
       </AsideRow>
       <AsideRow>
         <AsideText>Campaign contract</AsideText>
-        <AsideValue>{shortenString(proxy_contract_address)}</AsideValue>
+        <AsideValue><TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink></AsideValue>
       </AsideRow>
       <AsideRow>
         <AsideText>Gas sponsor balance</AsideText>

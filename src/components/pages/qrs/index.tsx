@@ -14,7 +14,7 @@ import {
   WidgetComponent
 } from 'components/pages/common'
 
-import { defineQRStatusName } from 'helpers'
+import { defineQRStatusName, formatDate } from 'helpers'
 
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
@@ -74,7 +74,7 @@ const QRs: FC<ReduxType> = ({
           return <>
             <BatchListValue>{qr.set_name}</BatchListValue>
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
-            <BatchListValue>{qr.created_at}</BatchListValue>
+            <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
             <BatchListValue>{qr.links_uploaded ? 'Uploaded' : 'Not uploaded'}</BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
             <BatchListValue>

@@ -18,6 +18,9 @@ import {
   defineNetworkName,
   capitalize
 } from 'helpers'
+import {
+  TextLink
+} from 'components/common'
 import { TProps } from './types'
 
 const CampaignComponent: FC<TProps> = ({
@@ -38,7 +41,12 @@ const CampaignComponent: FC<TProps> = ({
     <CampaignTitle>{title || 'No name'}</CampaignTitle>
     <CampaignRow>
       <CampaignText>Contract</CampaignText>
-      <CampaignValue>{shortenString(proxyContractAddress)}</CampaignValue>
+      <CampaignValue>
+        <TextLink
+          href={scanUrl}
+          target='_blank'
+        >{shortenString(proxyContractAddress)}</TextLink>
+      </CampaignValue>
     </CampaignRow>
     <CampaignRow>
       <CampaignText>Network</CampaignText>
@@ -66,12 +74,6 @@ const CampaignComponent: FC<TProps> = ({
         to={`/campaigns/${id}`}
         title="Details"
       />
-      {/* <CampaignButton
-        title='View Contract'
-        href={scanUrl}
-        target='_blank'
-        appearance='action-inverted'
-      /> */}
     </CampaignButtons>  
   </Campaign>
 }

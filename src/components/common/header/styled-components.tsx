@@ -3,20 +3,18 @@ import { NavLink } from 'react-router-dom'
 
 export const Header = styled.div`
   display: flex;
-  align-items: center;
-  justify-items: space-between;
+  justify-content: space-between;
+  align-items: baseline;
   width: 100%;
-  height: 80px;
+  min-height: 80px;
   padding: 0 20px;
 `;
 
 export const HeaderTitle = styled.h2`
   color: ${props => props.theme.primaryTextColor};
-  font-size: 24px;
+  font-size: 28px;
   flex: 1;
-  display: flex;
-  font-weight: 400;
-  align-items: center;
+  font-weight: 700;
 `
 
 export const HeaderMode = styled.div`

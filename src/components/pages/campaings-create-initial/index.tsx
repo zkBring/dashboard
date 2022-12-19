@@ -20,7 +20,7 @@ import {
   AsideValueShorten,
   AssetsList
 } from 'components/pages/common'
-
+import { TextLink } from 'components/common'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { Dispatch } from 'redux'
@@ -31,7 +31,8 @@ import {
 import {
   convertLinksContent,
   shortenString,
-  defineNetworkName
+  defineNetworkName,
+  defineEtherscanUrl
 } from 'helpers'
 
 
@@ -163,6 +164,8 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
+  
+  const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
 
   const [ distributionType, setDistributionType ] = useState<TDistributionPattern>(currentCampaign ? currentCampaign.distribution_pattern : distributionPattern)
   const [ data, setData ] = useState<TLinksContent>([])
@@ -236,7 +239,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
         disabled: defineIfNextDisabled()
       }}
       title="Summary"
-      subtitle="Check your campaign’s details before going next"
+      subtitle="Check and confirm details"
     >
       <AsideContent>
         <AsideRow>
@@ -246,7 +249,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
 
         {currentTokenAddress && <AsideRow>
           <AsideText>Token address</AsideText>
-          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
+          <AsideValue><TextLink href={scannerUrl} target='_blank'>{shortenString(currentTokenAddress)}</TextLink></AsideValue>
         </AsideRow>}
 
         {<AsideRow>

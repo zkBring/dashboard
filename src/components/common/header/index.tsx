@@ -17,8 +17,9 @@ import { connect } from 'react-redux';
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import MiniPopup from '../mini-popup'
 import chains from 'configs/chains'
-import { TDefineTitle, LocationType } from './types'
+import { TDefineTitle, LocationType, TDefineBreadcrumbs } from './types'
 import { IAppDispatch } from 'data/store'
+import Breadcrumbs from '../breadcrumbs';
 
 const mapStateToProps = ({
   user: {
@@ -47,38 +48,131 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 interface Props {}
 
 const defineTitle: TDefineTitle = (location) => {
+  const locationUpdated = location.toLowerCase()
   switch(true) {
-    case location.includes('/campaigns/new/initial'):
-      return 'New campaign'
-    case location.includes('/campaigns/new/erc20/secure'):
-    case location.includes('/campaigns/new/erc20/generate'):
-    case location.includes('/campaigns/new/erc20/approve'):
-      return 'New ERC20 Campaign'
-    case location.includes('/campaigns/new/erc721/secure'):
-    case location.includes('/campaigns/new/erc721/generate'):
-    case location.includes('/campaigns/new/erc721/approve'):
-      return 'New ERC721 Campaign'
-    case location.includes('/campaigns/new/erc1155/secure'):
-    case location.includes('/campaigns/new/erc1155/generate'):
-    case location.includes('/campaigns/new/erc1155/approve'):
-      return 'New ERC1155 Campaign'
+    case locationUpdated.includes('/campaigns/new'):
+    case locationUpdated.includes('/campaigns/new/initial'):
+    case locationUpdated.includes('/campaigns/new/erc20/secure'):
+    case locationUpdated.includes('/campaigns/new/erc20/generate'):
+    case locationUpdated.includes('/campaigns/new/erc20/approve'):
+    case locationUpdated.includes('/campaigns/new/erc721/secure'):
+    case locationUpdated.includes('/campaigns/new/erc721/generate'):
+    case locationUpdated.includes('/campaigns/new/erc721/approve'):
+    case locationUpdated.includes('/campaigns/new/erc1155/secure'):
+    case locationUpdated.includes('/campaigns/new/erc1155/generate'):
+    case locationUpdated.includes('/campaigns/new/erc1155/approve'):
+      return 'New Campaign'
     
-    case location.includes('/campaigns/edit/erc20'):
-      return 'Edition of ERC20 Campaign'
-    case location.includes('/campaigns/edit/erc721'):
-      return 'Edition of ERC721 Campaign'
-    case location.includes('/campaigns/edit/erc1155'):
-      return 'Edition of ERC1155 Campaign'
+    case locationUpdated.includes('/campaigns/edit/erc20'):
+    case locationUpdated.includes('/campaigns/edit/erc721'):
+    case locationUpdated.includes('/campaigns/edit/erc1155'):
+      return 'New Batch'
     
-      case location.includes('/qrs/'):
-      return "QR Campaign"
-    case location.includes('/qrs'):
-      return "Your QR Campaigns"
+      case locationUpdated.includes('/qrs/'):
+      return "QR set manager"
+    case locationUpdated.includes('/qrs'):
+      return "QR manager"
     
-    case location.includes('/campaigns'):
+    case locationUpdated.includes('/campaigns'):
       return 'Campaigns'
     default:
       return ''
+  }
+}
+
+const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
+  const locationUpdated = location.toLowerCase()
+  switch(true) {
+    
+
+    case locationUpdated.includes('/campaigns/new/erc20/initial'):
+    case locationUpdated.includes('/campaigns/new/erc1155/initial'):
+    case locationUpdated.includes('/campaigns/new/erc721/initial'):
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/initial'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/initial'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/initial'):
+      return <Breadcrumbs
+        items={
+          [{
+            title: 'Campaign setup',
+            status: 'done'
+          }, {
+            title: 'Distribution',
+            status: 'current'
+          }, {
+            title: 'Permission'
+          }, {
+            title: 'Launch'
+          }]
+        }
+      />
+
+    case locationUpdated.includes('/campaigns/new/erc20/approve'):
+    case locationUpdated.includes('/campaigns/new/erc721/approve'):
+    case locationUpdated.includes('/campaigns/new/erc1155/approve'):
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/approve'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/approve'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/approve'):
+      return <Breadcrumbs
+        items={
+          [{
+            title: 'Campaign setup',
+            status: 'done'
+          }, {
+            title: 'Distribution',
+            status: 'done'
+          }, {
+            title: 'Permission',
+            status: 'current'
+          }, {
+            title: 'Launch'
+          }]
+        }
+      />
+
+    case locationUpdated.includes('/campaigns/new/erc20/secure'):
+    case locationUpdated.includes('/campaigns/new/erc721/secure'):
+    case locationUpdated.includes('/campaigns/new/erc1155/secure'):
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/secure'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/secure'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/secure'):
+      return <Breadcrumbs
+        items={
+          [{
+            title: 'Campaign setup',
+            status: 'done'
+          }, {
+            title: 'Distribution',
+            status: 'done'
+          }, {
+            title: 'Permission',
+            status: 'done'
+          }, {
+            title: 'Launch',
+            status: 'current'
+          }]
+        }
+      />
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/new'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/new'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/new'):
+    case locationUpdated.includes('/campaigns/new'):
+      return <Breadcrumbs
+        items={
+          [{
+            title: 'Campaign setup',
+            status: 'current'
+          }, {
+            title: 'Distribution'
+          }, {
+            title: 'Permission'
+          }, {
+            title: 'Launch'
+          }]
+        }
+      />
+    default:
+      return null
   }
 }
 
@@ -106,7 +200,6 @@ const HeaderComponent: FC<Props & ReduxType> = ({
     })}
   </MiniPopup>
 
-
 const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowUserOptions(false) }}>
     <MiniPopupCustomItem onClick={() => {
       logout()
@@ -118,6 +211,7 @@ const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowU
   return <Header>
     <HeaderTitle>
       {defineTitle(location.pathname)}
+      {defineBreadcrumbs(location.pathname)}
     </HeaderTitle>
     <HeaderInfo>
       {chainId && <HeaderUserInfo onClick={() => {

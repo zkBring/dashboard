@@ -148,82 +148,84 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     return !title || !tokenAddress || !symbol || loading
   }
   
-  return <Container>
-    <WidgetComponent title='Campaign setup'>
-      <WidgetSubtitle>Fill in all fields to continue to the next step</WidgetSubtitle>
-      <InputStyled
-        value={title}
-        disabled={Boolean(currentCampaign) || loading}
-        onChange={(value: string) => {
-          setTitle(value)
-          return value
-        }}
-        title='Title of the campaign'
-      />
+  return <>
+    <Container>
+      <WidgetComponent title='Campaign setup'>
+        <WidgetSubtitle>Fill in all fields to continue to the next step</WidgetSubtitle>
+        <InputStyled
+          value={title}
+          disabled={Boolean(currentCampaign) || loading}
+          onChange={(value: string) => {
+            setTitle(value)
+            return value
+          }}
+          title='Title of the campaign'
+        />
 
-      <StyledRadio
-        label='Token Standard'
-        disabled={Boolean(currentCampaign) || loading}
-        value={currentType}
-        radios={types}
-        onChange={(value) => { setCurrentType(value) }}
-      />
+        <StyledRadio
+          label='Token Standard'
+          disabled={Boolean(currentCampaign) || loading}
+          value={currentType}
+          radios={types}
+          onChange={(value) => { setCurrentType(value) }}
+        />
 
-      <InputStyled
-        value={tokenAddress}
-        placeholder='0x... address'
-        disabled={Boolean(currentCampaign) || loading}
-        onChange={(value: string) => {
-          setTokenAddress(value)
-          return value
-        }}
-        title='Token Address'
-      />
-    </WidgetComponent>
+        <InputStyled
+          value={tokenAddress}
+          placeholder='0x... address'
+          disabled={Boolean(currentCampaign) || loading}
+          onChange={(value: string) => {
+            setTokenAddress(value)
+            return value
+          }}
+          title='Token Address'
+        />
+      </WidgetComponent>
 
-    <Aside
-      next={{
-        action: () => {
-          setInitialData(
-            currentType as TTokenType,
-            title,
-            () => {
-              if (currentCampaign) {
-                return history.push(`/campaigns/edit/${currentType}/${currentCampaign.campaign_id}/initial`)
+      <Aside
+        next={{
+          action: () => {
+            setInitialData(
+              currentType as TTokenType,
+              title,
+              () => {
+                if (currentCampaign) {
+                  return history.push(`/campaigns/edit/${currentType}/${currentCampaign.campaign_id}/initial`)
+                }
+                history.push(`/campaigns/new/${currentType}/initial`)
               }
-              history.push(`/campaigns/new/${currentType}/initial`)
-            }
-          )
-        },
-        loading,
-        disabled: defineIfNextDisabled()
-      }}
-      back={{
-        action: () => {
-          history.push(`/campaigns`)
-        },
-      }}
-      title="Summary"
-      subtitle="Check and confirm details"
-    >
-      <AsideContent>
-        {title && <AsideRow>
-          <AsideText>Title of campaign</AsideText>
-          <AsideValueShorten>{title}</AsideValueShorten>
-        </AsideRow>}
+            )
+          },
+          loading,
+          disabled: defineIfNextDisabled()
+        }}
+        back={{
+          action: () => {
+            history.push(`/campaigns`)
+          },
+        }}
+        title="Summary"
+        subtitle="Check and confirm details"
+      >
+        <AsideContent>
+          {title && <AsideRow>
+            <AsideText>Title of campaign</AsideText>
+            <AsideValueShorten>{title}</AsideValueShorten>
+          </AsideRow>}
 
-        <AsideRow>
-          <AsideText>Token Standard</AsideText>
-          <AsideValue>{currentType}</AsideValue>
-        </AsideRow>
+          <AsideRow>
+            <AsideText>Token Standard</AsideText>
+            <AsideValue>{currentType}</AsideValue>
+          </AsideRow>
 
-        <AsideRow>
-          <AsideText>Network</AsideText>
-          <AsideValue>{defineNetworkName(chainId)}</AsideValue>
-        </AsideRow>
-      </AsideContent>
-    </Aside>
-  </Container>
+          <AsideRow>
+            <AsideText>Network</AsideText>
+            <AsideValue>{defineNetworkName(chainId)}</AsideValue>
+          </AsideRow>
+        </AsideContent>
+      </Aside>
+    </Container>
+  </>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateNew)

@@ -14,11 +14,13 @@ import { ReactComponent as ArrowIcon } from './arrow-icon.svg'
 import { ReactComponent as CloseIcon } from './close-icon.svg'
 import { ReactComponent as CheckboxIcon } from './checkbox-icon.svg'
 import { ReactComponent as SignInIcon } from './sign-in.svg'
+import { ReactComponent as BreadcrumbsIcon } from './breadcrumbs-icon.svg'
 
 const Icons = {
   EthereumLogo,
   LinkdropLogo,
   LinkdropTextLogo,
+  BreadcrumbsIcon,
   SignInIcon,
   DashboardMenuIcon,
   SupportMenuIcon,
