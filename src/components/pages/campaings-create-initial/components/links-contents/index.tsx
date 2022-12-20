@@ -5,11 +5,13 @@ import {
   LinkContentsControls,
   LinksContentDataItem,
   LinksContentDataLabel,
-  LinksContentDataValue
+  LinksContentDataValue,
+  CheckIndicator
 } from './styled-components'
 import { TOnRemove, TProps} from './types'
 import { shortenString } from 'helpers'
 import { TLinkContent } from 'types'
+import Icons from 'icons'
 import {
   ButtonStyled
 } from '../../styled-components'
@@ -24,6 +26,9 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
 }) => {
   return <LinkContentsItem>
     <LinkContentsData>
+      <CheckIndicator>
+        <Icons.CheckboxIcon />
+      </CheckIndicator>
       {tokenType !== 'ERC20' && <LinksContentDataItem>
         <LinksContentDataLabel>
           ID

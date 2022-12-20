@@ -167,7 +167,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   
   const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
 
-  const [ distributionType, setDistributionType ] = useState<TDistributionPattern>(currentCampaign ? currentCampaign.distribution_pattern : distributionPattern)
+  const [ distributionType, setDistributionType ] = useState<TDistributionPattern>('manual')
   const [ data, setData ] = useState<TLinksContent>([])
   const content = defineComponent(type, data, setData, currentCampaign)
 
@@ -206,7 +206,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
         />
       </WidgetComponent>
 
-      {distributionType !== 'sdk' && <WidgetComponent title='Select tokens'>
+      {distributionType !== 'sdk' && <WidgetComponent title='Add tokens to distribute'>
         {content}
       </WidgetComponent>}
     </WidgetContainer>

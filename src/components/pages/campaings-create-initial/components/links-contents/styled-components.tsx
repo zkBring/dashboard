@@ -28,3 +28,15 @@ export const LinksContentDataLabel = styled.div`
 `
 
 export const LinksContentDataValue = styled.div``
+
+
+export const CheckIndicator = styled.div`
+  display: flex;
+	align-items: center;
+	min-width: 16px;
+	justify-content: center;
+	height: 16px;
+	border-radius: 16px;
+	margin-right: 16px;
+	background-color: ${props => props.theme.primaryHighlightColor};
+`

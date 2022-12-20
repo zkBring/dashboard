@@ -19,7 +19,7 @@ export const Button = styled.button.attrs(props => ({
   className: props.className
 }))<TProps>`
   cursor: pointer;
-  padding: 8px 20px;
+  padding: 8px 40px;
   font-size: 14px;
   height: 40px;
   line-height: 1;

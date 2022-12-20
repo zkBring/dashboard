@@ -42,8 +42,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QRCreate: FC<ReduxType> = ({
-  chainId,
-  address,
   addQRSet,
   qrs,
   loading,
@@ -55,7 +53,6 @@ const QRCreate: FC<ReduxType> = ({
 
   return <Container>
     <WidgetComponent title='New QR set'>
-      <WidgetSubtitle>Type the name of your qr set and necessary quantity of codes.</WidgetSubtitle>
       <InputComponent
         value={title}
         disabled={loading}
