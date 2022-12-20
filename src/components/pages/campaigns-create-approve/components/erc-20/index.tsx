@@ -108,7 +108,9 @@ const Erc20: FC<ReduxType > = ({
         value={formData.tokenAmount}
         placeholder='Amount per link'
         onChange={value => {
-          setFormData({ ...formData, tokenAmount: value })
+          if (/^[0-9.]+$/.test(value) || value === '') {
+            setFormData({ ...formData, tokenAmount: value })
+          }
           return value
         }}
       />
@@ -116,7 +118,9 @@ const Erc20: FC<ReduxType > = ({
         value={formData.linksAmount}
         placeholder='Number of links'
         onChange={value => {
-          setFormData({ ...formData, linksAmount: value })
+          if (/^[0-9]+$/.test(value) || value === '') {
+            setFormData({ ...formData, linksAmount: value })
+          }
           return value
         }}
       />

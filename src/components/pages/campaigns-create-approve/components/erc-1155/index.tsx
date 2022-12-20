@@ -107,7 +107,9 @@ const Erc1155: FC<ReduxType > = ({
         value={formData.tokenId}
         placeholder='Token ID'
         onChange={value => {
-          setFormData({ ...formData, tokenId: value })
+          if (/^[0-9]+$/.test(value) || value === '') {
+            setFormData({ ...formData, tokenId: value })
+          }
           return value
         }}
       />
@@ -115,7 +117,9 @@ const Erc1155: FC<ReduxType > = ({
         value={formData.tokenAmount}
         placeholder='Copies per link'
         onChange={value => {
-          setFormData({ ...formData, tokenAmount: value })
+          if (/^[0-9]+$/.test(value) || value === '') {
+            setFormData({ ...formData, tokenAmount: value })
+          }
           return value
         }}
       />
@@ -123,7 +127,9 @@ const Erc1155: FC<ReduxType > = ({
         value={formData.linksAmount}
         placeholder='Number of links'
         onChange={value => {
-          setFormData({ ...formData, linksAmount: value })
+          if (/^[0-9]+$/.test(value) || value === '') {
+            setFormData({ ...formData, linksAmount: value })
+          }
           return value
         }}
       />

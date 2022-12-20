@@ -110,7 +110,9 @@ const Erc1155: FC<ReduxType > = ({
         value={formData.tokenId}
         placeholder='Token ID'
         onChange={value => {
-          setFormData({ ...formData, tokenId: value })
+          if (/^[0-9]+$/.test(value) || value === '') {
+            setFormData({ ...formData, tokenId: value })
+          }
           return value
         }}
       />
