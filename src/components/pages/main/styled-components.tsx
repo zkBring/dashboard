@@ -46,7 +46,7 @@ export const AlignBottomButton = styled(WidgetButton)`
 export const Title = styled.h3`
   font-size: 24px;
   margin: 0 0 24px;
-  font-size: 600;
+  font-weight: 600;
   line-height: 32px;
 
   

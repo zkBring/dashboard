@@ -26,7 +26,7 @@ export const CheckboxInput = styled.input`
 
 export const CheckboxLabel = styled.h3`
   margin: 0 0 0 4px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
 `
 

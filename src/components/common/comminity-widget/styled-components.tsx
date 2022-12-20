@@ -42,14 +42,14 @@ export const WidgetIcon = styled.div`
   justify-content: center;
 `
 export const WidgetTitle = styled.h3`
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
   line-height: 20px;
   margin: 0 0 6px;
 `
 export const WidgetText = styled.p`
   color: ${props => props.theme.noteTextColor};
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   min-height: 42px;

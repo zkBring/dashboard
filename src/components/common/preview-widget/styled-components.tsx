@@ -15,7 +15,7 @@ export const PreviewWidgetTitle = styled.h3`
   margin: 0 0 25px;
   max-width: 250px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 `
 
 export const PreviewWidgetDescription = styled.p`
@@ -39,7 +39,7 @@ export const PreviewWidgetLabel = styled.div`
   top: 0;
   right: 0;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   border-bottom-left-radius: 8px;
   background-color: ${props => props.theme.statusStoppedColor};
   color: ${props => props.theme.primaryTextColor};

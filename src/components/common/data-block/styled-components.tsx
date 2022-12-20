@@ -6,7 +6,7 @@ interface DataBlockProps {
 
 export const DataBlockTitle = styled.h3`
   font-family: Inter;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   color: ${props => props.theme.noteTextColor};
@@ -15,7 +15,7 @@ export const DataBlockTitle = styled.h3`
 
 export const DataBlockText = styled.p`
   font-family: Inter;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
   line-height: 16px;
   color: ${props => props.theme.primaryTextColor};
