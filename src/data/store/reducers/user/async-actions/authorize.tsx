@@ -18,7 +18,10 @@ import { sleep } from 'helpers'
 const authorize = (
   address: string
 ) => {
-  return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>, getState: () => RootState) => {
+  return async (
+    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
+    getState: () => RootState
+  ) => {
     const {
       user: {
         provider
@@ -83,6 +86,7 @@ const authorize = (
     } catch (err) {
       dispatch(userActions.setAuthorizationStep('connect'))
       console.error({ err })
+      alert('authorization was declined')
       dispatch(userActions.setLoading(false))
       return null
     }

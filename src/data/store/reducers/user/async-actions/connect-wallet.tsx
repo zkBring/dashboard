@@ -22,7 +22,7 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   })
   const provider = await web3Modal.connect();
 
-  const providerWeb3 = new Web3Provider(provider, 'any')
+  const providerWeb3 = new Web3Provider(provider)
   
   let { chainId } = await providerWeb3.getNetwork()
   // if (chainId !== 4) {
@@ -33,17 +33,9 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   const address = accounts[0] && accounts[0].toLowerCase()
   dispatch(actions.setProvider(providerWeb3))
   dispatch(actions.setAuthorizationStep('login'))
-  const result: string | null = await dispatch(asyncActions.authorize(address))
-
-  if (!result) {
-    return alert('authorization was declined')
-  }
-
 
   dispatch(actions.setAddress(address))
   dispatch(actions.setChainId(chainId))
-  
-  dispatch(initialization(chainId, address))
 
   await getNativeTokenAmount(
     dispatch,
@@ -53,35 +45,15 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   )
 
   provider.on("accountsChanged", async (accounts: string[]) => {
-    const address = accounts[0] && accounts[0].toLowerCase()
-    dispatch(actions.setAddress(''))
-    const result: string | null = await dispatch(asyncActions.authorize(address))
-    if (!result) {
-      return alert('authorization was declined')
-    }
-
-    dispatch(actions.setAddress(address))
-    dispatch(initialization(chainId, address))
-    await getNativeTokenAmount(
-      dispatch,
-      chainId,
-      address,
-      providerWeb3
-    )
+    window.location.reload()
   })
   
   // Subscribe to chainId change
   provider.on("chainChanged", async (chainId: string) => {
-    let chainIdConverted = parseInt(chainId, 16);
-    dispatch(actions.setChainId(chainIdConverted))
-    dispatch(initialization(Number(chainId), address))
-    await getNativeTokenAmount(
-      dispatch,
-      chainIdConverted,
-      address,
-      providerWeb3
-    )
+    window.location.reload()
   })
+
+  dispatch(initialization(chainId, address))
 }
 
 // const authorize = async (provider: any) => {

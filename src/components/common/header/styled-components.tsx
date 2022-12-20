@@ -1,13 +1,20 @@
 import styled, { css } from 'styled-components';
 import { NavLink } from 'react-router-dom'
 
-export const Header = styled.div`
+type THeaderProps = {
+  breadcrumbs: boolean
+}
+
+export const Header = styled.div<THeaderProps>`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   width: 100%;
-  min-height: 80px;
   padding: 0 20px;
+  height: 80px;
+  ${props => props.breadcrumbs && css`
+    height: 116px;
+  `}
 `;
 
 export const HeaderTitle = styled.h2`

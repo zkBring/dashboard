@@ -17,6 +17,7 @@ import { UserActions } from 'data/store/reducers/user/types'
 import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types';
+import { IAppDispatch } from 'data/store'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -29,9 +30,10 @@ const mapStateToProps = ({
   authorizationStep
 })
 
-const mapDispatcherToProps = (dispatch: Dispatch<UserActions>) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) => {
   return {
-    connectWallet: () => asyncUserActions.connectWallet(dispatch)
+    connectWallet: () => asyncUserActions.connectWallet(dispatch),
+    authorize: (address: string) => dispatch(asyncUserActions.authorize(address))
   }
 }
 
@@ -58,10 +60,11 @@ const Main: FC<ReduxType> = ({
   chainId,
   address,
   connectWallet,
+  authorize,
   loading,
   authorizationStep
 }) => {
-  if (address && chainId) {
+  if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
   }
   return <ContainerCentered>
@@ -80,7 +83,10 @@ const Main: FC<ReduxType> = ({
     <WidgetButton
       loading={loading}
       appearance='action'
-      onClick={connectWallet}
+      onClick={() => {
+        if (authorizationStep === 'connect') { return connectWallet() }
+        return authorize(address)
+      }}
       title={defineButtonTitle(authorizationStep, loading)}
     />
   </ContainerCentered>

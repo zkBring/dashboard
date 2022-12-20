@@ -5,7 +5,8 @@ import {
   ContainerButton,
   BatchListStyled,
   Header,
-  WidgetTitleStyled
+  WidgetTitleStyled,
+  BatchListValueStyled
 } from './styled-components'
 
 import {
@@ -58,7 +59,7 @@ const QRs: FC<ReduxType> = ({
         <ContainerButton
           title='Add QRs'
           size='small'
-          appearance='action'
+          appearance='additional'
           to='/qrs/new'
         />
       </Header>
@@ -77,14 +78,14 @@ const QRs: FC<ReduxType> = ({
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
             <BatchListValue>{qr.links_uploaded ? 'Uploaded' : 'Not uploaded'}</BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
-            <BatchListValue>
+            <BatchListValueStyled>
               <Button
-                appearance='action'
+                appearance='additional'
                 size='small'
                 title='Manage'
                 to={`/qrs/${qr.set_id}`}
               />
-            </BatchListValue>
+            </BatchListValueStyled>
           </>
         })}
       </BatchListStyled>}

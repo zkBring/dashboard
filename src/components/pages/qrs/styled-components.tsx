@@ -3,8 +3,7 @@ import {
   Button,
   Input
 } from 'components/common'
-import { WidgetTitle } from 'components/pages/common'
-
+import { WidgetTitle, BatchListValue } from 'components/pages/common'
 import {
   BatchList
 } from 'components/pages/common'
@@ -26,6 +25,7 @@ export const InputComponent = styled(Input)`
 
 export const BatchListStyled = styled(BatchList)`
   grid-template-columns: auto auto auto auto auto 180px;
+  margin-top: 20px; 
 `
 
 export const Header = styled.div`
@@ -39,4 +39,9 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 0;
+`
+
+export const BatchListValueStyled = styled(BatchListValue)`
+  display: flex;
+  justify-content: flex-end;
 `

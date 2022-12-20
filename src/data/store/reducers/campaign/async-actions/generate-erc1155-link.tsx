@@ -61,7 +61,8 @@ const generateERC1155Link = ({
         sponsored,
         tokenStandard,
         claimPattern,
-        distributionPattern
+        distributionPattern,
+        nativeTokensPerLink
       } = campaign
       if (!assets) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -121,6 +122,7 @@ const generateERC1155Link = ({
         wallet,
         id,
         signerKey,
+        nativeTokensPerLink,
         dashboardKey !== null ? dashboardKey : ''
       )))
 

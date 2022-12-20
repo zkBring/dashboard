@@ -55,7 +55,7 @@ const mapStateToProps = ({
   tokenAddress
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
   return {
     createProxyContract: (
       id?: string

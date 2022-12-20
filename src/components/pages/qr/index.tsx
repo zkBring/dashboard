@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { defineQRStatusName, downloadQRsAsCSV } from 'helpers'
 import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup, DownloadPopup } from './components'
-import { Loader } from 'components/common'
+import { Note, TextLink } from 'components/common'
 import {
   WidgetInfo,
   WidgetValue,
@@ -129,14 +129,14 @@ const QR: FC<ReduxType> = ({
           Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
         </Paragraph>
         <Paragraph>
-          If you haven’t created claim links yet, then do it in Campaigns
+          If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Campaigns</TextLink>
         </Paragraph>
+        <Note>
+        You will not be able to change the quantity of QRs after uploading links
+        </Note>
       </>
     }
     return <>
-      <Paragraph>
-        Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
-      </Paragraph>
       <AsideRow>
         <AsideValue>
           .csv
@@ -201,7 +201,7 @@ const QR: FC<ReduxType> = ({
         <WidgetButton
           title='Change quantity'
           size='small'
-          appearance='action'
+          appearance='additional'
           disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
           onClick={() => {
             toggleUpdateQuantityPopup(true)
@@ -223,6 +223,11 @@ const QR: FC<ReduxType> = ({
         placeholder='Status'
       />
       <Buttons>
+        <WidgetButton
+          title='Back'
+          appearance='default'
+          to='/qrs'
+        /> 
         <WidgetButton
           title='Download'
           appearance='action'

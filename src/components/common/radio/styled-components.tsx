@@ -63,5 +63,5 @@ export const RadioButtonController = styled.div`
 export const RadioButtonLabel = styled.h4`
   margin: 0 0 0 4px;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
 `

@@ -1,6 +1,4 @@
-export type TDefineTitle = (path: string) => string
-export type TDefineBreadcrumbs = (path: string) => any
-
-export interface LocationType {
-  pathname: string
+export interface IProps {
+  title: string,
+  breadcrumbs: any
 }

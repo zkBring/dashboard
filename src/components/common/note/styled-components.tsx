@@ -8,4 +8,5 @@ export const NoteWrapper = styled.div`
   position: relative;
   border-radius: 16px;
   margin-bottom: 30px;
+  font-size: 14px;;
 `

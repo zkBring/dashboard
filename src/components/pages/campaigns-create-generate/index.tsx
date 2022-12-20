@@ -80,7 +80,6 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   }, [])
 
   return <Container>
-
     <GenerateProgress>
       {Math.ceil(linksGenerateLoader * 100)}%
     </GenerateProgress>

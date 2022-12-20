@@ -12,10 +12,14 @@ export const Aside = styled.aside`
   background-color: ${props => props.theme.backgroundColor};
 `
 
-export const AsideLogoZone = styled.div`
+export const AsideLogoZone = styled.div<{ noAside: boolean }>`
   display: flex;
   align-items: center;
   padding: 28px 12px;
+
+  ${props => props.noAside && css`{
+    position: absolute;
+  }`}
 `
 
 export const AsideLogoIcon = styled.img`

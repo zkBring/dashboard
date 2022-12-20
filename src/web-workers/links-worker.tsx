@@ -109,6 +109,7 @@ export class LinksWorker {
     wallet: string,
     id: string,
     signerKey: string,
+    nativeTokensPerLink: string,
     dashboardKey: string
   ) : Promise<any> {
     try {
@@ -124,7 +125,7 @@ export class LinksWorker {
         let result
         if (type === 'ERC20') {
           result = await this.createERC20Link(
-            '0',
+            nativeTokensPerLink,
             tokenAddress,
             wallet,
             assets[i].amount || '0',
@@ -134,7 +135,7 @@ export class LinksWorker {
           )
         } else if (type === 'ERC721') {
           result = await this.createERC721Link(
-            '0',
+            nativeTokensPerLink,
             tokenAddress,
             wallet,
             String(assets[i].id || '0'),
@@ -144,7 +145,7 @@ export class LinksWorker {
           )
         } else {
           result = await this.createERC1155Link(
-            '0',
+            nativeTokensPerLink,
             tokenAddress,
             wallet,
             String(assets[i].id || '0'),

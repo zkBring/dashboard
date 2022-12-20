@@ -62,8 +62,10 @@ const generateERC20Link = ({
         sponsored,
         tokenStandard,
         claimPattern,
-        distributionPattern
+        distributionPattern,
+        nativeTokensPerLink
       } = campaign
+
       if (!assets) { return alert('assets are not provided') }
       if (!chainId) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
@@ -103,6 +105,8 @@ const generateERC20Link = ({
       const workers = await createWorkers(assetsGroups, 'links', updateProgressbar)
       console.log({ workers })
 
+      console.log({ nativeTokensPerLink })
+
       const newLinks = await Promise.all(workers.map(({
         worker,
         data
@@ -120,6 +124,7 @@ const generateERC20Link = ({
         wallet,
         id,
         signerKey,
+        nativeTokensPerLink,
         dashboardKey !== null ? dashboardKey : ''
       )))
 

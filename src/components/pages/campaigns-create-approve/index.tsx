@@ -18,7 +18,8 @@ import {
   AsideValue,
   AsideContent,
   AsideValueShorten,
-  AssetsList
+  AssetsList,
+  WidgetSubtitle
 } from 'components/pages/common'
 import { shortenString, defineNetworkName } from 'helpers'
 
@@ -134,8 +135,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   return <Container>
     <WidgetComponent title='Claim pattern'>
+      <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
       <StyledRadio
-        label='Claim pattern'
         disabled={Boolean(campaign) || loading}
         value={claimPattern}
         radios={patterns}
@@ -172,7 +173,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         loading
       }}
       title="Summary"
-      subtitle="Check your campaign’s details before going next"
+      subtitle="Check and confirm details "
     >
       <AsideContent>
         <AsideRow>

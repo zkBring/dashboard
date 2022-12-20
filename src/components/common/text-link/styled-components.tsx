@@ -12,10 +12,10 @@ export const TextLink = styled.a`
 `
 
 export const TextRouterLink = styled(Link)`
-  color: ${props => props.theme.primaryTextColor};
+  color: ${props => props.theme.primaryHighlightColor};
   text-decoration: none;
 
   &:active, &:hover, &:visited {
-    color: ${props => props.theme.primaryTextColor};
+    color: ${props => props.theme.primaryHighlightColor};
   }
 `

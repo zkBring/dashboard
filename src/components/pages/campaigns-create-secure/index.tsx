@@ -206,7 +206,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         loading
       }}
       title="Summary"
-      subtitle="Check your campaign’s details before going next"
+      subtitle="Check and confirm details"
     >
       <AsideContent>
         <AsideRow>

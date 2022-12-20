@@ -63,9 +63,8 @@ export const ContainerCentered = styled.div`
   width: 100%;
   flex-direction: column;
   background: ${props => props.theme.backgroundColor};
-
+  margin-top: 100px;
 `
-
 export const ConnectWalletContainer = styled.div`
   
 `
