@@ -11,9 +11,7 @@ import { RootState } from 'data/store'
 import { defineContract } from 'helpers'
 import contracts from 'configs/contracts'
 
-const checkIfGranted = (
-  callback?: () => void
-) => {
+const checkIfGranted = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
@@ -58,7 +56,6 @@ const checkIfGranted = (
 
       if (isGranted) {
         dispatch(campaignActions.setApproved(true))
-        callback && callback()
       }
 
     } catch (err) {

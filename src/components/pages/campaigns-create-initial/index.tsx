@@ -63,20 +63,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => dispatch(
       campaignAsyncActions.createProxyContract(id)
     ),
-    checkIfApproved: (
-      callback: () => void,
-    ) => {
-      dispatch(
-        userAsyncActions.checkIfApproved(callback)
-      )
-    },
-    checkIfGranted: (
-      callback: () => void,
-    ) => {
-      dispatch(
-        userAsyncActions.checkIfGranted(callback)
-      )
-    },
   }
 }
 
@@ -89,9 +75,7 @@ const patterns = [
 
 const CampaignsCreateInitial: FC<ReduxType> = ({
   campaigns,
-  checkIfApproved,
   tokenStandard,
-  checkIfGranted,
   loading,
   title,
   tokenAddress,
@@ -110,17 +94,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
 
   const history = useHistory()
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
-
-  useEffect(() => {
-    // if (!campaign) {
-    //   return
-    // }
-    // if (campaign && campaign.claim_pattern === 'mint') {
-    //   return checkIfGranted(() => history.push(redirectURL))
-    // }
-    // if (tokenStandard === 'ERC20') { return } // always show when transfer
-    // checkIfApproved(() => history.push(redirectURL))
-  }, [])
 
   useEffect(() => {
     createProxyContract(campaign?.campaign_number)

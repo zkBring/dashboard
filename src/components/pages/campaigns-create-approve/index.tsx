@@ -71,6 +71,18 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
   return {
+    checkIfApproved: (
+    ) => {
+      dispatch(
+        userAsyncActions.checkIfApproved()
+      )
+    },
+    checkIfGranted: (
+    ) => {
+      dispatch(
+        userAsyncActions.checkIfGranted()
+      )
+    },
     approveERC20: (
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
@@ -212,7 +224,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   approveERC20,
   approveERC721,
   approveERC1155,
-  claimPattern
+  claimPattern,
+  checkIfApproved,
+  checkIfGranted
 }) => {
 
   const [
@@ -239,6 +253,17 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const defineIfNextDisabled = () => {
     return (!data.length || !assetsParsed) && distributionType === 'manual' && !loading
   }
+
+  useEffect(() => {
+    if (!currentCampaign) {
+      return
+    }
+    if (currentCampaign && currentCampaign.claim_pattern === 'mint') {
+      return checkIfGranted()
+    }
+    if (tokenStandard === 'ERC20') { return }
+    checkIfApproved()
+  }, [])
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }

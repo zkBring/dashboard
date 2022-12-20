@@ -10,9 +10,7 @@ import { ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC721Contract, ERC1155Contract } from 'abi'
 
-const checkIfApproved = (
-  callback?: () => void
-) => {
+const checkIfApproved = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
@@ -44,7 +42,6 @@ const checkIfApproved = (
       console.log({ isApproved })
       if (isApproved) {
         dispatch(campaignActions.setApproved(true))
-        callback && callback()
       }
 
     } catch (err) {

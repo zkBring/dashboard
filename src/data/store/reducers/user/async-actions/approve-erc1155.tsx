@@ -29,9 +29,15 @@ const approve = (
       },
       campaign: {
         tokenAddress,
-        proxyContractAddress
+        proxyContractAddress,
+        approved
       }
     } = getState()
+
+    if (approved) {
+      if (callback) { callback() }
+      return
+    }
 
     try {
       if (!tokenAddress) {

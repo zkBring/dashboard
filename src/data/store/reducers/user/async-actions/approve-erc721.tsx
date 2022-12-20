@@ -29,9 +29,15 @@ const approve = (
       },
       campaign: {
         tokenAddress,
-        proxyContractAddress
+        proxyContractAddress,
+        approved
       }
     } = getState()
+
+    if (approved) {
+      if (callback) { callback() }
+      return
+    }
 
     try {
       if (!tokenAddress) {
@@ -47,7 +53,6 @@ const approve = (
         return alert('No user address provided')
       }
       dispatch(campaignActions.setLoading(true))
-      dispatch(campaignActions.setClaimPattern('transfer'))
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
       await contractInstance.setApprovalForAll(proxyContractAddress, true)

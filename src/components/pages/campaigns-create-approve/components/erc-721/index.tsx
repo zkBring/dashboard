@@ -111,7 +111,7 @@ const Erc721: FC<ReduxType > = ({
     <InputsContainer>
       <InputStyled
         value={formData.tokenId}
-        placeholder='Token ID'
+        placeholder={claimPattern === 'mint' ? 'Max token ID' : 'Token ID'}
         disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
         onChange={value => {
           const pattern = claimPattern === 'mint' ? /^[0-9]+$/ : /^[0-9-]+$/

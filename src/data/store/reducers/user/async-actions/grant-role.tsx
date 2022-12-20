@@ -32,9 +32,15 @@ const grantRole = (
       campaign: {
         tokenAddress,
         proxyContractAddress,
-        tokenStandard
+        tokenStandard,
+        approved
       }
     } = getState()
+
+    if (approved) {
+      if (callback) { callback() }
+      return
+    }
 
     try {
       if (!tokenAddress) {
