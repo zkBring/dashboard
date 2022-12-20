@@ -66,10 +66,10 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
             title: 'Campaign setup',
             status: 'done'
           }, {
-            title: 'Distribution',
+            title: 'Claim pattern',
             status: 'current'
           }, {
-            title: 'Permission'
+            title: 'Distribution'
           }, {
             title: 'Launch'
           }]
@@ -88,10 +88,10 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
             title: 'Campaign setup',
             status: 'done'
           }, {
-            title: 'Distribution',
+            title: 'Claim pattern',
             status: 'done'
           }, {
-            title: 'Permission',
+            title: 'Distribution',
             status: 'current'
           }, {
             title: 'Launch'
@@ -111,10 +111,10 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
             title: 'Campaign setup',
             status: 'done'
           }, {
-            title: 'Distribution',
+            title: 'Claim pattern',
             status: 'done'
           }, {
-            title: 'Permission',
+            title: 'Distribution',
             status: 'done'
           }, {
             title: 'Launch',
@@ -132,9 +132,9 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
             title: 'Campaign setup',
             status: 'current'
           }, {
-            title: 'Distribution'
+            title: 'Claim pattern'
           }, {
-            title: 'Permission'
+            title: 'Distribution'
           }, {
             title: 'Launch'
           }]

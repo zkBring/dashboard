@@ -9,14 +9,19 @@ import {
 import { ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC721Contract } from 'abi'
+import { TAssetsData, TLinkContent } from 'types'
 
 const approve = (
+  assets: TAssetsData,
+  assetsOriginal: TLinkContent[],
   callback?: () => void
 ) => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setAssets(assets))
+    dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {
         provider,
@@ -24,7 +29,6 @@ const approve = (
       },
       campaign: {
         tokenAddress,
-        assets,
         proxyContractAddress
       }
     } = getState()

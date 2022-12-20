@@ -1,69 +1,112 @@
 import { FC, useEffect, useState } from 'react'
-import {
-  StyledRadio
-} from './styled-components'
-import { RootState } from 'data/store';
+import { StyledRadio } from './styled-components'
+import { Erc20, Erc721, Erc1155 } from './components'
+import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TLinkParams, TClaimPattern } from 'types'
-import { useHistory } from 'react-router-dom'
-import { IAppDispatch } from 'data/store'
+import { TTokenType, TAssetsData, TLinkContent, TLinkParams, TDistributionPattern } from 'types'
+import { TDefineComponent, TLinksContent } from './types'
+import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import {
   WidgetComponent,
   Container,
   Aside,
+  WidgetSubtitle,
+  WidgetContainer,
   AsideRow,
   AsideText,
   AsideValue,
   AsideContent,
   AsideValueShorten,
-  AssetsList,
-  WidgetSubtitle
+  AssetsList
 } from 'components/pages/common'
-import { shortenString, defineNetworkName } from 'helpers'
+import { TextLink } from 'components/common'
+import { useHistory } from 'react-router-dom'
+import * as campaignActions from 'data/store/reducers/campaign/actions'
+import { Dispatch } from 'redux'
+import { CampaignActions } from 'data/store/reducers/campaign/types'
+import {
+  NATIVE_TOKEN_ADDRESS
+} from 'configs/app'
+import {
+  convertLinksContent,
+  shortenString,
+  defineNetworkName,
+  defineEtherscanUrl
+} from 'helpers'
+
 
 const mapStateToProps = ({
-  campaigns: {
-    campaigns
-  },
   campaign: {
     tokenStandard,
     loading,
-    title,
+    claimPattern,
+    distributionPattern,
     tokenAddress,
-    assetsOriginal,
+    decimals,
+    proxyContractAddress,
+    title,
     assets
+  },
+  campaigns: {
+    campaigns
   },
   user: {
     chainId
   }
 }: RootState) => ({
-  campaigns,
   tokenStandard,
   loading,
-  title,
+  campaigns,
+  claimPattern,
+  distributionPattern,
+  proxyContractAddress,
   tokenAddress,
+  decimals,
   chainId,
-  assetsOriginal,
+  title,
   assets
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
   return {
-    approveERC20: (callback: () => void) => {
+    approveERC20: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      callback: () => void
+    ) => {
       dispatch(
-        userAsyncActions.approveERC20(callback)
+        userAsyncActions.approveERC20(
+          assets,
+          assetsOriginal,
+          callback)
+        )
+    },
+    approveERC721: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      callback: () => void
+    ) => {
+      dispatch(
+        userAsyncActions.approveERC721(
+          assets,
+          assetsOriginal,
+          callback
+        )
       )
     },
-    approveERC721: (callback: () => void) => {
+    approveERC1155: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      callback: () => void
+    ) => {
       dispatch(
-        userAsyncActions.approveERC721(callback)
-      )
-    },
-    approveERC1155: (callback: () => void) => {
-      dispatch(
-        userAsyncActions.approveERC1155(callback)
+        userAsyncActions.approveERC1155(
+          assets,
+          assetsOriginal,
+          callback
+        )
       )
     },
     grantRole: (callback: () => void) => {
@@ -71,81 +114,150 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         userAsyncActions.grantRole(callback)
       )
     },
-    checkIfApproved: (
-      callback: () => void,
-    ) => {
-      dispatch(
-        userAsyncActions.checkIfApproved(callback)
+    createProxyContract: (
+      id?: string
+    ) => dispatch(
+      campaignAsyncActions.createProxyContract(id)
+    ),
+    setTokenContractData: (
+      provider: any,
+      tokenAddress: string,
+      type: TTokenType,
+      address: string,
+      chainId: number
+    ) => campaignAsyncActions.setTokenContractData(
+      dispatch,
+      tokenAddress,
+      provider,
+      type,
+      address,
+      chainId
+    ),
+    setAssetsData: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      callback: () => void
+    ) => dispatch(campaignAsyncActions.setAssetsData(
+        assets,
+        assetsOriginal,
+        callback
       )
-    },
-    checkIfGranted: (
-      callback: () => void,
-    ) => {
+    ),
+    clearCampaign: () => {
       dispatch(
-        userAsyncActions.checkIfGranted(callback)
+        campaignActions.clearCampaign()
       )
-    },
+    }
   }
 }
 
-type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
-const patterns = [
-  { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' },
-  { value: 'transfer', label: 'Transfer (tokens should be preminted, and will be transferred to user at claim)' }
-]
+type ReduxType = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatcherToProps>
+
+
+const defineComponent: TDefineComponent = (type, assetsData, setAssetsData, campaign) => {
+  switch(type.toUpperCase()) {
+    case 'ERC20':
+      return <Erc20
+        type={type}
+        campaign={campaign}
+        assetsData={assetsData}
+        setAssetsData={setAssetsData}
+    />
+    case 'ERC721':
+      return <Erc721
+        type={type}
+        campaign={campaign}
+        assetsData={assetsData}
+        setAssetsData={setAssetsData}
+      />
+    default:
+      return <Erc1155
+        type={type}
+        campaign={campaign}
+        assetsData={assetsData}
+        setAssetsData={setAssetsData}
+      />
+  }
+}
 
 const CampaignsCreateApprove: FC<ReduxType> = ({
+  createProxyContract,
   campaigns,
-  checkIfApproved,
+  distributionPattern,
+  setAssetsData,
+  tokenAddress,
+  decimals,
+  chainId,
   tokenStandard,
-  checkIfGranted,
+  title,
+  assets,
+  loading,
   grantRole,
   approveERC20,
   approveERC721,
   approveERC1155,
-  loading,
-  title,
-  tokenAddress,
-  chainId,
-  assetsOriginal,
-  assets
+  claimPattern
 }) => {
-  const { id } = useParams<TLinkParams>()
-  const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-  const currentCampaignTitle = campaign ? campaign.title : title
-  const currentTokenAddress = campaign ? campaign.token_address : tokenAddress
-  const currentCampaignChainId = campaign ? campaign.chain_id : chainId
-  const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
+
+  const [
+    assetsParsed,
+    setAssetsParsedValue
+  ] = useState<TAssetsData>([])
 
   const history = useHistory()
-  const redirectURL = campaign ? `/campaigns/edit/${tokenStandard}/${campaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
-  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
+  const { type, id } = useParams<TLinkParams>()
+  const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+
+  const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
+  const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
+  const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
+  const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
+  const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
+
+  const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
+
+  const [ distributionType, setDistributionType ] = useState<TDistributionPattern>('manual')
+  const [ data, setData ] = useState<TLinksContent>([])
+  const content = defineComponent(type, data, setData, currentCampaign)
+
+  const defineIfNextDisabled = () => {
+    return (!data.length || !assetsParsed) && distributionType === 'manual' && !loading
+  }
 
   useEffect(() => {
-    if (!campaign) {
-      return
-    }
-    if (campaign && campaign.claim_pattern === 'mint') {
-      return checkIfGranted(() => history.push(redirectURL))
-    }
-    if (tokenStandard === 'ERC20') { return } // always show when transfer
-    checkIfApproved(() => history.push(redirectURL))
-  }, [])
-
+    if (!data || decimals === null) { return setAssetsParsedValue([]) }
+    let assets = convertLinksContent(data, decimals)
+    if (!assets) { return setAssetsParsedValue([]) }
+    setAssetsParsedValue(assets)
+  }, [data])
+  
   return <Container>
-    <WidgetComponent title='Claim pattern'>
-      <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
-      <StyledRadio
-        disabled={Boolean(campaign) || loading}
-        value={claimPattern}
-        radios={patterns}
-        onChange={(value) => {
-          console.log({ value })
-          setClaimPattern(value)
-        }}
-      />
-    </WidgetComponent>
+    <WidgetContainer>
+      <WidgetComponent title='Distribution'>
+        <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
+        <StyledRadio
+          // disabled={Boolean(currentCampaign)}
+          disabled
+          radios={[
+            { label: 'Manual (Select token IDs to generate links)', value: 'manual' },
+            { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: 'sdk' }
+          ]}
+          value={distributionType}
+          onChange={value => {
+            return
+            // setData([])
+            setDistributionType(value)
+          }}
+        />
+      </WidgetComponent>
+
+      {distributionType !== 'sdk' && <WidgetComponent title='Add tokens to distribute'>
+        {content}
+      </WidgetComponent>}
+    </WidgetContainer>
+
     <Aside
       back={{
         action: () => {
@@ -162,18 +274,30 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             return grantRole(callback)
           }
           if (tokenStandard === 'ERC20') {
-            approveERC20(callback)
+            approveERC20(
+              assetsParsed,
+              data,
+              callback
+            )
           } else if (tokenStandard === 'ERC721') {
-            approveERC721(callback)
+            approveERC721(
+              assetsParsed,
+              data,
+              callback
+            )
           } else {
-            approveERC1155(callback)
+            approveERC1155(
+              assetsParsed,
+              data,
+              callback
+            )
           }
         },
-        disabled: loading,
-        loading
+        loading,
+        disabled: defineIfNextDisabled()
       }}
       title="Summary"
-      subtitle="Check and confirm details "
+      subtitle="Check and confirm details"
     >
       <AsideContent>
         <AsideRow>
@@ -183,13 +307,13 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
         {currentTokenAddress && <AsideRow>
           <AsideText>Token address</AsideText>
-          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
+          <AsideValue><TextLink href={scannerUrl} target='_blank'>{shortenString(currentTokenAddress)}</TextLink></AsideValue>
         </AsideRow>}
 
-        <AsideRow>
+        {<AsideRow>
           <AsideText>Token Name</AsideText>
           <AsideValue>Coming soon</AsideValue>
-        </AsideRow>
+        </AsideRow>}
 
         {currentCampaignTokenStandard && <AsideRow>
           <AsideText>Token standard</AsideText>
@@ -201,20 +325,16 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
         </AsideRow>}
 
-        {currentCampaignTokenStandard && assetsOriginal && <AssetsList data={assetsOriginal} type={currentCampaignTokenStandard} />}
-
-        {assets && <AsideRow>
-          <AsideText>Total links</AsideText>
-          <AsideValue>{assets.length}</AsideValue>
-        </AsideRow>}
+        {currentCampaignTokenStandard && <AssetsList data={data} type={currentCampaignTokenStandard} />}
 
         <AsideRow>
-          <AsideText>Claim pattern</AsideText>
-          <AsideValue>{claimPattern}</AsideValue>
+          <AsideText>Total links</AsideText>
+          <AsideValue>{assetsParsed.length}</AsideValue>
         </AsideRow>
-
       </AsideContent>
+      
     </Aside>
+    
   </Container>
 }
 
