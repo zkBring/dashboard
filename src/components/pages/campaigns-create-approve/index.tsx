@@ -109,9 +109,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
         )
       )
     },
-    grantRole: (callback: () => void) => {
+    grantRole: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      callback: () => void
+    ) => {
       dispatch(
-        userAsyncActions.grantRole(callback)
+        userAsyncActions.grantRole(
+          assets,
+          assetsOriginal,
+          callback
+        )
       )
     },
     createProxyContract: (
@@ -156,7 +164,13 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 
-const defineComponent: TDefineComponent = (type, assetsData, setAssetsData, campaign) => {
+const defineComponent: TDefineComponent = (
+  type,
+  assetsData,
+  setAssetsData,
+  claimPattern,
+  campaign
+) => {
   switch(type.toUpperCase()) {
     case 'ERC20':
       return <Erc20
@@ -220,7 +234,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   const [ distributionType, setDistributionType ] = useState<TDistributionPattern>('manual')
   const [ data, setData ] = useState<TLinksContent>([])
-  const content = defineComponent(type, data, setData, currentCampaign)
+  const content = defineComponent(type, data, setData, claimPattern, currentCampaign)
 
   const defineIfNextDisabled = () => {
     return (!data.length || !assetsParsed) && distributionType === 'manual' && !loading
@@ -228,7 +242,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }
-    let assets = convertLinksContent(data, decimals)
+    let assets = convertLinksContent(data, decimals, claimPattern)
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
@@ -271,7 +285,11 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             history.push(redirectURL)
           }
           if (claimPattern === 'mint') {
-            return grantRole(callback)
+            return grantRole(
+              assetsParsed,
+              data,
+              callback
+            )
           }
           if (tokenStandard === 'ERC20') {
             approveERC20(
@@ -330,6 +348,11 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         <AsideRow>
           <AsideText>Total links</AsideText>
           <AsideValue>{assetsParsed.length}</AsideValue>
+        </AsideRow>
+
+        <AsideRow>
+          <AsideText>Claim pattern</AsideText>
+          <AsideValue>{claimPattern}</AsideValue>
         </AsideRow>
       </AsideContent>
       

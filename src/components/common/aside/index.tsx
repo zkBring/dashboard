@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom'
 import LinkDropLogo from 'images/linkdrop-logo.png'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
+import Icons from 'icons'
 
 const mapStateToProps = ({
   user: {
@@ -59,10 +60,10 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
 
     <AsideMenu>
       <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
-        Campaigns
+        <Icons.CampaignsIcon />Campaigns
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-        QR-manager
+      <Icons.QRManagerIcon />QR-manager
       </AsideMenuItem>
     </AsideMenu>
 

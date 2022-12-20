@@ -69,10 +69,11 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps> &
   TProps
 
-const Erc1155: FC<ReduxType > = ({
+const Erc721: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
-  assetsData
+  assetsData,
+  claimPattern
 }) => {
   console.log({ tokenStandard })
 
@@ -83,7 +84,6 @@ const Erc1155: FC<ReduxType > = ({
       linksAmount: '',
       tokenId: '',
       tokenAmount: '',
-      id: assetsData.length,
       tokenType: tokenStandard || 'ERC721'
     }
   }
@@ -94,6 +94,9 @@ const Erc1155: FC<ReduxType > = ({
   ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
+    if (claimPattern === 'mint') {
+      return Boolean(assetsData.length)
+    }
     return !formData.tokenId || formData.tokenId.length === 0
   }
 
@@ -109,8 +112,10 @@ const Erc1155: FC<ReduxType > = ({
       <InputStyled
         value={formData.tokenId}
         placeholder='Token ID'
+        disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
         onChange={value => {
-          if (/^[0-9]+$/.test(value) || value === '') {
+          const pattern = claimPattern === 'mint' ? /^[0-9]+$/ : /^[0-9-]+$/
+          if (pattern.test(value) || value === '') {
             setFormData({ ...formData, tokenId: value })
           }
           return value
@@ -122,7 +127,10 @@ const Erc1155: FC<ReduxType > = ({
         appearance='additional'
         disabled={checkIfDisabled()}
         onClick={() => {
-          setAssetsData([ ...assetsData, formData ])
+          setAssetsData([ ...assetsData, {
+            ...formData,
+            id: assetsData.length
+          }])
           setFormData(getDefaultValues())
         }}
       >
@@ -132,4 +140,4 @@ const Erc1155: FC<ReduxType > = ({
   </Container>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(Erc1155)
+export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)

@@ -1,4 +1,4 @@
-import { TTokenType, TCampaign } from 'types'
+import { TTokenType, TCampaign, TClaimPattern } from 'types'
 import { TLinksContent } from '../../types'
 
 export type TProps = {

@@ -192,17 +192,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
           <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
         </AsideRow>}
 
-        {currentCampaignTokenStandard && assetsOriginal && <AssetsList data={assetsOriginal} type={currentCampaignTokenStandard} />}
-
-        {assets && <AsideRow>
-          <AsideText>Total links</AsideText>
-          <AsideValue>{assets.length}</AsideValue>
-        </AsideRow>}
-
-        <AsideRow>
-          <AsideText>Claim pattern</AsideText>
-          <AsideValue>{claimPattern}</AsideValue>
-        </AsideRow>
 
       </AsideContent>
     </Aside>

@@ -15,11 +15,14 @@ import { ReactComponent as CloseIcon } from './close-icon.svg'
 import { ReactComponent as CheckboxIcon } from './checkbox-icon.svg'
 import { ReactComponent as SignInIcon } from './sign-in.svg'
 import { ReactComponent as BreadcrumbsIcon } from './breadcrumbs-icon.svg'
+import { ReactComponent as CampaignsIcon } from './campaigns.svg'
+import { ReactComponent as QRManagerIcon } from './qr-manager.svg'
 
 const Icons = {
   EthereumLogo,
   LinkdropLogo,
   LinkdropTextLogo,
+  CampaignsIcon,
   BreadcrumbsIcon,
   SignInIcon,
   DashboardMenuIcon,
@@ -33,6 +36,7 @@ const Icons = {
   ExternalLinkIcon,
   ArrowIcon,
   CloseIcon,
+  QRManagerIcon,
   CheckboxIcon
 }
 

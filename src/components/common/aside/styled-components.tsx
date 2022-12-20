@@ -70,16 +70,30 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
   border-radius: 10px;
   transition: background-color .3s;
 
+  svg {
+    margin-right: 8px;
+  }
+
   &:hover {
     ${props => !props.disabled && !props.active && css`
       color: ${props.theme.linkTextColor};
       background: ${props.theme.menuItemActive};
     `}
+    svg {
+      path {
+        stroke: ${props => props.theme.linkTextColor};
+      }
+    }
   }
 
   ${props => props.active && css`
     color: ${props => props.theme.linkTextColor};
     background: ${props.theme.menuItemActive};
+    svg {
+      path {
+        stroke: ${props.theme.linkTextColor};
+      }
+    }
   `}
 
   ${props => props.disabled && css`

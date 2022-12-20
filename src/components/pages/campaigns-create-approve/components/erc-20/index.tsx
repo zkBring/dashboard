@@ -81,7 +81,6 @@ const Erc20: FC<ReduxType > = ({
       linksAmount: '',
       tokenId: '',
       tokenAmount: '',
-      id: assetsData.length,
       tokenType: tokenStandard || 'ERC20'
     }
   }
@@ -130,7 +129,10 @@ const Erc20: FC<ReduxType > = ({
         appearance='additional'
         disabled={checkIfDisabled()}
         onClick={() => {
-          setAssetsData([ ...assetsData, formData ])
+          setAssetsData([ ...assetsData, {
+            ...formData,
+            id: assetsData.length
+          }])
           setFormData(getDefaultValues())
           console.log({ formData,  })
         }}

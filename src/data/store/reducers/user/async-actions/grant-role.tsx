@@ -10,14 +10,19 @@ import { utils, ethers } from 'ethers'
 import { RootState } from 'data/store'
 import contracts from 'configs/contracts'
 import { defineContract } from 'helpers'
+import { TAssetsData, TLinkContent } from 'types'
 
 const grantRole = (
+  assets: TAssetsData,
+  assetsOriginal: TLinkContent[],
   callback?: () => void
 ) => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setAssets(assets))
+    dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {
         provider,
