@@ -52,23 +52,26 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
 
     return <>
       {createNewCampaignWidget}
-      <Title>Campaigns</Title>
-      <Container>
-        {currentAddressCampaigns.map(campaign => {
-          return <Campaign
-            title={campaign.title}
-            created_at={campaign.created_at}
-            id={campaign.campaign_id}
-            key={campaign.campaign_id}
-            chainId={campaign.chain_id}
-            type={campaign.token_standard}
-            symbol={campaign.symbol}
-            linksAmount={countLinks(campaign.batches)}
-            proxyContractAddress={campaign.proxy_contract_address}
-            claimPattern={campaign.claim_pattern}
-          />
-        })}
-      </Container>
+      {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <>
+        <Title>Campaigns</Title>
+        <Container>
+          {currentAddressCampaigns.map(campaign => {
+            return <Campaign
+              title={campaign.title}
+              created_at={campaign.created_at}
+              id={campaign.campaign_id}
+              key={campaign.campaign_id}
+              chainId={campaign.chain_id}
+              type={campaign.token_standard}
+              symbol={campaign.symbol}
+              linksAmount={countLinks(campaign.batches)}
+              proxyContractAddress={campaign.proxy_contract_address}
+              claimPattern={campaign.claim_pattern}
+            />
+          })}
+        </Container>
+      </>}
+      
     </>
 }
 
