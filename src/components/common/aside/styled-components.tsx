@@ -29,7 +29,7 @@ export const AsideLogoIcon = styled.img`
 
 export const AsideLogoText = styled.h4`
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
   color: ${props => props.theme.primaryTextColor};
 `
@@ -102,7 +102,7 @@ export const AsideTitle = styled.h2`
   font-size: 26px;
   flex: 1;
   display: flex;
-  font-weight: 400;
+  font-weight: 500;
   align-items: center;
   margin: 0;
 `

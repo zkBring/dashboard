@@ -9,7 +9,7 @@ export const RadioButtonsContainer = styled.div`
 
 export const RadioButtonsLabel = styled.h3`
   margin-bottom: 4px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
   margin: 0 0 12px;
   color: ${props => props.theme.primaryTextColor};
@@ -62,6 +62,6 @@ export const RadioButtonController = styled.div`
 
 export const RadioButtonLabel = styled.h4`
   margin: 0 0 0 4px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
 `

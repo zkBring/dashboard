@@ -5,7 +5,7 @@ export const TextBlock = styled(WidgetTextBlock)`
   text-align: center;
 
   span {
-    font-weight: 700;
+    font-weight: 600;
   }
 `
 

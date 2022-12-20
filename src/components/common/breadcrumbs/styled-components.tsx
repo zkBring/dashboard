@@ -9,7 +9,7 @@ export const BreadcrumbsWrapper = styled.div`
 
 export const BreadcrumbsItem = styled.div<TBreadCrubItem>`
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   display: flex;
   align-items: center;
   color: ${props => props.theme.additionalTextColor};

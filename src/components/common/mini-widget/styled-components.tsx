@@ -14,7 +14,7 @@ const MiniWidgetTitle = styled.h2`
   color: ${props => props.theme.primaryTextColor};
   font-size: 24px;
   line-height: 36px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 4px;
   margin-top: 0;
   display: flex;

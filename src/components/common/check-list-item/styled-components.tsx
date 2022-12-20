@@ -23,6 +23,6 @@ export const CheckBox = styled.div<{ checked: boolean }>`
 
 export const Title = styled.h3`
 	font-size: 16px;
-	font-weight: 400;
+	font-weight: 500;
 	margin: 0;
 `

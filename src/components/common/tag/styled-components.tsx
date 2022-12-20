@@ -9,7 +9,7 @@ export const TagContainer = styled.div<TagProps>`
   padding: 4px 8px;
   display: inline-block;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   line-height: 16px;
 

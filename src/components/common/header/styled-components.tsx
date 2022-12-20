@@ -21,7 +21,7 @@ export const HeaderTitle = styled.h2`
   color: ${props => props.theme.primaryTextColor};
   font-size: 28px;
   flex: 1;
-  font-weight: 700;
+  font-weight: 600;
 `
 
 export const HeaderMode = styled.div`
@@ -57,7 +57,7 @@ export const HeaderUserInfo = styled.div`
   font-size: 14px;
   min-width: 152px;
   border-radius: 36px;
-  font-weight: 400;
+  font-weight: 500;
   padding: 0 0 0 24px;
   min-height: 36px;
   position: relative;

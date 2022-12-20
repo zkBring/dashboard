@@ -19,7 +19,7 @@ export const WidgetInfo = styled.div`
 `
 
 export const WidgetValue = styled.div`
-  font-weight: 700;
+  font-weight: 600;
   font-size: 32px;
 `
 
