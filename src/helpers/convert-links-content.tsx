@@ -1,7 +1,7 @@
 import { TLinkContent, TAssetsData, TClaimPattern } from 'types'
-import { utils } from 'ethers'
+import { utils, BigNumber } from 'ethers'
 import { getBignumberInterval } from 'helpers'
-import { add, bignumber } from 'mathjs'
+import  { add, bignumber } from 'mathjs'
 // export type TAsset = {
 //   amount?: string,
 //   id?: number | string,
@@ -31,29 +31,33 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
       if (claimPattern === 'mint') {
         if (!item.tokenId) { return result }
         const {
-          prefix,
           suffix,
-          limit
+            limit,
+            prefixOffset
         } = getBignumberInterval('0', item.tokenId)
         result = [...result, ...Array.from({ length: limit + 1 }, (_, i) => {
+          const additional = BigNumber.from(suffix).add(BigNumber.from(i))
+          const final = BigNumber.from(prefixOffset).add(additional)
           return {
-            id: String(add(bignumber('0'), i))
-          }}
-        )]
+            id: String(final)
+          }
+        })]
       } else {
         if (item.tokenId && item.tokenId.includes('-')) {
           const tokenIds = item.tokenId.split('-').map(item => item.trim())
           const {
-            prefix,
             suffix,
-            limit
+            limit,
+            prefixOffset
           } = getBignumberInterval(tokenIds[0], tokenIds[1])
 
           result = [...result, ...Array.from({ length: limit + 1 }, (_, i) => {
+            const additional = BigNumber.from(suffix).add(BigNumber.from(i))
+            const final = BigNumber.from(prefixOffset).add(additional)
             return {
-              id: String(add(bignumber(tokenIds[0]), i))
-            }}
-          )]
+              id: String(final)
+            }
+          })]
         
         } else {
           result.push({

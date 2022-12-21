@@ -7,7 +7,8 @@ type TGetBigNumberInterval = (
   prefix: string,
   suffix: string,
   limit: number,
-  diff: string
+  diff: string,
+  prefixOffset: string
 }
 
 const getBignumberInterval: TGetBigNumberInterval = (initial: string, final: string) => {
@@ -18,11 +19,14 @@ const getBignumberInterval: TGetBigNumberInterval = (initial: string, final: str
   const prefix = initial.slice(0, Number(`-${diff.length}`))
   const suffix = initial.slice(Number(`-${diff.length}`))
   const limit = Number(diff)
+  const initialDigitsCount = initial.length
+  const prefixOffset = String(prefix + new Array(initialDigitsCount - prefix.length).fill('0').join('') || 0)
   return {
     prefix,
     suffix,
     limit,
-    diff
+    diff,
+    prefixOffset
   }
 }
 
