@@ -1,7 +1,7 @@
 import { TLinkContent, TAssetsData, TClaimPattern } from 'types'
 import { utils } from 'ethers'
 import { getBignumberInterval } from 'helpers'
-
+import { add, bignumber } from 'mathjs'
 // export type TAsset = {
 //   amount?: string,
 //   id?: number | string,
@@ -35,9 +35,11 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
           suffix,
           limit
         } = getBignumberInterval('0', item.tokenId)
-        result = [...result, ...Array.from({ length: limit }, (_, i) => ({
-          id: prefix + (Number(suffix) + i)
-        }))]
+        result = [...result, ...Array.from({ length: limit + 1 }, (_, i) => {
+          return {
+            id: String(add(bignumber('0'), i))
+          }}
+        )]
       } else {
         if (item.tokenId && item.tokenId.includes('-')) {
           const tokenIds = item.tokenId.split('-').map(item => item.trim())
@@ -47,15 +49,11 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
             limit
           } = getBignumberInterval(tokenIds[0], tokenIds[1])
 
-          console.log({
-            prefix,
-            suffix,
-            limit
-          })
-          
-          result = [...result, ...Array.from({ length: limit }, (_, i) => ({
-            id: prefix + (Number(suffix) + i)
-          }))]
+          result = [...result, ...Array.from({ length: limit + 1 }, (_, i) => {
+            return {
+              id: String(add(bignumber(tokenIds[0]), i))
+            }}
+          )]
         
         } else {
           result.push({
