@@ -35,9 +35,9 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
           suffix,
           limit
         } = getBignumberInterval('0', item.tokenId)
-        result = Array.from({ length: limit }, (_, i) => ({
+        result = [...result, ...Array.from({ length: limit }, (_, i) => ({
           id: prefix + (Number(suffix) + i)
-        }))
+        }))]
       } else {
         if (item.tokenId && item.tokenId.includes('-')) {
           const tokenIds = item.tokenId.split('-').map(item => item.trim())
