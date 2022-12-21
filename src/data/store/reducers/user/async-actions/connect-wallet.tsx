@@ -6,7 +6,6 @@ import {
 } from '../types'
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
-import WalletConnectProvider from "@walletconnect/web3-provider"
 import { IAppDispatch } from 'data/store';
 import {
   initialization,

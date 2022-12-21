@@ -122,6 +122,12 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
           }]
         }
       />
+
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/generate'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/generate'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/generate'):
+      return null
+
     case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/new'):
     case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/new'):
     case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/new'):
