@@ -46,10 +46,16 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
             suffix,
             limit
           } = getBignumberInterval(tokenIds[0], tokenIds[1])
+
+          console.log({
+            prefix,
+            suffix,
+            limit
+          })
           
-          result = Array.from({ length: limit }, (_, i) => ({
+          result = [...result, ...Array.from({ length: limit }, (_, i) => ({
             id: prefix + (Number(suffix) + i)
-          }))
+          }))]
         
         } else {
           result.push({
