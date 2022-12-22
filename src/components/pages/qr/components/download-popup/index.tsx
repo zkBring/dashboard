@@ -1,7 +1,13 @@
 import { FC, useState } from 'react'
 import { Popup } from 'components/common'
 import { TProps } from './types'
-import { InputComponent, PopupForm, WidgetButton, PopupFormContent } from '../../styled-components'
+import {
+  InputComponent,
+  PopupForm,
+  WidgetButton,
+  PopupFormContent,
+  Buttons
+} from '../../styled-components'
 import { useHistory } from 'react-router-dom'
 
 const DPI = 300
@@ -18,6 +24,7 @@ const DownloadPopup: FC<TProps> = ({
 }) => {
   const history = useHistory()
   const [ formSize, setFormSize ] = useState('2')
+  const showError = Number(formSize) > 5
   
   return <Popup
     title='Specify the size of the QR code'
@@ -32,20 +39,29 @@ const DownloadPopup: FC<TProps> = ({
         <InputComponent
           title='Width and width (inches)'
           value={String(formSize)}
-          onChange={value => { setFormSize(value); return value }}
-          placeholder='Width (inches)'
+          onChange={value => {
+            if (/^[0-9.]+$/.test(value) || value === '') {
+              setFormSize(value)
+            }
+            return value
+          }}
+          error={showError ? 'Maximum size is limited by 5 inches' : undefined}
+          note={showError ? undefined : 'Maximum size is limited by 5 inches'}
         />
       </PopupFormContent>
-      <WidgetButton
-        disabled={!formSize}
-        onClick={() => {
-          const currentSize = convertInchesToPixels(formSize)
-          if (currentSize) {
-            history.push(`/qrs/${id}/download?width=${encodeURIComponent(currentSize)}&height=${encodeURIComponent(currentSize)}`)
-          }
-        }}
-        title='Download'
-      />
+      <Buttons>
+        <WidgetButton
+          disabled={!formSize}
+          onClick={() => {
+            const currentSize = convertInchesToPixels(formSize)
+            if (currentSize) {
+              history.push(`/qrs/${id}/download?width=${encodeURIComponent(currentSize)}&height=${encodeURIComponent(currentSize)}`)
+            }
+          }}
+          title='Download'
+        />
+      </Buttons>
+      
     </PopupForm>
   </Popup>
 }

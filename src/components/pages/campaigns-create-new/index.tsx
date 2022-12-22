@@ -173,6 +173,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         <InputStyled
           value={tokenAddress}
           placeholder='0x... address'
+          note='Carefully check address before you go'
           disabled={Boolean(currentCampaign) || loading}
           onChange={(value: string) => {
             setTokenAddress(value)

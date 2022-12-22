@@ -8,5 +8,6 @@ export interface IProps {
   error?: string,
   value?: string,
   className?: string,
-  ref?: { current: any }
+  ref?: { current: any },
+  note?: string
 }

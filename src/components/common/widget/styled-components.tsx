@@ -12,7 +12,7 @@ export const WidgetComponent = styled.div<TProps>`
 export const WidgetTitle = styled.h3`
   font-size: 22px;
   margin: 0 0 16px;
-  font-weight: 500;
+  font-weight: 600;
 `
 
 export const WidgetContent = styled.div`

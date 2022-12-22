@@ -17,13 +17,19 @@ import { ReactComponent as SignInIcon } from './sign-in.svg'
 import { ReactComponent as BreadcrumbsIcon } from './breadcrumbs-icon.svg'
 import { ReactComponent as CampaignsIcon } from './campaigns.svg'
 import { ReactComponent as QRManagerIcon } from './qr-manager.svg'
+import { ReactComponent as InputNoteIcon } from './input-note-icon.svg'
+import { ReactComponent as FileIcon } from './file-icon.svg'
+import { ReactComponent as PolygonIcon } from './polygon-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  PolygonIcon,
+  FileIcon,
   LinkdropLogo,
   LinkdropTextLogo,
   CampaignsIcon,
   BreadcrumbsIcon,
+  InputNoteIcon,
   SignInIcon,
   DashboardMenuIcon,
   SupportMenuIcon,

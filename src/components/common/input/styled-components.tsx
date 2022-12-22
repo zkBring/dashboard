@@ -7,10 +7,12 @@ interface InputContainerProps {
 }
 
 interface InputFieldProps {
-  value: string
+  value: string,
+  error?: string
 }
 
 interface InputTitleProps {
+  error?: string
 }
 
 export const InputContainer = styled.div.attrs(props => ({
@@ -25,6 +27,9 @@ export const InputTitle = styled.h3<InputTitleProps>`
   font-size: 16px;
   margin: 0 0 12px;
   color: ${props => props.theme.primaryTextColor};
+  ${props => props.error && css`
+    color: ${props => props.theme.dangerTextColor};
+  `}
 `
 
 export const InputField = styled.input<InputFieldProps>`
@@ -43,12 +48,38 @@ export const InputField = styled.input<InputFieldProps>`
     border-color: ${props => props.theme.primaryHighlightColor};
     outline: none;
   }
+
+  ${props => props.error && css`
+    border-color: ${props => props.theme.dangerTextColor};
+    &:focus {
+      border-color: ${props => props.theme.dangerTextColor};
+      outline: none;
+    }
+  `}
 `
 
-export const InputError = styled.div`
+export const InputAdditionalText = styled.div<{ type: 'error' | 'note'}>`
   margin-top: 6px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: ${props => props.theme.dangerTextColor};
+  display: flex;
+  align-items: center;
+  color: ${props => props.theme.additionalTextColor};
+  svg {
+    margin-right: 8px;
+  }
+
+  ${prosp => prosp.type === 'error' && css`
+    color: ${props => props.theme.dangerTextColor};
+    svg {
+      rect {
+        fill: ${props => props.theme.dangerTextColor};
+      }
+      path {
+        stroke: ${props => props.theme.dangerTextColor};
+      }
+    }
+  `}
+  
 `

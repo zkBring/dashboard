@@ -129,13 +129,16 @@ export const AsideTextLink = styled(TextLink)`
 export const FooterMenu = styled.div`
   padding: 20px 32px;
   padding: 0px 16px 36px;
+
+  & > *:last-child {
+    margin-bottom: 0;
+    button {
+      margin-bottom: 0;
+    }
+  }
 `
 
 export const FooterButton = styled(Button)`
   margin-bottom: 14px;
   width: 100%;
-
-  &:last-child {
-    margin-bottom: 0px;
-  }
 `

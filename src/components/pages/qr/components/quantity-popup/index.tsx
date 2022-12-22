@@ -1,7 +1,14 @@
 import { FC, useState } from 'react'
 import { Popup } from 'components/common'
 import { TProps } from './types'
-import { InputComponent, StyledProgressBar, PopupForm, WidgetButton, PopupFormContent } from '../../styled-components'
+import {
+  InputComponent,
+  Buttons,
+  PopupForm,
+  WidgetButton,
+  PopupFormContent
+} from '../../styled-components'
+import { WidgetSubtitle } from 'components/pages/common'
 
 const QuantityPopup: FC<TProps> = ({
   onClose,
@@ -11,9 +18,9 @@ const QuantityPopup: FC<TProps> = ({
   loading
 }) => {
   const [ formQuantity, setFormQuantity ] = useState(quantity || '0')
-  console.log({ loader })
+  const showError = Number(formQuantity) > 300000
   return <Popup
-    title='Change quantity of QRs needed'
+    title='Quantity of QRs in a set'
     onClose={() => {
       onClose()
     }}
@@ -23,6 +30,7 @@ const QuantityPopup: FC<TProps> = ({
       onSubmit(formQuantity)
     }}>
       <PopupFormContent>
+        <WidgetSubtitle>You are able to change the quantity of QRs as many times as you want before you upload links</WidgetSubtitle>
         <InputComponent
           value={String(formQuantity)}
           onChange={value => {
@@ -31,19 +39,29 @@ const QuantityPopup: FC<TProps> = ({
             }
             return value
           }}
-          placeholder='Quantity'
+          title='Quantity'
+          error={showError ? 'Maximum quantity in a batch is limited by 300,000' : undefined}
+          note={showError ? undefined : 'Maximum quantity in a batch is limited by 300,000'}
         />
       </PopupFormContent>
 
-      {loading && <StyledProgressBar
-        current={Math.ceil(loader * 100)}
-        max={100}
-      />}
+      <Buttons>
+        <WidgetButton
+          title='Cancel'
+          onClick={() => {
+            onClose()
+          }}
+        />
 
-      <WidgetButton
-        disabled={loading}
-        title='Change'
-      />
+        <WidgetButton
+          disabled={loading || !formQuantity || showError}
+          title={loading ? `Generating ${Math.ceil(loader * 100)}%` : 'Change'}
+          type='submit'
+          loading={loading}
+          appearance='action'
+        />
+
+      </Buttons>
     </PopupForm>
   </Popup>
 }

@@ -1,7 +1,13 @@
 import { FC, useState, FormEvent } from 'react'
 import { Popup, Note } from 'components/common'
 import { TProps } from './types'
-import { InputComponent, StyledProgressBar, PopupForm, WidgetButton, PopupFormContent } from '../../styled-components'
+import {
+  InputComponent,
+  PopupForm,
+  WidgetButton,
+  PopupFormContent,
+  Buttons
+} from '../../styled-components'
 
 const LinksPopup: FC<TProps> = ({
   onClose,
@@ -63,17 +69,15 @@ const LinksPopup: FC<TProps> = ({
           You will not be able to change quantity of QR's after upload of links
         </Note>
       </PopupFormContent>
-
-      {loading && <StyledProgressBar
-        current={Math.ceil(loader * 100)}
-        max={100}
-      />}
-
-      <WidgetButton
-        disabled={loading}
-        type='submit'
-        title='Upload'
-      />
+      <Buttons>
+        <WidgetButton
+          disabled={loading}
+          title={loading ? `Uploading ${Math.ceil(loader * 100)}%` : 'Upload'}
+          type='submit'
+          loading={loading}
+          appearance='action'
+        />
+      </Buttons>
     </PopupForm>
   </Popup>
 }

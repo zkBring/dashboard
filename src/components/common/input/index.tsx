@@ -1,15 +1,12 @@
 import React, { FC } from 'react'
-
 import {
   InputContainer,
   InputField,
   InputTitle,
-  InputError
+  InputAdditionalText
 } from './styled-components'
-
-import { ThemeProvider } from 'styled-components'
-import themes from 'themes'
 import { IProps } from './types'
+import Icons from 'icons'
 
 const InputComponent: FC<IProps> = ({
   placeholder,
@@ -21,26 +18,31 @@ const InputComponent: FC<IProps> = ({
   name,
   value = '',
   className,
-  ref
+  ref,
+  note
 }) => {
-  return <ThemeProvider theme={themes.light}>
-    <InputContainer
+  return <InputContainer
+    disabled={disabled}
+    error={error}
+    className={className}
+  >
+    {title && <InputTitle error={error}>{title}</InputTitle>}
+    <InputField
+      ref={ref}
+      onChange={(evt) => onChange(evt.target.value)}
+      type={type}
       disabled={disabled}
+      placeholder={placeholder}
+      value={value}
       error={error}
-      className={className}
-    >
-      {title && <InputTitle>{title}</InputTitle>}
-      <InputField
-        ref={ref}
-        onChange={(evt) => onChange(evt.target.value)}
-        type={type}
-        disabled={disabled}
-        placeholder={placeholder}
-        value={value}
-      />
-    </InputContainer>
-    {error && <InputError>{error}</InputError>}
-  </ThemeProvider>
+    />
+    {error && <InputAdditionalText type='error'>
+      <Icons.InputNoteIcon />{error}
+    </InputAdditionalText>}
+    {note && <InputAdditionalText type='note'>
+      <Icons.InputNoteIcon />{note}
+    </InputAdditionalText>}
+  </InputContainer>
 }
 
 export default InputComponent

@@ -1,7 +1,8 @@
-import { TLinkContent, TTokenType } from 'types'
+import { TClaimPattern, TLinkContent, TTokenType } from 'types'
 
 export type TProps = {
   data: TLinkContent[],
-  type: TTokenType
+  type: TTokenType,
+  claimPattern: TClaimPattern
 }
 

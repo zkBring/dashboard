@@ -6,7 +6,8 @@ import {
   BatchListStyled,
   Header,
   WidgetTitleStyled,
-  BatchListValueStyled
+  BatchListValueStyled,
+  HighlightSpan
 } from './styled-components'
 
 import {
@@ -57,7 +58,7 @@ const QRs: FC<ReduxType> = ({
       <Header>
         <WidgetTitleStyled>My QR sets</WidgetTitleStyled>
         <ContainerButton
-          title='Add QRs'
+          title='+ Add new set'
           size='small'
           appearance='additional'
           to='/qrs/new'
@@ -76,7 +77,7 @@ const QRs: FC<ReduxType> = ({
             <BatchListValue>{qr.set_name}</BatchListValue>
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
-            <BatchListValue>{qr.links_uploaded ? 'Uploaded' : 'Not uploaded'}</BatchListValue>
+            <BatchListValue>{qr.links_uploaded ? <HighlightSpan>Uploaded</HighlightSpan> : 'Not uploaded'}</BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
             <BatchListValueStyled>
               <Button

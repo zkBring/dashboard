@@ -12,7 +12,8 @@ import { Link } from './styled-components'
 
 const AssetsList: FC<TProps> = ({
   data,
-  type
+  type,
+  claimPattern
 }) => {
   if (!data || data.length === 0) {
     return <AsideDivider />
@@ -32,7 +33,7 @@ const AssetsList: FC<TProps> = ({
       case 'ERC721':
         return <>
           <AsideText>
-            ID
+            {claimPattern === 'mint' ? 'Tokens limit' : 'ID'}
           </AsideText>
           <AsideValue>
             {shortenString(item.tokenId)}

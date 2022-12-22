@@ -1,6 +1,7 @@
 import TransactionAside from "./transaction-aside"
 import Aside from './aside'
 import AssetsList from './assets-list'
+import InstructionNote from './instruction-note'
 
 import {
   Container,
@@ -25,6 +26,7 @@ export {
   TransactionAside,
   Container,
   WidgetComponent,
+  InstructionNote,
   WidgetAside,
   AsideContent,
   BatchList,

@@ -12,7 +12,7 @@ import {
   WidgetValue,
   Buttons,
   WidgetButton,
-  LinksIndicator,
+  FileIcon,
   StyledSelect,
   WidgetSubtitleStyled,
   Paragraph
@@ -137,9 +137,12 @@ const QR: FC<ReduxType> = ({
       </>
     }
     return <>
+      <Paragraph>
+        Claim links are successfully connected to QR codes
+      </Paragraph>
       <AsideRow>
         <AsideValue>
-          .csv
+          <FileIcon />file.csv
         </AsideValue>
         <AsideValue>
           <WidgetButton

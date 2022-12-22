@@ -1,5 +1,8 @@
 import styled from 'styled-components'
-import { Input, Select } from 'components/common'
-
+import { InstructionNote } from 'components/pages/common'
 
 export const Container = styled.div``
+
+export const InstructionNoteStyled = styled(InstructionNote)`
+  margin-bottom: 20px;
+`

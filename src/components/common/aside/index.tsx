@@ -69,8 +69,8 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
 
     <AsideFooter>
       <FooterMenu>
-        <FooterButton>Go to old version</FooterButton>
-        <FooterButton>Contact us</FooterButton>
+        <FooterButton target="_blank" href="https://v1-2.dashboard.linkdrop.io">Go to old version</FooterButton>
+        <FooterButton target="_blank" href="https://linkdrop.io/">Contact us</FooterButton>
       </FooterMenu>
     </AsideFooter>
   </Aside>

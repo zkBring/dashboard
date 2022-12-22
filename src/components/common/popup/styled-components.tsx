@@ -27,7 +27,8 @@ export const Popup = styled.div`
 
 export const PopupTitle = styled.h3`
   margin: 0 0 14px;
-  font-size: 18px;
+  font-size: 22px;
+  font-weight: 600;
   padding-right: 30px;
 `
 

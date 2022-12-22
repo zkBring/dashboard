@@ -79,11 +79,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
-const isSponsored = [
-  { value: true, label: 'Sponsor claim transactions (users can claim tokens without having MATIC)' },
-  { value: false, label: 'No sponsoring (users pay gas to claim tokens)' }
-]
-
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps> 
 
 const CampaignsCreateSecure: FC<ReduxType> = ({
@@ -136,20 +131,27 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     assets.length
   )
 
-  const totalComission = sponsored ? multiply(
+  const potentialComission = multiply(
     comission,
     assets.length
-  ) : 0
+  )
+
+  const totalComission = sponsored ? potentialComission : 0
 
   const totalNativeTokensAmountToSecure = !sponsored ? totalNativeTokensAmount : add(
     totalNativeTokensAmount,
     totalComission
   )
 
+  const isSponsored = [
+    { value: true, label: `Sponsor claim transactions (+ ${potentialComission} ${nativeTokenSymbol})` },
+    { value: false, label: `No sponsoring (+ 0 ${nativeTokenSymbol})` }
+  ]
+
   return <Container>
     <WidgetContainer>
       <WidgetComponent title='Transaction sponsorship'>
-        <WidgetSubtitle>Select to secure tokens to sponsor claim transactions, so users can claim tokens without having {nativeTokenSymbol} in their wallets. </WidgetSubtitle>
+        <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
           radios={isSponsored}
@@ -165,6 +167,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           title={`${nativeTokenSymbol} to include`}
           value={nativeTokensAmount}
           disabled={loading}
+          note='This amount of native tokens will be included to each link as a bonus for receiver'
           onChange={value => {
             if (/^[0-9.]+$/.test(value) || value === '') {
               setNativeTokensAmount(value)
@@ -206,7 +209,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         loading
       }}
       title="Summary"
-      subtitle="Check your campaign’s details before going next"
+      subtitle="Check and confirm details"
     >
       <AsideContent>
         <AsideRow>
@@ -234,7 +237,11 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
         </AsideRow>}
 
-        {currentCampaignTokenStandard && assetsOriginal && <AssetsList data={assetsOriginal} type={currentCampaignTokenStandard} />}
+        {currentCampaignTokenStandard && assetsOriginal && <AssetsList
+          data={assetsOriginal}
+          claimPattern={currentCampaignClaimPattern}
+          type={currentCampaignTokenStandard}
+        />}
 
         {assets && <AsideRow>
           <AsideText>Total links</AsideText>

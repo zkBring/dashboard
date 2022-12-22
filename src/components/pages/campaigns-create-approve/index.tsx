@@ -280,7 +280,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           // disabled={Boolean(currentCampaign)}
           disabled
           radios={[
-            { label: 'Manual (Select token IDs to generate links)', value: 'manual' },
+            { label: 'Manual (Select tokens to generate links)', value: 'manual' },
             { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: 'sdk' }
           ]}
           value={distributionType}
@@ -292,9 +292,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         />
       </WidgetComponent>
 
-      {distributionType !== 'sdk' && <WidgetComponent title='Add tokens to distribute'>
-        {content}
-      </WidgetComponent>}
+      {distributionType !== 'sdk' && content}
     </WidgetContainer>
 
     <Aside
@@ -368,7 +366,11 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
         </AsideRow>}
 
-        {currentCampaignTokenStandard && <AssetsList data={data} type={currentCampaignTokenStandard} />}
+        {currentCampaignTokenStandard && <AssetsList
+          claimPattern={claimPattern}
+          data={data}
+          type={currentCampaignTokenStandard}
+        />}
 
         <AsideRow>
           <AsideText>Total links</AsideText>

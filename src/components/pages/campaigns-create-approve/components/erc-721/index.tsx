@@ -2,7 +2,9 @@ import { FC, useState } from 'react'
 import {
   InputsContainer,
   InputStyled,
-  ButtonStyled
+  ButtonStyled,
+  NotesContainer,
+  TextBold
 } from '../../styled-components'
 import { TProps } from './type'
 import {
@@ -14,7 +16,11 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-
+import {
+  WidgetComponent,
+  InstructionNote
+} from 'components/pages/common'
+import Icons from 'icons'
 
 const mapStateToProps = ({
   user: {
@@ -100,44 +106,55 @@ const Erc721: FC<ReduxType > = ({
     return !formData.tokenId || formData.tokenId.length === 0
   }
 
-  return <Container>
-    <LinksContents
-      type={type}
-      data={assetsData}
-      onRemove={(id) => {
-        setAssetsData(assetsData.filter(item => item.id !== id))
-      }}
-    />
-    <InputsContainer>
-      <InputStyled
-        value={formData.tokenId}
-        placeholder={claimPattern === 'mint' ? 'Max token ID' : 'Token ID'}
-        disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
-        onChange={value => {
-          const pattern = claimPattern === 'mint' ? /^[0-9]+$/ : /^[0-9-]+$/
-          if (pattern.test(value) || value === '') {
-            setFormData({ ...formData, tokenId: value })
-          }
-          return value
+  return <WidgetComponent title={claimPattern === 'mint' ?  'Specify amount of NFTs' : 'Add token IDs to distribute'}>
+    <Container>
+      <LinksContents
+        type={type}
+        data={assetsData}
+        onRemove={(id) => {
+          setAssetsData(assetsData.filter(item => item.id !== id))
         }}
       />
+      <InputsContainer>
+        <InputStyled
+          value={formData.tokenId}
+          placeholder={claimPattern === 'mint' ? 'Amount' : 'Token ID'}
+          disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
+          onChange={value => {
+            const pattern = claimPattern === 'mint' ? /^[0-9]+$/ : /^[0-9-]+$/
+            if (pattern.test(value) || value === '') {
+              setFormData({ ...formData, tokenId: value })
+            }
+            return value
+          }}
+        />
 
-      <ButtonStyled
-        size='small'
-        appearance='additional'
-        disabled={checkIfDisabled()}
-        onClick={() => {
-          setAssetsData([ ...assetsData, {
-            ...formData,
-            id: assetsData.length
-          }])
-          setFormData(getDefaultValues())
-        }}
-      >
-        + Add
-      </ButtonStyled>
-    </InputsContainer>
-  </Container>
+        <ButtonStyled
+          size='small'
+          appearance='additional'
+          disabled={checkIfDisabled()}
+          onClick={() => {
+            setAssetsData([ ...assetsData, {
+              ...formData,
+              id: assetsData.length
+            }])
+            setFormData(getDefaultValues())
+          }}
+        >
+          + Add
+        </ButtonStyled>
+      </InputsContainer>
+      <NotesContainer>
+        <InstructionNote
+          icon={<Icons.InputNoteIcon />}
+        >
+          {
+            claimPattern === 'mint' ? 'Specify limit of tokens to be minted' : <><TextBold>Adding multiple IDs</TextBold> — You can add a range of IDs, by typing it the following way: 1-10</>
+          }
+        </InstructionNote>
+      </NotesContainer>
+    </Container>
+  </WidgetComponent>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)

@@ -100,6 +100,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   const tokenUrl = defineEtherscanUrl(chain_id, `/address/${token_address || ''}`)
   const ownerUrl = defineEtherscanUrl(chain_id, `/address/${creator_address || ''}`)
   const contractUrl = defineEtherscanUrl(chain_id, `/address/${proxy_contract_address || ''}`)
+  const totalLinks = batches ? batches.reduce((sum, item) => {
+    return sum + item.claim_links_count
+  }, 0) : 0
   return <Container>
     <WidgetComponent>
       <Header>
@@ -107,7 +110,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         <WidgetButton
           appearance='additional'
           size='small'
-          title='+ Add'
+          title='+ Add batch'
           onClick={() => {
             history.push(`/campaigns/edit/${token_standard}/${campaign_id}/new`)
           }}
@@ -116,7 +119,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       <BatchList>
         <BatchListLabel>Batch</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
-        <BatchListLabel>Date created</BatchListLabel>
+        <BatchListLabel>Created at</BatchListLabel>
         <BatchListLabel></BatchListLabel>
         {batches && batches.map((batch, idx) => {
           const dateFormatted = formatDate(batch.created_at || '')
@@ -125,7 +128,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               #{idx + 1}
             </BatchListValue>
             <BatchListValue>
-              {batch.claim_links_count} link(s)
+              {batch.claim_links_count}
             </BatchListValue>
             <BatchListValue>
               {dateFormatted}
@@ -188,7 +191,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       </AsideRow>
       <AsideRow>
         <AsideText>Links</AsideText>
-        <AsideValue>COMING SOON</AsideValue>
+        <AsideValue>{totalLinks}</AsideValue>
       </AsideRow>
       <AsideRow>
         <AsideText>Claims</AsideText>

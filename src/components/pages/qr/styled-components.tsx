@@ -4,7 +4,7 @@ import {
   WidgetSubtitle
 } from 'components/pages/common'
 import { Select } from 'components/common'
-
+import Icons from 'icons'
 export const WidgetInfo = styled.div`
   display: grid;
   max-width: 600px;
@@ -42,6 +42,7 @@ export const InputComponent = styled(Input)`
 
 export const PopupFormContent = styled.div`
   margin-bottom: 20px;
+  padding-top: 20px;
 `
 
 export const PopupForm = styled.form`
@@ -67,5 +68,9 @@ export const StyledSelect = styled(Select)`
 export const Paragraph = styled.p`
   margin: 0 0 24px;
   font-size: 16px;
+`
 
+export const FileIcon = styled(Icons.FileIcon)`
+  margin-right: 4px;
+  vertical-align: text-top;
 `

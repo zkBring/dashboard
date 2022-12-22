@@ -62,7 +62,8 @@ const QRCreate: FC<ReduxType> = ({
       <InputComponent
         value={amount}
         disabled={loading}
-        title='Quantity of QR codes'
+        title='Quantity'
+        note='You can change quantity later'
         onChange={value => {
           if (/^[0-9]+$/.test(value) || value === '') {
             setAmount(value);

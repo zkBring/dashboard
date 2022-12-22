@@ -4,10 +4,12 @@ import {
     HeaderTitle,
     HeaderInfo,
     HeaderUserInfo,
+    HeaderUserInfoPadded,
     HeaderUserInfoAddress,
     MiniPopupCustomItem,
     NetworkIndicator,
-    NetworkIndicatorClass
+    NetworkIndicatorClass,
+    PolygonIcon
     // @ts-ignore
 } from './styled-components.tsx'
 import { useHistory } from 'react-router-dom'
@@ -39,6 +41,16 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     connectWallet: () => asyncUserActions.connectWallet(dispatch),
     switchNetwork: (provider: any, chainId: number, address: string, callback: () => void) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address, callback),
     logout: () => dispatch(asyncUserActions.logout())
+  }
+}
+
+const defineNetworkLogo = (chainId: number | null) => {
+  if (!chainId) { return null }
+  switch (chainId) {
+    case 137:
+      return <PolygonIcon />
+    default:
+      return null
   }
 }
 
@@ -87,16 +99,17 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
       {chainId && <HeaderUserInfo onClick={() => {
         setShowToggleChain(!showToggleChain)
       }}>
+        {defineNetworkLogo(chainId)}
         {capitalize(defineNetworkName(chainId))}
         {chainsPopup}
       </HeaderUserInfo>}
-      {address && <HeaderUserInfo onClick={() => {
+      {address && <HeaderUserInfoPadded onClick={() => {
         setShowUserOptions(!showUserOptions)
       }}>
         {nativeTokenAmountFormatted !== null ? parseFloat(Number((nativeTokenAmountFormatted)).toFixed(3)) : 0} {defineNativeTokenSymbol({ chainId })}
         <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>
         {userOptionsPopup}
-      </HeaderUserInfo>}
+      </HeaderUserInfoPadded>}
     </HeaderInfo>
   </Header>
 }

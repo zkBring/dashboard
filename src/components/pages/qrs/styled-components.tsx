@@ -45,3 +45,8 @@ export const BatchListValueStyled = styled(BatchListValue)`
   display: flex;
   justify-content: flex-end;
 `
+
+
+export const HighlightSpan = styled.span`
+  color: ${props => props.theme.primaryHighlightColor}
+`

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { NavLink } from 'react-router-dom'
+import Icons from 'icons'
 
 type THeaderProps = {
   breadcrumbs: boolean
@@ -38,6 +39,7 @@ export const HeaderLogoLink = styled(NavLink)`
   align-items: center;
   color: ${props => props.theme.primaryTextColor};
 `
+
 export const ConnectionIndicator = styled.div`
   width: 16px;
   height: 16px;
@@ -58,7 +60,7 @@ export const HeaderUserInfo = styled.div`
   min-width: 152px;
   border-radius: 36px;
   font-weight: 500;
-  padding: 0 0 0 24px;
+  padding: 0;
   min-height: 36px;
   position: relative;
   text-align: center;
@@ -75,6 +77,10 @@ export const HeaderUserInfo = styled.div`
   &:last-child {
     margin-right: 0px;
   }
+`
+
+export const HeaderUserInfoPadded = styled(HeaderUserInfo)`
+  padding: 0 0 0 24px;
 `
 
 export const HeaderUserInfoAddress = styled.div`
@@ -133,4 +139,8 @@ export const NetworkIndicator = styled.div<TNetworkIndicatorProps>`
   ${props => props.selected && css`
     background-color: ${props => props.theme.primaryHighlightColor}!important;
   `}
+`
+
+export const PolygonIcon = styled(Icons.PolygonIcon)`
+  margin-right: 8px;
 `

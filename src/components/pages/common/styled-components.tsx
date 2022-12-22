@@ -39,7 +39,8 @@ export const WidgetTitle = styled.h3`
 
 export const WidgetSubtitle = styled.p`
   font-size: 16px;
-  margin: 0 0 36px;
+  margin: 0 0 20px;
+  font-weight: 500;
   color: ${props => props.theme.additionalTextColor};
 `
 
