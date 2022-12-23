@@ -25,6 +25,7 @@ import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
 import countAssetsTotalAmountERC721 from './count-assets-total-amount-erc721'
 import countAssetsTotalAmountERC1155 from './count-assets-total-amount-erc1155'
 import formatDate from './format-date'
+import formatTime from './format-time'
 import defineQRStatusName from './define-qr-status-name'
 import mapQRsWithLinks from './map-qrs-with-links'
 import defineBatchPreviewContents from './define-batch-preview-contents'
@@ -56,6 +57,7 @@ export {
   createDataGroups,
   downloadAssetsAsCSV,
   createWorkers,
+  formatTime,
   terminateWorkers,
   defineNetworkName,
   capitalize,

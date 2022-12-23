@@ -19,6 +19,7 @@ export const Button = styled.button.attrs(props => ({
   className: props.className
 }))<TProps>`
   cursor: pointer;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
   padding: 8px 30px;
   font-size: 14px;
   height: 40px;
@@ -29,7 +30,7 @@ export const Button = styled.button.attrs(props => ({
   justify-content: center;
   border-radius: 100px;
   //default
-  transition: color .3s, background-color .3s, border-color .3s;
+  transition: color .3s, background-color .3s, border-color .3s, background-color .3s;
   background-color: ${props => props.theme.buttonDefaultBackgroundColor};
   color: ${props => props.theme.primaryTextColor};
   border: 1px solid;
@@ -37,13 +38,12 @@ export const Button = styled.button.attrs(props => ({
   
   ${props => !props.disabled && css`
     &:hover {
-      border-color: ${props.theme.extraBorderColor};
+      border-color: ${props.theme.buttonDefaultBorderHoverColor};
       background-color: ${props.theme.buttonDefaultBackgroundHoverColor};
     }
     &:active {
-      border-color: ${props.theme.extraBorderColor};
-      background-color: ${props.theme.primaryTextColor};
-      color: ${props.theme.secondaryTextColor};
+      border-color: ${props.theme.buttonDefaultBorderActiveColor};
+      background-color: ${props.theme.buttonDefaultBackgroundActiveColor};
     }
   `}
 
@@ -56,7 +56,7 @@ export const Button = styled.button.attrs(props => ({
 
   ${props => props.disabled && css`
     border-color: ${props => props.theme.disabledBorderColor};
-    color: ${props => props.theme.disabledTextColor};
+    color: ${props => props.theme.additionalTextColor};
   `}
   
 
@@ -68,18 +68,19 @@ export const Button = styled.button.attrs(props => ({
     
     ${!props.disabled && css`
       &:hover {
-        background-color: ${props.theme.secondaryHighlightColor};
+        background-color: ${props.theme.buttonActionBackgroundHoverColor};
       }
       &:active {
-        background-color: ${props.theme.buttonActionBackgroundColor};
+        background-color: ${props.theme.buttonActionBackgroundActiveColor};
       } 
     `}
 
     ${props.disabled && css`
-      background-color: ${props.theme.disabledColor};
-      color: ${props => props.theme.disabledTextColor};
+      background-color: ${props.theme.buttonDisabledBackgroundColor};
+      color: ${props => props.theme.additionalTextColor};
     `}
   `}
+
 
   ${props => props.appearance === 'additional' && css`
     border: none; 
@@ -88,20 +89,18 @@ export const Button = styled.button.attrs(props => ({
 
     ${!props.disabled && css`
       &:hover {
-        opacity: .8;
-        background-color: ${props => props.theme.buttonAdditionalBackgroundColor};
-        color: ${props => props.theme.primaryHighlightColor};
+        background-color: ${props => props.theme.buttonAdditionalBackgroundHoverColor};
+        color: ${props => props.theme.buttonAdditionalTextHoverColor};
       }
       &:active {
-        opacity: .8;
-        background-color: ${props => props.theme.buttonAdditionalBackgroundColor};
-        color: ${props => props.theme.primaryHighlightColor};
+        background-color: ${props => props.theme.buttonAdditionalBackgroundActiveColor};
+        color: ${props => props.theme.buttonAdditionalTextActiveColor};
       } 
     `}
 
     ${props.disabled && css`
-      background-color: ${props.theme.disabledColor};
-      color: ${props => props.theme.disabledTextColor};
+      background-color: ${props.theme.buttonDisabledBackgroundColor};
+      color: ${props => props.theme.additionalTextColor};
     `}
   `}
 

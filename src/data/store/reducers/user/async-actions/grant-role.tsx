@@ -38,6 +38,7 @@ const grantRole = (
     } = getState()
 
     if (approved) {
+      alert('You have already granted a role')
       if (callback) { callback() }
       return
     }

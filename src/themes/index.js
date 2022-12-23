@@ -26,9 +26,22 @@ const themes = {
 		invertedCommunityColor: '#4B2FF5',
 	
 		buttonActionBackgroundColor: '#0C5EFF',
+		buttonActionBackgroundHoverColor: '#357AFF',
+		buttonActionBackgroundActiveColor: '#095AF5',
+
+		buttonDisabledBackgroundColor: '#E4E4E4',
+
 		buttonDefaultBackgroundColor: 'transparent',
 		buttonDefaultBackgroundHoverColor: 'transparent',
+		buttonDefaultBackgroundActiveColor: 'transparent',
+		buttonDefaultBorderHoverColor: '#121212',
+		buttonDefaultBorderActiveColor: '#121212',
+
 		buttonAdditionalBackgroundColor: '#E4EDFF',
+		buttonAdditionalBackgroundHoverColor: '#E4EDFF',
+		buttonAdditionalTextHoverColor: '#357AFF',
+		buttonAdditionalBackgroundActiveColor: '#E4EDFF',
+		buttonAdditionalTextActiveColor: '#095AF5',
 
 		buttonGradient: 'linear-gradient(to right, #00B2FF 0%, #FA00FF 50%, #00B2FF 100%)',
 

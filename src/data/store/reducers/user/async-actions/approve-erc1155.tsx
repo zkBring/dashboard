@@ -35,6 +35,7 @@ const approve = (
     } = getState()
 
     if (approved) {
+      alert('You have already approved')
       if (callback) { callback() }
       return
     }

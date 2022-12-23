@@ -15,7 +15,7 @@
 @font-face {
   font-family: 'Inter';
   font-weight: 600;
-  src: url('vendor/fonts/Inter-SemiBold.ttf') format('ttf');
+  src: url('vendor/fonts/Inter-SemiBold.ttf') format('truetype');
 }
 
 @font-face {

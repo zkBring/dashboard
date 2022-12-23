@@ -18,23 +18,23 @@ import {
 import {
   Header,
   WidgetButton,
-  WidgetTitleStyled
+  WidgetTitleStyled,
+  SecondaryTextSpan
 } from './styled-components'
 
 import {
   shortenString,
   defineNetworkName,
-  defineEtherscanUrl
+  defineEtherscanUrl,
+  formatTime,
+  formatDate,
+  decryptLinks,
+  downloadLinksAsCSV
 } from 'helpers'
 import { TextLink } from 'components/common'
 
-import { downloadLinksAsCSV } from 'helpers'
 import { useHistory } from 'react-router-dom'
 import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
-import {
-  formatDate,
-  decryptLinks
-} from 'helpers'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 
@@ -123,6 +123,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         <BatchListLabel></BatchListLabel>
         {batches && batches.map((batch, idx) => {
           const dateFormatted = formatDate(batch.created_at || '')
+          const timeFormatted = formatTime(batch.created_at || '')
           return <>
             <BatchListValue>
               #{idx + 1}
@@ -131,7 +132,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               {batch.claim_links_count}
             </BatchListValue>
             <BatchListValue>
-              {dateFormatted}
+              {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
             </BatchListValue>
             <WidgetButton
               appearance='additional'

@@ -23,3 +23,7 @@ export const WidgetComponent = styled(Widget)`
 export const WidgetButton = styled(Button)`
   
 `
+
+export const SecondaryTextSpan = styled.span`
+  color: ${props => props.theme.additionalTextColor};
+`

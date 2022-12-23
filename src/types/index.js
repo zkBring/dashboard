@@ -15,6 +15,7 @@ import TWallet from './wallet'
 import TSelectOption from './select-option'
 import TLink from './link'
 import TFormatDate from './format-date'
+import TFormatTime from './format-time'
 import TLinkParams from './link-params'
 import {
   TQRStatus,
@@ -36,6 +37,7 @@ export {
   TQRImageOptions,
   TClaimPattern,
   TLinkContent,
+  TFormatTime,
   TAuthorizationStep,
   TTokenType,
   TCampaignStatus,
