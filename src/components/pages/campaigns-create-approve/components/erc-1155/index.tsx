@@ -3,14 +3,14 @@ import {
   InputsContainer,
   InputStyled,
   ButtonStyled,
-  NotesContainer,
-  TextBold
+  TextBold,
+  InstructionNoteStyled,
+  NotesContainer
 } from '../../styled-components'
 import Icons from 'icons'
 import { TProps } from './type'
 import {
-  Container,
-  InstructionNoteStyled
+  Container
 } from './styled-components'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
@@ -78,7 +78,8 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 const Erc1155: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
-  assetsData
+  assetsData,
+  children
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -165,6 +166,7 @@ const Erc1155: FC<ReduxType > = ({
         <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
           <TextBold>Number of links</TextBold> — number of claim links to be generated
         </InstructionNoteStyled>
+        {children}
       </NotesContainer>
     </Container>
   </WidgetComponent>

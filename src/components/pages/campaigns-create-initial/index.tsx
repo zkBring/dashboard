@@ -34,7 +34,8 @@ const mapStateToProps = ({
     title,
     tokenAddress,
     assetsOriginal,
-    assets
+    assets,
+    symbol
   },
   user: {
     chainId
@@ -47,7 +48,8 @@ const mapStateToProps = ({
   tokenAddress,
   chainId,
   assetsOriginal,
-  assets
+  assets,
+  symbol
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -83,6 +85,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   assetsOriginal,
   createProxyContract,
   applyClaimPattern,
+  symbol,
   assets
 }) => {
   const { type, id } = useParams<TLinkParams>()
@@ -90,6 +93,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const currentCampaignTitle = campaign ? campaign.title : title
   const currentTokenAddress = campaign ? campaign.token_address : tokenAddress
   const currentCampaignChainId = campaign ? campaign.chain_id : chainId
+  const currentCampaignSymbol = campaign ? campaign.symbol : symbol
   const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
 
   const history = useHistory()
@@ -150,10 +154,10 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
           <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
         </AsideRow>}
 
-        <AsideRow>
-          <AsideText>Token Name</AsideText>
-          <AsideValue>Coming soon</AsideValue>
-        </AsideRow>
+        {currentCampaignSymbol && <AsideRow>
+          <AsideText>Token name</AsideText>
+          <AsideValue>{currentCampaignSymbol}</AsideValue>
+        </AsideRow>}
 
         {currentCampaignTokenStandard && <AsideRow>
           <AsideText>Token standard</AsideText>

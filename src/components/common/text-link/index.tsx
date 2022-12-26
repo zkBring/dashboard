@@ -1,4 +1,4 @@
-import { TextLink, TextRouterLink } from './styled-components'
+import { TextLink, TextRouterLink, TextButton } from './styled-components'
 import { FC } from 'react'
 
 type TProps = {
@@ -6,7 +6,8 @@ type TProps = {
   to?: string,
   target?: string,
   children?: any,
-  className?: string
+  className?: string,
+  onClick?: () => void
 }
 
 const TextLinkComponent: FC<TProps> = ({
@@ -14,8 +15,12 @@ const TextLinkComponent: FC<TProps> = ({
   target,
   children,
   to,
-  className
+  className,
+  onClick
 }) => {
+  if (onClick) {
+    return <TextButton className={className} onClick={onClick}>{children}</TextButton>
+  }
   if (to) {
     return <TextRouterLink className={className} to={to}>{children}</TextRouterLink>
   }

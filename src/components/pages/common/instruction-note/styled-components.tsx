@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  max-width: 450px;
+  max-width: 500px;
 `
 
 export const IconContainer = styled.div`

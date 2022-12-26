@@ -1,4 +1,5 @@
 export type TProps = {
   icon: any,
-  className?: string
+  className?: string,
+  onClick?: () => void
 }

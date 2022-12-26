@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
-import { StyledRadio } from './styled-components'
-import { Erc20, Erc721, Erc1155 } from './components'
+import { StyledRadio, InstructionNoteStyled } from './styled-components'
+import { Erc20, Erc721, Erc1155, CSVUploadPopup } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -8,6 +8,8 @@ import { TTokenType, TAssetsData, TLinkContent, TLinkParams, TDistributionPatter
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
+import Icons from 'icons'
+import { TextLink } from 'components/common'
 import {
   WidgetComponent,
   Container,
@@ -21,7 +23,6 @@ import {
   AsideValueShorten,
   AssetsList
 } from 'components/pages/common'
-import { TextLink } from 'components/common'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { Dispatch } from 'redux'
@@ -36,7 +37,6 @@ import {
   defineEtherscanUrl
 } from 'helpers'
 
-
 const mapStateToProps = ({
   campaign: {
     tokenStandard,
@@ -47,7 +47,8 @@ const mapStateToProps = ({
     decimals,
     proxyContractAddress,
     title,
-    assets
+    assets,
+    symbol
   },
   campaigns: {
     campaigns
@@ -66,6 +67,7 @@ const mapStateToProps = ({
   decimals,
   chainId,
   title,
+  symbol,
   assets
 })
 
@@ -181,8 +183,16 @@ const defineComponent: TDefineComponent = (
   assetsData,
   setAssetsData,
   claimPattern,
+  setUploadCSVPopup,
   campaign
 ) => {
+
+  const UploadInstructionNote = type === 'ERC721' &&  claimPattern === 'mint' ? null : <InstructionNoteStyled
+    icon={<Icons.UploadFileIcon />}
+  >
+    If you have a big set of different tokens to distribute, you could also provide this information by <TextLink onClick={setUploadCSVPopup}>uploading a CSV file. </TextLink>
+  </InstructionNoteStyled>
+
   switch(type.toUpperCase()) {
     case 'ERC20':
       return <Erc20
@@ -190,21 +200,27 @@ const defineComponent: TDefineComponent = (
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
-    />
+    >
+      {UploadInstructionNote}
+    </Erc20>
     case 'ERC721':
       return <Erc721
         type={type}
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
-      />
+      >
+        {UploadInstructionNote}
+      </Erc721>
     default:
       return <Erc1155
         type={type}
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
-      />
+      >
+        {UploadInstructionNote}
+      </Erc1155>
   }
 }
 
@@ -226,7 +242,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   approveERC1155,
   claimPattern,
   checkIfApproved,
-  checkIfGranted
+  checkIfGranted,
+  symbol
 }) => {
 
   const [
@@ -242,13 +259,23 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
+  const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
+
 
   const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
 
   const [ distributionType, setDistributionType ] = useState<TDistributionPattern>('manual')
   const [ data, setData ] = useState<TLinksContent>([])
-  const content = defineComponent(type, data, setData, claimPattern, currentCampaign)
+  const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
+  const content = defineComponent(
+    type,
+    data,
+    setData,
+    claimPattern,
+    () => setUploadCSVPopup(true),
+    currentCampaign
+  )
 
   const defineIfNextDisabled = () => {
     return (!data.length || !assetsParsed) && distributionType === 'manual' && !loading
@@ -273,9 +300,19 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   }, [data])
   
   return <Container>
+    {uploadCSVPopup && <CSVUploadPopup
+      onClose={() => setUploadCSVPopup(false)}
+      onUpload={(assets: TLinksContent) => {
+        setData(assets)
+        setUploadCSVPopup(false)
+      }}
+      tokenStandard={tokenStandard}
+      claimPattern={claimPattern}
+    />}
     <WidgetContainer>
       <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
+        
         <StyledRadio
           // disabled={Boolean(currentCampaign)}
           disabled
@@ -291,7 +328,6 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           }}
         />
       </WidgetComponent>
-
       {distributionType !== 'sdk' && content}
     </WidgetContainer>
 
@@ -351,9 +387,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           <AsideValue><TextLink href={scannerUrl} target='_blank'>{shortenString(currentTokenAddress)}</TextLink></AsideValue>
         </AsideRow>}
 
-        {<AsideRow>
+        {currentCampaignSymbol && <AsideRow>
           <AsideText>Token Name</AsideText>
-          <AsideValue>Coming soon</AsideValue>
+          <AsideValue>{currentCampaignSymbol}</AsideValue>
         </AsideRow>}
 
         {currentCampaignTokenStandard && <AsideRow>

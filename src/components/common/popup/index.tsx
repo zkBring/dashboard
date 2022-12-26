@@ -11,7 +11,8 @@ import Icons from 'icons'
 const PopupComponent: FC<TProps> = ({
   title,
   onClose,
-  children
+  children,
+  className
 }) => {
   const onClick = (e: UIEvent<HTMLElement>) => {
     const target = (e.target as HTMLElement)
@@ -22,7 +23,7 @@ const PopupComponent: FC<TProps> = ({
   }
 
   return <PopupWrapper onClick={onClick}>
-    <Popup>
+    <Popup className={className}>
       {title && <PopupTitle>{title}</PopupTitle>}
       <CloseButton onClick={() => { onClose && onClose() }}>
         <Icons.CloseIcon />

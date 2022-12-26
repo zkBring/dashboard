@@ -1,4 +1,5 @@
 export type TProps = {
   onClose?: () => void,
-  title?: string
+  title?: string,
+  className?: string
 }

@@ -20,10 +20,12 @@ import { ReactComponent as QRManagerIcon } from './qr-manager.svg'
 import { ReactComponent as InputNoteIcon } from './input-note-icon.svg'
 import { ReactComponent as FileIcon } from './file-icon.svg'
 import { ReactComponent as PolygonIcon } from './polygon-icon.svg'
+import { ReactComponent as UploadFileIcon } from './upload-file-icon.svg'
 
 const Icons = {
   EthereumLogo,
   PolygonIcon,
+  UploadFileIcon,
   FileIcon,
   LinkdropLogo,
   LinkdropTextLogo,

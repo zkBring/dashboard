@@ -124,6 +124,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
   const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
+  const currentCampaignTokenSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
 
   const totalNativeTokensAmount = nativeTokensAmount === '' || nativeTokensAmount === '0' ? 0 : multiply(
@@ -222,10 +223,10 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
         </AsideRow>}
 
-        <AsideRow>
+        {currentCampaignTokenSymbol && <AsideRow>
           <AsideText>Token Name</AsideText>
-          <AsideValue>Coming soon</AsideValue>
-        </AsideRow>
+          <AsideValue>{currentCampaignTokenSymbol}</AsideValue>
+        </AsideRow>}
 
         {currentCampaignTokenStandard && <AsideRow>
           <AsideText>Token standard</AsideText>

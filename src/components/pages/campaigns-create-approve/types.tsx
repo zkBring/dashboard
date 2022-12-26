@@ -7,5 +7,6 @@ export type TDefineComponent = (
   assetsData: TLinksContent,
   setAssetsData: any,
   claimPattern: TClaimPattern,
+  setUploadCSVPopup: () => void,
   campaign?: TCampaign | null
 ) => React.ReactNode

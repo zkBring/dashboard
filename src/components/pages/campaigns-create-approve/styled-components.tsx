@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Radio, Input, Button } from 'components/common'
 import {
-  AsideValue
+  InstructionNote
 } from 'components/pages/common'
 
 export const StyledRadio = styled(Radio)`
@@ -24,9 +24,12 @@ export const ButtonStyled = styled(Button)`
   
 `
 
-
 export const NotesContainer = styled.div`
   
+`
+
+export const InstructionNoteStyled = styled(InstructionNote)`
+  margin-bottom: 20px;
 `
 
 export const TextBold = styled.span`

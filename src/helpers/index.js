@@ -39,7 +39,7 @@ import getBignumberInterval from './get-bignumber-interval'
 import loadImage from './load-image'
 import checkERC721AssetsDataForMint from './check-erc721-assets-data-for-mint'
 import downloadAssetsAsCSV from './download-assets-as-csv'
-
+import checkAssetsFile from './check-assets-file'
 import {
   createDataGroups,
   createWorkers,
@@ -55,6 +55,7 @@ export {
   loadImage,
   getBignumberInterval,
   createDataGroups,
+  checkAssetsFile,
   downloadAssetsAsCSV,
   createWorkers,
   formatTime,

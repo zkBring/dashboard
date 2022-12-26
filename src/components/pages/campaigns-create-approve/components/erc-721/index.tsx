@@ -4,7 +4,8 @@ import {
   InputStyled,
   ButtonStyled,
   NotesContainer,
-  TextBold
+  TextBold,
+  InstructionNoteStyled
 } from '../../styled-components'
 import { TProps } from './type'
 import {
@@ -17,8 +18,7 @@ import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
-  WidgetComponent,
-  InstructionNote
+  WidgetComponent
 } from 'components/pages/common'
 import Icons from 'icons'
 
@@ -79,7 +79,8 @@ const Erc721: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
   assetsData,
-  claimPattern
+  claimPattern,
+  children
 }) => {
   console.log({ tokenStandard })
 
@@ -145,13 +146,14 @@ const Erc721: FC<ReduxType > = ({
         </ButtonStyled>
       </InputsContainer>
       <NotesContainer>
-        <InstructionNote
+        <InstructionNoteStyled
           icon={<Icons.InputNoteIcon />}
         >
           {
             claimPattern === 'mint' ? 'Specify limit of tokens to be minted' : <><TextBold>Adding multiple IDs</TextBold> — You can add a range of IDs, by typing it the following way: 1-10</>
           }
-        </InstructionNote>
+        </InstructionNoteStyled>
+        {children}
       </NotesContainer>
     </Container>
   </WidgetComponent>

@@ -21,7 +21,7 @@ export const Popup = styled.div`
   position: relative;
   width: 100%;
   background: ${props => props.theme.backgroundColor};
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 20px;
 `
 
@@ -37,5 +37,6 @@ export const CloseButton = styled.div`
   right: 20px;
   cursor: pointer;
   top: 20px;
+  z-index: 3;
 `
 

@@ -4,12 +4,12 @@ import {
   InputStyled,
   ButtonStyled,
   TextBold,
-  NotesContainer
+  NotesContainer,
+  InstructionNoteStyled
 } from '../../styled-components'
 import { TProps } from './type'
 import {
-  Container,
-  InstructionNoteStyled
+  Container
 } from './styled-components'
 import {
   WidgetComponent,
@@ -79,7 +79,8 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 const Erc20: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
-  assetsData
+  assetsData,
+  children
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -150,12 +151,13 @@ const Erc20: FC<ReduxType > = ({
           </ButtonStyled>
         </InputsContainer>
         <NotesContainer>
-        <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
-          <TextBold>Amount per link</TextBold> — amount of tokens that you would like to include in every link
-        </InstructionNoteStyled>
-        <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
-          <TextBold>Number of links</TextBold> — number of claim links to be generated
-        </InstructionNoteStyled>
+          <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
+            <TextBold>Amount per link</TextBold> — amount of tokens that you would like to include in every link
+          </InstructionNoteStyled>
+          <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
+            <TextBold>Number of links</TextBold> — number of claim links to be generated
+          </InstructionNoteStyled>
+          {children}
         </NotesContainer>
       </Container>
     </WidgetComponent>

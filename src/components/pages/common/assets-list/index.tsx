@@ -27,7 +27,7 @@ const AssetsList: FC<TProps> = ({
             Copies/links
           </AsideText>
           <AsideValue>
-            {item.tokenAmount} copies / {item.linksAmount} link(s)
+            {item.tokenAmount} per link / {item.linksAmount} link(s)
           </AsideValue>
         </>
       case 'ERC721':
@@ -45,7 +45,7 @@ const AssetsList: FC<TProps> = ({
             ID/Copies
           </AsideText>
           <AsideValue>
-            {shortenString(item.tokenId)} / {item.tokenAmount} copies / {item.linksAmount} link(s)
+            {shortenString(item.tokenId)} / {item.tokenAmount} per link / {item.linksAmount} link(s)
           </AsideValue>
         </>
     }

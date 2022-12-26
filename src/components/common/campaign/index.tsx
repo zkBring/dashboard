@@ -72,7 +72,7 @@ const CampaignComponent: FC<TProps> = ({
     <CampaignButtons>
       <CampaignButton
         to={`/campaigns/${id}`}
-        title="Details"
+        title="Manage"
       />
     </CampaignButtons>  
   </Campaign>

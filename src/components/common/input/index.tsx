@@ -18,7 +18,7 @@ const InputComponent: FC<IProps> = ({
   name,
   value = '',
   className,
-  ref,
+  customRef,
   note
 }) => {
   return <InputContainer
@@ -28,7 +28,7 @@ const InputComponent: FC<IProps> = ({
   >
     {title && <InputTitle error={error}>{title}</InputTitle>}
     <InputField
-      ref={ref}
+      ref={customRef}
       onChange={(evt) => onChange(evt.target.value)}
       type={type}
       disabled={disabled}

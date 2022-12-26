@@ -5,10 +5,10 @@ import { Container, IconContainer, TextContainer } from './styled-components'
 const InstructionNote: FC<TProps> = ({
   icon,
   children,
-  className
+  className,
+  onClick
 }) => {
-
-  return <Container className={className}>
+  return <Container className={className} onClick={onClick}>
     {icon && <IconContainer>
       {icon}
     </IconContainer>}
