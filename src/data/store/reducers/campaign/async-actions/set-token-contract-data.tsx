@@ -69,14 +69,14 @@ async function setTokenContractData (
       }
       dispatch(actionsCampaign.setDecimals(0))
     }
-    if (type.toUpperCase() === 'ERC1155 Token Name') {
+    if (type.toUpperCase() === 'ERC1155') {
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
       try {
         const symbol = await contractInstance.name()
         dispatch(actionsCampaign.setSymbol(symbol))
       } catch (e) {
         console.log({ e })
-        dispatch(actionsCampaign.setSymbol('ERC1155'))
+        dispatch(actionsCampaign.setSymbol('ERC1155 Token Name'))
       }
       dispatch(actionsCampaign.setDecimals(0))
     }
