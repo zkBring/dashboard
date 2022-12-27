@@ -20,7 +20,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
   tokenAmount,
   tokenId,
   linksAmount,
-  tokenType,
+  type,
   id,
   onRemove
 }) => {
@@ -29,7 +29,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
       <CheckIndicator>
         <Icons.CheckboxIcon />
       </CheckIndicator>
-      {tokenType !== 'ERC20' && <LinksContentDataItem>
+      {type !== 'ERC20' && <LinksContentDataItem>
         <LinksContentDataLabel>
           ID
         </LinksContentDataLabel>
@@ -37,7 +37,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
           {shortenString(tokenId)}
         </LinksContentDataValue>
       </LinksContentDataItem>}
-      {tokenType !== 'ERC721' && <LinksContentDataItem>
+      {type !== 'ERC721' && <LinksContentDataItem>
         <LinksContentDataLabel>
           Amount
         </LinksContentDataLabel>
@@ -45,7 +45,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
           {tokenAmount}
         </LinksContentDataValue>
       </LinksContentDataItem>}
-      {tokenType !== 'ERC721' && <LinksContentDataItem>
+      {type !== 'ERC721' && <LinksContentDataItem>
         <LinksContentDataLabel>
           Number of links
         </LinksContentDataLabel>

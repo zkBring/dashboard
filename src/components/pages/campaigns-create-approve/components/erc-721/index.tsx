@@ -86,12 +86,12 @@ const Erc721: FC<ReduxType > = ({
 
   const { type } = useParams<{ type: TTokenType }>()
 
-  const getDefaultValues = () => {
+  const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
       tokenId: '',
       tokenAmount: '',
-      tokenType: tokenStandard || 'ERC721'
+      type: tokenStandard || 'ERC721'
     }
   }
 

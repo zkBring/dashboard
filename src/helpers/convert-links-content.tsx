@@ -17,7 +17,8 @@ type TConvertLinksContent = (
 const convertLinksContent: TConvertLinksContent = (linksContents, decimals, claimPattern) => {
   let result: TAssetsData = []
   linksContents.forEach((item: TLinkContent) => {
-    if (item.tokenType === 'ERC1155') {
+    console.log({ item })
+    if (item.type === 'ERC1155') {
       const amountOfLinks = Number(item.linksAmount)
       for (let i = 0; i < amountOfLinks; i++) {
         result.push({
@@ -26,7 +27,8 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
           original_amount: item.tokenAmount
         })
       }
-    } else if (item.tokenType === 'ERC721') {
+    } else if (item.type === 'ERC721') {
+      
       if (claimPattern === 'mint') {
         if (!item.tokenId) { return result }
         const {
@@ -42,6 +44,7 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
           }
         })]
       } else {
+        
         if (item.tokenId && item.tokenId.includes('-')) {
           const tokenIds = item.tokenId.split('-').map(item => item.trim())
           const {

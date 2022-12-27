@@ -84,12 +84,12 @@ const Erc1155: FC<ReduxType > = ({
 
   const { type } = useParams<{ type: TTokenType }>()
 
-  const getDefaultValues = () => {
+  const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
       tokenId: '',
       tokenAmount: '',
-      tokenType: tokenStandard || 'ERC1155'
+      type: tokenStandard || 'ERC1155'
     }
   }
 

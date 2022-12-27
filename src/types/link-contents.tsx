@@ -5,5 +5,5 @@ export type TLinkContent = {
   tokenAmount?: string,
   linksAmount?: string,
   id?: number,
-  tokenType?: TTokenType
+  type?: TTokenType
 }

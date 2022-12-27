@@ -294,6 +294,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }
+    console.log({ data })
     let assets = convertLinksContent(data, decimals, claimPattern)
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)

@@ -1,6 +1,6 @@
 import { FC, useState, FormEvent, useRef, useEffect } from 'react'
 import { TProps } from './types'
-import { checkAssetsFile, downloadAssetsAsCSV } from 'helpers'
+import { checkAssetsFile, downloadAssetsBlankCSV } from 'helpers'
 import {
   PopupForm,
   WidgetButton,
@@ -33,19 +33,46 @@ const CSVUploadPopup: FC<TProps> = ({
     reader.readAsBinaryString(file.files[0])
     reader.onloadend = function () {
       const lines = (reader.result as string).split('\n')
-      if (lines[0] !== "Token ID,Token amount,Links amount") {
-        return alert('Invalid file. File should have an appropriate format')
+      if (!tokenStandard) {
+        return alert('No token standard provided')
+      }
+      if (
+        (tokenStandard === 'ERC1155' && lines[0] !== "Token ID,Token amount,Links amount") ||
+        (tokenStandard === 'ERC721' && lines[0] !== "Token ID") ||
+        (tokenStandard === 'ERC20' && lines[0] !== "Token amount,Links amount")
+      ) {
+        return alert('Invalid file. File should have an appropriate format. Please, download an example')
       }
      
       lines.shift()
       const assets = lines.map(item => {
-        const [ token_id, token_amount, links_amount ] = item.split(',')
-        return {
-          tokenId: token_id ? token_id.trim() : undefined,
-          tokenAmount: token_amount ? token_amount.trim() : undefined,
-          linksAmount: links_amount ? links_amount.trim() : undefined,
-          id: Math.random(),
-          type: tokenStandard
+        if (tokenStandard === 'ERC1155') {
+          const [ token_id, token_amount, links_amount ] = item.split(',')
+          return {
+            tokenId: token_id ? token_id.trim() : undefined,
+            tokenAmount: token_amount ? token_amount.trim() : undefined,
+            linksAmount: links_amount ? links_amount.trim() : undefined,
+            id: Math.random(),
+            type: tokenStandard
+          }
+        } else if (tokenStandard === 'ERC721') {
+          const [ token_id ] = item.split(',')
+          return {
+            tokenId: token_id ? token_id.trim() : undefined,
+            tokenAmount: '',
+            linksAmount: '',
+            id: Math.random(),
+            type: tokenStandard
+          }
+        } else {
+          const [ token_amount, links_amount ] = item.split(',')
+          return {
+            tokenAmount: token_amount ? token_amount.trim() : undefined,            
+            linksAmount: links_amount ? links_amount.trim() : undefined,
+            tokenId: '',
+            id: Math.random(),
+            type: tokenStandard
+          }
         }
       })
       const isValid: boolean = checkAssetsFile(assets, tokenStandard)
@@ -68,7 +95,8 @@ const CSVUploadPopup: FC<TProps> = ({
         <PopupTitle>Upload .csv file with links</PopupTitle>
         <PopupText>
           Read the information about the required file format <TextLink onClick={() => {
-            downloadAssetsAsCSV([], 'example')
+            if (!tokenStandard) { return alert('No token standard chosen') }
+            downloadAssetsBlankCSV(tokenStandard, 'example')
           }}>here</TextLink>
         </PopupText>
       </PopupFormContent>

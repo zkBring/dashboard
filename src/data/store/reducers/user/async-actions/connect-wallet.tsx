@@ -8,7 +8,6 @@ import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import { IAppDispatch } from 'data/store';
 import {
-  initialization,
   getNativeTokenAmount
  } from './index'
  const { REACT_APP_INFURA_ID } = process.env
@@ -44,15 +43,13 @@ async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
   )
 
   provider.on("accountsChanged", async (accounts: string[]) => {
-    window.location.reload()
+    dispatch(asyncActions.logout())
   })
   
   // Subscribe to chainId change
   provider.on("chainChanged", async (chainId: string) => {
-    window.location.reload()
+    dispatch(asyncActions.logout())
   })
-
-  dispatch(initialization(chainId, address))
 }
 
 // const authorize = async (provider: any) => {

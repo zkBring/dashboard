@@ -8,23 +8,28 @@ import {
 import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import { authorizationApi, dashboardKeyApi } from 'data/api'
 import { ethers } from 'ethers'
 import { encrypt, decrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
 import { sleep } from 'helpers'
+import {
+  initialization
+ } from './index'
 
 const authorize = (
   address: string
 ) => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
+    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
     getState: () => RootState
   ) => {
     const {
       user: {
-        provider
+        provider,
+        address,
+        chainId
       }
     } = getState()
     dispatch(userActions.setLoading(true))
@@ -77,10 +82,12 @@ const authorize = (
 
         dispatch(userActions.setDashboardKey(decrypted_dashboard_key))
       }
+      await dispatch(initialization(chainId, address))
       dispatch(userActions.setAuthorizationStep('authorized'))
       await sleep(2000)
 
-      //
+      
+  
       dispatch(userActions.setLoading(false))
       return message
     } catch (err) {

@@ -47,9 +47,11 @@ import {
   createQuantityGroups
 } from './create-workers'
 import convertLinksContent from './convert-links-content'
+import downloadAssetsBlankCSV from './download-assets-blank-csv'
 
 export {
   shortenString,
+  downloadAssetsBlankCSV,
   convertLinksContent,
   checkERC721AssetsDataForMint,
   loadImage,
