@@ -21,8 +21,7 @@ const checkIfConnected = () => {
 
     try {
       await sleep(1000)
-      console.log({t: window.ethereum._state.accounts})
-      if (window.ethereum._state.accounts.length > 0) {
+      if (window.ethereum && window.ethereum._state && window.ethereum._state.accounts && window.ethereum._state.accounts.length > 0) {
         await userAsyncActions.connectWallet(dispatch)
       }
       return dispatch(userActions.setLoading(false))
