@@ -1,3 +1,3 @@
-type TAuthorizationStep = 'connect' | 'login' | 'store-key' | 'authorized'
+type TAuthorizationStep = 'initial' | 'connect' | 'login' | 'store-key' | 'authorized'
 
 export default TAuthorizationStep

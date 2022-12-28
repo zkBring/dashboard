@@ -12,7 +12,9 @@ import {
  } from './index'
  const { REACT_APP_INFURA_ID } = process.env
 
-async function connectWallet (dispatch: Dispatch<UserActions> & IAppDispatch) {
+async function connectWallet (
+  dispatch: Dispatch<UserActions> & IAppDispatch
+) {
   const web3Modal = new Web3Modal({
     cacheProvider: false, // optional
     providerOptions: {}

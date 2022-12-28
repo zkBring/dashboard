@@ -40,10 +40,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
 
 
 const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
-  if (loading) {
+  if (loading && step !== 'initial') {
     return 'Loading'
   }
   switch (step) {
+    case 'initial':
     case 'connect':
       return 'Connect'
     case 'login':
@@ -86,10 +87,11 @@ const Main: FC<ReduxType> = ({
       <CheckListItem title='Sign message to store data securely' id='store-key' checked={authorizationStep === 'authorized'} />
     </Contents>
     <WidgetButton
-      loading={loading}
-      disabled={loading}
+      loading={loading && authorizationStep !== 'initial'}
+      disabled={loading || authorizationStep === 'initial'}
       appearance='action'
       onClick={() => {
+        console.log({authorizationStep})
         if (authorizationStep === 'connect') { return connectWallet() }
         return authorize(address)
       }}

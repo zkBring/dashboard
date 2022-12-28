@@ -13,7 +13,7 @@ const initialState: UserState = {
   sdk: null,
   dashboardKey: null,
   workersCount: (navigator && navigator.hardwareConcurrency) || 4,
-  authorizationStep: 'connect'
+  authorizationStep: 'initial'
 };
 
 export function userReducer(

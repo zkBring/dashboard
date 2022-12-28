@@ -17,20 +17,18 @@ const checkIfConnected = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
   ) => {
-    dispatch(userActions.setLoading(true))
-
     try {
       await sleep(1000)
       if (window.ethereum && window.ethereum._state && window.ethereum._state.accounts && window.ethereum._state.accounts.length > 0) {
         await userAsyncActions.connectWallet(dispatch)
+      } else {
+        dispatch(userActions.setAuthorizationStep('connect'))
       }
-      return dispatch(userActions.setLoading(false))
     } catch (err) {
       console.log({
         err
       })
     }
-    dispatch(campaignActions.setLoading(false))
   }
 }
 
