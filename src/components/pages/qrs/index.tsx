@@ -7,7 +7,8 @@ import {
   Header,
   WidgetTitleStyled,
   BatchListValueStyled,
-  HighlightSpan
+  HighlightSpan,
+  ErrorSpan
 } from './styled-components'
 
 import {
@@ -77,7 +78,7 @@ const QRs: FC<ReduxType> = ({
             <BatchListValue>{qr.set_name}</BatchListValue>
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
-            <BatchListValue>{qr.links_uploaded ? <HighlightSpan>Uploaded</HighlightSpan> : 'Not uploaded'}</BatchListValue>
+            <BatchListValue>{qr.links_uploaded ? <HighlightSpan>Uploaded</HighlightSpan> : <ErrorSpan>Not uploaded</ErrorSpan>}</BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
             <BatchListValueStyled>
               <Button

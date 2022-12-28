@@ -48,5 +48,9 @@ export const BatchListValueStyled = styled(BatchListValue)`
 
 
 export const HighlightSpan = styled.span`
-  color: ${props => props.theme.primaryHighlightColor}
+  color: ${props => props.theme.primaryHighlightColor};
+`
+
+export const ErrorSpan = styled.span`
+  color: ${props => props.theme.dangerTextColor};
 `

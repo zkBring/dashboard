@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import {
   WidgetButton,
   ContainerCentered,
@@ -33,7 +33,8 @@ const mapStateToProps = ({
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) => {
   return {
     connectWallet: () => asyncUserActions.connectWallet(dispatch),
-    authorize: (address: string) => dispatch(asyncUserActions.authorize(address))
+    authorize: (address: string) => dispatch(asyncUserActions.authorize(address)),
+    checkIfConnected: () => dispatch(asyncUserActions.checkIfConnected())
   }
 }
 
@@ -62,8 +63,12 @@ const Main: FC<ReduxType> = ({
   connectWallet,
   authorize,
   loading,
-  authorizationStep
+  authorizationStep,
+  checkIfConnected
 }) => {
+  useEffect(() => {
+    checkIfConnected()
+  }, [])
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
   }
@@ -82,6 +87,7 @@ const Main: FC<ReduxType> = ({
     </Contents>
     <WidgetButton
       loading={loading}
+      disabled={loading}
       appearance='action'
       onClick={() => {
         if (authorizationStep === 'connect') { return connectWallet() }

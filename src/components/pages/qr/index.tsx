@@ -142,14 +142,14 @@ const QR: FC<ReduxType> = ({
       </Paragraph>
       <AsideRow>
         <AsideValue>
-          <FileIcon />file.csv
+          {qr.qr_quantity || 0} links connected
         </AsideValue>
         <AsideValue>
           <WidgetButton
             size='small'
             disabled={false}
             appearance='additional'
-            title='Change file'
+            title='Update links'
             onClick={() => {
               toggleUpdateLinksPopup(true)
             }}
