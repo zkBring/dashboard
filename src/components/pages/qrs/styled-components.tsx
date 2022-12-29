@@ -47,10 +47,16 @@ export const BatchListValueStyled = styled(BatchListValue)`
 `
 
 
-export const HighlightSpan = styled.span`
-  color: ${props => props.theme.primaryHighlightColor};
+export const ErrorSpan = styled.span`
+  display: flex;
+  align-items: center;
+  color: ${props => props.theme.dangerTextColor};
+
+  svg {
+    margin-right: 8px;
+  }
 `
 
-export const ErrorSpan = styled.span`
-  color: ${props => props.theme.dangerTextColor};
+export const UploadedSpan = styled.span`
+  padding-left: 24px;
 `

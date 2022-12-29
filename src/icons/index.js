@@ -21,6 +21,7 @@ import { ReactComponent as InputNoteIcon } from './input-note-icon.svg'
 import { ReactComponent as FileIcon } from './file-icon.svg'
 import { ReactComponent as PolygonIcon } from './polygon-icon.svg'
 import { ReactComponent as UploadFileIcon } from './upload-file-icon.svg'
+import { ReactComponent as NotUploadedIcon } from './not-uploaded-icon.svg'
 
 const Icons = {
   EthereumLogo,
@@ -28,6 +29,7 @@ const Icons = {
   UploadFileIcon,
   FileIcon,
   LinkdropLogo,
+  NotUploadedIcon,
   LinkdropTextLogo,
   CampaignsIcon,
   BreadcrumbsIcon,
