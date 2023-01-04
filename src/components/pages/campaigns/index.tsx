@@ -17,21 +17,7 @@ const mapStateToProps = ({
   chainId
 })
 
-const countLinks: (batches: TLinksBatch[]) => number = (batches) => {
-  if (!batches) { return 0 }
-  return batches
-    .map(batch => batch.claim_links_count)
-    .reduce<number>((sum, item) => {
-      return sum + item
-    }, 0)
-}
-
-const mapDispatcherToProps = (dispatch: Dispatch) => {
-  return {
-  }
-}
-
-type ReduxType = ReturnType<typeof mapStateToProps>  & ReturnType<typeof mapDispatcherToProps>
+type ReduxType = ReturnType<typeof mapStateToProps>
 
 const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWallet, chainId }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
@@ -64,7 +50,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
               chainId={campaign.chain_id}
               type={campaign.token_standard}
               symbol={campaign.symbol}
-              linksAmount={countLinks(campaign.batches)}
+              linksAmount={campaign.links_count}
               proxyContractAddress={campaign.proxy_contract_address}
               claimPattern={campaign.claim_pattern}
             />
@@ -75,4 +61,4 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
     </>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)
+export default connect(mapStateToProps)(CampaignsPage)

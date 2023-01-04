@@ -61,7 +61,7 @@ const generateERC1155Link = ({
         sponsored,
         tokenStandard,
         claimPattern,
-        distributionPattern,
+        sdk,
         nativeTokensPerLink
       } = campaign
       if (!assets) { return alert('assets are not provided') }
@@ -162,7 +162,7 @@ const generateERC1155Link = ({
         }
         const newCampaign: TCampaignNew = {
           campaign_number: id,
-          distribution_pattern: distributionPattern,
+          sdk,
           encrypted_signer_key: encrypt(signerKey, dashboardKey),
           signer_address: signerAddress,
           token_address: tokenAddress,

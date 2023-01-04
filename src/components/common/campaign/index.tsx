@@ -58,7 +58,7 @@ const CampaignComponent: FC<TProps> = ({
     </CampaignRow>
     <CampaignRow>
       <CampaignText>Links</CampaignText>
-      <CampaignValue>COMING SOON</CampaignValue>
+      <CampaignValue>{linksAmount}</CampaignValue>
     </CampaignRow>
     <Divider />
     <CampaignRow>

@@ -12,11 +12,12 @@ import {
 import { utils, ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC20Contract } from 'abi'
-import { TAssetsData, TLinkContent } from 'types'
+import { TAssetsData, TLinkContent, TDistributionPattern } from 'types'
 
 const approve = (
   assets: TAssetsData,
   assetsOriginal: TLinkContent[],
+  sdk: boolean,
   callback?: () => void
 ) => {
   return async (
@@ -24,6 +25,7 @@ const approve = (
     getState: () => RootState
   ) => {
     dispatch(campaignActions.setAssets(assets))
+    dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {

@@ -60,7 +60,7 @@ const generateERC721Link = ({
         tokenStandard,
         signerAddress,
         claimPattern,
-        distributionPattern,
+        sdk,
         nativeTokensPerLink
       } = campaign
       if (!assets) { return alert('assets are not provided') }
@@ -165,7 +165,7 @@ const generateERC721Link = ({
           creator_address: address,
           wallet,
           symbol,
-          distribution_pattern: distributionPattern,
+          sdk,
           title: title || '',
           token_standard: tokenStandard,
           chain_id: chainId,

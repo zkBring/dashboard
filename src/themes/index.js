@@ -1,6 +1,6 @@
 const themes = {
 	light: {
-		primaryTextColor: '#000', // main ccolor of text
+		primaryTextColor: '#121212', // main ccolor of text
 		secondaryTextColor: '#FFF', // secondary color of text
 		additionalTextColor: '#9D9D9D', // secondary color of text
 		linkTextColor: '#0C5EFF',

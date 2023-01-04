@@ -19,7 +19,7 @@ const initialState: CampaignState = {
   signerAddress: null,
   sponsored: true,
   claimPattern: 'mint',
-  distributionPattern: 'manual',
+  sdk: false,
   links: [],
   nativeTokensPerLink: '0',
   linksGenerateLoader: 0
@@ -50,8 +50,8 @@ export function newRetroDropReducer(
           return {...state, wallet: action.payload.wallet }
         case Constants.CAMPAIGN_SET_PROXY_CONTRACT_ADDRESS:
           return {...state, proxyContractAddress: action.payload.proxyContractAddress }
-        case Constants.CAMPAIGN_SET_DISTRIBUTION_PATTERN:
-          return {...state, distributionPattern: action.payload.distributionPattern }
+        case Constants.CAMPAIGN_SET_SDK:
+          return {...state, sdk: action.payload.sdk }
         case Constants.CAMPAIGN_SET_APPROVED:
           return {...state, approved: action.payload.approved }
         case Constants.CAMPAIGN_SET_SECURED:

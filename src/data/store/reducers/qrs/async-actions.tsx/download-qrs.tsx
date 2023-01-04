@@ -11,12 +11,13 @@ import {
   createWorkers,
   terminateWorkers
 } from 'helpers'
-import LedgerIcon from 'images/ledger-logo.png'
 import { Remote } from 'comlink';
 import { QRsWorker } from 'web-workers/qrs-worker'
+import qrOptions from 'configs/qr-options'
 
 const {
-  REACT_APP_CLAIM_APP
+  REACT_APP_CLAIM_APP,
+  REACT_APP_QR_OPTIONS
 } = process.env
 
 const downloadQRs = ({
@@ -52,19 +53,16 @@ const downloadQRs = ({
         await sleep(1)
       }
 
-      const resp = await fetch(LedgerIcon)
+      const qrOption = qrOptions[REACT_APP_QR_OPTIONS || 'ledger']
+
+      const resp = await fetch(qrOption.icon)
       const blob = await resp.blob()
       const img = await createImageBitmap(blob as ImageBitmapSource)
 
-      const qrImageOptions = {
-        margin: 1,
-        imageSize: 0.5,
-        crossOrigin: 'anonymous',
-      }
 
       const logoImageLoaded = await loadImage(
-        qrImageOptions,
-        LedgerIcon
+        qrOption.imageOptions,
+        qrOption.icon
       )
 
       const linkGroups = createDataGroups(qrsArray, neededWorkersCount)
@@ -79,10 +77,10 @@ const downloadQRs = ({
         width, // qr width
         height, // qr height
         dashboardKey,
-        qrImageOptions,
         logoImageLoaded.width,
         logoImageLoaded.height,
         img, // image bitmap to render in canvas
+        qrOption,
         REACT_APP_CLAIM_APP
       )))
 

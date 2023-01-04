@@ -1,6 +1,6 @@
 /* gobal OffscreenCanvas */
 import { expose } from 'comlink'
-import { TQRItem, TLinkDecrypted, TQRImageOptions } from 'types'
+import { TQRItem, TQROption, TLinkDecrypted, TQRImageOptions } from 'types'
 import * as wccrypto from '@walletconnect/utils/dist/esm'
 import { ethers } from 'ethers'
 import { decrypt, encrypt } from 'lib/crypto'
@@ -38,18 +38,19 @@ export class QRsWorker {
     this.currentPercentageFinished = 0
     return qrArray
   }
-
   public async downloadQRs (
     qrsArray: TQRItem[],
     width: number,
     height: number,
     dashboardKey: string,
-    imageOptions: TQRImageOptions,
     logoImageWidth: number,
     logoImageHeight: number,
     img: ImageBitmap,
+    qrOption: TQROption,
     claimAppUrl?: string
   ) {
+
+    console.log({ qrOption })
     let qrs: Blob[] = []
     for (let i = 0; i < qrsArray.length; i++) {
       const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
@@ -59,27 +60,16 @@ export class QRsWorker {
         height,
         margin: width / 60,
         type: 'canvas',
-        cornersSquareOptions: {
-          color: "#FFF",
-          type: 'square'
-        },
-        cornersDotOptions: {
-          color: "#FFF",
-          type: 'square'
-        },
-        dotsOptions: {
-          color: "#FFF",
-          type: "dots"
-        },
-        backgroundOptions: {
-          color: "#000",
-        },
+        cornersSquareOptions: qrOption.cornersSquareOptions,
+        cornersDotOptions: qrOption.cornersDotOptions,
+        dotsOptions: qrOption.dotsOptions,
+        backgroundOptions: qrOption.backgroundOptions,
         image: img,
-        imageOptions,
+        imageOptions: qrOption.imageOptions,
         logoImageWidth,
         logoImageHeight
       })
-
+  
       const blob = await qrCode.getRawData('png')
       if (!blob) { continue }
       qrs.push(blob)

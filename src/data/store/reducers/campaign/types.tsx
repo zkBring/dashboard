@@ -23,7 +23,7 @@ export interface CampaignState {
   claimPattern: TClaimPattern,
   nativeTokensPerLink: string,
   linksGenerateLoader: number,
-  distributionPattern: TDistributionPattern,
+  sdk: boolean,
   links: {
     date: string,
     links: TLink[],

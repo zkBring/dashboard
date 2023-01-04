@@ -31,9 +31,14 @@ import TDistributionPattern from './distribution-pattern'
 import { TLinkContent } from './link-contents'
 import TQRImageOptions from './qr-image-options'
 import TAuthorizationStep from './authorization-step'
+import TQROption, { DotType, CornerSquareType, CornerDotType } from './qr-option'
 
 export {
   TCampaign,
+  TQROption,
+  DotType,
+  CornerSquareType,
+  CornerDotType,
   TQRImageOptions,
   TClaimPattern,
   TLinkContent,

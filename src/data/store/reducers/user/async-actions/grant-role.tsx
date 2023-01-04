@@ -15,6 +15,7 @@ import { TAssetsData, TLinkContent } from 'types'
 const grantRole = (
   assets: TAssetsData,
   assetsOriginal: TLinkContent[],
+  sdk: boolean,
   callback?: () => void
 ) => {
   return async (
@@ -22,6 +23,7 @@ const grantRole = (
     getState: () => RootState
   ) => {
     dispatch(campaignActions.setAssets(assets))
+    dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {

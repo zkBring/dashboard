@@ -134,9 +134,9 @@ export function setClaimPattern(claimPattern: TClaimPattern) {
   })
 }
 
-export function setDistributionPattern(distributionPattern: TDistributionPattern) {
-  return action(Constants.CAMPAIGN_SET_DISTRIBUTION_PATTERN, {
-    distributionPattern
+export function setSdk(sdk: boolean) {
+  return action(Constants.CAMPAIGN_SET_SDK, {
+    sdk
   })
 }
 

@@ -42,7 +42,7 @@ const mapStateToProps = ({
     tokenStandard,
     loading,
     claimPattern,
-    distributionPattern,
+    sdk,
     tokenAddress,
     decimals,
     proxyContractAddress,
@@ -61,7 +61,7 @@ const mapStateToProps = ({
   loading,
   campaigns,
   claimPattern,
-  distributionPattern,
+  sdk,
   proxyContractAddress,
   tokenAddress,
   decimals,
@@ -88,24 +88,29 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
     approveERC20: (
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
+      sdk: boolean,
       callback: () => void
     ) => {
       dispatch(
         userAsyncActions.approveERC20(
           assets,
           assetsOriginal,
-          callback)
+          sdk,
+          callback
+        )
         )
     },
     approveERC721: (
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
+      sdk: boolean,
       callback: () => void
     ) => {
       dispatch(
         userAsyncActions.approveERC721(
           assets,
           assetsOriginal,
+          sdk,
           callback
         )
       )
@@ -113,12 +118,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
     approveERC1155: (
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
+      sdk: boolean,
       callback: () => void
     ) => {
       dispatch(
         userAsyncActions.approveERC1155(
           assets,
           assetsOriginal,
+          sdk,
           callback
         )
       )
@@ -126,12 +133,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
     grantRole: (
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
+      sdk: boolean,
       callback: () => void
     ) => {
       dispatch(
         userAsyncActions.grantRole(
           assets,
           assetsOriginal,
+          sdk,
           callback
         )
       )
@@ -227,7 +236,7 @@ const defineComponent: TDefineComponent = (
 const CampaignsCreateApprove: FC<ReduxType> = ({
   createProxyContract,
   campaigns,
-  distributionPattern,
+  sdk: initialSdk,
   setAssetsData,
   tokenAddress,
   decimals,
@@ -260,12 +269,14 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
   const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
+  const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
+
   const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
 
 
   const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
 
-  const [ distributionType, setDistributionType ] = useState<TDistributionPattern>('manual')
+  const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
   const [ data, setData ] = useState<TLinksContent>([])
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
   const content = defineComponent(
@@ -278,7 +289,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   )
 
   const defineIfNextDisabled = () => {
-    return (!data.length || !assetsParsed) && distributionType === 'manual' && !loading
+    return (!data.length || !assetsParsed) && !sdk && !loading
   }
 
   useEffect(() => {
@@ -313,23 +324,22 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     <WidgetContainer>
       <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
-        
         <StyledRadio
           // disabled={Boolean(currentCampaign)}
           disabled
           radios={[
-            { label: 'Manual (Select tokens to generate links)', value: 'manual' },
-            { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: 'sdk' }
+            { label: 'Manual (Select tokens to generate links)', value: false },
+            { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: true }
           ]}
-          value={distributionType}
+          value={sdk}
           onChange={value => {
             return
             // setData([])
-            setDistributionType(value)
+            setSdk(value)
           }}
         />
       </WidgetComponent>
-      {distributionType !== 'sdk' && content}
+      {!sdk && content}
     </WidgetContainer>
 
     <Aside
@@ -348,6 +358,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             return grantRole(
               assetsParsed,
               data,
+              sdk,
               callback
             )
           }
@@ -355,18 +366,21 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             approveERC20(
               assetsParsed,
               data,
+              sdk,
               callback
             )
           } else if (tokenStandard === 'ERC721') {
             approveERC721(
               assetsParsed,
               data,
+              sdk,
               callback
             )
           } else {
             approveERC1155(
               assetsParsed,
               data,
+              sdk,
               callback
             )
           }

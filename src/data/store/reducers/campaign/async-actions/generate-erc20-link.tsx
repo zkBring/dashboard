@@ -62,7 +62,7 @@ const generateERC20Link = ({
         sponsored,
         tokenStandard,
         claimPattern,
-        distributionPattern,
+        sdk,
         nativeTokensPerLink
       } = campaign
 
@@ -169,7 +169,7 @@ const generateERC20Link = ({
           token_address: tokenAddress,
           creator_address: address,
           wallet,
-          distribution_pattern: distributionPattern,
+          sdk,
           symbol,
           title: title || '',
           token_standard: tokenStandard,

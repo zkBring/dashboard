@@ -168,10 +168,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         <AsideText>Campaign contract</AsideText>
         <AsideValue><TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink></AsideValue>
       </AsideRow>
-      <AsideRow>
-        <AsideText>Gas sponsor balance</AsideText>
-        <AsideValue>COMING SOON</AsideValue>
-      </AsideRow>
 
       <AsideDivider />
 
@@ -193,10 +189,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       <AsideRow>
         <AsideText>Links</AsideText>
         <AsideValue>{totalLinks}</AsideValue>
-      </AsideRow>
-      <AsideRow>
-        <AsideText>Claims</AsideText>
-        <AsideValue>COMING SOON</AsideValue>
       </AsideRow>
     </Aside>
   </Container>

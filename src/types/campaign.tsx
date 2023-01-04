@@ -17,7 +17,8 @@ type TCampaign = {
   creator_address: string,
   created_at?: string,
   claim_pattern: TClaimPattern,
-  distribution_pattern: TDistributionPattern
+  sdk: boolean,
+  links_count: number
 }
 
 export default TCampaign

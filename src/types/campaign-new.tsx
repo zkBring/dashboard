@@ -1,7 +1,7 @@
 import { TTokenType } from './index.js'
 import { TLink, TClaimPattern, TDistributionPattern } from 'types'
 
-type TCampaign = {
+type TCampaignNew = {
   title: string,
   chain_id: number,
   campaign_number: string,
@@ -18,7 +18,7 @@ type TCampaign = {
   creator_address: string,
   created_at?: string,
   claim_pattern: TClaimPattern,
-  distribution_pattern: TDistributionPattern
+  sdk: boolean
 }
 
-export default TCampaign
+export default TCampaignNew
