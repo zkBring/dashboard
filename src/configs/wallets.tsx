@@ -33,5 +33,4 @@ const wallets: TWallet[] = [
   }
 ]
 
-
 export default wallets
