@@ -315,7 +315,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     {uploadCSVPopup && <CSVUploadPopup
       onClose={() => setUploadCSVPopup(false)}
       onUpload={(assets: TLinksContent) => {
-        setData(assets)
+        setData(data => [...data, ...assets])
         setUploadCSVPopup(false)
       }}
       tokenStandard={tokenStandard}
