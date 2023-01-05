@@ -20,23 +20,19 @@ import {
 import LinkdropSDK from '@linkdrop/sdk'
 import contracts from 'configs/contracts'
 import { RootState } from 'data/store'
-import { CLAIM_APP, CLAIM_APP_AURORA } from 'configs/app'
 import { campaignsApi, qrsApi } from 'data/api'
 
-const { REACT_APP_INFURA_ID } = process.env
+const {
+  REACT_APP_INFURA_ID,
+  REACT_APP_CLAIM_APP
+} = process.env
 
 const initialization = (
   chainId: number | null, address: string
 ) => {
   return async (dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions>, getState: () => RootState) => {
-    if (chainId === 1313161554) {
-      if (!CLAIM_APP_AURORA) {
-        return alert('CLAIM_APP is not provided in .env file')
-      }
-    } else {
-      if (!CLAIM_APP) {
-        return alert('CLAIM_APP is not provided in .env file')
-      }
+    if (!REACT_APP_CLAIM_APP) {
+      return alert('REACT_APP_CLAIM_APP is not provided in .env file')
     }
     if (!chainId) {
       return alert('Chain is not detected')
@@ -52,9 +48,8 @@ const initialization = (
     const contract = contracts[chainId]
     const networkName = defineNetworkName(chainId)
     const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
-    const claimHost = chainId === 1313161554 ? CLAIM_APP_AURORA : CLAIM_APP
     const sdk = new LinkdropSDK({
-      claimHost,
+      claimHost: REACT_APP_CLAIM_APP,
       factoryAddress: contract.factory,
       chain: networkName,
       linkdropMasterAddress: address,
