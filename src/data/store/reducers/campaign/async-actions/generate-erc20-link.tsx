@@ -23,8 +23,7 @@ import { LinksWorker } from 'web-workers/links-worker'
 
 const {
   REACT_APP_INFURA_ID,
-  REACT_APP_CLAIM_APP,
-  REACT_APP_CLAIM_APP_AURORA
+  REACT_APP_CLAIM_APP
 } = process.env
 
 const generateERC20Link = ({
@@ -79,16 +78,13 @@ const generateERC20Link = ({
       if (!REACT_APP_INFURA_ID) {
         return alert('REACT_APP_INFURA_ID is not provided in .env file')
       }
-      if (!REACT_APP_CLAIM_APP_AURORA) {
-        return alert('REACT_APP_CLAIM_APP_AURORA is not provided in .env file')
-      }
+
       if (!REACT_APP_CLAIM_APP) {
         return alert('REACT_APP_CLAIM_APP is not provided in .env file')
       }
       const start = +(new Date())
       const neededWorkersCount = assets.length <= 1000 ? 1 : workersCount
 
-      const claimHost = chainId === 1313161554 ? REACT_APP_CLAIM_APP_AURORA : REACT_APP_CLAIM_APP
       const contract = contracts[chainId]
       const networkName = defineNetworkName(chainId)
       const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
@@ -117,7 +113,7 @@ const generateERC20Link = ({
         networkName,
         jsonRpcUrl,
         `https://${networkName}.linkdrop.io`,
-        claimHost,
+        REACT_APP_CLAIM_APP,
         data,
         sponsored,
         tokenAddress,
