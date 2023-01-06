@@ -5,7 +5,7 @@ export const Container = styled.div`
   margin-bottom: 36px;
   background: ${props => props.theme.blankColor};
   display: grid;
-  grid-template-columns: repeat(4, 260px);
+  grid-template-columns: repeat(auto-fit, 260px);
   grid-gap: 30px;
 `
 

@@ -97,9 +97,10 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     claim_pattern,
     chain_id
   } = currentCampaign
-  const tokenUrl = defineEtherscanUrl(chain_id, `/address/${token_address || ''}`)
-  const ownerUrl = defineEtherscanUrl(chain_id, `/address/${creator_address || ''}`)
-  const contractUrl = defineEtherscanUrl(chain_id, `/address/${proxy_contract_address || ''}`)
+  console.log({ chain_id })
+  const tokenUrl = defineEtherscanUrl(Number(chain_id), `/address/${token_address || ''}`)
+  const ownerUrl = defineEtherscanUrl(Number(chain_id), `/address/${creator_address || ''}`)
+  const contractUrl = defineEtherscanUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
   const totalLinks = batches ? batches.reduce((sum, item) => {
     return sum + item.claim_links_count
   }, 0) : 0
