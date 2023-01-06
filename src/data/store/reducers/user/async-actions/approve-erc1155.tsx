@@ -10,6 +10,7 @@ import { ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC1155Contract } from 'abi'
 import { TAssetsData, TLinkContent, TDistributionPattern } from 'types'
+import { sleep } from 'helpers'
 
 const approve = (
   assets: TAssetsData,
@@ -21,6 +22,7 @@ const approve = (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setLoading(true))
     dispatch(campaignActions.setAssets(assets))
     dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
@@ -37,7 +39,8 @@ const approve = (
     } = getState()
 
     if (approved) {
-      alert('You have already approved')
+      await sleep(2000)
+      dispatch(campaignActions.setLoading(false))
       if (callback) { callback() }
       return
     }
@@ -55,7 +58,6 @@ const approve = (
       if (!address) {
         return alert('No user address provided')
       }
-      dispatch(campaignActions.setLoading(true))
       dispatch(campaignActions.setClaimPattern('transfer'))
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)

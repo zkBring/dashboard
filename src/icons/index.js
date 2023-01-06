@@ -22,10 +22,14 @@ import { ReactComponent as FileIcon } from './file-icon.svg'
 import { ReactComponent as PolygonIcon } from './polygon-icon.svg'
 import { ReactComponent as UploadFileIcon } from './upload-file-icon.svg'
 import { ReactComponent as NotUploadedIcon } from './not-uploaded-icon.svg'
+import { ReactComponent as AttentionIcon } from './attention-icon.svg'
+import { ReactComponent as ApprovedIcon } from './approved-icon.svg'
 
 const Icons = {
   EthereumLogo,
   PolygonIcon,
+  AttentionIcon,
+  ApprovedIcon,
   UploadFileIcon,
   FileIcon,
   LinkdropLogo,

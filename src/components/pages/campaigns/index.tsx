@@ -1,11 +1,16 @@
 import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { Campaign } from 'components/common'
-import { Container, StyledWidget, Title, WidgetDescription, WidgetButton } from './styled-components'
+import {
+  Container,
+  StyledWidget,
+  Title,
+  WidgetDescription,
+  WidgetButton,
+  NoteStyled
+} from './styled-components'
 import { TProps } from './types'
-import { TLinksBatch } from 'types'
 import { defineNativeTokenSymbol } from 'helpers'
 
 const mapStateToProps = ({
@@ -37,6 +42,11 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWall
     </StyledWidget>  
 
     return <>
+      <NoteStyled title='Important Note'>
+        <div>New dashboard does not display campaigns created with the old version.</div>
+        <div>You can still view and manage all previously created campaigns switching to the old version.</div>
+        <div>Switch using the button in the footer of the side menu.</div>
+      </NoteStyled>
       {createNewCampaignWidget}
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <>
         <Title>Campaigns</Title>
