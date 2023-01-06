@@ -9,6 +9,7 @@ export const Aside = styled.aside`
   position: relative;
   height: 100%;
   min-width: 208px;
+  max-width: 208px;
   background-color: ${props => props.theme.backgroundColor};
 `
 
