@@ -8,7 +8,7 @@ export const Aside = styled.aside`
   flex-direction: column;
   position: relative;
   height: 100%;
-  width: 208px;
+  min-width: 208px;
   background-color: ${props => props.theme.backgroundColor};
 `
 
