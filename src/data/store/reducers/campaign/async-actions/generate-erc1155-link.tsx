@@ -76,6 +76,10 @@ const generateERC1155Link = ({
       if (!REACT_APP_INFURA_ID) {
         return alert('REACT_APP_INFURA_ID is not provided in .env file')
       }
+      const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
+      if (!jsonRpcUrl) {
+        return alert('jsonRpcUrl is not defined in helper')
+      }
       if (!REACT_APP_CLAIM_APP) {
         return alert('REACT_APP_CLAIM_APP is not provided in .env file')
       }
@@ -84,7 +88,7 @@ const generateERC1155Link = ({
 
       const contract = contracts[chainId]
       const networkName = defineNetworkName(chainId)
-      const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
+      
 
       const updateProgressbar = async (value: number) => {
         if (value === currentPercentage || value < currentPercentage) { return }
