@@ -24,9 +24,20 @@ import { ReactComponent as UploadFileIcon } from './upload-file-icon.svg'
 import { ReactComponent as NotUploadedIcon } from './not-uploaded-icon.svg'
 import { ReactComponent as AttentionIcon } from './attention-icon.svg'
 import { ReactComponent as ApprovedIcon } from './approved-icon.svg'
+import { ReactComponent as OptionsIcon } from './options-icon.svg'
+import { ReactComponent as PauseIcon } from './pause-icon.svg'
+import { ReactComponent as UnpauseIcon } from './unpause-icon.svg'
+import { ReactComponent as RefundIcon } from './refund-icon.svg'
+import { ReactComponent as ClipboardCopyIcon } from './clipboard-copy-icon.svg'
+
 
 const Icons = {
   EthereumLogo,
+  ClipboardCopyIcon,
+  RefundIcon,
+  UnpauseIcon,
+  PauseIcon,
+  OptionsIcon,
   PolygonIcon,
   AttentionIcon,
   ApprovedIcon,

@@ -6,10 +6,11 @@ import {
 } from './styled-components'
 
 type Props = {
-  onClose: () => void
+  onClose: () => void,
+  className?: string
 }
 
-const MiniPopup: FC<Props> = ({ children, onClose }) => {
+const MiniPopup: FC<Props> = ({ children, onClose, className }) => {
   useEffect(() => {
     const callback = (evt: MouseEvent) => {
       const target = evt.target as HTMLDivElement
@@ -21,7 +22,8 @@ const MiniPopup: FC<Props> = ({ children, onClose }) => {
 
     return () => document.removeEventListener('click', callback)
   }, [])
-  return <MiniPopupContainer className={MiniPopupContainerClass}>
+  const classNames = className ? `${MiniPopupContainerClass} ${className}` : MiniPopupContainerClass
+  return <MiniPopupContainer className={classNames}>
     {children}
   </MiniPopupContainer>
 }
