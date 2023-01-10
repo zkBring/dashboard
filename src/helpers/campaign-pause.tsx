@@ -16,14 +16,14 @@ const campaignPause = async (
 
   const transaction = await signer.sendTransaction(payload)
 
-  const checkTransaction = async function (): Promise<boolean> {
+  const checkTransaction = async function (): Promise<string> {
     return new Promise((resolve, reject) => {
       const checkInterval = setInterval(async () => {
         try {
           const status = await defineCampaignStatus(contractAddress, provider)
-          if (!status) {
+          if (status === 'paused') {
             clearInterval(checkInterval)
-            resolve(status)
+            resolve('paused')
           }
         } catch (err) {
           console.log({ err })
@@ -33,6 +33,5 @@ const campaignPause = async (
     })
   }
   return await checkTransaction()
-
 }
 export default campaignPause

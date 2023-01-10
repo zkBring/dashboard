@@ -1,6 +1,5 @@
-import dropPlaceholder from 'images/drop-placeholder.png'
-import { utils, ethers } from 'ethers'
-import { LinkdropFactory, LinkdropMastercopy } from 'abi'
+import { ethers } from 'ethers'
+import { LinkdropMastercopy } from 'abi'
 
 const defineCampaignStatus = async (
   contractAddress: string,
@@ -8,6 +7,7 @@ const defineCampaignStatus = async (
 ) => {
   const proxyContract = await new ethers.Contract(contractAddress, LinkdropMastercopy.abi, provider)
   const isPaused = await proxyContract.paused()
-  return !isPaused
+  if (isPaused) { return 'paused' }
+  return 'active'
 }
 export default defineCampaignStatus

@@ -7,14 +7,15 @@ const campaignRefund = async (
   account: string,
   provider: any
 ) => {
-  let iface = new utils.Interface(LinkdropMastercopy.abi)
-  const signer = await provider.getSigner()
-  const gasPrice = await provider.getGasPrice()
-  const oneGwei = ethers.utils.parseUnits('1', 'gwei')
-  const data =  await iface.encodeFunctionData('withdraw', [])
-  const payload = { to: contractAddress, from: account, gasPrice: gasPrice.add(oneGwei), data }
+  try {
+    let iface = new utils.Interface(LinkdropMastercopy.abi)
+    const signer = await provider.getSigner()
+    const gasPrice = await provider.getGasPrice()
+    const oneGwei = ethers.utils.parseUnits('1', 'gwei')
+    const data =  await iface.encodeFunctionData('withdraw', [])
+    const payload = { to: contractAddress, from: account, gasPrice: gasPrice.add(oneGwei), data }
 
-  const transaction = await signer.sendTransaction(payload)
+    const transaction = await signer.sendTransaction(payload)
 
   // const checkTransaction = async function (): Promise<boolean> {
   //   return new Promise((resolve, reject) => {
@@ -33,6 +34,9 @@ const campaignRefund = async (
   //   })
   // }
   // return await checkTransaction()
+  } catch (e) {
+    console.error(e)
+  }
 
 }
 export default campaignRefund

@@ -71,6 +71,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
   const {
@@ -86,7 +87,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
 
   const history = useHistory()
 
-  const [ status, setStatus ] = useState<boolean | null>(null)
+  const [ status, setStatus ] = useState<TCampaignStatus>('initial')
 
   useEffect(() => {
     getCampaignBatches(params.id)
@@ -125,22 +126,29 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   const ownerUrl = defineEtherscanUrl(Number(chain_id), `/address/${creator_address || ''}`)
   const contractUrl = defineEtherscanUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
 
+  
+
   const defineOptions = () => {
-    if (status) {
+    if (status === 'active') {
       return [
         {
           title: 'Pause',
           icon: <Icons.PauseIcon />,
           action: async () => {
-            const result = await campaignPause(
-              proxy_contract_address,
-              address,
-              provider
-            )
-            if (!result) {
-              setStatus(result)
+            try {
+              setStatus('pending')
+              const result = await campaignPause(
+                proxy_contract_address,
+                address,
+                provider
+              )
+              if (result === 'paused') {
+                setStatus('paused')
+              }
+            } catch (e) {
+              setStatus('active')
+              console.error(e)
             }
-
           }
         },
         {
@@ -171,33 +179,74 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       ]
     }
 
-    return [
-      {
-        title: 'Unpause',
-        icon: <Icons.UnpauseIcon />,
-        action: async () => {
-          const result = await campaignUnpause(
-            proxy_contract_address,
-            address,
-            provider
-          )
-          if (result) {
-            setStatus(result)
+    if (status === 'paused') {
+      return [
+        {
+          title: 'Unpause',
+          icon: <Icons.UnpauseIcon />,
+          action: async () => {
+            try {
+              setStatus('pending')
+              const result = await campaignUnpause(
+                proxy_contract_address,
+                address,
+                provider
+              )
+              if (result === 'active') {
+                setStatus('active')
+              }
+            } catch (e) {
+              setStatus('paused')
+              console.error(e)
+            }
+          }
+        },
+        {
+          title: 'Refund',
+          icon: <Icons.RefundIcon />,
+          action: async () => {
+            const result = await campaignRefund(
+              proxy_contract_address,
+              address,
+              provider
+            )
+          }
+        },
+        {
+          title: 'Copy debug data',
+          icon: <Icons.ClipboardCopyIcon />,
+          action: () => {
+            copyToClipboard({
+              value: {
+                chainId: currentCampaign.chain_id,
+                proxyAddress: currentCampaign.proxy_contract_address,
+                campaignNumber: currentCampaign.campaign_number,
+                creatorAddress: currentCampaign.creator_address,
+                paused: String(status),
+                tokenAddress: currentCampaign.token_address,
+                type: currentCampaign.token_standard,
+                pattern: currentCampaign.claim_pattern,
+                createdAt: currentCampaign.created_at
+              }
+            })
           }
         }
-      },
-      {
-        title: 'Refund',
-        icon: <Icons.RefundIcon />,
-        action: async () => {
-          const result = await campaignRefund(
-            proxy_contract_address,
-            address,
-            provider
-          )
-        }
-      }
-    ]
+      ]
+    }
+    return []
+  }
+
+  const defineStatusTitle = () => {
+    switch (status) {
+      case 'active':
+        return 'Active'
+      case 'initial':
+        return '-'
+      case 'paused':
+        return 'Paused'
+      case 'pending':
+        return 'Pending'
+    }
   }
 
   return <Container>
@@ -253,7 +302,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       </AsideRow>
       {status !== null && <AsideRow>
         <AsideText>Status</AsideText>
-        <AsideValue>{status ? 'Active' : 'Paused'}</AsideValue>
+        <AsideValue>{defineStatusTitle()}</AsideValue>
       </AsideRow>}
 
       <AsideDivider />
