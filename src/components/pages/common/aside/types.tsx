@@ -21,5 +21,6 @@ export type TProps = {
   },
   options?: TOptionItem[],
   title?: string,
-  subtitle?: string
+  subtitle?: string,
+  loading?: boolean
 }

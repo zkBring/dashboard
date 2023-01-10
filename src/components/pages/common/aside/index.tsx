@@ -16,7 +16,8 @@ import {
   MiniPopupContainerStyled,
   OptionsList,
   OptionsListItem,
-  OptionsListBorder
+  OptionsListBorder,
+  TitleLoader
 } from './styled-components'
 
 const Aside: FC<TProps> = ({
@@ -35,14 +36,21 @@ const Aside: FC<TProps> = ({
   } = {},
   title,
   subtitle,
-  options
+  options,
+  loading
 }) => {
 
   const [ showOptions, setShowOptions ] = useState(false)
 
-  return <WidgetAside>
-    <WidgetComponent>
-      {options? <WidgetTitleFlex>
+  const defineHeaderContents = () => {
+    if (loading) {
+      return  <WidgetTitleFlex>
+        {title}
+        <TitleLoader />
+      </WidgetTitleFlex>
+    }
+    if (options) {
+      return <WidgetTitleFlex>
         {title}
         <WidgetOptions onClick={() => {
           setShowOptions(!showOptions)
@@ -68,9 +76,17 @@ const Aside: FC<TProps> = ({
             
           </MiniPopupContainerStyled>}
         </WidgetOptions>
-      </WidgetTitleFlex> : <WidgetTitle>
-        {title}
-      </WidgetTitle>}
+      </WidgetTitleFlex>
+    }
+
+    return <WidgetTitle>
+      {title}
+    </WidgetTitle>
+  }
+
+  return <WidgetAside>
+    <WidgetComponent>
+      {defineHeaderContents()}
       {subtitle && <WidgetSubtitle>{subtitle}</WidgetSubtitle>}
       {children}
       {(backAction || nextAction) && <ButtonsContainer>

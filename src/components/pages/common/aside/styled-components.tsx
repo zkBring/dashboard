@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { Button, MiniPopup } from 'components/common'
+import { Button, MiniPopup, Loader } from 'components/common'
 import { TOptionItem } from './types'
 
 export const ButtonStyled = styled(Button)`
@@ -17,10 +17,13 @@ export const WidgetTitle = styled.h3`
 export const WidgetTitleFlex = styled(WidgetTitle)`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 export const WidgetOptions = styled.div`
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
 `
 
 export const MiniPopupContainerStyled = styled(MiniPopup)`
@@ -73,4 +76,10 @@ export const OptionsListItem = styled.li<TOptionItem>`
 export const OptionsListBorder = styled.hr`
   border-color: ${props => props.theme.primaryBorderColor};
   border-top: none;
+`
+
+export const TitleLoader = styled(Loader)`
+  div {
+    border-color: ${props => props.theme.primaryHighlightColor} transparent transparent transparent;
+  }
 `

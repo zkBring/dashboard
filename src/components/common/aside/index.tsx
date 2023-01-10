@@ -38,7 +38,6 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 
 const AsideComponent: FC<AsideProps & ReduxType> = ({
-  address,
   authorizationStep
 }) => {
   const location = useLocation<LocationType>()

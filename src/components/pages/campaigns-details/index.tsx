@@ -204,6 +204,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         {
           title: 'Refund',
           icon: <Icons.RefundIcon />,
+          bordered: true,
           action: async () => {
             const result = await campaignRefund(
               proxy_contract_address,
@@ -295,6 +296,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     <Aside
       title="Campaign"
       options={defineOptions()}
+      loading={status === 'pending' || status === 'initial'}
     >
       <AsideRow>
         <AsideText>Created by</AsideText>
