@@ -5,5 +5,7 @@
 - Added pending status to campaign while waiting for transaction complete
 - JSON Rpc urls moved to env variables
 - Added loader indicator while pause/unpause is pending
+- Added loader indicator while checking if campaign was approved before
+- Added withdraw ability check 
 
 ## 2.1.0

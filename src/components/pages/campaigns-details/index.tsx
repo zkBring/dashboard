@@ -32,7 +32,8 @@ import {
   campaignPause,
   campaignUnpause,
   campaignRefund,
-  copyToClipboard
+  copyToClipboard,
+  defineProxyContractFunds
 } from 'helpers'
 import { TextLink } from 'components/common'
 import Icons from 'icons';
@@ -88,9 +89,22 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   const history = useHistory()
 
   const [ status, setStatus ] = useState<TCampaignStatus>('initial')
+  const [ withdrawable, setWithdrawable ] = useState<boolean>(false)
 
   useEffect(() => {
     getCampaignBatches(params.id)
+  }, [])
+
+  useEffect(() => {
+    const onInit = async () => {
+      const amount = await defineProxyContractFunds(
+        proxy_contract_address,
+        provider
+      )
+      console.log({ amount })
+      setWithdrawable(amount > 0)
+    }
+    onInit()
   }, [])
 
   useEffect(() => {
@@ -125,7 +139,25 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   const tokenUrl = defineEtherscanUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineEtherscanUrl(Number(chain_id), `/address/${creator_address || ''}`)
   const contractUrl = defineEtherscanUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
-
+  const copyToClipboardButton = {
+    title: 'Copy debug data',
+    icon: <Icons.ClipboardCopyIcon />,
+    action: () => {
+      copyToClipboard({
+        value: {
+          chainId: currentCampaign.chain_id,
+          proxyAddress: currentCampaign.proxy_contract_address,
+          campaignNumber: currentCampaign.campaign_number,
+          creatorAddress: currentCampaign.creator_address,
+          paused: String(status),
+          tokenAddress: currentCampaign.token_address,
+          type: currentCampaign.token_standard,
+          pattern: currentCampaign.claim_pattern,
+          createdAt: currentCampaign.created_at
+        }
+      })
+    }
+  }
   
 
   const defineOptions = () => {
@@ -157,25 +189,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           disabled: true,
           bordered: true
         },
-        {
-          title: 'Copy debug data',
-          icon: <Icons.ClipboardCopyIcon />,
-          action: () => {
-            copyToClipboard({
-              value: {
-                chainId: currentCampaign.chain_id,
-                proxyAddress: currentCampaign.proxy_contract_address,
-                campaignNumber: currentCampaign.campaign_number,
-                creatorAddress: currentCampaign.creator_address,
-                paused: String(status),
-                tokenAddress: currentCampaign.token_address,
-                type: currentCampaign.token_standard,
-                pattern: currentCampaign.claim_pattern,
-                createdAt: currentCampaign.created_at
-              }
-            })
-          }
-        }
+        copyToClipboardButton
       ]
     }
 
@@ -205,33 +219,27 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           title: 'Refund',
           icon: <Icons.RefundIcon />,
           bordered: true,
+          disabled: !withdrawable,
           action: async () => {
-            const result = await campaignRefund(
-              proxy_contract_address,
-              address,
-              provider
-            )
+            const currentStatus = status
+            try {
+              setStatus('pending')
+              const result = await campaignRefund(
+                proxy_contract_address,
+                address,
+                provider
+              )
+              if (result) {
+                setWithdrawable(false)
+                setStatus(currentStatus)
+              }
+            } catch (e) {
+              setStatus(currentStatus)
+              console.error(e)
+            }  
           }
         },
-        {
-          title: 'Copy debug data',
-          icon: <Icons.ClipboardCopyIcon />,
-          action: () => {
-            copyToClipboard({
-              value: {
-                chainId: currentCampaign.chain_id,
-                proxyAddress: currentCampaign.proxy_contract_address,
-                campaignNumber: currentCampaign.campaign_number,
-                creatorAddress: currentCampaign.creator_address,
-                paused: String(status),
-                tokenAddress: currentCampaign.token_address,
-                type: currentCampaign.token_standard,
-                pattern: currentCampaign.claim_pattern,
-                createdAt: currentCampaign.created_at
-              }
-            })
-          }
-        }
+        copyToClipboardButton
       ]
     }
     return []

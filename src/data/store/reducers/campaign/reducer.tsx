@@ -12,7 +12,7 @@ const initialState: CampaignState = {
   symbol: null,
   wallet: null,
   proxyContractAddress: null,
-  approved: false,
+  approved: null,
   id: null,
   secured: false,
   signerKey: null,

@@ -1,5 +1,11 @@
 import { FC, useEffect, useState } from 'react'
-import { StyledRadio, InstructionNoteStyled, AsideNote, ApprovedIcon } from './styled-components'
+import {
+  StyledRadio,
+  InstructionNoteStyled,
+  AsideNote,
+  ApprovedIcon,
+  LoaderStyled
+} from './styled-components'
 import { Erc20, Erc721, Erc1155, CSVUploadPopup } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
@@ -72,14 +78,17 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
   return {
-    checkIfApproved: (
-    ) => {
+    checkIfApproved: () => {
       dispatch(
         userAsyncActions.checkIfApproved()
       )
     },
-    checkIfGranted: (
-    ) => {
+    setApproved: (approved: boolean) => {
+      dispatch(
+        campaignActions.setApproved(approved)
+      )
+    },
+    checkIfGranted: () => {
       dispatch(
         userAsyncActions.checkIfGranted()
       )
@@ -233,10 +242,8 @@ const defineComponent: TDefineComponent = (
 }
 
 const CampaignsCreateApprove: FC<ReduxType> = ({
-  createProxyContract,
   campaigns,
   sdk: initialSdk,
-  setAssetsData,
   tokenAddress,
   decimals,
   chainId,
@@ -251,7 +258,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   checkIfApproved,
   checkIfGranted,
   symbol,
-  approved
+  approved,
+  setApproved
 }) => {
 
   const [
@@ -293,7 +301,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!currentCampaign) {
-      return
+      return setApproved(false)
     }
     if (currentCampaign && currentCampaign.claim_pattern === 'mint') {
       return checkIfGranted()
@@ -303,6 +311,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   }, [])
 
   const defineNextButtonTitle = () => {
+    if (approved === null || loading) {
+      return 'Loading'
+    }
     if (approved) {
       return 'Continue'
     }
@@ -316,6 +327,23 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
+
+  const approvedNote = () => {
+    if (approved === null) {
+      return <AsideNote>
+        <LoaderStyled />
+        Сhecking approval...
+      </AsideNote>
+    }
+
+    if (approved) {
+      return <AsideNote>
+        <ApprovedIcon />
+        Token has been approved before
+      </AsideNote>
+    }
+    return null
+  }
   
   return <Container>
     {uploadCSVPopup && <CSVUploadPopup
@@ -439,10 +467,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           <AsideValue>{claimPattern}</AsideValue>
         </AsideRow>
       </AsideContent>
-      {approved && <AsideNote>
-        <ApprovedIcon />
-        Token has been approved before
-      </AsideNote>}
+      {approvedNote()}
     </Aside>
     
   </Container>

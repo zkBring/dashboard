@@ -15,6 +15,7 @@ const checkIfApproved = () => {
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setApproved(null))
     const {
       user: {
         provider,
@@ -38,11 +39,9 @@ const checkIfApproved = () => {
       const contractABI = tokenStandard === 'ERC1155' ? ERC1155Contract : ERC721Contract
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI.abi, signer)
-      const isApproved = await contractInstance.isApprovedForAll(address, proxyContractAddress)
+      const isApproved: boolean = await contractInstance.isApprovedForAll(address, proxyContractAddress)
       console.log({ isApproved })
-      if (isApproved) {
-        dispatch(campaignActions.setApproved(true))
-      }
+      dispatch(campaignActions.setApproved(isApproved))
 
     } catch (err) {
       console.log({

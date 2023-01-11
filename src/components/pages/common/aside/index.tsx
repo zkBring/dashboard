@@ -63,6 +63,7 @@ const Aside: FC<TProps> = ({
                   <OptionsListItem
                     disabled={option.disabled}
                     onClick={() => {
+                      if (option.disabled) { return }
                       setShowOptions(false)
                       option.action && option.action()
                     }}

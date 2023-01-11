@@ -1,6 +1,6 @@
 {
   "name": "linkdrop-dashboard",
-  "version": "2.1.1-rc.3",
+  "version": "2.1.1-rc.4",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.0",

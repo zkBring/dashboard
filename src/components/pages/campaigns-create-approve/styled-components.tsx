@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Radio, Input, Button } from 'components/common'
+import { Radio, Input, Button, Loader } from 'components/common'
 import {
   InstructionNote
 } from 'components/pages/common'
@@ -48,5 +48,11 @@ export const AsideNote = styled.div`
 
 export const ApprovedIcon = styled(Icons.ApprovedIcon)`
   margin-right: 4px; 
-  
+`
+
+export const LoaderStyled = styled(Loader)`
+  margin-right: 4px;
+  div {
+    border-color: ${props => props.theme.primaryHighlightColor} transparent transparent transparent;
+  }
 `
