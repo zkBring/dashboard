@@ -14,7 +14,7 @@ export interface CampaignState {
   symbol: string | null,
   wallet: string | null,
   proxyContractAddress: string | null,
-  approved: boolean,
+  approved: boolean | null,
   id: null | string,
   secured: boolean,
   signerKey: string | null,

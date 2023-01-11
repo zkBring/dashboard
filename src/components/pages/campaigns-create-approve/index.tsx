@@ -1,10 +1,16 @@
 import { FC, useEffect, useState } from 'react'
-import { StyledRadio, InstructionNoteStyled } from './styled-components'
+import {
+  StyledRadio,
+  InstructionNoteStyled,
+  AsideNote,
+  ApprovedIcon,
+  LoaderStyled
+} from './styled-components'
 import { Erc20, Erc721, Erc1155, CSVUploadPopup } from './components'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TAssetsData, TLinkContent, TLinkParams, TDistributionPattern } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLinkParams } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
@@ -28,9 +34,6 @@ import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { Dispatch } from 'redux'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import {
-  NATIVE_TOKEN_ADDRESS
-} from 'configs/app'
-import {
   convertLinksContent,
   shortenString,
   defineNetworkName,
@@ -48,7 +51,8 @@ const mapStateToProps = ({
     proxyContractAddress,
     title,
     assets,
-    symbol
+    symbol,
+    approved
   },
   campaigns: {
     campaigns
@@ -63,6 +67,7 @@ const mapStateToProps = ({
   claimPattern,
   sdk,
   proxyContractAddress,
+  approved,
   tokenAddress,
   decimals,
   chainId,
@@ -73,14 +78,17 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
   return {
-    checkIfApproved: (
-    ) => {
+    checkIfApproved: () => {
       dispatch(
         userAsyncActions.checkIfApproved()
       )
     },
-    checkIfGranted: (
-    ) => {
+    setApproved: (approved: boolean) => {
+      dispatch(
+        campaignActions.setApproved(approved)
+      )
+    },
+    checkIfGranted: () => {
       dispatch(
         userAsyncActions.checkIfGranted()
       )
@@ -234,16 +242,13 @@ const defineComponent: TDefineComponent = (
 }
 
 const CampaignsCreateApprove: FC<ReduxType> = ({
-  createProxyContract,
   campaigns,
   sdk: initialSdk,
-  setAssetsData,
   tokenAddress,
   decimals,
   chainId,
   tokenStandard,
   title,
-  assets,
   loading,
   grantRole,
   approveERC20,
@@ -252,7 +257,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   claimPattern,
   checkIfApproved,
   checkIfGranted,
-  symbol
+  symbol,
+  approved,
+  setApproved
 }) => {
 
   const [
@@ -294,14 +301,24 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!currentCampaign) {
-      return
+      return setApproved(false)
     }
-    if (currentCampaign && currentCampaign.claim_pattern === 'mint') {
+    if (currentCampaign.claim_pattern === 'mint') {
       return checkIfGranted()
     }
-    if (tokenStandard === 'ERC20') { return }
+    if (tokenStandard === 'ERC20') { return setApproved(false) }
     checkIfApproved()
   }, [])
+
+  const defineNextButtonTitle = () => {
+    if (loading) {
+      return 'Loading'
+    }
+    if (approved || approved === null) {
+      return 'Continue'
+    }
+    return claimPattern === 'transfer' ? 'Approve' : 'Grant Role'
+  }
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }
@@ -310,6 +327,23 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
+
+  const approvedNote = () => {
+    if (approved === null) {
+      return <AsideNote>
+        <LoaderStyled />
+        Сhecking approval...
+      </AsideNote>
+    }
+
+    if (approved) {
+      return <AsideNote>
+        <ApprovedIcon />
+        Token has been approved before
+      </AsideNote>
+    }
+    return null
+  }
   
   return <Container>
     {uploadCSVPopup && <CSVUploadPopup
@@ -349,7 +383,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         }
       }}
       next={{
-        title: claimPattern === 'transfer' ? 'Approve' : 'Grant Role',
+        title: defineNextButtonTitle(),
         action: () => {
           const callback = () => {
             history.push(redirectURL)
@@ -433,7 +467,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           <AsideValue>{claimPattern}</AsideValue>
         </AsideRow>
       </AsideContent>
-      
+      {approvedNote()}
     </Aside>
     
   </Container>

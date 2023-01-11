@@ -3,6 +3,7 @@ import * as campaignActions from 'data/store/reducers/campaign/actions'
 import {
   UserActions
 } from '../types'
+import { sleep } from 'helpers'
 import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
@@ -21,6 +22,7 @@ const approve = (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setLoading(true))
     dispatch(campaignActions.setAssets(assets))
     dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
@@ -37,7 +39,8 @@ const approve = (
     } = getState()
 
     if (approved) {
-      alert('You have already approved')
+      await sleep(2000)
+      dispatch(campaignActions.setLoading(false))
       if (callback) { callback() }
       return
     }
@@ -55,7 +58,6 @@ const approve = (
       if (!address) {
         return alert('No user address provided')
       }
-      dispatch(campaignActions.setLoading(true))
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
       await contractInstance.setApprovalForAll(proxyContractAddress, true)

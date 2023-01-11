@@ -16,6 +16,7 @@ const checkIfGranted = () => {
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setApproved(null))
     const {
       user: {
         provider,
@@ -28,7 +29,6 @@ const checkIfGranted = () => {
         proxyContractAddress
       }
     } = getState()
-    dispatch(campaignActions.setLoading(true))
     try {
 
       if (!tokenAddress) {
@@ -53,17 +53,13 @@ const checkIfGranted = () => {
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI.abi, signer)
       const isGranted = await contractInstance.hasRole(contract.minter_role, proxyContractAddress)
-
-      if (isGranted) {
-        dispatch(campaignActions.setApproved(true))
-      }
+      dispatch(campaignActions.setApproved(isGranted))
 
     } catch (err) {
       console.log({
         err
       })
     }
-    dispatch(campaignActions.setLoading(false))
   }
 }
 

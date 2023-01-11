@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -28,10 +28,15 @@ import {
   defineEtherscanUrl,
   formatTime,
   formatDate,
-  decryptLinks,
-  downloadLinksAsCSV
+  defineCampaignStatus,
+  campaignPause,
+  campaignUnpause,
+  campaignRefund,
+  copyToClipboard,
+  defineProxyContractFunds
 } from 'helpers'
 import { TextLink } from 'components/common'
+import Icons from 'icons';
 
 import { useHistory } from 'react-router-dom'
 import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
@@ -40,14 +45,15 @@ import { IAppDispatch } from 'data/store'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
-  user: { address, dashboardKey },
+  user: { address, dashboardKey, provider },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
   address,
   decimals,
   loading,
-  dashboardKey
+  dashboardKey,
+  provider
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -66,6 +72,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
   const {
@@ -74,11 +81,41 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     match: { params },
     getCampaignBatches,
     loading,
-    downloadLinks
+    downloadLinks,
+    provider,
+    address
   } = props
+
   const history = useHistory()
+
+  const [ status, setStatus ] = useState<TCampaignStatus>('initial')
+  const [ withdrawable, setWithdrawable ] = useState<boolean>(false)
+
   useEffect(() => {
     getCampaignBatches(params.id)
+  }, [])
+
+  useEffect(() => {
+    const onInit = async () => {
+      const amount = await defineProxyContractFunds(
+        proxy_contract_address,
+        provider
+      )
+      console.log({ amount })
+      setWithdrawable(amount > 0)
+    }
+    onInit()
+  }, [])
+
+  useEffect(() => {
+    const onInit = async () => {
+      const status = await defineCampaignStatus(
+        proxy_contract_address,
+        provider
+      )
+      setStatus(status)
+    }
+    onInit()
   }, [])
 
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
@@ -95,15 +132,132 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     token_address,
     proxy_contract_address,
     claim_pattern,
-    chain_id
+    chain_id,
+    links_count
   } = currentCampaign
-  console.log({ chain_id })
+
   const tokenUrl = defineEtherscanUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineEtherscanUrl(Number(chain_id), `/address/${creator_address || ''}`)
   const contractUrl = defineEtherscanUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
-  const totalLinks = batches ? batches.reduce((sum, item) => {
-    return sum + item.claim_links_count
-  }, 0) : 0
+  const copyToClipboardButton = {
+    title: 'Copy debug data',
+    icon: <Icons.ClipboardCopyIcon />,
+    action: () => {
+      copyToClipboard({
+        value: {
+          chainId: currentCampaign.chain_id,
+          proxyAddress: currentCampaign.proxy_contract_address,
+          campaignNumber: currentCampaign.campaign_number,
+          creatorAddress: currentCampaign.creator_address,
+          paused: String(status),
+          tokenAddress: currentCampaign.token_address,
+          type: currentCampaign.token_standard,
+          pattern: currentCampaign.claim_pattern,
+          createdAt: currentCampaign.created_at
+        }
+      })
+    }
+  }
+  
+
+  const defineOptions = () => {
+    if (status === 'active') {
+      return [
+        {
+          title: 'Pause',
+          icon: <Icons.PauseIcon />,
+          action: async () => {
+            try {
+              setStatus('pending')
+              const result = await campaignPause(
+                proxy_contract_address,
+                address,
+                provider
+              )
+              if (result === 'paused') {
+                setStatus('paused')
+              }
+            } catch (e) {
+              setStatus('active')
+              console.error(e)
+            }
+          }
+        },
+        {
+          title: 'Refund',
+          icon: <Icons.RefundIcon />,
+          disabled: true,
+          bordered: true
+        },
+        copyToClipboardButton
+      ]
+    }
+
+    if (status === 'paused') {
+      return [
+        {
+          title: 'Unpause',
+          icon: <Icons.UnpauseIcon />,
+          action: async () => {
+            try {
+              setStatus('pending')
+              const result = await campaignUnpause(
+                proxy_contract_address,
+                address,
+                provider
+              )
+              if (result === 'active') {
+                setStatus('active')
+              }
+            } catch (e) {
+              setStatus('paused')
+              console.error(e)
+            }
+          }
+        },
+        {
+          title: 'Refund',
+          icon: <Icons.RefundIcon />,
+          bordered: true,
+          disabled: !withdrawable,
+          action: async () => {
+            const currentStatus = status
+            try {
+              setStatus('pending')
+              const result = await campaignRefund(
+                proxy_contract_address,
+                address,
+                provider
+              )
+              if (result) {
+                setWithdrawable(false)
+                setStatus(currentStatus)
+              }
+            } catch (e) {
+              setStatus(currentStatus)
+              console.error(e)
+            }  
+          }
+        },
+        copyToClipboardButton
+      ]
+    }
+    return []
+  }
+
+  const defineStatusTitle = () => {
+    switch (status) {
+      case 'active':
+        return 'Active'
+      case 'initial':
+        return '-'
+      case 'paused':
+        return 'Paused'
+      case 'pending':
+        return 'Pending'
+    }
+  }
+
   return <Container>
     <WidgetComponent>
       <Header>
@@ -149,15 +303,17 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     </WidgetComponent>
     <Aside
       title="Campaign"
+      options={defineOptions()}
+      loading={status === 'pending' || status === 'initial'}
     >
       <AsideRow>
         <AsideText>Created by</AsideText>
         <AsideValue><TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink></AsideValue>
       </AsideRow>
-      <AsideRow>
+      {status !== null && <AsideRow>
         <AsideText>Status</AsideText>
-        <AsideValue>Active</AsideValue>
-      </AsideRow>
+        <AsideValue>{defineStatusTitle()}</AsideValue>
+      </AsideRow>}
 
       <AsideDivider />
 
@@ -189,7 +345,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       </AsideRow>
       <AsideRow>
         <AsideText>Links</AsideText>
-        <AsideValue>{totalLinks}</AsideValue>
+        <AsideValue>{links_count}</AsideValue>
       </AsideRow>
     </Aside>
   </Container>

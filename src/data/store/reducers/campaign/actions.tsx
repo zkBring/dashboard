@@ -84,7 +84,7 @@ export function setProxyContractAddress(proxyContractAddress: string | null) {
   })
 }
 
-export function setApproved(approved: boolean) {
+export function setApproved(approved: boolean | null) {
   return action(Constants.CAMPAIGN_SET_APPROVED, {
     approved
   })

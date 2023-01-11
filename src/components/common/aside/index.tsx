@@ -38,7 +38,6 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 
 const AsideComponent: FC<AsideProps & ReduxType> = ({
-  address,
   authorizationStep
 }) => {
   const location = useLocation<LocationType>()
@@ -52,7 +51,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
   }
 	return <Aside>
     <AsideLogoZone>
-      <AsideTextLink to='/'>
+      <AsideTextLink to='/campaigns'>
         <AsideLogoIcon src={LinkDropLogo} />
         <AsideLogoText>LinkDrop</AsideLogoText>
       </AsideTextLink>

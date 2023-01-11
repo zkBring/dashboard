@@ -11,6 +11,7 @@ import { RootState } from 'data/store'
 import contracts from 'configs/contracts'
 import { defineContract } from 'helpers'
 import { TAssetsData, TLinkContent } from 'types'
+import { sleep } from 'helpers'
 
 const grantRole = (
   assets: TAssetsData,
@@ -22,6 +23,7 @@ const grantRole = (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
   ) => {
+    dispatch(campaignActions.setLoading(true))
     dispatch(campaignActions.setAssets(assets))
     dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
@@ -40,7 +42,8 @@ const grantRole = (
     } = getState()
 
     if (approved) {
-      alert('You have already granted a role')
+      await sleep(2000)
+      dispatch(campaignActions.setLoading(false))
       if (callback) { callback() }
       return
     }
@@ -66,7 +69,6 @@ const grantRole = (
         return alert('No tokenStandard provided')
       }
 
-      dispatch(campaignActions.setLoading(true))
       dispatch(campaignActions.setClaimPattern('mint'))
       const contract = contracts[chainId]
       const signer = await provider.getSigner()
