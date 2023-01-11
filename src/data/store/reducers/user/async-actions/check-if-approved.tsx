@@ -27,7 +27,6 @@ const checkIfApproved = () => {
         proxyContractAddress
       }
     } = getState()
-    dispatch(campaignActions.setLoading(true))
     try {
       if (!tokenAddress) {
         return alert('No token address provided')
@@ -48,7 +47,6 @@ const checkIfApproved = () => {
         err
       })
     }
-    dispatch(campaignActions.setLoading(false))
   }
 }
 

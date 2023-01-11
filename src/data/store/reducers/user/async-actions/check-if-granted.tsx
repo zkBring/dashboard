@@ -29,7 +29,6 @@ const checkIfGranted = () => {
         proxyContractAddress
       }
     } = getState()
-    dispatch(campaignActions.setLoading(true))
     try {
 
       if (!tokenAddress) {
@@ -61,7 +60,6 @@ const checkIfGranted = () => {
         err
       })
     }
-    dispatch(campaignActions.setLoading(false))
   }
 }
 

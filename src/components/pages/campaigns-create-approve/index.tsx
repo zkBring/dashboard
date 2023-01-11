@@ -303,18 +303,18 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (!currentCampaign) {
       return setApproved(false)
     }
-    if (currentCampaign && currentCampaign.claim_pattern === 'mint') {
+    if (currentCampaign.claim_pattern === 'mint') {
       return checkIfGranted()
     }
-    if (tokenStandard === 'ERC20') { return }
+    if (tokenStandard === 'ERC20') { return setApproved(false) }
     checkIfApproved()
   }, [])
 
   const defineNextButtonTitle = () => {
-    if (approved === null || loading) {
+    if (loading) {
       return 'Loading'
     }
-    if (approved) {
+    if (approved || approved === null) {
       return 'Continue'
     }
     return claimPattern === 'transfer' ? 'Approve' : 'Grant Role'
