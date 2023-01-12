@@ -1,8 +1,10 @@
 import LinkdropSDK from '@linkdrop/sdk'
 import { expose } from 'comlink'
-import { TLink, TAssetsData, TTokenType } from 'types'
+import { TLink, TAssetsData, TTokenType, TSingleLinkData } from 'types'
 import { EXPIRATION_DATE } from 'configs/app'
 import { encrypt } from 'lib/crypto'
+
+type TParseLinkParams = (link: string, tokenType: TTokenType) => TSingleLinkData
 
 export class LinksWorker {
   private newLinks: Array<TLink> = [];
@@ -13,6 +15,42 @@ export class LinksWorker {
     cb: (value: number) => void
   ) {
     this.cb = cb
+  }
+
+  private parseLinkParams: TParseLinkParams =  (link, tokenType) => {
+    const result: TSingleLinkData = {}
+    const linkParams = link.split('?')[1]
+    const linkParamsSplit = linkParams.split('&')
+    const tokenAmount = linkParamsSplit.find(item => item.includes('tokenAmount'))
+    const tokenId = linkParamsSplit.find(item => item.includes('tokenId'))
+    const linkKey = linkParamsSplit.find(item => item.includes('linkKey'))
+    const senderSignature = linkParamsSplit.find(item => item.includes('linkdropSignerSignature'))
+  
+    if (tokenType === 'ERC20') {
+      result['token_id'] = null
+      if (tokenAmount) {
+        result['token_amount'] = tokenAmount.split('=')[1]
+      }
+    } else if (tokenType === 'ERC721') {
+      result['token_amount'] = null
+      if (tokenId) {
+        result['token_id'] = tokenId.split('=')[1]
+      }
+    } else {
+      if (tokenAmount) {
+        result['token_amount'] = tokenAmount.split('=')[1]
+      }
+      if (tokenId) {
+        result['token_id'] = tokenId.split('=')[1]
+      }
+    }
+    if (linkKey) {
+      result['link_key'] = linkKey.split('=')[1]
+    }
+    if (senderSignature) {
+      result['sender_signature'] = senderSignature.split('=')[1]
+    }
+    return result
   }
 
   private createSDK (
@@ -157,11 +195,24 @@ export class LinksWorker {
         }
         if (result) {
           const newLink = !sponsored ? `${result?.url}&manual=true` : result?.url
-          const newLinkEncrypted = encrypt(newLink, dashboardKey)
-          this.newLinks = [...this.newLinks, {
+          const linkParsed = this.parseLinkParams(newLink, type)
+          // - token_id - token id for the link (always 0 for ERC20 campaigns)
+          // - token_amount - amount of tokens for the link (always 0 for ERC721 campaigns) 
+          // - sender_signature - signature obtained by signing link id with the signer key  
+
+          const linkData = {
+            encrypted_link_key: encrypt(linkParsed.link_key as string, dashboardKey),
+            token_id: linkParsed.token_id,
+            token_amount: linkParsed.token_amount,
             link_id: result?.linkId,
-            encrypted_claim_link: newLinkEncrypted
-          }]
+            sender_signature: linkParsed.sender_signature,
+            expiration_time: EXPIRATION_DATE,
+            wei_amount: nativeTokensPerLink
+          }
+          const newLinkEncrypted = encrypt(newLink, dashboardKey)
+          
+          this.newLinks = [...this.newLinks, linkData]
+          console.log(this.newLinks)
           const percentageFinished = Math.round(this.newLinks.length / assets.length * 100) / 100
           if (this.currentPercentageFinished < percentageFinished) {
             this.currentPercentageFinished = percentageFinished

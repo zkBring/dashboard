@@ -18,7 +18,8 @@ type TCampaign = {
   created_at?: string,
   claim_pattern: TClaimPattern,
   sdk: boolean,
-  links_count: number
+  links_count: number,
+  proxy_contract_version: string | number
 }
 
 export default TCampaign
