@@ -53,9 +53,11 @@ import campaignPause from './campaign-pause'
 import campaignUnpause from './campaign-unpause'
 import campaignRefund from './campaign-refund'
 import defineProxyContractFunds from './define-proxy-contract-funds'
+import getContractVersion from './get-contract-version'
 
 export {
   shortenString,
+  getContractVersion,
   defineProxyContractFunds,
   campaignRefund,
   campaignPause,

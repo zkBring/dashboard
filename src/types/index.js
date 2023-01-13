@@ -32,9 +32,13 @@ import { TLinkContent } from './link-contents'
 import TQRImageOptions from './qr-image-options'
 import TAuthorizationStep from './authorization-step'
 import TQROption, { DotType, CornerSquareType, CornerDotType } from './qr-option'
+import TSingleLinkData from './single-link-data'
+import TLinkDetails from './link-details'
 
 export {
   TCampaign,
+  TLinkDetails,
+  TSingleLinkData,
   TQROption,
   DotType,
   CornerSquareType,

@@ -1,6 +1,12 @@
 type TLink = {
   link_id: string,
-  encrypted_claim_link: string
+  token_id?: string | null
+  token_amount?: string | null
+  sender_signature?: string
+  encrypted_link_key?: string,
+  encrypted_claim_link?: string,
+  expiration_time?: string,
+  wei_amount?: string
 }
 
 export default TLink

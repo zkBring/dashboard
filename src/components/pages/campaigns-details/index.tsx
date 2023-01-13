@@ -63,7 +63,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         getCampaignBatches({ campaign_id })
       )
     },
-    downloadLinks: (batch_id: string | number, campaign_id: string | number, title: string) => {
+    downloadLinks: (batch_id: string | number, campaign_id: string, title: string) => {
       dispatch(
         downloadLinks(batch_id, campaign_id, title)
       )

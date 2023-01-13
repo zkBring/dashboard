@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux'
-import * as actionsCampaign from '../../campaign/actions'
 import { CampaignActions } from '../../campaign/types'
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
@@ -10,11 +9,11 @@ import {
   downloadLinksAsCSV,
   decryptLinks
 } from 'helpers'
-
+const { REACT_APP_CLAIM_APP } = process.env
 
 const downloadLinks = (
   batchId: string | number,
-  campaignId: string | number,
+  campaignId: string,
   title: string
 ) => {
   return async (
@@ -22,17 +21,27 @@ const downloadLinks = (
     getState: () => RootState
   ) => {
 
-    const { user: { dashboardKey} } = getState() 
+    const {
+      user: { dashboardKey }
+    } = getState()
     
     if (!dashboardKey) { return alert ('dashboardKey is not provided') }
+    if (!REACT_APP_CLAIM_APP) { return alert ('REACT_APP_CLAIM_APP is not provided in .env') }
     try {
       dispatch(actionsCampaigns.setLoading(true))
       
       const result = await campaignsApi.getBatch(campaignId, batchId)
 
       if (result.data.success) {
+
         const { claim_links, batch } = result.data
-        const decryptedLinks = decryptLinks(claim_links, dashboardKey)
+
+        console.log({ claim_links })
+    
+        const decryptedLinks = decryptLinks({
+          links: claim_links,
+          dashboardKey
+        })
         downloadLinksAsCSV(
           decryptedLinks,
           title,
