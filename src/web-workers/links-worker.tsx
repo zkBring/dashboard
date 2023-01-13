@@ -211,7 +211,6 @@ export class LinksWorker {
           }
           
           this.newLinks = [...this.newLinks, linkData]
-          console.log(this.newLinks)
           const percentageFinished = Math.round(this.newLinks.length / assets.length * 100) / 100
           if (this.currentPercentageFinished < percentageFinished) {
             this.currentPercentageFinished = percentageFinished
