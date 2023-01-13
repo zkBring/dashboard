@@ -209,7 +209,6 @@ export class LinksWorker {
             expiration_time: EXPIRATION_DATE,
             wei_amount: nativeTokensPerLink
           }
-          const newLinkEncrypted = encrypt(newLink, dashboardKey)
           
           this.newLinks = [...this.newLinks, linkData]
           console.log(this.newLinks)

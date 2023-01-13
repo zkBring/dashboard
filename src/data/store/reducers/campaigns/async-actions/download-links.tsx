@@ -22,14 +22,10 @@ const downloadLinks = (
   ) => {
 
     const {
-      user: { dashboardKey },
-      campaigns: { campaigns }
+      user: { dashboardKey }
     } = getState()
-
-    const currentCampaign = campaigns.find(campaign => campaign.campaign_id === campaignId)
     
     if (!dashboardKey) { return alert ('dashboardKey is not provided') }
-    if (!currentCampaign) { return alert ('campaign is not found') }
     if (!REACT_APP_CLAIM_APP) { return alert ('REACT_APP_CLAIM_APP is not provided in .env') }
     try {
       dispatch(actionsCampaigns.setLoading(true))
@@ -37,14 +33,6 @@ const downloadLinks = (
       const result = await campaignsApi.getBatch(campaignId, batchId)
 
       if (result.data.success) {
-        const {
-          token_standard,
-          token_address,
-          wallet,
-          chain_id,
-          creator_address,
-          proxy_contract_version
-        } = currentCampaign
 
         const { claim_links, batch } = result.data
 
@@ -52,15 +40,7 @@ const downloadLinks = (
     
         const decryptedLinks = decryptLinks({
           links: claim_links,
-          dashboardKey,
-          tokenType: token_standard,
-          tokenAddress: token_address,
-          version: proxy_contract_version ? String(proxy_contract_version) : undefined,
-          chainId: chain_id,
-          campaignId,
-          linkdropMasterAddress: creator_address,
-          wallet,
-          claimAppUrl: REACT_APP_CLAIM_APP
+          dashboardKey
         })
         downloadLinksAsCSV(
           decryptedLinks,
