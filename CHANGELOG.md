@@ -1,8 +1,5 @@
 # Ledger Dashboard
 
-## 2.1.3-rc.0
-- Header is no longer fixed, it can be scrolled with content of page
-
 ## 2.1.2
 - Fixed bug for collapsing aside menu when changing network using switcher on the website
 - Link shortening
