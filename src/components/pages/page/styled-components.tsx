@@ -9,14 +9,13 @@ export const Page = styled.div`
 
 export const MainContent = styled.div`
   flex: 1;
+  overflow: scroll;
   background: ${props => props.theme.blankColor};
 `;
 
 export const Content = styled.main<TContentProps>`
   padding: 24px 20px 24px;
-  height: 100%;
-  overflow: scroll;
-  max-height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
   ${props => props.withBreadcrumbs && css`
     max-height: calc(100vh - 116px);
   `}
