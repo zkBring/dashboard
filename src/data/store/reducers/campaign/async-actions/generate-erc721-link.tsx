@@ -15,7 +15,8 @@ import {
   sleep,
   createDataGroups,
   createWorkers,
-  terminateWorkers
+  terminateWorkers,
+  getContractVersion
 } from 'helpers'
 import { Remote } from 'comlink';
 import contracts from 'configs/contracts'
@@ -39,7 +40,8 @@ const generateERC721Link = ({
         chainId,
         address,
         dashboardKey,
-        workersCount
+        workersCount,
+        provider
       },
       campaign,
       campaigns: { campaigns }
@@ -156,6 +158,8 @@ const generateERC721Link = ({
           sponsored,
           batch_description: batchPreviewContents
         }
+        const version = await getContractVersion(proxyContractAddress, provider)
+
         const newCampaign: TCampaignNew = {
           campaign_number: id,
           encrypted_signer_key: encrypt(signerKey, dashboardKey),
@@ -170,6 +174,7 @@ const generateERC721Link = ({
           chain_id: chainId,
           proxy_contract_address: proxyContractAddress,
           claim_pattern: claimPattern,
+          proxy_contract_version: version,
           ...batch
         }
 

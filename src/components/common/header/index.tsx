@@ -74,7 +74,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
     {Object.keys(chains).map((chain: string) => {
       const currentChain = chains[Number(chain)]
       return <MiniPopupCustomItem onClick={() => {
-        switchNetwork(provider, Number(chain), address, () => history.push('/'))
+        switchNetwork(provider, Number(chain), address, () => { window.location.reload() })
       }}>
         {currentChain.displayName}
         <NetworkIndicator className={NetworkIndicatorClass} selected={Number(chainId) === Number(chain)} />
