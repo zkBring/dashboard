@@ -24,16 +24,10 @@ import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { connect } from 'react-redux';
 import { RootState } from 'data/store';
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    connectWallet: () => userAsyncActions.connectWallet(dispatch),
-  }
-}
-
 const mapStateToProps = ({ user: { provider, address } }: RootState) => ({ provider, address })
-type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+type ReduxType = ReturnType<typeof mapStateToProps>
 
-const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
+const AppRouter: FC<ReduxType> = ({ address }) => {
 
   return <HashRouter>
     <Page>
@@ -166,7 +160,7 @@ const AppRouter: FC<ReduxType> = ({ address, connectWallet }) => {
   </HashRouter>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(AppRouter)
+export default connect(mapStateToProps)(AppRouter)
 
 // /
 
