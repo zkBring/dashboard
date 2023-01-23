@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.3-rc.0
+## 2.1.3
 - Header is no longer fixed, it can be scrolled with content of page
 
 ## 2.1.2
