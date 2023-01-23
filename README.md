@@ -14,6 +14,7 @@ In the project you should create `.env` file with contents:
     REACT_APP_LINKS_LIMIT=<Number of links allowed to be generated with dashboard, for instance 20000>
     REACT_APP_SERVER_URL=<URL of claim application, for instance https://dev.dashboard-api.linkdrop.io/api/v1/dashboard>
     REACT_APP_QR_OPTIONS=linkdrop
+    REACT_APP_CHAINS=<Array of chains supported, for instance [5,80001] if you want to support Goerli and Mumbai>
 
 
 ## Requirements
