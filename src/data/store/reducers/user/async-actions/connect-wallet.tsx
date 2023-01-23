@@ -38,8 +38,6 @@ async function connectWallet (
     dispatch(asyncActions.logout())
   })
 
-  console.log({ chainsAvailable })
-
   if (!chainsAvailable.find(network => Number(chainId) === Number(network))) {
     return alert(`Available networks: ${chainsAvailable.map(chain => defineNetworkName(Number(chain)))}`)
   }
