@@ -24,7 +24,7 @@ const mapStateToProps = ({
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
-const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, connectWallet, chainId }) => {
+const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })

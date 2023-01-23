@@ -60,6 +60,21 @@ const chains: TChains = {
       'https://goerli.etherscan.io'
     ]
   },
+  80001: {
+    chainName: 'Mumbai',
+    displayName: 'Mumbai',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'MATIC',
+      decimals: 18
+    },
+    rpcUrls: [
+      'https://endpoints.omniatech.io/v1/matic/mumbai/public'
+    ],
+    blockExplorerUrls: [
+      'https://mumbai.polygonscan.com'
+    ]
+  },
   // 4: {
   //   chainName: 'Rinkeby Testnet',
   //   displayName: 'Rinkeby',

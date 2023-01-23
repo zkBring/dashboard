@@ -21,18 +21,22 @@ import { IAppDispatch } from 'data/store'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  user: { address, chainId, loading, authorizationStep },
+  user: { address, chainId, loading, authorizationStep, chainsAvailable},
 }: RootState) => ({
   campaigns,
   address,
   chainId,
   loading,
-  authorizationStep
+  authorizationStep,
+  chainsAvailable
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) => {
   return {
-    connectWallet: () => asyncUserActions.connectWallet(dispatch),
+    connectWallet: (chainsAvailable: (number | string)[]) => asyncUserActions.connectWallet(
+      dispatch,
+      chainsAvailable
+    ),
     authorize: (address: string) => dispatch(asyncUserActions.authorize(address)),
     checkIfConnected: () => dispatch(asyncUserActions.checkIfConnected())
   }
@@ -65,7 +69,8 @@ const Main: FC<ReduxType> = ({
   authorize,
   loading,
   authorizationStep,
-  checkIfConnected
+  checkIfConnected,
+  chainsAvailable
 }) => {
   useEffect(() => {
     checkIfConnected()
@@ -92,7 +97,7 @@ const Main: FC<ReduxType> = ({
       appearance='action'
       onClick={() => {
         console.log({authorizationStep})
-        if (authorizationStep === 'connect') { return connectWallet() }
+        if (authorizationStep === 'connect') { return connectWallet(chainsAvailable) }
         return authorize(address)
       }}
       title={defineButtonTitle(authorizationStep, loading)}
