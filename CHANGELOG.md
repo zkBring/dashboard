@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.4-rc.0
+## 2.1.4
 - Restrict networks with env variable 
 - Updated README.md file
 - Added Mumbai support
