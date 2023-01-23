@@ -12,7 +12,6 @@ import {
     PolygonIcon
     // @ts-ignore
 } from './styled-components.tsx'
-import { useHistory } from 'react-router-dom'
 import { shortenString, defineNetworkName, capitalize, defineNativeTokenSymbol } from 'helpers'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -27,18 +26,19 @@ const mapStateToProps = ({
     chainId, 
     address, 
     provider, 
-    nativeTokenAmountFormatted
+    nativeTokenAmountFormatted,
+    chainsAvailable
   }
 }: RootState) => ({
   chainId,
   address,
   provider,
-  nativeTokenAmountFormatted
+  nativeTokenAmountFormatted,
+  chainsAvailable
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    connectWallet: () => asyncUserActions.connectWallet(dispatch),
     switchNetwork: (provider: any, chainId: number, address: string, callback: () => void) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address, callback),
     logout: () => dispatch(asyncUserActions.logout())
   }
@@ -64,14 +64,16 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   provider,
   logout,
   title,
-  breadcrumbs
+  breadcrumbs,
+  chainsAvailable
 }) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
   const [ showUserOptions, setShowUserOptions ] = useState(false)
-  
-  const history = useHistory()
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
     {Object.keys(chains).map((chain: string) => {
+      if (chainsAvailable.length > 0 && !chainsAvailable.find(network => Number(chain) === Number(network))) {
+        return null
+      }
       const currentChain = chains[Number(chain)]
       return <MiniPopupCustomItem onClick={() => {
         switchNetwork(provider, Number(chain), address, () => { window.location.reload() })

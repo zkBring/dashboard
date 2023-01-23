@@ -12,15 +12,18 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { IAppDispatch } from 'data/store'
 import { sleep } from 'helpers'
+import { RootState } from 'data/store'
 
 const checkIfConnected = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
+    getState: () => RootState
   ) => {
+    const { user: { chainsAvailable } } = getState()
     try {
       await sleep(1000)
       if (window.ethereum && window.ethereum._state && window.ethereum._state.accounts && window.ethereum._state.accounts.length > 0) {
-        await userAsyncActions.connectWallet(dispatch)
+        await userAsyncActions.connectWallet(dispatch, chainsAvailable)
       } else {
         dispatch(userActions.setAuthorizationStep('connect'))
       }

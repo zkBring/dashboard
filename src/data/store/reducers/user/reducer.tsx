@@ -1,5 +1,9 @@
-import { UserState, UserActions } from './types';
-import { Constants } from './constants';
+import { UserState, UserActions } from './types'
+import { Constants } from './constants'
+import chains from 'configs/chains'
+
+const { REACT_APP_CHAINS } = process.env
+const chainsAvailable: number[] = REACT_APP_CHAINS ? JSON.parse(REACT_APP_CHAINS) : Object.keys(chains)
 
 const initialState: UserState = {
   address: '',
@@ -13,7 +17,8 @@ const initialState: UserState = {
   sdk: null,
   dashboardKey: null,
   workersCount: (navigator && navigator.hardwareConcurrency) || 4,
-  authorizationStep: 'initial'
+  authorizationStep: 'initial',
+  chainsAvailable: chainsAvailable
 };
 
 export function userReducer(

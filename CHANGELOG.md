@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.4-rc.0
+- Restrict networks with env variable 
+- Updated README.md file
+
 ## 2.1.3
 - Header is no longer fixed, it can be scrolled with content of page
 

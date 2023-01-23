@@ -16,7 +16,8 @@ export interface UserState {
   sdk: LinkdropSDK | null,
   dashboardKey: null | string,
   workersCount: number,
-  authorizationStep: TAuthorizationStep
+  authorizationStep: TAuthorizationStep,
+  chainsAvailable: (number | string)[]
 }
 
 export type UserActions = ActionType<typeof actions>;
