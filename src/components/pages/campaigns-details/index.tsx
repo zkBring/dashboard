@@ -85,6 +85,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     provider,
     address
   } = props
+  console.log({ dashboardKey })
 
   const history = useHistory()
 
@@ -119,6 +120,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   }, [])
 
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
+  console.log({ currentCampaign })
   if (!currentCampaign) {
     return null
   }

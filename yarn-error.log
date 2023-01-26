@@ -1,25 +1,30 @@
 Arguments: 
-  /Users/hazobaykulov/.nvm/versions/node/v14.17.0/bin/node /usr/local/Cellar/yarn/1.19.2/libexec/bin/yarn.js
+  /Users/hazobaykulov/.nvm/versions/node/v14.21.2/bin/node /Users/hazobaykulov/.nvm/versions/node/v14.21.2/bin/yarn
 
 PATH: 
-  /Users/hazobaykulov/.nvm/versions/node/v14.17.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Applications/Postgres.app/Contents/Versions/latest/bin
+  /Users/hazobaykulov/.nvm/versions/node/v14.21.2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin
 
 Yarn version: 
-  1.19.2
+  1.22.19
 
 Node version: 
-  14.17.0
+  14.21.2
 
 Platform: 
   darwin x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile '/Users/hazobaykulov/Library/Caches/Yarn/v6/npm-jsdom-16.7.0-918ae71965424b197c819f8183a754e18977b710-integrity/node_modules/jsdom/lib/jsdom/virtual-console.js' -> '/Users/hazobaykulov/www/dashboard-v2/node_modules/jsdom/lib/jsdom/virtual-console.js'
+  SyntaxError: /Users/hazobaykulov/www/dashboard-v2/package.json: Unexpected token } in JSON at position 1501
+      at JSON.parse (<anonymous>)
+      at /Users/hazobaykulov/.nvm/versions/node/v14.21.2/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/Users/hazobaykulov/.nvm/versions/node/v14.21.2/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /Users/hazobaykulov/.nvm/versions/node/v14.21.2/lib/node_modules/yarn/lib/cli.js:321:13
 
 npm manifest: 
   {
-    "name": "@drop-protocol/drop-dashboard",
-    "version": "0.1.0",
+    "name": "linkdrop-dashboard",
+    "version": "2.1.4",
     "private": true,
     "dependencies": {
       "@craco/craco": "^6.4.0",
@@ -64,7 +69,7 @@ npm manifest:
       "typescript": "^4.1.2",
       "uint8arrays": "^3.0.0",
       "web-vitals": "^1.0.1",
-      "web3modal": "^1.9.4"
+      "web3modal": "^1.9.4",
     },
     "scripts": {
       "start": "craco start",
@@ -10726,6 +10731,9 @@ Lockfile:
     version "1.2.4"
     resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
     integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
+  
+  "linkdrop-sdk-test@file:../linkdrop-sdk/dist":
+    version "0.0.0"
   
   loader-runner@^2.4.0:
     version "2.4.0"
