@@ -4,10 +4,12 @@ import TProps from './types'
 
 const Note: FC<TProps> = ({
   children,
-  title
+  title,
+  type = 'default',
+  className
 }) => {
-  return <NoteWrapper>
-    <IconStyled />
+  return <NoteWrapper className={className} type={type}>
+    <IconStyled type={type} />
     {title && <NoteTitle>{title}</NoteTitle>}
     {children}
   </NoteWrapper>

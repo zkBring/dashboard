@@ -51,6 +51,9 @@ const themes = {
 		tagSuccessColor: '#21F142',
 
 		noteDefaultBackgroundColor: '#E4EDFF',
+		noteWarningBackgroundColor: '#FFB4B4',
+		noteWarningTextColor: '#D71E1E',
+		noteWarningBorderColor: '#D71E1E',
 
 		statusSuccessColor: '#19E46A',
 		statusStoppedColor: '#DFE0EB'

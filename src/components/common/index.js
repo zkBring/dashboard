@@ -26,10 +26,12 @@ import Popup from './popup'
 import Note from './note'
 import Radio from './radio'
 import CheckListItem from './check-list-item'
+import SecretString from './secret-string'
 
 export {
   Header,
   Aside,
+  SecretString,
   CheckListItem,
   Button,
   LaunchButton,

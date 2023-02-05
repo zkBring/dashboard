@@ -29,12 +29,15 @@ import { ReactComponent as PauseIcon } from './pause-icon.svg'
 import { ReactComponent as UnpauseIcon } from './unpause-icon.svg'
 import { ReactComponent as RefundIcon } from './refund-icon.svg'
 import { ReactComponent as ClipboardCopyIcon } from './clipboard-copy-icon.svg'
-
+import { ReactComponent as EyeOpenIcon } from './eye-open-icon.svg'
+import { ReactComponent as EyeClosedIcon } from './eye-closed-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  EyeClosedIcon,
   ClipboardCopyIcon,
   RefundIcon,
+  EyeOpenIcon,
   UnpauseIcon,
   PauseIcon,
   OptionsIcon,

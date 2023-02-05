@@ -1,0 +1,56 @@
+import { FC } from 'react'
+import { TProps } from './types'
+import {
+  BatchList,
+  BatchListLabel,
+  BatchListValue,
+} from 'components/pages/common'
+import {
+  formatTime,
+  formatDate
+} from 'helpers'
+import {
+  WidgetButton,
+  SecondaryTextSpan
+} from '../../styled-components'
+
+const BatchesList: FC<TProps> = ({
+  batches,
+  campaignId,
+  title,
+  sdk,
+  downloadLinks,
+  encryptionKey
+}) => {
+  return <BatchList>
+    <BatchListLabel>{sdk ? 'Batch ID' : 'Batch'}</BatchListLabel>
+    <BatchListLabel>Links</BatchListLabel>
+    <BatchListLabel>Created at</BatchListLabel>
+    <BatchListLabel></BatchListLabel>
+    {batches && batches.map((batch, idx) => {
+      const dateFormatted = formatDate(batch.created_at || '')
+      const timeFormatted = formatTime(batch.created_at || '')
+      return <>
+        <BatchListValue>
+          {sdk ? batch.batch_id :  `#${idx + 1}`}
+        </BatchListValue>
+        <BatchListValue>
+          {batch.claim_links_count}
+        </BatchListValue>
+        <BatchListValue>
+          {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
+        </BatchListValue>
+        <WidgetButton
+          appearance='additional'
+          size='small'
+          title='Download'
+          onClick={() => {
+            downloadLinks(batch.batch_id, campaignId, title, sdk ? encryptionKey : undefined)
+          }}
+        />
+      </>
+    })}
+  </BatchList>
+}
+
+export default BatchesList

@@ -18,7 +18,6 @@ import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-import { LinkdropSDK } from 'linkdrop-sdk-test'
 
 // const secretKeys = { // x-secret-key
 //   '3b2c12979794fa25bf356e1f36c39a80': true,
@@ -98,33 +97,6 @@ const Main: FC<ReduxType> = ({
 }) => {
   useEffect(() => {
     checkIfConnected()
-  }, [])
-
-  useEffect(() => {
-    const init = async () => {
-      const sdk = new LinkdropSDK({
-        apiKey: {
-          key: 'TEST-CLIENT-31b96691e36b864425c5570e2f3ce9c8',
-          mode: 'client'
-        },
-        encryptionKey: ''
-      })
-      const campaign = await sdk.getCampaign(
-        '63bc41a1384f19ac512053dc',
-        '',
-        'a82d55f3bba22fda50c4fcb1803d8ea4c10d94400e85b02cfac648723c74b452'
-      )
-      console.log({ campaign })
-      const batches = await campaign?.getBatches()
-      console.log({ batches })
-      const batch = await campaign?.getBatch('63bc41a1384f19ac512053de')
-      console.log({ batch })
-
-      const linkParams = await sdk.getLinkParams("0x7F07Ec0Baec9D6AAb915Caa2A4fF41BB4865e544")
-      console.log({ linkParams })
-    }
-    init()
-    
   }, [])
 
   if (address && chainId && authorizationStep === 'authorized') {

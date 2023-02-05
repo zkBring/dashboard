@@ -14,11 +14,11 @@ import {
   Aside,
   WidgetContainer,
   WidgetSubtitle,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   AsideContent,
-  AsideValueShorten,
+  TableValueShorten,
   AssetsList,
   AsideDivider
 } from 'components/pages/common'
@@ -48,7 +48,8 @@ const mapStateToProps = ({
     title,
     tokenAddress,
     claimPattern,
-    assetsOriginal
+    assetsOriginal,
+    sdk
   },
 }: RootState) => ({
   assets,
@@ -60,7 +61,8 @@ const mapStateToProps = ({
   tokenStandard,
   loading,
   assetsOriginal,
-  claimPattern
+  claimPattern,
+  sdk
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -92,7 +94,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   tokenAddress,
   title,
   claimPattern,
-  assetsOriginal
+  assetsOriginal,
+  sdk
 }) => {
   
   const walletsOptions = useMemo(() => {
@@ -151,7 +154,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   return <Container>
     <WidgetContainer>
-      <WidgetComponent title='Transaction sponsorship'>
+      {!sdk && <WidgetComponent title='Transaction sponsorship'>
         <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
@@ -161,10 +164,10 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             setSponsored(value)
           }}
         />
-      </WidgetComponent>
+      </WidgetComponent>}
 
-      <WidgetComponent title='Optional'>
-        <StyledInput
+      <WidgetComponent title={sdk ? 'Additional options' : 'Optional'}>
+        {!sdk && <StyledInput
           title={`${nativeTokenSymbol} to include`}
           value={nativeTokensAmount}
           disabled={loading}
@@ -175,7 +178,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             }
             return value
           }}
-        />
+        />}
         <StyledSelect
           options={walletsOptions}
           disabled={loading}
@@ -213,30 +216,30 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       subtitle="Check and confirm details"
     >
       <AsideContent>
-        <AsideRow>
-          <AsideText>Title of campaign</AsideText>
-          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
-        </AsideRow>
+        <TableRow>
+          <TableText>Title of campaign</TableText>
+          <TableValueShorten>{currentCampaignTitle}</TableValueShorten>
+        </TableRow>
 
-        {currentTokenAddress && <AsideRow>
-          <AsideText>Token address</AsideText>
-          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
-        </AsideRow>}
+        {currentTokenAddress && <TableRow>
+          <TableText>Token address</TableText>
+          <TableValue>{shortenString(currentTokenAddress)}</TableValue>
+        </TableRow>}
 
-        {currentCampaignTokenSymbol && <AsideRow>
-          <AsideText>Token Name</AsideText>
-          <AsideValue>{currentCampaignTokenSymbol}</AsideValue>
-        </AsideRow>}
+        {currentCampaignTokenSymbol && <TableRow>
+          <TableText>Token Name</TableText>
+          <TableValue>{currentCampaignTokenSymbol}</TableValue>
+        </TableRow>}
 
-        {currentCampaignTokenStandard && <AsideRow>
-          <AsideText>Token standard</AsideText>
-          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
-        </AsideRow>}
+        {currentCampaignTokenStandard && <TableRow>
+          <TableText>Token standard</TableText>
+          <TableValue>{currentCampaignTokenStandard}</TableValue>
+        </TableRow>}
 
-        {currentCampaignChainId && <AsideRow>
-          <AsideText>Network</AsideText>
-          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
-        </AsideRow>}
+        {currentCampaignChainId && <TableRow>
+          <TableText>Network</TableText>
+          <TableValue>{defineNetworkName(Number(currentCampaignChainId))}</TableValue>
+        </TableRow>}
 
         {currentCampaignTokenStandard && assetsOriginal && <AssetsList
           data={assetsOriginal}
@@ -244,34 +247,36 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           type={currentCampaignTokenStandard}
         />}
 
-        {assets && <AsideRow>
-          <AsideText>Total links</AsideText>
-          <AsideValue>{assets.length}</AsideValue>
-        </AsideRow>}
+        {!sdk && assets && <TableRow>
+          <TableText>Total links</TableText>
+          <TableValue>{assets.length}</TableValue>
+        </TableRow>}
 
-        <AsideRow>
-          <AsideText>Claim pattern</AsideText>
-          <AsideValue>{currentCampaignClaimPattern}</AsideValue>
-        </AsideRow>
+        <TableRow>
+          <TableText>Claim pattern</TableText>
+          <TableValue>{currentCampaignClaimPattern}</TableValue>
+        </TableRow>
 
-        <AsideDivider />
+        {!sdk && <>
+          <AsideDivider />
 
-        <AsideRow>
-          <AsideText>To be secured (sponsorship)</AsideText>
-          <AsideValue>{String(totalComission)} {nativeTokenSymbol}</AsideValue>
-        </AsideRow>
+          <TableRow>
+            <TableText>To be secured (sponsorship)</TableText>
+            <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
+          </TableRow>
 
-        <AsideRow>
-          <AsideText>Included into the links</AsideText>
-          <AsideValue>{String(totalNativeTokensAmount)} {nativeTokenSymbol}</AsideValue>
-        </AsideRow>
+          <TableRow>
+            <TableText>Included into the links</TableText>
+            <TableValue>{String(totalNativeTokensAmount)} {nativeTokenSymbol}</TableValue>
+          </TableRow>
 
-        <AsideDivider />
+          <AsideDivider />
 
-        <AsideRow>
-          <AsideText>Total amount</AsideText>
-          <AsideValue>{String(totalNativeTokensAmountToSecure)} {nativeTokenSymbol}</AsideValue>
-        </AsideRow>
+          <TableRow>
+            <TableText>Total amount</TableText>
+            <TableValue>{String(totalNativeTokensAmountToSecure)} {nativeTokenSymbol}</TableValue>
+          </TableRow>
+        </>}
 
 
       </AsideContent>

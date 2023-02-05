@@ -10,11 +10,11 @@ import {
   Container,
   Aside,
   WidgetSubtitle,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   AsideContent,
-  AsideValueShorten
+  TableValueShorten
 } from 'components/pages/common'
 
 import { RootState, IAppDispatch } from 'data/store';
@@ -209,20 +209,20 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         subtitle="Check and confirm details"
       >
         <AsideContent>
-          {title && <AsideRow>
-            <AsideText>Title of campaign</AsideText>
-            <AsideValueShorten>{title}</AsideValueShorten>
-          </AsideRow>}
+          {title && <TableRow>
+            <TableText>Title of campaign</TableText>
+            <TableValueShorten>{title}</TableValueShorten>
+          </TableRow>}
 
-          <AsideRow>
-            <AsideText>Token Standard</AsideText>
-            <AsideValue>{currentType}</AsideValue>
-          </AsideRow>
+          <TableRow>
+            <TableText>Token Standard</TableText>
+            <TableValue>{currentType}</TableValue>
+          </TableRow>
 
-          <AsideRow>
-            <AsideText>Network</AsideText>
-            <AsideValue>{defineNetworkName(chainId)}</AsideValue>
-          </AsideRow>
+          <TableRow>
+            <TableText>Network</TableText>
+            <TableValue>{defineNetworkName(chainId)}</TableValue>
+          </TableRow>
         </AsideContent>
       </Aside>
     </Container>

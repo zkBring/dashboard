@@ -12,14 +12,14 @@ import {
   WidgetTitle,
   WidgetContainer,
   AsideDivider,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   BatchList,
   BatchListLabel,
   BatchListValue,
   AsideContent,
-  AsideValueShorten
+  TableValueShorten
 } from './styled-components'
 
 export {
@@ -38,9 +38,9 @@ export {
   WidgetSubtitle,
   WidgetTitle,
   AsideDivider,
-  AsideRow,
-  AsideValueShorten,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableValueShorten,
+  TableText,
+  TableValue,
   AssetsList
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { Widget, Button } from 'components/common'
-import { WidgetTitle } from 'components/pages/common'
+import { Widget, Button, Note } from 'components/common'
+import { WidgetTitle, Aside } from 'components/pages/common'
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
   max-width: 400px;
@@ -26,4 +26,13 @@ export const WidgetButton = styled(Button)`
 
 export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
+`
+
+export const AsideStyled = styled(Aside)`
+  min-width: 370px;
+  flex: 0 1 370px;
+`
+
+export const NoteStyled = styled(Note)`
+  margin-bottom: 32px;
 `

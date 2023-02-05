@@ -54,10 +54,12 @@ import campaignUnpause from './campaign-unpause'
 import campaignRefund from './campaign-refund'
 import defineProxyContractFunds from './define-proxy-contract-funds'
 import getContractVersion from './get-contract-version'
+import createEncryptionKey from './create-encryption-key'
 
 export {
   shortenString,
   getContractVersion,
+  createEncryptionKey,
   defineProxyContractFunds,
   campaignRefund,
   campaignPause,

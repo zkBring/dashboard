@@ -1,5 +1,5 @@
 import { TTokenType } from './index.js'
-import { TLink, TClaimPattern, TDistributionPattern } from 'types'
+import { TLink, TClaimPattern } from 'types'
 
 type TCampaignNew = {
   title: string,
@@ -12,7 +12,7 @@ type TCampaignNew = {
   proxy_contract_address: string,
   encrypted_signer_key: string,
   signer_address: string,
-  claim_links: TLink[],
+  claim_links?: TLink[],
   sponsored?: boolean,
   batch_description: string,
   creator_address: string,

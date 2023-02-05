@@ -60,7 +60,6 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   const { id } = useParams<TLinkParams>()
 
   useEffect(() => {
-    console.log({ tokenStandard })
     if (!tokenStandard) { return }
     
     if (tokenStandard === 'ERC20') {
@@ -73,7 +72,6 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
       }, id)
     } else {
       generateERC1155((id) => {
-        console.log('here')
         history.push(`/campaigns/${id}`)
       }, id)
     }

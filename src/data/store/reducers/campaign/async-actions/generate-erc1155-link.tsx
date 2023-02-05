@@ -156,8 +156,9 @@ const generateERC1155Link = ({
         // dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
   
       } else {
+        const batchLinks= newLinks.flat()
         const batch = {
-          claim_links: newLinks.flat(),
+          claim_links: batchLinks.length === 0 ? undefined : newLinks.flat(),
           sponsored,
           batch_description: batchPreviewContents
         }

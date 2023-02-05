@@ -7,7 +7,7 @@ import {
   LoaderStyled
 } from './styled-components'
 import { Erc20, Erc721, Erc1155, CSVUploadPopup } from './components'
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TAssetsData, TLinkContent, TLinkParams } from 'types'
@@ -22,11 +22,11 @@ import {
   Aside,
   WidgetSubtitle,
   WidgetContainer,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   AsideContent,
-  AsideValueShorten,
+  TableValueShorten,
   AssetsList
 } from 'components/pages/common'
 import { useHistory } from 'react-router-dom'
@@ -52,7 +52,7 @@ const mapStateToProps = ({
     title,
     assets,
     symbol,
-    approved
+    approved,
   },
   campaigns: {
     campaigns
@@ -201,8 +201,11 @@ const defineComponent: TDefineComponent = (
   setAssetsData,
   claimPattern,
   setUploadCSVPopup,
+  sdk,
   campaign
 ) => {
+
+  if (sdk) { return null }
 
   const UploadInstructionNote = type === 'ERC721' &&  claimPattern === 'mint' ? null : <InstructionNoteStyled
     icon={<Icons.UploadFileIcon />}
@@ -278,8 +281,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
 
-  const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
-
+  const defineRedirectUrl = () => {
+    return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
+  }
 
   const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
 
@@ -292,10 +296,12 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     setData,
     claimPattern,
     () => setUploadCSVPopup(true),
+    sdk,
     currentCampaign
   )
 
   const defineIfNextDisabled = () => {
+    if (type === 'ERC20') { return true }
     return (!data.length || !assetsParsed) && !sdk && !loading
   }
 
@@ -359,21 +365,19 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
-          // disabled={Boolean(currentCampaign)}
-          disabled
+          disabled={Boolean(currentCampaign) || type === 'ERC20'}
           radios={[
             { label: 'Manual (Select tokens to generate links)', value: false },
             { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: true }
           ]}
           value={sdk}
           onChange={value => {
-            return
-            // setData([])
+            setData([])
             setSdk(value)
           }}
         />
       </WidgetComponent>
-      {!sdk && content}
+      {content}
     </WidgetContainer>
 
     <Aside
@@ -386,7 +390,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         title: defineNextButtonTitle(),
         action: () => {
           const callback = () => {
-            history.push(redirectURL)
+            history.push(defineRedirectUrl())
           }
           if (claimPattern === 'mint') {
             return grantRole(
@@ -426,30 +430,30 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       subtitle="Check and confirm details"
     >
       <AsideContent>
-        <AsideRow>
-          <AsideText>Title of campaign</AsideText>
-          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
-        </AsideRow>
+        <TableRow>
+          <TableText>Title of campaign</TableText>
+          <TableValueShorten>{currentCampaignTitle}</TableValueShorten>
+        </TableRow>
 
-        {currentTokenAddress && <AsideRow>
-          <AsideText>Token address</AsideText>
-          <AsideValue><TextLink href={scannerUrl} target='_blank'>{shortenString(currentTokenAddress)}</TextLink></AsideValue>
-        </AsideRow>}
+        {currentTokenAddress && <TableRow>
+          <TableText>Token address</TableText>
+          <TableValue><TextLink href={scannerUrl} target='_blank'>{shortenString(currentTokenAddress)}</TextLink></TableValue>
+        </TableRow>}
 
-        {currentCampaignSymbol && <AsideRow>
-          <AsideText>Token Name</AsideText>
-          <AsideValue>{currentCampaignSymbol}</AsideValue>
-        </AsideRow>}
+        {currentCampaignSymbol && <TableRow>
+          <TableText>Token Name</TableText>
+          <TableValue>{currentCampaignSymbol}</TableValue>
+        </TableRow>}
 
-        {currentCampaignTokenStandard && <AsideRow>
-          <AsideText>Token standard</AsideText>
-          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
-        </AsideRow>}
+        {currentCampaignTokenStandard && <TableRow>
+          <TableText>Token standard</TableText>
+          <TableValue>{currentCampaignTokenStandard}</TableValue>
+        </TableRow>}
 
-        {currentCampaignChainId && <AsideRow>
-          <AsideText>Network</AsideText>
-          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
-        </AsideRow>}
+        {currentCampaignChainId && <TableRow>
+          <TableText>Network</TableText>
+          <TableValue>{defineNetworkName(Number(currentCampaignChainId))}</TableValue>
+        </TableRow>}
 
         {currentCampaignTokenStandard && <AssetsList
           claimPattern={claimPattern}
@@ -457,15 +461,15 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           type={currentCampaignTokenStandard}
         />}
 
-        <AsideRow>
-          <AsideText>Total links</AsideText>
-          <AsideValue>{assetsParsed.length}</AsideValue>
-        </AsideRow>
+        <TableRow>
+          <TableText>Total links</TableText>
+          <TableValue>{assetsParsed.length}</TableValue>
+        </TableRow>
 
-        <AsideRow>
-          <AsideText>Claim pattern</AsideText>
-          <AsideValue>{claimPattern}</AsideValue>
-        </AsideRow>
+        <TableRow>
+          <TableText>Claim pattern</TableText>
+          <TableValue>{claimPattern}</TableValue>
+        </TableRow>
       </AsideContent>
       {approvedNote()}
     </Aside>
