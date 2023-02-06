@@ -108,6 +108,21 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
         )
         )
     },
+    approveAllERC20: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      sdk: boolean,
+      callback: () => void
+    ) => {
+      dispatch(
+        userAsyncActions.approveAllERC20(
+          assets,
+          assetsOriginal,
+          sdk,
+          callback
+        )
+        )
+    },
     approveERC721: (
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
@@ -202,7 +217,7 @@ const defineComponent: TDefineComponent = (
   claimPattern,
   setUploadCSVPopup,
   sdk,
-  campaign
+  campaign,
 ) => {
 
   if (sdk) { return null }
@@ -262,7 +277,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   checkIfGranted,
   symbol,
   approved,
-  setApproved
+  setApproved,
+  approveAllERC20
 }) => {
 
   const [
@@ -301,8 +317,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   )
 
   const defineIfNextDisabled = () => {
-    if (type === 'ERC20') { return true }
-    return (!data.length || !assetsParsed) && !sdk && !loading
+    return ((!data.length || !assetsParsed) && !sdk) || loading
   }
 
   useEffect(() => {
@@ -312,7 +327,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (currentCampaign.claim_pattern === 'mint') {
       return checkIfGranted()
     }
-    if (tokenStandard === 'ERC20') { return setApproved(false) }
+    if (tokenStandard === 'ERC20') {
+      return setApproved(false)
+    }
     checkIfApproved()
   }, [])
 
@@ -365,7 +382,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
-          disabled={Boolean(currentCampaign) || type === 'ERC20'}
+          disabled={Boolean(currentCampaign)}
           radios={[
             { label: 'Manual (Select tokens to generate links)', value: false },
             { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: true }
@@ -401,6 +418,14 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             )
           }
           if (tokenStandard === 'ERC20') {
+            if (sdk) {
+              return approveAllERC20(
+                assetsParsed,
+                data,
+                sdk,
+                callback
+              )
+            }
             approveERC20(
               assetsParsed,
               data,
@@ -461,10 +486,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           type={currentCampaignTokenStandard}
         />}
 
-        <TableRow>
+        {!sdk && <TableRow>
           <TableText>Total links</TableText>
           <TableValue>{assetsParsed.length}</TableValue>
-        </TableRow>
+        </TableRow>}
 
         <TableRow>
           <TableText>Claim pattern</TableText>

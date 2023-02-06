@@ -7,12 +7,15 @@ import {
 } from 'components/pages/common'
 import {
   formatTime,
-  formatDate
+  formatDate,
+  copyToClipboard
 } from 'helpers'
 import {
   WidgetButton,
   SecondaryTextSpan
 } from '../../styled-components'
+import { ClipboardCopy, BatchId } from './styled-components'
+import Icons from 'icons'
 
 const BatchesList: FC<TProps> = ({
   batches,
@@ -32,7 +35,12 @@ const BatchesList: FC<TProps> = ({
       const timeFormatted = formatTime(batch.created_at || '')
       return <>
         <BatchListValue>
-          {sdk ? batch.batch_id :  `#${idx + 1}`}
+          {sdk ? <BatchId onClick={() => {
+            copyToClipboard({ value: batch.batch_id })
+          }}>
+            {batch.batch_id}
+            <ClipboardCopy><Icons.ClipboardCopyIcon /></ClipboardCopy>
+          </BatchId> :  `#${idx + 1}`}
         </BatchListValue>
         <BatchListValue>
           {batch.claim_links_count}
@@ -42,6 +50,7 @@ const BatchesList: FC<TProps> = ({
         </BatchListValue>
         <WidgetButton
           appearance='additional'
+          disabled={batch.claim_links_count === 0}
           size='small'
           title='Download'
           onClick={() => {

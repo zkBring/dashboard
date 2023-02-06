@@ -20,7 +20,7 @@ const SecretString: FC<TProps> =  ({
       setVisible(!visible)
     }}>
       
-      {visible ? <Icons.EyeOpenIcon /> : <Icons.EyeClosedIcon />}
+      {visible ? <Icons.EyeClosedIcon /> : <Icons.EyeOpenIcon />}
     </IconStyled>
   </Container>
 }

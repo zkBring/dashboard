@@ -1,4 +1,5 @@
 import approveERC20 from "./approve-erc20"
+import approveAllERC20 from './approve-all-erc20'
 import approveERC721 from "./approve-erc721"
 import approveERC1155 from "./approve-erc1155"
 import initialization from "./initialization"
@@ -16,6 +17,7 @@ import checkIfConnected from "./check-if-connected"
 
 export {
   approveERC20,
+  approveAllERC20,
   getNativeTokenAmount,
   initialization,
   getTokenAmount,
