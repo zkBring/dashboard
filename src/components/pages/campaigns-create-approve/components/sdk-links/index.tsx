@@ -7,7 +7,7 @@ import {
   TextBold,
   InstructionNoteStyled
 } from '../../styled-components'
-import { TProps } from './type'
+import { TProps } from './types'
 import {
   Container
 } from './styled-components'
@@ -75,16 +75,12 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps> &
   TProps
 
-const Erc721: FC<ReduxType > = ({
+const SDKLinks: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
   assetsData,
-  claimPattern,
-  children,
   sdk
 }) => {
-  console.log({ tokenStandard })
-
   const { type } = useParams<{ type: TTokenType }>()
 
   const getDefaultValues: () => TLinkContent = () => {
@@ -102,18 +98,15 @@ const Erc721: FC<ReduxType > = ({
   ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
-    if (claimPattern === 'mint') {
-      return Boolean(assetsData.length)
-    }
-    return !formData.tokenId || formData.tokenId.length === 0
+    return Boolean(assetsData.length)
   }
 
-  return <WidgetComponent title={claimPattern === 'mint' ?  'Specify number of NFTs' : 'Add token IDs to distribute'}>
+  return <WidgetComponent title='Specify number of NFTs'>
     <Container>
       <LinksContents
         type={type}
-        sdk={sdk}
         data={assetsData}
+        sdk={sdk}
         onRemove={(id) => {
           setAssetsData(assetsData.filter(item => item.id !== id))
         }}
@@ -121,10 +114,10 @@ const Erc721: FC<ReduxType > = ({
       <InputsContainer>
         <InputStyled
           value={formData.tokenId}
-          placeholder={claimPattern === 'mint' ? 'Amount' : 'Token ID'}
-          disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
+          placeholder='Number of NFTs'
+          disabled={Boolean(assetsData.length)}
           onChange={value => {
-            const pattern = claimPattern === 'mint' ? /^[0-9]+$/ : /^[0-9-]+$/
+            const pattern = /^[0-9]+$/
             if (pattern.test(value) || value === '') {
               setFormData({ ...formData, tokenId: value })
             }
@@ -147,18 +140,8 @@ const Erc721: FC<ReduxType > = ({
           + Add
         </ButtonStyled>
       </InputsContainer>
-      <NotesContainer>
-        <InstructionNoteStyled
-          icon={<Icons.InputNoteIcon />}
-        >
-          {
-            claimPattern === 'mint' ? 'Specify limit of tokens to be minted' : <><TextBold>Adding multiple IDs</TextBold> — You can add a range of IDs, by typing it the following way: 1-10</>
-          }
-        </InstructionNoteStyled>
-        {children}
-      </NotesContainer>
     </Container>
   </WidgetComponent>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)
+export default connect(mapStateToProps, mapDispatcherToProps)(SDKLinks)

@@ -2,10 +2,9 @@ import { FC, useState, useMemo } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import {
-  defineNativeTokenSymbol
+  defineNativeTokenSymbol,
+  countNativeTokensToSecure
 } from 'helpers'
-import { LINK_COMISSION_PRICE } from 'configs/app'
-import { add, bignumber, multiply, number } from 'mathjs'
 import { useParams } from 'react-router-dom'
 import { TLinkParams, TSelectOption } from 'types'
 import {
@@ -13,7 +12,6 @@ import {
   Container,
   Aside,
   WidgetContainer,
-  WidgetSubtitle,
   TableRow,
   TableText,
   TableValue,
@@ -24,7 +22,6 @@ import {
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
 import {
-  StyledRadio,
   StyledInput,
   StyledSelect
 } from './styled-components'
@@ -49,7 +46,8 @@ const mapStateToProps = ({
     tokenAddress,
     claimPattern,
     assetsOriginal,
-    sdk
+    sdk,
+    sponsored
   },
 }: RootState) => ({
   assets,
@@ -62,20 +60,20 @@ const mapStateToProps = ({
   loading,
   assetsOriginal,
   claimPattern,
-  sdk
+  sdk,
+  sponsored
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     secure: (
-      sponsored: boolean,
       totalNativeTokensAmountToSecure: string,
       nativeTokensPerLink: string,
       walletApp: string,
       callback: () => void
     ) => {
       dispatch(
-        userAsyncActions.secure(sponsored, totalNativeTokensAmountToSecure, nativeTokensPerLink, walletApp, callback)
+        userAsyncActions.secure(totalNativeTokensAmountToSecure, nativeTokensPerLink, walletApp, callback)
       )
     }
   }
@@ -95,7 +93,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   title,
   claimPattern,
   assetsOriginal,
-  sdk
+  sdk,
+  sponsored
 }) => {
   
   const walletsOptions = useMemo(() => {
@@ -113,15 +112,12 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     currentWallet,
     setCurrentWallet
   ] = useState<TSelectOption>(walletsOptions[0])
-  const [ sponsored, setSponsored ] = useState<boolean>(true)
   const history = useHistory()
   const [ nativeTokensAmount, setNativeTokensAmount ] = useState<string>('')
   const { id } = useParams<TLinkParams>()
   if (!assets || !symbol || !chainId) { return null }
   
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-  const comission = bignumber(String(LINK_COMISSION_PRICE))
-
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
   const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
@@ -130,42 +126,18 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentCampaignTokenSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
 
-  const totalNativeTokensAmount = nativeTokensAmount === '' || nativeTokensAmount === '0' ? 0 : multiply(
-    bignumber(nativeTokensAmount),
-    assets.length
-  )
-
-  const potentialComission = multiply(
-    comission,
-    assets.length
-  )
-
-  const totalComission = sponsored ? potentialComission : 0
-
-  const totalNativeTokensAmountToSecure = !sponsored ? totalNativeTokensAmount : add(
+  const {
     totalNativeTokensAmount,
-    totalComission
+    totalComission,
+    totalNativeTokensAmountToSecure
+  } = countNativeTokensToSecure(
+    nativeTokensAmount,
+    assets,
+    sponsored
   )
-
-  const isSponsored = [
-    { value: true, label: `Sponsor claim transactions (+ ${potentialComission} ${nativeTokenSymbol})` },
-    { value: false, label: `No sponsoring (+ 0 ${nativeTokenSymbol})` }
-  ]
 
   return <Container>
     <WidgetContainer>
-      {!sdk && <WidgetComponent title='Transaction sponsorship'>
-        <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
-        <StyledRadio
-          disabled={Boolean(currentCampaign) || loading}
-          radios={isSponsored}
-          value={sponsored}
-          onChange={value => {
-            setSponsored(value)
-          }}
-        />
-      </WidgetComponent>}
-
       <WidgetComponent title={sdk ? 'Additional options' : 'Optional'}>
         {!sdk && <StyledInput
           title={`${nativeTokenSymbol} to include`}
@@ -201,7 +173,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         action: () => {
           const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
           secure(
-            sponsored,
             String(totalNativeTokensAmountToSecure),
             nativeTokensAmount,
             String(currentWallet.value),
@@ -241,7 +212,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <TableValue>{defineNetworkName(Number(currentCampaignChainId))}</TableValue>
         </TableRow>}
 
-        {currentCampaignTokenStandard && assetsOriginal && <AssetsList
+        {!sdk && currentCampaignTokenStandard && assetsOriginal && <AssetsList
           data={assetsOriginal}
           claimPattern={currentCampaignClaimPattern}
           type={currentCampaignTokenStandard}

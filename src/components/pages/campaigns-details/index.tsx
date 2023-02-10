@@ -16,7 +16,8 @@ import {
   Header,
   WidgetButton,
   WidgetTitleStyled,
-  AsideStyled
+  AsideStyled,
+  AsideContainer
 } from './styled-components'
 
 import {
@@ -41,6 +42,7 @@ import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto';
 import LinkdropSDK from 'linkdrop-sdk-test'
+import { ethers } from 'ethers';
 
 
 const mapStateToProps = ({
@@ -123,9 +125,11 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   }, [])
 
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
-
+  console.log({ currentCampaign })
   useEffect(() => {
     const init = async () => {
+      return
+
       // if (!currentCampaign || !dashboardKey) { return }
       // const encryptionKey = createEncryptionKey(
       //   dashboardKey,
@@ -137,19 +141,18 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
       //   encryptionKey.replace('0x', '')
       // )
+      // console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
       // const sdk = new LinkdropSDK({
-      //   apiKey: {
-      //     key: '3b2c12979794fa25bf356e1f36c39a80',
-      //     mode: 'server'
-      //   },
       //   claimApiUrl: 'https://staging.claim.ledger.com'
       // })
+      // console.log({ sdk })
       // const campaign = await sdk.getCampaign(
       //   currentCampaign.campaign_id,
       //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
       //   encryptionKey
       // )
       // console.log({ campaign })
+      // if (!campaign) { return }
       // const batches = await campaign?.getBatches()
       // console.log({ batches })
       // if (!batches || !batches.batches) { return }
@@ -165,13 +168,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       // const lastLink = links[links.length - 1]
       // console.log({ lastLink })
       // if (!lastLink) { return }
-      // const status = await sdk.getLinkStatus(lastLink.linkId)
+      // const status = await campaign.getLinkStatus(lastLink.linkId)
       // console.log({ status })
 
-      // // const deactivated = await sdk.deactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
-      // // console.log({ deactivated })
-      // // const reactivated = await sdk.reactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
-      // // console.log({ reactivated })
+      // const deactivated = await campaign.deactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
+      // console.log({ deactivated })
+      // const reactivated = await campaign.reactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
+      // console.log({ reactivated })
 
       // const claim = await sdk.redeem('fb7734e4fda2e1e2fdc7340ab982d23f0bc3d9db4022083359403be9fd434127', '0x0553aDA5829184A7818dC866367D77334183603E')
       // console.log({ claim, test: 1 })
@@ -370,7 +373,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
 
     </WidgetContainer>
     
-    <WidgetContainer>
+    <AsideContainer>
       <AsideStyled
         title="Campaign"
         options={defineOptions()}
@@ -413,10 +416,10 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           <TableText>Token standard</TableText>
           <TableValue>{token_standard}</TableValue>
         </TableRow>
-        <TableRow>
+        {links_count === 0 && <TableRow>
           <TableText>Links</TableText>
           <TableValue>{links_count}</TableValue>
-        </TableRow>
+        </TableRow>}
       </AsideStyled>
 
       <AsideStyled
@@ -438,7 +441,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       >
        
       </AsideStyled>
-    </WidgetContainer>
+    </AsideContainer>
   </Container>
 }
 

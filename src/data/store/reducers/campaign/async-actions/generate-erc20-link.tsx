@@ -102,7 +102,7 @@ const generateERC20Link = ({
         await sleep(1)
       }
 
-      const assetsGroups = createDataGroups(assets, neededWorkersCount)
+      const assetsGroups = createDataGroups(sdk ? [] : assets, neededWorkersCount)
       console.log({ assetsGroups })
       const workers = await createWorkers(assetsGroups, 'links', updateProgressbar)
       console.log({ workers })

@@ -16,16 +16,16 @@ import { TCallback } from './types'
 
 const mapStateToProps = ({
   campaign: {
-    assets,
     tokenStandard,
     links,
-    linksGenerateLoader
+    linksGenerateLoader,
+    sdk
   },
 }: RootState) => ({
-  assets,
   tokenStandard,
   links,
-  linksGenerateLoader
+  linksGenerateLoader,
+  sdk
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -52,7 +52,7 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   generateERC20,
   generateERC721,
   generateERC1155,
-  assets,
+  sdk,
   linksGenerateLoader,
   tokenStandard
 }) => {
@@ -76,6 +76,10 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
       }, id)
     }
   }, [])
+
+  if (sdk) {
+    return null
+  }
 
   return <Container>
     <GenerateProgress>

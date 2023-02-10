@@ -22,22 +22,54 @@ const HowToUseSDK: FC<TProps> = ({
 import LinkdropSDK from '@linkdrop/sdk'
 
 const sdk = new LinkdropSDK({
-// required params
-  apiKey: {
-    key: <YOUR API KEY>, // key starts with "TEST-CLIENT-XXXXXX" for dev environments
-    mode: "client" | "server"
-  }
   // optional params
-  apiHost: string, // overrides api host
+  mode: 'testnets', // for goerli and mumbai networks
+  apiHost: string, // overrides defulat api host
   claimApiUrl: string // api url that will be used as prefix for claim links
 })
 
 const init = async () => {
+
+  // Get campaign
   const campaign = await sdk.getCampaign(
     campaignId: string,
-    signerKey: string,
-    encryptionKey: string
+    signerKey: string, // signer key decrypted with dashboard key
+    encryptionKey: string // key for link encryption
   )
+  // Get all params from "Campaign parameters" block above
+
+  // Create batch
+  const batch = await campaign.createBatch(
+    [{ 
+      id: string, // Token id (needed for ERC721/ERC1155 campaign)
+      amount: string, // Amount of tokens per link (needed for ERC20/ERC1155 campaign)
+      links: string, // Amount of links
+      weiAmount: string, // Amount of native tokens. Should be  
+    }],
+    // optional parameters
+    {
+      sponsored: boolean,
+      // if set to true claim will be paid by campaign creator. Default: true
+      batchDescription: string
+      // description of batch. Default: 'Created by SDK'
+    }
+  )
+
+  // Get all batches of campaign
+  const batches = await campaign.getBatches()
+
+  // Get batch by id
+  const batch = await campaign.getBatch(
+    batchId: string // id of batch
+  )
+
+  // Add links to batch
+  const links = await batch.addLinks([{ 
+    id: string, 
+    amount: string, 
+    links: string, 
+    weiAmount: string,
+  }]) 
 }
 
 init()

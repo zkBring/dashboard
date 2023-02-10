@@ -25,6 +25,9 @@ const BatchesList: FC<TProps> = ({
   downloadLinks,
   encryptionKey
 }) => {
+  if (!batches || batches.length === 0) {
+    return null
+  }
   return <BatchList>
     <BatchListLabel>{sdk ? 'Batch ID' : 'Batch'}</BatchListLabel>
     <BatchListLabel>Links</BatchListLabel>

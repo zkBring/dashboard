@@ -31,6 +31,13 @@ export const SecondaryTextSpan = styled.span`
 export const AsideStyled = styled(Aside)`
   min-width: 370px;
   flex: 0 1 370px;
+  margin: 0;
+`
+
+export const AsideContainer = styled.div`
+  min-width: 370px;
+  flex: 0 1 370px;
+  padding-left: 24px;
 `
 
 export const NoteStyled = styled(Note)`
