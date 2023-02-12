@@ -34,6 +34,12 @@ export const AsideStyled = styled(Aside)`
   margin: 0;
 `
 
+export const MainContent = styled.div`
+  min-width: 370px;
+  flex: 0 1 370px;
+  margin: 0;
+`
+
 export const AsideContainer = styled.div`
   min-width: 370px;
   flex: 0 1 370px;

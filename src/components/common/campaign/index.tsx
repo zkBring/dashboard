@@ -56,10 +56,10 @@ const CampaignComponent: FC<TProps> = ({
       <CampaignText>Type</CampaignText>
       <CampaignValue>{type}</CampaignValue>
     </CampaignRow>
-    <CampaignRow>
+    {linksAmount > 0 && <CampaignRow>
       <CampaignText>Links</CampaignText>
       <CampaignValue>{linksAmount}</CampaignValue>
-    </CampaignRow>
+    </CampaignRow>}
     <Divider />
     <CampaignRow>
       <CampaignText>Claim pattern</CampaignText>
