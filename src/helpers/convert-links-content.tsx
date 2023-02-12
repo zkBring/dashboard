@@ -12,12 +12,27 @@ import { getBignumberInterval } from 'helpers'
 type TConvertLinksContent = (
   linksContents: TLinkContent[],
   decimals: number,
-  claimPattern: TClaimPattern
+  claimPattern: TClaimPattern,
+  sdk: boolean
 ) => TAssetsData
-const convertLinksContent: TConvertLinksContent = (linksContents, decimals, claimPattern) => {
+const convertLinksContent: TConvertLinksContent = (linksContents, decimals, claimPattern, sdk) => {
   let result: TAssetsData = []
   linksContents.forEach((item: TLinkContent) => {
-    console.log({ item })
+    if (sdk) {
+      if (!item.tokenId) { return result }
+      const {
+        suffix,
+          limit,
+          prefixOffset
+      } = getBignumberInterval('0', item.tokenId)
+      result = [...result, ...Array.from({ length: limit }, (_, i) => {
+        const additional = BigNumber.from(suffix).add(BigNumber.from(i))
+        const final = BigNumber.from(prefixOffset).add(additional)
+        return {
+          id: String(final)
+        }
+      })]
+    }
     if (item.type === 'ERC1155') {
       const amountOfLinks = Number(item.linksAmount)
       for (let i = 0; i < amountOfLinks; i++) {
@@ -28,7 +43,6 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
         })
       }
     } else if (item.type === 'ERC721') {
-      
       if (claimPattern === 'mint') {
         if (!item.tokenId) { return result }
         const {

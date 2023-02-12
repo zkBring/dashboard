@@ -2,32 +2,25 @@ import { FC, useEffect, useState } from 'react'
 import {
   StyledRadio,
   InstructionNoteStyled,
-  AsideNote,
-  ApprovedIcon,
-  LoaderStyled
 } from './styled-components'
-import { Erc20, Erc721, Erc1155, CSVUploadPopup } from './components'
-import { RootState, IAppDispatch } from 'data/store';
+import { Erc20, Erc721, Erc1155, CSVUploadPopup, SDKLinks, AsideContents } from './components'
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TAssetsData, TLinkContent, TLinkParams } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLinkParams, TClaimPattern } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import Icons from 'icons'
 import { TextLink } from 'components/common'
+import { LINK_COMISSION_PRICE } from 'configs/app'
+import { bignumber, multiply } from 'mathjs'
 import {
   WidgetComponent,
   Container,
   Aside,
   WidgetSubtitle,
   WidgetContainer,
-  AsideRow,
-  AsideText,
-  AsideValue,
-  AsideContent,
-  AsideValueShorten,
-  AssetsList
 } from 'components/pages/common'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
@@ -35,10 +28,10 @@ import { Dispatch } from 'redux'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import {
   convertLinksContent,
-  shortenString,
-  defineNetworkName,
-  defineEtherscanUrl
+  defineNativeTokenSymbol,
+  countNativeTokensToSecure
 } from 'helpers'
+import { TAsideContentsProps } from './components/aside-contents/types'
 
 const mapStateToProps = ({
   campaign: {
@@ -52,7 +45,7 @@ const mapStateToProps = ({
     title,
     assets,
     symbol,
-    approved
+    approved,
   },
   campaigns: {
     campaigns
@@ -97,6 +90,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
       sdk: boolean,
+      sponsored: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -104,6 +98,24 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assets,
           assetsOriginal,
           sdk,
+          sponsored,
+          callback
+        )
+        )
+    },
+    approveAllERC20: (
+      assets: TAssetsData,
+      assetsOriginal: TLinkContent[],
+      sdk: boolean,
+      sponsored: boolean,
+      callback: () => void
+    ) => {
+      dispatch(
+        userAsyncActions.approveAllERC20(
+          assets,
+          assetsOriginal,
+          sdk,
+          sponsored,
           callback
         )
         )
@@ -112,6 +124,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
       sdk: boolean,
+      sponsored: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -119,6 +132,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assets,
           assetsOriginal,
           sdk,
+          sponsored,
           callback
         )
       )
@@ -127,6 +141,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
       sdk: boolean,
+      sponsored: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -134,6 +149,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assets,
           assetsOriginal,
           sdk,
+          sponsored,
           callback
         )
       )
@@ -142,6 +158,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assets: TAssetsData,
       assetsOriginal: TLinkContent[],
       sdk: boolean,
+      sponsored: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -149,6 +166,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assets,
           assetsOriginal,
           sdk,
+          sponsored,
           callback
         )
       )
@@ -201,8 +219,24 @@ const defineComponent: TDefineComponent = (
   setAssetsData,
   claimPattern,
   setUploadCSVPopup,
-  campaign
+  sponsored,
+  sdk,
+  campaign,
 ) => {
+
+  if (!sponsored && sdk) {
+    return null
+  }
+
+  if (sdk) {
+    return <SDKLinks
+      type={type}
+      sdk={sdk}
+      campaign={campaign}
+      assetsData={assetsData}
+      setAssetsData={setAssetsData}
+    />
+  }
 
   const UploadInstructionNote = type === 'ERC721' &&  claimPattern === 'mint' ? null : <InstructionNoteStyled
     icon={<Icons.UploadFileIcon />}
@@ -213,6 +247,7 @@ const defineComponent: TDefineComponent = (
   switch(type.toUpperCase()) {
     case 'ERC20':
       return <Erc20
+        sdk={sdk}
         type={type}
         campaign={campaign}
         assetsData={assetsData}
@@ -222,6 +257,7 @@ const defineComponent: TDefineComponent = (
     </Erc20>
     case 'ERC721':
       return <Erc721
+        sdk={sdk}
         type={type}
         campaign={campaign}
         assetsData={assetsData}
@@ -232,6 +268,7 @@ const defineComponent: TDefineComponent = (
     default:
       return <Erc1155
         type={type}
+        sdk={sdk}
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
@@ -239,6 +276,36 @@ const defineComponent: TDefineComponent = (
         {UploadInstructionNote}
       </Erc1155>
   }
+}
+
+const renderAsideContents = ({
+  approved,
+  sdk,
+  campaignTitle,
+  tokenAddress,
+  campaignSymbol,
+  campaignTokenStandard,
+  campaignChainId,
+  assetsParsed,
+  claimPattern,
+  data,
+  sponsored,
+  totalComission
+}: TAsideContentsProps) => {
+  return <AsideContents
+    approved={approved}
+    sdk={sdk}
+    campaignTitle={campaignTitle}
+    tokenAddress={tokenAddress}
+    campaignSymbol={campaignSymbol}
+    campaignTokenStandard={campaignTokenStandard}
+    campaignChainId={campaignChainId}
+    assetsParsed={assetsParsed}
+    claimPattern={claimPattern}
+    data={data}
+    sponsored={sponsored}
+    totalComission={totalComission}
+  />
 }
 
 const CampaignsCreateApprove: FC<ReduxType> = ({
@@ -259,7 +326,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   checkIfGranted,
   symbol,
   approved,
-  setApproved
+  setApproved,
+  approveAllERC20
 }) => {
 
   const [
@@ -278,25 +346,29 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
 
-  const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
-
-
-  const scannerUrl = defineEtherscanUrl(currentCampaignChainId, `/address/${currentTokenAddress || ''}`)
+  const defineRedirectUrl = () => {
+    return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
+  }
 
   const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
   const [ data, setData ] = useState<TLinksContent>([])
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
+  const [ sponsored, setSponsored ] = useState<boolean>(true)
+  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
+  const comission = bignumber(String(LINK_COMISSION_PRICE))
   const content = defineComponent(
     type,
     data,
     setData,
     claimPattern,
     () => setUploadCSVPopup(true),
+    sponsored,
+    sdk,
     currentCampaign
   )
 
   const defineIfNextDisabled = () => {
-    return (!data.length || !assetsParsed) && !sdk && !loading
+    return ((!data.length || !assetsParsed) && !sdk) || loading
   }
 
   useEffect(() => {
@@ -306,7 +378,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (currentCampaign.claim_pattern === 'mint') {
       return checkIfGranted()
     }
-    if (tokenStandard === 'ERC20') { return setApproved(false) }
+    if (tokenStandard === 'ERC20') {
+      return setApproved(false)
+    }
     checkIfApproved()
   }, [])
 
@@ -322,28 +396,28 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }
-    console.log({ data })
-    let assets = convertLinksContent(data, decimals, claimPattern)
+    let assets = convertLinksContent(data, decimals, claimPattern, sdk)
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
 
-  const approvedNote = () => {
-    if (approved === null) {
-      return <AsideNote>
-        <LoaderStyled />
-        Сhecking approval...
-      </AsideNote>
-    }
+  const potentialComission = multiply(
+    comission,
+    assetsParsed.length
+  )
 
-    if (approved) {
-      return <AsideNote>
-        <ApprovedIcon />
-        Token has been approved before
-      </AsideNote>
-    }
-    return null
-  }
+  const isSponsored = [
+    { value: true, label: `Sponsor claim transactions (+ ${potentialComission} ${nativeTokenSymbol})` },
+    { value: false, label: `No sponsoring (+ 0 ${nativeTokenSymbol})` }
+  ]
+
+  const {
+    totalComission
+  } = countNativeTokensToSecure(
+    '0',
+    assetsParsed,
+    sponsored
+  )
   
   return <Container>
     {uploadCSVPopup && <CSVUploadPopup
@@ -356,24 +430,35 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       claimPattern={claimPattern}
     />}
     <WidgetContainer>
-      <WidgetComponent title='Distribution'>
+    <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
-          // disabled={Boolean(currentCampaign)}
-          disabled
+          disabled={Boolean(currentCampaign) || loading}
           radios={[
             { label: 'Manual (Select tokens to generate links)', value: false },
             { label: 'SDK (Set up and use our SDK to generate links on the fly)', value: true }
           ]}
           value={sdk}
           onChange={value => {
-            return
-            // setData([])
+            setData([])
             setSdk(value)
           }}
         />
       </WidgetComponent>
-      {!sdk && content}
+      <WidgetComponent title='Transaction sponsorship'>
+        <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
+        <StyledRadio
+          disabled={Boolean(currentCampaign) || loading}
+          radios={isSponsored}
+          value={sponsored}
+          onChange={value => {
+            setData([])
+            setSponsored(value)
+          }}
+        />
+      </WidgetComponent>
+      
+      {content}
     </WidgetContainer>
 
     <Aside
@@ -386,21 +471,32 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         title: defineNextButtonTitle(),
         action: () => {
           const callback = () => {
-            history.push(redirectURL)
+            history.push(defineRedirectUrl())
           }
           if (claimPattern === 'mint') {
             return grantRole(
               assetsParsed,
               data,
               sdk,
+              sponsored,
               callback
             )
           }
           if (tokenStandard === 'ERC20') {
+            if (sdk) {
+              return approveAllERC20(
+                assetsParsed,
+                data,
+                sdk,
+                sponsored,
+                callback
+              )
+            }
             approveERC20(
               assetsParsed,
               data,
               sdk,
+              sponsored,
               callback
             )
           } else if (tokenStandard === 'ERC721') {
@@ -408,6 +504,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
               assetsParsed,
               data,
               sdk,
+              sponsored,
               callback
             )
           } else {
@@ -415,6 +512,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
               assetsParsed,
               data,
               sdk,
+              sponsored,
               callback
             )
           }
@@ -425,49 +523,20 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       title="Summary"
       subtitle="Check and confirm details"
     >
-      <AsideContent>
-        <AsideRow>
-          <AsideText>Title of campaign</AsideText>
-          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
-        </AsideRow>
-
-        {currentTokenAddress && <AsideRow>
-          <AsideText>Token address</AsideText>
-          <AsideValue><TextLink href={scannerUrl} target='_blank'>{shortenString(currentTokenAddress)}</TextLink></AsideValue>
-        </AsideRow>}
-
-        {currentCampaignSymbol && <AsideRow>
-          <AsideText>Token Name</AsideText>
-          <AsideValue>{currentCampaignSymbol}</AsideValue>
-        </AsideRow>}
-
-        {currentCampaignTokenStandard && <AsideRow>
-          <AsideText>Token standard</AsideText>
-          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
-        </AsideRow>}
-
-        {currentCampaignChainId && <AsideRow>
-          <AsideText>Network</AsideText>
-          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
-        </AsideRow>}
-
-        {currentCampaignTokenStandard && <AssetsList
-          claimPattern={claimPattern}
-          data={data}
-          type={currentCampaignTokenStandard}
-        />}
-
-        <AsideRow>
-          <AsideText>Total links</AsideText>
-          <AsideValue>{assetsParsed.length}</AsideValue>
-        </AsideRow>
-
-        <AsideRow>
-          <AsideText>Claim pattern</AsideText>
-          <AsideValue>{claimPattern}</AsideValue>
-        </AsideRow>
-      </AsideContent>
-      {approvedNote()}
+      {renderAsideContents({
+        approved,
+        sdk,
+        campaignTitle: currentCampaignTitle,
+        tokenAddress: currentTokenAddress,
+        campaignSymbol: currentCampaignSymbol,
+        campaignTokenStandard: currentCampaignTokenStandard,
+        campaignChainId: currentCampaignChainId,
+        assetsParsed,
+        claimPattern,
+        data,
+        sponsored,
+        totalComission
+      })}
     </Aside>
     
   </Container>

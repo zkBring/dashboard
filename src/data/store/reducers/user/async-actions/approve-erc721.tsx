@@ -16,6 +16,7 @@ const approve = (
   assets: TAssetsData,
   assetsOriginal: TLinkContent[],
   sdk: boolean,
+  sponsored: boolean,
   callback?: () => void
 ) => {
   return async (
@@ -25,6 +26,7 @@ const approve = (
     dispatch(campaignActions.setLoading(true))
     dispatch(campaignActions.setAssets(assets))
     dispatch(campaignActions.setSdk(sdk))
+    dispatch(campaignActions.setSponsored(sponsored))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {

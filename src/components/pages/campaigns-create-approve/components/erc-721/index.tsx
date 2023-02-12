@@ -80,7 +80,8 @@ const Erc721: FC<ReduxType > = ({
   setAssetsData,
   assetsData,
   claimPattern,
-  children
+  children,
+  sdk
 }) => {
   console.log({ tokenStandard })
 
@@ -107,10 +108,11 @@ const Erc721: FC<ReduxType > = ({
     return !formData.tokenId || formData.tokenId.length === 0
   }
 
-  return <WidgetComponent title={claimPattern === 'mint' ?  'Specify amount of NFTs' : 'Add token IDs to distribute'}>
+  return <WidgetComponent title={claimPattern === 'mint' ?  'Specify number of NFTs' : 'Add token IDs to distribute'}>
     <Container>
       <LinksContents
         type={type}
+        sdk={sdk}
         data={assetsData}
         onRemove={(id) => {
           setAssetsData(assetsData.filter(item => item.id !== id))

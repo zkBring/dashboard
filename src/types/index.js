@@ -34,11 +34,13 @@ import TAuthorizationStep from './authorization-step'
 import TQROption, { DotType, CornerSquareType, CornerDotType } from './qr-option'
 import TSingleLinkData from './single-link-data'
 import TLinkDetails from './link-details'
+import TButtonAppearance from './button-appearance'
 
 export {
   TCampaign,
   TLinkDetails,
   TSingleLinkData,
+  TButtonAppearance,
   TQROption,
   DotType,
   CornerSquareType,

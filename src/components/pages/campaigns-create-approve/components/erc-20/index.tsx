@@ -80,7 +80,8 @@ const Erc20: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
   assetsData,
-  children
+  children,
+  sdk
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -107,6 +108,7 @@ const Erc20: FC<ReduxType > = ({
       <Container>
         <LinksContents
           type={type}
+          sdk={sdk}
           data={assetsData}
           onRemove={(id) => {
             setAssetsData(assetsData.filter(item => item.id !== id))

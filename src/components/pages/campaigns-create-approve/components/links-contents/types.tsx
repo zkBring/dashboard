@@ -6,5 +6,6 @@ export type TOnRemove = (id: number) => void
 export type TProps = {
   data: TLinksContent,
   type: TTokenType,
-  onRemove: TOnRemove
+  onRemove: TOnRemove,
+  sdk: boolean
 }

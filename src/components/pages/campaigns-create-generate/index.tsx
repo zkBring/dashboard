@@ -16,16 +16,16 @@ import { TCallback } from './types'
 
 const mapStateToProps = ({
   campaign: {
-    assets,
     tokenStandard,
     links,
-    linksGenerateLoader
+    linksGenerateLoader,
+    sdk
   },
 }: RootState) => ({
-  assets,
   tokenStandard,
   links,
-  linksGenerateLoader
+  linksGenerateLoader,
+  sdk
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -52,7 +52,7 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   generateERC20,
   generateERC721,
   generateERC1155,
-  assets,
+  sdk,
   linksGenerateLoader,
   tokenStandard
 }) => {
@@ -60,7 +60,6 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
   const { id } = useParams<TLinkParams>()
 
   useEffect(() => {
-    console.log({ tokenStandard })
     if (!tokenStandard) { return }
     
     if (tokenStandard === 'ERC20') {
@@ -73,11 +72,14 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
       }, id)
     } else {
       generateERC1155((id) => {
-        console.log('here')
         history.push(`/campaigns/${id}`)
       }, id)
     }
   }, [])
+
+  if (sdk) {
+    return null
+  }
 
   return <Container>
     <GenerateProgress>

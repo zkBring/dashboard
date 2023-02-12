@@ -1,12 +1,12 @@
-const copyToClipboard = ({ value }: { value: Record<string, any> }) => {
+const copyToClipboard = ({ value }: { value: Record<string, any> | string }) => {
   let textArea: HTMLTextAreaElement
   function isOS () {
     return navigator.userAgent.match(/ipad|iphone/i)
   }
 
-  function createTextArea (data: Record<string, any>) {
+  function createTextArea (data: Record<string, any> | string) {
     textArea = document.createElement('textarea')
-    const value = Object.keys(data).reduce((sum, item, idx, arr) => {
+    const valueToCopy = typeof data === 'string' ? data : Object.keys(data).reduce((sum, item, idx, arr) => {
       if (idx === 0) {
         sum = '{'
       } else {
@@ -19,9 +19,7 @@ const copyToClipboard = ({ value }: { value: Record<string, any> }) => {
       return sum
     }, '')
 
-    console.log({ value })
-
-    textArea.value = value
+    textArea.value = valueToCopy
 
     textArea.style.position = 'fixed'
     textArea.style.left = '50%'

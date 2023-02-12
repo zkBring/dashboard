@@ -44,13 +44,13 @@ export const WidgetSubtitle = styled.p`
   color: ${props => props.theme.additionalTextColor};
 `
 
-export const AsideText = styled.span`
+export const TableText = styled.span`
   font-size: 14px;
   margin: 0;
   color: ${props => props.theme.additionalTextColor};
 `
 
-export const AsideValue = styled(AsideText)`
+export const TableValue = styled(TableText)`
   color: ${props => props.theme.primaryTextColor};
 
   &:first-letter {
@@ -58,7 +58,7 @@ export const AsideValue = styled(AsideText)`
   }
 `
 
-export const AsideRow = styled.div`
+export const TableRow = styled.div`
   padding: 6px 0;
   display: flex;
   align-items: center;
@@ -75,7 +75,7 @@ export const AsideDivider = styled.div`
   width: 100%;
   margin: 10px 0;
 `
-export const AsideValueShorten = styled(AsideValue)`
+export const TableValueShorten = styled(TableValue)`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

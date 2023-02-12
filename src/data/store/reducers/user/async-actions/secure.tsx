@@ -13,7 +13,6 @@ import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
 
 const secure = (
-  sponsored: boolean,
   totalNativeTokensAmountToSecure: string,
   nativeTokensPerLink: string,
   walletApp: string,
@@ -126,7 +125,6 @@ const secure = (
         ))
         dispatch(campaignActions.setSignerKey(privateKey))
         dispatch(campaignActions.setSignerAddress(wallet))
-        dispatch(campaignActions.setSponsored(sponsored))
         dispatch(campaignActions.setWallet(walletApp))
         callback && callback()
       }

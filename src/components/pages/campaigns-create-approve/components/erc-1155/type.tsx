@@ -5,5 +5,6 @@ export type TProps = {
   type: TTokenType,
   campaign?: TCampaign | null,
   assetsData: TLinksContent,
+  sdk: boolean,
   setAssetsData: (newAssets: TLinksContent) => void
 }

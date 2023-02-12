@@ -9,17 +9,15 @@ import { TLinkParams, TClaimPattern } from 'types'
 import { useHistory } from 'react-router-dom'
 import { IAppDispatch } from 'data/store'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import {
   WidgetComponent,
   Container,
   Aside,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   AsideContent,
-  AsideValueShorten,
-  AssetsList,
+  TableValueShorten,
   WidgetSubtitle
 } from 'components/pages/common'
 import { shortenString, defineNetworkName } from 'helpers'
@@ -144,30 +142,30 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
       subtitle="Check and confirm details "
     >
       <AsideContent>
-        <AsideRow>
-          <AsideText>Title of campaign</AsideText>
-          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
-        </AsideRow>
+        <TableRow>
+          <TableText>Title of campaign</TableText>
+          <TableValueShorten>{currentCampaignTitle}</TableValueShorten>
+        </TableRow>
 
-        {currentTokenAddress && <AsideRow>
-          <AsideText>Token address</AsideText>
-          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
-        </AsideRow>}
+        {currentTokenAddress && <TableRow>
+          <TableText>Token address</TableText>
+          <TableValue>{shortenString(currentTokenAddress)}</TableValue>
+        </TableRow>}
 
-        {currentCampaignSymbol && <AsideRow>
-          <AsideText>Token name</AsideText>
-          <AsideValue>{currentCampaignSymbol}</AsideValue>
-        </AsideRow>}
+        {currentCampaignSymbol && <TableRow>
+          <TableText>Token name</TableText>
+          <TableValue>{currentCampaignSymbol}</TableValue>
+        </TableRow>}
 
-        {currentCampaignTokenStandard && <AsideRow>
-          <AsideText>Token standard</AsideText>
-          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
-        </AsideRow>}
+        {currentCampaignTokenStandard && <TableRow>
+          <TableText>Token standard</TableText>
+          <TableValue>{currentCampaignTokenStandard}</TableValue>
+        </TableRow>}
 
-        {currentCampaignChainId && <AsideRow>
-          <AsideText>Network</AsideText>
-          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
-        </AsideRow>}
+        {currentCampaignChainId && <TableRow>
+          <TableText>Network</TableText>
+          <TableValue>{defineNetworkName(Number(currentCampaignChainId))}</TableValue>
+        </TableRow>}
 
 
       </AsideContent>

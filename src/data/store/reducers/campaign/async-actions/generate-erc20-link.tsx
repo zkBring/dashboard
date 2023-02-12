@@ -94,7 +94,6 @@ const generateERC20Link = ({
 
       const contract = contracts[chainId]
       const networkName = defineNetworkName(chainId)
-      
 
       const updateProgressbar = async (value: number) => {
         if (value === currentPercentage || value < currentPercentage) { return }
@@ -103,7 +102,7 @@ const generateERC20Link = ({
         await sleep(1)
       }
 
-      const assetsGroups = createDataGroups(assets, neededWorkersCount)
+      const assetsGroups = createDataGroups(sdk ? [] : assets, neededWorkersCount)
       console.log({ assetsGroups })
       const workers = await createWorkers(assetsGroups, 'links', updateProgressbar)
       console.log({ workers })
@@ -159,8 +158,9 @@ const generateERC20Link = ({
         // dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
   
       } else {
+        const batchLinks= newLinks.flat()
         const batch = {
-          claim_links: newLinks.flat(),
+          claim_links: batchLinks.length === 0 ? undefined : newLinks.flat(),
           sponsored,
           batch_description: batchPreviewContents
         }
