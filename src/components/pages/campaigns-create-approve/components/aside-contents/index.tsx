@@ -21,10 +21,9 @@ import {
   shortenString,
   defineNetworkName
 } from 'helpers'
-import { TAssetsData, TTokenType } from 'types'
+import { TAssetsData, TTokenType, TClaimPattern } from 'types'
 import { MathType } from 'mathjs'
 import { TLinksContent } from '../../types'
-import { TClaimPattern } from 'linkdrop-sdk-test/types'
 
 
 const renderTotalLinksSegment = (
