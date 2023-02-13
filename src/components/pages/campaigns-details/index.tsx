@@ -429,7 +429,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         }}
         back={{
           action: () => {
-            window.location.href = `https://github.com/LinkdropHQ/linkdrop-sdk`
+            window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
           },
           title: 'View on GitHub',
           appearance: 'action'
