@@ -80,7 +80,8 @@ const Erc1155: FC<ReduxType > = ({
   setAssetsData,
   assetsData,
   children,
-  sdk
+  sdk,
+  claimPattern
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -108,6 +109,7 @@ const Erc1155: FC<ReduxType > = ({
       <LinksContents
         type={type}
         data={assetsData}
+        claimPattern={claimPattern}
         sdk={sdk}
         onRemove={(id) => {
           setAssetsData(assetsData.filter(item => item.id !== id))

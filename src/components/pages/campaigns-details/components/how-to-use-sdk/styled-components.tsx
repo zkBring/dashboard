@@ -5,4 +5,6 @@ export const Code = styled.pre`
   background-color: ${props => props.theme.additionalBackgroundColor};
   border-radius: 8px;
   display: block;
+  max-height: 185px;
+  overflow: scroll;
 `

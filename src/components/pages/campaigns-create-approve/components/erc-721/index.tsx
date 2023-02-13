@@ -112,6 +112,7 @@ const Erc721: FC<ReduxType > = ({
     <Container>
       <LinksContents
         type={type}
+        claimPattern={claimPattern}
         sdk={sdk}
         data={assetsData}
         onRemove={(id) => {

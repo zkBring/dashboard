@@ -40,10 +40,7 @@ import { useHistory } from 'react-router-dom'
 import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
-import { decrypt } from 'lib/crypto';
-import LinkdropSDK from 'linkdrop-sdk-test'
-import { ethers } from 'ethers';
-
+import { decrypt } from 'lib/crypto'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
@@ -129,7 +126,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   useEffect(() => {
     const init = async () => {
       return
-
       // if (!currentCampaign || !dashboardKey) { return }
       // const encryptionKey = createEncryptionKey(
       //   dashboardKey,
@@ -433,7 +429,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         }}
         back={{
           action: () => {
-            
+            window.location.href = `https://github.com/LinkdropHQ/linkdrop-sdk`
           },
           title: 'View on GitHub',
           appearance: 'action'
