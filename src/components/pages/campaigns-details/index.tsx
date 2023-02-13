@@ -412,7 +412,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           <TableText>Token standard</TableText>
           <TableValue>{token_standard}</TableValue>
         </TableRow>
-        {links_count === 0 && <TableRow>
+        {links_count !== 0 && <TableRow>
           <TableText>Links</TableText>
           <TableValue>{links_count}</TableValue>
         </TableRow>}
