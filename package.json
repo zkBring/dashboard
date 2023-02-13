@@ -1,6 +1,6 @@
 {
   "name": "linkdrop-dashboard",
-  "version": "2.1.4",
+  "version": "2.1.5-rc.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.0",
@@ -45,8 +45,7 @@
     "typescript": "^4.1.2",
     "uint8arrays": "^3.0.0",
     "web-vitals": "^1.0.1",
-    "web3modal": "^1.9.4",
-    "linkdrop-sdk-test": "^1.0.56"
+    "web3modal": "^1.9.4"
   },
   "scripts": {
     "start": "craco start",
