@@ -26,11 +26,11 @@ const decryptLinks: TDecryptLink = ({
         claim_link: decrypt(encryptedLink, dashboardKey)
       })
     } else {
-      const encryptedLinkKey = links[i].encrypted_link_key
-      if (encryptedLinkKey) {
+      const encryptedClaimCode = links[i].encrypted_claim_code
+      if (encryptedClaimCode) {
         decryptedLinks.push({
           link_id: links[i].link_id,
-          claim_link: `${REACT_APP_CLAIM_APP}/#/claim/${decrypt(encryptedLinkKey, dashboardKey)}`
+          claim_link: `${REACT_APP_CLAIM_APP}/#/claim/${decrypt(encryptedClaimCode, dashboardKey)}`
         })
       }
     }

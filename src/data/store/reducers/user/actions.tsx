@@ -1,4 +1,4 @@
-import LinkdropSDK from '@linkdrop/sdk'
+import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
 import { TAuthorizationStep } from 'types'
