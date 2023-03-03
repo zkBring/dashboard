@@ -1,11 +1,12 @@
 # Ledger Dashboard
 
-## 2.1.5-rc.0
-- Added support for SDK
+## 2.1.5-rc.1
+- Added support for new SDK
 - Fixed bug with date and time of batch creation
 - Sponsorship price count is moved to approve screen
 - Added additional field for tokens to be distributed (for sdk campaigns)
 - Approve all tokens for ERC20 if campaign is created for sdk usage
+- Added support for short codes
 
 ## 2.1.4
 - Restrict networks with env variable 
