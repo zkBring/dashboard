@@ -64,8 +64,6 @@ const approve = (
       dispatch(campaignActions.setLoading(true))
       dispatch(campaignActions.setClaimPattern('transfer'))
       const signer = await provider.getSigner()
-      const gasPrice = await provider.getGasPrice()
-      const oneGwei = utils.parseUnits('1', 'gwei')
       const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
       let iface = new utils.Interface(ERC20Contract.abi)
       const assetsTotal = countAssetsTotalAmountERC20(assets)
@@ -77,7 +75,6 @@ const approve = (
 
       await signer.sendTransaction({
         to: tokenAddress,
-        gasPrice: gasPrice.add(oneGwei),
         from: address,
         value: 0,
         data: data

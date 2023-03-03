@@ -50,8 +50,6 @@ const secure = (
       const newWallet = ethers.Wallet.createRandom()
       const { address: wallet, privateKey } = newWallet
       const signer = await provider.getSigner()
-      const gasPrice = await provider.getGasPrice()
-      const oneGwei = utils.parseUnits('1', 'gwei')
       const factoryContract = await new ethers.Contract(contract.factory, LinkdropFactory.abi, signer)
       const isDeployed = await factoryContract.isDeployed(address, id)
       let data
@@ -77,7 +75,6 @@ const secure = (
 
       const transaction = await signer.sendTransaction({
         to,
-        gasPrice: gasPrice.add(oneGwei),
         from: address,
         value,
         data: data

@@ -30,15 +30,7 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    generateERC20: (callback: TCallback, id?: string, ) => dispatch(campaignAsyncActions.generateERC20Link({
-      callback,
-      id
-    })),
-    generateERC721: (callback: TCallback, id?: string) => dispatch(campaignAsyncActions.generateERC721Link({
-      callback,
-      id
-    })),
-    generateERC1155: (callback: TCallback, id?: string) => dispatch(campaignAsyncActions.generateERC1155Link({
+    generateLinks: (callback: TCallback, id?: string, ) => dispatch(campaignAsyncActions.generateLinks({
       callback,
       id
     }))
@@ -49,9 +41,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateGenerate: FC<ReduxType> = ({
-  generateERC20,
-  generateERC721,
-  generateERC1155,
+  generateLinks,
   sdk,
   linksGenerateLoader,
   tokenStandard
@@ -61,20 +51,9 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!tokenStandard) { return }
-    
-    if (tokenStandard === 'ERC20') {
-      generateERC20((id) => {
-        history.push(`/campaigns/${id}`)
-      }, id)
-    } else if (tokenStandard === 'ERC721') {
-      generateERC721((id) => {
-        history.push(`/campaigns/${id}`)
-      }, id)
-    } else {
-      generateERC1155((id) => {
-        history.push(`/campaigns/${id}`)
-      }, id)
-    }
+    generateLinks((id) => {
+      history.push(`/campaigns/${id}`)
+    }, id)
   }, [])
 
   if (sdk) {

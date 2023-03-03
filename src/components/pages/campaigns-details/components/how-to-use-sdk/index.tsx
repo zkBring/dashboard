@@ -50,8 +50,12 @@ const init = async () => {
     {
       sponsored: boolean,
       // if set to true claim will be paid by campaign creator. Default: true
-      batchDescription: string
+      batchDescription: string,
       // description of batch. Default: 'Created by SDK'
+      shortCodeLength: number,
+      // length of short code (default: 12)
+      shortCodeMixRegister: boolean
+      // should short code be in mixed register (default: true)
     }
   )
 
@@ -69,7 +73,12 @@ const init = async () => {
     amount: string, 
     links: string, 
     weiAmount: string,
-  }]) 
+  }], {
+    shortCodeLength: number,
+    // length of short code (default: 12)
+    shortCodeMixRegister: boolean
+    // should short code be in mixed register (default: true)
+  }) 
 }
 
 init()

@@ -11,7 +11,7 @@ import {
   Container,
   WidgetContainer
 } from 'components/pages/common'
-
+import { ethers } from 'ethers'
 import {
   Header,
   WidgetButton,
@@ -32,7 +32,7 @@ import {
   defineProxyContractFunds,
   createEncryptionKey
 } from 'helpers'
-
+import LinkdropSDK from 'linkdrop-sdk'
 import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
@@ -125,22 +125,21 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   console.log({ currentCampaign })
   useEffect(() => {
     const init = async () => {
-      return
-      // if (!currentCampaign || !dashboardKey) { return }
-      // const encryptionKey = createEncryptionKey(
-      //   dashboardKey,
-      //   currentCampaign.signer_address,
-      //   currentCampaign.campaign_number
-      // )
-      // console.log(
-      //   currentCampaign.campaign_id,
-      //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
-      //   encryptionKey.replace('0x', '')
-      // )
-      // console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
-      // const sdk = new LinkdropSDK({
-      //   claimApiUrl: 'https://staging.claim.ledger.com'
-      // })
+      if (!currentCampaign || !dashboardKey) { return }
+      const encryptionKey = createEncryptionKey(
+        dashboardKey,
+        currentCampaign.signer_address,
+        currentCampaign.campaign_number
+      )
+      console.log(
+        currentCampaign.campaign_id,
+        decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
+        encryptionKey.replace('0x', '')
+      )
+      console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
+      const sdk = new LinkdropSDK({
+        claimApiUrl: 'https://staging.claim.ledger.com'
+      })
       // console.log({ sdk })
       // const campaign = await sdk.getCampaign(
       //   currentCampaign.campaign_id,
@@ -164,7 +163,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       // const lastLink = links[links.length - 1]
       // console.log({ lastLink })
       // if (!lastLink) { return }
-      // const status = await campaign.getLinkStatus(lastLink.linkId)
+      // const status = await sdk.getLinkStatus(lastLink.linkId)
       // console.log({ status })
 
       // const deactivated = await campaign.deactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
@@ -172,8 +171,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
       // const reactivated = await campaign.reactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
       // console.log({ reactivated })
 
-      // const claim = await sdk.redeem('fb7734e4fda2e1e2fdc7340ab982d23f0bc3d9db4022083359403be9fd434127', '0x0553aDA5829184A7818dC866367D77334183603E')
-      // console.log({ claim, test: 1 })
+      // const claim = await sdk.redeem('6bd57626fa2633d2c9f907a35c661b0142daf68efcc45a048ff67f9f949a9a74', '0x0553aDA5829184A7818dC866367D77334183603E')
+      // console.log({ claim })
 
     }
     init()
