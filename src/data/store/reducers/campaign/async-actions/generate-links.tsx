@@ -57,7 +57,6 @@ const generateERC20Link = ({
         tokenAddress,
         wallet,
         symbol,
-        decimals,
         title,
         proxyContractAddress,
         sponsored,
@@ -127,7 +126,7 @@ const generateERC20Link = ({
       console.log({ newLinks })
       console.log((+ new Date()) - start)
 
-      if (!decimals || !signerKey || !tokenStandard || !address) { return }
+      if (!signerKey || !tokenStandard || !address) { return }
       const updatingCampaign = currentCampaignId ? campaigns.find(item => item.campaign_id === currentCampaignId) : undefined
       const batchPreviewContents = defineBatchPreviewContents(
         tokenStandard,
