@@ -20,7 +20,7 @@ export class LinksWorker {
     claimHost: string
   ) {
     const sdk = new LinkdropSDK({
-      claimApiUrl: claimHost
+      claimHostUrl: claimHost
     })
     this.sdk = sdk
   }
@@ -49,7 +49,8 @@ export class LinksWorker {
       tokenAddress,
       proxyContractAddress,
       Number(chainId),
-      proxyContractVersion
+      proxyContractVersion,
+      expirationTime
     )
   }
 
@@ -77,7 +78,8 @@ export class LinksWorker {
       tokenAddress,
       proxyContractAddress,
       Number(chainId),
-      proxyContractVersion
+      proxyContractVersion,
+      expirationTime
     )
   }
 
@@ -106,7 +108,8 @@ export class LinksWorker {
       tokenAddress,
       proxyContractAddress,
       Number(chainId),
-      proxyContractVersion
+      proxyContractVersion,
+      expirationTime
     )
   }
 

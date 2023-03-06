@@ -42,7 +42,7 @@ const initialization = (
     dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
 
     const sdk = new LinkdropSDK({
-      claimApiUrl: 'https://staging.claim.ledger.com'
+      claimHostUrl: 'https://staging.claim.ledger.com'
     })
 
     dispatch(userActions.setSDK(sdk))

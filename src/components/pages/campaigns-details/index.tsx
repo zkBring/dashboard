@@ -125,21 +125,21 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   console.log({ currentCampaign })
   useEffect(() => {
     const init = async () => {
-      if (!currentCampaign || !dashboardKey) { return }
-      const encryptionKey = createEncryptionKey(
-        dashboardKey,
-        currentCampaign.signer_address,
-        currentCampaign.campaign_number
-      )
-      console.log(
-        currentCampaign.campaign_id,
-        decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
-        encryptionKey.replace('0x', '')
-      )
-      console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
-      const sdk = new LinkdropSDK({
-        claimApiUrl: 'https://staging.claim.ledger.com'
-      })
+      // if (!currentCampaign || !dashboardKey) { return }
+      // const encryptionKey = createEncryptionKey(
+      //   dashboardKey,
+      //   currentCampaign.signer_address,
+      //   currentCampaign.campaign_number
+      // )
+      // console.log(
+      //   currentCampaign.campaign_id,
+      //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
+      //   encryptionKey.replace('0x', '')
+      // )
+      // console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
+      // const sdk = new LinkdropSDK({
+      //   claimHostUrl: 'https://staging.claim.ledger.com'
+      // })
       // console.log({ sdk })
       // const campaign = await sdk.getCampaign(
       //   currentCampaign.campaign_id,
