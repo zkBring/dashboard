@@ -24,8 +24,6 @@ import LinkdropSDK from '@linkdrop/sdk'
 const sdk = new LinkdropSDK({
   // optional params
   mode: 'testnets', // for goerli and mumbai networks
-  apiHost: string, // overrides defulat api host
-  claimApiUrl: string // api url that will be used as prefix for claim links
 })
 
 const init = async () => {
