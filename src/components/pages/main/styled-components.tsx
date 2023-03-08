@@ -36,6 +36,7 @@ export const WidgetDescription = styled.p`
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;
   width: 100%;
+  margin-top: 30px;
 `
 
 export const AlignBottomButton = styled(WidgetButton)`
@@ -71,7 +72,7 @@ export const ConnectWalletContainer = styled.div`
 
 export const Text = styled.p`
   font-size: 16px;
-  margin: 0 0 8px;
+  margin: 0 0 16px;
   line-height: 24px;
 `
 
@@ -85,4 +86,8 @@ export const List = styled.ol`
 
 export const ListItem = styled.li`
   margin: 0 0 4px;
+`
+
+export const TextBold = styled.span`
+  font-weight: 700;
 `

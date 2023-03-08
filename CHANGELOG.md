@@ -7,6 +7,9 @@
 - Added additional field for tokens to be distributed (for sdk campaigns)
 - Approve all tokens for ERC20 if campaign is created for sdk usage
 - Added support for short codes
+- Added info screen if dashboard is opened in mobile browser
+- Added info screen if Metamask is not installed
+- Added info screen if network is not supported
 
 ## 2.1.4
 - Restrict networks with env variable 

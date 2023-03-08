@@ -7,7 +7,8 @@ import {
   Contents,
   Text,
   List,
-  ListItem
+  ListItem,
+  TextBold
 } from './styled-components'
 import {
   CheckListItem,
@@ -23,6 +24,7 @@ import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
 import { defineNetworkName, defineSystem } from 'helpers'
+const { REACT_APP_CHAINS } = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -67,6 +69,27 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
+const defineDashboardName = () => {
+  if (REACT_APP_CHAINS === '[5,80001]') {
+    return 'Testnets Dashboard'
+  }
+  if (REACT_APP_CHAINS === '[1,137]') {
+    return 'Mainnets Dashboard'
+  }
+  return 'Development Dashboard'
+}
+
+const defineSwitchNetworkText = () => {
+  if (REACT_APP_CHAINS === '[5,80001]') {
+    return <Text>Please switch the network to <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>
+  }
+  if (REACT_APP_CHAINS === '[1,137]') {
+    return <Text>Please switch the network to <TextBold>Polygon</TextBold> or <TextBold>Mainnet</TextBold> to continue</Text>
+  }
+  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>
+  
+}
+
 const Main: FC<ReduxType> = ({
   chainId,
   address,
@@ -108,7 +131,7 @@ const Main: FC<ReduxType> = ({
   if (!window.ethereum || !window.ethereum._state) {
     return <ContainerCentered>
       <IconContainer>
-        <Icons.AttentionIcon />
+        <Icons.YellowAttentionIcon />
       </IconContainer>
       
       <Title>
@@ -137,27 +160,29 @@ const Main: FC<ReduxType> = ({
   }
 
   if (authorizationStep === 'wrong_network') {
-    // return <ContainerCentered>
-    //   <IconContainer>
-    //     <Icons.AttentionIcon />
-    //   </IconContainer>
+    return <ContainerCentered>
+      <IconContainer>
+        <Icons.YellowAttentionIcon />
+      </IconContainer>
       
-    //   <Title>
-    //     Wrong network
-    //   </Title>
-    //   <Contents>
+      <Title>
+        Wrong network
+      </Title>
+      <Contents>
 
-    //     <Text>
-    //       You have {defineNetworkName(chainId)} connected. Please switch the network to {chainId === 1 || chainId === 137 ? 'Goerli/Mumbai' : 'Mainnet/Polygon'} if you intend to use {chainId === 1 || chainId === 137 ? 'Testnets' : 'Mainnet'} Dashboard
-    //     </Text>
+        <Text>
+          You are now on {defineDashboardName()}.
+        </Text>
 
-    //   </Contents>
-    //   <WidgetButton
-    //     appearance='action'
-    //     href={chainId === 1 || chainId === 137 ? 'https://testnets.dashboard.linkdrop.io' : 'https://beta.dashboard.linkdrop.io'}
-    //     title={chainId === 1 || chainId === 137 ? 'Go to Testnets Dashboard' : 'Go to Testnets Dashboard'}
-    //   />
-    // </ContainerCentered>
+        {defineSwitchNetworkText()}
+
+      </Contents>
+      <WidgetButton
+        target='_blank'
+        href='https://linkdrop-2.gitbook.io/linkdrop-knoe/'
+        title='Read documentation'
+      />
+    </ContainerCentered>
   }
 
   return <ContainerCentered>
