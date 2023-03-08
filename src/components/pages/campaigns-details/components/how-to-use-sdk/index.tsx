@@ -17,9 +17,11 @@ const HowToUseSDK: FC<TProps> = ({
       Be careful! Code below includes private data. Do not share publicly. Sharing may lead to loss of assets
     </NoteStyled>
     <Code>
-{`// installation: yarn add @linkdrop/sdk
+{`// installation: yarn add linkdrop-sdk
 // import library
-import LinkdropSDK from '@linkdrop/sdk'
+import LinkdropSDK from 'linkdrop-sdk'
+// or
+// const LinkdropSDK = require('linkdrop-sdk').default
 
 const sdk = new LinkdropSDK({
   // optional params
