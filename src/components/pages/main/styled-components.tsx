@@ -47,9 +47,7 @@ export const Title = styled.h3`
   font-size: 24px;
   margin: 0 0 24px;
   font-weight: 600;
-  line-height: 32px;
-
-  
+  line-height: 32px;  
 `
 
 export const ContainerCentered = styled.div`
@@ -58,7 +56,9 @@ export const ContainerCentered = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 28px;
+  box-shadow: 0px 2px 4px rgba(40, 41, 61, 0.04), 0px 8px 16px rgba(96, 97, 112, 0.16);
   padding: 24px;
+  text-align: center;
   margin: 0 auto;
   width: 100%;
   flex-direction: column;
@@ -67,4 +67,22 @@ export const ContainerCentered = styled.div`
 `
 export const ConnectWalletContainer = styled.div`
   
+`
+
+export const Text = styled.p`
+  font-size: 16px;
+  margin: 0 0 8px;
+  line-height: 24px;
+`
+
+export const List = styled.ol`
+  font-size: 16px;
+  margin: 0 0 24px;
+  line-height: 24px;
+  padding-left: 16px;
+  text-align: left;
+`
+
+export const ListItem = styled.li`
+  margin: 0 0 4px;
 `

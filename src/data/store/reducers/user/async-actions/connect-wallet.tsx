@@ -39,7 +39,9 @@ async function connectWallet (
   })
 
   if (!chainsAvailable.find(network => Number(chainId) === Number(network))) {
-    return alert(`Available networks: ${chainsAvailable.map(chain => defineNetworkName(Number(chain)))}`)
+    dispatch(actions.setChainId(chainId))
+    // return dispatch(actions.setAuthorizationStep('wrong_network'))
+    return alert('Wrong network')
   }
   
   const accounts = await providerWeb3.listAccounts()

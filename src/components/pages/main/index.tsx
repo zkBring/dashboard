@@ -5,9 +5,13 @@ import {
   Title,
   IconContainer,
   Contents,
+  Text,
+  List,
+  ListItem
 } from './styled-components'
 import {
-  CheckListItem
+  CheckListItem,
+  TextLink
 } from 'components/common' 
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -18,29 +22,7 @@ import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-
-// const secretKeys = { // x-secret-key
-//   '3b2c12979794fa25bf356e1f36c39a80': true,
-//   'c6d5ccc194adb1772e0c61fb0ed0fc56': true,
-//   '9fbc6d938c398c5c7a8dc3c1b0b4673b': true,
-//   '6e3536197ed7c1c9444eb4701ce8b28a': true,
-//   'cd3aef8f77c9f46826984cb70a76eca1': true
-// }
-
-// const apiKeys = { // x-api-key
-//   '354f8c9df32ac9d4af69fadca1509f45': {
-//     'localhost:9090': true
-//   },
-//   '3e42a325855bf9dfc5cf083e255c53b5': {
-//     'localhost:3000': true
-//   },
-//   'TEST-CLIENT-31b96691e36b864425c5570e2f3ce9c8': {
-//     'localhost:3000': true
-//   },
-//   'ee12fe322b9636d628ff36e0ed87d5f7': {},
-//   'c72b77c061c976be4bc4f9114ac5e441': {}
-// }
-
+import { defineNetworkName, defineSystem } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -79,7 +61,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
     case 'store-key':
       return 'Sign'
     default:
-      return ''
+      return 'Connect'
   }
 }
 
@@ -99,9 +81,85 @@ const Main: FC<ReduxType> = ({
     checkIfConnected()
   }, [])
 
+  const system = defineSystem()
+
+  if (system !== 'desktop') {
+    return <ContainerCentered>
+    <IconContainer>
+      <Icons.MonitorIcon />
+    </IconContainer>
+    
+    <Title>
+      Please, use desktop browser
+    </Title>
+    <Contents>
+
+      <Text>
+      Linkdrop dashboard is only available on desktop browsers
+      </Text>
+    </Contents>
+  </ContainerCentered>
+  }
+
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
   }
+
+  if (!window.ethereum || !window.ethereum._state) {
+    return <ContainerCentered>
+      <IconContainer>
+        <Icons.AttentionIcon />
+      </IconContainer>
+      
+      <Title>
+        Extension required
+      </Title>
+      <Contents>
+
+        <Text>
+          A browser web3 wallet is required to use the Dashboard
+        </Text>
+
+        <List>
+          <ListItem>Download <TextLink href='https://metamask.io/download/' target='_blank'>Metamask</TextLink></ListItem>
+          <ListItem>Return back to this page and click reload</ListItem>
+        </List>
+        
+      </Contents>
+      <WidgetButton
+        appearance='action'
+        onClick={() => {
+          window.location.reload()
+        }}
+        title='Reload page'
+      />
+    </ContainerCentered>
+  }
+
+  if (authorizationStep === 'wrong_network') {
+    // return <ContainerCentered>
+    //   <IconContainer>
+    //     <Icons.AttentionIcon />
+    //   </IconContainer>
+      
+    //   <Title>
+    //     Wrong network
+    //   </Title>
+    //   <Contents>
+
+    //     <Text>
+    //       You have {defineNetworkName(chainId)} connected. Please switch the network to {chainId === 1 || chainId === 137 ? 'Goerli/Mumbai' : 'Mainnet/Polygon'} if you intend to use {chainId === 1 || chainId === 137 ? 'Testnets' : 'Mainnet'} Dashboard
+    //     </Text>
+
+    //   </Contents>
+    //   <WidgetButton
+    //     appearance='action'
+    //     href={chainId === 1 || chainId === 137 ? 'https://testnets.dashboard.linkdrop.io' : 'https://beta.dashboard.linkdrop.io'}
+    //     title={chainId === 1 || chainId === 137 ? 'Go to Testnets Dashboard' : 'Go to Testnets Dashboard'}
+    //   />
+    // </ContainerCentered>
+  }
+
   return <ContainerCentered>
     <IconContainer>
       <Icons.SignInIcon />
@@ -120,7 +178,6 @@ const Main: FC<ReduxType> = ({
       disabled={loading || authorizationStep === 'initial'}
       appearance='action'
       onClick={() => {
-        console.log({authorizationStep})
         if (authorizationStep === 'connect') { return connectWallet(chainsAvailable) }
         return authorize(address)
       }}

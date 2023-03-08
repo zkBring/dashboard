@@ -92,3 +92,15 @@ declare module 'worker-loader!*' {
 
   export default WebpackWorker;
 }
+
+declare module 'is-ios' {
+  type Module = boolean
+  const library: Module
+  export = library
+}
+
+declare module 'is-android' {
+  type Module = boolean
+  const library: Module
+  export = library
+}

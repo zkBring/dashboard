@@ -1,0 +1,1 @@
+export type TSystem = 'ios' | 'android' | 'desktop'

@@ -56,9 +56,11 @@ import defineProxyContractFunds from './define-proxy-contract-funds'
 import getContractVersion from './get-contract-version'
 import createEncryptionKey from './create-encryption-key'
 import countNativeTokensToSecure from './count-native-tokens-to-secure'
+import defineSystem from './define-system'
 
 export {
   shortenString,
+  defineSystem,
   countNativeTokensToSecure,
   getContractVersion,
   createEncryptionKey,

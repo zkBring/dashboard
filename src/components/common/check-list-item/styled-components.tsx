@@ -4,6 +4,7 @@ export const Container = styled.div`
 	display: flex;
 	align-items: center;
 	margin-bottom: 24px;
+	text-align: left;
 `
 
 export const CheckBox = styled.div<{ checked: boolean }>`
@@ -14,7 +15,7 @@ export const CheckBox = styled.div<{ checked: boolean }>`
 	height: 16px;
 	border-radius: 16px;
 	background-color: ${props => props.theme.primaryBorderColor};
-	margin-right: 16px;
+	margin-right: 10px;
 
 	${props => props.checked && css`
 		background-color: ${props => props.theme.primaryHighlightColor};

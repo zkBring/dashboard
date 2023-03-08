@@ -17,6 +17,7 @@ import TLink from './link'
 import TFormatDate from './format-date'
 import TFormatTime from './format-time'
 import TLinkParams from './link-params'
+import { TSystem } from './system'
 import {
   TQRStatus,
   TQRSet,
@@ -39,6 +40,7 @@ import TButtonAppearance from './button-appearance'
 export {
   TCampaign,
   TLinkDetails,
+  TSystem,
   TSingleLinkData,
   TButtonAppearance,
   TQROption,
