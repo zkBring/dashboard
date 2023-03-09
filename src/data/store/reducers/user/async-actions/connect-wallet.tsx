@@ -30,12 +30,12 @@ async function connectWallet (
   
   let { chainId } = await providerWeb3.getNetwork()
   provider.on("accountsChanged", async (accounts: string[]) => {
-    window.location.reload()
+    dispatch(asyncActions.logout())
   })
   
   // Subscribe to chainId change
   provider.on("chainChanged", async (chainId: string) => {
-    window.location.reload()
+    dispatch(asyncActions.logout())
   })
 
   if (!chainsAvailable.find(network => Number(chainId) === Number(network))) {
