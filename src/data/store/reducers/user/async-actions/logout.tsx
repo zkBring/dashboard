@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux'
 import * as userActions from 'data/store/reducers/user/actions'
+import axios from 'axios'
 
 import {
   UserActions,
@@ -19,7 +20,9 @@ const logout = () => {
       }
       
     } catch (err) {
-      console.error({ err })
+      if (axios.isAxiosError(err)) {
+        console.log({ code: err.code })
+      }
       dispatch(userActions.setLoading(false))
     }
   }
