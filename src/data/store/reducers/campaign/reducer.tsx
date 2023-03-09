@@ -18,7 +18,7 @@ const initialState: CampaignState = {
   signerKey: null,
   signerAddress: null,
   sponsored: true,
-  claimPattern: 'mint',
+  claimPattern: 'transfer',
   sdk: false,
   links: [],
   nativeTokensPerLink: '0',

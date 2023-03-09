@@ -69,8 +69,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const patterns = [
-  { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' },
-  { value: 'transfer', label: 'Transfer (tokens should be preminted, and will be transferred to user at claim)' }
+  { value: 'transfer', label: 'Transfer (tokens should be preminted, and will be transferred to user at claim)' },
+  { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' }
 ]
 
 const CampaignsCreateInitial: FC<ReduxType> = ({
@@ -80,11 +80,9 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   title,
   tokenAddress,
   chainId,
-  assetsOriginal,
   createProxyContract,
   applyClaimPattern,
   symbol,
-  assets
 }) => {
   const { type, id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -95,7 +93,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
 
   const history = useHistory()
-  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
+  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
 
   useEffect(() => {
     createProxyContract(campaign?.campaign_number)
@@ -105,7 +103,8 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
     <WidgetComponent title='Claim pattern'>
       <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
       <StyledRadio
-        disabled={Boolean(campaign) || loading}
+        // disabled={Boolean(campaign) || loading}
+        disabled={true}
         value={claimPattern}
         radios={patterns}
         onChange={(value) => {

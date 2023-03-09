@@ -29,8 +29,7 @@ export const SecondaryTextSpan = styled.span`
 `
 
 export const AsideStyled = styled(Aside)`
-  min-width: 370px;
-  flex: 0 1 370px;
+  min-width: 100%;
   margin: 0;
 `
 

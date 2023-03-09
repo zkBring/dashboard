@@ -12,13 +12,8 @@ const wallets: TWallet[] = [
     chains: ['1', '5', '137', '80001']
   },
   {
-    id: 'status',
-    name: 'Status',
-    chains: ['1', '5', '137', '80001']
-  },
-  {
-    id: 'opera',
-    name: 'Opera',
+    id: 'trust',
+    name: 'Trust',
     chains: ['1', '5', '137', '80001']
   },
   {
@@ -26,11 +21,16 @@ const wallets: TWallet[] = [
     name: 'Coinbase Wallet',
     chains: ['1', '5', '137', '80001']
   },
-  {
-    id: 'imtoken',
-    name: 'imToken',
-    chains: ['1', '5', '137', '80001']
-  }
+  // {
+  //   id: 'imtoken',
+  //   name: 'imToken',
+  //   chains: ['1', '5', '137', '80001']
+  // },
+  // {
+  //   id: 'status',
+  //   name: 'Status',
+  //   chains: ['1', '5', '137', '80001']
+  // }
 ]
 
 export default wallets

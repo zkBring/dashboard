@@ -57,9 +57,9 @@ const QRs: FC<ReduxType> = ({
   return <Container>
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>My QR sets</WidgetTitleStyled>
+        <WidgetTitleStyled>My QR codes</WidgetTitleStyled>
         <ContainerButton
-          title='+ Add new set'
+          title='+ Create QR codes'
           size='small'
           appearance='additional'
           to='/qrs/new'

@@ -7,4 +7,5 @@ export const Code = styled.pre`
   display: block;
   max-height: 185px;
   overflow: scroll;
+  white-space: pre-wrap;
 `
