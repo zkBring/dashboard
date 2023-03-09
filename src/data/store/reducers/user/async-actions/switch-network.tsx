@@ -4,15 +4,11 @@ import {
 } from '../types'
 import { IMetamaskError } from 'types'
 import {
-  initialization,
-  getNativeTokenAmount
- } from './index'
-import {
   toHex,
 } from 'helpers'
 import chains from 'configs/chains'
-import * as userActions from '../actions'
 import { IAppDispatch } from 'data/store';
+import * as asyncActions from '../async-actions'
 
 async function switchNetwork (
   dispatch: Dispatch<UserActions> & IAppDispatch,
@@ -26,12 +22,11 @@ async function switchNetwork (
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: toHex(chainId) }],
     })
-
+    dispatch(asyncActions.logout())
     callback && callback()
     
   } catch (err) {
       const switchError = err as IMetamaskError
-      console.log(switchError.code)
       if (switchError.code && switchError.code === 4902) {
         try {
           const chainObj = chains[chainId]
@@ -48,7 +43,7 @@ async function switchNetwork (
               method: 'wallet_addEthereumChain',
               params: [data],
             })
-
+            dispatch(asyncActions.logout())
             callback && callback()
           }
         } catch (addError) {

@@ -21,7 +21,9 @@ const logout = () => {
       
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log({ code: err.response?.status })
+        if (err.response?.status === 403) {
+          window.location.reload()
+        }
       }
       dispatch(userActions.setLoading(false))
     }

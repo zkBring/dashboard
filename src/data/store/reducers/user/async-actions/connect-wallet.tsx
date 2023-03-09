@@ -4,16 +4,12 @@ import * as asyncActions from '../async-actions'
 import {
   UserActions
 } from '../types'
-import {
-  defineNetworkName
-} from 'helpers'
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import { IAppDispatch } from 'data/store'
 import {
   getNativeTokenAmount
  } from './index'
- const { REACT_APP_INFURA_ID } = process.env
 
 async function connectWallet (
   dispatch: Dispatch<UserActions> & IAppDispatch,
@@ -58,11 +54,5 @@ async function connectWallet (
     providerWeb3
   )
 }
-
-// const authorize = async (provider: any) => {
-//   const signer = await provider.getSigner()
-//   const message = await signer.signMessage(`I’m signing this message to login to Linkdrop Dashboard at ${new Date()}`)
-//   console.log({ message })
-// }
 
 export default connectWallet
