@@ -10,3 +10,18 @@ export const SelectTitle = styled.h3`
   margin: 0 0 12px;
   color: ${props => props.theme.primaryTextColor};
 `
+
+
+export const SelectAdditionalText = styled.div`
+  margin-top: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  color: ${props => props.theme.additionalTextColor};
+  svg {
+    margin-right: 8px;
+  }
+
+`

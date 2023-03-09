@@ -132,7 +132,7 @@ const QR: FC<ReduxType> = ({
           If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Campaigns</TextLink>
         </Paragraph>
         <Note>
-        You will not be able to change the quantity of QRs after uploading links
+          You will not be able to change the quantity of QRs after uploading links
         </Note>
       </>
     }

@@ -44,7 +44,7 @@ const init = async () => {
       id: string, // Token id (needed for ERC721/ERC1155 campaign)
       amount: string, // Amount of tokens per link (needed for ERC20/ERC1155 campaign)
       links: string, // Amount of links
-      weiAmount: string, // Amount of native tokens. Should be  
+      weiAmount: string, // Amount of native tokens. Optional. The default value is '0'.
     }],
     // optional parameters
     {
@@ -69,10 +69,10 @@ const init = async () => {
 
   // Add links to batch
   const links = await batch.addLinks([{ 
-    id: string, 
-    amount: string, 
-    links: string, 
-    weiAmount: string,
+    id: string, // Token id (needed for ERC721/ERC1155 campaign)
+    amount: string, // Amount of tokens per link (needed for ERC20/ERC1155 campaign)
+    links: string, // Amount of links
+    weiAmount: string, // Amount of native tokens. Optional. The default value is '0'.
   }], {
     shortCodeLength: number,
     // length of short code (default: 12)

@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import Select from 'react-select'
 import { IProps } from './types'
-import { Container, SelectTitle } from './styled-components'
+import { Container, SelectTitle, SelectAdditionalText } from './styled-components'
+import Icons from 'icons'
 
 const SelectComponent: FC<IProps> = ({
   options,
@@ -10,7 +11,8 @@ const SelectComponent: FC<IProps> = ({
   className,
   onChange,
   title,
-  disabled
+  disabled,
+  note
 }) => <Container>
   {title && <SelectTitle>{title}</SelectTitle>}
   <Select
@@ -24,6 +26,9 @@ const SelectComponent: FC<IProps> = ({
     }}
     placeholder={placeholder}
   />
+  {note && <SelectAdditionalText>
+    <Icons.InputNoteIcon />{note}
+  </SelectAdditionalText>}
 </Container>
 
 export default SelectComponent

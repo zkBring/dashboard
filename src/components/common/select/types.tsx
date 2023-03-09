@@ -8,4 +8,5 @@ export interface IProps {
   onChange: (newValue: TSelectOption) => void
   title?: string
   disabled?: boolean
+  note?: string
 }

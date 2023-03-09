@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import {
-  StyledRadio
+  StyledRadio,
+  TextLinkStyled
 } from './styled-components'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux'
@@ -18,8 +19,10 @@ import {
   TableValue,
   AsideContent,
   TableValueShorten,
-  WidgetSubtitle
+  WidgetSubtitle,
+  WidgetContainer
 } from 'components/pages/common'
+import { Note } from 'components/common'
 import { shortenString, defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({
@@ -100,18 +103,24 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   }, [])
 
   return <Container>
-    <WidgetComponent title='Claim pattern'>
-      <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
-      <StyledRadio
-        // disabled={Boolean(campaign) || loading}
-        disabled={true}
-        value={claimPattern}
-        radios={patterns}
-        onChange={(value) => {
-          setClaimPattern(value)
-        }}
-      />
-    </WidgetComponent>
+    <WidgetContainer>
+      <WidgetComponent title='Claim pattern'>
+        <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
+        <StyledRadio
+          // disabled={Boolean(campaign) || loading}
+          disabled={true}
+          value={claimPattern}
+          radios={patterns}
+          onChange={(value) => {
+            setClaimPattern(value)
+          }}
+        />
+      </WidgetComponent>
+      <Note>
+        Mint pattern is supported in Pro plan. <TextLinkStyled target='_blank' href='https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/mint-pattern-requirements'>Learn more {`->`}</TextLinkStyled>
+      </Note>
+    </WidgetContainer>
+    
     <Aside
       back={{
         action: () => {

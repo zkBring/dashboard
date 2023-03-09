@@ -430,7 +430,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       claimPattern={claimPattern}
     />}
     <WidgetContainer>
-    <WidgetComponent title='Distribution'>
+      <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
