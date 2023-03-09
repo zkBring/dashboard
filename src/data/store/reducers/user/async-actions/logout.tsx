@@ -21,7 +21,7 @@ const logout = () => {
       
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log({ code: err.code })
+        console.log({ code: err.response?.status })
       }
       dispatch(userActions.setLoading(false))
     }
