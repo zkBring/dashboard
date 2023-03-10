@@ -1,7 +1,8 @@
 import { FC, useState, useEffect } from 'react'
 import {
   StyledRadio,
-  InputStyled
+  InputStyled,
+  SwitcherStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
 
@@ -99,7 +100,6 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateNew: FC<ReduxType> = ({
-  createProxyContract,
   symbol,
   chainId,
   provider,
@@ -160,6 +160,25 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             return value
           }}
           title='Title of the campaign'
+        />
+
+        <SwitcherStyled
+          options={[
+            {
+              title: 'NFTs (ERC721 / ERC1155)',
+              id: 'nft'
+            },
+            {
+              title: 'NFTs (ERC721 / ERC1155)',
+              id: 'ERC20'
+            }
+          ]}
+          active={currentType}
+          onChange={(id) => {
+            if (id === 'ERC20') {
+              setCurrentType('ERC20')
+            }
+          }}
         />
 
         <StyledRadio

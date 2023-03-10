@@ -81,5 +81,4 @@ export const InputAdditionalText = styled.div<{ type: 'error' | 'note'}>`
       }
     }
   `}
-  
 `
