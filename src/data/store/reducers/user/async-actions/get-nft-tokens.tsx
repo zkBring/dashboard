@@ -29,7 +29,6 @@ const getNFTTokens = () => {
       })
 
       const nfts = await alchemy.nft.getNftsForOwner(address)
-      console.log({ nfts })
       if (nfts.ownedNfts && nfts.ownedNfts.length > 0) {
         const ownedTokens = convertAlchemyTokens(nfts.ownedNfts as TAlchemyToken[])
         dispatch(userActions.setNFTTokens(ownedTokens))
