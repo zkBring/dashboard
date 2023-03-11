@@ -8,13 +8,18 @@ import {
 const Switcher: FC<TProps> = ({
   options,
   active,
-  onChange
+  onChange,
+  disabled
 }) => {
-  return <SwitcherContainer>
+  return <SwitcherContainer disabled={disabled}>
     {options.map(option => {
       return <SwitcherItem
         active={option.id === active}
-        onClick={() => onChange(option.id)}
+        disabled={disabled}
+        onClick={() => {
+          if (disabled) { return }
+          onChange(option.id)
+        }}
       >
         {option.title}
       </SwitcherItem>

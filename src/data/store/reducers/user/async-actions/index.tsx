@@ -14,6 +14,7 @@ import checkIfApproved from "./check-if-approved"
 import checkIfGranted from "./check-if-granted"
 import grantRole from "./grant-role"
 import checkIfConnected from "./check-if-connected"
+import getNFTTokens from './get-nft-tokens'
 
 export {
   approveERC20,
@@ -31,5 +32,6 @@ export {
   logout,
   checkIfApproved,
   checkIfGranted,
-  grantRole
+  grantRole,
+  getNFTTokens
 }

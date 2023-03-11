@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components"
 
-export const SwitcherContainer = styled.ul`
+export const SwitcherContainer = styled.ul<{disabled?: boolean}>`
   display: flex;
   padding: 0;
   border-radius: 8px;
@@ -8,9 +8,14 @@ export const SwitcherContainer = styled.ul`
   width: 100%;
   max-width: 600px;
   padding: 4px;
+
+  ${props => props.disabled && css`
+    opacity: .6;
+    cursor: not-allowed;
+  `}
 `
 
-export const SwitcherItem = styled.li<{active: boolean}>`
+export const SwitcherItem = styled.li<{active: boolean, disabled?: boolean}>`
   flex: 1;
   margin: 0;
   border-radius: 8px;
@@ -27,5 +32,9 @@ export const SwitcherItem = styled.li<{active: boolean}>`
     background: ${props.theme.noteDefaultBackgroundColor};
     border: ${props.theme.primaryHighlightColor};
     color: ${props.theme.primaryHighlightColor};
+  `}
+
+  ${props => props.disabled && css`
+    cursor: not-allowed;
   `}
 `

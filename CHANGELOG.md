@@ -10,6 +10,7 @@
 - Added info screen if dashboard is opened in mobile browser
 - Added info screen if Metamask is not installed
 - Added info screen if network is not supported
+- Added Alchemy API to upload NFT tokens list
 
 ## 2.1.4
 - Restrict networks with env variable 
