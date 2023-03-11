@@ -1,7 +1,13 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import Select from 'react-select'
 import { IProps } from './types'
-import { Container, SelectTitle, SelectAdditionalText } from './styled-components'
+import {
+  Container,
+  SelectTitle,
+  SelectAdditionalText,
+  SelectNotFound,
+  SelectStyledClass
+} from './styled-components'
 import Icons from 'icons'
 
 const SelectComponent: FC<IProps> = ({
@@ -12,13 +18,26 @@ const SelectComponent: FC<IProps> = ({
   onChange,
   title,
   disabled,
-  note
+  note,
+  notFoundActiveCondition
 }) => <Container>
   {title && <SelectTitle>{title}</SelectTitle>}
   <Select
     options={options}
-    className={className}
+    className={`${className || ''} ${SelectStyledClass}`}
     isDisabled={disabled}
+    noOptionsMessage={({ inputValue }) => {
+      const isNotFoundClickable = notFoundActiveCondition && notFoundActiveCondition(inputValue)
+      return <SelectNotFound
+        isNotFoundClickable={isNotFoundClickable}
+        onClick={() => {
+          if (!isNotFoundClickable) { return }
+          onChange && onChange({ label: inputValue, value: inputValue })
+        }}
+      >
+        {inputValue}
+      </SelectNotFound>
+    }}
     value={value}
     onChange={(value) => {
       if (!value) { return }

@@ -9,4 +9,5 @@ export interface IProps {
   title?: string
   disabled?: boolean
   note?: string
+  notFoundActiveCondition?: (value: string) => boolean
 }

@@ -27,10 +27,12 @@ import Note from './note'
 import Radio from './radio'
 import CheckListItem from './check-list-item'
 import SecretString from './secret-string'
+import Switcher from './switcher'
 
 export {
   Header,
   Aside,
+  Switcher,
   SecretString,
   CheckListItem,
   Button,

@@ -1,7 +1,8 @@
 import { FC, useState, useEffect } from 'react'
 import {
-  StyledRadio,
-  InputStyled
+  InputStyled,
+  SwitcherStyled,
+  SelectStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
 
@@ -16,16 +17,16 @@ import {
   AsideContent,
   TableValueShorten
 } from 'components/pages/common'
-
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import { TTokenType, TLinkParams } from 'types'
+import { TTokenType, TLinkParams, TOwnedTokens, TOwnedToken } from 'types'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
-import { defineNetworkName } from 'helpers'
+import { defineNetworkName, shortenString, defineTokenType } from 'helpers'
+import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 
 const mapStateToProps = ({
   campaign: {
@@ -41,18 +42,22 @@ const mapStateToProps = ({
   user: {
     chainId,
     provider,
-    address
+    address,
+    nftTokens,
+    loading: userLoading
   }
 }: RootState) => ({
   tokenStandard,
   loading,
   campaigns,
   chainId,
+  userLoading,
   provider,
   address,
   symbol,
   title,
-  tokenAddress
+  tokenAddress,
+  nftTokens
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
@@ -91,15 +96,30 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       dispatch(
         campaignActions.clearCampaign()
       )
+    },
+    getNFTTokens: () => {
+      dispatch(
+        userAsyncActions.getNFTTokens()
+      )
     }
   }
+}
+
+const defineNFTTokensOptions = (nftTokens: TOwnedTokens) => {
+  const tokens = Object.entries(nftTokens)
+  const options = tokens.map(([ address, asset ]) => {
+    return {
+      label: `${asset.name} ${shortenString(address)} (${asset.tokens.length} token(s) owned)`,
+      value: asset
+    }
+  })
+  return options
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateNew: FC<ReduxType> = ({
-  createProxyContract,
   symbol,
   chainId,
   provider,
@@ -108,7 +128,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   setTokenContractData,
   setInitialData,
   clearCampaign,
-  loading
+  loading,
+  getNFTTokens,
+  nftTokens,
+  userLoading
 }) => {
 
   const history = useHistory()
@@ -126,26 +149,42 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     setTitle
   ] = useState<string>(currentCampaign?.title || '')
 
-  const [ currentType, setCurrentType ] = useState<string>(currentCampaign?.token_standard || 'ERC20')
-
-  const types = [
-    { value: 'ERC20', label: 'ERC20' },
-    { value: 'ERC721', label: 'ERC721' },
-    { value: 'ERC1155', label: 'ERC1155' }
-  ]
+  const [ currentType, setCurrentType ] = useState<string | null>(currentCampaign?.token_standard || 'ERC721')
+  const [ currentSwitcherValue, setCurrentSwitcherValue ] = useState<string>(currentCampaign?.token_standard === 'ERC1155' || currentCampaign?.token_standard === 'ERC721' || !currentCampaign?.token_standard ? 'nfts' : 'tokens')
 
   useEffect(() => {
     clearCampaign()
   }, [])
 
   useEffect(() => {
+    getNFTTokens()
+  }, [])
+
+  useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
-    console.log('here', tokenAddress)
     setTokenContractData(provider, tokenAddress, currentType as TTokenType, address, chainId)
   }, [tokenAddress, provider, currentType])
 
   const defineIfNextDisabled = () => {
     return !title || !tokenAddress || !symbol || loading
+  }
+
+  const selectTokenOptions = defineNFTTokensOptions(nftTokens)
+
+  const selectCurrentValue = () => {
+    const currentOption = selectTokenOptions.find(option => option.value.address === tokenAddress)
+    if (currentOption) {
+      return currentOption
+    }
+  }
+
+  const selectCurrentPlaceholder = () => {
+    if (!tokenAddress) {
+      return 'Select Token'
+    }
+    const selectValue = selectCurrentValue()
+    if (!selectValue) { return tokenAddress }
+    return selectValue.label
   }
   
   return <>
@@ -162,15 +201,56 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           title='Title of the campaign'
         />
 
-        <StyledRadio
-          label='Token Standard'
-          disabled={Boolean(currentCampaign) || loading}
-          value={currentType}
-          radios={types}
-          onChange={(value) => { setCurrentType(value) }}
+        <SwitcherStyled
+          options={[
+            {
+              title: 'NFTs (ERC721/ERC1155)',
+              id: 'nfts'
+            },
+            {
+              title: 'Tokens (ERC20)',
+              id: 'tokens'
+            }
+          ]}
+          disabled={Boolean(currentCampaign) || loading || userLoading}
+          active={currentSwitcherValue}
+          onChange={(id) => {
+            setTokenAddress('')
+            setCurrentSwitcherValue(id)
+            if (id === 'tokens') {
+              setCurrentType('ERC20')
+            } else {
+              setCurrentType(null)
+            }
+          }}
         />
 
-        <InputStyled
+        {currentSwitcherValue === 'nfts' && <SelectStyled
+          disabled={Boolean(currentCampaign) || loading || userLoading}
+          onChange={async ({ value }: { value: TOwnedToken | string}) => {
+            if (typeof value === 'string') {
+              const tokenType = await defineTokenType(value, provider)
+              if (tokenType !== null) {
+                setCurrentType(tokenType)
+                setTokenAddress(value)
+              } else {
+                alert('Token was not detected among ERC721 and ERC1155 tokens')
+              }
+            } else {
+              setCurrentType(String(value.tokenType))
+              setTokenAddress(String(value.address))
+            }
+          }}
+          placeholder={selectCurrentPlaceholder()}
+          value={selectCurrentValue()}
+          options={selectTokenOptions}
+          notFoundActiveCondition={(value) => {
+            // return false
+            return value.startsWith('0x') && value.length === 42
+          }}
+        />}
+
+        {currentSwitcherValue === 'tokens' && <InputStyled
           value={tokenAddress}
           placeholder='0x... address'
           note='Carefully check address before you go'
@@ -180,7 +260,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             return value
           }}
           title='Token Address'
-        />
+        />}
       </WidgetComponent>
 
       <Aside

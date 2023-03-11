@@ -1,6 +1,15 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+export const SelectStyledClass = 'SelectStyledClass'
 
 export const Container = styled.div`
+  .${SelectStyledClass} {
+    border-color: ${props => props.theme.primaryBorderColor};
+
+    & > div {
+      min-height: 42px;
+    }
+  }
   
 `
 
@@ -24,4 +33,14 @@ export const SelectAdditionalText = styled.div`
     margin-right: 8px;
   }
 
+`
+
+export const SelectNotFound = styled.div<{isNotFoundClickable?: boolean}>`
+  text-align: left;
+  color: ${props => props.theme.additionalTextColor};
+  cursor: not-allowed;
+  ${props => props.isNotFoundClickable && css`
+    cursor: pointer;
+    color: ${props => props.theme.primaryTextColor};
+  `}
 `
