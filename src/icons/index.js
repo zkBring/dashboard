@@ -33,9 +33,11 @@ import { ReactComponent as EyeOpenIcon } from './eye-open-icon.svg'
 import { ReactComponent as EyeClosedIcon } from './eye-closed-icon.svg'
 import { ReactComponent as MonitorIcon } from './monitor-icon.svg'
 import { ReactComponent as YellowAttentionIcon } from './yellow-attention-icon.svg'
+import { ReactComponent as TrashIcon } from './trash-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  TrashIcon,
   MonitorIcon,
   EyeClosedIcon,
   YellowAttentionIcon,

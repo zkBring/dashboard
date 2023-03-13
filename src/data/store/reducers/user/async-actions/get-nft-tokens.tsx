@@ -7,7 +7,7 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { RootState } from 'data/store'
-import { Alchemy, Network } from 'alchemy-sdk'
+import { Alchemy, OwnedNft } from 'alchemy-sdk'
 import { TAlchemyToken } from 'types'
 import { convertAlchemyTokens, defineAlchemyNetwork } from 'helpers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env

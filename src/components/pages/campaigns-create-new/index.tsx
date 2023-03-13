@@ -149,7 +149,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     setTitle
   ] = useState<string>(currentCampaign?.title || '')
 
-  const [ currentType, setCurrentType ] = useState<string | null>(currentCampaign?.token_standard || 'ERC721')
+  const [ currentType, setCurrentType ] = useState<string | null>(currentCampaign?.token_standard || null)
   const [ currentSwitcherValue, setCurrentSwitcherValue ] = useState<string>(currentCampaign?.token_standard === 'ERC1155' || currentCampaign?.token_standard === 'ERC721' || !currentCampaign?.token_standard ? 'nfts' : 'tokens')
 
   useEffect(() => {
@@ -173,6 +173,9 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   const selectCurrentValue = () => {
     const currentOption = selectTokenOptions.find(option => option.value.address === tokenAddress)
+    if (!currentOption) {
+      return null
+    }
     if (currentOption) {
       return currentOption
     }

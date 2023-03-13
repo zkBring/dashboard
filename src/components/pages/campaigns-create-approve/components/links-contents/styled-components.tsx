@@ -1,20 +1,22 @@
 import styled from 'styled-components'
+import { Button } from 'components/common'
 
 export const LinkContentsItem = styled.div`
   display: flex;
-  justify-content: space-between;
   font-size: 14px;
   margin-bottom: 24px;
+  align-items: center;
 `
 
 export const LinkContentsData = styled.div`
   display: flex;
 `
 
-export const LinkContentsControls = styled.div``
+export const LinkContentsControls = styled.div`
+  margin-left: auto;
+`
 
 export const LinksContentDataItem = styled.div`
-  display: flex;
   margin-right: 36px;
 
   &:last-child {
@@ -23,11 +25,18 @@ export const LinksContentDataItem = styled.div`
 `
 
 export const LinksContentDataLabel = styled.div`
-  color: ${props => props.theme.additionalTextColor};
+  color: ${props => props.theme.primaryTextColor};
   margin-right  : 8px;  
 `
 
-export const LinksContentDataValue = styled.div``
+export const LinksContentDataValue = styled.div`
+  font-size: 11px;
+`
+
+export const LinksContentDataValueSpan = styled.span`
+  color: ${props => props.theme.additionalTextColor};
+  margin-right: 4px;
+`
 
 
 export const CheckIndicator = styled.div`
@@ -39,4 +48,17 @@ export const CheckIndicator = styled.div`
 	border-radius: 16px;
 	margin-right: 16px;
 	background-color: ${props => props.theme.primaryHighlightColor};
+`
+
+export const LinksContentImage = styled.img`
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: contain;
+  border: 1px solid ${props => props.theme.primaryBorderColor};
+  margin-right: 10px;
+`
+
+export const ButtonStyled = styled(Button)`
+  min-width: fit-content;
 `

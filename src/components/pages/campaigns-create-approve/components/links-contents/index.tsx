@@ -6,15 +6,16 @@ import {
   LinksContentDataItem,
   LinksContentDataLabel,
   LinksContentDataValue,
-  CheckIndicator
+  CheckIndicator,
+  LinksContentImage,
+  LinksContentDataValueSpan,
+  ButtonStyled
 } from './styled-components'
 import { TOnRemove, TProps} from './types'
 import { shortenString } from 'helpers'
 import { TLinkContent } from 'types'
 import Icons from 'icons'
-import {
-  ButtonStyled
-} from '../../styled-components'
+import TokenPlaceholder from 'images/token-placeholder.png'
 
 const SDKContent: FC<TLinkContent & { onRemove: TOnRemove }> = ({
   tokenId,
@@ -90,25 +91,25 @@ const MintPatternContents: FC<TLinkContent & { onRemove: TOnRemove }> = ({
 const ERC721Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
   tokenId,
   id,
-  onRemove
+  tokenImage,
+  onRemove,
+  tokenName
 }) => {
   return <LinkContentsItem>
+    <LinksContentImage src={tokenImage || TokenPlaceholder} alt={tokenId} />
     <LinkContentsData>
-      <CheckIndicator>
-        <Icons.CheckboxIcon />
-      </CheckIndicator>
       <LinksContentDataItem>
         <LinksContentDataLabel>
-          ID
+          {tokenName || 'Token'}
         </LinksContentDataLabel>
         <LinksContentDataValue>
-          {shortenString(tokenId)}
+         <LinksContentDataValueSpan>ID</LinksContentDataValueSpan>{shortenString(tokenId)}
         </LinksContentDataValue>
       </LinksContentDataItem>
     </LinkContentsData>
 
     <LinkContentsControls>
-    <ButtonStyled
+      <ButtonStyled
         size='small'
         appearance='additional'
         onClick={() => {
@@ -116,7 +117,7 @@ const ERC721Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
           onRemove(id)
         }}
       >
-        Remove
+        <Icons.TrashIcon />
       </ButtonStyled>
     </LinkContentsControls>
   </LinkContentsItem>
@@ -126,7 +127,6 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
   tokenAmount,
   tokenId,
   linksAmount,
-  type,
   id,
   onRemove
 }) => {

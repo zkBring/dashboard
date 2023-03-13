@@ -60,9 +60,11 @@ import defineSystem from './define-system'
 import convertAlchemyTokens from './convert-alchemy-tokens'
 import defineTokenType from './define-token-type'
 import defineAlchemyNetwork from './define-alchemy-network'
+import defineIfUserOwnsToken from './define-if-user-owns-token'
 
 export {
   shortenString,
+  defineIfUserOwnsToken,
   defineTokenType,
   defineAlchemyNetwork,
   convertAlchemyTokens,

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Radio, Input, Button, Loader } from 'components/common'
+import { Radio, Input, Button, Select } from 'components/common'
 import {
   InstructionNote
 } from 'components/pages/common'
@@ -35,4 +35,8 @@ export const InstructionNoteStyled = styled(InstructionNote)`
 
 export const TextBold = styled.span`
   font-weight: 600;
+`
+
+export const SelectStyled = styled(Select)`
+  width: 100%;
 `
