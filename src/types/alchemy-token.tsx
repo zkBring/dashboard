@@ -1,5 +1,11 @@
 import { TTokenType } from './index.js'
 
+export type TAlchemyTokenMedia = {
+  gateway: string
+  thumbnail: string
+  bytes: number
+}[]
+
 type TAlchemyContract = {
   address: string
   name: string
@@ -8,9 +14,11 @@ type TAlchemyContract = {
 
 type TAlchemyToken = {
   balance: number
+  title: string
   tokenId: string
-  tokenType: TTokenType,
+  tokenType: TTokenType
   contract: TAlchemyContract
+  media: TAlchemyTokenMedia
 }
 
 export default TAlchemyToken

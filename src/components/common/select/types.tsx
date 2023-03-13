@@ -1,8 +1,9 @@
 import { TSelectOption } from 'types'
+import { MutableRefObject, RefObject } from 'react'
 
 export interface IProps {
   options: TSelectOption[]
-  value?: TSelectOption
+  value?: TSelectOption | null
   placeholder?: string
   className?: string
   onChange: (newValue: TSelectOption) => void

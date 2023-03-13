@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import * as actionsCampaign from '../actions';
 import { CampaignActions } from '../types';
 import { TTokenType } from 'types'
-import { IAppDispatch, RootState } from 'data/store'
+import { IAppDispatch } from 'data/store'
 
 function setInitialData(
   tokenStandard: TTokenType,

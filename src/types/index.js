@@ -36,12 +36,13 @@ import TQROption, { DotType, CornerSquareType, CornerDotType } from './qr-option
 import TSingleLinkData from './single-link-data'
 import TLinkDetails from './link-details'
 import TButtonAppearance from './button-appearance'
-import TAlchemyToken from './alchemy-token'
+import TAlchemyToken, { TAlchemyTokenMedia } from './alchemy-token'
 import { TOwnedTokens, TOwnedToken } from './owned-tokens'
 
 export {
   TCampaign,
   TOwnedToken,
+  TAlchemyTokenMedia,
   TAlchemyToken,
   TOwnedTokens,
   TLinkDetails,

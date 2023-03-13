@@ -12,7 +12,9 @@ const convertAlchemyTokens: TConvertAlchemyTokens = (tokens) => {
         tokenType: item.tokenType,
         tokens: [{
           id: item.tokenId,
-          amount: item.balance
+          amount: item.balance,
+          media: item.media,
+          name: item.title
         }]
       }}
     }
@@ -22,7 +24,9 @@ const convertAlchemyTokens: TConvertAlchemyTokens = (tokens) => {
         ...sum[item.contract.address].tokens,
         {
           id: item.tokenId,
-          amount: item.balance
+          amount: item.balance,
+          media: item.media,
+          name: item.title
         }
       ]
     }}

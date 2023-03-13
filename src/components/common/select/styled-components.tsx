@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 export const SelectStyledClass = 'SelectStyledClass'
 
 export const Container = styled.div`
+  width: 100%;
   .${SelectStyledClass} {
     border-color: ${props => props.theme.primaryBorderColor};
 
