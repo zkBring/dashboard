@@ -141,11 +141,13 @@ const createSelectContainer = (
   nftTokens: TOwnedTokens,
   tokenAddress: string | null,
   userAddress: string,
-  provider: any
+  provider: any,
+  checkIfDisabled: () => boolean,
 ) => {
+  console.log({ checkIfDisabled: checkIfDisabled() })
   return <InputsContainer>
     <SelectStyled
-      disabled={false}
+      disabled={checkIfDisabled()}
       onChange={async ({ value }) => {
         const tokenId = typeof value === 'string' ? value : value.id
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
@@ -166,6 +168,17 @@ const createSelectContainer = (
           if (!userOwnership.owns) {
             return alert(`Token #${tokenId} is not owned by current user`)
           }
+
+          setAssetsData([
+            ...assetsData, {
+              tokenId: tokenId,
+              tokenAmount: "1",
+              linksAmount: "1",
+              type: 'ERC721',
+              id: assetsData.length,
+              tokenName: 'Token ERC721'
+            }
+          ])
 
           
         } else {
@@ -233,7 +246,8 @@ const createTextInputOrSelect = (
     nftTokens,
     tokenAddress,
     userAddress,
-    provider
+    provider,
+    checkIfDisabled
   )
 
 }
@@ -248,12 +262,14 @@ const Erc721: FC<ReduxType > = ({
   tokenAddress,
   nftTokens,
   provider,
-  address
+  address,
+  loading,
+  userLoading
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
   const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
-
+  console.log({ loading, userLoading })
   const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
@@ -269,10 +285,14 @@ const Erc721: FC<ReduxType > = ({
   ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
+    if (loading || userLoading) { return true }
     if (claimPattern === 'mint') {
       return Boolean(assetsData.length)
     }
-    return !formData.tokenId || formData.tokenId.length === 0
+    if (oldStyleInputs) {
+      return !formData.tokenId || formData.tokenId.length === 0
+    }
+    return false
   }
 
   const checkIfTokensAvailable = () => {

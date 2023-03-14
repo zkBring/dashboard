@@ -19,7 +19,7 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TOwnedTokens } from 'types'
+import { TTokenType, TLinkContent, TOwnedTokens, TOwnedToken, TSingleToken } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
@@ -159,12 +159,13 @@ const createSelectContainer = (
   nftTokens: TOwnedTokens,
   tokenAddress: string | null,
   userAddress: string,
-  provider: any
+  provider: any,
+  checkIfDisabled: () => boolean
 ) => {
   return <InputsContainer>
     <SelectStyled
-      disabled={false}
-      onChange={async ({ value }) => {
+      disabled={checkIfDisabled()}
+      onChange={async ({ value }: { value: string | TSingleToken }) => {
         const tokenId = typeof value === 'string' ? value : value.id
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
         if (tokenAlreadyAdded) {
@@ -187,7 +188,16 @@ const createSelectContainer = (
             return alert(`Token #${tokenId} is not owned by current user`)
           }
 
-          
+          setAssetsData([
+            ...assetsData, {
+              tokenId: tokenId,
+              tokenAmount: "1",
+              linksAmount: "1",
+              type: 'ERC1155',
+              id: assetsData.length,
+              tokenName: 'Token ERC1155'
+            }
+          ])
         } else {
           const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === value.id)
           if (tokenAlreadyAdded) {
@@ -198,15 +208,15 @@ const createSelectContainer = (
             ...assetsData, {
               tokenId: tokenId,
               tokenAmount: "1",
-              linksAmount: value.amount,
+              linksAmount: String(value.amount),
               type: 'ERC1155',
               id: assetsData.length,
               tokenImage: (value.media[0] || {}).gateway,
               tokenName: value.name
             }
           ])
-          setFormData(getDefaultValues())
         }
+        setFormData(getDefaultValues())
       }}
       value={null}
       placeholder='Token ID'
@@ -251,7 +261,8 @@ const createTextInputOrSelect = (
     nftTokens,
     tokenAddress,
     userAddress,
-    provider
+    provider,
+    checkIfDisabled
   )
 
 }
@@ -270,7 +281,9 @@ const Erc1155: FC<ReduxType > = ({
   nftTokens,
   tokenAddress,
   address,
-  provider
+  provider,
+  loading,
+  userLoading
 }) => {
   
 
@@ -296,7 +309,11 @@ const Erc1155: FC<ReduxType > = ({
   ] = useState<number | null>(null)
 
   const checkIfDisabled = () => {
-    return !formData.tokenId || !formData.linksAmount || !formData.tokenAmount
+    if (userLoading || loading) { return true }
+    if (oldStyleInputs) {
+      return !formData.tokenId || !formData.linksAmount || !formData.tokenAmount
+    }
+    return false
   }
 
   const checkIfTokensAvailable = () => {
@@ -305,7 +322,6 @@ const Erc1155: FC<ReduxType > = ({
     if (!tokenAmongOwned) { return true }
     return false
   }
-
 
   const addAllTokens = () => {
     if (!tokenAddress) { return }
