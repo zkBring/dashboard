@@ -4,8 +4,6 @@ import {
   InputStyled,
   ButtonStyled,
   NotesContainer,
-  TextBold,
-  InstructionNoteStyled,
   SelectStyled
 } from '../../styled-components'
 import { defineIfUserOwnsToken } from 'helpers'
@@ -19,12 +17,11 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TClaimPattern, TOwnedTokens, TOwnedToken } from 'types'
+import { TTokenType, TLinkContent, TClaimPattern, TOwnedTokens } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
 } from 'components/pages/common'
-import Icons from 'icons'
 
 const mapStateToProps = ({
   user: {
@@ -347,13 +344,6 @@ const Erc721: FC<ReduxType > = ({
         }}
       />
       <NotesContainer>
-        <InstructionNoteStyled
-          icon={<Icons.InputNoteIcon />}
-        >
-          {
-            claimPattern === 'mint' ? 'Specify limit of tokens to be minted' : <><TextBold>Adding multiple IDs</TextBold> — You can add a range of IDs, by typing it the following way: 1-10</>
-          }
-        </InstructionNoteStyled>
         {children}
       </NotesContainer>
     </Container>

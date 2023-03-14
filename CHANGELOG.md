@@ -11,6 +11,7 @@
 - Added info screen if Metamask is not installed
 - Added info screen if network is not supported
 - Added Alchemy API to upload NFT tokens list
+- Added select component to choose available token ids for ERC721 campaign
 
 ## 2.1.4
 - Restrict networks with env variable 
