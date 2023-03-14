@@ -14,10 +14,12 @@ export const LinkContentsData = styled.div`
 
 export const LinkContentsControls = styled.div`
   margin-left: auto;
+  display: flex;
+  align-items: center;
 `
 
 export const LinksContentDataItem = styled.div`
-  margin-right: 36px;
+  margin-right: 16px;
 
   &:last-child {
     margin-right: 0px;
@@ -61,4 +63,9 @@ export const LinksContentImage = styled.img`
 
 export const ButtonStyled = styled(Button)`
   min-width: fit-content;
+  margin-right: 10px;
+
+  &:last-child {
+    margin-right: 0px;
+  }
 `

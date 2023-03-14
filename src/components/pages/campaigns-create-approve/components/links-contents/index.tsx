@@ -11,7 +11,7 @@ import {
   LinksContentDataValueSpan,
   ButtonStyled
 } from './styled-components'
-import { TOnRemove, TProps} from './types'
+import { TOnRemove, TProps, TOnEdit } from './types'
 import { shortenString } from 'helpers'
 import { TLinkContent } from 'types'
 import Icons from 'icons'
@@ -123,46 +123,59 @@ const ERC721Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
   </LinkContentsItem>
 }
 
-const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
-  tokenAmount,
+const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove, onEdit?: TOnEdit }> = ({
   tokenId,
   linksAmount,
   id,
-  onRemove
+  tokenImage,
+  tokenName,
+  onRemove,
+  onEdit
 }) => {
   return <LinkContentsItem>
+    <LinksContentImage src={tokenImage || TokenPlaceholder} alt={tokenId} />
     <LinkContentsData>
-      <CheckIndicator>
-        <Icons.CheckboxIcon />
-      </CheckIndicator>
       <LinksContentDataItem>
         <LinksContentDataLabel>
-          ID
+          {tokenName || 'Token'}
         </LinksContentDataLabel>
         <LinksContentDataValue>
-          {shortenString(tokenId)}
+          <LinksContentDataValueSpan>ID</LinksContentDataValueSpan>{shortenString(tokenId)}
         </LinksContentDataValue>
       </LinksContentDataItem>
-      <LinksContentDataItem>
+
+      {/* <LinksContentDataItem>
         <LinksContentDataLabel>
           Amount
         </LinksContentDataLabel>
         <LinksContentDataValue>
           {tokenAmount}
         </LinksContentDataValue>
-      </LinksContentDataItem>
-      <LinksContentDataItem>
-        <LinksContentDataLabel>
-          Number of links
-        </LinksContentDataLabel>
-        <LinksContentDataValue>
-          {linksAmount}
-        </LinksContentDataValue>
-      </LinksContentDataItem>
+      </LinksContentDataItem> */}
     </LinkContentsData>
 
+    
+
     <LinkContentsControls>
-    <ButtonStyled
+      <LinksContentDataItem>
+        <LinksContentDataLabel>
+          Links
+        </LinksContentDataLabel>
+        <LinksContentDataValue>
+          <LinksContentDataValueSpan>{linksAmount}</LinksContentDataValueSpan>
+        </LinksContentDataValue>
+      </LinksContentDataItem>
+      <ButtonStyled
+        size='small'
+        appearance='additional'
+        onClick={() => {
+          if (id === undefined) { return }
+          onEdit && onEdit(id)
+        }}
+      >
+        Edit
+      </ButtonStyled>
+      <ButtonStyled
         size='small'
         appearance='additional'
         onClick={() => {
@@ -170,7 +183,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
           onRemove(id)
         }}
       >
-        Remove
+        <Icons.TrashIcon />
       </ButtonStyled>
     </LinkContentsControls>
   </LinkContentsItem>
@@ -224,6 +237,7 @@ const LinksContents: FC<TProps> = ({
   data,
   type,
   onRemove,
+  onEdit,
   sdk,
   claimPattern
 }) => {
@@ -233,7 +247,7 @@ const LinksContents: FC<TProps> = ({
     }
 
     if (type === 'ERC1155') {
-      return <ERC1155Content {...item} onRemove={onRemove} />
+      return <ERC1155Content {...item} onRemove={onRemove} onEdit={onEdit} />
     } else if (type === 'ERC721') {
       if (claimPattern === 'mint') {
         return <MintPatternContents {...item} onRemove={onRemove} />

@@ -6,7 +6,7 @@ import {
   NotesContainer,
   SelectStyled
 } from '../../styled-components'
-import { defineIfUserOwnsToken } from 'helpers'
+import { defineIfUserOwnsToken, shortenString } from 'helpers'
 import { TProps } from './type'
 import {
   Container,
@@ -63,7 +63,7 @@ const defineNFTTokensOptions = (nftTokens: TOwnedTokens, tokenAddress: string | 
   if (!token) { return [] }
   const options = token.tokens.map(singleToken => {
     return {
-      label: `${token.name} #${singleToken.id}`,
+      label: `${singleToken.name || token.name} #${shortenString(singleToken.id)}`,
       value: singleToken
     }
   })
@@ -252,7 +252,7 @@ const Erc721: FC<ReduxType > = ({
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
-  const [ easterEgg, toggleEasterEgg ] = useState<boolean>(false)
+  const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
 
   const getDefaultValues: () => TLinkContent = () => {
     return {
@@ -277,7 +277,7 @@ const Erc721: FC<ReduxType > = ({
 
   const checkIfTokensAvailable = () => {
     if (!tokenAddress) { return true }
-    const tokenAmongOwned = nftTokens[tokenAddress]
+    const tokenAmongOwned = nftTokens[tokenAddress] && nftTokens[tokenAddress].tokens.length > 0
     if (!tokenAmongOwned) { return true }
     return false
   }
@@ -307,7 +307,7 @@ const Erc721: FC<ReduxType > = ({
         {claimPattern === 'mint' ?  <span>
           Specify number of NFTs
         </span> : <span>
-          Add token IDs <span onClick={() => { toggleEasterEgg(!easterEgg) }}>to</span> distribute
+          Add token IDs <span onClick={() => { toggleOldStyleInputs(!oldStyleInputs) }}>to</span> distribute
         </span>}
       </WidgetTitleStyled>
       <ButtonStyled
@@ -321,7 +321,7 @@ const Erc721: FC<ReduxType > = ({
     </Header>
     <Container>
       {createTextInputOrSelect(
-        easterEgg,
+        oldStyleInputs,
         formData,
         claimPattern,
         assetsData,
