@@ -143,7 +143,6 @@ const createInputsContainer = (
           id: assetsData.length
         }])
         setFormData(getDefaultValues())
-        console.log({ formData, assetsData })
       }}
     >
       + Add
@@ -181,8 +180,6 @@ const createSelectContainer = (
             provider,
             tokenId
           )
-
-          console.log({ userOwnership })
 
           if (!userOwnership.owns) {
             return alert(`Token #${tokenId} is not owned by current user`)

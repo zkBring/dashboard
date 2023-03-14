@@ -144,7 +144,6 @@ const createSelectContainer = (
   provider: any,
   checkIfDisabled: () => boolean,
 ) => {
-  console.log({ checkIfDisabled: checkIfDisabled() })
   return <InputsContainer>
     <SelectStyled
       disabled={checkIfDisabled()}
@@ -269,7 +268,6 @@ const Erc721: FC<ReduxType > = ({
 
   const { type } = useParams<{ type: TTokenType }>()
   const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
-  console.log({ loading, userLoading })
   const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
