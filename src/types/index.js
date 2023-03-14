@@ -37,10 +37,11 @@ import TSingleLinkData from './single-link-data'
 import TLinkDetails from './link-details'
 import TButtonAppearance from './button-appearance'
 import TAlchemyToken, { TAlchemyTokenMedia } from './alchemy-token'
-import { TOwnedTokens, TOwnedToken } from './owned-tokens'
+import { TOwnedTokens, TOwnedToken, TSingleToken } from './owned-tokens'
 
 export {
   TCampaign,
+  TSingleToken,
   TOwnedToken,
   TAlchemyTokenMedia,
   TAlchemyToken,

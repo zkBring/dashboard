@@ -4,11 +4,9 @@ import {
   InputStyled,
   ButtonStyled,
   NotesContainer,
-  TextBold,
-  InstructionNoteStyled,
   SelectStyled
 } from '../../styled-components'
-import { defineIfUserOwnsToken } from 'helpers'
+import { defineIfUserOwnsToken, shortenString } from 'helpers'
 import { TProps } from './type'
 import {
   Container,
@@ -19,12 +17,11 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TClaimPattern, TOwnedTokens, TOwnedToken } from 'types'
+import { TTokenType, TLinkContent, TClaimPattern, TOwnedTokens } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
 } from 'components/pages/common'
-import Icons from 'icons'
 
 const mapStateToProps = ({
   user: {
@@ -66,7 +63,7 @@ const defineNFTTokensOptions = (nftTokens: TOwnedTokens, tokenAddress: string | 
   if (!token) { return [] }
   const options = token.tokens.map(singleToken => {
     return {
-      label: `${token.name} #${singleToken.id}`,
+      label: `${singleToken.name || token.name} #${shortenString(singleToken.id)}`,
       value: singleToken
     }
   })
@@ -144,11 +141,12 @@ const createSelectContainer = (
   nftTokens: TOwnedTokens,
   tokenAddress: string | null,
   userAddress: string,
-  provider: any
+  provider: any,
+  checkIfDisabled: () => boolean,
 ) => {
   return <InputsContainer>
     <SelectStyled
-      disabled={false}
+      disabled={checkIfDisabled()}
       onChange={async ({ value }) => {
         const tokenId = typeof value === 'string' ? value : value.id
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
@@ -169,6 +167,17 @@ const createSelectContainer = (
           if (!userOwnership.owns) {
             return alert(`Token #${tokenId} is not owned by current user`)
           }
+
+          setAssetsData([
+            ...assetsData, {
+              tokenId: tokenId,
+              tokenAmount: "1",
+              linksAmount: "1",
+              type: 'ERC721',
+              id: assetsData.length,
+              tokenName: 'Token ERC721'
+            }
+          ])
 
           
         } else {
@@ -236,7 +245,8 @@ const createTextInputOrSelect = (
     nftTokens,
     tokenAddress,
     userAddress,
-    provider
+    provider,
+    checkIfDisabled
   )
 
 }
@@ -251,12 +261,13 @@ const Erc721: FC<ReduxType > = ({
   tokenAddress,
   nftTokens,
   provider,
-  address
+  address,
+  loading,
+  userLoading
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
-  const [ easterEgg, toggleEasterEgg ] = useState<boolean>(false)
-
+  const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
   const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
@@ -272,15 +283,19 @@ const Erc721: FC<ReduxType > = ({
   ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
+    if (loading || userLoading) { return true }
     if (claimPattern === 'mint') {
       return Boolean(assetsData.length)
     }
-    return !formData.tokenId || formData.tokenId.length === 0
+    if (oldStyleInputs) {
+      return !formData.tokenId || formData.tokenId.length === 0
+    }
+    return false
   }
 
   const checkIfTokensAvailable = () => {
     if (!tokenAddress) { return true }
-    const tokenAmongOwned = nftTokens[tokenAddress]
+    const tokenAmongOwned = nftTokens[tokenAddress] && nftTokens[tokenAddress].tokens.length > 0
     if (!tokenAmongOwned) { return true }
     return false
   }
@@ -310,7 +325,7 @@ const Erc721: FC<ReduxType > = ({
         {claimPattern === 'mint' ?  <span>
           Specify number of NFTs
         </span> : <span>
-          Add token IDs <span onClick={() => { toggleEasterEgg(!easterEgg) }}>to</span> distribute
+          Add token IDs <span onClick={() => { toggleOldStyleInputs(!oldStyleInputs) }}>to</span> distribute
         </span>}
       </WidgetTitleStyled>
       <ButtonStyled
@@ -324,7 +339,7 @@ const Erc721: FC<ReduxType > = ({
     </Header>
     <Container>
       {createTextInputOrSelect(
-        easterEgg,
+        oldStyleInputs,
         formData,
         claimPattern,
         assetsData,
@@ -347,13 +362,6 @@ const Erc721: FC<ReduxType > = ({
         }}
       />
       <NotesContainer>
-        <InstructionNoteStyled
-          icon={<Icons.InputNoteIcon />}
-        >
-          {
-            claimPattern === 'mint' ? 'Specify limit of tokens to be minted' : <><TextBold>Adding multiple IDs</TextBold> — You can add a range of IDs, by typing it the following way: 1-10</>
-          }
-        </InstructionNoteStyled>
         {children}
       </NotesContainer>
     </Container>

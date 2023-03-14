@@ -15,9 +15,22 @@ const defineIfUserOwnsToken: TDefineIfUserOwnsToken = async (userAddress, tokenT
         balance: '1'
       }
     }
+
+    if (tokenType === 'ERC1155') {
+      const contractInstance = new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
+      const balance = await contractInstance.balanceOf(userAddress, tokenId)
+      return {
+        owns: String(balance) !== '0',
+        balance: String(balance)
+      }
+    }
+
+    const contractInstance = new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
+    const balance = await contractInstance.balanceOf(userAddress)
+
     return {
       owns: true,
-      balance: '1'
+      balance: String(balance)
     }
   } catch (err) {
     console.log({

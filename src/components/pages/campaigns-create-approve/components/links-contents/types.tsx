@@ -7,6 +7,9 @@ export type TProps = {
   data: TLinksContent
   type: TTokenType
   onRemove: TOnRemove
+  onEdit?: TOnEdit
   sdk: boolean
   claimPattern: TClaimPattern
 }
+
+export type TOnEdit = (id: number) => void

@@ -5,6 +5,7 @@ import {
 } from 'components/pages/common'
 import { Select } from 'components/common'
 import Icons from 'icons'
+
 export const WidgetInfo = styled.div`
   display: grid;
   max-width: 600px;

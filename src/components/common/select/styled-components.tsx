@@ -4,15 +4,23 @@ export const SelectStyledClass = 'SelectStyledClass'
 
 export const Container = styled.div`
   width: 100%;
+  max-width: 100%;
   .${SelectStyledClass} {
     border-color: ${props => props.theme.primaryBorderColor};
-
     & > div {
       min-height: 42px;
+      & > div {
+        & > div:last-child {
+          max-width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
     }
   }
-  
 `
+
+
 
 export const SelectTitle = styled.h3`
   font-weight: 600;
@@ -33,7 +41,6 @@ export const SelectAdditionalText = styled.div`
   svg {
     margin-right: 8px;
   }
-
 `
 
 export const SelectNotFound = styled.div<{isNotFoundClickable?: boolean}>`

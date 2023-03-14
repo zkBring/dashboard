@@ -79,6 +79,9 @@ export const InputAdditionalText = styled.div<{ type: 'error' | 'note'}>`
       path {
         stroke: ${props => props.theme.dangerTextColor};
       }
+      circle {
+        stroke: ${props => props.theme.dangerTextColor};
+      }
     }
   `}
 `
