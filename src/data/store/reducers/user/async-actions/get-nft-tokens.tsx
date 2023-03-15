@@ -41,3 +41,10 @@ const getNFTTokens = () => {
 }
 
 export default getNFTTokens
+// const result = []
+
+// const nfts = await alchemy.nft.getNftsForOwnerIterator(address)
+// for await (const nft of nfts) {
+//   result.push(nft)
+// }
+// console.log({ result })

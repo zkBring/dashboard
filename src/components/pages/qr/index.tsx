@@ -12,7 +12,6 @@ import {
   WidgetValue,
   Buttons,
   WidgetButton,
-  FileIcon,
   StyledSelect,
   WidgetSubtitleStyled,
   Paragraph

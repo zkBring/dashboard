@@ -72,7 +72,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const patterns = [
-  { value: 'transfer', label: 'Transfer (tokens should be preminted, and will be transferred to user at claim)' },
+  { value: 'transfer', label: 'Transfer (tokens should be preminted and will be transferred to user at claim)' },
   { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' }
 ]
 

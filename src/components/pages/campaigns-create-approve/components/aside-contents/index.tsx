@@ -19,7 +19,8 @@ import { TextLink } from 'components/common'
 import {
   defineEtherscanUrl,
   shortenString,
-  defineNetworkName
+  defineNetworkName,
+  defineNativeTokenSymbol
 } from 'helpers'
 import { TAssetsData, TTokenType, TClaimPattern } from 'types'
 import { MathType } from 'mathjs'
@@ -50,7 +51,8 @@ const renderNote = (
 
 const renderSecureAmount = (
   sponsored: boolean,
-  totalComission: MathType
+  totalComission: MathType,
+  nativeTokenSymbol: string
 ) => {
   if (!sponsored) {
     return null
@@ -58,8 +60,8 @@ const renderSecureAmount = (
   return <>
     <AsideDivider />
     <TableRow>
-      <TableText>Secured on next step</TableText>
-      <TableValue>{String(totalComission)}</TableValue>
+      <TableText>To be secured on next step</TableText>
+      <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
     </TableRow>
   </>
 }
@@ -93,7 +95,7 @@ const AsideContents: FC<TAsideContentsProps> = ({
   totalComission
 }) => {
   const scannerUrl = defineEtherscanUrl(campaignChainId, `/address/${tokenAddress || ''}`)
-
+  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId: campaignChainId })
   const approvedNote = () => {
     if (approved === null) {
       return <AsideNote>
@@ -155,9 +157,7 @@ const AsideContents: FC<TAsideContentsProps> = ({
         <TableText>Claim pattern</TableText>
         <TableValue>{claimPattern}</TableValue>
       </TableRow>
-
-      {renderSecureAmount(sponsored, totalComission)}
-      {renderNote(sponsored)}
+      {renderSecureAmount(sponsored, totalComission, nativeTokenSymbol)}
     </AsideContent>
     {approvedNote()}
   </>

@@ -32,7 +32,6 @@ import {
   defineProxyContractFunds,
   createEncryptionKey
 } from 'helpers'
-import LinkdropSDK from 'linkdrop-sdk'
 import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
@@ -411,13 +410,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           <TableText>Token standard</TableText>
           <TableValue>{token_standard}</TableValue>
         </TableRow>
-        {links_count !== 0 && <TableRow>
+        {links_count && links_count !== 0 && <TableRow>
           <TableText>Links</TableText>
           <TableValue>{links_count}</TableValue>
         </TableRow>}
       </AsideStyled>
 
-      <AsideStyled
+      {sdk && <AsideStyled
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
         next={{
@@ -435,7 +434,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         }}
       >
        
-      </AsideStyled>
+      </AsideStyled>}
     </AsideContainer>
   </Container>
 }

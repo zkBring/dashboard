@@ -407,8 +407,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   )
 
   const isSponsored = [
-    { value: true, label: `Sponsor claim transactions (+ ${potentialComission} ${nativeTokenSymbol})` },
-    { value: false, label: `No sponsoring (+ 0 ${nativeTokenSymbol})` }
+    { value: true, label: `Sponsor claiming gas fees (+ ${LINK_COMISSION_PRICE} ${nativeTokenSymbol} per link)` },
+    { value: false, label: `No sponsoring` }
   ]
 
   const {
@@ -445,7 +445,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
           }}
         />
       </WidgetComponent>
-      <WidgetComponent title='Transaction sponsorship'>
+      <WidgetComponent title='Gasless Claiming'>
         <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}

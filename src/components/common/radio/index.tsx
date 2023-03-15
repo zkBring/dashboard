@@ -19,17 +19,19 @@ const RadioButtons: FC<TProps> = ({
 }) => {
   return <RadioButtonsContainer className={className}>
     {label && <RadioButtonsLabel>{label}</RadioButtonsLabel>}
-    {radios.map(item => <RadioItem
-      disabled={disabled}
-      onClick={() => {
-        if (disabled) { return }
-        onChange(item.value)
-      }}
-      active={value === item.value}
-    >
-      <RadioButtonController className={RadioButtonControllerClassName}/>
-      <RadioButtonLabel>{item.label}</RadioButtonLabel>
-    </RadioItem>)}
+    {radios.map(item => {
+      return <RadioItem
+        disabled={disabled && value !== item.value}
+        onClick={() => {
+          if (disabled) { return }
+          onChange(item.value)
+        }}
+        active={value === item.value}
+      >
+        <RadioButtonController className={RadioButtonControllerClassName}/>
+        <RadioButtonLabel>{item.label}</RadioButtonLabel>
+      </RadioItem>
+    })}
   </RadioButtonsContainer>
 }
 
