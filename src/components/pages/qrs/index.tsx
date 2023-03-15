@@ -61,7 +61,7 @@ const QRs: FC<ReduxType> = ({
         <ContainerButton
           title='+ Create QR codes'
           size='small'
-          appearance='additional'
+          appearance='action'
           to='/qrs/new'
         />
       </Header>

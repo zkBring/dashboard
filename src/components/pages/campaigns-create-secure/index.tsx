@@ -158,7 +158,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           onChange={value => setCurrentWallet(value)}
           placeholder='Preferred wallet'
           title='Preferred wallet'
-          note='By default, user would be suggested to claim with Metamask, but still having other wallets available'
+          note='User will be suggested to claim with selected wallet by default, but still having other options available'
         />
       </WidgetComponent>
 

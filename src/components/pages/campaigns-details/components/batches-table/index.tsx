@@ -52,7 +52,7 @@ const BatchesList: FC<TProps> = ({
           {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
         </BatchListValue>
         <WidgetButton
-          appearance='additional'
+          appearance='action'
           disabled={batch.claim_links_count === 0}
           size='small'
           title='Download'
