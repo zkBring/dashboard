@@ -57,17 +57,17 @@ import getContractVersion from './get-contract-version'
 import createEncryptionKey from './create-encryption-key'
 import countNativeTokensToSecure from './count-native-tokens-to-secure'
 import defineSystem from './define-system'
-import convertAlchemyTokens from './convert-alchemy-tokens'
 import defineTokenType from './define-token-type'
 import defineAlchemyNetwork from './define-alchemy-network'
 import defineIfUserOwnsToken from './define-if-user-owns-token'
+import defineIfUserOwnsContract from './define-if-user-owns-contract'
 
 export {
   shortenString,
+  defineIfUserOwnsContract,
   defineIfUserOwnsToken,
   defineTokenType,
   defineAlchemyNetwork,
-  convertAlchemyTokens,
   defineSystem,
   countNativeTokensToSecure,
   getContractVersion,

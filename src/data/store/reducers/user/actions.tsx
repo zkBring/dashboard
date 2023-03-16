@@ -1,7 +1,7 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TAuthorizationStep, TOwnedTokens } from 'types'
+import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken } from 'types'
 
 export function setAddress(address: string) {
   return action(
@@ -21,11 +21,20 @@ export function setLoading(loading: boolean) {
   )
 }
 
-export function setNFTTokens(nftTokens: TOwnedTokens) {
+export function setContracts(contracts: TAlchemyContract[]) {
   return action(
-    Constants.USER_SET_NFT_TOKENS,
+    Constants.USER_SET_CONTRACTS,
     {
-      nftTokens
+      contracts
+    }
+  )
+}
+
+export function setNFTs(nfts: TAlchemyNFTToken[]) {
+  return action(
+    Constants.USER_SET_NFTS,
+    {
+      nfts
     }
   )
 }
@@ -88,7 +97,6 @@ export function setNativeTokenAmount(
     }
   )
 }
-
 
 export function setSDK (
   sdk: LinkdropSDK

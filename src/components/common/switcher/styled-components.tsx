@@ -30,11 +30,23 @@ export const SwitcherItem = styled.li<{active: boolean, disabled?: boolean}>`
 
   ${props => props.active && css`
     background: ${props.theme.noteDefaultBackgroundColor};
-    border: ${props.theme.primaryHighlightColor};
+    border: 1px solid ${props.theme.primaryHighlightColor};
     color: ${props.theme.primaryHighlightColor};
   `}
 
   ${props => props.disabled && css`
     cursor: not-allowed;
   `}
+`
+
+export const Container = styled.div`
+  
+`
+
+export const SwitcherTitle = styled.h3`
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 12px;
+  color: ${props => props.theme.primaryTextColor};
 `

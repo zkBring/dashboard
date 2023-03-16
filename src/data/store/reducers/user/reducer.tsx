@@ -19,7 +19,8 @@ const initialState: UserState = {
   workersCount: (navigator && navigator.hardwareConcurrency) || 4,
   authorizationStep: 'initial',
   chainsAvailable: chainsAvailable,
-  nftTokens: {}
+  contracts: [],
+  nfts: []
 };
 
 export function userReducer(
@@ -41,8 +42,10 @@ export function userReducer(
         return {...state, dashboardKey: action.payload.dashboardKey }
       case Constants.USER_SET_AUTHORIZATION_STEP:
         return {...state, authorizationStep: action.payload.authorizationStep }
-      case Constants.USER_SET_NFT_TOKENS:
-        return {...state, nftTokens: action.payload.nftTokens }
+      case Constants.USER_SET_CONTRACTS:
+        return {...state, contracts: action.payload.contracts }
+      case Constants.USER_SET_NFTS:
+        return {...state, nfts: action.payload.nfts }
       case Constants.USER_SET_TOKEN_AMOUNT:
         return {
           ...state,

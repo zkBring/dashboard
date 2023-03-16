@@ -7,12 +7,12 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { RootState } from 'data/store'
-import { Alchemy, OwnedNft } from 'alchemy-sdk'
-import { TAlchemyToken } from 'types'
-import { convertAlchemyTokens, defineAlchemyNetwork } from 'helpers'
+import { Alchemy } from 'alchemy-sdk'
+import { TAlchemyContract } from 'types'
+import { defineAlchemyNetwork } from 'helpers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
-const getNFTTokens = () => {
+const getContracts = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
     getState: () => RootState
@@ -28,10 +28,9 @@ const getNFTTokens = () => {
         network: defineAlchemyNetwork(chainId)
       })
 
-      const nfts = await alchemy.nft.getNftsForOwner(address)
-      if (nfts.ownedNfts && nfts.ownedNfts.length > 0) {
-        const ownedTokens = convertAlchemyTokens(nfts.ownedNfts as TAlchemyToken[])
-        dispatch(userActions.setNFTTokens(ownedTokens))
+      const { contracts } = await alchemy.nft.getContractsForOwner(address)
+      if (contracts && contracts.length > 0) {
+        dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
       }
     } catch (err) {
       alert('Some error occured')
@@ -40,11 +39,4 @@ const getNFTTokens = () => {
   }
 }
 
-export default getNFTTokens
-// const result = []
-
-// const nfts = await alchemy.nft.getNftsForOwnerIterator(address)
-// for await (const nft of nfts) {
-//   result.push(nft)
-// }
-// console.log({ result })
+export default getContracts

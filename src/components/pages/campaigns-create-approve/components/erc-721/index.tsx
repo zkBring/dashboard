@@ -17,7 +17,7 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TClaimPattern, TOwnedTokens } from 'types'
+import { TTokenType, TLinkContent, TClaimPattern, TAlchemyNFTToken } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
@@ -31,7 +31,7 @@ const mapStateToProps = ({
     nativeTokenAmountFormatted,
     tokenAmountFormatted,
     loading: userLoading,
-    nftTokens
+    nfts
   },
   campaign: {
     loading,
@@ -54,16 +54,15 @@ const mapStateToProps = ({
   userLoading,
   claimPattern,
   tokenAddress,
-  nftTokens
+  nfts
 })
 
-const defineNFTTokensOptions = (nftTokens: TOwnedTokens, tokenAddress: string | null) => {
+const defineNFTTokensOptions = (nftTokens: TAlchemyNFTToken[], tokenAddress: string | null) => {
   if (!tokenAddress) { return [] }
-  const token = nftTokens[tokenAddress]
-  if (!token) { return [] }
-  const options = token.tokens.map(singleToken => {
+  if (!nftTokens) { return [] }
+  const options = nftTokens.map(singleToken => {
     return {
-      label: `${singleToken.name || token.name} #${shortenString(singleToken.id)}`,
+      label: `${singleToken.title || 'ERC721 Token'} #${shortenString(singleToken.tokenId)}`,
       value: singleToken
     }
   })
@@ -138,7 +137,7 @@ const createSelectContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   getDefaultValues: () => TLinkContent,
-  nftTokens: TOwnedTokens,
+  nfts: TAlchemyNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   provider: any,
@@ -202,7 +201,7 @@ const createSelectContainer = (
       }}
       value={null}
       placeholder='Token ID'
-      options={defineNFTTokensOptions(nftTokens, tokenAddress)}
+      options={defineNFTTokensOptions(nfts, tokenAddress)}
       notFoundActiveCondition={(value) => {
         return value.length > 0 && (/^[0-9]+$/).test(value)
       }}
@@ -219,7 +218,7 @@ const createTextInputOrSelect = (
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
   getDefaultValues: () => TLinkContent,
-  nftTokens: TOwnedTokens,
+  nfts: TAlchemyNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   provider: any
@@ -242,7 +241,7 @@ const createTextInputOrSelect = (
     setFormData,
     setAssetsData,
     getDefaultValues,
-    nftTokens,
+    nfts,
     tokenAddress,
     userAddress,
     provider,
@@ -259,7 +258,7 @@ const Erc721: FC<ReduxType > = ({
   children,
   sdk,
   tokenAddress,
-  nftTokens,
+  nfts,
   provider,
   address,
   loading,
@@ -293,25 +292,22 @@ const Erc721: FC<ReduxType > = ({
     return false
   }
 
-  const checkIfTokensAvailable = () => {
+  const checkIfAllTokensDisabled = () => {
     if (!tokenAddress) { return true }
-    const tokenAmongOwned = nftTokens[tokenAddress] && nftTokens[tokenAddress].tokens.length > 0
-    if (!tokenAmongOwned) { return true }
+    if (!nfts || nfts.length === 0) { return true }
     return false
   }
 
   const addAllTokens = () => {
     if (!tokenAddress) { return true }
-    const tokenAmongOwned = nftTokens[tokenAddress]
-    if (!tokenAmongOwned) { return true }
-    const assets: TLinkContent[] = tokenAmongOwned.tokens.map((token, idx) => {
+    const assets: TLinkContent[] = nfts.map((token, idx) => {
       return {
-        tokenId: token.id,
+        tokenId: token.tokenId,
         linksAmount: '1',
         id: idx,
         type: 'ERC721',
         tokenImage: (token.media[0] || {}).gateway,
-        tokenName: token.name
+        tokenName: token.title 
       }
     })
 
@@ -329,7 +325,7 @@ const Erc721: FC<ReduxType > = ({
         </span>}
       </WidgetTitleStyled>
       <ButtonStyled
-        disabled={checkIfTokensAvailable()}
+        disabled={checkIfAllTokensDisabled()}
         appearance='additional'
         size='small'
         onClick={addAllTokens}
@@ -347,7 +343,7 @@ const Erc721: FC<ReduxType > = ({
         setAssetsData,
         checkIfDisabled,
         getDefaultValues,
-        nftTokens,
+        nfts,
         tokenAddress,
         address,
         provider

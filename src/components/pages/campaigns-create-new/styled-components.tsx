@@ -11,10 +11,6 @@ export const StyledRadio = styled(Radio)`
 
 export const InputStyled = styled(Input)``
 
-export const SwitcherStyled = styled(Switcher)`
-  
-`
+export const SwitcherStyled = styled(Switcher)``
 
-export const SelectStyled = styled(Select)`
-  
-`
+export const SelectStyled = styled(Select)``

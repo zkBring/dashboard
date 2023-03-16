@@ -2,7 +2,7 @@ import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
 import { Dispatch } from 'redux'
 import LinkdropSDK from 'linkdrop-sdk'
-import { TAuthorizationStep, TOwnedTokens } from 'types'
+import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken } from 'types'
 
 export interface UserState {
   address: string
@@ -18,7 +18,8 @@ export interface UserState {
   workersCount: number,
   authorizationStep: TAuthorizationStep,
   chainsAvailable: (number | string)[],
-  nftTokens: TOwnedTokens
+  contracts: TAlchemyContract[],
+  nfts: TAlchemyNFTToken[]
 }
 
 export type UserActions = ActionType<typeof actions>;

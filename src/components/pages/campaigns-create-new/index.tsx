@@ -20,12 +20,12 @@ import {
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import { TTokenType, TLinkParams, TOwnedTokens, TOwnedToken } from 'types'
+import { TTokenType, TLinkParams, TAlchemyContract } from 'types'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
-import { defineNetworkName, shortenString, defineTokenType } from 'helpers'
+import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 
 const mapStateToProps = ({
@@ -43,7 +43,7 @@ const mapStateToProps = ({
     chainId,
     provider,
     address,
-    nftTokens,
+    contracts,
     loading: userLoading
   }
 }: RootState) => ({
@@ -57,7 +57,7 @@ const mapStateToProps = ({
   symbol,
   title,
   tokenAddress,
-  nftTokens
+  contracts
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
@@ -97,20 +97,19 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
         campaignActions.clearCampaign()
       )
     },
-    getNFTTokens: () => {
+    getContracts: () => {
       dispatch(
-        userAsyncActions.getNFTTokens()
+        userAsyncActions.getContracts()
       )
     }
   }
 }
 
-const defineNFTTokensOptions = (nftTokens: TOwnedTokens) => {
-  const tokens = Object.entries(nftTokens)
-  const options = tokens.map(([ address, asset ]) => {
+const defineContractsOptions = (contracts: TAlchemyContract[]) => {
+  const options = contracts.map(contract => {
     return {
-      label: `${asset.name} ${shortenString(address)} (${asset.tokens.length} token(s) owned)`,
-      value: asset
+      label: `${contract.name} ${shortenString(contract.address)} (${contract.totalBalance} owned)`,
+      value: contract
     }
   })
   return options
@@ -120,7 +119,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateNew: FC<ReduxType> = ({
-  symbol,
+  symbol: appliedTokenSymbol,
   chainId,
   provider,
   address,
@@ -129,35 +128,43 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   setInitialData,
   clearCampaign,
   loading,
-  getNFTTokens,
-  nftTokens,
-  userLoading
+  getContracts,
+  contracts,
+  userLoading,
+  tokenAddress: appliedTokenAddress
 }) => {
 
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
 
-  const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  const currentTokenAddress = campaign ? campaign.token_address : ''
+  const currentTokenAddressToShow = currentTokenAddress || appliedTokenAddress
+  const currentCampaignType = campaign ? campaign.token_standard : null
+  const currentCampaignTitle = campaign ? campaign.title : ''
+  const currentTokenSymbol = campaign ? campaign.symbol : ''
+  const currentTokenSymbolToShow = currentTokenSymbol || appliedTokenSymbol
   
   const [
     tokenAddress,
     setTokenAddress
-  ] = useState<string>(currentCampaign?.token_address || '')
+  ] = useState<string>(currentTokenAddress)
+  
 
   const [
     title,
     setTitle
-  ] = useState<string>(currentCampaign?.title || '')
+  ] = useState<string>(currentCampaignTitle)
 
-  const [ currentType, setCurrentType ] = useState<string | null>(currentCampaign?.token_standard || null)
-  const [ currentSwitcherValue, setCurrentSwitcherValue ] = useState<string>(currentCampaign?.token_standard === 'ERC1155' || currentCampaign?.token_standard === 'ERC721' || !currentCampaign?.token_standard ? 'nfts' : 'tokens')
+  const [ currentType, setCurrentType ] = useState<string | null>(currentCampaignType)
+  const [ currentSwitcherValue, setCurrentSwitcherValue ] = useState<string>(currentCampaignType === 'ERC1155' || currentCampaignType === 'ERC721' || !currentCampaignType ? 'nfts' : 'tokens')
 
   useEffect(() => {
     clearCampaign()
   }, [])
 
   useEffect(() => {
-    getNFTTokens()
+    getContracts()
   }, [])
 
   useEffect(() => {
@@ -166,10 +173,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   }, [tokenAddress, provider, currentType])
 
   const defineIfNextDisabled = () => {
-    return !title || !tokenAddress || !symbol || loading
+    return !title || !tokenAddress || !appliedTokenSymbol || loading
   }
 
-  const selectTokenOptions = defineNFTTokensOptions(nftTokens)
+  const selectTokenOptions = defineContractsOptions(contracts)
 
   const selectCurrentValue = () => {
     const currentOption = selectTokenOptions.find(option => option.value.address === tokenAddress)
@@ -196,7 +203,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         <WidgetSubtitle>Fill in all fields to continue to the next step</WidgetSubtitle>
         <InputStyled
           value={title}
-          disabled={Boolean(currentCampaign) || loading}
+          disabled={Boolean(campaign) || loading}
+          placeholder='Enter title'
           onChange={(value: string) => {
             setTitle(value)
             return value
@@ -205,6 +213,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         />
 
         <SwitcherStyled
+          title='Contract'
           options={[
             {
               title: 'NFTs (ERC721/ERC1155)',
@@ -215,7 +224,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               id: 'tokens'
             }
           ]}
-          disabled={Boolean(currentCampaign) || loading || userLoading}
+          disabled={Boolean(campaign) || loading || userLoading}
           active={currentSwitcherValue}
           onChange={(id) => {
             setTokenAddress('')
@@ -229,11 +238,15 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         />
 
         {currentSwitcherValue === 'nfts' && <SelectStyled
-          disabled={Boolean(currentCampaign) || loading || userLoading}
-          onChange={async ({ value }: { value: TOwnedToken | string}) => {
+          disabled={Boolean(campaign) || loading || userLoading}
+          onChange={async ({ value }: { value: TAlchemyContract | string}) => {
             if (typeof value === 'string') {
               const tokenType = await defineTokenType(value, provider)
-              if (tokenType !== null) {
+              if (tokenType !== null && chainId) {
+                const tokenOwnership = await defineIfUserOwnsContract(address, value, chainId)
+                if (!tokenOwnership) {
+                  return alert('You dont have tokens of provided contract')
+                }
                 setCurrentType(tokenType)
                 setTokenAddress(value)
               } else {
@@ -257,12 +270,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           value={tokenAddress}
           placeholder='0x... address'
           note='Carefully check address before you go'
-          disabled={Boolean(currentCampaign) || loading}
+          disabled={Boolean(campaign) || loading}
           onChange={(value: string) => {
             setTokenAddress(value)
             return value
           }}
-          title='Token Address'
         />}
       </WidgetComponent>
 
@@ -273,8 +285,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               currentType as TTokenType,
               title,
               () => {
-                if (currentCampaign) {
-                  return history.push(`/campaigns/edit/${currentType}/${currentCampaign.campaign_id}/initial`)
+                if (campaign) {
+                  return history.push(`/campaigns/edit/${currentType}/${campaign.campaign_id}/initial`)
                 }
                 history.push(`/campaigns/new/${currentType}/initial`)
               }
@@ -297,10 +309,20 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             <TableValueShorten>{title}</TableValueShorten>
           </TableRow>}
 
-          <TableRow>
-            <TableText>Token Standard</TableText>
+          {(currentTokenAddress || appliedTokenAddress) && <TableRow>
+            <TableText>Token address</TableText>
+            <TableValue>{shortenString(String(currentTokenAddressToShow))}</TableValue>
+          </TableRow>}
+
+          {(currentTokenSymbol || appliedTokenSymbol) && <TableRow>
+            <TableText>Collection</TableText>
+            <TableValue>{currentTokenSymbol || appliedTokenSymbol}</TableValue>
+          </TableRow>}
+
+          {currentType && <TableRow>
+            <TableText>Token standard</TableText>
             <TableValue>{currentType}</TableValue>
-          </TableRow>
+          </TableRow>}
 
           <TableRow>
             <TableText>Network</TableText>
