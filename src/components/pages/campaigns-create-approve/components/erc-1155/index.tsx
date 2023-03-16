@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import {
   InputsContainer,
   InputStyled,
@@ -19,7 +19,7 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TOwnedTokens, TOwnedToken, TSingleToken } from 'types'
+import { TTokenType, TLinkContent, TAlchemyNFTToken } from 'types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
@@ -35,7 +35,7 @@ const mapStateToProps = ({
     nativeTokenAmountFormatted,
     tokenAmountFormatted,
     loading: userLoading,
-    nftTokens
+    nfts
   },
   campaign: {
     loading,
@@ -57,8 +57,8 @@ const mapStateToProps = ({
   userLoading,
   claimPattern,
   tokenStandard,
-  nftTokens,
-  tokenAddress
+  tokenAddress,
+  nfts
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -80,13 +80,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
-const defineNFTTokensOptions = (nftTokens: TOwnedTokens, tokenAddress: string | null) => {
+const defineNFTTokensOptions = (nftTokens: TAlchemyNFTToken[], tokenAddress: string | null) => {
   if (!tokenAddress) { return [] }
-  const token = nftTokens[tokenAddress]
-  if (!token) { return [] }
-  const options = token.tokens.map(singleToken => {
+  const options = nftTokens.map(singleToken => {
     return {
-      label: `${singleToken.name || token.name} #${shortenString(singleToken.id)} (x ${singleToken.amount})`,
+      label: `${singleToken.title} #${shortenString(singleToken.tokenId)} (x ${singleToken.balance})`,
       value: singleToken
     }
   })
@@ -155,7 +153,7 @@ const createSelectContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   getDefaultValues: () => TLinkContent,
-  nftTokens: TOwnedTokens,
+  nfts: TAlchemyNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   provider: any,
@@ -164,8 +162,8 @@ const createSelectContainer = (
   return <InputsContainer>
     <SelectStyled
       disabled={checkIfDisabled()}
-      onChange={async ({ value }: { value: string | TSingleToken }) => {
-        const tokenId = typeof value === 'string' ? value : value.id
+      onChange={async ({ value }: { value: string | TAlchemyNFTToken }) => {
+        const tokenId = typeof value === 'string' ? value : value.tokenId
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
         if (tokenAlreadyAdded) {
           return alert(`Token #${tokenId} was already added`)
@@ -195,21 +193,16 @@ const createSelectContainer = (
               tokenName: 'Token ERC1155'
             }
           ])
-        } else {
-          const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === value.id)
-          if (tokenAlreadyAdded) {
-            return alert(`Token #${tokenId} was already added`)
-          }
-          
+        } else {          
           setAssetsData([
             ...assetsData, {
               tokenId: tokenId,
               tokenAmount: "1",
-              linksAmount: String(value.amount),
+              linksAmount: String(value.balance),
               type: 'ERC1155',
               id: assetsData.length,
               tokenImage: (value.media[0] || {}).gateway,
-              tokenName: value.name
+              tokenName: value.title
             }
           ])
         }
@@ -217,7 +210,7 @@ const createSelectContainer = (
       }}
       value={null}
       placeholder='Token ID'
-      options={defineNFTTokensOptions(nftTokens, tokenAddress)}
+      options={defineNFTTokensOptions(nfts, tokenAddress)}
       notFoundActiveCondition={(value) => {
         return value.length > 0 && (/^[0-9]+$/).test(value)
       }}
@@ -233,7 +226,7 @@ const createTextInputOrSelect = (
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
   getDefaultValues: () => TLinkContent,
-  nftTokens: TOwnedTokens,
+  nfts: TAlchemyNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   provider: any
@@ -255,7 +248,7 @@ const createTextInputOrSelect = (
     setFormData,
     setAssetsData,
     getDefaultValues,
-    nftTokens,
+    nfts,
     tokenAddress,
     userAddress,
     provider,
@@ -275,7 +268,7 @@ const Erc1155: FC<ReduxType > = ({
   children,
   sdk,
   claimPattern,
-  nftTokens,
+  nfts,
   tokenAddress,
   address,
   provider,
@@ -313,26 +306,22 @@ const Erc1155: FC<ReduxType > = ({
     return false
   }
 
-  const checkIfTokensAvailable = () => {
+  const checkIfAllTokensDisabled = () => {
     if (!tokenAddress) { return true }
-    const tokenAmongOwned = nftTokens[tokenAddress] && nftTokens[tokenAddress].tokens.length > 0
-    if (!tokenAmongOwned) { return true }
+    if (!nfts || nfts.length === 0) { return true }
     return false
   }
 
   const addAllTokens = () => {
     if (!tokenAddress) { return }
-    const tokenAmongOwned = nftTokens[tokenAddress]
-    if (!tokenAmongOwned) { return }
-    
-    const assets: TLinkContent[] = tokenAmongOwned.tokens.map((token, idx) => {
+    const assets: TLinkContent[] = nfts.map((token, idx) => {
       return {
-        tokenId: token.id,
-        linksAmount: String(token.amount),
+        tokenId: token.tokenId,
+        linksAmount: String(token.balance),
         id: idx,
         type: 'ERC1155',
         tokenImage: (token.media[0] || {}).gateway,
-        tokenName: token.name,
+        tokenName: token.title,
         tokenAmount: "1"
       }
     })
@@ -369,7 +358,7 @@ const Erc1155: FC<ReduxType > = ({
       </WidgetTitleStyled>
 
       <ButtonStyled
-        disabled={checkIfTokensAvailable()}
+        disabled={checkIfAllTokensDisabled()}
         appearance='additional'
         size='small'
         onClick={addAllTokens}
@@ -386,7 +375,7 @@ const Erc1155: FC<ReduxType > = ({
         setAssetsData,
         checkIfDisabled,
         getDefaultValues,
-        nftTokens,
+        nfts,
         tokenAddress,
         address,
         provider
