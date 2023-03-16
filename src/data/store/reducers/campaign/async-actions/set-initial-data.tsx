@@ -43,9 +43,7 @@ function setInitialData(
         const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
           contractAddresses: [ tokenAddress ]
         })
-    
-        console.log({ ownedNfts })
-    
+        
         if (ownedNfts && ownedNfts.length > 0) {
           dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
         }
