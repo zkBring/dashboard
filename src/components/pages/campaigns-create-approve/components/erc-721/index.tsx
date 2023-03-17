@@ -147,7 +147,7 @@ const createSelectContainer = (
     <SelectStyled
       disabled={checkIfDisabled()}
       onChange={async ({ value }) => {
-        const tokenId = typeof value === 'string' ? value : value.id
+        const tokenId = typeof value === 'string' ? value : value.tokenId
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
         if (tokenAlreadyAdded) {
           return alert(`Token #${tokenId} was already added`)

@@ -82,7 +82,7 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
     `}
     svg {
       path {
-        stroke: ${props => props.theme.linkTextColor};
+        fill: ${props => props.theme.linkTextColor};
       }
     }
   }
@@ -92,7 +92,7 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
     background: ${props.theme.menuItemActive};
     svg {
       path {
-        stroke: ${props.theme.linkTextColor};
+        fill: ${props.theme.linkTextColor};
       }
     }
   `}
