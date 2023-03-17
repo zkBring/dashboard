@@ -8,7 +8,7 @@ import {
   Title,
   WidgetDescription,
   WidgetButton,
-  NoteStyled
+  InformationContainerStyled
 } from './styled-components'
 import { TProps } from './types'
 import { defineNativeTokenSymbol } from 'helpers'
@@ -42,11 +42,31 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
     </StyledWidget>  
 
     return <>
-      <NoteStyled title='Important Note'>
-        <div>New dashboard does not display campaigns created with the old version.</div>
-        <div>You can still view and manage all previously created campaigns switching to the old version.</div>
-        <div>Switch using the button in the footer of the side menu.</div>
-      </NoteStyled>
+      <InformationContainerStyled
+        title='Important Note'
+        id='initial_guide'
+        contents={[
+          {
+            title: 'Setting up a campaign',
+            link: {
+              title: 'Read the guide ->',
+              href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/setting-up-a-campaign'
+            }
+          }, {
+            title: 'Main ways to distribute NFTs with Linkdrop: QRs, claim codes or links',
+            link: {
+              title: 'Read the guide ->',
+              href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/distribution-qrs-claim-codes-or-links'
+            }
+          }, {
+            title: 'Use Linkdrop SDK for custom logic',
+            link: {
+              title: 'Read the guide ->',
+              href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/sdk'
+            }
+          }
+        ]}
+      />
       {createNewCampaignWidget}
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <>
         <Title>Campaigns</Title>
