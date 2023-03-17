@@ -4,7 +4,7 @@ import { TProps } from './types'
 export const WidgetComponent = styled.div<TProps>`
   background: #FFF;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 24px;
   box-shadow: 0px 8px 16px rgba(96,97,112,0.16);
 `

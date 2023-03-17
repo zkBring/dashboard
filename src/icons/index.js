@@ -55,7 +55,6 @@ const Icons = {
   LinkdropLogo,
   NotUploadedIcon,
   LinkdropTextLogo,
-  CampaignsIcon,
   BreadcrumbsIcon,
   InputNoteIcon,
   SignInIcon,
@@ -71,6 +70,7 @@ const Icons = {
   ArrowIcon,
   CloseIcon,
   QRManagerIcon,
+  CampaignsIcon,
   CheckboxIcon
 }
 
