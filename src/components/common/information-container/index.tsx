@@ -31,7 +31,6 @@ const InformationContainer: FC<TProps> = ({
   }, [])
 
   const onClose = () => {
-    console.log('here')
     window.localStorage.setItem(`information-container-${id}`, 'false')
     setVisible(false)
   }
