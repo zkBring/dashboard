@@ -45,7 +45,6 @@ function setInitialData(
         })
         
         if (ownedNfts && ownedNfts.length > 0) {
-          console.log({ ownedNfts })
           dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
         }
       }
