@@ -6,12 +6,11 @@ import {
   AsideMenu,
   AsideMenuItem,
   AsideLogoIcon,
-  FooterMenu,
   AsideTextLink,
-  FooterButton,
-  AsideLogoText
-// @ts-ignore
-} from './styled-components.tsx'
+  AsideMenuItemExternal,
+  AsideLogoText,
+  AsideTitle
+} from './styled-components'
 import { useLocation } from 'react-router-dom'
 import LinkDropLogo from 'images/linkdrop-logo.png'
 import { RootState } from 'data/store'
@@ -62,15 +61,23 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
         <Icons.CampaignsIcon />Campaigns
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-      <Icons.QRManagerIcon />QR-manager
+        <Icons.QRManagerIcon />QR-manager
       </AsideMenuItem>
     </AsideMenu>
 
     <AsideFooter>
-      <FooterMenu>
-        <FooterButton target="_blank" href="https://v1-2.dashboard.linkdrop.io">Go to old version</FooterButton>
-        <FooterButton target="_blank" href="https://linkdrop.io/pricing/">Contact us</FooterButton>
-      </FooterMenu>
+      <AsideTitle>Misc</AsideTitle>
+      <AsideMenu>
+        <AsideMenuItemExternal href='https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58' target="_blank">
+          <Icons.LegalIcon />Legal
+        </AsideMenuItemExternal>
+        <AsideMenuItemExternal href='https://v1-2.dashboard.linkdrop.io' target="_blank">
+          <Icons.GoToOldVersionIcon />Go to old version
+        </AsideMenuItemExternal>
+        <AsideMenuItemExternal href='https://linkdrop.io/pricing/' target="_blank">
+          <Icons.ContactUsIcon />Contact us
+        </AsideMenuItemExternal>
+      </AsideMenu>
     </AsideFooter>
   </Aside>
 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Widget, Button, Note } from 'components/common'
+import { Widget, Button, Note, InformationContainer } from 'components/common'
 
 export const Container = styled.div`
   margin-bottom: 36px;
@@ -40,6 +40,6 @@ export const WidgetButton = styled(Button)`
   width: 100%;
 `
 
-export const NoteStyled = styled(Note)`
-  margin-bottom: 20px;;
-` 
+export const InformationContainerStyled = styled(InformationContainer)`
+  margin-bottom: 40px;
+`

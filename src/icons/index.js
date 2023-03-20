@@ -34,15 +34,23 @@ import { ReactComponent as EyeClosedIcon } from './eye-closed-icon.svg'
 import { ReactComponent as MonitorIcon } from './monitor-icon.svg'
 import { ReactComponent as YellowAttentionIcon } from './yellow-attention-icon.svg'
 import { ReactComponent as TrashIcon } from './trash-icon.svg'
+import { ReactComponent as GoToOldVersionIcon } from './go-to-old-version-icon.svg'
+import { ReactComponent as ContactUsIcon } from './contact-us-icon.svg'
+import { ReactComponent as LegalIcon } from './legal-icon.svg'
+import { ReactComponent as CloseCircleIcon } from './close-circle-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  GoToOldVersionIcon,
+  CloseCircleIcon,
+  ContactUsIcon,
   TrashIcon,
   MonitorIcon,
   EyeClosedIcon,
   YellowAttentionIcon,
   ClipboardCopyIcon,
   RefundIcon,
+  LegalIcon,
   EyeOpenIcon,
   UnpauseIcon,
   PauseIcon,
