@@ -11,7 +11,6 @@ import {
   InformationContainerStyled
 } from './styled-components'
 import { TProps } from './types'
-import { defineNativeTokenSymbol } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -28,7 +27,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
-  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
   const createNewCampaignWidget = <StyledWidget title='New campaign'>
       <WidgetDescription>

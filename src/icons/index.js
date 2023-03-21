@@ -38,11 +38,13 @@ import { ReactComponent as GoToOldVersionIcon } from './go-to-old-version-icon.s
 import { ReactComponent as ContactUsIcon } from './contact-us-icon.svg'
 import { ReactComponent as LegalIcon } from './legal-icon.svg'
 import { ReactComponent as CloseCircleIcon } from './close-circle-icon.svg'
+import { ReactComponent as BookIcon } from './book-icon.svg'
 
 const Icons = {
   EthereumLogo,
   GoToOldVersionIcon,
   CloseCircleIcon,
+  BookIcon,
   ContactUsIcon,
   TrashIcon,
   MonitorIcon,
