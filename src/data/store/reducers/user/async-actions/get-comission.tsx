@@ -1,0 +1,44 @@
+import { ethers } from 'ethers'
+import contracts from 'configs/contracts'
+import { defineJSONRpcUrl } from 'helpers'
+const { REACT_APP_INFURA_ID } = process.env
+
+const feeManagerABI = [
+  "function fee() view returns (uint256)",
+  "function isWhitelisted(address) view returns (bool)",
+]
+
+const getComission = async (
+  chainId: number,
+  address: string
+) => {
+  try {
+    if (!REACT_APP_INFURA_ID) {
+      return alert('No REACT_APP_INFURA_ID provided in .env file')
+    }
+    const JSONRpcUrl = defineJSONRpcUrl({ infuraPk: REACT_APP_INFURA_ID as string, chainId })
+    const provider = new ethers.providers.JsonRpcProvider(JSONRpcUrl)
+    const feeManagerAddress = contracts[chainId].fee_manager
+    const feeManager = new ethers.Contract(feeManagerAddress, feeManagerABI, provider)
+    const isWhitelisted = await feeManager.isWhitelisted(address)
+    console.log({ isWhitelisted })
+    if (isWhitelisted) {
+      return {
+        whitelisted: true,
+        comission: 0
+      }
+    } else {
+      const fee = await feeManager.fee()
+      return {
+        whitelisted: false,
+        comission: fee.toNumber()
+      }
+    }
+  } catch (err) {
+    console.log({
+      err
+    })
+  } 
+}
+
+export default getComission

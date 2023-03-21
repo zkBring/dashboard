@@ -108,3 +108,25 @@ export function setSDK (
     }
   )
 }
+
+export function setWhitelisted (
+  whitelisted: boolean | null
+) {
+  return action(
+    Constants.USER_SET_WHITELISTED,
+    {
+      whitelisted
+    }
+  )
+}
+
+export function setComission (
+  comission: number
+) {
+  return action(
+    Constants.USER_SET_COMISSION,
+    {
+      comission
+    }
+  )
+}

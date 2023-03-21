@@ -20,7 +20,9 @@ const initialState: UserState = {
   authorizationStep: 'initial',
   chainsAvailable: chainsAvailable,
   contracts: [],
-  nfts: []
+  nfts: [],
+  whitelisted: null,
+  comission: 0
 };
 
 export function userReducer(

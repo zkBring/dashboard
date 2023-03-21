@@ -1,4 +1,3 @@
 export const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'
-export const LINK_COMISSION_PRICE = '0.0001'
 export const EXPIRATION_DATE = '1900000000000'
 export const IPFS_GATEWAY_URL = "https://cloudflare-ipfs.com/ipfs"

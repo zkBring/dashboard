@@ -15,6 +15,7 @@ import checkIfGranted from "./check-if-granted"
 import grantRole from "./grant-role"
 import checkIfConnected from "./check-if-connected"
 import getContracts from './get-contracts'
+import getComission from './get-comission'
 
 export {
   approveERC20,
@@ -33,5 +34,6 @@ export {
   checkIfApproved,
   checkIfGranted,
   grantRole,
-  getContracts
+  getContracts,
+  getComission
 }

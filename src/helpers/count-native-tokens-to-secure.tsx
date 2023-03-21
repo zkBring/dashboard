@@ -1,13 +1,13 @@
-import { LINK_COMISSION_PRICE } from 'configs/app'
 import { add, bignumber, multiply } from 'mathjs'
 import { TAssetsData } from 'types'
 
 const countNativeTokensToSecure = (
   nativeTokensAmount: string,
   assets: TAssetsData,
+  comissionPrice: number | null,
   sponsored: boolean
 ) => {
-  const comission = bignumber(String(LINK_COMISSION_PRICE))
+  const comission = bignumber(String(comissionPrice))
 
   const totalNativeTokensAmount = nativeTokensAmount === '' || nativeTokensAmount === '0' ? 0 : multiply(
     bignumber(nativeTokensAmount),

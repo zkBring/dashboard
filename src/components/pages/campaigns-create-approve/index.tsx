@@ -13,7 +13,6 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import Icons from 'icons'
 import { TextLink } from 'components/common'
-import { LINK_COMISSION_PRICE } from 'configs/app'
 import { bignumber, multiply } from 'mathjs'
 import {
   WidgetComponent,
@@ -51,7 +50,8 @@ const mapStateToProps = ({
     campaigns
   },
   user: {
-    chainId
+    chainId,
+    comission
   }
 }: RootState) => ({
   tokenStandard,
@@ -66,7 +66,8 @@ const mapStateToProps = ({
   chainId,
   title,
   symbol,
-  assets
+  assets,
+  comission
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
@@ -327,7 +328,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   symbol,
   approved,
   setApproved,
-  approveAllERC20
+  approveAllERC20,
+  comission: comissionPrice
 }) => {
 
   const [
@@ -355,7 +357,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
   const [ sponsored, setSponsored ] = useState<boolean>(true)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-  const comission = bignumber(String(LINK_COMISSION_PRICE))
+  const comission = bignumber(String(comissionPrice))
   const content = defineComponent(
     type,
     data,
@@ -407,7 +409,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   )
 
   const isSponsored = [
-    { value: true, label: `Sponsor claiming gas fees (+ ${LINK_COMISSION_PRICE} ${nativeTokenSymbol} per link)` },
+    { value: true, label: `Sponsor claiming gas fees (+ ${comissionPrice} ${nativeTokenSymbol} per link)` },
     { value: false, label: `No sponsoring` }
   ]
 
@@ -416,6 +418,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   } = countNativeTokensToSecure(
     '0',
     assetsParsed,
+    comissionPrice,
     sponsored
   )
   

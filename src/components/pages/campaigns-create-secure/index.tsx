@@ -32,7 +32,8 @@ import { shortenString, defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({
   user: {
-    chainId
+    chainId,
+    comission
   },
   campaigns: {
     campaigns
@@ -61,7 +62,8 @@ const mapStateToProps = ({
   assetsOriginal,
   claimPattern,
   sdk,
-  sponsored
+  sponsored,
+  comission
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -94,7 +96,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   claimPattern,
   assetsOriginal,
   sdk,
-  sponsored
+  sponsored,
+  comission
 }) => {
   
   const walletsOptions = useMemo(() => {
@@ -133,6 +136,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   } = countNativeTokensToSecure(
     nativeTokensAmount,
     assets,
+    comission,
     sponsored
   )
 
