@@ -6,10 +6,11 @@ import {
 import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
-import { utils, ethers } from 'ethers'
-import { RootState } from 'data/store';
+import { utils, ethers, BigNumberish } from 'ethers'
+import { RootState } from 'data/store'
 import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
+import { defineNativeTokenSymbol } from 'helpers'
 
 const secure = (
   totalNativeTokensAmountToSecure: string,
@@ -22,7 +23,8 @@ const secure = (
       user: {
         provider,
         address,
-        chainId
+        chainId,
+        nativeTokenAmount
       },
       campaign: {
         proxyContractAddress,
@@ -31,6 +33,7 @@ const secure = (
         claimPattern
       }
     } = getState()
+
     try {
       if (!proxyContractAddress) {
         return alert('No proxy address provided')
@@ -68,6 +71,11 @@ const secure = (
       }
   
       const value = utils.parseEther(String(totalNativeTokensAmountToSecure))
+      if (value.gte(nativeTokenAmount as BigNumberish)) {
+        const nativeToken = defineNativeTokenSymbol({ chainId })
+        dispatch(campaignActions.setLoading(false))
+        return alert(`Not enough ${nativeToken} on account`)
+      }
 
       const transaction = await signer.sendTransaction({
         to,

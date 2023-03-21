@@ -3,13 +3,14 @@ import * as actions from './actions'
 import { Dispatch } from 'redux'
 import LinkdropSDK from 'linkdrop-sdk'
 import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken } from 'types'
+import { BigNumberish } from 'ethers'
 
 export interface UserState {
   address: string
   loading: boolean
   provider: any
   chainId: number | null
-  nativeTokenAmount: string | null
+  nativeTokenAmount: string | BigNumberish | null
   nativeTokenAmountFormatted: string | null
   tokenAmount: string | null
   tokenAmountFormatted: string | null
