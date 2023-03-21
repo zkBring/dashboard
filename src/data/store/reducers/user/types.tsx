@@ -6,20 +6,22 @@ import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken } from 'types'
 
 export interface UserState {
   address: string
-  loading: boolean,
-  provider: any,
-  chainId: number | null,
-  nativeTokenAmount: string | null,
-  nativeTokenAmountFormatted: string | null,
-  tokenAmount: string | null,
-  tokenAmountFormatted: string | null,
-  sdk: LinkdropSDK | null,
-  dashboardKey: null | string,
-  workersCount: number,
-  authorizationStep: TAuthorizationStep,
-  chainsAvailable: (number | string)[],
-  contracts: TAlchemyContract[],
+  loading: boolean
+  provider: any
+  chainId: number | null
+  nativeTokenAmount: string | null
+  nativeTokenAmountFormatted: string | null
+  tokenAmount: string | null
+  tokenAmountFormatted: string | null
+  sdk: LinkdropSDK | null
+  dashboardKey: null | string
+  workersCount: number
+  authorizationStep: TAuthorizationStep
+  chainsAvailable: (number | string)[]
+  contracts: TAlchemyContract[]
   nfts: TAlchemyNFTToken[]
+  whitelisted: boolean | null
+  comission: string
 }
 
 export type UserActions = ActionType<typeof actions>;

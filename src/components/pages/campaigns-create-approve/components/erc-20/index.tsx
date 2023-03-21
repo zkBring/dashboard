@@ -13,7 +13,6 @@ import {
 } from './styled-components'
 import {
   WidgetComponent,
-  InstructionNote
 } from 'components/pages/common'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
@@ -148,7 +147,6 @@ const Erc20: FC<ReduxType > = ({
                 id: assetsData.length
               }])
               setFormData(getDefaultValues())
-              console.log({ formData,  })
             }}
           >
             + Add

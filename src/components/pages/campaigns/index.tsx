@@ -43,7 +43,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
 
     return <>
       <InformationContainerStyled
-        title='Important Note'
+        title='Getting started'
         id='initial_guide'
         contents={[
           {
@@ -53,13 +53,13 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
               href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/setting-up-a-campaign'
             }
           }, {
-            title: 'Main ways to distribute NFTs with Linkdrop: QRs, claim codes or links',
+            title: 'Distributing NFTs with QRs, claim codes or links',
             link: {
               title: 'Read the guide ->',
               href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/distribution-qrs-claim-codes-or-links'
             }
           }, {
-            title: 'Use Linkdrop SDK for custom logic',
+            title: 'Integrating SDK for custom logic',
             link: {
               title: 'Read the guide ->',
               href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/sdk'

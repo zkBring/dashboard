@@ -10,8 +10,6 @@ import { defineBatchPreviewContents } from 'helpers'
 import { campaignsApi } from 'data/api'
 import { encrypt } from 'lib/crypto'
 import {
-  defineNetworkName,
-  defineJSONRpcUrl,
   sleep,
   createDataGroups,
   createWorkers,
@@ -19,7 +17,6 @@ import {
   getContractVersion
 } from 'helpers'
 import { Remote } from 'comlink';
-import contracts from 'configs/contracts'
 import { LinksWorker } from 'web-workers/links-worker'
 
 const {
@@ -78,11 +75,6 @@ const generateERC20Link = ({
       if (!tokenStandard) { return alert('tokenStandard is not provided') }
       if (!REACT_APP_INFURA_ID) {
         return alert('REACT_APP_INFURA_ID is not provided in .env file')
-      }
-      const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
-
-      if (!jsonRpcUrl) {
-        return alert('jsonRpcUrl is not defined in helper')
       }
 
       if (!REACT_APP_CLAIM_APP) {

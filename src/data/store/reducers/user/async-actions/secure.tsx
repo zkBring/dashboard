@@ -7,7 +7,6 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { utils, ethers } from 'ethers'
-import { LINK_COMISSION_PRICE } from 'configs/app'
 import { RootState } from 'data/store';
 import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
@@ -33,9 +32,6 @@ const secure = (
       }
     } = getState()
     try {
-      if (!LINK_COMISSION_PRICE) {
-        return alert('No LINK_COMISSION_PRICE provided')
-      }
       if (!proxyContractAddress) {
         return alert('No proxy address provided')
       }

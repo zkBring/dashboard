@@ -9,7 +9,7 @@ const {
 const defineJSONRpcUrl = ({ chainId, infuraPk } : { chainId: number, infuraPk: string }) => {
   const networkName = defineNetworkName(chainId)
 
-  if (networkName === 'matic') {
+  if (networkName === 'polygon') {
     return REACT_APP_JSON_RPC_POLYGON
   } else if (networkName === 'mumbai') {
     return REACT_APP_JSON_RPC_MUMBAI

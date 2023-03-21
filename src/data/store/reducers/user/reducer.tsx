@@ -20,7 +20,9 @@ const initialState: UserState = {
   authorizationStep: 'initial',
   chainsAvailable: chainsAvailable,
   contracts: [],
-  nfts: []
+  nfts: [],
+  whitelisted: null,
+  comission: '0'
 };
 
 export function userReducer(
@@ -46,6 +48,10 @@ export function userReducer(
         return {...state, contracts: action.payload.contracts }
       case Constants.USER_SET_NFTS:
         return {...state, nfts: action.payload.nfts }
+      case Constants.USER_SET_WHITELISTED:
+        return {...state, whitelisted: action.payload.whitelisted }
+      case Constants.USER_SET_COMISSION:
+        return {...state, comission: action.payload.comission }
       case Constants.USER_SET_TOKEN_AMOUNT:
         return {
           ...state,
