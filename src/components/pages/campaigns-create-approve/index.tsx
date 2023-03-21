@@ -331,7 +331,6 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   approveAllERC20,
   comission: comissionPrice
 }) => {
-
   const [
     assetsParsed,
     setAssetsParsedValue

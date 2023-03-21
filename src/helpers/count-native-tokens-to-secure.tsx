@@ -4,7 +4,7 @@ import { TAssetsData } from 'types'
 const countNativeTokensToSecure = (
   nativeTokensAmount: string,
   assets: TAssetsData,
-  comissionPrice: number | null,
+  comissionPrice: string,
   sponsored: boolean
 ) => {
   const comission = bignumber(String(comissionPrice))

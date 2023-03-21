@@ -31,7 +31,6 @@ const createProxyContract = (id?: string) => {
       address,
       campaignId
     )
-    console.log({ proxyContractAddress })
     if (!proxyContractAddress) { return }
     dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
     dispatch(actionsCampaign.setId(campaignId))

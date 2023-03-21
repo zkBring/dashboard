@@ -21,7 +21,7 @@ export interface UserState {
   contracts: TAlchemyContract[]
   nfts: TAlchemyNFTToken[]
   whitelisted: boolean | null
-  comission: number
+  comission: string
 }
 
 export type UserActions = ActionType<typeof actions>;

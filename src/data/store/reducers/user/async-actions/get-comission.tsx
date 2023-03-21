@@ -21,17 +21,16 @@ const getComission = async (
     const feeManagerAddress = contracts[chainId].fee_manager
     const feeManager = new ethers.Contract(feeManagerAddress, feeManagerABI, provider)
     const isWhitelisted = await feeManager.isWhitelisted(address)
-    console.log({ isWhitelisted })
     if (isWhitelisted) {
       return {
         whitelisted: true,
-        comission: 0
+        comission: '0'
       }
     } else {
       const fee = await feeManager.fee()
       return {
         whitelisted: false,
-        comission: fee.toNumber()
+        comission: String(ethers.utils.formatUnits(fee, 18))
       }
     }
   } catch (err) {

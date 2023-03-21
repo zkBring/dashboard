@@ -4,16 +4,19 @@ const { REACT_APP_CLAIM_APP } = process.env
 
 type TDecryptLink = ({
   links,
-  dashboardKey
+  dashboardKey,
+  tokenAddress
 } : {
   links: TLink[],
-  dashboardKey: string
+  dashboardKey: string,
+  tokenAddress: string
 }
 ) => TLinkDecrypted[]
 
 const decryptLinks: TDecryptLink = ({
   links,
-  dashboardKey
+  dashboardKey,
+  tokenAddress
 }) => {
   const decryptedLinks = []
   const start = +new Date()
@@ -30,6 +33,9 @@ const decryptLinks: TDecryptLink = ({
         const decryptedClaimCode = decrypt(encryptedClaimCode, dashboardKey)
         decryptedLinks.push({
           link_id: links[i].link_id,
+          token_id: links[i].token_id !== '0' ? links[i].token_id : undefined,
+          token_amount: links[i].token_amount !== '0' ? links[i].token_amount : undefined,
+          token_address: tokenAddress,
           claim_code: decryptedClaimCode,
           claim_link: `${REACT_APP_CLAIM_APP}/#/claim/${decryptedClaimCode}`
         })

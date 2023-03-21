@@ -65,10 +65,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       batch_id: string | number,
       campaign_id: string,
       title: string,
+      tokenAddress: string | null,
       encryptionKey?: string
     ) => {
       dispatch(
-        downloadLinks(batch_id, campaign_id, title, encryptionKey)
+        downloadLinks(batch_id, campaign_id, title, tokenAddress, encryptionKey)
       )
     }
   }
@@ -121,7 +122,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   }, [])
 
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
-  console.log({ currentCampaign })
+
   useEffect(() => {
     const init = async () => {
       // if (!currentCampaign || !dashboardKey) { return }
@@ -350,6 +351,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           sdk={sdk}
           downloadLinks={downloadLinks}
           encryptionKey={encryptionKey}
+          tokenAddress={token_address}
         />
         
       </WidgetComponent>

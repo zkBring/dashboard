@@ -121,7 +121,7 @@ export function setWhitelisted (
 }
 
 export function setComission (
-  comission: number
+  comission: string
 ) {
   return action(
     Constants.USER_SET_COMISSION,
