@@ -14,7 +14,8 @@ import {
 import {
   BatchListLabel,
   BatchListValue,
-  WidgetComponent
+  WidgetComponent,
+  InitialGuide
 } from 'components/pages/common'
 import Icons from 'icons'
 import { defineQRStatusName, formatDate } from 'helpers'
@@ -48,13 +49,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QRs: FC<ReduxType> = ({
-  chainId,
-  address,
-  addQRSet,
   qrs,
-  loading
 }) => {
   return <Container>
+    <InitialGuide />
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>My QR codes</WidgetTitleStyled>

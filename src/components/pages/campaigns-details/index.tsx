@@ -104,7 +104,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         proxy_contract_address,
         provider
       )
-      console.log({ amount })
       setWithdrawable(amount > 0)
     }
     onInit()

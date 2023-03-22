@@ -2,6 +2,7 @@ import TransactionAside from "./transaction-aside"
 import Aside from './aside'
 import AssetsList from './assets-list'
 import InstructionNote from './instruction-note'
+import InitialGuide from './initial-guide'
 
 import {
   Container,
@@ -42,5 +43,6 @@ export {
   TableValueShorten,
   TableText,
   TableValue,
-  AssetsList
+  AssetsList,
+  InitialGuide
 }
