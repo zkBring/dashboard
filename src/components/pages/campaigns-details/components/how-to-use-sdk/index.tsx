@@ -25,7 +25,8 @@ import LinkdropSDK from 'linkdrop-sdk'
 
 const sdk = new LinkdropSDK({
   // optional params
-  mode: 'testnets', // for goerli and mumbai networks
+  mode?: 'testnets', // for goerli and mumbai networks
+  apiHost?: string // parameter to override default api host. Optional. The default value is 'https://dashboard-api.linkdrop.io' for mainnets and 'https://testnets.dashboard-api.linkdrop.io' for testtents.
 })
 
 const init = async () => {
@@ -44,7 +45,7 @@ const init = async () => {
       id: string, // Token id (needed for ERC721/ERC1155 campaign)
       amount: string, // Amount of tokens per link (needed for ERC20/ERC1155 campaign)
       links: string, // Amount of links
-      weiAmount: string, // Amount of native tokens. Optional. The default value is '0'.
+      weiAmount?: string, // Amount of native tokens. Optional. The default value is '0'.
     }],
     // optional parameters
     {
@@ -72,7 +73,7 @@ const init = async () => {
     id: string, // Token id (needed for ERC721/ERC1155 campaign)
     amount: string, // Amount of tokens per link (needed for ERC20/ERC1155 campaign)
     links: string, // Amount of links
-    weiAmount: string, // Amount of native tokens. Optional. The default value is '0'.
+    weiAmount?: string, // Amount of native tokens. Optional. The default value is '0'.
   }], {
     shortCodeLength: number,
     // length of short code (default: 12)

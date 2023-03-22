@@ -2,6 +2,7 @@ import LinkdropSDK from 'linkdrop-sdk'
 import { expose } from 'comlink'
 import { TLink, TAssetsData, TTokenType, TSingleLinkData } from 'types'
 import { EXPIRATION_DATE } from 'configs/app'
+const { REACT_APP_SERVER_URL } = process.env
 
 type TParseLinkParams = (link: string, tokenType: TTokenType) => TSingleLinkData
 
@@ -20,7 +21,8 @@ export class LinksWorker {
     claimHost: string
   ) {
     const sdk = new LinkdropSDK({
-      claimHostUrl: claimHost
+      claimHostUrl: claimHost,
+      apiHost: REACT_APP_SERVER_URL
     })
     this.sdk = sdk
   }
