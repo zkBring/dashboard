@@ -28,9 +28,11 @@ const getContracts = () => {
         network: defineAlchemyNetwork(chainId)
       })
 
-      const { contracts } = await alchemy.nft.getContractsForOwner(address, {
-        excludeFilters: [NftFilters.SPAM]
-      })
+      const filters = chainId === 1 || chainId === 137 ? {
+        excludeFilters: [ NftFilters.SPAM]
+      } : undefined
+
+      const { contracts } = await alchemy.nft.getContractsForOwner(address, filters)
       if (contracts && contracts.length > 0) {
         dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
       }
