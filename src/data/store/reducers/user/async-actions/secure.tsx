@@ -6,14 +6,13 @@ import {
 import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
-import { utils, ethers } from 'ethers'
-import { LINK_COMISSION_PRICE } from 'configs/app'
-import { RootState } from 'data/store';
+import { utils, ethers, BigNumberish } from 'ethers'
+import { RootState } from 'data/store'
 import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
+import { defineNativeTokenSymbol } from 'helpers'
 
 const secure = (
-  sponsored: boolean,
   totalNativeTokensAmountToSecure: string,
   nativeTokensPerLink: string,
   walletApp: string,
@@ -24,7 +23,8 @@ const secure = (
       user: {
         provider,
         address,
-        chainId
+        chainId,
+        nativeTokenAmount
       },
       campaign: {
         proxyContractAddress,
@@ -33,10 +33,8 @@ const secure = (
         claimPattern
       }
     } = getState()
+
     try {
-      if (!LINK_COMISSION_PRICE) {
-        return alert('No LINK_COMISSION_PRICE provided')
-      }
       if (!proxyContractAddress) {
         return alert('No proxy address provided')
       }
@@ -51,8 +49,6 @@ const secure = (
       const newWallet = ethers.Wallet.createRandom()
       const { address: wallet, privateKey } = newWallet
       const signer = await provider.getSigner()
-      const gasPrice = await provider.getGasPrice()
-      const oneGwei = utils.parseUnits('1', 'gwei')
       const factoryContract = await new ethers.Contract(contract.factory, LinkdropFactory.abi, signer)
       const isDeployed = await factoryContract.isDeployed(address, id)
       let data
@@ -75,10 +71,14 @@ const secure = (
       }
   
       const value = utils.parseEther(String(totalNativeTokensAmountToSecure))
+      if (value.gte(nativeTokenAmount as BigNumberish)) {
+        const nativeToken = defineNativeTokenSymbol({ chainId })
+        dispatch(campaignActions.setLoading(false))
+        return alert(`Not enough ${nativeToken} on account`)
+      }
 
       const transaction = await signer.sendTransaction({
         to,
-        gasPrice: gasPrice.add(oneGwei),
         from: address,
         value,
         data: data
@@ -126,7 +126,6 @@ const secure = (
         ))
         dispatch(campaignActions.setSignerKey(privateKey))
         dispatch(campaignActions.setSignerAddress(wallet))
-        dispatch(campaignActions.setSponsored(sponsored))
         dispatch(campaignActions.setWallet(walletApp))
         callback && callback()
       }

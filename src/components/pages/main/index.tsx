@@ -5,9 +5,14 @@ import {
   Title,
   IconContainer,
   Contents,
+  Text,
+  List,
+  ListItem,
+  TextBold
 } from './styled-components'
 import {
-  CheckListItem
+  CheckListItem,
+  TextLink
 } from 'components/common' 
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -16,8 +21,10 @@ import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import { UserActions } from 'data/store/reducers/user/types'
 import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
-import { TAuthorizationStep } from 'types';
+import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
+import { defineNetworkName, defineSystem } from 'helpers'
+const { REACT_APP_CHAINS } = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -56,11 +63,32 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
     case 'store-key':
       return 'Sign'
     default:
-      return ''
+      return 'Connect'
   }
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+
+const defineDashboardName = () => {
+  if (REACT_APP_CHAINS === '[5,80001]') {
+    return 'Testnets Dashboard'
+  }
+  if (REACT_APP_CHAINS === '[1,137]') {
+    return 'Mainnets Dashboard'
+  }
+  return 'Development Dashboard'
+}
+
+const defineSwitchNetworkText = () => {
+  if (REACT_APP_CHAINS === '[5,80001]') {
+    return <Text>Please switch the network to <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>
+  }
+  if (REACT_APP_CHAINS === '[1,137]') {
+    return <Text>Please switch the network to <TextBold>Polygon</TextBold> or <TextBold>Mainnet</TextBold> to continue</Text>
+  }
+  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>
+  
+}
 
 const Main: FC<ReduxType> = ({
   chainId,
@@ -75,9 +103,88 @@ const Main: FC<ReduxType> = ({
   useEffect(() => {
     checkIfConnected()
   }, [])
+
+  const system = defineSystem()
+
+  if (system !== 'desktop') {
+    return <ContainerCentered>
+    <IconContainer>
+      <Icons.MonitorIcon />
+    </IconContainer>
+    
+    <Title>
+      Please, use desktop browser
+    </Title>
+    <Contents>
+
+      <Text>
+      Linkdrop dashboard is only available on desktop browsers
+      </Text>
+    </Contents>
+  </ContainerCentered>
+  }
+
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
   }
+
+  if (!window.ethereum || !window.ethereum._state) {
+    return <ContainerCentered>
+      <IconContainer>
+        <Icons.YellowAttentionIcon />
+      </IconContainer>
+      
+      <Title>
+        Extension required
+      </Title>
+      <Contents>
+
+        <Text>
+          A browser web3 wallet is required to use the Dashboard
+        </Text>
+
+        <List>
+          <ListItem>Download <TextLink href='https://metamask.io/download/' target='_blank'>Metamask</TextLink></ListItem>
+          <ListItem>Return back to this page and click reload</ListItem>
+        </List>
+        
+      </Contents>
+      <WidgetButton
+        appearance='action'
+        onClick={() => {
+          window.location.reload()
+        }}
+        title='Reload page'
+      />
+    </ContainerCentered>
+  }
+
+  if (authorizationStep === 'wrong_network') {
+    return <ContainerCentered>
+      <IconContainer>
+        <Icons.YellowAttentionIcon />
+      </IconContainer>
+      
+      <Title>
+        Wrong network
+      </Title>
+      <Contents>
+
+        <Text>
+          You are now on {defineDashboardName()}.
+        </Text>
+
+        {defineSwitchNetworkText()}
+
+      </Contents>
+      <WidgetButton
+        target='_blank'
+        href='https://linkdrop-2.gitbook.io/linkdrop-knoe/'
+        title='Read documentation'
+      />
+    </ContainerCentered>
+  }
+
   return <ContainerCentered>
     <IconContainer>
       <Icons.SignInIcon />
@@ -96,7 +203,6 @@ const Main: FC<ReduxType> = ({
       disabled={loading || authorizationStep === 'initial'}
       appearance='action'
       onClick={() => {
-        console.log({authorizationStep})
         if (authorizationStep === 'connect') { return connectWallet(chainsAvailable) }
         return authorize(address)
       }}

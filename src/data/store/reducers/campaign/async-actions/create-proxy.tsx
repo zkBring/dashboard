@@ -4,13 +4,17 @@ import * as actionsCampaign from '../actions';
 import { CampaignActions } from '../types';
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
+import contracts from 'configs/contracts'
 
 const createProxyContract = (id?: string) => {
   return async (
     dispatch: Dispatch<CampaignActions | UserActions>,
     getState: () => RootState
   ) => {
-    const { user: { sdk }, campaigns: { campaigns } } = getState()
+    const { user: { sdk, address, chainId }, campaigns: { campaigns } } = getState()
+    if (!chainId) {
+      return alert('No chain id provided')
+    }
     if (id) {
       const campaign = campaigns.find(campaign => campaign.campaign_number === id)
       if (campaign) {
@@ -20,8 +24,13 @@ const createProxyContract = (id?: string) => {
         return
       }
     }
+    const contract = contracts[chainId]
     const campaignId = String(+(new Date()))
-    const proxyContractAddress = await sdk?.getProxyAddress(campaignId)
+    const proxyContractAddress = await sdk?.utils.computeProxyAddress(
+      contract.factory,
+      address,
+      campaignId
+    )
     if (!proxyContractAddress) { return }
     dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
     dispatch(actionsCampaign.setId(campaignId))

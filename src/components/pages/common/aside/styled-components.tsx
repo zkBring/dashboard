@@ -5,6 +5,7 @@ import { TOptionItem } from './types'
 export const ButtonStyled = styled(Button)`
   min-width: 136px;
   margin-left: 16px;
+  padding: 8px 20px;
 `
 
 export const WidgetTitle = styled.h3`

@@ -1,7 +1,7 @@
-import { Dispatch } from 'redux'
-import * as actionsCampaign from '../actions'
-import * as actionsCampaigns from '../../campaigns/actions'
-import { CampaignActions } from '../types'
+import { Dispatch } from 'redux';
+import * as actionsCampaign from '../actions';
+import * as actionsCampaigns from '../../campaigns/actions';
+import { CampaignActions } from '../types';
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
 import { TCampaignNew } from 'types'
@@ -10,8 +10,6 @@ import { defineBatchPreviewContents } from 'helpers'
 import { campaignsApi } from 'data/api'
 import { encrypt } from 'lib/crypto'
 import {
-  defineNetworkName,
-  defineJSONRpcUrl,
   sleep,
   createDataGroups,
   createWorkers,
@@ -19,15 +17,14 @@ import {
   getContractVersion
 } from 'helpers'
 import { Remote } from 'comlink';
-import {  } from 'configs/app'
-import contracts from 'configs/contracts'
 import { LinksWorker } from 'web-workers/links-worker'
+
 const {
   REACT_APP_INFURA_ID,
-  REACT_APP_CLAIM_APP,
+  REACT_APP_CLAIM_APP
 } = process.env
 
-const generateERC1155Link = ({
+const generateERC20Link = ({
   callback,
   id: currentCampaignId
 }: { callback?: (id: string) => void, id?: string  }) => {
@@ -53,11 +50,11 @@ const generateERC1155Link = ({
         id,
         assets,
         signerKey,
+        signerAddress,
         tokenAddress,
         wallet,
         symbol,
         title,
-        signerAddress,
         proxyContractAddress,
         sponsored,
         tokenStandard,
@@ -65,7 +62,9 @@ const generateERC1155Link = ({
         sdk,
         nativeTokensPerLink
       } = campaign
+
       if (!assets) { return alert('assets are not provided') }
+      if (!chainId) { return alert('assets are not provided') }
       if (!symbol) { return alert('symbol is not provided') }
       if (!tokenAddress) { return alert('tokenAddress is not provided') }
       if (!wallet) { return alert('wallet is not provided') }
@@ -73,24 +72,16 @@ const generateERC1155Link = ({
       if (!signerKey) { return alert('signerKey is not provided') }
       if (!signerAddress) { return alert('signerAddress is not provided') }
       if (!dashboardKey || dashboardKey === null) { return alert('dashboardKey is not provided') }
-      if (!chainId) { return alert('chainId is not provided') }
       if (!tokenStandard) { return alert('tokenStandard is not provided') }
       if (!REACT_APP_INFURA_ID) {
         return alert('REACT_APP_INFURA_ID is not provided in .env file')
       }
-      const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
-      if (!jsonRpcUrl) {
-        return alert('jsonRpcUrl is not defined in helper')
-      }
+
       if (!REACT_APP_CLAIM_APP) {
         return alert('REACT_APP_CLAIM_APP is not provided in .env file')
       }
-      const neededWorkersCount = assets.length <= 1000 ? 1 : workersCount
       const start = +(new Date())
-
-      const contract = contracts[chainId]
-      const networkName = defineNetworkName(chainId)
-      
+      const neededWorkersCount = assets.length <= 1000 ? 1 : workersCount
 
       const updateProgressbar = async (value: number) => {
         if (value === currentPercentage || value < currentPercentage) { return }
@@ -99,39 +90,35 @@ const generateERC1155Link = ({
         await sleep(1)
       }
 
-      const assetsGroups = createDataGroups(assets, neededWorkersCount)
+      const assetsGroups = createDataGroups(sdk ? [] : assets, neededWorkersCount)
       console.log({ assetsGroups })
       const workers = await createWorkers(assetsGroups, 'links', updateProgressbar)
       console.log({ workers })
 
-      
-      console.log({ assets })
+      if (!proxyContractAddress || !chainId) { return }
+      const version = await getContractVersion(proxyContractAddress, provider)
+
       const newLinks = await Promise.all(workers.map(({
         worker,
         data
       }) => (worker as Remote<LinksWorker>).generateLink(
         tokenStandard,
         address,
-        contract.factory,
-        networkName,
-        jsonRpcUrl,
-        `https://${networkName}.linkdrop.io`,
-        REACT_APP_CLAIM_APP,
+        Number(chainId),
         data,
-        sponsored,
         tokenAddress,
-        wallet,
-        id,
         signerKey,
         nativeTokensPerLink,
-        dashboardKey !== null ? dashboardKey : ''
+        dashboardKey !== null ? dashboardKey : '',
+        proxyContractAddress,
+        version
       )))
+
 
       console.log({ newLinks })
       console.log((+ new Date()) - start)
-  
-      if (!chainId || !proxyContractAddress || !signerKey || !tokenStandard || !address) { return }
-  
+
+      if (!signerKey || !tokenStandard || !address) { return }
       const updatingCampaign = currentCampaignId ? campaigns.find(item => item.campaign_id === currentCampaignId) : undefined
       const batchPreviewContents = defineBatchPreviewContents(
         tokenStandard,
@@ -139,7 +126,7 @@ const generateERC1155Link = ({
         symbol,
         chainId
       )
-      
+
       if (updatingCampaign && currentCampaignId) {
         const result = await campaignsApi.saveBatch(
           currentCampaignId,
@@ -156,21 +143,22 @@ const generateERC1155Link = ({
         // dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
   
       } else {
+        const batchLinks= newLinks.flat()
         const batch = {
-          claim_links: newLinks.flat(),
+          claim_links: batchLinks.length === 0 ? undefined : newLinks.flat(),
           sponsored,
           batch_description: batchPreviewContents
         }
-        const version = await getContractVersion(proxyContractAddress, provider)
+        
 
         const newCampaign: TCampaignNew = {
           campaign_number: id,
-          sdk,
           encrypted_signer_key: encrypt(signerKey, dashboardKey),
           signer_address: signerAddress,
           token_address: tokenAddress,
           creator_address: address,
           wallet,
+          sdk,
           symbol,
           title: title || '',
           token_standard: tokenStandard,
@@ -182,11 +170,15 @@ const generateERC1155Link = ({
         }
 
         const result = await campaignsApi.create(newCampaign)
+        console.log({ result })
         if (result.data.success) {
           const { campaign } = result.data
 
           dispatch(actionsCampaigns.addCampaign(campaign))
-          if (callback) { callback(campaign.campaign_id) }
+          if (callback) {
+            console.log('should call callback')
+            callback(campaign.campaign_id)
+          }
         }
       }
       terminateWorkers(workers)
@@ -198,4 +190,4 @@ const generateERC1155Link = ({
   }
 }
 
-export default generateERC1155Link
+export default generateERC20Link

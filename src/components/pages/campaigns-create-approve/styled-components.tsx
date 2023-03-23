@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { Radio, Input, Button, Loader } from 'components/common'
+import { Radio, Input, Button, Select } from 'components/common'
 import {
   InstructionNote
 } from 'components/pages/common'
-import Icons from 'icons'
+
 
 export const StyledRadio = styled(Radio)`
   margin-bottom: 20px;
@@ -37,22 +37,6 @@ export const TextBold = styled.span`
   font-weight: 600;
 `
 
-export const AsideNote = styled.div`
-  color: ${props => props.theme.primaryHighlightColor};
-  font-size: 14px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-`
-
-export const ApprovedIcon = styled(Icons.ApprovedIcon)`
-  margin-right: 4px; 
-`
-
-export const LoaderStyled = styled(Loader)`
-  margin-right: 4px;
-  div {
-    border-color: ${props => props.theme.primaryHighlightColor} transparent transparent transparent;
-  }
+export const SelectStyled = styled(Select)`
+  width: 100%;
 `

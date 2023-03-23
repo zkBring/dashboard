@@ -1,4 +1,5 @@
 import approveERC20 from "./approve-erc20"
+import approveAllERC20 from './approve-all-erc20'
 import approveERC721 from "./approve-erc721"
 import approveERC1155 from "./approve-erc1155"
 import initialization from "./initialization"
@@ -13,9 +14,12 @@ import checkIfApproved from "./check-if-approved"
 import checkIfGranted from "./check-if-granted"
 import grantRole from "./grant-role"
 import checkIfConnected from "./check-if-connected"
+import getContracts from './get-contracts'
+import getComission from './get-comission'
 
 export {
   approveERC20,
+  approveAllERC20,
   getNativeTokenAmount,
   initialization,
   getTokenAmount,
@@ -29,5 +33,7 @@ export {
   logout,
   checkIfApproved,
   checkIfGranted,
-  grantRole
+  grantRole,
+  getContracts,
+  getComission
 }

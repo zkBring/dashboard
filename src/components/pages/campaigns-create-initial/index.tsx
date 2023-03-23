@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import {
-  StyledRadio
+  StyledRadio,
+  TextLinkStyled
 } from './styled-components'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux'
@@ -9,19 +10,19 @@ import { TLinkParams, TClaimPattern } from 'types'
 import { useHistory } from 'react-router-dom'
 import { IAppDispatch } from 'data/store'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import {
   WidgetComponent,
   Container,
   Aside,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   AsideContent,
-  AsideValueShorten,
-  AssetsList,
-  WidgetSubtitle
+  TableValueShorten,
+  WidgetSubtitle,
+  WidgetContainer
 } from 'components/pages/common'
+import { Note } from 'components/common'
 import { shortenString, defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({
@@ -71,8 +72,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const patterns = [
-  { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' },
-  { value: 'transfer', label: 'Transfer (tokens should be preminted, and will be transferred to user at claim)' }
+  { value: 'transfer', label: 'Transfer (tokens should be preminted and will be transferred to user at claim)' },
+  { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' }
 ]
 
 const CampaignsCreateInitial: FC<ReduxType> = ({
@@ -82,11 +83,9 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   title,
   tokenAddress,
   chainId,
-  assetsOriginal,
   createProxyContract,
   applyClaimPattern,
   symbol,
-  assets
 }) => {
   const { type, id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -97,24 +96,31 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
 
   const history = useHistory()
-  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'mint')
+  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
 
   useEffect(() => {
     createProxyContract(campaign?.campaign_number)
   }, [])
 
   return <Container>
-    <WidgetComponent title='Claim pattern'>
-      <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
-      <StyledRadio
-        disabled={Boolean(campaign) || loading}
-        value={claimPattern}
-        radios={patterns}
-        onChange={(value) => {
-          setClaimPattern(value)
-        }}
-      />
-    </WidgetComponent>
+    <WidgetContainer>
+      <WidgetComponent title='Claim pattern'>
+        <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
+        <StyledRadio
+          // disabled={Boolean(campaign) || loading}
+          disabled={true}
+          value={claimPattern}
+          radios={patterns}
+          onChange={(value) => {
+            setClaimPattern(value)
+          }}
+        />
+      </WidgetComponent>
+      <Note>
+        Mint pattern is supported in Pro plan. <TextLinkStyled target='_blank' href='https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/mint-pattern-requirements'>Learn more {`->`}</TextLinkStyled>
+      </Note>
+    </WidgetContainer>
+    
     <Aside
       back={{
         action: () => {
@@ -144,30 +150,30 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
       subtitle="Check and confirm details "
     >
       <AsideContent>
-        <AsideRow>
-          <AsideText>Title of campaign</AsideText>
-          <AsideValueShorten>{currentCampaignTitle}</AsideValueShorten>
-        </AsideRow>
+        <TableRow>
+          <TableText>Title of campaign</TableText>
+          <TableValueShorten>{currentCampaignTitle}</TableValueShorten>
+        </TableRow>
 
-        {currentTokenAddress && <AsideRow>
-          <AsideText>Token address</AsideText>
-          <AsideValue>{shortenString(currentTokenAddress)}</AsideValue>
-        </AsideRow>}
+        {currentTokenAddress && <TableRow>
+          <TableText>Token address</TableText>
+          <TableValue>{shortenString(currentTokenAddress)}</TableValue>
+        </TableRow>}
 
-        {currentCampaignSymbol && <AsideRow>
-          <AsideText>Token name</AsideText>
-          <AsideValue>{currentCampaignSymbol}</AsideValue>
-        </AsideRow>}
+        {currentCampaignSymbol && <TableRow>
+          <TableText>Token name</TableText>
+          <TableValue>{currentCampaignSymbol}</TableValue>
+        </TableRow>}
 
-        {currentCampaignTokenStandard && <AsideRow>
-          <AsideText>Token standard</AsideText>
-          <AsideValue>{currentCampaignTokenStandard}</AsideValue>
-        </AsideRow>}
+        {currentCampaignTokenStandard && <TableRow>
+          <TableText>Token standard</TableText>
+          <TableValue>{currentCampaignTokenStandard}</TableValue>
+        </TableRow>}
 
-        {currentCampaignChainId && <AsideRow>
-          <AsideText>Network</AsideText>
-          <AsideValue>{defineNetworkName(Number(currentCampaignChainId))}</AsideValue>
-        </AsideRow>}
+        {currentCampaignChainId && <TableRow>
+          <TableText>Network</TableText>
+          <TableValue>{defineNetworkName(Number(currentCampaignChainId))}</TableValue>
+        </TableRow>}
 
 
       </AsideContent>

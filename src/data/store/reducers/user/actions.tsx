@@ -1,12 +1,11 @@
-import LinkdropSDK from '@linkdrop/sdk'
+import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TAuthorizationStep } from 'types'
+import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken } from 'types'
 
 export function setAddress(address: string) {
   return action(
     Constants.USER_SET_ADDRESS,
-    // payload
     {
       address
     }
@@ -16,9 +15,26 @@ export function setAddress(address: string) {
 export function setLoading(loading: boolean) {
   return action(
     Constants.USER_SET_LOADING,
-    // payload
     {
       loading
+    }
+  )
+}
+
+export function setContracts(contracts: TAlchemyContract[]) {
+  return action(
+    Constants.USER_SET_CONTRACTS,
+    {
+      contracts
+    }
+  )
+}
+
+export function setNFTs(nfts: TAlchemyNFTToken[]) {
+  return action(
+    Constants.USER_SET_NFTS,
+    {
+      nfts
     }
   )
 }
@@ -26,7 +42,6 @@ export function setLoading(loading: boolean) {
 export function setAuthorizationStep (authorizationStep: TAuthorizationStep) {
   return action(
     Constants.USER_SET_AUTHORIZATION_STEP,
-    // payload
     {
       authorizationStep
     }
@@ -36,7 +51,6 @@ export function setAuthorizationStep (authorizationStep: TAuthorizationStep) {
 export function setDashboardKey(dashboardKey: string) {
   return action(
     Constants.USER_SET_DASHBOARD_KEY,
-    // payload
     {
       dashboardKey
     }
@@ -46,7 +60,6 @@ export function setDashboardKey(dashboardKey: string) {
 export function setProvider(provider: any) {
   return action(
     Constants.USER_SET_PROVIDER,
-    // payload
     {
       provider
     }
@@ -56,7 +69,6 @@ export function setProvider(provider: any) {
 export function setChainId(chainId: number) {
   return action(
     Constants.USER_SET_CHAIN_ID,
-    // payload
     {
       chainId
     }
@@ -66,7 +78,6 @@ export function setChainId(chainId: number) {
 export function setTokenAmount(tokenAmount: string, tokenAmountFormatted: string) {
   return action(
     Constants.USER_SET_TOKEN_AMOUNT,
-    // payload
     {
       tokenAmount,
       tokenAmountFormatted
@@ -80,7 +91,6 @@ export function setNativeTokenAmount(
 ) {
   return action(
     Constants.USER_SET_NATIVE_TOKEN_AMOUNT,
-    // payload
     {
       nativeTokenAmount,
       nativeTokenAmountFormatted
@@ -88,15 +98,35 @@ export function setNativeTokenAmount(
   )
 }
 
-
 export function setSDK (
   sdk: LinkdropSDK
 ) {
   return action(
     Constants.USER_SET_SDK,
-    // payload
     {
       sdk
+    }
+  )
+}
+
+export function setWhitelisted (
+  whitelisted: boolean | null
+) {
+  return action(
+    Constants.USER_SET_WHITELISTED,
+    {
+      whitelisted
+    }
+  )
+}
+
+export function setComission (
+  comission: string
+) {
+  return action(
+    Constants.USER_SET_COMISSION,
+    {
+      comission
     }
   )
 }

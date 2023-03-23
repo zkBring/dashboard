@@ -12,7 +12,6 @@ import {
   WidgetValue,
   Buttons,
   WidgetButton,
-  FileIcon,
   StyledSelect,
   WidgetSubtitleStyled,
   Paragraph
@@ -22,8 +21,8 @@ import {
   Container,
   Aside,
   WidgetSubtitle,
-  AsideRow,
-  AsideValue
+  TableRow,
+  TableValue
 } from 'components/pages/common'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
@@ -132,7 +131,7 @@ const QR: FC<ReduxType> = ({
           If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Campaigns</TextLink>
         </Paragraph>
         <Note>
-        You will not be able to change the quantity of QRs after uploading links
+          You will not be able to change the quantity of QRs after uploading links
         </Note>
       </>
     }
@@ -140,11 +139,11 @@ const QR: FC<ReduxType> = ({
       <Paragraph>
         Claim links are successfully connected to QR codes
       </Paragraph>
-      <AsideRow>
-        <AsideValue>
+      <TableRow>
+        <TableValue>
           {qr.qr_quantity || 0} links connected
-        </AsideValue>
-        <AsideValue>
+        </TableValue>
+        <TableValue>
           <WidgetButton
             size='small'
             disabled={false}
@@ -154,8 +153,8 @@ const QR: FC<ReduxType> = ({
               toggleUpdateLinksPopup(true)
             }}
           />
-        </AsideValue>
-      </AsideRow>
+        </TableValue>
+      </TableRow>
     </>
   }
 
@@ -268,67 +267,6 @@ const QR: FC<ReduxType> = ({
       {defineAsideContent(qr.links_uploaded)}
     </Aside>
   </Container>
-
-
-  // return <Container>
-  
-
-  //   <WidgetComponent title={qr.set_name}>
-  //     <WidgetInfo>
-  //       <WidgetSubtitle>
-  //         Quantity: {qr.qr_quantity} QRs
-  //       </WidgetSubtitle>
-  //       <WidgetValue>
-  //         <Buttons>
-  //           <WidgetButton
-  //             title='Change quantity'
-  //             disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
-  //             onClick={() => {
-  //               toggleUpdateQuantityPopup(true)
-  //             }}
-  //           />
-  //           <WidgetButton
-  //             title='Download'
-  //             appearance='action'
-              
-  //             onClick={() => {
-  //               toggleDownloadPopup(true)
-  //             }}
-  //           /> 
-  //         </Buttons>
-  //       </WidgetValue>
-  //       <WidgetSubtitle>
-  //         Status
-  //       </WidgetSubtitle>
-  //       <WidgetValue>
-  //        
-  //       </WidgetValue>
-  //     </WidgetInfo>
-
-  //     <WidgetInfo>
-  //       <WidgetSubtitle>
-  //         Claimable links:
-  //         <LinksIndicator>
-  //           {qr.links_uploaded ? `${qr.qr_quantity} link(s) <--> ${qr.qr_array?.length} QR(s)` : 'No links uploaded'}
-  //         </LinksIndicator>
-  //       </WidgetSubtitle>
-  //       <WidgetValue>
-  //         <WidgetButton
-  //           title={qr.links_uploaded ? 'Change links' : 'Upload links'}
-  //           onClick={() => {
-  //             toggleUpdateLinksPopup(true)
-  //           }}
-  //         />
-  //       </WidgetValue>
-  //       <WidgetSubtitle />
-  //       <WidgetValue>
-  //         Upload a CSV file with links, file should include number of rows 
-  //         equivalent to a number of QR codes
-  //       </WidgetValue>
-  //     </WidgetInfo>
-          
-  //   </WidgetComponent>
-  // </Container>
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(QR)

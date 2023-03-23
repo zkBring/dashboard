@@ -1,7 +1,8 @@
 import { FC, useState, useEffect } from 'react'
 import {
-  StyledRadio,
-  InputStyled
+  InputStyled,
+  SwitcherStyled,
+  SelectStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
 
@@ -10,22 +11,22 @@ import {
   Container,
   Aside,
   WidgetSubtitle,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   AsideContent,
-  AsideValueShorten
+  TableValueShorten
 } from 'components/pages/common'
-
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import { TTokenType, TLinkParams } from 'types'
+import { TTokenType, TLinkParams, TAlchemyContract } from 'types'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
-import { defineNetworkName } from 'helpers'
+import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract } from 'helpers'
+import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 
 const mapStateToProps = ({
   campaign: {
@@ -41,18 +42,22 @@ const mapStateToProps = ({
   user: {
     chainId,
     provider,
-    address
+    address,
+    contracts,
+    loading: userLoading
   }
 }: RootState) => ({
   tokenStandard,
   loading,
   campaigns,
   chainId,
+  userLoading,
   provider,
   address,
   symbol,
   title,
-  tokenAddress
+  tokenAddress,
+  contracts
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
@@ -91,16 +96,30 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       dispatch(
         campaignActions.clearCampaign()
       )
+    },
+    getContracts: () => {
+      dispatch(
+        userAsyncActions.getContracts()
+      )
     }
   }
+}
+
+const defineContractsOptions = (contracts: TAlchemyContract[]) => {
+  const options = contracts.map(contract => {
+    return {
+      label: `${contract.name} ${shortenString(contract.address)} (${contract.totalBalance} owned)`,
+      value: contract
+    }
+  })
+  return options
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateNew: FC<ReduxType> = ({
-  createProxyContract,
-  symbol,
+  symbol: appliedTokenSymbol,
   chainId,
   provider,
   address,
@@ -108,44 +127,74 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   setTokenContractData,
   setInitialData,
   clearCampaign,
-  loading
+  loading,
+  getContracts,
+  contracts,
+  userLoading,
+  tokenAddress: appliedTokenAddress
 }) => {
 
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
 
-  const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
+  const currentTokenAddress = campaign ? campaign.token_address : ''
+  const currentTokenAddressToShow = currentTokenAddress || appliedTokenAddress
+  const currentCampaignType = campaign ? campaign.token_standard : null
+  const currentCampaignTitle = campaign ? campaign.title : ''
+  const currentTokenSymbol = campaign ? campaign.symbol : ''
+  const currentTokenSymbolToShow = currentTokenSymbol || appliedTokenSymbol
   
   const [
     tokenAddress,
     setTokenAddress
-  ] = useState<string>(currentCampaign?.token_address || '')
+  ] = useState<string>(currentTokenAddress)
+  
 
   const [
     title,
     setTitle
-  ] = useState<string>(currentCampaign?.title || '')
+  ] = useState<string>(currentCampaignTitle)
 
-  const [ currentType, setCurrentType ] = useState<string>(currentCampaign?.token_standard || 'ERC20')
-
-  const types = [
-    { value: 'ERC20', label: 'ERC20' },
-    { value: 'ERC721', label: 'ERC721' },
-    { value: 'ERC1155', label: 'ERC1155' }
-  ]
+  const [ currentType, setCurrentType ] = useState<string | null>(currentCampaignType)
+  const [ currentSwitcherValue, setCurrentSwitcherValue ] = useState<string>(currentCampaignType === 'ERC1155' || currentCampaignType === 'ERC721' || !currentCampaignType ? 'nfts' : 'tokens')
 
   useEffect(() => {
     clearCampaign()
   }, [])
 
   useEffect(() => {
+    getContracts()
+  }, [])
+
+  useEffect(() => {
     if (!tokenAddress.length || !chainId) { return }
-    console.log('here', tokenAddress)
     setTokenContractData(provider, tokenAddress, currentType as TTokenType, address, chainId)
   }, [tokenAddress, provider, currentType])
 
   const defineIfNextDisabled = () => {
-    return !title || !tokenAddress || !symbol || loading
+    return !title || !tokenAddress || !appliedTokenSymbol || loading
+  }
+
+  const selectTokenOptions = defineContractsOptions(contracts)
+
+  const selectCurrentValue = () => {
+    const currentOption = selectTokenOptions.find(option => option.value.address === tokenAddress)
+    if (!currentOption) {
+      return null
+    }
+    if (currentOption) {
+      return currentOption
+    }
+  }
+
+  const selectCurrentPlaceholder = () => {
+    if (!tokenAddress) {
+      return 'Select Token'
+    }
+    const selectValue = selectCurrentValue()
+    if (!selectValue) { return tokenAddress }
+    return selectValue.label
   }
   
   return <>
@@ -154,7 +203,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         <WidgetSubtitle>Fill in all fields to continue to the next step</WidgetSubtitle>
         <InputStyled
           value={title}
-          disabled={Boolean(currentCampaign) || loading}
+          disabled={Boolean(campaign) || loading}
+          placeholder='Enter title'
           onChange={(value: string) => {
             setTitle(value)
             return value
@@ -162,25 +212,70 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           title='Title of the campaign'
         />
 
-        <StyledRadio
-          label='Token Standard'
-          disabled={Boolean(currentCampaign) || loading}
-          value={currentType}
-          radios={types}
-          onChange={(value) => { setCurrentType(value) }}
+        <SwitcherStyled
+          title='Contract'
+          options={[
+            {
+              title: 'NFTs (ERC721/ERC1155)',
+              id: 'nfts'
+            },
+            {
+              title: 'Tokens (ERC20)',
+              id: 'tokens'
+            }
+          ]}
+          disabled={Boolean(campaign) || loading || userLoading}
+          active={currentSwitcherValue}
+          onChange={(id) => {
+            setTokenAddress('')
+            setCurrentSwitcherValue(id)
+            if (id === 'tokens') {
+              setCurrentType('ERC20')
+            } else {
+              setCurrentType(null)
+            }
+          }}
         />
 
-        <InputStyled
+        {currentSwitcherValue === 'nfts' && <SelectStyled
+          disabled={Boolean(campaign) || loading || userLoading}
+          onChange={async ({ value }: { value: TAlchemyContract | string}) => {
+            if (typeof value === 'string') {
+              const tokenType = await defineTokenType(value, provider)
+              if (tokenType !== null && chainId) {
+                const tokenOwnership = await defineIfUserOwnsContract(address, value, chainId)
+                if (!tokenOwnership) {
+                  return alert('You dont have tokens of provided contract')
+                }
+                setCurrentType(tokenType)
+                setTokenAddress(value)
+              } else {
+                alert('Token was not detected among ERC721 and ERC1155 tokens')
+              }
+            } else {
+              setCurrentType(String(value.tokenType))
+              setTokenAddress(String(value.address))
+            }
+          }}
+          placeholder={selectCurrentPlaceholder()}
+          value={selectCurrentValue()}
+          options={selectTokenOptions}
+          notFoundActiveCondition={(value) => {
+            // return false
+            return value.startsWith('0x') && value.length === 42
+          }}
+        />}
+
+        {currentSwitcherValue === 'tokens' && <InputStyled
           value={tokenAddress}
           placeholder='0x... address'
           note='Carefully check address before you go'
-          disabled={Boolean(currentCampaign) || loading}
+          disabled={Boolean(campaign) || loading}
           onChange={(value: string) => {
             setTokenAddress(value)
             return value
           }}
-          title='Token Address'
-        />
+        />}
       </WidgetComponent>
 
       <Aside
@@ -190,8 +285,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               currentType as TTokenType,
               title,
               () => {
-                if (currentCampaign) {
-                  return history.push(`/campaigns/edit/${currentType}/${currentCampaign.campaign_id}/initial`)
+                if (campaign) {
+                  return history.push(`/campaigns/edit/${currentType}/${campaign.campaign_id}/initial`)
                 }
                 history.push(`/campaigns/new/${currentType}/initial`)
               }
@@ -209,20 +304,30 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         subtitle="Check and confirm details"
       >
         <AsideContent>
-          {title && <AsideRow>
-            <AsideText>Title of campaign</AsideText>
-            <AsideValueShorten>{title}</AsideValueShorten>
-          </AsideRow>}
+          {title && <TableRow>
+            <TableText>Title of campaign</TableText>
+            <TableValueShorten>{title}</TableValueShorten>
+          </TableRow>}
 
-          <AsideRow>
-            <AsideText>Token Standard</AsideText>
-            <AsideValue>{currentType}</AsideValue>
-          </AsideRow>
+          {(currentTokenAddress || appliedTokenAddress) && <TableRow>
+            <TableText>Token address</TableText>
+            <TableValue>{shortenString(String(currentTokenAddressToShow))}</TableValue>
+          </TableRow>}
 
-          <AsideRow>
-            <AsideText>Network</AsideText>
-            <AsideValue>{defineNetworkName(chainId)}</AsideValue>
-          </AsideRow>
+          {(currentTokenSymbol || appliedTokenSymbol) && <TableRow>
+            <TableText>Collection</TableText>
+            <TableValue>{currentTokenSymbol || appliedTokenSymbol}</TableValue>
+          </TableRow>}
+
+          {currentType && <TableRow>
+            <TableText>Token standard</TableText>
+            <TableValue>{currentType}</TableValue>
+          </TableRow>}
+
+          <TableRow>
+            <TableText>Network</TableText>
+            <TableValue>{defineNetworkName(chainId)}</TableValue>
+          </TableRow>
         </AsideContent>
       </Aside>
     </Container>

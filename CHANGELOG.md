@@ -1,5 +1,19 @@
 # Ledger Dashboard
 
+## 2.1.5-rc.1
+- Added support for new SDK
+- Fixed bug with date and time of batch creation
+- Sponsorship price count is moved to approve screen
+- Added additional field for tokens to be distributed (for sdk campaigns)
+- Approve all tokens for ERC20 if campaign is created for sdk usage
+- Added support for short codes
+- Added info screen if dashboard is opened in mobile browser
+- Added info screen if Metamask is not installed
+- Added info screen if network is not supported
+- Added Alchemy API to upload NFT tokens list
+- Added select component to choose available token ids for ERC721/ERC1155 campaign
+- Dynamic definition of user comission with contract instance
+
 ## 2.1.4
 - Restrict networks with env variable 
 - Updated README.md file

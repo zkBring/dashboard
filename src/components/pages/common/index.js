@@ -2,6 +2,7 @@ import TransactionAside from "./transaction-aside"
 import Aside from './aside'
 import AssetsList from './assets-list'
 import InstructionNote from './instruction-note'
+import InitialGuide from './initial-guide'
 
 import {
   Container,
@@ -12,14 +13,14 @@ import {
   WidgetTitle,
   WidgetContainer,
   AsideDivider,
-  AsideRow,
-  AsideText,
-  AsideValue,
+  TableRow,
+  TableText,
+  TableValue,
   BatchList,
   BatchListLabel,
   BatchListValue,
   AsideContent,
-  AsideValueShorten
+  TableValueShorten
 } from './styled-components'
 
 export {
@@ -38,9 +39,10 @@ export {
   WidgetSubtitle,
   WidgetTitle,
   AsideDivider,
-  AsideRow,
-  AsideValueShorten,
-  AsideText,
-  AsideValue,
-  AssetsList
+  TableRow,
+  TableValueShorten,
+  TableText,
+  TableValue,
+  AssetsList,
+  InitialGuide
 }

@@ -4,66 +4,73 @@ import * as asyncActions from '../async-actions'
 import {
   UserActions
 } from '../types'
-import {
-  defineNetworkName
-} from 'helpers'
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import { IAppDispatch } from 'data/store'
 import {
-  getNativeTokenAmount
+  getNativeTokenAmount,
+  getComission
  } from './index'
- const { REACT_APP_INFURA_ID } = process.env
 
 async function connectWallet (
   dispatch: Dispatch<UserActions> & IAppDispatch,
   chainsAvailable: (number | string)[]
 ) {
 
-  const web3Modal = new Web3Modal({
-    cacheProvider: false, // optional
-    providerOptions: {}
-  })
+  try {
+    const web3Modal = new Web3Modal({
+      cacheProvider: false, // optional
+      providerOptions: {}
+    })
+    
+    const provider = await web3Modal.connect();
+    const providerWeb3 = new Web3Provider(provider)
+    
+    let { chainId } = await providerWeb3.getNetwork()
+    provider.on("accountsChanged", async (accounts: string[]) => {
+      dispatch(asyncActions.logout())
+    })
+    
+    // Subscribe to chainId change
+    provider.on("chainChanged", async (chainId: string) => {
+      dispatch(asyncActions.logout())
+    })
   
-  const provider = await web3Modal.connect();
-  const providerWeb3 = new Web3Provider(provider)
+    if (!chainsAvailable.find(network => Number(chainId) === Number(network))) {
+      dispatch(actions.setChainId(chainId))
+      return dispatch(actions.setAuthorizationStep('wrong_network'))
+    }
+    
+    const accounts = await providerWeb3.listAccounts()
+    const address = accounts[0] && accounts[0].toLowerCase()
+    const comissionRes = await getComission(
+      chainId,
+      address
+    )
+    console.log({ comissionRes })
+    if (comissionRes) {
+      const { comission, whitelisted } = comissionRes
+      console.log({ comission, whitelisted })
+      dispatch(actions.setWhitelisted(whitelisted))
+      dispatch(actions.setComission(comission))
+    }
+    dispatch(actions.setProvider(providerWeb3))
+    dispatch(actions.setAuthorizationStep('login'))
   
-  let { chainId } = await providerWeb3.getNetwork()
-  provider.on("accountsChanged", async (accounts: string[]) => {
-    dispatch(asyncActions.logout())
-  })
+    dispatch(actions.setAddress(address))
+    dispatch(actions.setChainId(chainId))
   
-  // Subscribe to chainId change
-  provider.on("chainChanged", async (chainId: string) => {
-    dispatch(asyncActions.logout())
-  })
-
-  if (!chainsAvailable.find(network => Number(chainId) === Number(network))) {
-    return alert(`Available networks: ${chainsAvailable.map(chain => defineNetworkName(Number(chain)))}`)
+    await getNativeTokenAmount(
+      dispatch,
+      chainId,
+      address,
+      providerWeb3
+    )
+  } catch (err) {
+    console.log({ err })
   }
-  
-  const accounts = await providerWeb3.listAccounts()
-  const address = accounts[0] && accounts[0].toLowerCase()
-  dispatch(actions.setProvider(providerWeb3))
-  dispatch(actions.setAuthorizationStep('login'))
-
-  dispatch(actions.setAddress(address))
-  dispatch(actions.setChainId(chainId))
-
-  await getNativeTokenAmount(
-    dispatch,
-    chainId,
-    address,
-    providerWeb3
-  )
 
   
 }
-
-// const authorize = async (provider: any) => {
-//   const signer = await provider.getSigner()
-//   const message = await signer.signMessage(`I’m signing this message to login to Linkdrop Dashboard at ${new Date()}`)
-//   console.log({ message })
-// }
 
 export default connectWallet

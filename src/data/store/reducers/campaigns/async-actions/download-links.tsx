@@ -14,19 +14,32 @@ const { REACT_APP_CLAIM_APP } = process.env
 const downloadLinks = (
   batchId: string | number,
   campaignId: string,
-  title: string
+  title: string,
+  tokenAddress: string | null,
+  encryptionKey?: string
 ) => {
   return async (
     dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions>,
     getState: () => RootState
   ) => {
 
-    const {
-      user: { dashboardKey }
+    let {
+      user: { dashboardKey },
     } = getState()
+
     
-    if (!dashboardKey) { return alert ('dashboardKey is not provided') }
+    if (!dashboardKey) {
+      if ( !encryptionKey) {
+        return alert ('dashboardKey and encryptionKey are not provided')
+      }
+    }
+
+    if (encryptionKey) {
+      dashboardKey = encryptionKey
+    }
+
     if (!REACT_APP_CLAIM_APP) { return alert ('REACT_APP_CLAIM_APP is not provided in .env') }
+    if (!tokenAddress) { return alert ('tokenAddress is not provided') }
     try {
       dispatch(actionsCampaigns.setLoading(true))
       
@@ -40,7 +53,8 @@ const downloadLinks = (
     
         const decryptedLinks = decryptLinks({
           links: claim_links,
-          dashboardKey
+          dashboardKey: String(dashboardKey),
+          tokenAddress
         })
         downloadLinksAsCSV(
           decryptedLinks,

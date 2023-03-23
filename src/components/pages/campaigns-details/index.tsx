@@ -4,44 +4,42 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   AsideDivider,
-  AsideRow,
-  AsideText,
-  AsideValue,
-  BatchList,
-  BatchListLabel,
-  BatchListValue,
+  TableRow,
+  TableText,
+  TableValue,
   WidgetComponent,
   Container,
-  Aside
+  WidgetContainer
 } from 'components/pages/common'
-
+import { ethers } from 'ethers'
 import {
   Header,
   WidgetButton,
   WidgetTitleStyled,
-  SecondaryTextSpan
+  AsideStyled,
+  AsideContainer
 } from './styled-components'
 
 import {
   shortenString,
   defineNetworkName,
   defineEtherscanUrl,
-  formatTime,
-  formatDate,
   defineCampaignStatus,
   campaignPause,
   campaignUnpause,
   campaignRefund,
   copyToClipboard,
-  defineProxyContractFunds
+  defineProxyContractFunds,
+  createEncryptionKey
 } from 'helpers'
+import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
 import { TextLink } from 'components/common'
-import Icons from 'icons';
-
+import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
 import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
+import { decrypt } from 'lib/crypto'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
@@ -63,9 +61,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         getCampaignBatches({ campaign_id })
       )
     },
-    downloadLinks: (batch_id: string | number, campaign_id: string, title: string) => {
+    downloadLinks: (
+      batch_id: string | number,
+      campaign_id: string,
+      title: string,
+      tokenAddress: string | null,
+      encryptionKey?: string
+    ) => {
       dispatch(
-        downloadLinks(batch_id, campaign_id, title)
+        downloadLinks(batch_id, campaign_id, title, tokenAddress, encryptionKey)
       )
     }
   }
@@ -80,7 +84,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     dashboardKey,
     match: { params },
     getCampaignBatches,
-    loading,
     downloadLinks,
     provider,
     address
@@ -101,7 +104,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         proxy_contract_address,
         provider
       )
-      console.log({ amount })
       setWithdrawable(amount > 0)
     }
     onInit()
@@ -119,22 +121,89 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   }, [])
 
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
-  if (!currentCampaign) {
+
+  useEffect(() => {
+    const init = async () => {
+      // if (!currentCampaign || !dashboardKey) { return }
+      // const encryptionKey = createEncryptionKey(
+      //   dashboardKey,
+      //   currentCampaign.signer_address,
+      //   currentCampaign.campaign_number
+      // )
+      // console.log(
+      //   currentCampaign.campaign_id,
+      //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
+      //   encryptionKey.replace('0x', '')
+      // )
+      // console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
+      // const sdk = new LinkdropSDK({
+      //   claimHostUrl: 'https://staging.claim.ledger.com'
+      // })
+      // console.log({ sdk })
+      // const campaign = await sdk.getCampaign(
+      //   currentCampaign.campaign_id,
+      //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
+      //   encryptionKey
+      // )
+      // console.log({ campaign })
+      // if (!campaign) { return }
+      // const batches = await campaign?.getBatches()
+      // console.log({ batches })
+      // if (!batches || !batches.batches) { return }
+      // const batchLast = batches.batches[batches.batches.length - 1]
+      // console.log({ batchLast })
+      // if (!batchLast) { return }
+      // const batch = await campaign?.getBatch(batchLast.batch_id)
+      // console.log({ batch })
+      // if (!batch) { return }
+      // const links = batch.getLinks()
+      // console.log({ links })
+      // if (!links) { return }
+      // const lastLink = links[links.length - 1]
+      // console.log({ lastLink })
+      // if (!lastLink) { return }
+      // const status = await sdk.getLinkStatus(lastLink.linkId)
+      // console.log({ status })
+
+      // const deactivated = await campaign.deactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
+      // console.log({ deactivated })
+      // const reactivated = await campaign.reactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
+      // console.log({ reactivated })
+
+      // const claim = await sdk.redeem('6bd57626fa2633d2c9f907a35c661b0142daf68efcc45a048ff67f9f949a9a74', '0x0553aDA5829184A7818dC866367D77334183603E')
+      // console.log({ claim })
+
+    }
+    init()
+  }, [])
+  
+  if (!currentCampaign || !dashboardKey) {
     return null
   }
+
   const {
     campaign_id,
     token_standard,
     title,
     batches,
-    created_at,
     creator_address,
     token_address,
     proxy_contract_address,
     claim_pattern,
     chain_id,
-    links_count
+    links_count,
+    sdk,
+    signer_address,
+    campaign_number,
+    encrypted_signer_key,
   } = currentCampaign
+
+  const encryptionKey = createEncryptionKey(
+    dashboardKey,
+    signer_address,
+    campaign_number
+  )
+
 
   const tokenUrl = defineEtherscanUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineEtherscanUrl(Number(chain_id), `/address/${creator_address || ''}`)
@@ -259,95 +328,115 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
   }
 
   return <Container>
-    <WidgetComponent>
-      <Header>
-        <WidgetTitleStyled>{title || `Campaign ${campaign_id}`}</WidgetTitleStyled>
-        <WidgetButton
-          appearance='additional'
-          size='small'
-          title='+ Add batch'
-          onClick={() => {
-            history.push(`/campaigns/edit/${token_standard}/${campaign_id}/new`)
-          }}
+    <WidgetContainer>
+
+      <WidgetComponent>
+        <Header>
+          <WidgetTitleStyled>{title || `Campaign ${campaign_id}`}</WidgetTitleStyled>
+          {!sdk && <WidgetButton
+            appearance='additional'
+            size='small'
+            title='+ Add batch'
+            onClick={() => {
+              history.push(`/campaigns/edit/${token_standard}/${campaign_id}/new`)
+            }}
+          />}
+        </Header>
+
+        <BatchesList
+          batches={batches}
+          title={title}
+          campaignId={campaign_id}
+          sdk={sdk}
+          downloadLinks={downloadLinks}
+          encryptionKey={encryptionKey}
+          tokenAddress={token_address}
         />
-      </Header>
-      <BatchList>
-        <BatchListLabel>Batch</BatchListLabel>
-        <BatchListLabel>Links</BatchListLabel>
-        <BatchListLabel>Created at</BatchListLabel>
-        <BatchListLabel></BatchListLabel>
-        {batches && batches.map((batch, idx) => {
-          const dateFormatted = formatDate(batch.created_at || '')
-          const timeFormatted = formatTime(batch.created_at || '')
-          return <>
-            <BatchListValue>
-              #{idx + 1}
-            </BatchListValue>
-            <BatchListValue>
-              {batch.claim_links_count}
-            </BatchListValue>
-            <BatchListValue>
-              {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
-            </BatchListValue>
-            <WidgetButton
-              appearance='additional'
-              size='small'
-              title='Download'
-              onClick={() => {
-                downloadLinks(batch.batch_id, campaign_id, title)
-              }}
-            />
-          </>
-        })}
-      </BatchList>
-    </WidgetComponent>
-    <Aside
-      title="Campaign"
-      options={defineOptions()}
-      loading={status === 'pending' || status === 'initial'}
-    >
-      <AsideRow>
-        <AsideText>Created by</AsideText>
-        <AsideValue><TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink></AsideValue>
-      </AsideRow>
-      {status !== null && <AsideRow>
-        <AsideText>Status</AsideText>
-        <AsideValue>{defineStatusTitle()}</AsideValue>
-      </AsideRow>}
+        
+      </WidgetComponent>
 
-      <AsideDivider />
+      <CampaignParameters
+        campaignId={campaign_id}
+        chainId={chain_id}
+        encryptionKey={encryptionKey}
+        sdk={sdk}
+        masterAddress={creator_address}
+        signingKey={decrypt(encrypted_signer_key, dashboardKey)}
+      />
 
-      <AsideRow>
-        <AsideText>Token address</AsideText>
-        <AsideValue><TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink></AsideValue>
-      </AsideRow>
-      <AsideRow>
-        <AsideText>Campaign contract</AsideText>
-        <AsideValue><TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink></AsideValue>
-      </AsideRow>
+      <HowToUseSDK sdk={sdk} />
 
-      <AsideDivider />
+    </WidgetContainer>
+    
+    <AsideContainer>
+      <AsideStyled
+        title="Campaign"
+        options={defineOptions()}
+        loading={status === 'pending' || status === 'initial'}
+      >
+        <TableRow>
+          <TableText>Created by</TableText>
+          <TableValue><TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink></TableValue>
+        </TableRow>
+        {status !== null && <TableRow>
+          <TableText>Status</TableText>
+          <TableValue>{defineStatusTitle()}</TableValue>
+        </TableRow>}
 
-      <AsideRow>
-        <AsideText>Claim pattern</AsideText>
-        <AsideValue>{claim_pattern}</AsideValue>
-      </AsideRow>
+        <AsideDivider />
 
-      <AsideDivider />
+        <TableRow>
+          <TableText>Token address</TableText>
+          <TableValue><TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink></TableValue>
+        </TableRow>
+        <TableRow>
+          <TableText>Campaign contract</TableText>
+          <TableValue><TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink></TableValue>
+        </TableRow>
 
-      <AsideRow>
-        <AsideText>Network</AsideText>
-        <AsideValue>{defineNetworkName(Number(chain_id))}</AsideValue>
-      </AsideRow>
-      <AsideRow>
-        <AsideText>Token standard</AsideText>
-        <AsideValue>{token_standard}</AsideValue>
-      </AsideRow>
-      <AsideRow>
-        <AsideText>Links</AsideText>
-        <AsideValue>{links_count}</AsideValue>
-      </AsideRow>
-    </Aside>
+        <AsideDivider />
+
+        <TableRow>
+          <TableText>Claim pattern</TableText>
+          <TableValue>{claim_pattern}</TableValue>
+        </TableRow>
+
+        <AsideDivider />
+
+        <TableRow>
+          <TableText>Network</TableText>
+          <TableValue>{defineNetworkName(Number(chain_id))}</TableValue>
+        </TableRow>
+        <TableRow>
+          <TableText>Token standard</TableText>
+          <TableValue>{token_standard}</TableValue>
+        </TableRow>
+        {links_count && links_count !== 0 && <TableRow>
+          <TableText>Links</TableText>
+          <TableValue>{links_count}</TableValue>
+        </TableRow>}
+      </AsideStyled>
+
+      {sdk && <AsideStyled
+        title="Resources"
+        subtitle='Guides on how to install and run Linkdrop SDK'
+        next={{
+          action: () => {
+            
+          },
+          title: 'Read Docs'
+        }}
+        back={{
+          action: () => {
+            window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
+          },
+          title: 'View on GitHub',
+          appearance: 'action'
+        }}
+      >
+       
+      </AsideStyled>}
+    </AsideContainer>
   </Container>
 }
 

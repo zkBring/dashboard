@@ -70,7 +70,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   const [ showToggleChain, setShowToggleChain ] = useState(false)
   const [ showUserOptions, setShowUserOptions ] = useState(false)
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
-    {Object.keys(chains).map((chain: string) => {
+    {['1', '137', '5', '80001'].map((chain: string) => {
       if (chainsAvailable.length > 0 && !chainsAvailable.find(network => Number(chain) === Number(network))) {
         return null
       }

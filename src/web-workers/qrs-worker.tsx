@@ -9,7 +9,6 @@ import QRCodeStyling from 'qr-code-styling-bigmac'
 export class QRsWorker {
   private cb: (value: number) => void;
   private currentPercentageFinished: number = 0;
-
   public constructor(
     cb: (value: number) => void
   ) {

@@ -2,7 +2,7 @@ import axios from 'axios'
 const { REACT_APP_SERVER_URL } = process.env
 
 const authorizationApi = axios.create({
-  baseURL: REACT_APP_SERVER_URL
+  baseURL: `${REACT_APP_SERVER_URL}/api/v1/dashboard`
 })
 
 const requests = {

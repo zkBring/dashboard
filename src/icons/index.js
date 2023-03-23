@@ -29,12 +29,31 @@ import { ReactComponent as PauseIcon } from './pause-icon.svg'
 import { ReactComponent as UnpauseIcon } from './unpause-icon.svg'
 import { ReactComponent as RefundIcon } from './refund-icon.svg'
 import { ReactComponent as ClipboardCopyIcon } from './clipboard-copy-icon.svg'
-
+import { ReactComponent as EyeOpenIcon } from './eye-open-icon.svg'
+import { ReactComponent as EyeClosedIcon } from './eye-closed-icon.svg'
+import { ReactComponent as MonitorIcon } from './monitor-icon.svg'
+import { ReactComponent as YellowAttentionIcon } from './yellow-attention-icon.svg'
+import { ReactComponent as TrashIcon } from './trash-icon.svg'
+import { ReactComponent as GoToOldVersionIcon } from './go-to-old-version-icon.svg'
+import { ReactComponent as ContactUsIcon } from './contact-us-icon.svg'
+import { ReactComponent as LegalIcon } from './legal-icon.svg'
+import { ReactComponent as CloseCircleIcon } from './close-circle-icon.svg'
+import { ReactComponent as BookIcon } from './book-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  GoToOldVersionIcon,
+  CloseCircleIcon,
+  BookIcon,
+  ContactUsIcon,
+  TrashIcon,
+  MonitorIcon,
+  EyeClosedIcon,
+  YellowAttentionIcon,
   ClipboardCopyIcon,
   RefundIcon,
+  LegalIcon,
+  EyeOpenIcon,
   UnpauseIcon,
   PauseIcon,
   OptionsIcon,
@@ -46,7 +65,6 @@ const Icons = {
   LinkdropLogo,
   NotUploadedIcon,
   LinkdropTextLogo,
-  CampaignsIcon,
   BreadcrumbsIcon,
   InputNoteIcon,
   SignInIcon,
@@ -62,6 +80,7 @@ const Icons = {
   ArrowIcon,
   CloseIcon,
   QRManagerIcon,
+  CampaignsIcon,
   CheckboxIcon
 }
 

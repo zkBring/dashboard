@@ -13,7 +13,6 @@ import {
 } from './styled-components'
 import {
   WidgetComponent,
-  InstructionNote
 } from 'components/pages/common'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
@@ -80,7 +79,9 @@ const Erc20: FC<ReduxType > = ({
   tokenStandard,
   setAssetsData,
   assetsData,
-  children
+  children,
+  sdk,
+  claimPattern
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -107,6 +108,8 @@ const Erc20: FC<ReduxType > = ({
       <Container>
         <LinksContents
           type={type}
+          sdk={sdk}
+          claimPattern={claimPattern}
           data={assetsData}
           onRemove={(id) => {
             setAssetsData(assetsData.filter(item => item.id !== id))
@@ -144,7 +147,6 @@ const Erc20: FC<ReduxType > = ({
                 id: assetsData.length
               }])
               setFormData(getDefaultValues())
-              console.log({ formData,  })
             }}
           >
             + Add

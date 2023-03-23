@@ -2,9 +2,9 @@ import { TProps } from './types'
 import { FC } from 'react'
 import {
   AsideDivider,
-  AsideRow,
-  AsideText,
-  AsideValue
+  TableRow,
+  TableText,
+  TableValue
 } from '../index'
 import { TLinkContent, TTokenType } from 'types'
 import { shortenString, downloadAssetsAsCSV } from 'helpers'
@@ -23,50 +23,50 @@ const AssetsList: FC<TProps> = ({
     switch (type) {
       case 'ERC20':
         return <>
-          <AsideText>
+          <TableText>
             Copies/links
-          </AsideText>
-          <AsideValue>
+          </TableText>
+          <TableValue>
             {item.tokenAmount} per link / {item.linksAmount} link(s)
-          </AsideValue>
+          </TableValue>
         </>
       case 'ERC721':
         return <>
-          <AsideText>
+          <TableText>
             {claimPattern === 'mint' ? 'Tokens limit' : 'ID'}
-          </AsideText>
-          <AsideValue>
+          </TableText>
+          <TableValue>
             {shortenString(item.tokenId)}
-          </AsideValue>
+          </TableValue>
         </>
       case 'ERC1155':
         return <>
-          <AsideText>
+          <TableText>
             ID/Copies
-          </AsideText>
-          <AsideValue>
+          </TableText>
+          <TableValue>
             {shortenString(item.tokenId)} / {item.tokenAmount} per link / {item.linksAmount} link(s)
-          </AsideValue>
+          </TableValue>
         </>
     }
   }
   return <>
     <AsideDivider />
     {data.slice(0, 4).map(item => {
-      return <AsideRow>
+      return <TableRow>
         {createItemValue(item, type)}
-      </AsideRow>
+      </TableRow>
     })}
-    {data.length > 4 && <AsideRow>
-      <AsideText>
+    {data.length > 4 && <TableRow>
+      <TableText>
         Only 4 IDs are displayed. <Link onClick={() => {
           downloadAssetsAsCSV(
             data,
             'assets'
           )
         }}>Download</Link> csv to see all IDs
-      </AsideText>
-    </AsideRow>}
+      </TableText>
+    </TableRow>}
     <AsideDivider />
   </>
 }

@@ -13,18 +13,15 @@ import {
 import {
   CampaignsActions
 } from '../../campaigns/types'
-import {
-  defineNetworkName,
-  defineJSONRpcUrl,
-} from 'helpers'
-import LinkdropSDK from '@linkdrop/sdk'
-import contracts from 'configs/contracts'
+
+import LinkdropSDK from 'linkdrop-sdk'
 import { RootState } from 'data/store'
 import { campaignsApi, qrsApi } from 'data/api'
 
 const {
   REACT_APP_INFURA_ID,
-  REACT_APP_CLAIM_APP
+  REACT_APP_CLAIM_APP,
+  REACT_APP_SERVER_URL
 } = process.env
 
 const initialization = (
@@ -33,6 +30,9 @@ const initialization = (
   return async (dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions>, getState: () => RootState) => {
     if (!REACT_APP_CLAIM_APP) {
       return alert('REACT_APP_CLAIM_APP is not provided in .env file')
+    }
+    if (!REACT_APP_SERVER_URL) {
+      return alert('REACT_APP_SERVER_URL is not provided in .env file')
     }
     if (!chainId) {
       return alert('Chain is not detected')
@@ -45,16 +45,9 @@ const initialization = (
     dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
     dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
 
-    const contract = contracts[chainId]
-    const networkName = defineNetworkName(chainId)
-    const jsonRpcUrl = defineJSONRpcUrl({ chainId, infuraPk: REACT_APP_INFURA_ID })
     const sdk = new LinkdropSDK({
-      claimHost: REACT_APP_CLAIM_APP,
-      factoryAddress: contract.factory,
-      chain: networkName,
-      linkdropMasterAddress: address,
-      jsonRpcUrl,
-      apiHost: `https://${networkName}.linkdrop.io`
+      claimHostUrl: REACT_APP_CLAIM_APP,
+      apiHost: REACT_APP_SERVER_URL
     })
 
     dispatch(userActions.setSDK(sdk))

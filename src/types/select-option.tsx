@@ -1,2 +1,4 @@
-type TSelectOption<TValueType = string | number> = { value: TValueType, label: string }
+type TSelectOption<TValueType = any> = {
+  value: TValueType, label: string
+}
 export default TSelectOption

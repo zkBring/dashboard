@@ -58,5 +58,5 @@ export const ErrorSpan = styled.span`
 `
 
 export const UploadedSpan = styled.span`
-  padding-left: 24px;
+  color: ${props => props.theme.primaryHighlightColor};
 `

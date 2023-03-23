@@ -54,10 +54,24 @@ import campaignUnpause from './campaign-unpause'
 import campaignRefund from './campaign-refund'
 import defineProxyContractFunds from './define-proxy-contract-funds'
 import getContractVersion from './get-contract-version'
+import createEncryptionKey from './create-encryption-key'
+import countNativeTokensToSecure from './count-native-tokens-to-secure'
+import defineSystem from './define-system'
+import defineTokenType from './define-token-type'
+import defineAlchemyNetwork from './define-alchemy-network'
+import defineIfUserOwnsToken from './define-if-user-owns-token'
+import defineIfUserOwnsContract from './define-if-user-owns-contract'
 
 export {
   shortenString,
+  defineIfUserOwnsContract,
+  defineIfUserOwnsToken,
+  defineTokenType,
+  defineAlchemyNetwork,
+  defineSystem,
+  countNativeTokensToSecure,
   getContractVersion,
+  createEncryptionKey,
   defineProxyContractFunds,
   campaignRefund,
   campaignPause,

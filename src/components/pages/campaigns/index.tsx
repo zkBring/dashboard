@@ -8,10 +8,9 @@ import {
   Title,
   WidgetDescription,
   WidgetButton,
-  NoteStyled
 } from './styled-components'
+import { InitialGuide } from 'components/pages/common'
 import { TProps } from './types'
-import { defineNativeTokenSymbol } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -28,7 +27,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
-  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
   const createNewCampaignWidget = <StyledWidget title='New campaign'>
       <WidgetDescription>
@@ -42,11 +40,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
     </StyledWidget>  
 
     return <>
-      <NoteStyled title='Important Note'>
-        <div>New dashboard does not display campaigns created with the old version.</div>
-        <div>You can still view and manage all previously created campaigns switching to the old version.</div>
-        <div>Switch using the button in the footer of the side menu.</div>
-      </NoteStyled>
+      <InitialGuide />
       {createNewCampaignWidget}
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <>
         <Title>Campaigns</Title>
