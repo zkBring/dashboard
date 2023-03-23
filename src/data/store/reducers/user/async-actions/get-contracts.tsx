@@ -7,7 +7,7 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { RootState } from 'data/store'
-import { Alchemy } from 'alchemy-sdk'
+import { Alchemy, NftFilters } from 'alchemy-sdk'
 import { TAlchemyContract } from 'types'
 import { defineAlchemyNetwork } from 'helpers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
@@ -28,7 +28,9 @@ const getContracts = () => {
         network: defineAlchemyNetwork(chainId)
       })
 
-      const { contracts } = await alchemy.nft.getContractsForOwner(address)
+      const { contracts } = await alchemy.nft.getContractsForOwner(address, {
+        excludeFilters: [NftFilters.SPAM]
+      })
       if (contracts && contracts.length > 0) {
         dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
       }
