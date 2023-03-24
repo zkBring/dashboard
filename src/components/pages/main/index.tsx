@@ -23,8 +23,8 @@ import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-import { defineNetworkName, defineSystem } from 'helpers'
-const { REACT_APP_CHAINS } = process.env
+import { defineSystem } from 'helpers'
+const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -86,8 +86,21 @@ const defineSwitchNetworkText = () => {
   if (REACT_APP_CHAINS === '[1,137]') {
     return <Text>Please switch the network to <TextBold>Polygon</TextBold> or <TextBold>Mainnet</TextBold> to continue</Text>
   }
-  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>
-  
+  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>  
+}
+
+const defineRedirectButton = () => {
+  if (!REACT_APP_CHAINS) { return null }
+  if (REACT_APP_CHAINS === '[5,80001]') {
+    return <WidgetButton appearance='action' href={REACT_APP_MAINNETS_URL}>
+      Switch to Main Dashboard
+    </WidgetButton>
+  }
+  if (REACT_APP_CHAINS === '[1,137]') {
+    return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
+      Switch to Testnet Dashboard
+    </WidgetButton>
+  }
 }
 
 const Main: FC<ReduxType> = ({
@@ -173,10 +186,10 @@ const Main: FC<ReduxType> = ({
         <Text>
           You are now on {defineDashboardName()}.
         </Text>
-
         {defineSwitchNetworkText()}
 
       </Contents>
+      {defineRedirectButton()}
       <WidgetButton
         target='_blank'
         href='https://linkdrop-2.gitbook.io/linkdrop-knoe/'
