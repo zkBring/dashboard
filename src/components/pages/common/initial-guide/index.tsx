@@ -12,19 +12,19 @@ const InitialGuide: FC = () => {
         title: 'Setting up a campaign',
         link: {
           title: 'Read the guide ->',
-          href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/setting-up-a-campaign'
+          href: 'https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign'
         }
       }, {
         title: 'Distributing NFTs with QRs, claim codes or links',
         link: {
           title: 'Read the guide ->',
-          href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/distribution-qrs-claim-codes-or-links'
+          href: 'https://docs.linkdrop.io/how-tos/distribution-qrs-claim-codes-or-links'
         }
       }, {
         title: 'Integrating SDK for custom logic',
         link: {
           title: 'Read the guide ->',
-          href: 'https://linkdrop-2.gitbook.io/linkdrop-knoe/sdk'
+          href: 'https://docs.linkdrop.io/sdk'
         }
       }
     ]}
