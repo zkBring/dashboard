@@ -93,12 +93,12 @@ const defineRedirectButton = () => {
   if (!REACT_APP_CHAINS) { return null }
   if (REACT_APP_CHAINS === '[5,80001]') {
     return <WidgetButton appearance='action' href={REACT_APP_MAINNETS_URL}>
-      Switch to Main dashboard
+      Switch to Main Dashboard
     </WidgetButton>
   }
   if (REACT_APP_CHAINS === '[1,137]') {
     return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
-      Switch to Testnet dashboard
+      Switch to Testnet Dashboard
     </WidgetButton>
   }
 }
