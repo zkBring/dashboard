@@ -12,6 +12,7 @@ export const IconContainer = styled.div`
 `
 
 export const Contents = styled.div`
+  margin-bottom: 20px;
 `
 
 export const InvertedWidget = styled(Widget)`
@@ -36,7 +37,7 @@ export const WidgetDescription = styled.p`
 export const WidgetButton = styled(Button)`
   padding: 4px 50px;
   width: 100%;
-  margin-top: 30px;
+  margin-bottom: 15px;
 `
 
 export const AlignBottomButton = styled(WidgetButton)`
@@ -65,6 +66,13 @@ export const ContainerCentered = styled.div`
   flex-direction: column;
   background: ${props => props.theme.backgroundColor};
   margin-top: 100px;
+  a {
+    width: 100%;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
 `
 export const ConnectWalletContainer = styled.div`
   
