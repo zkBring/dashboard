@@ -68,7 +68,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
     <AsideFooter>
       <AsideTitle>Misc</AsideTitle>
       <AsideMenu>
-        <AsideMenuItemExternal href='https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/setting-up-a-campaign' target="_blank">
+        <AsideMenuItemExternal href='https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign' target="_blank">
           <Icons.BookIcon />Start guide
         </AsideMenuItemExternal>
         <AsideMenuItemExternal href='https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58' target="_blank">
