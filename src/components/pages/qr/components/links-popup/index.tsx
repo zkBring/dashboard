@@ -29,12 +29,12 @@ const LinksPopup: FC<TProps> = ({
     reader.readAsBinaryString(file.files[0])
     reader.onloadend = function () {
       const lines = (reader.result as string).split('\n')
-      if (lines[0] !== "link_id,claim_link") {
+      if (lines[0] !== 'link_id,token_id,token_amount,token_address,claim_code,claim_link') {
         return alert('Invalid file. File should be downloaded from campaigns page')
       }
       lines.shift()
       const links = lines.map(item => {
-        const [ link_id, claim_link ] = item.split(',')
+        const [ link_id, token_id, token_amount, token_address, claim_code, claim_link ] = item.split(',')
         return {
           link_id,
           claim_link
