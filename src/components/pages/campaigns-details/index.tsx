@@ -11,7 +11,6 @@ import {
   Container,
   WidgetContainer
 } from 'components/pages/common'
-import { ethers } from 'ethers'
 import {
   Header,
   WidgetButton,
@@ -19,7 +18,6 @@ import {
   AsideStyled,
   AsideContainer
 } from './styled-components'
-
 import {
   shortenString,
   defineNetworkName,
@@ -40,6 +38,7 @@ import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
+import { plausibleApi } from 'data/api'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
@@ -244,6 +243,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 provider
               )
               if (result === 'paused') {
+                await plausibleApi.invokeEvent({
+                  eventName: 'camp_pause',
+                  data: {
+                    network: defineNetworkName(chain_id),
+                    token_type: token_standard as string,
+                    claim_pattern: claim_pattern,
+                    distribution: sdk ? 'sdk' : 'manual',
+                    preferred_wallet: currentCampaign.wallet
+                  }
+                })
                 setStatus('paused')
               }
             } catch (e) {
@@ -276,6 +285,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 provider
               )
               if (result === 'active') {
+                await plausibleApi.invokeEvent({
+                  eventName: 'camp_unpause',
+                  data: {
+                    network: defineNetworkName(chain_id),
+                    token_type: token_standard as string,
+                    claim_pattern: claim_pattern,
+                    distribution: sdk ? 'sdk' : 'manual',
+                    preferred_wallet: currentCampaign.wallet
+                  }
+                })
                 setStatus('active')
               }
             } catch (e) {
@@ -300,6 +319,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               )
               if (result) {
                 setWithdrawable(false)
+                await plausibleApi.invokeEvent({
+                  eventName: 'camp_refund',
+                  data: {
+                    network: defineNetworkName(chain_id),
+                    token_type: token_standard as string,
+                    claim_pattern: claim_pattern,
+                    distribution: sdk ? 'sdk' : 'manual',
+                    preferred_wallet: currentCampaign.wallet
+                  }
+                })
                 setStatus(currentStatus)
               }
             } catch (e) {
@@ -421,13 +450,19 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
         next={{
-          action: () => {
-            
+          action: async () => {
+            await plausibleApi.invokeEvent({
+              eventName: 'view_docs'
+            })
+            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
           },
           title: 'Read Docs'
         }}
         back={{
-          action: () => {
+          action: async () => {
+            await plausibleApi.invokeEvent({
+              eventName: 'view_github'
+            })
             window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
           },
           title: 'View on GitHub',

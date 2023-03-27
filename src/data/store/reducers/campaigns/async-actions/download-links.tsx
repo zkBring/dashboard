@@ -9,6 +9,8 @@ import {
   downloadLinksAsCSV,
   decryptLinks
 } from 'helpers'
+import { plausibleApi } from 'data/api'
+import { defineNetworkName } from 'helpers'
 const { REACT_APP_CLAIM_APP } = process.env
 
 const downloadLinks = (
@@ -46,21 +48,32 @@ const downloadLinks = (
       const result = await campaignsApi.getBatch(campaignId, batchId)
 
       if (result.data.success) {
-
         const { claim_links, batch } = result.data
-
-        console.log({ claim_links })
-    
         const decryptedLinks = decryptLinks({
           links: claim_links,
           dashboardKey: String(dashboardKey),
           tokenAddress
         })
+
+        console.log({ batch })
+
         downloadLinksAsCSV(
           decryptedLinks,
           title,
           batch.created_at || ''
         )
+        // await plausibleApi.invokeEvent({
+        //   eventName: 'batch_added',
+        //   data: {
+        //     network: defineNetworkName(chainId),
+        //     token_type: tokenStandard as string,
+        //     claim_pattern: claimPattern,
+        //     distribution: sdk ? 'sdk' : 'manual',
+        //     sponsorship: sponsored ? 'sponsored' : 'non sponsored',
+        //     extra_token: nativeTokensPerLink !== '0' ? 'yes' : 'no',
+        //     preferred_wallet: wallet
+        //   }
+        // })
       }
 
       dispatch(actionsCampaigns.setLoading(false))

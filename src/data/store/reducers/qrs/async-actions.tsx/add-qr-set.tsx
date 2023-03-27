@@ -12,6 +12,7 @@ import {
 } from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { Remote } from 'comlink';
+import { plausibleApi } from 'data/api'
 
 const addQRSet = ({
   title,
@@ -67,6 +68,9 @@ const addQRSet = ({
   
       const result = await qrsApi.create(newQr)
       if (result.data.success) {
+        await plausibleApi.invokeEvent({
+          eventName: 'new_qr_set'
+        })
         dispatch(actionsQR.addQr(result.data.qr_set))
         dispatch(actionsQR.setUploadLoader(0))
         callback && callback(result.data._id)

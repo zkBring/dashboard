@@ -11,7 +11,8 @@ import { RootState } from 'data/store'
 import contracts from 'configs/contracts'
 import { defineContract } from 'helpers'
 import { TAssetsData, TLinkContent } from 'types'
-import { sleep } from 'helpers'
+import { sleep, defineNetworkName } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const grantRole = (
   assets: TAssetsData,
@@ -39,7 +40,8 @@ const grantRole = (
         tokenAddress,
         proxyContractAddress,
         tokenStandard,
-        approved
+        approved,
+        claimPattern
       }
     } = getState()
 
@@ -107,6 +109,16 @@ const grantRole = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        await plausibleApi.invokeEvent({
+          eventName: 'camp_step3_passed',
+          data: {
+            network: defineNetworkName(chainId),
+            token_type: tokenStandard as string,
+            claim_pattern: claimPattern,
+            distribution: sdk ? 'sdk' : 'manual',
+            sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+          }
+        })
         dispatch(campaignActions.setApproved(true))
         if (callback) { callback() }
       }

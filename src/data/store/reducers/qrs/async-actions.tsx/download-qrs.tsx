@@ -14,7 +14,7 @@ import {
 import { Remote } from 'comlink';
 import { QRsWorker } from 'web-workers/qrs-worker'
 import qrOptions from 'configs/qr-options'
-
+import { plausibleApi } from 'data/api'
 const {
   REACT_APP_CLAIM_APP,
   REACT_APP_QR_OPTIONS
@@ -95,6 +95,12 @@ const downloadQRs = ({
       currentPercentage = 0
       terminateWorkers(workers)
       dispatch(actionsQR.setDownloadLoader(0))
+      await plausibleApi.invokeEvent({
+        eventName: 'qr_download',
+        data: {
+          format: 'png'
+        }
+      })
       callback && callback()
     } catch (err) {
       currentPercentage = 0
