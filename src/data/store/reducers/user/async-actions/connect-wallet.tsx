@@ -11,6 +11,8 @@ import {
   getNativeTokenAmount,
   getComission
  } from './index'
+ import { plausibleApi } from 'data/api'
+import { defineNetworkName } from 'helpers'
 
 async function connectWallet (
   dispatch: Dispatch<UserActions> & IAppDispatch,
@@ -47,7 +49,7 @@ async function connectWallet (
       chainId,
       address
     )
-    console.log({ comissionRes })
+
     if (comissionRes) {
       const { comission, whitelisted } = comissionRes
       console.log({ comission, whitelisted })
@@ -55,8 +57,16 @@ async function connectWallet (
       dispatch(actions.setComission(comission))
     }
     dispatch(actions.setProvider(providerWeb3))
+    
     dispatch(actions.setAuthorizationStep('login'))
-  
+
+    await plausibleApi.invokeEvent({
+      eventName: 'sign_in_step1',
+      data: {
+        network: defineNetworkName(chainId)
+      }
+    })
+
     dispatch(actions.setAddress(address))
     dispatch(actions.setChainId(chainId))
   

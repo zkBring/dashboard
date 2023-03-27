@@ -24,6 +24,7 @@ import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
 import { defineSystem } from 'helpers'
+import { detect } from 'detect-browser'
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
 const mapStateToProps = ({
@@ -116,6 +117,9 @@ const Main: FC<ReduxType> = ({
   useEffect(() => {
     checkIfConnected()
   }, [])
+
+  const browser = detect();
+  console.log({ browser })
 
   const system = defineSystem()
 
