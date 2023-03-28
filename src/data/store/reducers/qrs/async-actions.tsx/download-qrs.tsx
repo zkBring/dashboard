@@ -95,7 +95,7 @@ const downloadQRs = ({
       currentPercentage = 0
       terminateWorkers(workers)
       dispatch(actionsQR.setDownloadLoader(0))
-      await plausibleApi.invokeEvent({
+      plausibleApi.invokeEvent({
         eventName: 'qr_download',
         data: {
           format: 'png'

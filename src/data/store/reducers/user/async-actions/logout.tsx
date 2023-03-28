@@ -22,7 +22,7 @@ const logout = () => {
     try {
       const logout = await authorizationApi.logout()
       if (logout.statusText === 'OK') {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'logout',
           data: {
             network: defineNetworkName(chainId)

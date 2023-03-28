@@ -60,7 +60,7 @@ async function connectWallet (
     
     dispatch(actions.setAuthorizationStep('login'))
 
-    await plausibleApi.invokeEvent({
+    plausibleApi.invokeEvent({
       eventName: 'sign_in_step1',
       data: {
         network: defineNetworkName(chainId)

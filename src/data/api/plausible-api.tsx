@@ -20,7 +20,6 @@ const invokeEvent: TInvokeEvent = async ({
       props: data
     }, {
       headers: {
-        'User-Agent': navigator.userAgent,
         // 'X-Forwarded-For': '127.0.0.1',
         'Content-Type': 'application/json'
       }

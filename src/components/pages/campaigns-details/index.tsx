@@ -263,7 +263,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 provider
               )
               if (result === 'paused') {
-                await plausibleApi.invokeEvent({
+                plausibleApi.invokeEvent({
                   eventName: 'camp_pause',
                   data: {
                     network: defineNetworkName(chain_id),
@@ -305,7 +305,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 provider
               )
               if (result === 'active') {
-                await plausibleApi.invokeEvent({
+                plausibleApi.invokeEvent({
                   eventName: 'camp_unpause',
                   data: {
                     network: defineNetworkName(chain_id),
@@ -339,7 +339,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               )
               if (result) {
                 setWithdrawable(false)
-                await plausibleApi.invokeEvent({
+                plausibleApi.invokeEvent({
                   eventName: 'camp_refund',
                   data: {
                     network: defineNetworkName(chain_id),
@@ -493,7 +493,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         subtitle='Guides on how to install and run Linkdrop SDK'
         next={{
           action: async () => {
-            await plausibleApi.invokeEvent({
+            plausibleApi.invokeEvent({
               eventName: 'view_docs'
             })
             window.open(`https://docs.linkdrop.io/sdk`, '_blank')
@@ -502,7 +502,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         }}
         back={{
           action: async () => {
-            await plausibleApi.invokeEvent({
+            plausibleApi.invokeEvent({
               eventName: 'view_github'
             })
             window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');

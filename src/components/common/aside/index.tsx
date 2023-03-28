@@ -83,8 +83,8 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
         }}>
           <Icons.LegalIcon />Legal
         </AsideMenuItemExternal>
-        <AsideMenuItemExternal onClick={async () => {
-          await plausibleApi.invokeEvent({
+        <AsideMenuItemExternal onClick={() => {
+          plausibleApi.invokeEvent({
             eventName: 'old',
             data: {
               network: defineNetworkName(chainId)
@@ -95,7 +95,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
           <Icons.GoToOldVersionIcon />Go to old version
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={async () => {
-          await plausibleApi.invokeEvent({
+          plausibleApi.invokeEvent({
             eventName: 'contact',
             data: {
               network: defineNetworkName(chainId)

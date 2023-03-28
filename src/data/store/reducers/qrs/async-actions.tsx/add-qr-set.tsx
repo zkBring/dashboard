@@ -68,7 +68,7 @@ const addQRSet = ({
   
       const result = await qrsApi.create(newQr)
       if (result.data.success) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'new_qr_set'
         })
         dispatch(actionsQR.addQr(result.data.qr_set))

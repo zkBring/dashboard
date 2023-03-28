@@ -24,7 +24,7 @@ const updateQRSetStatus = ({
       dispatch(actionsQR.setLoading(true))
       const result = await qrsApi.updateStatus(setId, newStatus)
       if (result.data.success) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'qr_upd_status'
         })
         const qrsUpdated = qrs.map(item => {

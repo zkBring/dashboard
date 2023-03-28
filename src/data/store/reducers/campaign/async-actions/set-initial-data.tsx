@@ -49,7 +49,7 @@ function setInitialData(
         }
       }
 
-      await plausibleApi.invokeEvent({
+      plausibleApi.invokeEvent({
         eventName: 'camp_step1_passed',
         data: {
           network: defineNetworkName(chainId),

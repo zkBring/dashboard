@@ -18,7 +18,7 @@ function applyClaimPattern(
     const { user: { chainId }, campaign: { tokenStandard } } = getState()
     try {
 
-      await plausibleApi.invokeEvent({
+      plausibleApi.invokeEvent({
         eventName: 'camp_step2_passed',
         data: {
           network: defineNetworkName(chainId),

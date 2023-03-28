@@ -139,7 +139,7 @@ const generateERC20Link = ({
         )
 
         if (result.data.success) {
-          await plausibleApi.invokeEvent({
+          plausibleApi.invokeEvent({
             eventName: 'batch_added',
             data: {
               network: defineNetworkName(chainId),
@@ -187,7 +187,7 @@ const generateERC20Link = ({
           const { campaign } = result.data
 
           dispatch(actionsCampaigns.addCampaign(campaign))
-          await plausibleApi.invokeEvent({
+          plausibleApi.invokeEvent({
             eventName: 'camp_created',
             data: {
               network: defineNetworkName(chainId),

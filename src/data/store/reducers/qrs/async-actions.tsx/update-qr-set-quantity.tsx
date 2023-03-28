@@ -59,7 +59,7 @@ const updateQRSetQuantity = ({
       const result = await qrsApi.updateQuantity(setId, qrArray.flat(), quantity)
       
       if (result && result.data && result.data.success) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'qr_upd_quantity'
         })
         const qrsUpdated = qrs.map(item => {

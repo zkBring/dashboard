@@ -70,7 +70,7 @@ const downloadLinks = (
           title,
           batch.created_at || ''
         )
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'download_links',
           data: {
             network: defineNetworkName(chainId),

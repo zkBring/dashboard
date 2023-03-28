@@ -50,7 +50,7 @@ const mapQRsWithLinksAction = ({
       const result = await qrsApi.mapLinks(setId, qrArrayMapped)
       
       if (result.data.success) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'qr_connect',
           data: {
             success: 'yes'
@@ -76,7 +76,7 @@ const mapQRsWithLinksAction = ({
       }
       dispatch(actionsQR.setMappingLoader(0))
     } catch (err) {
-      await plausibleApi.invokeEvent({
+      plausibleApi.invokeEvent({
         eventName: 'qr_connect',
         data: {
           success: 'no'

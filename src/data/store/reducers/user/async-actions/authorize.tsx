@@ -84,7 +84,7 @@ const authorize = (
       }
       await dispatch(initialization(chainId, address))
       dispatch(userActions.setAuthorizationStep('authorized'))
-      await plausibleApi.invokeEvent({
+      plausibleApi.invokeEvent({
         eventName: 'sign_in_step2',
         data: {
           network: defineNetworkName(chainId)

@@ -425,10 +425,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   return <Container>
     {uploadCSVPopup && <CSVUploadPopup
       onClose={() => setUploadCSVPopup(false)}
-      onUpload={async (assets: TLinksContent) => {
+      onUpload={(assets: TLinksContent) => {
         setData(data => [...data, ...assets])
         setUploadCSVPopup(false)
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'camp_step3_csv',
         })
       }}
