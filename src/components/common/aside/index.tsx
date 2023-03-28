@@ -101,7 +101,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
               network: defineNetworkName(chainId)
             }
           })
-          window.open('https://v2.linkdrop.io/contact-us', '_blank')
+          window.open('https://linkdrop.io/contact-us', '_blank')
         }}>
           <Icons.ContactUsIcon />Contact us
         </AsideMenuItemExternal>
