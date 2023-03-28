@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useState } from 'react'
 import {
   InputsContainer,
   InputStyled,
@@ -24,8 +24,9 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import {
   WidgetComponent
 } from 'components/pages/common'
-import { defineIfUserOwnsToken, shortenString } from 'helpers'
+import { defineIfUserOwnsToken, shortenString, defineNetworkName } from 'helpers'
 import { EditPopup } from './components'
+import { plausibleApi } from 'data/api'
 
 const mapStateToProps = ({
   user: {
@@ -273,7 +274,8 @@ const Erc1155: FC<ReduxType > = ({
   address,
   provider,
   loading,
-  userLoading
+  userLoading,
+  chainId
 }) => {
   
 
@@ -312,7 +314,7 @@ const Erc1155: FC<ReduxType > = ({
     return false
   }
 
-  const addAllTokens = () => {
+  const addAllTokens = async () => {
     if (!tokenAddress) { return }
     const assets: TLinkContent[] = nfts.map((token, idx) => {
       return {
@@ -323,6 +325,13 @@ const Erc1155: FC<ReduxType > = ({
         tokenImage: (token.media[0] || {}).gateway,
         tokenName: token.title,
         tokenAmount: "1"
+      }
+    })
+    plausibleApi.invokeEvent({
+      eventName: 'camp_step3_selectall',
+      data: {
+        network: defineNetworkName(chainId),
+        token_type: tokenStandard as string,
       }
     })
     setAssetsData(assets)
@@ -353,7 +362,19 @@ const Erc1155: FC<ReduxType > = ({
     <Header>
       <WidgetTitleStyled>
         <span>
-          Add token IDs <span onClick={() => { toggleOldStyleInputs(!oldStyleInputs) }}>to</span> distribute
+          Add token IDs <span onClick={async () => {
+            const newValue = !oldStyleInputs
+            if (newValue) {
+              plausibleApi.invokeEvent({
+                eventName: 'camp_step3_range',
+                data: {
+                  network: defineNetworkName(chainId),
+                  token_type: tokenStandard as string
+                }
+              })
+            }
+            toggleOldStyleInputs(newValue)
+          }}>to</span> distribute
         </span>
       </WidgetTitleStyled>
 

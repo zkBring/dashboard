@@ -7,9 +7,9 @@ import { UserActions } from '../../user/types'
 import { TAlchemyNFTToken, TTokenType } from 'types'
 import { IAppDispatch } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
-import { TAlchemyContract } from 'types'
-import { defineAlchemyNetwork } from 'helpers'
+import { defineAlchemyNetwork, defineNetworkName } from 'helpers'
 import { RootState } from 'data/store'
+import { plausibleApi } from 'data/api'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 function setInitialData(
@@ -48,6 +48,14 @@ function setInitialData(
           dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
         }
       }
+
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step1_passed',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard
+        }
+      })
 
       if (callback) {
         callback()

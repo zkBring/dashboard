@@ -16,15 +16,19 @@ import LinkDropLogo from 'images/linkdrop-logo.png'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import Icons from 'icons'
+import { defineNetworkName } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const mapStateToProps = ({
   user: {
     address,
-    authorizationStep
+    authorizationStep,
+    chainId
   }
 }: RootState) => ({
   address,
-  authorizationStep
+  authorizationStep,
+  chainId
 })
 
 interface AsideProps {}
@@ -37,7 +41,8 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 
 const AsideComponent: FC<AsideProps & ReduxType> = ({
-  authorizationStep
+  authorizationStep,
+  chainId
 }) => {
   const location = useLocation<LocationType>()
   if (authorizationStep !== 'authorized') {
@@ -68,16 +73,36 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
     <AsideFooter>
       <AsideTitle>Misc</AsideTitle>
       <AsideMenu>
-        <AsideMenuItemExternal href='https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign' target="_blank">
+        <AsideMenuItemExternal onClick={() => {
+          window.open('https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign', '_blank')
+        }}>
           <Icons.BookIcon />Start guide
         </AsideMenuItemExternal>
-        <AsideMenuItemExternal href='https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58' target="_blank">
+        <AsideMenuItemExternal onClick={() => {
+          window.open('https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58', '_blank')
+        }}>
           <Icons.LegalIcon />Legal
         </AsideMenuItemExternal>
-        <AsideMenuItemExternal href='https://v1-2.dashboard.linkdrop.io' target="_blank">
+        <AsideMenuItemExternal onClick={() => {
+          plausibleApi.invokeEvent({
+            eventName: 'old',
+            data: {
+              network: defineNetworkName(chainId)
+            }
+          })
+          window.open('https://dashboard.linkdrop.io', '_blank')
+        }}>
           <Icons.GoToOldVersionIcon />Go to old version
         </AsideMenuItemExternal>
-        <AsideMenuItemExternal href='https://linkdrop.io/pricing/' target="_blank">
+        <AsideMenuItemExternal onClick={async () => {
+          plausibleApi.invokeEvent({
+            eventName: 'contact',
+            data: {
+              network: defineNetworkName(chainId)
+            }
+          })
+          window.open('https://linkdrop.io/contact-us', '_blank')
+        }}>
           <Icons.ContactUsIcon />Contact us
         </AsideMenuItemExternal>
       </AsideMenu>

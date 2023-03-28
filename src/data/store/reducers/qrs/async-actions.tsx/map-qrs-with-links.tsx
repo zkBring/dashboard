@@ -9,6 +9,7 @@ import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink';
 import { sleep } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const mapQRsWithLinksAction = ({
   setId,
@@ -47,35 +48,40 @@ const mapQRsWithLinksAction = ({
       const qrArrayMapped = await qrsWorker.mapQrsWithLinks(qrs, links, dashboardKey)
       console.log((+ new Date()) - start)
       const result = await qrsApi.mapLinks(setId, qrArrayMapped)
-      const qrsUpdated = qrSets.map(item => {
-        if (item.set_id === setId) {
-          return {
-            ...item,
-            links_uploaded: result.data.success
-          }
-        }
-        return item
-      })
-
       
-      dispatch(actionsQR.updateQrs(qrsUpdated))
-      callback && callback()
+      if (result.data.success) {
+        plausibleApi.invokeEvent({
+          eventName: 'qr_connect',
+          data: {
+            success: 'yes'
+          }
+        })
+        const qrsUpdated = qrSets.map(item => {
+          if (item.set_id === setId) {
+            return {
+              ...item,
+              links_uploaded: result.data.success
+            }
+          }
+          return item
+        })
+  
+        
+        dispatch(actionsQR.updateQrs(qrsUpdated))
+        callback && callback()
+      }
+      
       if (!result.data.success) {
         alert('Couldn’t connect links to QRs, please try again')
       }
-      dispatch(actionsQR.updateQrs(qrsUpdated))
       dispatch(actionsQR.setMappingLoader(0))
     } catch (err) {
-      const qrsUpdated = qrSets.map(item => {
-        if (item.set_id === setId) {
-          return {
-            ...item,
-            links_uploaded: false
-          }
+      plausibleApi.invokeEvent({
+        eventName: 'qr_connect',
+        data: {
+          success: 'no'
         }
-        return item
       })
-      dispatch(actionsQR.updateQrs(qrsUpdated))
       alert('Couldn’t connect links to QRs, please try again')
       dispatch(actionsQR.setMappingLoader(0))
       console.error(err)

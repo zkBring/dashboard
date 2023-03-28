@@ -77,7 +77,7 @@ const CSVUploadPopup: FC<TProps> = ({
       })
       const isValid: boolean = checkAssetsFile(assets, tokenStandard)
       if (!isValid) {
-        return alert()
+        return alert('File is not valid')
       }
       onUpload(assets)
     }

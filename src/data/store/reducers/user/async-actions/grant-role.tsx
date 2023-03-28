@@ -11,7 +11,8 @@ import { RootState } from 'data/store'
 import contracts from 'configs/contracts'
 import { defineContract } from 'helpers'
 import { TAssetsData, TLinkContent } from 'types'
-import { sleep } from 'helpers'
+import { sleep, defineNetworkName } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const grantRole = (
   assets: TAssetsData,
@@ -39,7 +40,8 @@ const grantRole = (
         tokenAddress,
         proxyContractAddress,
         tokenStandard,
-        approved
+        approved,
+        claimPattern
       }
     } = getState()
 
@@ -79,9 +81,18 @@ const grantRole = (
       const contractABI = (defineContract(tokenStandard)).abi
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI, signer)
       let iface = new utils.Interface(contractABI)
-      console.log({
-        minter_role: contract.minter_role, proxyContractAddress
+
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
       })
+
       const data = await iface.encodeFunctionData('grantRole', [
         contract.minter_role, proxyContractAddress
       ])
@@ -107,6 +118,16 @@ const grantRole = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        plausibleApi.invokeEvent({
+          eventName: 'camp_step3_passed',
+          data: {
+            network: defineNetworkName(chainId),
+            token_type: tokenStandard as string,
+            claim_pattern: claimPattern,
+            distribution: sdk ? 'sdk' : 'manual',
+            sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+          }
+        })
         dispatch(campaignActions.setApproved(true))
         if (callback) { callback() }
       }

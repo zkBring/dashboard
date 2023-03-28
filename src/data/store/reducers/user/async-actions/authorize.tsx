@@ -9,11 +9,11 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
-import { authorizationApi, dashboardKeyApi } from 'data/api'
+import { authorizationApi, dashboardKeyApi, plausibleApi } from 'data/api'
 import { ethers } from 'ethers'
 import { encrypt, decrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
-import { sleep } from 'helpers'
+import { sleep, defineNetworkName } from 'helpers'
 import {
   initialization
  } from './index'
@@ -84,6 +84,12 @@ const authorize = (
       }
       await dispatch(initialization(chainId, address))
       dispatch(userActions.setAuthorizationStep('authorized'))
+      plausibleApi.invokeEvent({
+        eventName: 'sign_in_step2',
+        data: {
+          network: defineNetworkName(chainId)
+        }
+      })
       await sleep(2000)
 
       

@@ -7,12 +7,14 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import {
-  countAssetsTotalAmountERC20
+  countAssetsTotalAmountERC20,
+  defineNetworkName
 } from 'helpers'
 import { utils, ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC20Contract } from 'abi'
 import { TAssetsData, TLinkContent, TDistributionPattern } from 'types'
+import { plausibleApi } from 'data/api'
 
 const approve = (
   assets: TAssetsData,
@@ -32,13 +34,16 @@ const approve = (
     const {
       user: {
         provider,
-        address
+        address,
+        chainId
       },
       campaign: {
         tokenAddress,
         symbol,
         decimals,
-        proxyContractAddress
+        proxyContractAddress,
+        tokenStandard,
+        claimPattern
       }
     } = getState()
 
@@ -72,6 +77,17 @@ const approve = (
       const data = await iface.encodeFunctionData('approve', [
         proxyContractAddress, String(amountFormatted)
       ])
+      
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
+      })
 
       await signer.sendTransaction({
         to: tokenAddress,
@@ -93,6 +109,16 @@ const approve = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        plausibleApi.invokeEvent({
+          eventName: 'camp_step3_passed',
+          data: {
+            network: defineNetworkName(chainId),
+            token_type: tokenStandard as string,
+            claim_pattern: claimPattern,
+            distribution: sdk ? 'sdk' : 'manual',
+            sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+          }
+        })
         dispatch(campaignActions.setApproved(true))
         if (callback) { callback() }
       }

@@ -58,7 +58,14 @@ const BatchesList: FC<TProps> = ({
           size='small'
           title='Download'
           onClick={() => {
-            downloadLinks(batch.batch_id, campaignId, title, tokenAddress, sdk ? encryptionKey : undefined)
+            downloadLinks(
+              batch.batch_id,
+              campaignId,
+              title,
+              tokenAddress,
+              Boolean(batch.sponsored),
+              sdk ? encryptionKey : undefined
+            )
           }}
         />
       </>

@@ -11,6 +11,7 @@ import {
 } from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { Remote } from 'comlink';
+import { plausibleApi } from 'data/api'
 
 const updateQRSetQuantity = ({
   setId,
@@ -58,6 +59,9 @@ const updateQRSetQuantity = ({
       const result = await qrsApi.updateQuantity(setId, qrArray.flat(), quantity)
       
       if (result && result.data && result.data.success) {
+        plausibleApi.invokeEvent({
+          eventName: 'qr_upd_quantity'
+        })
         const qrsUpdated = qrs.map(item => {
           if (item.set_id === setId) {
             return {

@@ -11,7 +11,6 @@ import {
   Container,
   WidgetContainer
 } from 'components/pages/common'
-import { ethers } from 'ethers'
 import {
   Header,
   WidgetButton,
@@ -19,7 +18,6 @@ import {
   AsideStyled,
   AsideContainer
 } from './styled-components'
-
 import {
   shortenString,
   defineNetworkName,
@@ -40,6 +38,8 @@ import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
+import { plausibleApi } from 'data/api'
+import { TClaimPattern, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
@@ -66,10 +66,28 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       campaign_id: string,
       title: string,
       tokenAddress: string | null,
+      chainId: number,
+      tokenType: TTokenType,
+      sdk: boolean,
+      sponsored: boolean,
+      claimPattern: TClaimPattern,
+      wallet: string,
       encryptionKey?: string
     ) => {
       dispatch(
-        downloadLinks(batch_id, campaign_id, title, tokenAddress, encryptionKey)
+        downloadLinks(
+          batch_id,
+          campaign_id,
+          title,
+          tokenAddress,
+          chainId,
+          tokenType,
+          sdk,
+          sponsored,
+          claimPattern,
+          wallet,
+          encryptionKey
+        )
       )
     }
   }
@@ -196,6 +214,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     signer_address,
     campaign_number,
     encrypted_signer_key,
+    wallet
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -244,6 +263,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 provider
               )
               if (result === 'paused') {
+                plausibleApi.invokeEvent({
+                  eventName: 'camp_pause',
+                  data: {
+                    network: defineNetworkName(chain_id),
+                    token_type: token_standard as string,
+                    claim_pattern: claim_pattern,
+                    distribution: sdk ? 'sdk' : 'manual',
+                    preferred_wallet: currentCampaign.wallet
+                  }
+                })
                 setStatus('paused')
               }
             } catch (e) {
@@ -276,6 +305,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
                 provider
               )
               if (result === 'active') {
+                plausibleApi.invokeEvent({
+                  eventName: 'camp_unpause',
+                  data: {
+                    network: defineNetworkName(chain_id),
+                    token_type: token_standard as string,
+                    claim_pattern: claim_pattern,
+                    distribution: sdk ? 'sdk' : 'manual',
+                    preferred_wallet: currentCampaign.wallet
+                  }
+                })
                 setStatus('active')
               }
             } catch (e) {
@@ -300,6 +339,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               )
               if (result) {
                 setWithdrawable(false)
+                plausibleApi.invokeEvent({
+                  eventName: 'camp_refund',
+                  data: {
+                    network: defineNetworkName(chain_id),
+                    token_type: token_standard as string,
+                    claim_pattern: claim_pattern,
+                    distribution: sdk ? 'sdk' : 'manual',
+                    preferred_wallet: currentCampaign.wallet
+                  }
+                })
                 setStatus(currentStatus)
               }
             } catch (e) {
@@ -348,7 +397,29 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           title={title}
           campaignId={campaign_id}
           sdk={sdk}
-          downloadLinks={downloadLinks}
+          downloadLinks={(
+            batchId,
+            campaignId,
+            title,
+            tokenAddress,
+            sponsored,
+            encryptionKey
+          ) => {
+
+            downloadLinks(
+              batchId,
+              campaignId,
+              title,
+              tokenAddress,
+              chain_id,
+              token_standard,
+              sdk,
+              sponsored,
+              claim_pattern,
+              wallet,
+              encryptionKey
+            )
+          }}
           encryptionKey={encryptionKey}
           tokenAddress={token_address}
         />
@@ -421,13 +492,19 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
         next={{
-          action: () => {
-            
+          action: async () => {
+            plausibleApi.invokeEvent({
+              eventName: 'view_docs'
+            })
+            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
           },
           title: 'Read Docs'
         }}
         back={{
-          action: () => {
+          action: async () => {
+            plausibleApi.invokeEvent({
+              eventName: 'view_github'
+            })
             window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
           },
           title: 'View on GitHub',

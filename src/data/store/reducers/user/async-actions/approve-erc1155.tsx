@@ -10,7 +10,8 @@ import { ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC1155Contract } from 'abi'
 import { TAssetsData, TLinkContent, TDistributionPattern } from 'types'
-import { sleep } from 'helpers'
+import { sleep, defineNetworkName } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const approve = (
   assets: TAssetsData,
@@ -31,12 +32,15 @@ const approve = (
     const {
       user: {
         provider,
-        address
+        address,
+        chainId
       },
       campaign: {
         tokenAddress,
         proxyContractAddress,
-        approved
+        approved,
+        tokenStandard,
+        claimPattern
       }
     } = getState()
 
@@ -63,6 +67,17 @@ const approve = (
       dispatch(campaignActions.setClaimPattern('transfer'))
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
+
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
+      })
       await contractInstance.setApprovalForAll(proxyContractAddress, true)
   
       const checkTransaction = async function (): Promise<boolean> {
@@ -78,6 +93,16 @@ const approve = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        plausibleApi.invokeEvent({
+          eventName: 'camp_step3_passed',
+          data: {
+            network: defineNetworkName(chainId),
+            token_type: tokenStandard as string,
+            claim_pattern: claimPattern,
+            distribution: sdk ? 'sdk' : 'manual',
+            sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+          }
+        })
         dispatch(campaignActions.setApproved(true))
         if (callback) { callback() }
       }

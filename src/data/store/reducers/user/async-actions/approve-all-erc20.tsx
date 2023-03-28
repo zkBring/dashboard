@@ -10,6 +10,8 @@ import { utils, ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC20Contract } from 'abi'
 import { TAssetsData, TLinkContent } from 'types'
+import { plausibleApi } from 'data/api'
+import { defineNetworkName } from 'helpers'
 
 const approve = (
   assets: TAssetsData,
@@ -29,13 +31,16 @@ const approve = (
     const {
       user: {
         provider,
-        address
+        address,
+        chainId
       },
       campaign: {
         tokenAddress,
         symbol,
         decimals,
-        proxyContractAddress
+        proxyContractAddress,
+        tokenStandard,
+        claimPattern
       }
     } = getState()
 
@@ -67,6 +72,17 @@ const approve = (
         proxyContractAddress, ethers.constants.MaxUint256
       ])
 
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
+      })
+
       await signer.sendTransaction({
         to: tokenAddress,
         from: address,
@@ -87,6 +103,16 @@ const approve = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        plausibleApi.invokeEvent({
+          eventName: 'camp_step3_passed',
+          data: {
+            network: defineNetworkName(chainId),
+            token_type: tokenStandard as string,
+            claim_pattern: claimPattern,
+            distribution: sdk ? 'sdk' : 'manual',
+            sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+          }
+        })
         dispatch(campaignActions.setApproved(true))
         if (callback) { callback() }
       }

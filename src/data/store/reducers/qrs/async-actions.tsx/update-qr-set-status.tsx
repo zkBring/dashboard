@@ -4,6 +4,7 @@ import { QRsActions } from '../types'
 import { RootState } from 'data/store'
 import { TQRStatus } from 'types'
 import { qrsApi } from 'data/api'
+import { plausibleApi } from 'data/api'
 
 const updateQRSetStatus = ({
   setId,
@@ -23,6 +24,9 @@ const updateQRSetStatus = ({
       dispatch(actionsQR.setLoading(true))
       const result = await qrsApi.updateStatus(setId, newStatus)
       if (result.data.success) {
+        plausibleApi.invokeEvent({
+          eventName: 'qr_upd_status'
+        })
         const qrsUpdated = qrs.map(item => {
           if (item.set_id === setId) {
             return {

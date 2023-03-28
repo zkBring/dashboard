@@ -124,7 +124,7 @@ export const AsideTextLink = styled(TextLink)`
   align-items: center;
 `
 
-export const AsideMenuItemExternal = styled.a`
+export const AsideMenuItemExternal = styled.div`
   margin: 0;
   min-height: 40px;
   color: ${props => props.theme.primaryTextColor};

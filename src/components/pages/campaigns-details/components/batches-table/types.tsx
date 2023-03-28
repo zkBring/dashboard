@@ -5,7 +5,14 @@ export type TProps = {
   campaignId: string
   title: string
   sdk: boolean
-  downloadLinks: (batch_id: string | number, campaign_id: string, title: string, tokenAddress: string | null, encryptionKey?: string) => void
+  downloadLinks: (
+    batch_id: string | number,
+    campaign_id: string,
+    title: string,
+    tokenAddress: string | null,
+    sponsored: boolean,
+    encryptionKey?: string
+  ) => void
   encryptionKey: string,
   tokenAddress: string | null
 }

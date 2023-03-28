@@ -18,6 +18,8 @@ import {
 } from 'helpers'
 import { Remote } from 'comlink';
 import { LinksWorker } from 'web-workers/links-worker'
+import { plausibleApi } from 'data/api'
+import { defineNetworkName } from 'helpers'
 
 const {
   REACT_APP_INFURA_ID,
@@ -44,6 +46,7 @@ const generateERC20Link = ({
       campaign,
       campaigns: { campaigns }
     } = getState()
+  
     let currentPercentage = 0
     try {
       const {
@@ -136,12 +139,22 @@ const generateERC20Link = ({
         )
 
         if (result.data.success) {
+          plausibleApi.invokeEvent({
+            eventName: 'batch_added',
+            data: {
+              network: defineNetworkName(chainId),
+              token_type: tokenStandard as string,
+              claim_pattern: claimPattern,
+              distribution: sdk ? 'sdk' : 'manual',
+              sponsorship: sponsored ? 'sponsored' : 'non sponsored',
+              extra_token: nativeTokensPerLink !== '0' ? 'yes' : 'no',
+              preferred_wallet: wallet
+            }
+          })
           const { campaign_id } = result.data
           if (callback) { callback(campaign_id) }
         }
-  
-        // dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
-  
+    
       } else {
         const batchLinks= newLinks.flat()
         const batch = {
@@ -170,11 +183,22 @@ const generateERC20Link = ({
         }
 
         const result = await campaignsApi.create(newCampaign)
-        console.log({ result })
         if (result.data.success) {
           const { campaign } = result.data
 
           dispatch(actionsCampaigns.addCampaign(campaign))
+          plausibleApi.invokeEvent({
+            eventName: 'camp_created',
+            data: {
+              network: defineNetworkName(chainId),
+              token_type: tokenStandard as string,
+              claim_pattern: claimPattern,
+              distribution: sdk ? 'sdk' : 'manual',
+              sponsorship: sponsored ? 'sponsored' : 'non sponsored',
+              extra_token: nativeTokensPerLink !== '0' ? 'yes' : 'no',
+              preferred_wallet: wallet
+            }
+          })
           if (callback) {
             console.log('should call callback')
             callback(campaign.campaign_id)

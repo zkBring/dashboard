@@ -31,6 +31,7 @@ import {
   countNativeTokensToSecure
 } from 'helpers'
 import { TAsideContentsProps } from './components/aside-contents/types'
+import { plausibleApi } from 'data/api'
 
 const mapStateToProps = ({
   campaign: {
@@ -427,6 +428,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       onUpload={(assets: TLinksContent) => {
         setData(data => [...data, ...assets])
         setUploadCSVPopup(false)
+        plausibleApi.invokeEvent({
+          eventName: 'camp_step3_csv',
+        })
       }}
       tokenStandard={tokenStandard}
       claimPattern={claimPattern}

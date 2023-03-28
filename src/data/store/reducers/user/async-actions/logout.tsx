@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux'
 import * as userActions from 'data/store/reducers/user/actions'
 import axios from 'axios'
-
 import {
   UserActions,
 } from '../types'
@@ -9,16 +8,28 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { authorizationApi } from 'data/api'
+import { plausibleApi } from 'data/api'
+import { RootState } from 'data/store'
+import { defineNetworkName } from 'helpers'
 
 const logout = () => {
-  return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>) => {   
+  return async (
+    dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>,
+    getState: () => RootState
+  ) => {   
     dispatch(userActions.setLoading(true))
+    const { user: { chainId } } = getState()
     try {
       const logout = await authorizationApi.logout()
       if (logout.statusText === 'OK') {
+        plausibleApi.invokeEvent({
+          eventName: 'logout',
+          data: {
+            network: defineNetworkName(chainId)
+          }
+        })
         window.location.reload()
       }
-      
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 403) {

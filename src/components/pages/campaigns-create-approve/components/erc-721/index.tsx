@@ -6,7 +6,7 @@ import {
   NotesContainer,
   SelectStyled
 } from '../../styled-components'
-import { defineIfUserOwnsToken, shortenString } from 'helpers'
+import { defineIfUserOwnsToken, shortenString, defineNetworkName } from 'helpers'
 import { TProps } from './type'
 import {
   Container,
@@ -22,6 +22,7 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import {
   WidgetComponent
 } from 'components/pages/common'
+import { plausibleApi } from 'data/api'
 
 const mapStateToProps = ({
   user: {
@@ -262,7 +263,8 @@ const Erc721: FC<ReduxType > = ({
   provider,
   address,
   loading,
-  userLoading
+  userLoading,
+  chainId
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -298,7 +300,7 @@ const Erc721: FC<ReduxType > = ({
     return false
   }
 
-  const addAllTokens = () => {
+  const addAllTokens = async () => {
     if (!tokenAddress) { return true }
     const assets: TLinkContent[] = nfts.map((token, idx) => {
       return {
@@ -312,6 +314,13 @@ const Erc721: FC<ReduxType > = ({
     })
 
     setAssetsData(assets)
+    plausibleApi.invokeEvent({
+      eventName: 'camp_step3_selectall',
+      data: {
+        network: defineNetworkName(chainId),
+        token_type: tokenStandard as string,
+      }
+    })
     setFormData(getDefaultValues())
   }
 
@@ -321,7 +330,19 @@ const Erc721: FC<ReduxType > = ({
         {claimPattern === 'mint' ?  <span>
           Specify number of NFTs
         </span> : <span>
-          Add token IDs <span onClick={() => { toggleOldStyleInputs(!oldStyleInputs) }}>to</span> distribute
+          Add token IDs <span onClick={() => {
+            const newValue = !oldStyleInputs
+            if (newValue) {
+              plausibleApi.invokeEvent({
+                eventName: 'camp_step3_range',
+                data: {
+                  network: defineNetworkName(chainId),
+                  token_type: tokenStandard as string
+                }
+              })
+            }
+            toggleOldStyleInputs(newValue)
+          }}>to</span> distribute
         </span>}
       </WidgetTitleStyled>
       <ButtonStyled

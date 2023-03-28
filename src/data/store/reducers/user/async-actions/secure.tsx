@@ -10,7 +10,8 @@ import { utils, ethers, BigNumberish } from 'ethers'
 import { RootState } from 'data/store'
 import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
-import { defineNativeTokenSymbol } from 'helpers'
+import { defineNativeTokenSymbol, defineNetworkName } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const secure = (
   totalNativeTokensAmountToSecure: string,
@@ -30,7 +31,10 @@ const secure = (
         proxyContractAddress,
         id,
         symbol,
-        claimPattern
+        claimPattern,
+        tokenStandard,
+        sdk,
+        sponsored
       }
     } = getState()
 
@@ -54,6 +58,18 @@ const secure = (
       let data
       let to
       const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, provider)
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step4_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored',
+          preferred_wallet: walletApp,
+          extra_token: nativeTokensPerLink === '0' ? 'no' : 'yes'
+        }
+      })
       
       if (!isDeployed) {
         let iface = new utils.Interface(LinkdropFactory.abi)
