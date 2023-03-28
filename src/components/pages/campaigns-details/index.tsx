@@ -39,6 +39,7 @@ import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
 import { plausibleApi } from 'data/api'
+import { TClaimPattern, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
@@ -65,10 +66,28 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       campaign_id: string,
       title: string,
       tokenAddress: string | null,
+      chainId: number,
+      tokenType: TTokenType,
+      sdk: boolean,
+      sponsored: boolean,
+      claimPattern: TClaimPattern,
+      wallet: string,
       encryptionKey?: string
     ) => {
       dispatch(
-        downloadLinks(batch_id, campaign_id, title, tokenAddress, encryptionKey)
+        downloadLinks(
+          batch_id,
+          campaign_id,
+          title,
+          tokenAddress,
+          chainId,
+          tokenType,
+          sdk,
+          sponsored,
+          claimPattern,
+          wallet,
+          encryptionKey
+        )
       )
     }
   }
@@ -195,6 +214,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     signer_address,
     campaign_number,
     encrypted_signer_key,
+    wallet
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -377,7 +397,29 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
           title={title}
           campaignId={campaign_id}
           sdk={sdk}
-          downloadLinks={downloadLinks}
+          downloadLinks={(
+            batchId,
+            campaignId,
+            title,
+            tokenAddress,
+            sponsored,
+            encryptionKey
+          ) => {
+
+            downloadLinks(
+              batchId,
+              campaignId,
+              title,
+              tokenAddress,
+              chain_id,
+              token_standard,
+              sdk,
+              sponsored,
+              claim_pattern,
+              wallet,
+              encryptionKey
+            )
+          }}
           encryptionKey={encryptionKey}
           tokenAddress={token_address}
         />

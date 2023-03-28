@@ -77,6 +77,17 @@ const approve = (
       const data = await iface.encodeFunctionData('approve', [
         proxyContractAddress, String(amountFormatted)
       ])
+      
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
+      })
 
       await signer.sendTransaction({
         to: tokenAddress,
@@ -98,7 +109,7 @@ const approve = (
       }
       const finished = await checkTransaction()
       if (finished) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'camp_step3_passed',
           data: {
             network: defineNetworkName(chainId),

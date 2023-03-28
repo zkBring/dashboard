@@ -81,9 +81,18 @@ const grantRole = (
       const contractABI = (defineContract(tokenStandard)).abi
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI, signer)
       let iface = new utils.Interface(contractABI)
-      console.log({
-        minter_role: contract.minter_role, proxyContractAddress
+
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
       })
+
       const data = await iface.encodeFunctionData('grantRole', [
         contract.minter_role, proxyContractAddress
       ])
@@ -109,7 +118,7 @@ const grantRole = (
       }
       const finished = await checkTransaction()
       if (finished) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'camp_step3_passed',
           data: {
             network: defineNetworkName(chainId),

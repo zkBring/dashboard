@@ -9,8 +9,10 @@ import {
   downloadLinksAsCSV,
   decryptLinks
 } from 'helpers'
+import { TClaimPattern, TTokenType } from 'types'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
+
 const { REACT_APP_CLAIM_APP } = process.env
 
 const downloadLinks = (
@@ -18,6 +20,12 @@ const downloadLinks = (
   campaignId: string,
   title: string,
   tokenAddress: string | null,
+  chainId: number,
+  tokenType: TTokenType,
+  sdk: boolean,
+  sponsored: boolean,
+  claimPattern: TClaimPattern,
+  wallet: string,
   encryptionKey?: string
 ) => {
   return async (
@@ -62,18 +70,17 @@ const downloadLinks = (
           title,
           batch.created_at || ''
         )
-        // await plausibleApi.invokeEvent({
-        //   eventName: 'batch_added',
-        //   data: {
-        //     network: defineNetworkName(chainId),
-        //     token_type: tokenStandard as string,
-        //     claim_pattern: claimPattern,
-        //     distribution: sdk ? 'sdk' : 'manual',
-        //     sponsorship: sponsored ? 'sponsored' : 'non sponsored',
-        //     extra_token: nativeTokensPerLink !== '0' ? 'yes' : 'no',
-        //     preferred_wallet: wallet
-        //   }
-        // })
+        await plausibleApi.invokeEvent({
+          eventName: 'batch_added',
+          data: {
+            network: defineNetworkName(chainId),
+            token_type: tokenType as string,
+            claim_pattern: claimPattern,
+            distribution: sdk ? 'sdk' : 'manual',
+            sponsorship: sponsored ? 'sponsored' : 'non sponsored',
+            preferred_wallet: wallet
+          }
+        })
       }
 
       dispatch(actionsCampaigns.setLoading(false))

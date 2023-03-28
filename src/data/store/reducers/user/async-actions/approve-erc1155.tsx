@@ -67,6 +67,17 @@ const approve = (
       dispatch(campaignActions.setClaimPattern('transfer'))
       const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
+
+      plausibleApi.invokeEvent({
+        eventName: 'camp_step3_filled',
+        data: {
+          network: defineNetworkName(chainId),
+          token_type: tokenStandard as string,
+          claim_pattern: claimPattern,
+          distribution: sdk ? 'sdk' : 'manual',
+          sponsorship: sponsored ? 'sponsored' : 'non sponsored'
+        }
+      })
       await contractInstance.setApprovalForAll(proxyContractAddress, true)
   
       const checkTransaction = async function (): Promise<boolean> {
@@ -82,7 +93,7 @@ const approve = (
       }
       const finished = await checkTransaction()
       if (finished) {
-        await plausibleApi.invokeEvent({
+        plausibleApi.invokeEvent({
           eventName: 'camp_step3_passed',
           data: {
             network: defineNetworkName(chainId),
