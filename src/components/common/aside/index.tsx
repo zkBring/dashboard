@@ -90,7 +90,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
               network: defineNetworkName(chainId)
             }
           })
-          window.open('https://v1-2.dashboard.linkdrop.io', '_blank')
+          window.open('https://dashboard.linkdrop.io', '_blank')
         }}>
           <Icons.GoToOldVersionIcon />Go to old version
         </AsideMenuItemExternal>
