@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.0",
-    "@drop-protocol/drop-sdk": "^0.2.1",
     "@progress/kendo-file-saver": "^1.1.1",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.11.4",
