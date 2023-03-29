@@ -18,11 +18,12 @@ const Switcher: FC<TProps> = ({
     <SwitcherTitle>{title}</SwitcherTitle>
     <SwitcherContainer disabled={disabled}>
       {options.map(option => {
+        const optionDisabled = disabled || option.disabled
         return <SwitcherItem
           active={option.id === active}
-          disabled={disabled}
+          disabled={optionDisabled}
           onClick={() => {
-            if (disabled) { return }
+            if (optionDisabled) { return }
             onChange(option.id)
           }}
         >

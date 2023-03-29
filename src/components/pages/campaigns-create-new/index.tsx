@@ -221,7 +221,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             },
             {
               title: 'Tokens (ERC20)',
-              id: 'tokens'
+              id: 'tokens',
+              disabled: true
             }
           ]}
           disabled={Boolean(campaign) || loading || userLoading}
