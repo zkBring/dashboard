@@ -13,6 +13,8 @@
 - Added Alchemy API to upload NFT tokens list
 - Added select component to choose available token ids for ERC721/ERC1155 campaign
 - Dynamic definition of user comission with contract instance
+- Added limits for PRO and Starter plans
+- Added Intercom plugin
 
 ## 2.1.4
 - Restrict networks with env variable 

@@ -20,6 +20,7 @@ In the project you should create `.env` file with contents:
     REACT_APP_PLAUSIBLE_DOMAIN=<Plausable analytics domain name>
     REACT_APP_STARTER_PLAN_LINKS_LIMIT=<limit of links per batch for starter plan>
     REACT_APP_PRO_PLAN_LINKS_LIMIT=<limit of links per batch for PRO plan>
+    REACT_APP_INTERCOM_ID=<Application ID for Intercom>
 
 ## Requirements
 
