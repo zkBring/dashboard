@@ -92,8 +92,6 @@ const authorize = (
       })
       await sleep(2000)
 
-      
-  
       dispatch(userActions.setLoading(false))
       return message
     } catch (err) {
