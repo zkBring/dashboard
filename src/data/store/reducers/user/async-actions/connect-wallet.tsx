@@ -52,7 +52,6 @@ async function connectWallet (
 
     if (comissionRes) {
       const { comission, whitelisted } = comissionRes
-      console.log({ comission, whitelisted })
       dispatch(actions.setWhitelisted(whitelisted))
       dispatch(actions.setComission(comission))
     }

@@ -32,6 +32,7 @@ import {
 } from 'helpers'
 import { TAsideContentsProps } from './components/aside-contents/types'
 import { plausibleApi } from 'data/api'
+const { REACT_APP_STARTER_PLAN_LINKS_LIMIT, REACT_APP_PRO_PLAN_LINKS_LIMIT } = process.env
 
 const mapStateToProps = ({
   campaign: {
@@ -52,7 +53,8 @@ const mapStateToProps = ({
   },
   user: {
     chainId,
-    comission
+    comission,
+    whitelisted
   }
 }: RootState) => ({
   tokenStandard,
@@ -68,7 +70,8 @@ const mapStateToProps = ({
   title,
   symbol,
   assets,
-  comission
+  comission,
+  whitelisted
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
@@ -223,7 +226,7 @@ const defineComponent: TDefineComponent = (
   setUploadCSVPopup,
   sponsored,
   sdk,
-  campaign,
+  campaign
 ) => {
 
   if (!sponsored && sdk) {
@@ -330,7 +333,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   approved,
   setApproved,
   approveAllERC20,
-  comission: comissionPrice
+  comission: comissionPrice,
+  whitelisted
 }) => {
   const [
     assetsParsed,
@@ -478,6 +482,12 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         action: () => {
           const callback = () => {
             history.push(defineRedirectUrl())
+          }
+          if (whitelisted && REACT_APP_PRO_PLAN_LINKS_LIMIT && assetsParsed.length > Number(REACT_APP_PRO_PLAN_LINKS_LIMIT as string)) {
+            return alert(`Pro plan is limited to ${REACT_APP_PRO_PLAN_LINKS_LIMIT} links per batch. Contact us if you need to increase limits.`)
+          }
+          if (!whitelisted && REACT_APP_STARTER_PLAN_LINKS_LIMIT && assetsParsed.length > Number(REACT_APP_STARTER_PLAN_LINKS_LIMIT as string)) {
+            return alert(`Starter plan is limited to ${REACT_APP_STARTER_PLAN_LINKS_LIMIT} links per batch. Upgrade your plan to increase limits.`)
           }
           if (claimPattern === 'mint') {
             return grantRole(
