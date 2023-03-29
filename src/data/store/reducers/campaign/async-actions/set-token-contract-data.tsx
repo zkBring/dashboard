@@ -65,7 +65,7 @@ async function setTokenContractData (
         dispatch(actionsCampaign.setSymbol(symbol))
       } catch (e) {
         console.log({ e })
-        dispatch(actionsCampaign.setSymbol('ERC721 Token Name'))
+        dispatch(actionsCampaign.setSymbol('ERC721 Token'))
       }
       dispatch(actionsCampaign.setDecimals(0))
     }
@@ -76,7 +76,7 @@ async function setTokenContractData (
         dispatch(actionsCampaign.setSymbol(symbol))
       } catch (e) {
         console.log({ e })
-        dispatch(actionsCampaign.setSymbol('ERC1155 Token Name'))
+        dispatch(actionsCampaign.setSymbol('ERC1155 Token'))
       }
       dispatch(actionsCampaign.setDecimals(0))
     }
