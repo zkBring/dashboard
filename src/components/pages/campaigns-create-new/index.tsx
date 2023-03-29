@@ -190,7 +190,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   const selectCurrentPlaceholder = () => {
     if (!tokenAddress) {
-      return 'Select Token'
+      return 'Choose collection'
     }
     const selectValue = selectCurrentValue()
     if (!selectValue) { return tokenAddress }
@@ -209,10 +209,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             setTitle(value)
             return value
           }}
-          title='Title of the campaign'
+          title='Title'
         />
 
-        <SwitcherStyled
+        {false && <SwitcherStyled
           title='Contract'
           options={[
             {
@@ -221,7 +221,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             },
             {
               title: 'Tokens (ERC20)',
-              id: 'tokens'
+              id: 'tokens',
+              disabled: true
             }
           ]}
           disabled={Boolean(campaign) || loading || userLoading}
@@ -235,7 +236,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               setCurrentType(null)
             }
           }}
-        />
+        />}
 
         {currentSwitcherValue === 'nfts' && <SelectStyled
           disabled={Boolean(campaign) || loading || userLoading}
@@ -257,6 +258,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               setTokenAddress(String(value.address))
             }
           }}
+          title='NFT Collection'
           placeholder={selectCurrentPlaceholder()}
           value={selectCurrentValue()}
           options={selectTokenOptions}

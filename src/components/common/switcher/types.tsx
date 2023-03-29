@@ -2,6 +2,7 @@ export type TOption = {
   title: string
   id: string
   active?: boolean
+  disabled?: boolean
 }
 
 export type TProps = {

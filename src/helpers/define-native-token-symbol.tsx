@@ -1,6 +1,6 @@
 type TDefineNativeTokenSymbol = ({ chainId }: { chainId: number | null }) => string
 const defineNativeTokenSymbol: TDefineNativeTokenSymbol = ({ chainId }) => {
-  switch(chainId) {
+  switch(Number(chainId)) {
     case 100:
       return 'xDAI'
     case 137:

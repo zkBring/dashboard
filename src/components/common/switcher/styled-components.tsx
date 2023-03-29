@@ -36,6 +36,7 @@ export const SwitcherItem = styled.li<{active: boolean, disabled?: boolean}>`
 
   ${props => props.disabled && css`
     cursor: not-allowed;
+    opacity: .3;
   `}
 `
 

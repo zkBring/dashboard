@@ -6,10 +6,17 @@ export const Container = styled.div`
   width: 100%;
   max-width: 100%;
   .${SelectStyledClass} {
-    border-color: ${props => props.theme.primaryBorderColor};
     & > div {
       min-height: 42px;
+      border-radius: 8px;
+      border: 1px solid ${props => props.theme.primaryBorderColor};
+
       & > div {
+        & > div {
+          font-size: 14px;
+          font-family: 'Inter', 'Helvetica Neue', sans-serif;
+          font-weight: 400;
+        }
         & > div:last-child {
           max-width: 100%;
           text-overflow: ellipsis;
@@ -19,8 +26,6 @@ export const Container = styled.div`
     }
   }
 `
-
-
 
 export const SelectTitle = styled.h3`
   font-weight: 600;
