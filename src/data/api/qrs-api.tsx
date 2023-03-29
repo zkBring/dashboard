@@ -3,7 +3,7 @@ import { TQRSet, TQRStatus, TQRItem } from 'types'
 
 const { REACT_APP_SERVER_URL } = process.env
 const qrsSetApi = axios.create({
-  baseURL: `${REACT_APP_SERVER_URL}/api/v1/dashboard`
+  baseURL: `${REACT_APP_SERVER_URL}/api/v2/dashboard`
 })
 
 const requests = {
