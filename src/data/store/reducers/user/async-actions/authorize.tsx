@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux'
-import * as campaignActions from 'data/store/reducers/campaign/actions'
 import * as userActions from '../actions'
 
 import {
@@ -40,13 +39,25 @@ const authorize = (
     try {
       const signer = await provider.getSigner()
       const message = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
-      const sig = await signer.signMessage(message)
-      await authorizationApi.authorize(
-        message,
-        timestamp,
-        sig,
-        address.toLocaleUpperCase()
-      )
+      
+      try {
+        const sig = await signer.signMessage(message)
+        await authorizationApi.authorize(
+          message,
+          timestamp,
+          sig,
+          address.toLocaleUpperCase()
+        )
+      } catch (err) {
+        plausibleApi.invokeEvent({
+          eventName: 'sign_in_signature_reject',
+          data: {
+            signature: 'login'
+          }
+        })
+        throw new Error('Rejected to sign message')
+      }
+      
 
       dispatch(userActions.setAuthorizationStep('store-key'))
 
@@ -55,34 +66,43 @@ const authorize = (
       const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
       if (!encrypted_key) {
         // register
-        const {
-          dashboard_key,
-          encrypted_dashboard_key
-        } = await createDashboardKey(
+        const result = await createDashboardKey(
           signer,
           sig_message
         )
 
-        if (encrypted_dashboard_key && dashboard_key) {
-          const { data: { success } } = await dashboardKeyApi.create(
-            encrypted_dashboard_key,
-            key_id
-          )
-          if (success) {
-            dispatch(userActions.setDashboardKey(dashboard_key))
+        if (result) {
+          const {
+            dashboard_key,
+            encrypted_dashboard_key
+          } = result 
+          if (encrypted_dashboard_key && dashboard_key) {
+            const { data: { success } } = await dashboardKeyApi.create(
+              encrypted_dashboard_key,
+              key_id
+            )
+            if (success) {
+              dispatch(userActions.setDashboardKey(dashboard_key))
+            }
           }
+        } else {
+          throw new Error('Rejected to create Dashboard key')
         }
-      } else {
 
+        
+      } else {
         const decrypted_dashboard_key = await retrieveDashboardKey(
           signer,
           encrypted_key,
           sig_message
         )
-
-        dispatch(userActions.setDashboardKey(decrypted_dashboard_key))
+        if (decrypted_dashboard_key) {
+          dispatch(userActions.setDashboardKey(decrypted_dashboard_key))
+        } else {
+          throw new Error('Rejected to retrieve Dashboard key')
+        }
       }
-      await dispatch(initialization(chainId, address))
+      
       dispatch(userActions.setAuthorizationStep('authorized'))
       plausibleApi.invokeEvent({
         eventName: 'sign_in_step2',
@@ -90,14 +110,15 @@ const authorize = (
           network: defineNetworkName(chainId)
         }
       })
-      await sleep(2000)
+      await sleep(1000)
+      await dispatch(initialization())
 
       dispatch(userActions.setLoading(false))
       return message
     } catch (err) {
       dispatch(userActions.setAuthorizationStep('connect'))
       console.error({ err })
-      alert('authorization was declined')
+      alert('Authorization was declined')
       dispatch(userActions.setLoading(false))
       return null
     }
@@ -105,29 +126,30 @@ const authorize = (
 }
 
 
-const createDashboardKey: (signer: any, sig_message: string) => Promise<{ dashboard_key: string, encrypted_dashboard_key: string }> = async (
+const createDashboardKey: (signer: any, sig_message: string) => Promise<{ dashboard_key: string, encrypted_dashboard_key: string } | void> = async (
   signer,
   sig_message
 ) => {
-  const signature = await signer.signMessage(sig_message)
-  const signature_key = await ethers.utils.id(signature)
-  const { privateKey: dashboard_key } = generateKeyPair()
-  console.log({ dashboard_key })
-
-
-  const signature_key_32 = signature_key.slice(0, 32)
-  const signature_key_uint_8_array = new TextEncoder().encode(signature_key_32)
-  const signature_key_as_base_16 = toString(signature_key_uint_8_array, 'base16')
-
-
-  // revert signature_key_32
-  // const signature_key_from_string = fromString(signature_key_as_base_16, 'base16')
-  // const signature_key_32_decoded = new TextDecoder().decode(signature_key_from_string)  
-
-  const encrypted_dashboard_key = encrypt(dashboard_key, signature_key_as_base_16)
-  return {
-    dashboard_key,
-    encrypted_dashboard_key
+  try {
+    const signature = await signer.signMessage(sig_message)
+    const signature_key = await ethers.utils.id(signature)
+    const { privateKey: dashboard_key } = generateKeyPair()
+    const signature_key_32 = signature_key.slice(0, 32)
+    const signature_key_uint_8_array = new TextEncoder().encode(signature_key_32)
+    const signature_key_as_base_16 = toString(signature_key_uint_8_array, 'base16')
+    const encrypted_dashboard_key = encrypt(dashboard_key, signature_key_as_base_16)
+    return {
+      dashboard_key,
+      encrypted_dashboard_key
+    }
+  } catch (err) {
+    console.error({ err })
+    plausibleApi.invokeEvent({
+      eventName: 'sign_in_signature_reject',
+      data: {
+        signature: 'create_dashboard_key'
+      }
+    })
   }
 }
 
@@ -135,25 +157,28 @@ const retrieveDashboardKey: (
   signer: any,
   encrypted_dashboard_key: string,
   sig_message: string
-) => Promise<string> = async (
+) => Promise<string | void> = async (
   signer,
   encrypted_dashboard_key,
   sig_message
 ) => {
-  const signature = await signer.signMessage(sig_message)
-  const signature_key = await ethers.utils.id(signature)
-  const signature_key_32 = signature_key.slice(0, 32)
-  const signature_key_uint_8_array = new TextEncoder().encode(signature_key_32)
-  const signature_key_as_base_16 = toString(signature_key_uint_8_array, 'base16')
+  try {
+    const signature = await signer.signMessage(sig_message)
+    const signature_key = await ethers.utils.id(signature)
+    const signature_key_32 = signature_key.slice(0, 32)
+    const signature_key_uint_8_array = new TextEncoder().encode(signature_key_32)
+    const signature_key_as_base_16 = toString(signature_key_uint_8_array, 'base16')
 
-  return decrypt(encrypted_dashboard_key, signature_key_as_base_16)
+    return decrypt(encrypted_dashboard_key, signature_key_as_base_16) 
+  } catch (err) {
+    console.error({ err })
+    plausibleApi.invokeEvent({
+      eventName: 'sign_in_signature_reject',
+      data: {
+        signature: 'retrieve_dashboard_key'
+      }
+    })
+  }
 }
 
 export default authorize
-
-
-// get
-// 4223502431
-// 799be89db4a45876862dadb04f7b6afe546fc5d61b651208007eb906def5b045
-// encrypted ip6cv+Mdmr94FHNHbtYwsCeQjUYkju6HY26+CgMwvrVtDaMAxAI7Ug0vWqneK+f+7YOE29pnZ6+3NL2kyik3/nGb+bYWRs8sBPbYQwewsDIsFTOh0uirsFnT9WM=
-// 

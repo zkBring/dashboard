@@ -3,6 +3,10 @@ import * as userActions from '../actions'
 import { TQRSet, TCampaign } from 'types'
 import * as qrsActions from '../../qrs/actions'
 import * as campaignsActions from '../../campaigns/actions'
+import {
+  getNativeTokenAmount,
+  getComission
+ } from './index'
 
 import {
   UserActions,
@@ -24,10 +28,12 @@ const {
   REACT_APP_SERVER_URL
 } = process.env
 
-const initialization = (
-  chainId: number | null, address: string
-) => {
-  return async (dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions>, getState: () => RootState) => {
+const initialization = () => {
+  return async (
+    dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions>,
+    getState: () => RootState
+  ) => {
+    const { user: { address, chainId, provider }} = getState()
     if (!REACT_APP_CLAIM_APP) {
       return alert('REACT_APP_CLAIM_APP is not provided in .env file')
     }
@@ -35,15 +41,49 @@ const initialization = (
       return alert('REACT_APP_SERVER_URL is not provided in .env file')
     }
     if (!chainId) {
-      return alert('Chain is not detected')
+      return alert('Chain id is not provided')
     }
     if (!REACT_APP_INFURA_ID) {
       return alert('REACT_APP_INFURA_ID is not provided in .env file')
     }
-    const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
-    const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
-    dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
-    dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
+    dispatch(userActions.setLoading(true))
+    try {
+      const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
+      dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
+    } catch (err) {
+      console.log(err)
+      alert('Error occured with campaigns fetch, check console for information')
+    }
+
+    try {
+      const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
+      dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
+    } catch (err) {
+      console.log(err)
+      alert('Error occured with QR sets fetch, check console for information')
+    }
+
+    try {
+      const comissionRes = await getComission(
+        chainId,
+        address
+      )
+      if (comissionRes) {
+        const { comission, whitelisted } = comissionRes
+        dispatch(userActions.setWhitelisted(whitelisted))
+        dispatch(userActions.setComission(comission))
+      }
+    } catch (err) {
+      console.log(err)
+      alert('Error occured with comission fetch, check console for information')
+    }
+    
+    await getNativeTokenAmount(
+      dispatch,
+      chainId,
+      address,
+      provider
+    )
 
     const sdk = new LinkdropSDK({
       claimHostUrl: REACT_APP_CLAIM_APP,
@@ -51,6 +91,7 @@ const initialization = (
     })
 
     dispatch(userActions.setSDK(sdk))
+    dispatch(userActions.setLoading(false))
   }
 }
 
