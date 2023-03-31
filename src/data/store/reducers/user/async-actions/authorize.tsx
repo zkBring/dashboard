@@ -13,9 +13,6 @@ import { ethers } from 'ethers'
 import { encrypt, decrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
 import { sleep, defineNetworkName } from 'helpers'
-import {
-  initialization
- } from './index'
 
 const authorize = (
   address: string
@@ -102,18 +99,17 @@ const authorize = (
           throw new Error('Rejected to retrieve Dashboard key')
         }
       }
-      
-      dispatch(userActions.setAuthorizationStep('authorized'))
+
       plausibleApi.invokeEvent({
         eventName: 'sign_in_step2',
         data: {
           network: defineNetworkName(chainId)
         }
       })
-      await sleep(1000)
-      await dispatch(initialization())
 
+      await sleep(1000)
       dispatch(userActions.setLoading(false))
+      dispatch(userActions.setAuthorizationStep('authorized'))
       return message
     } catch (err) {
       dispatch(userActions.setAuthorizationStep('connect'))

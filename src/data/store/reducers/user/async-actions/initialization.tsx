@@ -46,24 +46,11 @@ const initialization = () => {
     if (!REACT_APP_INFURA_ID) {
       return alert('REACT_APP_INFURA_ID is not provided in .env file')
     }
-    dispatch(userActions.setLoading(true))
     try {
       const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
       dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
-    } catch (err) {
-      console.log(err)
-      alert('Error occured with campaigns fetch, check console for information')
-    }
-
-    try {
       const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
       dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
-    } catch (err) {
-      console.log(err)
-      alert('Error occured with QR sets fetch, check console for information')
-    }
-
-    try {
       const comissionRes = await getComission(
         chainId,
         address
@@ -75,9 +62,9 @@ const initialization = () => {
       }
     } catch (err) {
       console.log(err)
-      alert('Error occured with comission fetch, check console for information')
+      alert('Error occured with data fetch, check console for information')
     }
-    
+
     await getNativeTokenAmount(
       dispatch,
       chainId,
@@ -91,7 +78,6 @@ const initialization = () => {
     })
 
     dispatch(userActions.setSDK(sdk))
-    dispatch(userActions.setLoading(false))
   }
 }
 

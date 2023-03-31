@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.5-rc.2
+- Additional analytics events collected
+- Updated logic of sign-in
+
 ## 2.1.5-rc.1
 - Added support for new SDK
 - Fixed bug with date and time of batch creation

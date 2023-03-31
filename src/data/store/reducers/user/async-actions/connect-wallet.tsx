@@ -8,8 +8,11 @@ import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import { IAppDispatch } from 'data/store'
 
- import { plausibleApi } from 'data/api'
+import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
+import {
+  initialization
+} from './index'
 
 async function connectWallet (
   dispatch: Dispatch<UserActions> & IAppDispatch,
@@ -59,6 +62,8 @@ async function connectWallet (
 
     dispatch(actions.setAddress(address))
     dispatch(actions.setChainId(chainId))
+
+    dispatch(initialization())
   
   } catch (err) {
     console.log({ err })
