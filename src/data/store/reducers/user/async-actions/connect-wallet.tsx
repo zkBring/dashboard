@@ -7,10 +7,7 @@ import {
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import { IAppDispatch } from 'data/store'
-import {
-  getNativeTokenAmount,
-  getComission
- } from './index'
+
  import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
 
@@ -40,21 +37,15 @@ async function connectWallet (
   
     if (!chainsAvailable.find(network => Number(chainId) === Number(network))) {
       dispatch(actions.setChainId(chainId))
+      plausibleApi.invokeEvent({
+        eventName: 'sign_in_wrong_network'
+      })
       return dispatch(actions.setAuthorizationStep('wrong_network'))
     }
     
     const accounts = await providerWeb3.listAccounts()
     const address = accounts[0] && accounts[0].toLowerCase()
-    const comissionRes = await getComission(
-      chainId,
-      address
-    )
-
-    if (comissionRes) {
-      const { comission, whitelisted } = comissionRes
-      dispatch(actions.setWhitelisted(whitelisted))
-      dispatch(actions.setComission(comission))
-    }
+   
     dispatch(actions.setProvider(providerWeb3))
     
     dispatch(actions.setAuthorizationStep('login'))
@@ -69,17 +60,10 @@ async function connectWallet (
     dispatch(actions.setAddress(address))
     dispatch(actions.setChainId(chainId))
   
-    await getNativeTokenAmount(
-      dispatch,
-      chainId,
-      address,
-      providerWeb3
-    )
   } catch (err) {
     console.log({ err })
   }
 
-  
 }
 
 export default connectWallet

@@ -24,11 +24,12 @@ const ButtonComponent: FC<TProps> = ({
       return <Anchor href={href} target={target}>
         <Button
           disabled={disabled}
+          loading={loading}
           appearance={appearance}
           className={className}
           size={size}
         >
-          {title || children}
+          {loading && <ButtonLoader size='small' />}{title || children}
         </Button>
       </Anchor>
     }
@@ -37,10 +38,11 @@ const ButtonComponent: FC<TProps> = ({
         <Button
           disabled={disabled}
           appearance={appearance}
+          loading={loading}
           className={className}
           size={size}
         >
-          {title || children}
+          {loading && <ButtonLoader size='small' />}{title || children}
         </Button>
       </ButtonLink>
     }
