@@ -22,6 +22,7 @@ const getNativeTokenAmount: TGetNativeTokenBalance = async (
       nativeTokenAmountFormatted
     ))
   } catch (err) {
+    alert('Error with native tokens amount fetch, check console for information')
     console.log({
       err
     })

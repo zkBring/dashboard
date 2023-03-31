@@ -75,7 +75,7 @@ const EditPopup: FC<ReduxType> = ({
     }}>
       <PopupFormContent>
         <InputComponent
-          title='Width and width (inches)'
+          title='Quantity'
           value={String(linksAmount)}
           onChange={value => {
             if (value === '') {

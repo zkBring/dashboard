@@ -14,16 +14,17 @@ import { TProps } from './types'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  user: { address, chainId },
+  user: { address, chainId, loading },
 }: RootState) => ({
   campaigns,
   address,
-  chainId
+  chainId,
+  loading
 })
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
-const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) => {
+const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
@@ -33,9 +34,10 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, chainId }) 
         Create a campaign to distribute your NFTs via claim links
       </WidgetDescription>
       <WidgetButton 
-        title='Create'
+        title={loading ? 'Loading' : 'Create'}
         appearance='action'
         to='/campaigns/new'
+        loading={loading}
       />
     </StyledWidget>  
 

@@ -56,6 +56,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
   }
   switch (step) {
     case 'initial':
+      return 'Loading'
     case 'connect':
       return 'Connect'
     case 'login':
@@ -63,7 +64,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
     case 'store-key':
       return 'Sign'
     default:
-      return 'Connect'
+      return 'Loading'
   }
 }
 
@@ -117,9 +118,7 @@ const Main: FC<ReduxType> = ({
     checkIfConnected()
   }, [])
 
-  const system = defineSystem()
-
-  if (system !== 'desktop') {
+  if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
     <IconContainer>
       <Icons.MonitorIcon />
@@ -141,7 +140,7 @@ const Main: FC<ReduxType> = ({
     return <Redirect to='/campaigns' />
   }
 
-  if (!window.ethereum || !window.ethereum._state) {
+  if (authorizationStep === 'no_metamask') {
     return <ContainerCentered>
       <IconContainer>
         <Icons.YellowAttentionIcon />
@@ -212,10 +211,11 @@ const Main: FC<ReduxType> = ({
       <CheckListItem title='Sign message to store data securely' id='store-key' checked={authorizationStep === 'authorized'} />
     </Contents>
     <WidgetButton
-      loading={loading && authorizationStep !== 'initial'}
-      disabled={loading || authorizationStep === 'initial'}
+      loading={loading}
+      disabled={loading}
       appearance='action'
       onClick={() => {
+        if (loading) { return }
         if (authorizationStep === 'connect') { return connectWallet(chainsAvailable) }
         return authorize(address)
       }}
