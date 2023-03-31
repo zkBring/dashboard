@@ -1,10 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.5-rc.2
-- Additional analytics events collected
-- Updated logic of sign-in
-
-## 2.1.5-rc.1
+## 2.1.5
 - Added support for new SDK
 - Fixed bug with date and time of batch creation
 - Sponsorship price count is moved to approve screen
@@ -19,6 +15,8 @@
 - Dynamic definition of user comission with contract instance
 - Added limits for PRO and Starter plans
 - Added Intercom plugin
+- Additional analytics events collected
+- Updated logic of sign-in
 
 ## 2.1.4
 - Restrict networks with env variable 
