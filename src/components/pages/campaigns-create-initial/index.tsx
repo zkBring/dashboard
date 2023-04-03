@@ -39,7 +39,8 @@ const mapStateToProps = ({
     symbol
   },
   user: {
-    chainId
+    chainId, 
+    whitelisted
   }
 }: RootState) => ({
   campaigns,
@@ -50,7 +51,8 @@ const mapStateToProps = ({
   chainId,
   assetsOriginal,
   assets,
-  symbol
+  symbol,
+  whitelisted
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -86,6 +88,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   createProxyContract,
   applyClaimPattern,
   symbol,
+  whitelisted
 }) => {
   const { type, id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -107,8 +110,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
       <WidgetComponent title='Claim pattern'>
         <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
         <StyledRadio
-          // disabled={Boolean(campaign) || loading}
-          disabled={true}
+          disabled={Boolean(campaign) || loading || !whitelisted}
           value={claimPattern}
           radios={patterns}
           onChange={(value) => {

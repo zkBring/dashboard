@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.6.rc.0
+- Bug fix for data fetch order
+- Mint pattern is available for whitelisted account
+
 ## 2.1.5
 - Added support for new SDK
 - Fixed bug with date and time of batch creation
