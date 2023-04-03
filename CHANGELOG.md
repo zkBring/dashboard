@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.7-rc.0
+- Update for favicons
+
 ## 2.1.6
 - Bug fix for data fetch order
 - Mint pattern is available for whitelisted account
