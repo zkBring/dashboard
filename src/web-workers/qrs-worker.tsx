@@ -1,7 +1,7 @@
 /* gobal OffscreenCanvas */
 import { expose } from 'comlink'
 import { TQRItem, TQROption, TLinkDecrypted, TQRImageOptions } from 'types'
-import * as wccrypto from '@walletconnect/utils/dist/esm'
+import * as wccrypto from '@walletconnect/utils'
 import { ethers } from 'ethers'
 import { decrypt, encrypt } from 'lib/crypto'
 import QRCodeStyling from 'qr-code-styling-bigmac'
