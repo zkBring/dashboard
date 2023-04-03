@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.7-rc.0
+## 2.1.7
 - Update for favicons
 
 ## 2.1.6
