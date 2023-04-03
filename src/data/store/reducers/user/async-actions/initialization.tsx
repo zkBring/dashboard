@@ -3,10 +3,6 @@ import * as userActions from '../actions'
 import { TQRSet, TCampaign } from 'types'
 import * as qrsActions from '../../qrs/actions'
 import * as campaignsActions from '../../campaigns/actions'
-import {
-  getNativeTokenAmount,
-  getComission
- } from './index'
 
 import {
   UserActions,
@@ -51,26 +47,10 @@ const initialization = () => {
       dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
       const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
       dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
-      const comissionRes = await getComission(
-        chainId,
-        address
-      )
-      if (comissionRes) {
-        const { comission, whitelisted } = comissionRes
-        dispatch(userActions.setWhitelisted(whitelisted))
-        dispatch(userActions.setComission(comission))
-      }
     } catch (err) {
       console.log(err)
       alert('Error occured with data fetch, check console for information')
     }
-
-    await getNativeTokenAmount(
-      dispatch,
-      chainId,
-      address,
-      provider
-    )
 
     const sdk = new LinkdropSDK({
       claimHostUrl: REACT_APP_CLAIM_APP,

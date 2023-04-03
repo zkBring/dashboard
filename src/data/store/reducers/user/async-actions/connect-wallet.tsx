@@ -7,12 +7,13 @@ import {
 import Web3Modal from "web3modal"
 import { Web3Provider } from '@ethersproject/providers'
 import { IAppDispatch } from 'data/store'
-
+import {
+  getNativeTokenAmount,
+  getComission
+ } from './index'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
-import {
-  initialization
-} from './index'
+import * as userActions from '../actions'
 
 async function connectWallet (
   dispatch: Dispatch<UserActions> & IAppDispatch,
@@ -63,7 +64,22 @@ async function connectWallet (
     dispatch(actions.setAddress(address))
     dispatch(actions.setChainId(chainId))
 
-    dispatch(initialization())
+    const comissionRes = await getComission(
+      chainId,
+      address
+    )
+    if (comissionRes) {
+      const { comission, whitelisted } = comissionRes
+      dispatch(userActions.setWhitelisted(whitelisted))
+      dispatch(userActions.setComission(comission))
+    }
+
+    await getNativeTokenAmount(
+      dispatch,
+      chainId,
+      address,
+      providerWeb3
+    )
   
   } catch (err) {
     console.log({ err })

@@ -13,6 +13,9 @@ import { ethers } from 'ethers'
 import { encrypt, decrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
 import { sleep, defineNetworkName } from 'helpers'
+import {
+  initialization
+} from './index'
 
 const authorize = (
   address: string
@@ -55,8 +58,8 @@ const authorize = (
         throw new Error('Rejected to sign message')
       }
       
-
       dispatch(userActions.setAuthorizationStep('store-key'))
+      dispatch(initialization())
 
       // dashboard key 
       const dashboardKeyData = await dashboardKeyApi.get()
@@ -86,7 +89,6 @@ const authorize = (
           throw new Error('Rejected to create Dashboard key')
         }
 
-        
       } else {
         const decrypted_dashboard_key = await retrieveDashboardKey(
           signer,
