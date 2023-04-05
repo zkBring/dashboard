@@ -9,6 +9,7 @@ import {
 import { ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC721Contract, ERC1155Contract } from 'abi'
+import { alertError } from 'helpers'
 
 const checkIfApproved = () => {
   return async (
@@ -18,7 +19,7 @@ const checkIfApproved = () => {
     dispatch(campaignActions.setApproved(null))
     const {
       user: {
-        provider,
+        signer,
         address
       },
       campaign: {
@@ -29,20 +30,20 @@ const checkIfApproved = () => {
     } = getState()
     try {
       if (!tokenAddress) {
-        return alert('No token address provided')
+        return alertError('No token address provided')
       }
       if (!address) {
-        return alert('No user address provided')
+        return alertError('No user address provided')
       }
       
       const contractABI = tokenStandard === 'ERC1155' ? ERC1155Contract : ERC721Contract
-      const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI.abi, signer)
       const isApproved: boolean = await contractInstance.isApprovedForAll(address, proxyContractAddress)
       console.log({ isApproved })
       dispatch(campaignActions.setApproved(isApproved))
 
     } catch (err) {
+      alertError('Check console for more information')
       console.log({
         err
       })

@@ -61,10 +61,16 @@ import defineTokenType from './define-token-type'
 import defineAlchemyNetwork from './define-alchemy-network'
 import defineIfUserOwnsToken from './define-if-user-owns-token'
 import defineIfUserOwnsContract from './define-if-user-owns-contract'
+import defineIfUserOwnsContractERC20 from './define-if-user-owns-contract-erc20'
+import alertError from './alert-error'
+import prepareERC20Url from './prepare-erc20-list'
 
 export {
+  alertError,
+  prepareERC20Url,
   shortenString,
   defineIfUserOwnsContract,
+  defineIfUserOwnsContractERC20,
   defineIfUserOwnsToken,
   defineTokenType,
   defineAlchemyNetwork,

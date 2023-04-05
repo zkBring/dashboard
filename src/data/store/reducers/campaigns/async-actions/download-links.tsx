@@ -7,7 +7,8 @@ import { campaignsApi } from 'data/api'
 import * as actionsCampaigns from '../actions'
 import {
   downloadLinksAsCSV,
-  decryptLinks
+  decryptLinks,
+  alertError
 } from 'helpers'
 import { TClaimPattern, TTokenType } from 'types'
 import { plausibleApi } from 'data/api'
@@ -40,7 +41,7 @@ const downloadLinks = (
     
     if (!dashboardKey) {
       if ( !encryptionKey) {
-        return alert ('dashboardKey and encryptionKey are not provided')
+        return alertError ('dashboardKey and encryptionKey are not provided')
       }
     }
 
@@ -48,8 +49,8 @@ const downloadLinks = (
       dashboardKey = encryptionKey
     }
 
-    if (!REACT_APP_CLAIM_APP) { return alert ('REACT_APP_CLAIM_APP is not provided in .env') }
-    if (!tokenAddress) { return alert ('tokenAddress is not provided') }
+    if (!REACT_APP_CLAIM_APP) { return alertError ('REACT_APP_CLAIM_APP is not provided in .env') }
+    if (!tokenAddress) { return alertError ('tokenAddress is not provided') }
     try {
       dispatch(actionsCampaigns.setLoading(true))
       
@@ -85,7 +86,7 @@ const downloadLinks = (
 
       dispatch(actionsCampaigns.setLoading(false))
     } catch (err) {
-      alert('Error occured! Check console for more info')
+      alertError('Check console for more info')
       console.error('Some error occured', err)
     }
   }

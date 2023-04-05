@@ -4,7 +4,8 @@ import {
   SwitcherContainer,
   SwitcherItem,
   Container,
-  SwitcherTitle
+  SwitcherTitle,
+  SwitcherLoader
 } from './styled-components'
 
 const Switcher: FC<TProps> = ({
@@ -18,16 +19,17 @@ const Switcher: FC<TProps> = ({
     <SwitcherTitle>{title}</SwitcherTitle>
     <SwitcherContainer disabled={disabled}>
       {options.map(option => {
-        const optionDisabled = disabled || option.disabled
+        const optionDisabled = option.disabled
         return <SwitcherItem
           active={option.id === active}
           disabled={optionDisabled}
+          loading={option.id === active && option.loading}
           onClick={() => {
-            if (optionDisabled) { return }
+            if (optionDisabled || disabled) { return }
             onChange(option.id)
           }}
         >
-          {option.title}
+          {option.loading && <SwitcherLoader />} {option.title}
         </SwitcherItem>
       })}
 

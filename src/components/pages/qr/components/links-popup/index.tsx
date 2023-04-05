@@ -8,6 +8,7 @@ import {
   PopupFormContent,
   Buttons
 } from '../../styled-components'
+import { alertError } from 'helpers'
 
 const LinksPopup: FC<TProps> = ({
   onClose,
@@ -30,7 +31,7 @@ const LinksPopup: FC<TProps> = ({
     reader.onloadend = function () {
       const lines = (reader.result as string).split('\n')
       if (lines[0] !== 'link_id,token_id,token_amount,token_address,claim_code,claim_link') {
-        return alert('Invalid file. File should be downloaded from campaigns page')
+        return alertError('Invalid file. File should be downloaded from campaigns page')
       }
       lines.shift()
       const links = lines.map(item => {
@@ -41,7 +42,7 @@ const LinksPopup: FC<TProps> = ({
         }
       })
       if (links.length !== Number(quantity)) {
-        return alert(`Amount of links should be equal to an amount of QRs. Number of links is ${links.length}, but ${quantity} needed`)
+        return alertError(`Amount of links should be equal to an amount of QRs. Number of links is ${links.length}, but ${quantity} needed`)
       }
       onSubmit(links)
     }

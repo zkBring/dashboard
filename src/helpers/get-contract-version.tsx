@@ -3,14 +3,14 @@ import { LinkdropMastercopy } from 'abi'
 
 type TGetContractVersion = (
   proxyContractAddress: string,
-  provider: any
+  signer: any
 ) => Promise<string>
 
 const getContractVersion: TGetContractVersion = async (
   proxyContractAddress,
-  provider
+  signer
 ) => {
-  const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, provider)
+  const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, signer)
   return String(await proxyContract.version())
 
 }

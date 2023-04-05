@@ -63,7 +63,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading }) 
           })}
         </Container>
       </>}
-      
     </>
 }
 

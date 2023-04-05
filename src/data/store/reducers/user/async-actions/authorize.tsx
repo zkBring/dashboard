@@ -12,7 +12,7 @@ import { authorizationApi, dashboardKeyApi, plausibleApi } from 'data/api'
 import { ethers } from 'ethers'
 import { encrypt, decrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
-import { sleep, defineNetworkName } from 'helpers'
+import { sleep, defineNetworkName, alertError } from 'helpers'
 import {
   initialization
 } from './index'
@@ -26,9 +26,9 @@ const authorize = (
   ) => {
     const {
       user: {
-        provider,
         address,
-        chainId
+        chainId,
+        signer
       }
     } = getState()
     dispatch(userActions.setLoading(true))
@@ -37,7 +37,6 @@ const authorize = (
     const humanReadable = new Date(timestamp).toUTCString()
     
     try {
-      const signer = await provider.getSigner()
       const message = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
       
       try {
@@ -116,7 +115,7 @@ const authorize = (
     } catch (err) {
       dispatch(userActions.setAuthorizationStep('connect'))
       console.error({ err })
-      alert('Authorization was declined')
+      alertError('Authorization was declined')
       dispatch(userActions.setLoading(false))
       return null
     }

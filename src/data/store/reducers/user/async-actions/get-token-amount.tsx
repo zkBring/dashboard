@@ -16,6 +16,7 @@ const getTokenAmount: TGetTokenBalance = async (
       String(tokenAmount),
       decimals
     )
+    console.log({ tokenAmountFormatted })
     dispatch(actions.setTokenAmount(
       tokenAmount,
       tokenAmountFormatted

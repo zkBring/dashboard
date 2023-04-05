@@ -9,12 +9,13 @@ import {
   Buttons
 } from '../../styled-components'
 import { useHistory } from 'react-router-dom'
+import { alertError } from 'helpers'
 
 const DPI = 300
 
 const convertInchesToPixels = (value: string) => {
-  if (!value) { return alert('Value is not valid') }
-  if (isNaN(Number(value))) { return alert('Value is not valid') }
+  if (!value) { return alertError('Value is not valid') }
+  if (isNaN(Number(value))) { return alertError('Value is not valid') }
   return Number(value) * DPI
 }
 

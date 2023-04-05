@@ -5,11 +5,10 @@ import { defineProxyContractFunds } from 'helpers'
 const campaignRefund = async (
   contractAddress: string,
   account: string,
-  provider: any
+  signer: any
 ) => {
   let iface = new utils.Interface(LinkdropMastercopy.abi)
-  const signer = await provider.getSigner()
-  const gasPrice = await provider.getGasPrice()
+  const gasPrice = await signer.getGasPrice()
   const oneGwei = ethers.utils.parseUnits('1', 'gwei')
   const data =  await iface.encodeFunctionData('withdraw', [])
   const payload = { to: contractAddress, from: account, gasPrice: gasPrice.add(oneGwei), data }
@@ -20,7 +19,7 @@ const campaignRefund = async (
     return new Promise((resolve, reject) => {
       const checkInterval = setInterval(async () => {
         try {
-          const amount = await defineProxyContractFunds(contractAddress, provider)
+          const amount = await defineProxyContractFunds(contractAddress, signer)
           if (String(amount) === '0') {
             clearInterval(checkInterval)
             resolve(true)

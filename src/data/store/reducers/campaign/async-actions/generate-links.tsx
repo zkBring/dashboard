@@ -1,7 +1,7 @@
-import { Dispatch } from 'redux';
-import * as actionsCampaign from '../actions';
-import * as actionsCampaigns from '../../campaigns/actions';
-import { CampaignActions } from '../types';
+import { Dispatch } from 'redux'
+import * as actionsCampaign from '../actions'
+import * as actionsCampaigns from '../../campaigns/actions'
+import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
 import { TCampaignNew } from 'types'
@@ -14,9 +14,10 @@ import {
   createDataGroups,
   createWorkers,
   terminateWorkers,
-  getContractVersion
+  getContractVersion,
+  alertError
 } from 'helpers'
-import { Remote } from 'comlink';
+import { Remote } from 'comlink'
 import { LinksWorker } from 'web-workers/links-worker'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
@@ -41,7 +42,7 @@ const generateERC20Link = ({
         address,
         dashboardKey,
         workersCount,
-        provider
+        signer
       },
       campaign,
       campaigns: { campaigns }
@@ -63,25 +64,26 @@ const generateERC20Link = ({
         tokenStandard,
         claimPattern,
         sdk,
-        nativeTokensPerLink
+        nativeTokensPerLink,
+        decimals
       } = campaign
 
-      if (!assets) { return alert('assets are not provided') }
-      if (!chainId) { return alert('assets are not provided') }
-      if (!symbol) { return alert('symbol is not provided') }
-      if (!tokenAddress) { return alert('tokenAddress is not provided') }
-      if (!wallet) { return alert('wallet is not provided') }
-      if (!id) { return alert('campaign id is not provided') }
-      if (!signerKey) { return alert('signerKey is not provided') }
-      if (!signerAddress) { return alert('signerAddress is not provided') }
-      if (!dashboardKey || dashboardKey === null) { return alert('dashboardKey is not provided') }
-      if (!tokenStandard) { return alert('tokenStandard is not provided') }
+      if (!assets) { return alertError('assets are not provided') }
+      if (!chainId) { return alertError('assets are not provided') }
+      if (!symbol) { return alertError('symbol is not provided') }
+      if (!tokenAddress) { return alertError('tokenAddress is not provided') }
+      if (!wallet) { return alertError('wallet is not provided') }
+      if (!id) { return alertError('campaign id is not provided') }
+      if (!signerKey) { return alertError('signerKey is not provided') }
+      if (!signerAddress) { return alertError('signerAddress is not provided') }
+      if (!dashboardKey || dashboardKey === null) { return alertError('dashboardKey is not provided') }
+      if (!tokenStandard) { return alertError('tokenStandard is not provided') }
       if (!REACT_APP_INFURA_ID) {
-        return alert('REACT_APP_INFURA_ID is not provided in .env file')
+        return alertError('REACT_APP_INFURA_ID is not provided in .env file')
       }
 
       if (!REACT_APP_CLAIM_APP) {
-        return alert('REACT_APP_CLAIM_APP is not provided in .env file')
+        return alertError('REACT_APP_CLAIM_APP is not provided in .env file')
       }
       const start = +(new Date())
       const neededWorkersCount = assets.length <= 1000 ? 1 : workersCount
@@ -99,7 +101,7 @@ const generateERC20Link = ({
       console.log({ workers })
 
       if (!proxyContractAddress || !chainId) { return }
-      const version = await getContractVersion(proxyContractAddress, provider)
+      const version = await getContractVersion(proxyContractAddress, signer)
 
       const newLinks = await Promise.all(workers.map(({
         worker,
@@ -127,7 +129,8 @@ const generateERC20Link = ({
         tokenStandard,
         assets,
         symbol,
-        chainId
+        chainId,
+        decimals
       )
 
       if (updatingCampaign && currentCampaignId) {
@@ -200,7 +203,6 @@ const generateERC20Link = ({
             }
           })
           if (callback) {
-            console.log('should call callback')
             callback(campaign.campaign_id)
           }
         }
@@ -208,7 +210,7 @@ const generateERC20Link = ({
       terminateWorkers(workers)
       dispatch(actionsCampaign.clearCampaign())
     } catch (err) {
-      alert('Error occured! Check console for more info')
+      alertError('Check console for more info')
       console.error('Some error occured', err)
     }
   }

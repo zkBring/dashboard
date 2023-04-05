@@ -5,52 +5,64 @@ import {
 import { IMetamaskError } from 'types'
 import {
   toHex,
+  alertError
 } from 'helpers'
 import chains from 'configs/chains'
-import { IAppDispatch } from 'data/store';
+import { IAppDispatch, RootState } from 'data/store';
 import * as asyncActions from '../async-actions'
 
-async function switchNetwork (
-  dispatch: Dispatch<UserActions> & IAppDispatch,
-	provider: any,
+function switchNetwork (
   chainId: number,
-  address: string,
   callback: () => void
 ) {
-  try {
-    await provider.provider.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: toHex(chainId) }],
-    })
-    dispatch(asyncActions.logout())
-    callback && callback()
+  return async (
+    dispatch: Dispatch<UserActions> & IAppDispatch,
+    getState: () => RootState
+  ) => {
+    const { user: { provider, signer } } = getState()
+    if (!chainId) {
+      return alertError('Current chain ID is not provided')
+    }
     
-  } catch (err) {
-      const switchError = err as IMetamaskError
-      if (switchError.code && switchError.code === 4902) {
-        try {
-          const chainObj = chains[chainId]
-          if (chainObj) {
-            const data = {
-              chainName: chainObj.chainName,
-              nativeCurrency: chainObj.nativeCurrency,
-              rpcUrls: chainObj.rpcUrls,
-              blockExplorerUrls: chainObj.blockExplorerUrls,
-              chainId: toHex(chainId)
+    try {
+      const request = await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{
+          chainId: toHex(chainId)
+        }],
+      })
+      dispatch(asyncActions.logout())
+      callback && callback()
+    } catch (err) {
+        const switchError = err as IMetamaskError
+        if (switchError.code && switchError.code === 4902) {
+          try {
+            const chainObj = chains[chainId]
+            if (chainObj) {
+              const data = {
+                chainName: chainObj.chainName,
+                nativeCurrency: chainObj.nativeCurrency,
+                rpcUrls: chainObj.rpcUrls,
+                blockExplorerUrls: chainObj.blockExplorerUrls,
+                chainId: toHex(chainId)
+              }
+  
+              await provider.request({
+                method: 'wallet_addEthereumChain',
+                params: [data],
+              })
+              dispatch(asyncActions.logout())
+              callback && callback()
             }
-
-            await provider.provider.request({
-              method: 'wallet_addEthereumChain',
-              params: [data],
-            })
-            dispatch(asyncActions.logout())
-            callback && callback()
+          } catch (err) {
+            alertError('Check console for more information')
+            console.error({ err })
+            // handle "add" error
           }
-        } catch (addError) {
-          // handle "add" error
-        }
-      }    
+        }    
+    }
   }
+  
 }
 
 export default switchNetwork

@@ -4,7 +4,7 @@ import { TLinkParams, TQRSet, TQRItem } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-
+import { alertError } from 'helpers'
 import {
   Container,
   GenerateProgressBar,
@@ -59,7 +59,7 @@ const QR: FC<ReduxType> = ({
   useEffect(() => {
     const width = query.get('width')
     const height = query.get('height')
-    if (!qr || !qr.qr_array) { return alert('qr_array is not provided') }
+    if (!qr || !qr.qr_array) { return alertError('qr_array is not provided') }
     downloadQRs(qr.qr_array, qr.set_name, Number(width), Number(height), () => {
       history.push(`/qrs/${id}`)
     })

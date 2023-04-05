@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 import {
-    Button,
-    ButtonLoader,
-    Anchor,
-    ButtonLink
+  Button,
+  ButtonLoader,
+  Anchor,
+  ButtonLink
 } from './styled-components'
 import { TProps } from './types'
 

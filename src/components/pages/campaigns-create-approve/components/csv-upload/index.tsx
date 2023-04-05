@@ -1,6 +1,6 @@
-import { FC, useState, FormEvent, useRef, useEffect } from 'react'
+import { FC, useState, useRef, useEffect } from 'react'
 import { TProps } from './types'
-import { checkAssetsFile, downloadAssetsBlankCSV } from 'helpers'
+import { checkAssetsFile, alertError } from 'helpers'
 import {
   PopupForm,
   WidgetButton,
@@ -34,14 +34,14 @@ const CSVUploadPopup: FC<TProps> = ({
     reader.onloadend = function () {
       const lines = (reader.result as string).split('\n')
       if (!tokenStandard) {
-        return alert('No token standard provided')
+        return alertError('No token standard provided')
       }
       if (
         (tokenStandard === 'ERC1155' && lines[0] !== "Token ID,Token amount,Links amount") ||
         (tokenStandard === 'ERC721' && lines[0] !== "Token ID") ||
         (tokenStandard === 'ERC20' && lines[0] !== "Token amount,Links amount")
       ) {
-        return alert('Invalid file. File should have an appropriate format. Please, download an example')
+        return alertError('Invalid file. File should have an appropriate format. Please, download an example')
       }
      
       lines.shift()
@@ -77,7 +77,7 @@ const CSVUploadPopup: FC<TProps> = ({
       })
       const isValid: boolean = checkAssetsFile(assets, tokenStandard)
       if (!isValid) {
-        return alert('File is not valid')
+        return alertError('File is not valid')
       }
       onUpload(assets)
     }

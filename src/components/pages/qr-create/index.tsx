@@ -8,10 +8,9 @@ import {
 } from './styled-components'
 
 import {
-  WidgetComponent,
-  WidgetSubtitle
+  WidgetComponent
 } from 'components/pages/common'
-
+import { alertError } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
@@ -83,7 +82,7 @@ const QRCreate: FC<ReduxType> = ({
           loading={loading}
           disabled={!title || !amount || loading}
           onClick={() => {
-            if(isNaN(Number(amount))) { return alert('Amount is not valid') }
+            if(isNaN(Number(amount))) { return alertError('Amount is not valid') }
             addQRSet(
               title, 
               Number(amount),

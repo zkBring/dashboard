@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import contracts from 'configs/contracts'
-import { defineJSONRpcUrl } from 'helpers'
+import { defineJSONRpcUrl, alertError } from 'helpers'
 const { REACT_APP_INFURA_ID } = process.env
 
 const feeManagerABI = [
@@ -14,7 +14,7 @@ const getComission = async (
 ) => {
   try {
     if (!REACT_APP_INFURA_ID) {
-      return alert('No REACT_APP_INFURA_ID provided in .env file')
+      return alertError('No REACT_APP_INFURA_ID provided in .env file')
     }
     const JSONRpcUrl = defineJSONRpcUrl({ infuraPk: REACT_APP_INFURA_ID as string, chainId })
     const provider = new ethers.providers.JsonRpcProvider(JSONRpcUrl)
@@ -34,6 +34,7 @@ const getComission = async (
       }
     }
   } catch (err) {
+    alertError('Check console for more information')
     console.log({
       err
     })

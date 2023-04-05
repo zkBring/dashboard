@@ -9,7 +9,7 @@ import {
 import { RootState } from 'data/store'
 import { Alchemy, NftFilters } from 'alchemy-sdk'
 import { TAlchemyContract } from 'types'
-import { defineAlchemyNetwork } from 'helpers'
+import { defineAlchemyNetwork, alertError } from 'helpers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 const getContracts = () => {
@@ -21,7 +21,7 @@ const getContracts = () => {
     try {
       const { user: { address, chainId } } = getState()
       if (!chainId) {
-        return alert('chainId is not provided')
+        return alertError('chainId is not provided')
       }
       const alchemy = new Alchemy({
         apiKey: REACT_APP_ALCHEMY_API_KEY,
@@ -37,7 +37,8 @@ const getContracts = () => {
         dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
       }
     } catch (err) {
-      alert('Some error occured')
+      alertError('Check console for more information')
+      console.error({ err })
     }
     dispatch(userActions.setLoading(false))
   }

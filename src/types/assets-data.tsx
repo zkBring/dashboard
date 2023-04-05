@@ -1,5 +1,5 @@
-import { BigNumber } from 'mathjs'
 import { TTokenType } from 'types'
+import { BigNumber } from 'mathjs'
 
 export type TAsset = {
   amount?: string,
@@ -13,7 +13,7 @@ export type TTotalAmount = {
   original_amount?: BigNumber;
 }
 
-export type TDefineTotalAmountERC20 = (assets: TAsset[] ) => TTotalAmount
+export type TDefineTotalAmountERC20 = (assets: TAsset[], decimals?: number | null) => TTotalAmount
 
 export type TDefineTotalAmountERC721 = (assets: TAsset[] ) => TTotalAmount
 

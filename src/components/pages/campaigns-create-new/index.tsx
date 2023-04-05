@@ -5,7 +5,6 @@ import {
   SelectStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
-
 import {
   WidgetComponent,
   Container,
@@ -20,12 +19,13 @@ import {
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import { TTokenType, TLinkParams, TAlchemyContract } from 'types'
+import { TTokenType, TLinkParams, TAlchemyContract, TAlchemyERC20Contract } from 'types'
 import { useHistory } from 'react-router-dom'
 import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
-import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract } from 'helpers'
+import { alertError } from 'helpers'
+import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract, defineIfUserOwnsContractERC20 } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 
 const mapStateToProps = ({
@@ -41,10 +41,11 @@ const mapStateToProps = ({
   },
   user: {
     chainId,
-    provider,
     address,
     contracts,
-    loading: userLoading
+    contractsERC20,
+    loading: userLoading,
+    signer
   }
 }: RootState) => ({
   tokenStandard,
@@ -52,12 +53,13 @@ const mapStateToProps = ({
   campaigns,
   chainId,
   userLoading,
-  provider,
   address,
   symbol,
   title,
   tokenAddress,
-  contracts
+  signer,
+  contracts,
+  contractsERC20
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
@@ -68,19 +70,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       campaignAsyncActions.createProxyContract(id)
     ),
     setTokenContractData: (
-      provider: any,
       tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
+      type: TTokenType
+    ) => dispatch(campaignAsyncActions.setTokenContractData(
       tokenAddress,
-      provider,
       type,
-      address,
-      chainId
-    ),
+    )),
     setInitialData: (
       tokenStandard: TTokenType,
       title: string,
@@ -101,18 +96,32 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       dispatch(
         userAsyncActions.getContracts()
       )
+    },
+    getERC20Contracts: () => {
+      dispatch(
+        userAsyncActions.getERC20Contracts()
+      )
     }
   }
 }
 
-const defineContractsOptions = (contracts: TAlchemyContract[]) => {
-  const options = contracts.map(contract => {
+const defineContractsOptions = (contracts: TAlchemyContract[], contractsERC20: TAlchemyERC20Contract[], tokenType: string | null) => {
+
+  if (tokenType === 'ERC20') {
+    return contractsERC20.map(contract => {
+      return {
+        label: `${contract.symbol} ${shortenString(contract.address)} (${contract.totalBalance} owned)`,
+        value: contract
+      }
+    })
+  }
+
+  return contracts.map(contract => {
     return {
       label: `${contract.name} ${shortenString(contract.address)} (${contract.totalBalance} owned)`,
       value: contract
     }
   })
-  return options
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
@@ -121,7 +130,6 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 const CampaignsCreateNew: FC<ReduxType> = ({
   symbol: appliedTokenSymbol,
   chainId,
-  provider,
   address,
   campaigns,
   setTokenContractData,
@@ -129,9 +137,12 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   clearCampaign,
   loading,
   getContracts,
+  getERC20Contracts,
   contracts,
   userLoading,
-  tokenAddress: appliedTokenAddress
+  tokenAddress: appliedTokenAddress,
+  contractsERC20,
+  signer
 }) => {
 
   const history = useHistory()
@@ -143,14 +154,12 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   const currentCampaignType = campaign ? campaign.token_standard : null
   const currentCampaignTitle = campaign ? campaign.title : ''
   const currentTokenSymbol = campaign ? campaign.symbol : ''
-  const currentTokenSymbolToShow = currentTokenSymbol || appliedTokenSymbol
   
   const [
     tokenAddress,
     setTokenAddress
   ] = useState<string>(currentTokenAddress)
   
-
   const [
     title,
     setTitle
@@ -164,19 +173,25 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   }, [])
 
   useEffect(() => {
-    getContracts()
-  }, [])
+    if ((!currentType || currentType === 'ERC721' || currentType === 'ERC1155') && contracts.length === 0) {
+      return getContracts()
+    }
+
+    if (currentType === 'ERC20' && contractsERC20.length === 0) {
+      return getERC20Contracts()
+    }
+  }, [currentType])
 
   useEffect(() => {
-    if (!tokenAddress.length || !chainId) { return }
-    setTokenContractData(provider, tokenAddress, currentType as TTokenType, address, chainId)
-  }, [tokenAddress, provider, currentType])
+    if (!tokenAddress.length) { return }
+    setTokenContractData(tokenAddress, currentType as TTokenType)
+  }, [tokenAddress, currentType])
 
   const defineIfNextDisabled = () => {
     return !title || !tokenAddress || !appliedTokenSymbol || loading
   }
 
-  const selectTokenOptions = defineContractsOptions(contracts)
+  const selectTokenOptions: any[] = defineContractsOptions(contracts, contractsERC20, currentType)
 
   const selectCurrentValue = () => {
     const currentOption = selectTokenOptions.find(option => option.value.address === tokenAddress)
@@ -212,17 +227,18 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           title='Title'
         />
 
-        {false && <SwitcherStyled
+        <SwitcherStyled
           title='Contract'
           options={[
             {
               title: 'NFTs (ERC721/ERC1155)',
-              id: 'nfts'
+              id: 'nfts',
+              loading: userLoading
             },
             {
               title: 'Tokens (ERC20)',
               id: 'tokens',
-              disabled: true
+              loading: userLoading
             }
           ]}
           disabled={Boolean(campaign) || loading || userLoading}
@@ -236,48 +252,41 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               setCurrentType(null)
             }
           }}
-        />}
+        />
 
-        {currentSwitcherValue === 'nfts' && <SelectStyled
+        <SelectStyled
           disabled={Boolean(campaign) || loading || userLoading}
           onChange={async ({ value }: { value: TAlchemyContract | string}) => {
             if (typeof value === 'string') {
-              const tokenType = await defineTokenType(value, provider)
-              if (tokenType !== null && chainId) {
+              if (currentType === 'ERC20' && chainId) {
+                const tokenOwnership = await defineIfUserOwnsContractERC20(address, value, signer)
+                if (!tokenOwnership) {
+                  return alertError('No tokens of provided contract found')
+                }
+                setTokenAddress(value)
+              } else if (currentType !== 'ERC20' && currentType && chainId) {
+                const tokenType = await defineTokenType(value, signer)
                 const tokenOwnership = await defineIfUserOwnsContract(address, value, chainId)
                 if (!tokenOwnership) {
-                  return alert('You dont have tokens of provided contract')
+                  return alertError('No tokens of provided contract found')
                 }
                 setCurrentType(tokenType)
                 setTokenAddress(value)
               } else {
-                alert('Token was not detected among ERC721 and ERC1155 tokens')
+                alertError('No token standard provided')
               }
             } else {
               setCurrentType(String(value.tokenType))
               setTokenAddress(String(value.address))
             }
           }}
-          title='NFT Collection'
           placeholder={selectCurrentPlaceholder()}
           value={selectCurrentValue()}
           options={selectTokenOptions}
           notFoundActiveCondition={(value) => {
-            // return false
             return value.startsWith('0x') && value.length === 42
           }}
-        />}
-
-        {currentSwitcherValue === 'tokens' && <InputStyled
-          value={tokenAddress}
-          placeholder='0x... address'
-          note='Carefully check address before you go'
-          disabled={Boolean(campaign) || loading}
-          onChange={(value: string) => {
-            setTokenAddress(value)
-            return value
-          }}
-        />}
+        />
       </WidgetComponent>
 
       <Aside

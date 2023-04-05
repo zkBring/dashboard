@@ -13,12 +13,12 @@ import {
   Header,
   WidgetTitleStyled
 } from './styled-components'
+import { alertError } from 'helpers'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent, TClaimPattern, TAlchemyNFTToken } from 'types'
-import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
 } from 'components/pages/common'
@@ -71,22 +71,7 @@ const defineNFTTokensOptions = (nftTokens: TAlchemyNFTToken[], tokenAddress: str
 }
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    setTokenContractData: (
-      provider: any,
-      tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
-      tokenAddress,
-      provider,
-      type,
-      address,
-      chainId
-    )
-  }
+  return {}
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
@@ -151,7 +136,7 @@ const createSelectContainer = (
         const tokenId = typeof value === 'string' ? value : value.tokenId
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
         if (tokenAlreadyAdded) {
-          return alert(`Token #${tokenId} was already added`)
+          return alertError(`Token #${tokenId} was already added`)
         }
 
         if (typeof value === 'string') {
@@ -165,7 +150,7 @@ const createSelectContainer = (
           )
 
           if (!userOwnership.owns) {
-            return alert(`Token #${tokenId} is not owned by current user`)
+            return alertError(`Token #${tokenId} is not owned by current user`)
           }
 
           setAssetsData([
@@ -183,7 +168,7 @@ const createSelectContainer = (
         } else {
           const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === value.id)
           if (tokenAlreadyAdded) {
-            return alert(`Token #${tokenId} was already added`)
+            return alertError(`Token #${tokenId} was already added`)
           }
           
           setAssetsData([

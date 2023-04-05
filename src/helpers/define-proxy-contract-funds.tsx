@@ -1,7 +1,7 @@
 const defineProxyContractFunds = async (
   contractAddress: string,
-  provider: any
+  signer: any
 ) => {
-  return await provider.getBalance(contractAddress)
+  return await signer.getBalance(contractAddress)
 }
 export default defineProxyContractFunds

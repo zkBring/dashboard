@@ -53,22 +53,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    setTokenContractData: (
-      provider: any,
-      tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
-      tokenAddress,
-      provider,
-      type,
-      address,
-      chainId
-    )
-  }
+  return {}
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &

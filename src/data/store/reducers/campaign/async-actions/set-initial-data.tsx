@@ -7,7 +7,7 @@ import { UserActions } from '../../user/types'
 import { TAlchemyNFTToken, TTokenType } from 'types'
 import { IAppDispatch } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
-import { defineAlchemyNetwork, defineNetworkName } from 'helpers'
+import { defineAlchemyNetwork, defineNetworkName, alertError } from 'helpers'
 import { RootState } from 'data/store'
 import { plausibleApi } from 'data/api'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
@@ -28,10 +28,10 @@ function setInitialData(
     try {
       const { user: { chainId, address }, campaign: { tokenAddress } } = getState()
       if (!chainId) {
-        return alert('No chainId provided in state of user')
+        return alertError('No chainId provided in state of user')
       }
       if (!tokenAddress) {
-        return alert('No tokenAddress provided in state of user')
+        return alertError('No tokenAddress provided in state of user')
       }
 
       if (tokenStandard !== 'ERC20') {
