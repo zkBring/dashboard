@@ -9,8 +9,8 @@ import {
 import { ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC1155Contract } from 'abi'
-import { TAssetsData, TLinkContent, TDistributionPattern } from 'types'
-import { sleep, defineNetworkName } from 'helpers'
+import { TAssetsData, TLinkContent } from 'types'
+import { sleep, defineNetworkName, alertError } from 'helpers'
 import { plausibleApi } from 'data/api'
 
 const approve = (
@@ -31,7 +31,7 @@ const approve = (
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {
-        provider,
+        signer,
         address,
         chainId
       },
@@ -53,19 +53,18 @@ const approve = (
 
     try {
       if (!tokenAddress) {
-        return alert('No token address provided')
+        return alertError('No token address provided')
       }
       if (!assets) {
-        return alert('No assets provided')
+        return alertError('No assets provided')
       }
       if (!proxyContractAddress) {
-        return alert('No proxy address provided')
+        return alertError('No proxy address provided')
       }
       if (!address) {
-        return alert('No user address provided')
+        return alertError('No user address provided')
       }
       dispatch(campaignActions.setClaimPattern('transfer'))
-      const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
 
       plausibleApi.invokeEvent({
@@ -81,7 +80,7 @@ const approve = (
       await contractInstance.setApprovalForAll(proxyContractAddress, true)
   
       const checkTransaction = async function (): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           const checkInterval = setInterval(async () => {
             const isApproved = await contractInstance.isApprovedForAll(address, proxyContractAddress)
             if (isApproved) {
@@ -107,6 +106,7 @@ const approve = (
         if (callback) { callback() }
       }
     } catch (err) {
+      alertError('Check console for more information')
       console.log({
         err
       })

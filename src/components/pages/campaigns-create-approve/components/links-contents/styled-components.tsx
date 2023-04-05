@@ -10,6 +10,7 @@ export const LinkContentsItem = styled.div`
 
 export const LinkContentsData = styled.div`
   display: flex;
+  align-items: center;
 `
 
 export const LinkContentsControls = styled.div`

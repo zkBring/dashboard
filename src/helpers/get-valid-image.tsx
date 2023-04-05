@@ -1,4 +1,5 @@
 import dropPlaceholder from 'images/drop-placeholder.png'
+import { alertError } from 'helpers'
 
 const getValidImage = async (imageUrl: string, showImage?: boolean) => {
   if (!imageUrl || (!imageUrl.includes('https://') && !imageUrl.includes('http://') && !imageUrl.includes('base64'))) {
@@ -10,7 +11,7 @@ const getValidImage = async (imageUrl: string, showImage?: boolean) => {
     console.log(checkImage.status)
     return imageUrl
   } catch (err) {
-    if (showImage) { alert('Cannot add image due to usage rights limitation. Please use other image.') }
+    if (showImage) { alertError('Cannot add image due to usage rights limitation. Please use other image.') }
     return dropPlaceholder
   }
 }

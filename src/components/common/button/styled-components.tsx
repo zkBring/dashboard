@@ -1,7 +1,13 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Loader from '../loader'
 import { Link } from 'react-router-dom'
 import { TProps } from './types'
+
+const backgroundAnimation = keyframes`
+  0% { background-position: left top; }
+  50% { background-position: right bottom; }
+  100% { background-position: left top; }
+`
 
 export const ButtonLink = styled(Link)`
   text-decoration: none;
@@ -154,6 +160,9 @@ export const Button = styled.button.attrs(props => ({
     transition: background-position .3s, transform .3s;
     border: none;
     color: ${props => props.theme.secondaryTextColor};
+    animation-name: ${backgroundAnimation};
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
 
     ${!props.disabled && css`
       &:hover {

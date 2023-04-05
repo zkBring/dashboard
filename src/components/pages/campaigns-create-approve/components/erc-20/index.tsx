@@ -9,17 +9,22 @@ import {
 } from '../../styled-components'
 import { TProps } from './type'
 import {
-  Container
+  Container,
+  Header,
+  WidgetTitleStyled,
+  TokenBalance,
+  TokenBalanceValue
 } from './styled-components'
 import {
   WidgetComponent,
 } from 'components/pages/common'
+import { shortenString } from 'helpers'
 import LinksContents from '../links-contents'
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
+import { Tooltip } from 'components/common'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent } from 'types'
-import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import Icons from 'icons'
 
 const mapStateToProps = ({
@@ -53,22 +58,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    setTokenContractData: (
-      provider: any,
-      tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
-      tokenAddress,
-      provider,
-      type,
-      address,
-      chainId
-    )
-  }
+  return {}
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
@@ -81,7 +71,9 @@ const Erc20: FC<ReduxType > = ({
   assetsData,
   children,
   sdk,
-  claimPattern
+  claimPattern,
+  tokenAmountFormatted,
+  symbol
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -104,7 +96,13 @@ const Erc20: FC<ReduxType > = ({
     return !formData.tokenAmount || !formData.linksAmount
   }
 
-  return <WidgetComponent title='Add tokens to distribute'>
+  return <WidgetComponent>
+      <Header>
+        <WidgetTitleStyled>Add tokens to distribute</WidgetTitleStyled>
+        {tokenAmountFormatted && <TokenBalance>
+          Token balance: <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip>
+        </TokenBalance>}
+      </Header>
       <Container>
         <LinksContents
           type={type}

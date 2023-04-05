@@ -37,9 +37,9 @@ const mapStateToProps = ({
   chainsAvailable
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch ) => {
   return {
-    switchNetwork: (provider: any, chainId: number, address: string, callback: () => void) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address, callback),
+    switchNetwork: (chain: number, callback: () => void) => dispatch(asyncUserActions.switchNetwork(chain, callback)),
     logout: () => dispatch(asyncUserActions.logout())
   }
 }
@@ -76,7 +76,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
       }
       const currentChain = chains[Number(chain)]
       return <MiniPopupCustomItem onClick={() => {
-        switchNetwork(provider, Number(chain), address, () => { window.location.reload() })
+        switchNetwork(Number(chain), () => { window.location.reload() })
       }}>
         {currentChain.displayName}
         <NetworkIndicator className={NetworkIndicatorClass} selected={Number(chainId) === Number(chain)} />

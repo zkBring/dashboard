@@ -1,7 +1,7 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken } from 'types'
+import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken, TAlchemyERC20Contract, TERC20TokenList } from 'types'
 
 export function setAddress(address: string) {
   return action(
@@ -21,11 +21,31 @@ export function setLoading(loading: boolean) {
   )
 }
 
+export function setTokenListERC20(tokenListERC20: TERC20TokenList) {
+  return action(
+    Constants.USER_SET_TOKEN_LIST_ERC20,
+    {
+      tokenListERC20
+    }
+  )
+}
+
+
+
 export function setContracts(contracts: TAlchemyContract[]) {
   return action(
     Constants.USER_SET_CONTRACTS,
     {
       contracts
+    }
+  )
+}
+
+export function setContractsERC20(contractsERC20: TAlchemyERC20Contract[]) {
+  return action(
+    Constants.USER_SET_CONTRACTS_ERC20,
+    {
+      contractsERC20
     }
   )
 }
@@ -62,6 +82,24 @@ export function setProvider(provider: any) {
     Constants.USER_SET_PROVIDER,
     {
       provider
+    }
+  )
+}
+
+export function setJsonRPCProvider(jsonRPCProvider: any) {
+  return action(
+    Constants.USER_SET_JSON_RPC_PROVIDER,
+    {
+      jsonRPCProvider
+    }
+  )
+}
+
+export function setSigner(signer: any) {
+  return action(
+    Constants.USER_SET_SIGNER,
+    {
+      signer
     }
   )
 }

@@ -29,7 +29,6 @@ const invokeEvent: TInvokeEvent = async ({
   }
 }
 
-
 export default {
   invokeEvent
 }

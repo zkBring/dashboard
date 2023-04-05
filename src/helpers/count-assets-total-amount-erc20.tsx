@@ -1,29 +1,21 @@
 
 import {
   TDefineTotalAmountERC20,
-  TTotalAmount,
   TAsset
 } from 'types'
-import { add, bignumber } from 'mathjs'
+import { utils } from 'ethers'
+import { bignumber, BigNumber } from 'mathjs'
 
-const countAssetsTotalAmountERC20: TDefineTotalAmountERC20 = (assets) => {
-  return assets.reduce<TTotalAmount>((sum: TTotalAmount, item: TAsset) => {
-    const { amount, original_amount } = item
-    return {
-      ...sum,
-      amount: amount ? add(
-        bignumber(item.amount),
-        bignumber(sum.amount)
-      ) : sum.amount,
-      original_amount: original_amount ? add(
-        bignumber(item.original_amount),
-        bignumber(sum.original_amount)
-      ) : sum.original_amount,
-    }  
-  }, {
-    amount: bignumber('0'),
-    original_amount: bignumber('0')
-  })
+const countAssetsTotalAmountERC20: TDefineTotalAmountERC20 = (assets, decimals) => {
+  const count = assets.reduce<BigNumber>((sum: BigNumber, item: TAsset) => {
+    const { amount } = item
+    return amount ? bignumber(item.amount).add(sum) : sum
+  }, bignumber('0'))
+  const result = {
+    amount: count, // atomic
+    original_amount: bignumber(utils.formatUnits(String(count), decimals || 18))
+  }
+  return result
 }
 
 export default countAssetsTotalAmountERC20

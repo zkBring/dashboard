@@ -29,6 +29,7 @@ import CheckListItem from './check-list-item'
 import SecretString from './secret-string'
 import Switcher from './switcher'
 import InformationContainer from './information-container'
+import Tooltip from './tooltip'
 
 export {
   Header,
@@ -64,5 +65,6 @@ export {
   ProgressBar,
   Popup,
   Note,
-  Radio
+  Radio,
+  Tooltip
 }

@@ -7,8 +7,8 @@ import { qrsApi } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
-import { wrap, Remote, proxy } from 'comlink';
-import { sleep } from 'helpers'
+import { wrap, Remote, proxy } from 'comlink'
+import { sleep, alertError } from 'helpers'
 import { plausibleApi } from 'data/api'
 
 const mapQRsWithLinksAction = ({
@@ -72,7 +72,7 @@ const mapQRsWithLinksAction = ({
       }
       
       if (!result.data.success) {
-        alert('Couldn’t connect links to QRs, please try again')
+        alertError('Couldn’t connect links to QRs, please try again')
       }
       dispatch(actionsQR.setMappingLoader(0))
     } catch (err) {
@@ -82,7 +82,7 @@ const mapQRsWithLinksAction = ({
           success: 'no'
         }
       })
-      alert('Couldn’t connect links to QRs, please try again')
+      alertError('Couldn’t connect links to QRs, please try again')
       dispatch(actionsQR.setMappingLoader(0))
       console.error(err)
     }

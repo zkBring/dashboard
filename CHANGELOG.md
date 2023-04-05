@@ -1,5 +1,10 @@
 # Ledger Dashboard
 
+## 2.1.8-rc.1
+- Support for Coinbase browser extension
+- Support for ERC20 standard campaigns
+- Minor interface fixes
+
 ## 2.1.7
 - Update for favicons
 

@@ -16,14 +16,15 @@ import {
 } from 'components/common' 
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux';
+import { Dispatch } from 'redux'
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import { UserActions } from 'data/store/reducers/user/types'
 import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-import { defineSystem } from 'helpers'
+import { useAccount, useChainId, useConnect } from 'wagmi'
+
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
 const mapStateToProps = ({
@@ -40,9 +41,18 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) => {
   return {
-    connectWallet: (chainsAvailable: (number | string)[]) => asyncUserActions.connectWallet(
-      dispatch,
-      chainsAvailable
+    connectWallet: (
+      connectorAddress: string,
+      connectorChainID: number,
+      connector: any,
+      chainsAvailable: (number | string)[]
+    ) => dispatch(
+      asyncUserActions.connectWallet(
+        connectorAddress,
+        connectorChainID,
+        connector,
+        chainsAvailable
+      )
     ),
     authorize: (address: string) => dispatch(asyncUserActions.authorize(address)),
     checkIfConnected: () => dispatch(asyncUserActions.checkIfConnected())
@@ -54,6 +64,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
   if (loading && step !== 'initial') {
     return 'Loading'
   }
+
   switch (step) {
     case 'initial':
       return 'Loading'
@@ -114,9 +125,25 @@ const Main: FC<ReduxType> = ({
   checkIfConnected,
   chainsAvailable
 }) => {
+  const { address: connectorAddress, connector } = useAccount()
+  const connectorChainID = useChainId()
+  const { connect, connectors } = useConnect()
+  const injectedProvider = connectors.find(connector => connector.id === "injected")
+
   useEffect(() => {
     checkIfConnected()
   }, [])
+
+  useEffect(() => {
+    if (!connectorAddress || !connectorChainID || !connector) { return }
+    connectWallet(
+      connectorAddress,
+      connectorChainID,
+      connector,
+      chainsAvailable
+    )
+  }, [connectorAddress, connectorChainID, connector])
+
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
@@ -212,11 +239,13 @@ const Main: FC<ReduxType> = ({
     </Contents>
     <WidgetButton
       loading={loading}
-      disabled={loading}
+      disabled={loading || !injectedProvider}
       appearance='action'
       onClick={() => {
-        if (loading) { return }
-        if (authorizationStep === 'connect') { return connectWallet(chainsAvailable) }
+        if (loading || !injectedProvider) { return }
+        if (authorizationStep === 'connect') { 
+          return connect({ connector: injectedProvider })
+        }
         return authorize(address)
       }}
       title={defineButtonTitle(authorizationStep, loading)}

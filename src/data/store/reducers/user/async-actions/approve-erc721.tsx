@@ -12,7 +12,7 @@ import { RootState } from 'data/store';
 import { ERC721Contract } from 'abi'
 import { TAssetsData, TLinkContent } from 'types'
 import { plausibleApi } from 'data/api'
-import { defineNetworkName } from 'helpers'
+import { defineNetworkName, alertError } from 'helpers'
 
 const approve = (
   assets: TAssetsData,
@@ -32,7 +32,7 @@ const approve = (
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {
-        provider,
+        signer,
         address,
         chainId
       },
@@ -54,18 +54,17 @@ const approve = (
 
     try {
       if (!tokenAddress) {
-        return alert('No token address provided')
+        return alertError('No token address provided')
       }
       if (!assets) {
-        return alert('No assets provided')
+        return alertError('No assets provided')
       }
       if (!proxyContractAddress) {
-        return alert('No proxy address provided')
+        return alertError('No proxy address provided')
       }
       if (!address) {
-        return alert('No user address provided')
+        return alertError('No user address provided')
       }
-      const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
       plausibleApi.invokeEvent({
         eventName: 'camp_step3_filled',
@@ -106,6 +105,7 @@ const approve = (
         if (callback) { callback() }
       }
     } catch (err) {
+      alertError('Check console for more information')
       console.log({
         err
       })

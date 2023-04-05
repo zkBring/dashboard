@@ -31,21 +31,26 @@ const checkIfConnected = () => {
     }
     try {
       await sleep(1000)
-      if (!window.ethereum || !window.ethereum._state) {
+      if (
+        !window.ethereum || (
+          !window.ethereum.isCoinbaseWallet &&
+          !window.ethereum.isMetaMask
+        )
+      ) {
         dispatch(userActions.setLoading(false))
         plausibleApi.invokeEvent({
           eventName: 'sign_in_no_injected_wallet'
         })
         return dispatch(userActions.setAuthorizationStep('no_metamask'))
       }
-      if (window.ethereum && window.ethereum._state && window.ethereum._state.accounts && window.ethereum._state.accounts.length > 0) {
-        await userAsyncActions.connectWallet(dispatch, chainsAvailable)
-      } else {
+      // if (window.ethereum && window.ethereum._state && window.ethereum._state.accounts && window.ethereum._state.accounts.length > 0) {
+      //   await userAsyncActions.connectWallet(chainsAvailable)
+      // } else {
         plausibleApi.invokeEvent({
           eventName: 'sign_in_show_connect'
         })
         dispatch(userActions.setAuthorizationStep('connect'))
-      }
+      // }
     } catch (err) {
       console.log({
         err

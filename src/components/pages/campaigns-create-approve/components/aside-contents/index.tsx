@@ -22,7 +22,7 @@ import {
   defineNetworkName,
   defineNativeTokenSymbol
 } from 'helpers'
-import { TAssetsData, TTokenType, TClaimPattern } from 'types'
+import { TAssetsData, TTokenType, TClaimPattern, TTotalAmount } from 'types'
 import { MathType } from 'mathjs'
 import { TLinksContent } from '../../types'
 
@@ -40,15 +40,6 @@ const renderTotalLinksSegment = (
 
 }
 
-const renderNote = (
-  sponsored: boolean
-) => {
-  if (!sponsored) {
-    return null
-  }
-  return <NoteStyled>Please pay attention at the amount that will be secured on the next step before proceeding!</NoteStyled>
-}
-
 const renderSecureAmount = (
   sponsored: boolean,
   totalComission: MathType,
@@ -60,10 +51,26 @@ const renderSecureAmount = (
   return <>
     <AsideDivider />
     <TableRow>
-      <TableText>To be secured on next step</TableText>
+      <TableText>To be secured (sponsorship)</TableText>
       <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
     </TableRow>
   </>
+}
+
+const renderApproveAmount = (
+  symbol: string | null,
+  campaignTokenStandard: TTokenType | null,
+  claimPattern: TClaimPattern,
+  totalAmount?: TTotalAmount
+) => {
+  if (claimPattern === 'mint' || !campaignTokenStandard || campaignTokenStandard === 'ERC1155' || campaignTokenStandard === 'ERC721' || !totalAmount || !symbol) {
+    return null
+  }
+  const totalToApprove = totalAmount.original_amount
+  return <TableRow>
+    <TableText>To be approved</TableText>
+    <TableValue>{String(totalToApprove)} {symbol}</TableValue>
+  </TableRow>
 }
 
 const renderAssetsList = (
@@ -80,6 +87,16 @@ const renderAssetsList = (
   />
 }
 
+const renderTotal = (
+  totalComission: MathType,
+  nativeTokenSymbol: string
+) => {
+  return <TableRow>
+    <TableText>Total amount</TableText>
+    <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
+  </TableRow>
+}
+
 const AsideContents: FC<TAsideContentsProps> = ({
   approved,
   campaignTitle,
@@ -92,10 +109,13 @@ const AsideContents: FC<TAsideContentsProps> = ({
   sdk,
   data,
   sponsored,
-  totalComission
+  totalComission,
+  symbol,
+  totalAmount
 }) => {
   const scannerUrl = defineEtherscanUrl(campaignChainId, `/address/${tokenAddress || ''}`)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId: campaignChainId })
+
   const approvedNote = () => {
     if (approved === null) {
       return <AsideNote>
@@ -158,6 +178,16 @@ const AsideContents: FC<TAsideContentsProps> = ({
         <TableValue>{claimPattern}</TableValue>
       </TableRow>
       {renderSecureAmount(sponsored, totalComission, nativeTokenSymbol)}
+      {false && renderApproveAmount( // hidden for now
+        symbol,
+        campaignTokenStandard,
+        claimPattern,
+        totalAmount
+      )}
+
+      <AsideDivider />
+      {renderTotal(totalComission, nativeTokenSymbol)}
+
     </AsideContent>
     {approvedNote()}
   </>

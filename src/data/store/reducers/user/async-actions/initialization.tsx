@@ -3,7 +3,6 @@ import * as userActions from '../actions'
 import { TQRSet, TCampaign } from 'types'
 import * as qrsActions from '../../qrs/actions'
 import * as campaignsActions from '../../campaigns/actions'
-
 import {
   UserActions,
 } from '../types'
@@ -13,10 +12,10 @@ import {
 import {
   CampaignsActions
 } from '../../campaigns/types'
-
 import LinkdropSDK from 'linkdrop-sdk'
 import { RootState } from 'data/store'
 import { campaignsApi, qrsApi } from 'data/api'
+import { alertError } from 'helpers'
 
 const {
   REACT_APP_INFURA_ID,
@@ -31,16 +30,16 @@ const initialization = () => {
   ) => {
     const { user: { address, chainId, provider }} = getState()
     if (!REACT_APP_CLAIM_APP) {
-      return alert('REACT_APP_CLAIM_APP is not provided in .env file')
+      return alertError('REACT_APP_CLAIM_APP is not provided in .env file')
     }
     if (!REACT_APP_SERVER_URL) {
-      return alert('REACT_APP_SERVER_URL is not provided in .env file')
+      return alertError('REACT_APP_SERVER_URL is not provided in .env file')
     }
     if (!chainId) {
-      return alert('Chain id is not provided')
+      return alertError('Chain id is not provided')
     }
     if (!REACT_APP_INFURA_ID) {
-      return alert('REACT_APP_INFURA_ID is not provided in .env file')
+      return alertError('REACT_APP_INFURA_ID is not provided in .env file')
     }
     try {
       const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
@@ -49,7 +48,7 @@ const initialization = () => {
       dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
     } catch (err) {
       console.log(err)
-      alert('Error occured with data fetch, check console for information')
+      alertError('Error occured with data fetch, check console for information')
     }
 
     const sdk = new LinkdropSDK({

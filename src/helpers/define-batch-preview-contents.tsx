@@ -8,18 +8,20 @@ type TDefineTitle = (
   type: TTokenType,
   assets: TAsset[],
   symbol: string,
-  chainId: number
+  chainId: number,
+  decimals?: number | null
 ) => string
 
 const defineTitle: TDefineTitle = (
   type,
   assets,
   symbol,
-  chainId
+  chainId,
+  decimals
 ) => {
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   if (type.toUpperCase() === 'ERC20') {
-    const totalAmount = countAssetsTotalAmountERC20(assets)
+    const totalAmount = countAssetsTotalAmountERC20(assets, decimals)
     if (symbol === nativeTokenSymbol) {
       // раздача native tokens
       return `${totalAmount.original_amount} ${nativeTokenSymbol}`

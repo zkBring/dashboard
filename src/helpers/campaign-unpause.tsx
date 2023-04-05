@@ -5,11 +5,10 @@ import defineCampaignStatus from './define-campaign-status'
 const campaignUnpause = async (
   contractAddress: string,
   account: string,
-  provider: any
+  signer: any
 ) => {
   let iface = new utils.Interface(LinkdropMastercopy.abi)
-  const signer = await provider.getSigner()
-  const gasPrice = await provider.getGasPrice()
+  const gasPrice = await signer.getGasPrice()
   const oneGwei = ethers.utils.parseUnits('1', 'gwei')
   const data =  await iface.encodeFunctionData('unpause', [])
   const payload = { to: contractAddress, from: account, gasPrice: gasPrice.add(oneGwei), data }
@@ -20,7 +19,7 @@ const campaignUnpause = async (
     return new Promise((resolve, reject) => {
       const checkInterval = setInterval(async () => {
         try {
-          const status = await defineCampaignStatus(contractAddress, provider)
+          const status = await defineCampaignStatus(contractAddress, signer)
           if (status === 'active') {
             clearInterval(checkInterval)
             resolve('active')

@@ -3,6 +3,7 @@ import {
   TGetNativeTokenBalance
 } from '../types'
 import { utils } from 'ethers'
+import { alertError } from 'helpers'
 
 const getNativeTokenAmount: TGetNativeTokenBalance = async (
   dispatch,
@@ -22,8 +23,8 @@ const getNativeTokenAmount: TGetNativeTokenBalance = async (
       nativeTokenAmountFormatted
     ))
   } catch (err) {
-    alert('Error with native tokens amount fetch, check console for information')
-    console.log({
+    alertError('Error with native tokens amount fetch, check console for information')
+    console.error({
       err
     })
   }

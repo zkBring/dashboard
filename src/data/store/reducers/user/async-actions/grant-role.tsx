@@ -9,7 +9,7 @@ import {
 import { utils, ethers } from 'ethers'
 import { RootState } from 'data/store'
 import contracts from 'configs/contracts'
-import { defineContract } from 'helpers'
+import { defineContract, alertError } from 'helpers'
 import { TAssetsData, TLinkContent } from 'types'
 import { sleep, defineNetworkName } from 'helpers'
 import { plausibleApi } from 'data/api'
@@ -34,7 +34,8 @@ const grantRole = (
       user: {
         provider,
         address,
-        chainId
+        chainId,
+        signer
       },
       campaign: {
         tokenAddress,
@@ -54,28 +55,27 @@ const grantRole = (
 
     try {
       if (!tokenAddress) {
-        return alert('No token address provided')
+        return alertError('No token address provided')
       }
 
       if (!proxyContractAddress) {
-        return alert('No proxy address provided')
+        return alertError('No proxy address provided')
       }
 
       if (!address) {
-        return alert('No user address provided')
+        return alertError('No user address provided')
       }
 
       if (!chainId) {
-        return alert('No chainId provided')
+        return alertError('No chainId provided')
       }
 
       if (!tokenStandard) {
-        return alert('No tokenStandard provided')
+        return alertError('No tokenStandard provided')
       }
 
       dispatch(campaignActions.setClaimPattern('mint'))
       const contract = contracts[chainId]
-      const signer = await provider.getSigner()
       const gasPrice = await provider.getGasPrice()
       const oneGwei = utils.parseUnits('1', 'gwei')
       const contractABI = (defineContract(tokenStandard)).abi
@@ -132,7 +132,8 @@ const grantRole = (
         if (callback) { callback() }
       }
     } catch (err) {
-      alert('The contract does not comply to the claim pattern that you’ve selected (mint at claim). Please read more here: https://linkdrop-docs.notion.site/Mint-pattern-requirements-4d99306c117e416dad9bdcf4f473560e')
+      alertError('The contract does not comply to the claim pattern that you’ve selected (mint at claim). Please read more here: https://linkdrop-docs.notion.site/Mint-pattern-requirements-4d99306c117e416dad9bdcf4f473560e')
+      console.error(err)
     }
     dispatch(campaignActions.setLoading(false))
   }

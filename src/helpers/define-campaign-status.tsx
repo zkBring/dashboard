@@ -3,9 +3,9 @@ import { LinkdropMastercopy } from 'abi'
 
 const defineCampaignStatus = async (
   contractAddress: string,
-  provider: any
+  signer: any
 ) => {
-  const proxyContract = await new ethers.Contract(contractAddress, LinkdropMastercopy.abi, provider)
+  const proxyContract = await new ethers.Contract(contractAddress, LinkdropMastercopy.abi, signer)
   const isPaused = await proxyContract.paused()
   if (isPaused) { return 'paused' }
   return 'active'
