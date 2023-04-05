@@ -55,7 +55,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
       )
     ),
     authorize: (address: string) => dispatch(asyncUserActions.authorize(address)),
-    checkIfConnected: () => dispatch(asyncUserActions.checkIfConnected())
+    initialLoad: () => dispatch(asyncUserActions.initialLoad())
   }
 }
 
@@ -122,7 +122,7 @@ const Main: FC<ReduxType> = ({
   authorize,
   loading,
   authorizationStep,
-  checkIfConnected,
+  initialLoad,
   chainsAvailable
 }) => {
   const { address: connectorAddress, connector } = useAccount()
@@ -131,18 +131,24 @@ const Main: FC<ReduxType> = ({
   const injectedProvider = connectors.find(connector => connector.id === "injected")
 
   useEffect(() => {
-    checkIfConnected()
+    initialLoad()
   }, [])
 
   useEffect(() => {
-    if (!connectorAddress || !connectorChainID || !connector) { return }
+    if (
+      !connectorAddress ||
+      !connectorChainID ||
+      !connector ||
+      authorizationStep !== 'connect'
+    ) { return }
+
     connectWallet(
       connectorAddress,
       connectorChainID,
       connector,
       chainsAvailable
     )
-  }, [connectorAddress, connectorChainID, connector])
+  }, [connectorAddress, connectorChainID, connector, authorizationStep])
 
 
   if (authorizationStep === 'wrong_device') {
@@ -167,7 +173,7 @@ const Main: FC<ReduxType> = ({
     return <Redirect to='/campaigns' />
   }
 
-  if (authorizationStep === 'no_metamask') {
+  if (authorizationStep === 'no_injected_extension') {
     return <ContainerCentered>
       <IconContainer>
         <Icons.YellowAttentionIcon />

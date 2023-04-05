@@ -13,8 +13,9 @@ import { IAppDispatch } from 'data/store'
 import { sleep } from 'helpers'
 import { RootState } from 'data/store'
 import { plausibleApi } from 'data/api'
+import { Ethereum } from '@wagmi/connectors'
 
-const checkIfConnected = () => {
+const initialLoad = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
@@ -41,16 +42,12 @@ const checkIfConnected = () => {
         plausibleApi.invokeEvent({
           eventName: 'sign_in_no_injected_wallet'
         })
-        return dispatch(userActions.setAuthorizationStep('no_metamask'))
+        return dispatch(userActions.setAuthorizationStep('no_injected_extension'))
       }
-      // if (window.ethereum && window.ethereum._state && window.ethereum._state.accounts && window.ethereum._state.accounts.length > 0) {
-      //   await userAsyncActions.connectWallet(chainsAvailable)
-      // } else {
-        plausibleApi.invokeEvent({
-          eventName: 'sign_in_show_connect'
-        })
-        dispatch(userActions.setAuthorizationStep('connect'))
-      // }
+      plausibleApi.invokeEvent({
+        eventName: 'sign_in_show_connect'
+      })
+      dispatch(userActions.setAuthorizationStep('connect'))
     } catch (err) {
       console.log({
         err
@@ -60,4 +57,4 @@ const checkIfConnected = () => {
   }
 }
 
-export default checkIfConnected
+export default initialLoad

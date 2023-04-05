@@ -49,6 +49,7 @@ const { provider } = configureChains(chains, [
 ])
 
 const wagmiClient = createClient({
+  autoConnect: true,
   connectors: [
     new WalletConnectConnector({
       chains, options: {

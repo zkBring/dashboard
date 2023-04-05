@@ -1,3 +1,10 @@
-type TAuthorizationStep = 'wrong_network' | 'initial' | 'connect' | 'login' | 'store-key' | 'authorized' | 'no_metamask' | 'wrong_device'
+type TAuthorizationStep = 'wrong_network' | // network is not supported in current version
+                          'initial' | // initial state
+                          'connect' | // can be connected
+                          'login' | // can be authorized
+                          'store-key' | // can generate key
+                          'authorized' | // authorized
+                          'no_injected_extension' | // no extension installed
+                          'wrong_device' // mobile device
 
 export default TAuthorizationStep

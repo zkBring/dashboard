@@ -44,8 +44,10 @@ function connectWallet (
           dispatch(asyncActions.logout())
         })
       
-        provider.on("chainChanged", async () => {
-          dispatch(asyncActions.logout())
+        provider.on("chainChanged", async (newChain: any) => {
+          if (newChain !== connectorChainID) {
+            dispatch(asyncActions.logout())
+          }
         })
         const signer = await connector.getSigner()
         dispatch(actions.setSigner(signer))

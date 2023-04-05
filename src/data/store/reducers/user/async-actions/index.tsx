@@ -13,7 +13,7 @@ import logout from "./logout"
 import checkIfApproved from "./check-if-approved"
 import checkIfGranted from "./check-if-granted"
 import grantRole from "./grant-role"
-import checkIfConnected from "./check-if-connected"
+import initialLoad from "./initial-load"
 import getContracts from './get-contracts'
 import getERC20Contracts from './get-erc20-contracts'
 import getComission from './get-comission'
@@ -27,7 +27,7 @@ export {
   initialization,
   getTokenAmount,
   secure,
-  checkIfConnected,
+  initialLoad,
   switchNetwork,
   connectWallet,
   approveERC721,
