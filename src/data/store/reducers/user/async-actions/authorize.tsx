@@ -113,7 +113,7 @@ const authorize = (
       dispatch(userActions.setAuthorizationStep('authorized'))
       return message
     } catch (err) {
-      dispatch(userActions.setAuthorizationStep('connect'))
+      dispatch(userActions.setAuthorizationStep('login'))
       console.error({ err })
       alertError('Authorization was declined')
       dispatch(userActions.setLoading(false))
