@@ -5,6 +5,7 @@ type TAlchemyERC20Contract = {
   totalBalance: string | null
   tokenType: TTokenType
   symbol: string
+  decimals: number
 }
 
 export default TAlchemyERC20Contract

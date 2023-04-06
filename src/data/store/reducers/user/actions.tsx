@@ -2,6 +2,7 @@ import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
 import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken, TAlchemyERC20Contract, TERC20TokenList } from 'types'
+import { BigNumber } from 'ethers'
 
 export function setAddress(address: string) {
   return action(
@@ -113,25 +114,20 @@ export function setChainId(chainId: number) {
   )
 }
 
-export function setTokenAmount(tokenAmount: string, tokenAmountFormatted: string) {
+export function setTokenAmount(tokenAmount: BigNumber) {
   return action(
     Constants.USER_SET_TOKEN_AMOUNT,
     {
-      tokenAmount,
-      tokenAmountFormatted
+      tokenAmount
     }
   )
 }
 
-export function setNativeTokenAmount(
-  nativeTokenAmount: string,
-  nativeTokenAmountFormatted: string
-) {
+export function setNativeTokenAmount(nativeTokenAmount: BigNumber) {
   return action(
     Constants.USER_SET_NATIVE_TOKEN_AMOUNT,
     {
-      nativeTokenAmount,
-      nativeTokenAmountFormatted
+      nativeTokenAmount
     }
   )
 }

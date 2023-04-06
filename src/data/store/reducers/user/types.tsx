@@ -3,7 +3,7 @@ import * as actions from './actions'
 import { Dispatch } from 'redux'
 import LinkdropSDK from 'linkdrop-sdk'
 import { TAuthorizationStep, TAlchemyContract, TAlchemyNFTToken, TAlchemyERC20Contract, TERC20TokenList } from 'types'
-import { BigNumberish } from 'ethers'
+import { BigNumber } from 'ethers'
 
 export interface UserState {
   address: string
@@ -12,10 +12,8 @@ export interface UserState {
   jsonRPCProvider: any
   signer: any
   chainId: number | null
-  nativeTokenAmount: string | BigNumberish | null
-  nativeTokenAmountFormatted: string | null
-  tokenAmount: string | null
-  tokenAmountFormatted: string | null
+  nativeTokenAmount: BigNumber | null
+  tokenAmount: BigNumber | null
   sdk: LinkdropSDK | null
   dashboardKey: null | string
   workersCount: number

@@ -12,15 +12,7 @@ const getTokenAmount: TGetTokenBalance = async (
 ) => {
   try {
     const tokenAmount = await contractInstance.balanceOf(address)
-    const tokenAmountFormatted = utils.formatUnits(
-      String(tokenAmount),
-      decimals
-    )
-    console.log({ tokenAmountFormatted })
-    dispatch(actions.setTokenAmount(
-      tokenAmount,
-      tokenAmountFormatted
-    ))
+    dispatch(actions.setTokenAmount(tokenAmount))
   } catch (err) {
     console.log({
       err

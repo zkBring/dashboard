@@ -15,7 +15,6 @@ import { RootState } from 'data/store';
 import { ERC20Contract } from 'abi'
 import { TAssetsData, TLinkContent, TTotalAmount } from 'types'
 import { plausibleApi } from 'data/api'
-import { bignumber } from 'mathjs'
 
 const approve = (
   assets: TAssetsData,
@@ -38,7 +37,6 @@ const approve = (
         signer,
         address,
         chainId,
-        tokenAmountFormatted,
         tokenAmount
       },
       campaign: {
@@ -83,17 +81,17 @@ const approve = (
         return alertError(`Cannot define amount of tokens to approve`)
       }
 
-      if (!tokenAmountFormatted) {
+      if (!tokenAmount) {
         dispatch(campaignActions.setLoading(false))
         return alertError(`No tokens to approve`)
       }
 
-      console.log('here', tokenAmount, amountToApprove)
+      console.log({ amountToApprove, tokenAmount })
 
-      if (amountToApprove.gt(bignumber(String(tokenAmount)))) {
+      if (amountToApprove.gt(tokenAmount)) {
         dispatch(campaignActions.setLoading(false))
         return alertError(
-          `Not enough tokens to approve. Current balance: ${tokenAmountFormatted}, tokens to approve: ${amountToApproveFormatted}`
+          `Not enough tokens to approve. Current balance: ${utils.formatUnits(tokenAmount, decimals)}, tokens to approve: ${amountToApproveFormatted}`
         )
       }
       const data = await iface.encodeFunctionData('approve', [

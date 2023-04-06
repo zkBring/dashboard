@@ -15,7 +15,6 @@ import Title from './title'
 import Campaign from './campaign'
 import Breadcrumbs from './breadcrumbs'
 import InfoBlock from './info-block'
-import PreviewWidget from './preview-widget'
 import TextLink from './text-link'
 import MiniPopup from './mini-popup'
 import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/styled-components'
@@ -53,7 +52,6 @@ export {
   Campaign,
   Breadcrumbs,
   InfoBlock,
-  PreviewWidget,
   TextLink,
   MiniPopup,
   WidgetText,

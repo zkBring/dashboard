@@ -6,7 +6,6 @@ import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
 import { TCampaignNew } from 'types'
 import { CampaignsActions } from '../../campaigns/types'
-import { defineBatchPreviewContents } from 'helpers'
 import { campaignsApi } from 'data/api'
 import { encrypt } from 'lib/crypto'
 import {
@@ -21,6 +20,7 @@ import { Remote } from 'comlink'
 import { LinksWorker } from 'web-workers/links-worker'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
+import { BigNumber } from 'ethers'
 
 const {
   REACT_APP_INFURA_ID,
@@ -64,8 +64,7 @@ const generateERC20Link = ({
         tokenStandard,
         claimPattern,
         sdk,
-        nativeTokensPerLink,
-        decimals
+        nativeTokensPerLink
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -102,6 +101,7 @@ const generateERC20Link = ({
 
       if (!proxyContractAddress || !chainId) { return }
       const version = await getContractVersion(proxyContractAddress, signer)
+      console.log({ nativeTokensPerLink })
 
       const newLinks = await Promise.all(workers.map(({
         worker,
@@ -113,7 +113,7 @@ const generateERC20Link = ({
         data,
         tokenAddress,
         signerKey,
-        nativeTokensPerLink,
+        String(nativeTokensPerLink || '0'),
         dashboardKey !== null ? dashboardKey : '',
         proxyContractAddress,
         version
@@ -125,20 +125,13 @@ const generateERC20Link = ({
 
       if (!signerKey || !tokenStandard || !address) { return }
       const updatingCampaign = currentCampaignId ? campaigns.find(item => item.campaign_id === currentCampaignId) : undefined
-      const batchPreviewContents = defineBatchPreviewContents(
-        tokenStandard,
-        assets,
-        symbol,
-        chainId,
-        decimals
-      )
 
       if (updatingCampaign && currentCampaignId) {
         const result = await campaignsApi.saveBatch(
           currentCampaignId,
           newLinks.flat(),
           sponsored,
-          batchPreviewContents
+          'legacy property'
         )
 
         if (result.data.success) {
@@ -150,7 +143,7 @@ const generateERC20Link = ({
               claim_pattern: claimPattern,
               distribution: sdk ? 'sdk' : 'manual',
               sponsorship: sponsored ? 'sponsored' : 'non sponsored',
-              extra_token: nativeTokensPerLink !== '0' ? 'yes' : 'no',
+              extra_token: !nativeTokensPerLink?.eq('0') ? 'yes' : 'no',
               preferred_wallet: wallet
             }
           })
@@ -163,7 +156,7 @@ const generateERC20Link = ({
         const batch = {
           claim_links: batchLinks.length === 0 ? undefined : newLinks.flat(),
           sponsored,
-          batch_description: batchPreviewContents
+          batch_description: 'legacy property'
         }
         
 
@@ -198,7 +191,7 @@ const generateERC20Link = ({
               claim_pattern: claimPattern,
               distribution: sdk ? 'sdk' : 'manual',
               sponsorship: sponsored ? 'sponsored' : 'non sponsored',
-              extra_token: nativeTokensPerLink !== '0' ? 'yes' : 'no',
+              extra_token: !nativeTokensPerLink?.eq('0') ? 'yes' : 'no',
               preferred_wallet: wallet
             }
           })

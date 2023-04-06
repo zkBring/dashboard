@@ -10,7 +10,7 @@ import { RootState } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
 import { TAlchemyERC20Contract } from 'types'
 import { defineAlchemyNetwork, alertError } from 'helpers'
-import { ethers, BigNumber } from 'ethers'
+import { BigNumber } from 'ethers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 const getERC20Contracts = () => {
@@ -71,15 +71,12 @@ const getERC20Contracts = () => {
               address: token.contractAddress,
               tokenType: 'ERC20',
               totalBalance: !token.tokenBalance ? '0' : String(
-                ethers.utils.formatUnits(
-                  BigNumber.from(
-                    token.tokenBalance.toString()
-                  ).toString(),
-                  tokenListInstance.decimals
-                )
+                BigNumber.from(
+                  token.tokenBalance.toString()
+                ).toString(),
               ),
               symbol: tokenListInstance.symbol,
-              
+              decimals: tokenListInstance.decimals
             }
             
             contractsWithMetadata.push(tokenWithMetadata)

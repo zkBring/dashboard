@@ -3,8 +3,7 @@ import { TAsideContentsProps } from './types'
 import {
   AsideNote,
   ApprovedIcon,
-  LoaderStyled,
-  NoteStyled
+  LoaderStyled
 } from './styled-components'
 import {
   TableRow,
@@ -23,7 +22,7 @@ import {
   defineNativeTokenSymbol
 } from 'helpers'
 import { TAssetsData, TTokenType, TClaimPattern, TTotalAmount } from 'types'
-import { MathType } from 'mathjs'
+import { BigNumber, utils } from 'ethers'
 import { TLinksContent } from '../../types'
 
 
@@ -42,7 +41,7 @@ const renderTotalLinksSegment = (
 
 const renderSecureAmount = (
   sponsored: boolean,
-  totalComission: MathType,
+  totalComission: BigNumber,
   nativeTokenSymbol: string
 ) => {
   if (!sponsored) {
@@ -52,7 +51,7 @@ const renderSecureAmount = (
     <AsideDivider />
     <TableRow>
       <TableText>To be secured (sponsorship)</TableText>
-      <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
+      <TableValue>{String(utils.formatUnits(totalComission, 18))} {nativeTokenSymbol}</TableValue>
     </TableRow>
   </>
 }
@@ -88,12 +87,12 @@ const renderAssetsList = (
 }
 
 const renderTotal = (
-  totalComission: MathType,
+  totalComission: BigNumber,
   nativeTokenSymbol: string
 ) => {
   return <TableRow>
     <TableText>Total amount</TableText>
-    <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
+    <TableValue>{String(utils.formatUnits(totalComission, 18))} {nativeTokenSymbol}</TableValue>
   </TableRow>
 }
 

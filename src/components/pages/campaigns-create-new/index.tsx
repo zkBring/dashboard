@@ -25,6 +25,7 @@ import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
 import { alertError } from 'helpers'
+import { utils } from 'ethers'
 import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract, defineIfUserOwnsContractERC20 } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 
@@ -110,7 +111,7 @@ const defineContractsOptions = (contracts: TAlchemyContract[], contractsERC20: T
   if (tokenType === 'ERC20') {
     return contractsERC20.map(contract => {
       return {
-        label: `${contract.symbol} ${shortenString(contract.address)} (${contract.totalBalance} owned)`,
+        label: `${contract.symbol} ${shortenString(contract.address)} (${utils.formatUnits(contract.totalBalance as string, contract.decimals)} owned)`,
         value: contract
       }
     })
@@ -205,6 +206,9 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   const selectCurrentPlaceholder = () => {
     if (!tokenAddress) {
+      if (currentType === 'ERC20') {
+        return 'Token name or address'
+      }
       return 'Choose collection'
     }
     const selectValue = selectCurrentValue()

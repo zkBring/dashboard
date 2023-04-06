@@ -1,6 +1,7 @@
 import { action } from 'typesafe-actions';
 import { Constants } from './constants';
-import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern, TDistributionPattern } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern } from 'types'
+import { BigNumber } from 'ethers'
 
 export function setTokenAddress(tokenAddress: string | null) {
   return action(Constants.CAMPAIGN_SET_TOKEN_ADDRESS, {
@@ -140,7 +141,7 @@ export function setSdk(sdk: boolean) {
   })
 }
 
-export function setNativeTokensPerLink(nativeTokensPerLink: string) {
+export function setNativeTokensPerLink(nativeTokensPerLink: BigNumber) {
   return action(Constants.CAMPAIGN_SET_NATIVE_TOKENS_PER_LINK, {
     nativeTokensPerLink
   })

@@ -3,9 +3,7 @@ import TCampaignStatus from './campaign-status'
 import TAssetsData, {
   TAsset,
   TDefineTotalAmountERC20,
-  TDefineTotalAmountERC721,
-  TTotalAmount,
-  TDefineAssetsTotalAmount
+  TTotalAmount
 } from './assets-data'
 import TOwners from './owners'
 import TCommunities from './communities'
@@ -72,10 +70,8 @@ export {
   TSelectOption,
   TDefineTotalAmountERC20,
   TLink,
-  TDefineTotalAmountERC721,
   TTotalAmount,
   TFormatDate,
-  TDefineAssetsTotalAmount,
   TLinkParams,
   TQRStatus,
   TQRSet,

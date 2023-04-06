@@ -405,7 +405,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   ]
 
   const totalAmount = tokenStandard !== 'ERC20' ? undefined : countAssetsTotalAmountERC20(assetsParsed, decimals)
-  console.log({ totalAmount })
+
   const {
     totalComission
   } = countNativeTokensToSecure(

@@ -29,8 +29,6 @@ const mapStateToProps = ({
     address,
     provider,
     chainId,
-    nativeTokenAmountFormatted,
-    tokenAmountFormatted,
     loading: userLoading,
     nfts
   },
@@ -50,8 +48,6 @@ const mapStateToProps = ({
   chainId,
   symbol,
   tokenStandard,
-  nativeTokenAmountFormatted,
-  tokenAmountFormatted,
   userLoading,
   claimPattern,
   tokenAddress,

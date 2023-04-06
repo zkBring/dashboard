@@ -14,8 +14,6 @@ const initialState: UserState = {
   chainId: null,
   nativeTokenAmount: null,
   tokenAmount: null,
-  nativeTokenAmountFormatted: null,
-  tokenAmountFormatted: null,
   sdk: null,
   dashboardKey: null,
   workersCount: (navigator && navigator.hardwareConcurrency) || 4,
@@ -68,13 +66,11 @@ export function userReducer(
         return {
           ...state,
           tokenAmount: action.payload.tokenAmount,
-          tokenAmountFormatted: action.payload.tokenAmountFormatted
         }
       case Constants.USER_SET_NATIVE_TOKEN_AMOUNT:
         return {
           ...state,
           nativeTokenAmount: action.payload.nativeTokenAmount,
-          nativeTokenAmountFormatted: action.payload.nativeTokenAmountFormatted
         }
       default:
           return state;

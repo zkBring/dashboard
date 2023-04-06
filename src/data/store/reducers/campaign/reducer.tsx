@@ -21,7 +21,7 @@ const initialState: CampaignState = {
   claimPattern: 'transfer',
   sdk: false,
   links: [],
-  nativeTokensPerLink: '0',
+  nativeTokensPerLink: null,
   linksGenerateLoader: 0
 }
 
