@@ -35,7 +35,8 @@ const initialLoad = () => {
       if (
         !window.ethereum || (
           !window.ethereum.isCoinbaseWallet &&
-          !window.ethereum.isMetaMask
+          !window.ethereum.isMetaMask && 
+          !window.ethereum.isZerion
         )
       ) {
         dispatch(userActions.setLoading(false))

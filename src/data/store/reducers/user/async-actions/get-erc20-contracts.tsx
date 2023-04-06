@@ -33,8 +33,11 @@ const getERC20Contracts = () => {
       if (tokenBalances && tokenBalances.length > 0) {
           const contractsWithMetadata: TAlchemyERC20Contract[] = []
           for (let token of tokenBalances) {
+            if (token.tokenBalance && parseInt(token.tokenBalance, 16) === 0) {
+              continue
+            }
 
-            // commented for now
+            // commented for now, possible to use later
             // const contractInstance = await new ethers.Contract(token.contractAddress, ERC20Contract.abi, signer)
             // const decimals = await contractInstance.decimals()
             // const symbol = await contractInstance.symbol()
