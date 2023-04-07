@@ -101,7 +101,6 @@ const generateERC20Link = ({
 
       if (!proxyContractAddress || !chainId) { return }
       const version = await getContractVersion(proxyContractAddress, signer)
-      console.log({ nativeTokensPerLink })
 
       const newLinks = await Promise.all(workers.map(({
         worker,
