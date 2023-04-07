@@ -1,17 +1,16 @@
 import { FC, useState } from 'react'
 import {
-    Header,
-    HeaderTitle,
-    HeaderInfo,
-    HeaderUserInfo,
-    HeaderUserInfoPadded,
-    HeaderUserInfoAddress,
-    MiniPopupCustomItem,
-    NetworkIndicator,
-    NetworkIndicatorClass,
-    PolygonIcon
-    // @ts-ignore
-} from './styled-components.tsx'
+  Header,
+  HeaderTitle,
+  HeaderInfo,
+  HeaderUserInfo,
+  HeaderUserInfoPadded,
+  HeaderUserInfoAddress,
+  MiniPopupCustomItem,
+  NetworkIndicator,
+  NetworkIndicatorClass,
+  PolygonIcon
+} from './styled-components'
 import { shortenString, defineNetworkName, capitalize, defineNativeTokenSymbol } from 'helpers'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -20,26 +19,27 @@ import MiniPopup from '../mini-popup'
 import chains from 'configs/chains'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
+import { utils } from 'ethers'
 
 const mapStateToProps = ({
   user: {
     chainId, 
     address, 
     provider, 
-    nativeTokenAmountFormatted,
+    nativeTokenAmount,
     chainsAvailable
   }
 }: RootState) => ({
   chainId,
   address,
   provider,
-  nativeTokenAmountFormatted,
+  nativeTokenAmount,
   chainsAvailable
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch ) => {
   return {
-    switchNetwork: (provider: any, chainId: number, address: string, callback: () => void) => asyncUserActions.switchNetwork(dispatch, provider, chainId, address, callback),
+    switchNetwork: (chain: number, callback: () => void) => dispatch(asyncUserActions.switchNetwork(chain, callback)),
     logout: () => dispatch(asyncUserActions.logout())
   }
 }
@@ -59,7 +59,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 const HeaderComponent: FC<IProps & ReduxType> = ({
   chainId,
   address,
-  nativeTokenAmountFormatted,
+  nativeTokenAmount,
   switchNetwork,
   provider,
   logout,
@@ -69,6 +69,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
 }) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
   const [ showUserOptions, setShowUserOptions ] = useState(false)
+  const nativeTokenAmountFormatted = nativeTokenAmount ? utils.formatEther(nativeTokenAmount) : 0
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
     {['1', '137', '5', '80001'].map((chain: string) => {
       if (chainsAvailable.length > 0 && !chainsAvailable.find(network => Number(chain) === Number(network))) {
@@ -76,7 +77,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
       }
       const currentChain = chains[Number(chain)]
       return <MiniPopupCustomItem onClick={() => {
-        switchNetwork(provider, Number(chain), address, () => { window.location.reload() })
+        switchNetwork(Number(chain), () => { window.location.reload() })
       }}>
         {currentChain.displayName}
         <NetworkIndicator className={NetworkIndicatorClass} selected={Number(chainId) === Number(chain)} />
@@ -108,7 +109,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
       {address && <HeaderUserInfoPadded onClick={() => {
         setShowUserOptions(!showUserOptions)
       }}>
-        {nativeTokenAmountFormatted !== null ? parseFloat(Number((nativeTokenAmountFormatted)).toFixed(3)) : 0} {defineNativeTokenSymbol({ chainId })}
+        {nativeTokenAmount !== null ? parseFloat(Number((nativeTokenAmountFormatted)).toFixed(3)) : 0} {defineNativeTokenSymbol({ chainId })}
         <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>
         {userOptionsPopup}
       </HeaderUserInfoPadded>}

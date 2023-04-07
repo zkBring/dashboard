@@ -1,10 +1,8 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { expose } from 'comlink'
-import { TLink, TAssetsData, TTokenType, TSingleLinkData } from 'types'
+import { TLink, TAssetsData, TTokenType } from 'types'
 import { EXPIRATION_DATE } from 'configs/app'
 const { REACT_APP_SERVER_URL } = process.env
-
-type TParseLinkParams = (link: string, tokenType: TTokenType) => TSingleLinkData
 
 export class LinksWorker {
   private newLinks: Array<TLink> = [];
@@ -127,6 +125,18 @@ export class LinksWorker {
     proxyContractAddress: string,
     proxyContractVersion: string
   ) : Promise<any> {
+    console.log({
+      type,
+      linkdropMasterAddress,
+      chainId,
+      assets,
+      tokenAddress,
+      signerKey,
+      nativeTokensPerLink,
+      dashboardKey,
+      proxyContractAddress,
+      proxyContractVersion
+    })
     try {
       this.createSDK(
         linkdropMasterAddress
@@ -134,8 +144,9 @@ export class LinksWorker {
       for (let i = 0; i < assets.length; i++) {
         let result
         if (type === 'ERC20') {
+          console.log({ nativeTokensPerLink })
           result = await this.createERC20Link(
-            nativeTokensPerLink,
+            String(nativeTokensPerLink),
             tokenAddress,
             assets[i].amount || '0',
             EXPIRATION_DATE,
@@ -147,7 +158,7 @@ export class LinksWorker {
           )
         } else if (type === 'ERC721') {
           result = await this.createERC721Link(
-            nativeTokensPerLink,
+            String(nativeTokensPerLink),
             tokenAddress,
             String(assets[i].id || '0'),
             EXPIRATION_DATE,
@@ -159,7 +170,7 @@ export class LinksWorker {
           )
         } else {
           result = await this.createERC1155Link(
-            nativeTokensPerLink,
+            String(nativeTokensPerLink),
             tokenAddress,
             String(assets[i].id || '0'),
             assets[i].amount || '0',
@@ -180,7 +191,7 @@ export class LinksWorker {
             link_id: result.link_id,
             sender_signature: result.sender_signature,
             expiration_time: EXPIRATION_DATE,
-            wei_amount: nativeTokensPerLink
+            wei_amount: String(nativeTokensPerLink)
           }
           
           this.newLinks = [...this.newLinks, linkData]

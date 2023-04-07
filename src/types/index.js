@@ -3,9 +3,7 @@ import TCampaignStatus from './campaign-status'
 import TAssetsData, {
   TAsset,
   TDefineTotalAmountERC20,
-  TDefineTotalAmountERC721,
-  TTotalAmount,
-  TDefineAssetsTotalAmount
+  TTotalAmount
 } from './assets-data'
 import TOwners from './owners'
 import TCommunities from './communities'
@@ -37,10 +35,14 @@ import TSingleLinkData from './single-link-data'
 import TLinkDetails from './link-details'
 import TButtonAppearance from './button-appearance'
 import TAlchemyContract from './alchemy-contract'
+import TAlchemyERC20Contract from './alchemy-erc20-contract'
 import { TAlchemyNFTToken } from './alchemy-nft-token'
+import { TERC20TokenList, TERC20TokenItem } from './erc20-token-list'
 
 export {
   TCampaign,
+  TERC20TokenItem,
+  TERC20TokenList,
   TAlchemyContract,
   TAlchemyNFTToken,
   TLinkDetails,
@@ -55,6 +57,7 @@ export {
   TClaimPattern,
   TLinkContent,
   TFormatTime,
+  TAlchemyERC20Contract,
   TAuthorizationStep,
   TTokenType,
   TCampaignStatus,
@@ -67,10 +70,8 @@ export {
   TSelectOption,
   TDefineTotalAmountERC20,
   TLink,
-  TDefineTotalAmountERC721,
   TTotalAmount,
   TFormatDate,
-  TDefineAssetsTotalAmount,
   TLinkParams,
   TQRStatus,
   TQRSet,

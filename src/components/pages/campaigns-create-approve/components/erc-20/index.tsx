@@ -9,27 +9,32 @@ import {
 } from '../../styled-components'
 import { TProps } from './type'
 import {
-  Container
+  Container,
+  Header,
+  WidgetTitleStyled,
+  TokenBalance,
+  TokenBalanceValue
 } from './styled-components'
 import {
   WidgetComponent,
 } from 'components/pages/common'
+import { defineIfUserHasEnoughERC20Tokens } from 'helpers'
 import LinksContents from '../links-contents'
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
+import { Tooltip } from 'components/common'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent } from 'types'
-import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import Icons from 'icons'
+import { utils, BigNumber } from 'ethers'
 
 const mapStateToProps = ({
   user: {
     address,
     provider,
     chainId,
-    nativeTokenAmountFormatted,
-    tokenAmountFormatted,
-    loading: userLoading
+    loading: userLoading,
+    tokenAmount
   },
   campaign: {
     loading,
@@ -46,33 +51,13 @@ const mapStateToProps = ({
   chainId,
   symbol,
   tokenStandard,
-  nativeTokenAmountFormatted,
-  tokenAmountFormatted,
+  tokenAmount,
   userLoading,
   claimPattern
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    setTokenContractData: (
-      provider: any,
-      tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
-      tokenAddress,
-      provider,
-      type,
-      address,
-      chainId
-    )
-  }
-}
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatcherToProps> &
   TProps
 
 const Erc20: FC<ReduxType > = ({
@@ -81,7 +66,10 @@ const Erc20: FC<ReduxType > = ({
   assetsData,
   children,
   sdk,
-  claimPattern
+  claimPattern,
+  symbol,
+  decimals,
+  tokenAmount
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
@@ -101,10 +89,21 @@ const Erc20: FC<ReduxType > = ({
   ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
-    return !formData.tokenAmount || !formData.linksAmount
+    return !formData.tokenAmount ||
+           !formData.linksAmount ||
+           formData.tokenAmount === '0' ||
+           formData.linksAmount === '0'
   }
 
-  return <WidgetComponent title='Add tokens to distribute'>
+  const tokenAmountFormatted = tokenAmount && decimals ? utils.formatUnits(tokenAmount, decimals) : '0'
+
+  return <WidgetComponent>
+      <Header>
+        <WidgetTitleStyled>Add tokens to distribute</WidgetTitleStyled>
+        {tokenAmount && <TokenBalance>
+          Token balance: <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip>
+        </TokenBalance>}
+      </Header>
       <Container>
         <LinksContents
           type={type}
@@ -142,6 +141,15 @@ const Erc20: FC<ReduxType > = ({
             appearance='additional'
             disabled={checkIfDisabled()}
             onClick={() => {
+              const hasEnoughTokens = defineIfUserHasEnoughERC20Tokens(
+                tokenAmount as BigNumber,
+                formData.tokenAmount as string,
+                formData.linksAmount as string,
+                decimals,
+              )
+              if (!hasEnoughTokens) {
+                return alert(`Not enough tokens on balance. Current balance: ${tokenAmountFormatted} ${symbol}`)
+              }
               setAssetsData([ ...assetsData, {
                 ...formData,
                 id: assetsData.length
@@ -165,4 +173,4 @@ const Erc20: FC<ReduxType > = ({
     </WidgetComponent>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(Erc20)
+export default connect(mapStateToProps)(Erc20)

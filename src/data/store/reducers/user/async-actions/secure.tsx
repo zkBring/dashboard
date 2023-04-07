@@ -6,23 +6,26 @@ import {
 import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
-import { utils, ethers, BigNumberish } from 'ethers'
+import { utils, ethers, BigNumberish, BigNumber } from 'ethers'
 import { RootState } from 'data/store'
 import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
-import { defineNativeTokenSymbol, defineNetworkName } from 'helpers'
+import { defineNativeTokenSymbol, defineNetworkName, alertError } from 'helpers'
 import { plausibleApi } from 'data/api'
 
 const secure = (
-  totalNativeTokensAmountToSecure: string,
+  totalNativeTokensAmountToSecure: BigNumber,
   nativeTokensPerLink: string,
   walletApp: string,
   callback?: () => void
 ) => {
-  return async (dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>, getState: () => RootState) => {
+  return async (
+    dispatch: Dispatch<UserActions>  & Dispatch<CampaignActions>,
+    getState: () => RootState
+  ) => {
     const {
       user: {
-        provider,
+        signer,
         address,
         chainId,
         nativeTokenAmount
@@ -40,24 +43,23 @@ const secure = (
 
     try {
       if (!proxyContractAddress) {
-        return alert('No proxy address provided')
+        return alertError('No proxy address provided')
       }
       if (!symbol) {
-        return alert('No symbol provided')
+        return alertError('No symbol provided')
       }
       if (!chainId) {
-        return alert('No chainId provided')
+        return alertError('No chainId provided')
       }
       const contract = contracts[chainId]
       dispatch(campaignActions.setLoading(true))
       const newWallet = ethers.Wallet.createRandom()
       const { address: wallet, privateKey } = newWallet
-      const signer = await provider.getSigner()
       const factoryContract = await new ethers.Contract(contract.factory, LinkdropFactory.abi, signer)
       const isDeployed = await factoryContract.isDeployed(address, id)
       let data
       let to
-      const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, provider)
+      const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, signer)
       plausibleApi.invokeEvent({
         eventName: 'camp_step4_filled',
         data: {
@@ -83,20 +85,19 @@ const secure = (
           wallet
         ])
         to = proxyContractAddress
-        console.log({ proxyContractAddress })
       }
   
-      const value = utils.parseEther(String(totalNativeTokensAmountToSecure))
-      if (value.gte(nativeTokenAmount as BigNumberish)) {
+  
+      if (totalNativeTokensAmountToSecure.gte(nativeTokenAmount as BigNumberish)) {
         const nativeToken = defineNativeTokenSymbol({ chainId })
         dispatch(campaignActions.setLoading(false))
-        return alert(`Not enough ${nativeToken} on account`)
+        return alertError(`Not enough ${nativeToken} on account`)
       }
 
       const transaction = await signer.sendTransaction({
         to,
         from: address,
-        value,
+        value: totalNativeTokensAmountToSecure,
         data: data
       })
       console.log({ transaction }) // hash
@@ -107,7 +108,6 @@ const secure = (
         return new Promise((resolve, reject) => {
           const checkInterval = setInterval(async () => {
             try {
-              console.log({ wallet })
               const res = await proxyContract.isLinkdropSigner(wallet)
               if (res) {
                 resolve(true)
@@ -129,14 +129,11 @@ const secure = (
       }
       const finished = await checkTransaction()
       if (finished) {
-        console.log({ nativeTokensPerLink })
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setNativeTokensPerLink(
-          String(
-            utils.parseEther(
-              String(
-                nativeTokensPerLink || 0
-              )
+          utils.parseEther(
+            String(
+              nativeTokensPerLink || 0
             )
           )
         ))

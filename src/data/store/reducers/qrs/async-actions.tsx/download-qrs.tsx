@@ -9,7 +9,8 @@ import {
   loadImage,
   createDataGroups,
   createWorkers,
-  terminateWorkers
+  terminateWorkers,
+  alertError
 } from 'helpers'
 import { Remote } from 'comlink';
 import { QRsWorker } from 'web-workers/qrs-worker'
@@ -42,8 +43,8 @@ const downloadQRs = ({
     let currentPercentage = 0
     try {
       const neededWorkersCount = qrsArray.length <= 1000 ? 1 : workersCount
-      if (!dashboardKey) { return alert('dashboardKey is not provided') }
-      if (!qrsArray) { return alert('qrsArray is not provided') }
+      if (!dashboardKey) { return alertError('dashboardKey is not provided') }
+      if (!qrsArray) { return alertError('qrsArray is not provided') }
       const start = +(new Date())
       
       const updateProgressbar = async (value: number) => {
@@ -53,7 +54,7 @@ const downloadQRs = ({
         await sleep(1)
       }
 
-      const qrOption = qrOptions[REACT_APP_QR_OPTIONS || 'ledger']
+      const qrOption = qrOptions[REACT_APP_QR_OPTIONS || 'linkdrop']
 
       const resp = await fetch(qrOption.icon)
       const blob = await resp.blob()
@@ -106,7 +107,7 @@ const downloadQRs = ({
       currentPercentage = 0
       dispatch(actionsQR.setDownloadLoader(0))
       callback && callback()
-      alert('Some error occured, check console for more information')
+      alertError('check console for more information')
       console.error(err)
     }
     dispatch(actionsQR.setLoading(false))

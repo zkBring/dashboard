@@ -1,4 +1,4 @@
-import { TTokenType, TCampaign, TLinkContent, TClaimPattern } from 'types'
+import { TTokenType, TCampaign, TLinkContent, TClaimPattern, TAssetsData } from 'types'
 
 export type TLinksContent = TLinkContent[]
 

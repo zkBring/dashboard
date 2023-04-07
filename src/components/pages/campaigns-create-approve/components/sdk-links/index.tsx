@@ -2,10 +2,7 @@ import { FC, useState } from 'react'
 import {
   InputsContainer,
   InputStyled,
-  ButtonStyled,
-  NotesContainer,
-  TextBold,
-  InstructionNoteStyled
+  ButtonStyled
 } from '../../styled-components'
 import { TProps } from './types'
 import {
@@ -16,19 +13,15 @@ import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent } from 'types'
-import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
   WidgetComponent
 } from 'components/pages/common'
-import Icons from 'icons'
 
 const mapStateToProps = ({
   user: {
     address,
     provider,
     chainId,
-    nativeTokenAmountFormatted,
-    tokenAmountFormatted,
     loading: userLoading
   },
   campaign: {
@@ -46,29 +39,12 @@ const mapStateToProps = ({
   chainId,
   symbol,
   tokenStandard,
-  nativeTokenAmountFormatted,
-  tokenAmountFormatted,
   userLoading,
   claimPattern
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    setTokenContractData: (
-      provider: any,
-      tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
-      tokenAddress,
-      provider,
-      type,
-      address,
-      chainId
-    )
-  }
+  return {}
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
@@ -102,7 +78,7 @@ const SDKLinks: FC<ReduxType > = ({
     return Boolean(assetsData.length)
   }
 
-  return <WidgetComponent title='Specify number of NFTs'>
+  return <WidgetComponent title={tokenStandard === 'ERC20' ? 'Specify number of tokens' : 'Specify number of NFTs'}>
     <Container>
       <LinksContents
         type={type}
@@ -116,7 +92,7 @@ const SDKLinks: FC<ReduxType > = ({
       <InputsContainer>
         <InputStyled
           value={formData.tokenId}
-          placeholder='Number of NFTs'
+          placeholder={tokenStandard === 'ERC20' ? 'Number of tokens' : 'Number of NFTs'}
           disabled={Boolean(assetsData.length)}
           onChange={value => {
             const pattern = /^[0-9]+$/

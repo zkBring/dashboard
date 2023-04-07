@@ -3,12 +3,12 @@ import { TTokenType } from './index.js'
 type TAlchemyContract = {
   address: string
   name: string
-  numDistinctTokensOwned: 1
+  numDistinctTokensOwned: number
   symbol: string
   title: string
   tokenId: string
   tokenType: TTokenType
-  totalBalance: 1
+  totalBalance: number
 }
 
 export default TAlchemyContract

@@ -7,6 +7,7 @@ import {
 } from 'helpers'
 import { useParams } from 'react-router-dom'
 import { TLinkParams, TSelectOption } from 'types'
+import { utils } from 'ethers'
 import {
   WidgetComponent,
   Container,
@@ -29,6 +30,7 @@ import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { useHistory } from 'react-router-dom'
 import { shortenString, defineNetworkName } from 'helpers'
+import { BigNumber } from 'ethers'
 
 const mapStateToProps = ({
   user: {
@@ -69,7 +71,7 @@ const mapStateToProps = ({
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     secure: (
-      totalNativeTokensAmountToSecure: string,
+      totalNativeTokensAmountToSecure: BigNumber,
       nativeTokensPerLink: string,
       walletApp: string,
       callback: () => void
@@ -178,7 +180,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         action: () => {
           const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
           secure(
-            String(totalNativeTokensAmountToSecure),
+            totalNativeTokensAmountToSecure,
             nativeTokensAmount,
             String(currentWallet.value),
             () => history.push(redirectURL)
@@ -238,19 +240,19 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
           <TableRow>
             <TableText>To be secured (sponsorship)</TableText>
-            <TableValue>{String(totalComission)} {nativeTokenSymbol}</TableValue>
+            <TableValue>{String(utils.formatUnits(totalComission, 18))} {nativeTokenSymbol}</TableValue>
           </TableRow>
 
           <TableRow>
             <TableText>Included into the links</TableText>
-            <TableValue>{String(totalNativeTokensAmount)} {nativeTokenSymbol}</TableValue>
+            <TableValue>{String(utils.formatUnits(totalNativeTokensAmount, 18))} {nativeTokenSymbol}</TableValue>
           </TableRow>
 
           <AsideDivider />
 
           <TableRow>
             <TableText>Total amount</TableText>
-            <TableValue>{String(totalNativeTokensAmountToSecure)} {nativeTokenSymbol}</TableValue>
+            <TableValue>{String(utils.formatUnits(totalNativeTokensAmountToSecure, 18))} {nativeTokenSymbol}</TableValue>
           </TableRow>
         </>}
 

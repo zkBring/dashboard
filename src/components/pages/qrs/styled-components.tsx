@@ -8,7 +8,6 @@ import {
   BatchList
 } from 'components/pages/common'
 
-
 export const Container = styled.div`
   display: flex;
   flex-direction: column;

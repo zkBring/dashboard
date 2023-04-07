@@ -7,17 +7,18 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import {
-  countAssetsTotalAmountERC20,
-  defineNetworkName
+  defineNetworkName,
+  alertError
 } from 'helpers'
 import { utils, ethers } from 'ethers'
 import { RootState } from 'data/store';
 import { ERC20Contract } from 'abi'
-import { TAssetsData, TLinkContent, TDistributionPattern } from 'types'
+import { TAssetsData, TLinkContent, TTotalAmount } from 'types'
 import { plausibleApi } from 'data/api'
 
 const approve = (
   assets: TAssetsData,
+  totalAmount: TTotalAmount,
   assetsOriginal: TLinkContent[],
   sdk: boolean,
   sponsored: boolean,
@@ -33,9 +34,10 @@ const approve = (
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {
-        provider,
+        signer,
         address,
-        chainId
+        chainId,
+        tokenAmount
       },
       campaign: {
         tokenAddress,
@@ -49,33 +51,51 @@ const approve = (
 
     try {
       if (!tokenAddress) {
-        return alert('No token address provided')
+        return alertError('No token address provided')
       }
       if (!assets) {
-        return alert('No assets provided')
+        return alertError('No assets provided')
       }
       if (!symbol) {
-        return alert('No symbol provided')
+        return alertError('No symbol provided')
       }
       if (!decimals) {
-        return alert('No decimals provided')
+        return alertError('No decimals provided')
       }
       if (!proxyContractAddress) {
-        return alert('No proxy address provided')
+        return alertError('No proxy address provided')
       }
       if (!address) {
-        return alert('No user address provided')
+        return alertError('No user address provided')
       }
       dispatch(campaignActions.setLoading(true))
       dispatch(campaignActions.setClaimPattern('transfer'))
-      const signer = await provider.getSigner()
       const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
       let iface = new utils.Interface(ERC20Contract.abi)
-      const assetsTotal = countAssetsTotalAmountERC20(assets)
-      const amountFormatted = assetsTotal.amount
-      if (!amountFormatted) { return }
+
+      const amountToApprove = totalAmount.amount
+      const amountToApproveFormatted = totalAmount.original_amount
+
+      if (!amountToApprove || !amountToApproveFormatted) {
+        dispatch(campaignActions.setLoading(false))
+        return alertError(`Cannot define amount of tokens to approve`)
+      }
+
+      if (!tokenAmount) {
+        dispatch(campaignActions.setLoading(false))
+        return alertError(`No tokens to approve`)
+      }
+
+      console.log({ amountToApprove, tokenAmount })
+
+      if (amountToApprove.gt(tokenAmount)) {
+        dispatch(campaignActions.setLoading(false))
+        return alertError(
+          `Not enough tokens to approve. Current balance: ${utils.formatUnits(tokenAmount, decimals)}, tokens to approve: ${amountToApproveFormatted}`
+        )
+      }
       const data = await iface.encodeFunctionData('approve', [
-        proxyContractAddress, String(amountFormatted)
+        proxyContractAddress, String(amountToApprove)
       ])
       
       plausibleApi.invokeEvent({
@@ -97,10 +117,10 @@ const approve = (
       })
   
       const checkTransaction = async function (): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           const checkInterval = setInterval(async () => {
             const allowed = await contractInstance.allowance(address, proxyContractAddress)
-            if (allowed >= amountFormatted) {
+            if (allowed >= amountToApprove) {
               resolve(true)
               clearInterval(checkInterval)
             }
@@ -123,6 +143,7 @@ const approve = (
         if (callback) { callback() }
       }
     } catch (err) {
+      alertError('Check console for more information')
       console.log({
         err
       })

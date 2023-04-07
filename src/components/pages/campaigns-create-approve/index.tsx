@@ -7,13 +7,12 @@ import { Erc20, Erc721, Erc1155, CSVUploadPopup, SDKLinks, AsideContents } from 
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TAssetsData, TLinkContent, TLinkParams, TClaimPattern } from 'types'
+import { TAssetsData, TLinkContent, TLinkParams, TClaimPattern, TTotalAmount } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import Icons from 'icons'
 import { TextLink } from 'components/common'
-import { bignumber, multiply } from 'mathjs'
 import {
   WidgetComponent,
   Container,
@@ -28,7 +27,9 @@ import { CampaignActions } from 'data/store/reducers/campaign/types'
 import {
   convertLinksContent,
   defineNativeTokenSymbol,
-  countNativeTokensToSecure
+  countNativeTokensToSecure,
+  alertError,
+  countAssetsTotalAmountERC20
 } from 'helpers'
 import { TAsideContentsProps } from './components/aside-contents/types'
 import { plausibleApi } from 'data/api'
@@ -93,6 +94,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
     },
     approveERC20: (
       assets: TAssetsData,
+      totalAmount: TTotalAmount,
       assetsOriginal: TLinkContent[],
       sdk: boolean,
       sponsored: boolean,
@@ -101,6 +103,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       dispatch(
         userAsyncActions.approveERC20(
           assets,
+          totalAmount,
           assetsOriginal,
           sdk,
           sponsored,
@@ -180,20 +183,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       id?: string
     ) => dispatch(
       campaignAsyncActions.createProxyContract(id)
-    ),
-    setTokenContractData: (
-      provider: any,
-      tokenAddress: string,
-      type: TTokenType,
-      address: string,
-      chainId: number
-    ) => campaignAsyncActions.setTokenContractData(
-      dispatch,
-      tokenAddress,
-      provider,
-      type,
-      address,
-      chainId
     ),
     setAssetsData: (
       assets: TAssetsData,
@@ -295,7 +284,9 @@ const renderAsideContents = ({
   claimPattern,
   data,
   sponsored,
-  totalComission
+  totalComission,
+  symbol,
+  totalAmount
 }: TAsideContentsProps) => {
   return <AsideContents
     approved={approved}
@@ -310,6 +301,8 @@ const renderAsideContents = ({
     data={data}
     sponsored={sponsored}
     totalComission={totalComission}
+    symbol={symbol}
+    totalAmount={totalAmount}
   />
 }
 
@@ -361,7 +354,6 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
   const [ sponsored, setSponsored ] = useState<boolean>(true)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-  const comission = bignumber(String(comissionPrice))
   const content = defineComponent(
     type,
     data,
@@ -407,15 +399,12 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     setAssetsParsedValue(assets)
   }, [data])
 
-  const potentialComission = multiply(
-    comission,
-    assetsParsed.length
-  )
-
   const isSponsored = [
     { value: true, label: `Sponsor claiming gas fees (+ ${comissionPrice} ${nativeTokenSymbol} per link)` },
     { value: false, label: `No sponsoring` }
   ]
+
+  const totalAmount = tokenStandard !== 'ERC20' ? undefined : countAssetsTotalAmountERC20(assetsParsed, decimals)
 
   const {
     totalComission
@@ -484,10 +473,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             history.push(defineRedirectUrl())
           }
           if (whitelisted && REACT_APP_PRO_PLAN_LINKS_LIMIT && assetsParsed.length > Number(REACT_APP_PRO_PLAN_LINKS_LIMIT as string)) {
-            return alert(`Pro plan is limited to ${REACT_APP_PRO_PLAN_LINKS_LIMIT} links per batch. Contact us if you need to increase limits.`)
+            return alertError(`Pro plan is limited to ${REACT_APP_PRO_PLAN_LINKS_LIMIT} links per batch. Contact us if you need to increase limits.`)
           }
           if (!whitelisted && REACT_APP_STARTER_PLAN_LINKS_LIMIT && assetsParsed.length > Number(REACT_APP_STARTER_PLAN_LINKS_LIMIT as string)) {
-            return alert(`Starter plan is limited to ${REACT_APP_STARTER_PLAN_LINKS_LIMIT} links per batch. Upgrade your plan to increase limits.`)
+            return alertError(`Starter plan is limited to ${REACT_APP_STARTER_PLAN_LINKS_LIMIT} links per batch. Upgrade your plan to increase limits.`)
           }
           if (claimPattern === 'mint') {
             return grantRole(
@@ -510,6 +499,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             }
             approveERC20(
               assetsParsed,
+              totalAmount as TTotalAmount,
               data,
               sdk,
               sponsored,
@@ -551,7 +541,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
         claimPattern,
         data,
         sponsored,
-        totalComission
+        totalComission,
+        symbol,
+        totalAmount: totalAmount as TTotalAmount
       })}
     </Aside>
     

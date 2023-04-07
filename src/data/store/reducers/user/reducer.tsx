@@ -9,20 +9,22 @@ const initialState: UserState = {
   address: '',
   loading: false,
   provider: null,
+  jsonRPCProvider: null,
+  signer: null,
   chainId: null,
   nativeTokenAmount: null,
   tokenAmount: null,
-  nativeTokenAmountFormatted: null,
-  tokenAmountFormatted: null,
   sdk: null,
   dashboardKey: null,
   workersCount: (navigator && navigator.hardwareConcurrency) || 4,
   authorizationStep: 'initial',
   chainsAvailable: chainsAvailable,
   contracts: [],
+  contractsERC20: [],
   nfts: [],
   whitelisted: null,
-  comission: '0'
+  comission: '0',
+  tokenListERC20: {}
 };
 
 export function userReducer(
@@ -36,6 +38,10 @@ export function userReducer(
         return {...state, loading: action.payload.loading }
       case Constants.USER_SET_PROVIDER:
         return {...state, provider: action.payload.provider }
+      case Constants.USER_SET_JSON_RPC_PROVIDER:
+        return {...state, jsonRPCProvider: action.payload.jsonRPCProvider }
+      case Constants.USER_SET_SIGNER:
+        return {...state, signer: action.payload.signer }
       case Constants.USER_SET_CHAIN_ID:
         return {...state, chainId: action.payload.chainId }
       case Constants.USER_SET_SDK:
@@ -46,6 +52,10 @@ export function userReducer(
         return {...state, authorizationStep: action.payload.authorizationStep }
       case Constants.USER_SET_CONTRACTS:
         return {...state, contracts: action.payload.contracts }
+      case Constants.USER_SET_TOKEN_LIST_ERC20:
+        return {...state, tokenListERC20: action.payload.tokenListERC20 }
+      case Constants.USER_SET_CONTRACTS_ERC20:
+        return {...state, contractsERC20: action.payload.contractsERC20 }
       case Constants.USER_SET_NFTS:
         return {...state, nfts: action.payload.nfts }
       case Constants.USER_SET_WHITELISTED:
@@ -56,13 +66,11 @@ export function userReducer(
         return {
           ...state,
           tokenAmount: action.payload.tokenAmount,
-          tokenAmountFormatted: action.payload.tokenAmountFormatted
         }
       case Constants.USER_SET_NATIVE_TOKEN_AMOUNT:
         return {
           ...state,
           nativeTokenAmount: action.payload.nativeTokenAmount,
-          nativeTokenAmountFormatted: action.payload.nativeTokenAmountFormatted
         }
       default:
           return state;

@@ -4,6 +4,7 @@ import qrsApi from './qrs-api'
 import getERC1155AssetData from './get-erc1155-asset-data'
 import dashboardKeyApi from './dashboard-key-api'
 import plausibleApi from './plausible-api'
+import getTokenERC20List from './get-erc20-token-list'
 
 export {
   authorizationApi,
@@ -11,5 +12,6 @@ export {
   qrsApi,
   getERC1155AssetData,
   dashboardKeyApi,
-  plausibleApi
+  plausibleApi,
+  getTokenERC20List
 }

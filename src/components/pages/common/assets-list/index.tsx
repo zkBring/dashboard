@@ -24,7 +24,7 @@ const AssetsList: FC<TProps> = ({
       case 'ERC20':
         return <>
           <TableText>
-            Copies/links
+            Amount/links
           </TableText>
           <TableValue>
             {item.tokenAmount} per link / {item.linksAmount} link(s)

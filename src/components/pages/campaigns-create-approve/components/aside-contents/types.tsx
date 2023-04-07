@@ -1,6 +1,6 @@
-import { TAssetsData, TClaimPattern, TTokenType } from "types"
+import { TAssetsData, TClaimPattern, TTokenType, TTotalAmount } from "types"
 import { TLinksContent } from '../../types'
-import { MathType } from 'mathjs'
+import { BigNumber } from 'ethers'
 
 export type TAsideContentsProps = {
   approved: boolean | null
@@ -14,5 +14,7 @@ export type TAsideContentsProps = {
   claimPattern: TClaimPattern
   data: TLinksContent
   sponsored: boolean
-  totalComission: MathType
+  totalComission: BigNumber
+  symbol: string | null
+  totalAmount?: TTotalAmount
 }

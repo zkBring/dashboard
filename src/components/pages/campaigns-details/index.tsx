@@ -43,7 +43,7 @@ import { TClaimPattern, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
-  user: { address, dashboardKey, provider },
+  user: { address, dashboardKey, signer },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
@@ -51,7 +51,7 @@ const mapStateToProps = ({
   decimals,
   loading,
   dashboardKey,
-  provider
+  signer
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -96,16 +96,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
 
-const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) => {
-  const {
-    campaigns,
-    dashboardKey,
-    match: { params },
-    getCampaignBatches,
-    downloadLinks,
-    provider,
-    address
-  } = props
+const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
+  campaigns,
+  dashboardKey,
+  match: { params },
+  getCampaignBatches,
+  downloadLinks,
+  signer,
+  address
+}) => {
 
   const history = useHistory()
 
@@ -120,7 +119,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     const onInit = async () => {
       const amount = await defineProxyContractFunds(
         proxy_contract_address,
-        provider
+        signer
       )
       setWithdrawable(amount > 0)
     }
@@ -131,7 +130,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
     const onInit = async () => {
       const status = await defineCampaignStatus(
         proxy_contract_address,
-        provider
+        signer
       )
       setStatus(status)
     }
@@ -260,7 +259,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               const result = await campaignPause(
                 proxy_contract_address,
                 address,
-                provider
+                signer
               )
               if (result === 'paused') {
                 plausibleApi.invokeEvent({
@@ -302,7 +301,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               const result = await campaignUnpause(
                 proxy_contract_address,
                 address,
-                provider
+                signer
               )
               if (result === 'active') {
                 plausibleApi.invokeEvent({
@@ -335,7 +334,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = (props) =>
               const result = await campaignRefund(
                 proxy_contract_address,
                 address,
-                provider
+                signer
               )
               if (result) {
                 setWithdrawable(false)
