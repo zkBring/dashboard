@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.8-rc.2
+## 2.1.8
 - Support for Coinbase browser extension
 - Support for Zerion browser extension
 - Support for ERC20 standard campaigns
