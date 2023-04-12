@@ -39,7 +39,7 @@ const LinksPopup: FC<TProps> = ({
         const [ link_id, token_id, token_amount, token_address, claim_code, claim_link ] = item.split(',')
         return {
           link_id,
-          claim_link: claim_link.replace(/(?:\\[rn]|[\r\n]+)+/g, '')
+          claim_link: claim_link.replace(/([\r\n])/g, '')
         }
       })
 
