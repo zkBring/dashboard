@@ -1,12 +1,8 @@
 import styled from "styled-components";
-import {
-  Button,
-  Input
-} from 'components/common'
-import { WidgetTitle, BatchListValue } from 'components/pages/common'
-import {
-  BatchList
-} from 'components/pages/common'
+import { Input } from 'linkdrop-ui'
+import { WidgetTitle, BatchListValue, BatchList } from 'components/pages/common'
+import { Button } from 'components/common'
+
 
 export const Container = styled.div`
   display: flex;

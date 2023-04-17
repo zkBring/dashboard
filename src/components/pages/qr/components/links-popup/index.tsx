@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent } from 'react'
-import { Popup, Note } from 'components/common'
+import { Popup, Note } from 'linkdrop-ui'
 import { TProps } from './types'
 import {
   InputComponent,

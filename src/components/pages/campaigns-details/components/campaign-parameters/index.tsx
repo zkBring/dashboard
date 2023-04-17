@@ -8,7 +8,7 @@ import {
   WidgetComponent
 } from 'components/pages/common'
 import { NoteStyled } from '../../styled-components'
-import { SecretString } from 'components/common'
+import { SecretString } from 'linkdrop-ui'
 
 const CampaignParameters: FC<TProps> = ({
   masterAddress,

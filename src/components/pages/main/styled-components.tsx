@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Widget, Button } from 'components/common'
+import { Widget, Button  } from 'components/common'
 
 export const Container = styled.div`
   display: grid;

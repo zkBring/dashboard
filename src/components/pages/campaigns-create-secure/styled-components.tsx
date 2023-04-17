@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Input, Radio, Select } from 'components/common'
+import { Input, Radio, Select } from 'linkdrop-ui'
 
 export const StyledRadio = styled(Radio)`
   margin-bottom: 20px;

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { Widget, Button } from 'components/common'
+import { Widget } from 'components/common'
+import { Button } from 'components/common'
 
 export const Container = styled.div`
   margin-bottom: 36px;

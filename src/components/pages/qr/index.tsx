@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import { defineQRStatusName, downloadQRsAsCSV } from 'helpers'
 import qrStatus from 'configs/qr-status'
 import { QuantityPopup, LinksPopup, DownloadPopup } from './components'
-import { Note, TextLink } from 'components/common'
+import { TextLink } from 'components/common'
+import { Note } from 'linkdrop-ui'
 import {
   WidgetInfo,
   WidgetValue,

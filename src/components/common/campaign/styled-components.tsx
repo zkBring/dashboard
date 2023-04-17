@@ -1,17 +1,16 @@
 import styled from 'styled-components'
-import { Button } from '../index'
-import { Widget } from '../index'
+import { Widget, Button } from '../index'
+console.log({ Widget, Button })
 
 export const Campaign = styled(Widget)`
   position: relative;
   padding: 24px 16px;
 `
 
-export const CampaignButton = styled(Button)`
+export const CampaignButton = styled(props => <Button {...props} />)`
   width: 100%;
   min-height: 36px;
 `
-
 
 export const CampaignButtons = styled.div`
   display: flex;

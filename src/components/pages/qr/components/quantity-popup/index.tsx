@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Popup } from 'components/common'
+import { Popup } from 'linkdrop-ui'
 import { TProps } from './types'
 import {
   InputComponent,

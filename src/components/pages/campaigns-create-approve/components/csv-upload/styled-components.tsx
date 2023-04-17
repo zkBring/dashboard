@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { Button, Input, Popup } from "components/common"
+import { Input, Popup } from "linkdrop-ui"
+import { Button } from 'components/common'
 
 export const PopupFormContent = styled.div`
   margin-bottom: 20px;

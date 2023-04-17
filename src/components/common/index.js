@@ -1,16 +1,8 @@
 import Header from "./header"
 import Aside from "./aside"
-import Button from "./button"
-import LaunchButton from "./launch-button"
-import Input from "./input"
-import MiniWidget from "./mini-widget"
 import Tag from './tag'
-import Select from './select'
 import Widget from './widget'
-import CommunityWidget from './comminity-widget'
-import Textarea from './textarea'
 import DataBlock from './data-block'
-import Loader from './loader'
 import Title from './title'
 import Campaign from './campaign'
 import Breadcrumbs from './breadcrumbs'
@@ -19,36 +11,21 @@ import TextLink from './text-link'
 import MiniPopup from './mini-popup'
 import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/styled-components'
 import TransactionDetails from './transaction-details'
-import Checkbox from './checkbox'
-import ProgressBar from './progress-bar'
-import Popup from './popup'
-import Note from './note'
-import Radio from './radio'
 import CheckListItem from './check-list-item'
-import SecretString from './secret-string'
-import Switcher from './switcher'
 import InformationContainer from './information-container'
 import Tooltip from './tooltip'
+import Button from './button'
 
 export {
   Header,
   Aside,
-  InformationContainer,
-  Switcher,
-  SecretString,
-  CheckListItem,
   Button,
-  LaunchButton,
-  Input,
-  MiniWidget,
+  InformationContainer,
+  CheckListItem,
   Tag,
-  Select,
   Widget,
-  Textarea,
   DataBlock,
-  Loader,
   Title,
-  CommunityWidget,
   Campaign,
   Breadcrumbs,
   InfoBlock,
@@ -59,10 +36,5 @@ export {
   WidgetTextBlock,
   TransactionDetails,
   WidgetData,
-  Checkbox,
-  ProgressBar,
-  Popup,
-  Note,
-  Radio,
   Tooltip
 }

@@ -55,7 +55,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading }) 
               key={campaign.campaign_id}
               chainId={campaign.chain_id}
               type={campaign.token_standard}
-              symbol={campaign.symbol}
               linksAmount={campaign.links_count}
               proxyContractAddress={campaign.proxy_contract_address}
               claimPattern={campaign.claim_pattern}
