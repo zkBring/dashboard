@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
-import { Button, MiniPopup, Loader } from 'components/common'
+import { MiniPopup, Button } from 'components/common'
+import { Loader } from 'linkdrop-ui'
 import { TOptionItem } from './types'
 
 export const ButtonStyled = styled(Button)`

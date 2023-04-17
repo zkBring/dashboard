@@ -1,13 +1,8 @@
 import styled from "styled-components";
 import {
-  Button,
   Input
-} from 'components/common'
-import { WidgetTitle } from 'components/pages/common'
-
-import {
-  BatchList
-} from 'components/pages/common'
+} from 'linkdrop-ui'
+import { Button } from 'components/common'
 
 
 export const Container = styled.div`

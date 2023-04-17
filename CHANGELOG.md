@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.9-rc.0
+- Integration of external UI-kit library
+
 ## 2.1.8
 - Support for Coinbase browser extension
 - Support for Zerion browser extension

@@ -1,9 +1,10 @@
-import { Button, Input, ProgressBar } from "components/common"
+import { Input, ProgressBar } from "linkdrop-ui"
+import { Button } from 'components/common'
 import styled from "styled-components"
 import {
   WidgetSubtitle
 } from 'components/pages/common'
-import { Select } from 'components/common'
+import { Select } from 'linkdrop-ui'
 import Icons from 'icons'
 
 export const WidgetInfo = styled.div`

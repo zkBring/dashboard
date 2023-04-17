@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ProgressBar } from 'components/common'
+import { ProgressBar } from 'linkdrop-ui'
 
 export const Container = styled.div`
   display: flex;

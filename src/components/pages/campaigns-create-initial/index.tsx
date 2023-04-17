@@ -22,7 +22,7 @@ import {
   WidgetSubtitle,
   WidgetContainer
 } from 'components/pages/common'
-import { Note } from 'components/common'
+import { Note } from 'linkdrop-ui'
 import { shortenString, defineNetworkName } from 'helpers'
 
 const mapStateToProps = ({

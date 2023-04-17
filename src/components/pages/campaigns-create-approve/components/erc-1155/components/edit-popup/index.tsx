@@ -11,7 +11,6 @@ import {
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { defineIfUserOwnsToken } from 'helpers'
-import { ethers } from 'ethers'
 
 const mapStateToProps = ({
   user: {
