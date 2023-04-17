@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Widget, Button } from '../index'
-console.log({ Widget, Button })
 
 export const Campaign = styled(Widget)`
   position: relative;
