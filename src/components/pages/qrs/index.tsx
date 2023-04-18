@@ -58,7 +58,7 @@ const QRs: FC<ReduxType> = ({
         <WidgetTitleStyled>My QR codes</WidgetTitleStyled>
         <ContainerButton
           title='+ Create QR codes'
-          size='small'
+          size='extra-small'
           appearance='action'
           to='/qrs/new'
         />
@@ -84,7 +84,7 @@ const QRs: FC<ReduxType> = ({
             <BatchListValueStyled>
               <Button
                 appearance='additional'
-                size='small'
+                size='extra-small'
                 title='Manage'
                 to={`/qrs/${qr.set_id}`}
               />

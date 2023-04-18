@@ -146,7 +146,7 @@ const QR: FC<ReduxType> = ({
         </TableValue>
         <TableValue>
           <WidgetButton
-            size='small'
+            size='extra-small'
             disabled={false}
             appearance='additional'
             title='Update links'
@@ -203,7 +203,7 @@ const QR: FC<ReduxType> = ({
         </WidgetValue>
         <WidgetButton
           title='Change quantity'
-          size='small'
+          size='extra-small'
           appearance='additional'
           disabled={qr.links_uploaded || qr.status !== 'NOT_SENT_TO_PRINTER'}
           onClick={() => {

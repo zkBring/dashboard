@@ -1,3 +1,3 @@
-type TButtonAppearance = 'action' | 'action-inverted' | 'default' | 'default-inverted' | 'additional'
+type TButtonAppearance = 'action' | 'default' | 'additional'
 
 export default TButtonAppearance

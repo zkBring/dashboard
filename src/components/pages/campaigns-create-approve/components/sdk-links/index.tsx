@@ -104,7 +104,7 @@ const SDKLinks: FC<ReduxType > = ({
         />
 
         <ButtonStyled
-          size='small'
+          size='extra-small'
           appearance='additional'
           disabled={checkIfDisabled()}
           onClick={() => {
