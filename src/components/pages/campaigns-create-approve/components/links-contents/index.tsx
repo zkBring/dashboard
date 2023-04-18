@@ -39,7 +39,7 @@ const SDKContent: FC<TLinkContent & { onRemove: TOnRemove }> = ({
 
     <LinkContentsControls>
     <ButtonStyled
-        size='small'
+        size='extra-small'
         appearance='additional'
         onClick={() => {
           if (id === undefined) { return }
@@ -74,7 +74,7 @@ const MintPatternContents: FC<TLinkContent & { onRemove: TOnRemove }> = ({
 
     <LinkContentsControls>
     <ButtonStyled
-        size='small'
+        size='extra-small'
         appearance='additional'
         onClick={() => {
           if (id === undefined) { return }
@@ -110,7 +110,7 @@ const ERC721Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
 
     <LinkContentsControls>
       <ButtonStyled
-        size='small'
+        size='extra-small'
         appearance='additional'
         onClick={() => {
           if (id === undefined) { return }
@@ -166,7 +166,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove, onEdit?: TOnEdit 
         </LinksContentDataValue>
       </LinksContentDataItem>
       <ButtonStyled
-        size='small'
+        size='extra-small'
         appearance='additional'
         onClick={() => {
           if (id === undefined) { return }
@@ -176,7 +176,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove, onEdit?: TOnEdit 
         Edit
       </ButtonStyled>
       <ButtonStyled
-        size='small'
+        size='extra-small'
         appearance='additional'
         onClick={() => {
           if (id === undefined) { return }
@@ -220,7 +220,7 @@ const ERC20Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
 
     <LinkContentsControls>
     <ButtonStyled
-        size='small'
+        size='extra-small'
         appearance='additional'
         onClick={() => {
           if (id === undefined) { return }

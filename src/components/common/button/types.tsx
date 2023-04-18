@@ -9,7 +9,7 @@ export type TProps<TLoadingType = boolean> = {
   onClick?: () => void
   appearance?: TButtonAppearance
   className?: string
-  size?: 'default' | 'small'
+  size?: 'default' | 'extra-small' | 'small' | 'large'
   href?: string
   to?: string
   target?: TButtonTarget

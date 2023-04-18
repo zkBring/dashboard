@@ -137,7 +137,7 @@ const Erc20: FC<ReduxType > = ({
           />
 
           <ButtonStyled
-            size='small'
+            size='extra-small'
             appearance='additional'
             disabled={checkIfDisabled()}
             onClick={() => {
