@@ -48,9 +48,11 @@ import defineIfUserOwnsContractERC20 from './define-if-user-owns-contract-erc20'
 import alertError from './alert-error'
 import prepareERC20Url from './prepare-erc20-list'
 import defineIfUserHasEnoughERC20Tokens from './define-if-user-has-enough-erc20-token'
+import defineQROptions from './define-qr-options'
 
 export {
   alertError,
+  defineQROptions,
   prepareERC20Url,
   defineIfUserHasEnoughERC20Tokens,
   shortenString,

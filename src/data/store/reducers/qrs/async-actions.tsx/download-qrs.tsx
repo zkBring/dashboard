@@ -10,11 +10,11 @@ import {
   createDataGroups,
   createWorkers,
   terminateWorkers,
-  alertError
+  alertError,
+  defineQROptions
 } from 'helpers'
 import { Remote } from 'comlink';
 import { QRsWorker } from 'web-workers/qrs-worker'
-import qrOptions from 'configs/qr-options'
 import { plausibleApi } from 'data/api'
 const {
   REACT_APP_CLAIM_APP,
@@ -39,7 +39,7 @@ const downloadQRs = ({
     getState: () => RootState
   ) => {
     dispatch(actionsQR.setLoading(true))
-    const { user: { dashboardKey, workersCount } } = getState()
+    const { user: { dashboardKey, workersCount, address } } = getState()
     let currentPercentage = 0
     try {
       const neededWorkersCount = qrsArray.length <= 1000 ? 1 : workersCount
@@ -54,7 +54,7 @@ const downloadQRs = ({
         await sleep(1)
       }
 
-      const qrOption = qrOptions[REACT_APP_QR_OPTIONS || 'linkdrop']
+      const qrOption = defineQROptions(address)
 
       const resp = await fetch(qrOption.icon)
       const blob = await resp.blob()
