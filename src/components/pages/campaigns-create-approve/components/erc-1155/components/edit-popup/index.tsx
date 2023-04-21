@@ -11,12 +11,11 @@ import {
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { defineIfUserOwnsToken } from 'helpers'
-import { ethers } from 'ethers'
 
 const mapStateToProps = ({
   user: {
     address,
-    provider
+    signer
   },
   campaign: {
     tokenAddress,
@@ -26,7 +25,7 @@ const mapStateToProps = ({
   tokenAddress,
   address,
   tokenStandard,
-  provider
+  signer
 })
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
@@ -38,7 +37,7 @@ const EditPopup: FC<ReduxType> = ({
   assets,
   tokenAddress,
   tokenStandard,
-  provider,
+  signer,
   address,
   onUpdate
 }) => {
@@ -47,15 +46,16 @@ const EditPopup: FC<ReduxType> = ({
   const [ linksLimit, setLinksLimit ] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!currentAsset || !provider || !tokenStandard || !tokenAddress || !address) { return }
+    if (!currentAsset || !signer || !tokenStandard || !tokenAddress || !address) { return }
     const init = async () => {
       const ownership = await defineIfUserOwnsToken(
         address,
         tokenStandard,
         tokenAddress,
-        provider,
+        signer,
         currentAsset?.tokenId as string
       )
+
       if (ownership.owns) {
         setLinksLimit(ownership.balance)
       }
@@ -64,6 +64,7 @@ const EditPopup: FC<ReduxType> = ({
   }, [])
 
   const showError = linksLimit !== null && Number(linksAmount) > Number(linksLimit)
+
   return <PopupStyled
     title='Edit quantity of links'
     onClose={() => {
@@ -85,8 +86,8 @@ const EditPopup: FC<ReduxType> = ({
             }
             return value
           }}
-          error={showError ? `Value cannot be less than 1 and more than ${linksLimit}` : undefined}
-          note={showError ? undefined : `Value cannot be less than 1 and more than ${linksLimit}`}
+          error={linksLimit && showError ? `Value cannot be less than 1 and more than ${linksLimit}` : undefined}
+          note={linksLimit && showError ? undefined : `Value cannot be less than 1 and more than ${linksLimit}`}
         />
       </PopupFormContent>
       <Buttons>

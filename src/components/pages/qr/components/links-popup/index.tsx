@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent } from 'react'
-import { Popup, Note } from 'components/common'
+import { Popup, Note } from 'linkdrop-ui'
 import { TProps } from './types'
 import {
   InputComponent,
@@ -30,17 +30,19 @@ const LinksPopup: FC<TProps> = ({
     reader.readAsBinaryString(file.files[0])
     reader.onloadend = function () {
       const lines = (reader.result as string).split('\n')
-      if (!lines[0].includes('link_id,token_id,token_amount,token_address,claim_code,claim_link')) {
+      if (!lines[0].startsWith('link_id,token_id,token_amount,token_address,claim_code,claim_link')) {
         return alertError('Invalid file. File should be downloaded from campaigns page')
       }
       lines.shift()
+
       const links = lines.map(item => {
         const [ link_id, token_id, token_amount, token_address, claim_code, claim_link ] = item.split(',')
         return {
           link_id,
-          claim_link
+          claim_link: claim_link.replace(/([\r\n])/g, '')
         }
       })
+
       if (links.length !== Number(quantity)) {
         return alertError(`Amount of links should be equal to an amount of QRs. Number of links is ${links.length}, but ${quantity} needed`)
       }

@@ -383,7 +383,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <WidgetTitleStyled>{title || `Campaign ${campaign_id}`}</WidgetTitleStyled>
           {!sdk && <WidgetButton
             appearance='additional'
-            size='small'
+            size='extra-small'
             title='+ Add batch'
             onClick={() => {
               history.push(`/campaigns/edit/${token_standard}/${campaign_id}/new`)

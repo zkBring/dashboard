@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.9
+- Integration of external UI-kit library
+- Added custom qr-code options for whitelisted accounts 
+
 ## 2.1.8
 - Support for Coinbase browser extension
 - Support for Zerion browser extension

@@ -113,7 +113,7 @@ const createInputsContainer = (
     />
 
     <ButtonStyled
-      size='small'
+      size='extra-small'
       disabled={checkIfDisabled()}
       appearance='additional'
       onClick={() => {
@@ -361,7 +361,7 @@ const Erc1155: FC<ReduxType > = ({
       <ButtonStyled
         disabled={checkIfAllTokensDisabled()}
         appearance='additional'
-        size='small'
+        size='extra-small'
         onClick={addAllTokens}
       >
         Select All

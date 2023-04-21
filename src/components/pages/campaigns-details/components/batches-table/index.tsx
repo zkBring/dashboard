@@ -55,7 +55,7 @@ const BatchesList: FC<TProps> = ({
         <WidgetButton
           appearance='action'
           disabled={batch.claim_links_count === 0}
-          size='small'
+          size='extra-small'
           title='Download'
           onClick={() => {
             downloadLinks(

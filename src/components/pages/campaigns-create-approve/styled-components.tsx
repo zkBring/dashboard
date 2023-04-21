@@ -1,5 +1,7 @@
 import styled from 'styled-components'
-import { Radio, Input, Button, Select } from 'components/common'
+import { Radio, Input, Select } from 'linkdrop-ui'
+import { Button } from 'components/common'
+
 import {
   InstructionNote
 } from 'components/pages/common'

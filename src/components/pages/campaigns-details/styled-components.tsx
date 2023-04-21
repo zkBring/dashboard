@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { Widget, Button, Note } from 'components/common'
+import { Widget, Button } from 'components/common'
+import { Note } from 'linkdrop-ui'
 import { WidgetTitle, Aside } from 'components/pages/common'
 
 export const WidgetTitleStyled = styled(WidgetTitle)`

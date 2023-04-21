@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Header, Aside, Breadcrumbs } from 'components/common'
 import { Page, MainContent, Content } from './styled-components'
 import { ThemeProvider } from 'styled-components'

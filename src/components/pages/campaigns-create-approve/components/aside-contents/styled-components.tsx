@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Icons from 'icons'
-import { Loader, Note } from 'components/common'
+import { Loader, Note } from 'linkdrop-ui'
 
 export const AsideNote = styled.div`
   color: ${props => props.theme.primaryHighlightColor};

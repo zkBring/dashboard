@@ -1,6 +1,5 @@
-import {
-  FC
-} from 'react'
+import { FC } from 'react'
+
 import {
   Campaign,
   CampaignRow,
@@ -11,6 +10,7 @@ import {
   CampaignTitle,
   Divider
 } from './styled-components'
+
 import {
   formatDate,
   defineEtherscanUrl,
@@ -18,6 +18,7 @@ import {
   defineNetworkName,
   capitalize
 } from 'helpers'
+
 import {
   TextLink
 } from 'components/common'
@@ -26,7 +27,6 @@ import { TProps } from './types'
 const CampaignComponent: FC<TProps> = ({
   created_at,
   id,
-  symbol,
   chainId,
   type,
   proxyContractAddress,
