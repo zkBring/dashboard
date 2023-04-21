@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.9-rc.0
+## 2.1.9
 - Integration of external UI-kit library
 
 ## 2.1.8
