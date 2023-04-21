@@ -6,7 +6,6 @@ const {
 const defineQROptions = (address: string) => {
   const addressFormatted = address.toLowerCase()
   const configForAddress = addressConfigOptions[addressFormatted]
-  console.log({ configForAddress })
   if (configForAddress) {
     return qrOptions[configForAddress]
   }
