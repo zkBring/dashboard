@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.10-rc.0
+## 2.1.10
 - "Refund" transaction fix
 
 ## 2.1.9
