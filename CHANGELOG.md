@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.10-rc.0
+- "Refund" transaction fix
+
 ## 2.1.9
 - Integration of external UI-kit library
 - Added custom qr-code options for whitelisted accounts 
