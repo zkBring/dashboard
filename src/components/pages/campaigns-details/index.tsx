@@ -27,7 +27,7 @@ import {
   campaignUnpause,
   campaignRefund,
   copyToClipboard,
-  defineProxyContractFunds,
+  defineContractFunds,
   createEncryptionKey
 } from 'helpers'
 import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
@@ -43,7 +43,7 @@ import { TClaimPattern, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
-  user: { address, dashboardKey, signer },
+  user: { address, dashboardKey, signer, jsonRPCProvider },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
@@ -51,7 +51,8 @@ const mapStateToProps = ({
   decimals,
   loading,
   dashboardKey,
-  signer
+  signer,
+  provider: jsonRPCProvider
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -103,7 +104,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   getCampaignBatches,
   downloadLinks,
   signer,
-  address
+  address,
+  provider
 }) => {
 
   const history = useHistory()
@@ -117,9 +119,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
   useEffect(() => {
     const onInit = async () => {
-      const amount = await defineProxyContractFunds(
+      const amount = await defineContractFunds(
         proxy_contract_address,
-        signer
+        provider
       )
       setWithdrawable(amount > 0)
     }
@@ -334,7 +336,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
               const result = await campaignRefund(
                 proxy_contract_address,
                 address,
-                signer
+                signer,
+                provider
               )
               if (result) {
                 setWithdrawable(false)
