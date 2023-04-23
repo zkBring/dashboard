@@ -35,7 +35,7 @@ import defineCampaignStatus from './define-campaign-status'
 import campaignPause from './campaign-pause'
 import campaignUnpause from './campaign-unpause'
 import campaignRefund from './campaign-refund'
-import defineProxyContractFunds from './define-proxy-contract-funds'
+import defineContractFunds from './define-contract-funds'
 import getContractVersion from './get-contract-version'
 import createEncryptionKey from './create-encryption-key'
 import countNativeTokensToSecure from './count-native-tokens-to-secure'
@@ -65,7 +65,7 @@ export {
   countNativeTokensToSecure,
   getContractVersion,
   createEncryptionKey,
-  defineProxyContractFunds,
+  defineContractFunds,
   campaignRefund,
   campaignPause,
   campaignUnpause,

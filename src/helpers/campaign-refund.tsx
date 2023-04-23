@@ -1,11 +1,12 @@
 import { utils, ethers } from 'ethers'
 import {  LinkdropMastercopy } from 'abi'
-import { defineProxyContractFunds } from 'helpers'
+import { defineContractFunds } from 'helpers'
 
 const campaignRefund = async (
   contractAddress: string,
   account: string,
-  signer: any
+  signer: any,
+  provider: any
 ) => {
   let iface = new utils.Interface(LinkdropMastercopy.abi)
   const gasPrice = await signer.getGasPrice()
@@ -19,7 +20,7 @@ const campaignRefund = async (
     return new Promise((resolve, reject) => {
       const checkInterval = setInterval(async () => {
         try {
-          const amount = await defineProxyContractFunds(contractAddress, signer)
+          const amount = await defineContractFunds(contractAddress, provider)
           if (String(amount) === '0') {
             clearInterval(checkInterval)
             resolve(true)
