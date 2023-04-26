@@ -4,7 +4,7 @@ import * as actionsCampaigns from '../../campaigns/actions'
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
-import { TCampaignNew } from 'types'
+import { TCampaignNew, TCampaign } from 'types'
 import { CampaignsActions } from '../../campaigns/types'
 import { campaignsApi } from 'data/api'
 import { encrypt } from 'lib/crypto'
@@ -20,7 +20,7 @@ import { Remote } from 'comlink'
 import { LinksWorker } from 'web-workers/links-worker'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
-import { BigNumber } from 'ethers'
+import * as campaignsActions from '../../campaigns/actions'
 
 const {
   REACT_APP_INFURA_ID,
@@ -147,7 +147,11 @@ const generateERC20Link = ({
             }
           })
           const { campaign_id } = result.data
-          if (callback) { callback(campaign_id) }
+          if (callback) {
+            const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
+            dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
+            callback(campaign_id)
+          }
         }
     
       } else {
@@ -180,8 +184,6 @@ const generateERC20Link = ({
         const result = await campaignsApi.create(newCampaign)
         if (result.data.success) {
           const { campaign } = result.data
-
-          dispatch(actionsCampaigns.addCampaign(campaign))
           plausibleApi.invokeEvent({
             eventName: 'camp_created',
             data: {
@@ -195,6 +197,8 @@ const generateERC20Link = ({
             }
           })
           if (callback) {
+            const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
+            dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
             callback(campaign.campaign_id)
           }
         }
