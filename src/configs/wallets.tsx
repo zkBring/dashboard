@@ -13,13 +13,27 @@ const wallets: TWallet[] = [
   },
   {
     id: 'trust',
-    name: 'Trust',
+    name: 'Trust Wallet',
     chains: ['1', '5', '137', '80001']
   },
   {
     id: 'coinbase_wallet',
     name: 'Coinbase Wallet',
     chains: ['1', '5', '137', '80001']
+  },
+  {
+    id: 'imtoken',
+    name: 'imToken',
+    chains: ['1', '5', '137', '80001']
+  },
+  {
+    id: 'zerion',
+    name: 'Zerion',
+    chains: ['1', '5', '137', '80001']
+  }, {
+    id: 'rainbow',
+    name: 'Rainbow',
+    chains: ['1', '5']
   },
   // {
   //   id: 'imtoken',

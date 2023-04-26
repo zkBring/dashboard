@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.11-rc.0
+- Reload of campaigns after batch creation
+- Wallets list config updated
+
 ## 2.1.10
 - "Refund" transaction fix
 
