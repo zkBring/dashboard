@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux'
-import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import * as userActions from 'data/store/reducers/user/actions'
 import { defineSystem } from 'helpers'
 
@@ -13,14 +12,12 @@ import { IAppDispatch } from 'data/store'
 import { sleep } from 'helpers'
 import { RootState } from 'data/store'
 import { plausibleApi } from 'data/api'
-import { Ethereum } from '@wagmi/connectors'
 
 const initialLoad = () => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
   ) => {
-    const { user: { chainsAvailable } } = getState()
     dispatch(userActions.setLoading(true))
     const system = defineSystem()
     if (system !== 'desktop') {
