@@ -58,6 +58,8 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading }) 
               linksAmount={campaign.links_count}
               proxyContractAddress={campaign.proxy_contract_address}
               claimPattern={campaign.claim_pattern}
+              sponsored={campaign.sponsored || false}
+              linksClaimed={campaign.links_claimed || 0}
             />
           })}
         </Container>

@@ -8,7 +8,8 @@ import {
 import {
   formatTime,
   formatDate,
-  copyToClipboard
+  copyToClipboard,
+  shortenString
 } from 'helpers'
 import {
   WidgetButton,
@@ -30,27 +31,39 @@ const BatchesList: FC<TProps> = ({
     return null
   }
   return <BatchList>
-    <BatchListLabel>{sdk ? 'Batch ID' : 'Batch'}</BatchListLabel>
-    <BatchListLabel>Links</BatchListLabel>
+    <BatchListLabel>#</BatchListLabel>
+    <BatchListLabel>Batch ID</BatchListLabel>
+    
     <BatchListLabel>Created at</BatchListLabel>
+    <BatchListLabel>Links</BatchListLabel>
+    <BatchListLabel>Claims</BatchListLabel>
     <BatchListLabel></BatchListLabel>
     {batches && batches.map((batch, idx) => {
       const dateFormatted = formatDate(batch.created_at || '')
       const timeFormatted = formatTime(batch.created_at || '')
       return <>
         <BatchListValue>
-          {sdk ? <BatchId onClick={() => {
+          {idx + 1}
+        </BatchListValue>
+        <BatchListValue>
+          <BatchId onClick={() => {
             copyToClipboard({ value: batch.batch_id })
           }}>
-            {batch.batch_id}
+            {shortenString(batch.batch_id)}
             <ClipboardCopy><Icons.ClipboardCopyIcon /></ClipboardCopy>
-          </BatchId> :  `#${idx + 1}`}
+          </BatchId>
+        </BatchListValue>
+
+
+        
+        <BatchListValue>
+          {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
         </BatchListValue>
         <BatchListValue>
           {batch.claim_links_count}
         </BatchListValue>
         <BatchListValue>
-          {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
+          {batch.links_claimed}
         </BatchListValue>
         <WidgetButton
           appearance='action'

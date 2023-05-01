@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Button } from 'components/common'
+import { Button, TextLink } from 'components/common'
 import {
   Container,
   ContainerButton,
@@ -10,7 +10,6 @@ import {
   ErrorSpan,
   UploadedSpan
 } from './styled-components'
-
 import {
   BatchListLabel,
   BatchListValue,
@@ -69,6 +68,7 @@ const QRs: FC<ReduxType> = ({
         <BatchListLabel>Quantity</BatchListLabel>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Claim links</BatchListLabel>
+        <BatchListLabel>Linked campaign</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
         {qrs.map(qr => {
@@ -80,6 +80,12 @@ const QRs: FC<ReduxType> = ({
               <Icons.NotUploadedIcon />
               Not uploaded
             </ErrorSpan>}</BatchListValue>
+            <BatchListValue>
+              {
+                (!qr.links_uploaded || !qr.campaign) ?
+                  '-' : <TextLink to={`/campaigns/${(qr.campaign || {}).campaign_id}`}>{(qr.campaign || {}).title}{`->`}</TextLink>
+              }
+            </BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
             <BatchListValueStyled>
               <Button

@@ -19,7 +19,7 @@ export const InputComponent = styled(Input)`
 `
 
 export const BatchListStyled = styled(BatchList)`
-  grid-template-columns: auto auto auto auto auto 180px;
+  grid-template-columns: auto auto auto auto auto auto 180px;
   margin-top: 20px; 
 `
 

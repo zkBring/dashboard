@@ -16,7 +16,9 @@ import {
   WidgetButton,
   WidgetTitleStyled,
   AsideStyled,
-  AsideContainer
+  AsideContainer,
+  AsideButton,
+  AsideButtonsContainer
 } from './styled-components'
 import {
   shortenString,
@@ -436,9 +438,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         masterAddress={creator_address}
         signingKey={decrypt(encrypted_signer_key, dashboardKey)}
       />
-
       <HowToUseSDK sdk={sdk} />
-
     </WidgetContainer>
     
     <AsideContainer>
@@ -488,32 +488,40 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <TableText>Links</TableText>
           <TableValue>{links_count}</TableValue>
         </TableRow>}
+        <AsideButtonsContainer>
+          <AsideButton>Download full report</AsideButton>
+        </AsideButtonsContainer>
+        
       </AsideStyled>
 
-      {sdk && <AsideStyled
+      {true && <AsideStyled
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
-        next={{
-          action: async () => {
-            plausibleApi.invokeEvent({
-              eventName: 'view_docs'
-            })
-            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
-          },
-          title: 'Read Docs'
-        }}
-        back={{
-          action: async () => {
-            plausibleApi.invokeEvent({
-              eventName: 'view_github'
-            })
-            window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
-          },
-          title: 'View on GitHub',
-          appearance: 'action'
-        }}
       >
-       
+       <AsideButton
+          appearance='action'
+          size='small'
+          onClick={() => {
+              plausibleApi.invokeEvent({
+                eventName: 'view_docs'
+              })
+              window.open(`https://docs.linkdrop.io/sdk`, '_blank')
+          }}
+        >
+          Read Docs
+        </AsideButton>
+       <AsideButton
+          appearance='action'
+          size='small'
+          onClick={() => {
+              plausibleApi.invokeEvent({
+                eventName: 'view_github'
+              })
+              window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
+          }}
+        >
+          View on GitHub
+        </AsideButton>
       </AsideStyled>}
     </AsideContainer>
   </Container>
