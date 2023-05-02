@@ -11,14 +11,14 @@ import {
   createWorkers,
   terminateWorkers,
   alertError,
-  defineQROptions
+  defineQROptions,
+  defineIfQRIsDeeplink
 } from 'helpers'
 import { Remote } from 'comlink';
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { plausibleApi } from 'data/api'
 const {
-  REACT_APP_CLAIM_APP,
-  REACT_APP_QR_OPTIONS
+  REACT_APP_CLAIM_APP
 } = process.env
 
 const downloadQRs = ({
@@ -70,6 +70,7 @@ const downloadQRs = ({
       console.log({ linkGroups })
       const workers = await createWorkers(linkGroups, 'qrs', updateProgressbar)
       console.log({ workers })
+      const isDeeplink = defineIfQRIsDeeplink(address)
       const result = await Promise.all(workers.map(({
         worker,
         data
@@ -82,6 +83,7 @@ const downloadQRs = ({
         logoImageLoaded.height,
         img, // image bitmap to render in canvas
         qrOption,
+        isDeeplink,
         REACT_APP_CLAIM_APP
       )))
 

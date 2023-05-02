@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Input } from 'linkdrop-ui'
-import { WidgetTitle, BatchListValue, BatchList } from 'components/pages/common'
+import { WidgetTitle, BatchListValue, BatchList, BatchListLabel } from 'components/pages/common'
 import { Button } from 'components/common'
-
 
 export const Container = styled.div`
   display: flex;
@@ -39,6 +38,13 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
 export const BatchListValueStyled = styled(BatchListValue)`
   display: flex;
   justify-content: flex-end;
+`
+
+export const BatchListLabelStyled = styled(BatchListLabel)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 `
 
 

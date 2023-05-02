@@ -217,7 +217,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     signer_address,
     campaign_number,
     encrypted_signer_key,
-    wallet
+    wallet,
+    sponsored
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -398,6 +399,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <BatchesList
           batches={batches}
+          sponsored={sponsored}
           title={title}
           campaignId={campaign_id}
           sdk={sdk}

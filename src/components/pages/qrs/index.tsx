@@ -8,7 +8,8 @@ import {
   WidgetTitleStyled,
   BatchListValueStyled,
   ErrorSpan,
-  UploadedSpan
+  UploadedSpan,
+  BatchListLabelStyled
 } from './styled-components'
 import {
   BatchListLabel,
@@ -73,7 +74,7 @@ const QRs: FC<ReduxType> = ({
         <BatchListLabel></BatchListLabel>
         {qrs.map(qr => {
           return <>
-            <BatchListValue>{qr.set_name}</BatchListValue>
+            <BatchListLabelStyled>{qr.set_name}</BatchListLabelStyled>
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
             <BatchListValue>{qr.links_uploaded ? <UploadedSpan>Uploaded</UploadedSpan> : <ErrorSpan>

@@ -25,7 +25,8 @@ const BatchesList: FC<TProps> = ({
   sdk,
   downloadLinks,
   tokenAddress,
-  encryptionKey
+  encryptionKey,
+  sponsored
 }) => {
   if (!batches || batches.length === 0) {
     return null
@@ -76,7 +77,7 @@ const BatchesList: FC<TProps> = ({
               campaignId,
               title,
               tokenAddress,
-              Boolean(batch.sponsored),
+              Boolean(sponsored),
               sdk ? encryptionKey : undefined
             )
           }}
