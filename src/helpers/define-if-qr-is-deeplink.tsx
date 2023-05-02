@@ -1,12 +1,12 @@
-import { addressQRLinkPrefixOptions } from 'configs/qr-options'
+import addressSpecificOptions from 'configs/address-specific-options'
 
 const defineIfQRIsDeeplink = (address: string) => {
   const addressFormatted = address.toLowerCase()
-  const configForAddress = addressQRLinkPrefixOptions[addressFormatted]
-  if (!configForAddress) {
+  const configForAddress = addressSpecificOptions[addressFormatted]
+  if (!configForAddress || !configForAddress.qrDeeplink) {
     return
   }
-  return configForAddress
+  return configForAddress.qrDeeplink
 }
 
 export default defineIfQRIsDeeplink

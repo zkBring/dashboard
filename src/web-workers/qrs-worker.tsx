@@ -51,7 +51,6 @@ export class QRsWorker {
     isDeeplink?: string,
     claimAppUrl?: string
   ) {
-  
     let qrs: Blob[] = []
     for (let i = 0; i < qrsArray.length; i++) {
       const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)

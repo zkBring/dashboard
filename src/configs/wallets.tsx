@@ -34,17 +34,7 @@ const wallets: TWallet[] = [
     id: 'rainbow',
     name: 'Rainbow',
     chains: ['1', '5']
-  },
-  // {
-  //   id: 'imtoken',
-  //   name: 'imToken',
-  //   chains: ['1', '5', '137', '80001']
-  // },
-  // {
-  //   id: 'status',
-  //   name: 'Status',
-  //   chains: ['1', '5', '137', '80001']
-  // }
+  }
 ]
 
 export default wallets
