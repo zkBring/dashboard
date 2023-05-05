@@ -3,6 +3,11 @@
 ## 2.1.11-rc.0
 - Reload of campaigns after batch creation
 - Wallets list config updated
+- Report download for claimed links
+- Additional properties for campaigns
+- 'sponsored' property migration to campaign from batch
+- Coinbase deeplink added
+- Wallets array specification for address
 
 ## 2.1.10
 - "Refund" transaction fix
