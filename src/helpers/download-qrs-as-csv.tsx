@@ -8,11 +8,14 @@ const downloadQRsAsCSV = (
   arr: TQRItem[],
   title: string,
   dashboardKey: string,
+  isDeeplink?: string,
   createdAt?: string
 ) => {
   const values = arr.map(item => {
+    const originalLink = `${REACT_APP_CLAIM_APP}/#/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
+    const QRLink = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
     const updatedItem = {
-      ar_link: `${REACT_APP_CLAIM_APP}/#/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
+      ar_link: QRLink
     }
     return Object.values(updatedItem).join(",")
   })

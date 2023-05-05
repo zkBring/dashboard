@@ -1,4 +1,4 @@
-import BatchesList from './batches-table'
+import BatchesList from './batches-list'
 import CampaignParameters from './campaign-parameters'
 import HowToUseSDK from './how-to-use-sdk'
 

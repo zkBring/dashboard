@@ -84,7 +84,7 @@ export const TableValueShorten = styled(TableValue)`
 
 export const BatchList = styled.div`
   display: inline-grid;
-  grid-template-columns: auto auto auto 120px;
+  grid-template-columns: auto auto auto auto auto 120px;
   align-items: center;
   grid-gap: 6px;
   margin-bottom: 20px;

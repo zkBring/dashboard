@@ -129,7 +129,6 @@ const generateERC20Link = ({
         const result = await campaignsApi.saveBatch(
           currentCampaignId,
           newLinks.flat(),
-          sponsored,
           'legacy property'
         )
 
@@ -158,7 +157,6 @@ const generateERC20Link = ({
         const batchLinks= newLinks.flat()
         const batch = {
           claim_links: batchLinks.length === 0 ? undefined : newLinks.flat(),
-          sponsored,
           batch_description: 'legacy property'
         }
         
@@ -178,6 +176,7 @@ const generateERC20Link = ({
           proxy_contract_address: proxyContractAddress,
           claim_pattern: claimPattern,
           proxy_contract_version: version,
+          sponsored,
           ...batch
         }
 

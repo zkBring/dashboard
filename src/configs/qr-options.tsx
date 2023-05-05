@@ -76,11 +76,4 @@ const qrOptions: TQROptions = {
   }
 }
 
-type TAddressConfig = Record<string, string>
-export const addressConfigOptions: TAddressConfig = {
-  '0xe78f82c63f9237ce12c415afc547fa80e1575629': 'coinbase',
-  '0xf2b95635fc6cf3ebc8b5ca01c4e683a22b2e662c': 'coinbase',
-  '0xb4c3d57327d4fc9bcc3499963e21db1a5435d537': 'coinbase'
-}
-
 export default qrOptions 

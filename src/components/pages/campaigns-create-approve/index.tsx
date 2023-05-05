@@ -344,6 +344,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
   const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
+  const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : true
 
   const defineRedirectUrl = () => {
     return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
@@ -352,7 +353,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
   const [ data, setData ] = useState<TLinksContent>([])
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
-  const [ sponsored, setSponsored ] = useState<boolean>(true)
+  const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const content = defineComponent(
     type,

@@ -1,5 +1,6 @@
 import { FC } from 'react'
-
+import { RootState } from 'data/store'
+import { connect } from 'react-redux'
 import {
   Campaign,
   CampaignRow,
@@ -16,7 +17,8 @@ import {
   defineEtherscanUrl,
   shortenString,
   defineNetworkName,
-  capitalize
+  capitalize,
+  defineNativeTokenSymbol
 } from 'helpers'
 
 import {
@@ -24,7 +26,26 @@ import {
 } from 'components/common'
 import { TProps } from './types'
 
-const CampaignComponent: FC<TProps> = ({
+const mapStateToProps = ({
+  user: { comission, whitelisted },
+}: RootState) => ({
+  comission, whitelisted
+})
+
+type ReduxType = ReturnType<typeof mapStateToProps>
+
+const definePricePerClaim = (
+  whitelisted: boolean,
+  sponsored: boolean,
+  nativeTokenSymbol: string,
+  comission: string
+) => {
+  if (!sponsored) { return 'Free' }
+  if (whitelisted) { return `$0.2 + GAS` }
+  return `${comission} ${nativeTokenSymbol}`
+}
+
+const CampaignComponent: FC<TProps & ReduxType> = ({
   created_at,
   id,
   chainId,
@@ -32,11 +53,16 @@ const CampaignComponent: FC<TProps> = ({
   proxyContractAddress,
   title,
   linksAmount,
-  claimPattern
+  claimPattern,
+  sponsored,
+  linksClaimed,
+  comission,
+  whitelisted
 }) => {
   const dateFormatted = created_at && formatDate(created_at)
   const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
   const networkName = defineNetworkName(Number(chainId))
+  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   return <Campaign>
     <CampaignTitle>{title || 'No name'}</CampaignTitle>
     <CampaignRow>
@@ -53,14 +79,33 @@ const CampaignComponent: FC<TProps> = ({
       <CampaignValue>{capitalize(networkName)}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>Type</CampaignText>
+      <CampaignText>Token standard</CampaignText>
       <CampaignValue>{type}</CampaignValue>
     </CampaignRow>
-    {linksAmount > 0 && <CampaignRow>
+    <CampaignRow>
       <CampaignText>Links</CampaignText>
       <CampaignValue>{linksAmount}</CampaignValue>
-    </CampaignRow>}
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>Claims</CampaignText>
+      <CampaignValue>{linksClaimed || 0}</CampaignValue>
+    </CampaignRow>
     <Divider />
+    <CampaignRow>
+      <CampaignText>Sponsorship</CampaignText>
+      <CampaignValue>{sponsored ? 'Enabled' : 'Disabled'}</CampaignValue>
+    </CampaignRow>
+    <CampaignRow>
+      <CampaignText>Price per claim</CampaignText>
+      <CampaignValue>{
+        definePricePerClaim(
+          Boolean(whitelisted),
+          sponsored,
+          nativeTokenSymbol,
+          comission
+        )
+      }</CampaignValue>
+    </CampaignRow>
     <CampaignRow>
       <CampaignText>Claim pattern</CampaignText>
       <CampaignValue>{capitalize(claimPattern)}</CampaignValue>
@@ -78,4 +123,4 @@ const CampaignComponent: FC<TProps> = ({
   </Campaign>
 }
 
-export default CampaignComponent
+export default connect(mapStateToProps)(CampaignComponent)

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Button } from 'components/common'
+import { Button, TextLink } from 'components/common'
 import {
   Container,
   ContainerButton,
@@ -8,9 +8,9 @@ import {
   WidgetTitleStyled,
   BatchListValueStyled,
   ErrorSpan,
-  UploadedSpan
+  UploadedSpan,
+  BatchListLabelStyled
 } from './styled-components'
-
 import {
   BatchListLabel,
   BatchListValue,
@@ -69,17 +69,24 @@ const QRs: FC<ReduxType> = ({
         <BatchListLabel>Quantity</BatchListLabel>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Claim links</BatchListLabel>
+        <BatchListLabel>Linked campaign</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
         {qrs.map(qr => {
           return <>
-            <BatchListValue>{qr.set_name}</BatchListValue>
+            <BatchListLabelStyled>{qr.set_name}</BatchListLabelStyled>
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
             <BatchListValue>{qr.links_uploaded ? <UploadedSpan>Uploaded</UploadedSpan> : <ErrorSpan>
               <Icons.NotUploadedIcon />
               Not uploaded
             </ErrorSpan>}</BatchListValue>
+            <BatchListValue>
+              {
+                (!qr.links_uploaded || !qr.campaign) ?
+                  '-' : <TextLink to={`/campaigns/${(qr.campaign || {}).campaign_id}`}>{(qr.campaign || {}).title}{`->`}</TextLink>
+              }
+            </BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
             <BatchListValueStyled>
               <Button

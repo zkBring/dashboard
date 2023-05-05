@@ -49,10 +49,12 @@ import alertError from './alert-error'
 import prepareERC20Url from './prepare-erc20-list'
 import defineIfUserHasEnoughERC20Tokens from './define-if-user-has-enough-erc20-token'
 import defineQROptions from './define-qr-options'
+import defineIfQRIsDeeplink from './define-if-qr-is-deeplink'
 
 export {
   alertError,
   defineQROptions,
+  defineIfQRIsDeeplink,
   prepareERC20Url,
   defineIfUserHasEnoughERC20Tokens,
   shortenString,
