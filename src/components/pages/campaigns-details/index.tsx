@@ -36,7 +36,7 @@ import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
-import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
+import { getCampaignBatches, downloadLinks, downloadReport } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
@@ -62,6 +62,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     getCampaignBatches: (campaign_id: string | number) => {
       dispatch(
         getCampaignBatches({ campaign_id })
+      )
+    },
+    downloadReport: (
+      campaign_id: string
+    ) => {
+      dispatch(
+        downloadReport(
+          campaign_id
+        )
       )
     },
     downloadLinks: (
@@ -105,6 +114,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   match: { params },
   getCampaignBatches,
   downloadLinks,
+  downloadReport,
   signer,
   address,
   provider
@@ -218,7 +228,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     campaign_number,
     encrypted_signer_key,
     wallet,
-    sponsored
+    sponsored,
+    links_claimed
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -486,12 +497,12 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <TableText>Token standard</TableText>
           <TableValue>{token_standard}</TableValue>
         </TableRow>
-        {links_count && links_count !== 0 && <TableRow>
+        {links_count !== 0 && <TableRow>
           <TableText>Links</TableText>
           <TableValue>{links_count}</TableValue>
         </TableRow>}
         <AsideButtonsContainer>
-          <AsideButton>Download full report</AsideButton>
+          <AsideButton disabled={links_claimed <= 0} onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
         </AsideButtonsContainer>
         
       </AsideStyled>

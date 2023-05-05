@@ -82,10 +82,10 @@ const CampaignComponent: FC<TProps & ReduxType> = ({
       <CampaignText>Token standard</CampaignText>
       <CampaignValue>{type}</CampaignValue>
     </CampaignRow>
-    {linksAmount > 0 && <CampaignRow>
+    <CampaignRow>
       <CampaignText>Links</CampaignText>
       <CampaignValue>{linksAmount}</CampaignValue>
-    </CampaignRow>}
+    </CampaignRow>
     <CampaignRow>
       <CampaignText>Claims</CampaignText>
       <CampaignValue>{linksClaimed || 0}</CampaignValue>

@@ -353,7 +353,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
   const [ data, setData ] = useState<TLinksContent>([])
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
-  const [ sponsored, setSponsored ] = useState<boolean>(currentCampaignSponsored)
+  const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const content = defineComponent(
     type,
