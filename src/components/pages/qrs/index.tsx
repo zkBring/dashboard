@@ -18,7 +18,7 @@ import {
   InitialGuide
 } from 'components/pages/common'
 import Icons from 'icons'
-import { defineQRStatusName, formatDate } from 'helpers'
+import { defineQRStatusName, formatDate, shortenString } from 'helpers'
 
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
@@ -83,8 +83,8 @@ const QRs: FC<ReduxType> = ({
             </ErrorSpan>}</BatchListValue>
             <BatchListValue>
               {
-                (!qr.links_uploaded || !qr.campaign) ?
-                  '-' : <TextLink to={`/campaigns/${(qr.campaign || {}).campaign_id}`}>{(qr.campaign || {}).title}{`->`}</TextLink>
+                (!qr.links_uploaded || !qr.campaign || !qr.campaign.campaign_id) ?
+                  '-' : <TextLink to={`/campaigns/${(qr.campaign || {}).campaign_id}`}>{shortenString((qr.campaign || {}).title)}{`->`}</TextLink>
               }
             </BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
