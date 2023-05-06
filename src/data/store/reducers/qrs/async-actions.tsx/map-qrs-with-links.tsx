@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRItem, TLinkDecrypted } from 'types'
+import { TQRItem, TLinkDecrypted, TQRSet } from 'types'
 import { qrsApi } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
@@ -56,18 +56,8 @@ const mapQRsWithLinksAction = ({
             success: 'yes'
           }
         })
-        const qrsUpdated = qrSets.map(item => {
-          if (item.set_id === setId) {
-            return {
-              ...item,
-              links_uploaded: result.data.success
-            }
-          }
-          return item
-        })
-  
-        
-        dispatch(actionsQR.updateQrs(qrsUpdated))
+        const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
+        dispatch(actionsQR.updateQrs(qrs.data.qr_sets))
         callback && callback()
       }
       
