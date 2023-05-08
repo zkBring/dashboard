@@ -41,7 +41,7 @@ const definePricePerClaim = (
   comission: string
 ) => {
   if (!sponsored) { return 'Free' }
-  if (whitelisted) { return `$0.2 + GAS` }
+  if (whitelisted) { return `$0.2 + gas` }
   return `${comission} ${nativeTokenSymbol}`
 }
 
