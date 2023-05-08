@@ -22,6 +22,10 @@ const downloadReport = (
     try {
     
       const { data: { links_data } } = await campaignsApi.getReport(campaignId)
+      if (links_data.length === 0) {
+        alertError('No data for report. At least one claimed link is needed for report')
+        return dispatch(actionsCampaigns.setLoading(false))
+      }
       downloadLinksAsCSV(links_data, `REPORT-${campaignId}`)
       dispatch(actionsCampaigns.setLoading(false))
     } catch (err) {
