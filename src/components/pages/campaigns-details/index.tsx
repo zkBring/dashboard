@@ -502,7 +502,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <TableValue>{links_count}</TableValue>
         </TableRow>}
         <AsideButtonsContainer>
-          <AsideButton disabled={!Boolean(batches.find(batch => batch.links_claimed))} onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
+          <AsideButton onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
         </AsideButtonsContainer>
         
       </AsideStyled>
