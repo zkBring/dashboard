@@ -497,23 +497,30 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <TableText>Token standard</TableText>
           <TableValue>{token_standard}</TableValue>
         </TableRow>
-        {links_count !== 0 && <TableRow>
-          <TableText>Links</TableText>
+        <TableRow>
+          <TableText>Links amount</TableText>
           <TableValue>{links_count}</TableValue>
+        </TableRow>
+        {sponsored && <TableRow>
+          <TableText>Links claimed</TableText>
+          <TableValue>{links_claimed}</TableValue>
         </TableRow>}
-        <AsideButtonsContainer>
+        <TableRow>
+          <TableText>Sponsorship</TableText>
+          <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
+        </TableRow>
+
+        {sponsored && <AsideButtonsContainer>
           <AsideButton onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
-        </AsideButtonsContainer>
+        </AsideButtonsContainer>}
         
       </AsideStyled>
 
-      {true && <AsideStyled
+      <AsideStyled
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
       >
        <AsideButton
-          appearance='action'
-          size='small'
           onClick={() => {
               plausibleApi.invokeEvent({
                 eventName: 'view_docs'
@@ -523,19 +530,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         >
           Read Docs
         </AsideButton>
-       <AsideButton
-          appearance='action'
-          size='small'
-          onClick={() => {
-              plausibleApi.invokeEvent({
-                eventName: 'view_github'
-              })
-              window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
-          }}
-        >
-          View on GitHub
-        </AsideButton>
-      </AsideStyled>}
+      </AsideStyled>
     </AsideContainer>
   </Container>
 }
