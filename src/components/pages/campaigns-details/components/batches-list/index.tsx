@@ -37,7 +37,6 @@ const BatchesList: FC<TProps> = ({
     
     <BatchListLabel>Created at</BatchListLabel>
     <BatchListLabel>Links</BatchListLabel>
-    <BatchListLabel>Claims</BatchListLabel>
     <BatchListLabel></BatchListLabel>
     {batches && batches.map((batch, idx) => {
       const dateFormatted = formatDate(batch.created_at || '')
@@ -62,9 +61,6 @@ const BatchesList: FC<TProps> = ({
         </BatchListValue>
         <BatchListValue>
           {batch.claim_links_count}
-        </BatchListValue>
-        <BatchListValue>
-          {batch.links_claimed}
         </BatchListValue>
         <WidgetButton
           appearance='action'

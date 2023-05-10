@@ -1,4 +1,3 @@
-import Icons from 'icons'
 import styled from 'styled-components'
 
 export const ClipboardCopy = styled.div`
