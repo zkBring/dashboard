@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { Route, Switch, HashRouter } from 'react-router-dom'
 import ProtectedRoute from './protected-route'
-import { IAppDispatch } from 'data/store'
 
 import {
   NotFound,
@@ -17,12 +16,13 @@ import {
   Main,
   CampaignsCreateNew,
   QRDownload,
-  QRCreate
+  QRCreate,
+  Dispensers,
+  DispenserCreate
 } from 'components/pages'
 
-import * as userAsyncActions from 'data/store/reducers/user/async-actions'
-import { connect } from 'react-redux';
-import { RootState } from 'data/store';
+import { connect } from 'react-redux'
+import { RootState } from 'data/store'
 
 const mapStateToProps = ({ user: { provider, address } }: RootState) => ({ provider, address })
 type ReduxType = ReturnType<typeof mapStateToProps>
@@ -61,7 +61,19 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           component={Campaigns}
         />
 
+        <ProtectedRoute
+          path='/dispensers'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Dispensers}
+        />
 
+        <ProtectedRoute
+          path='/dispensers/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DispenserCreate}
+        />
 
         <ProtectedRoute
           path='/campaigns/new/:type/initial'
