@@ -14,18 +14,20 @@ import { alertError } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+const { REACT_APP_STARTER_PLAN_LINKS_LIMIT, REACT_APP_PRO_PLAN_LINKS_LIMIT } = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
   qrs: { qrs, loading, uploadLoader },
-  user: { address, chainId },
+  user: { address, chainId, whitelisted },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
   qrs,
   uploadLoader,
-  loading
+  loading,
+  whitelisted
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -44,11 +46,13 @@ const QRCreate: FC<ReduxType> = ({
   addQRSet,
   qrs,
   loading,
-  uploadLoader
+  uploadLoader,
+  whitelisted
 }) => {
   const history = useHistory()
   const [ title, setTitle ] = useState<string>('')
   const [ amount, setAmount ] = useState<string>('')
+  const limit = Number(whitelisted ? REACT_APP_PRO_PLAN_LINKS_LIMIT : REACT_APP_STARTER_PLAN_LINKS_LIMIT)
 
   return <Container>
     <WidgetComponent title='New QR set'>
@@ -83,6 +87,7 @@ const QRCreate: FC<ReduxType> = ({
           disabled={!title || !amount || loading}
           onClick={() => {
             if(isNaN(Number(amount))) { return alertError('Amount is not valid') }
+            if (Number(amount) > limit) { return alertError(`plan is limited to ${limit} links per QR-set. Contact us if you need to increase limits.`) }
             addQRSet(
               title, 
               Number(amount),

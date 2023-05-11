@@ -7,8 +7,10 @@ import { campaignsApi } from 'data/api'
 import * as actionsCampaigns from '../actions'
 import {
   downloadLinksAsCSV,
-  alertError
+  alertError,
+  defineNetworkName
 } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const downloadReport = (
   campaignId: string
@@ -17,7 +19,7 @@ const downloadReport = (
     dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions>,
     getState: () => RootState
   ) => {
-
+    const { user: { chainId } } = getState()
     if (!campaignId) { return alertError ('campaignId is not provided') }
     try {
     
@@ -27,6 +29,13 @@ const downloadReport = (
         return dispatch(actionsCampaigns.setLoading(false))
       }
       downloadLinksAsCSV(links_data, `REPORT-${campaignId}`)
+      plausibleApi.invokeEvent({
+        eventName: 'download_report',
+        data: {
+          network: defineNetworkName(chainId),
+          campaignId
+        }
+      })
       dispatch(actionsCampaigns.setLoading(false))
     } catch (err) {
       alertError('Check console for more info')
