@@ -14,9 +14,11 @@ import Main from './main'
 import QRCreate from './qr-create'
 import Dispensers from './dispensers'
 import DispenserCreate from './dispenser-create'
+import Dispenser from './dispenser'
 
 export {
-  Page, 
+  Page,
+  Dispenser,
   NotFound,
   Campaigns,
   CampaignsDetails,

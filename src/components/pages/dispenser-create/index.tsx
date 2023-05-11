@@ -1,5 +1,4 @@
-import { FC, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { FC, useState, useRef } from 'react'
 import {
   Container,
   InputComponent,
@@ -9,25 +8,24 @@ import {
   ContainerButton,
   DateTimeContainer
 } from './styled-components'
-import moment from 'moment'
+import moment, { isDuration } from 'moment'
 import {
   WidgetComponent,
   WidgetSubtitle
 } from 'components/pages/common'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
+import { useHistory } from 'react-router-dom'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  qrs: { qrs, loading, uploadLoader },
+  dispensers: { loading },
   user: { address, chainId },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  qrs,
-  uploadLoader,
   loading
 })
 
@@ -42,22 +40,27 @@ const selectOptions = [defaultValue].concat(Array.from({ length: 47 }, (_: any, 
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    addQRSet: (
+    addDispenser: (
       title: string,
-      quantity: number,
+      date: string,
+      duration: number,
       callback: (id: string | number) => void
-    ) => dispatch(asyncQRsActions.addQRSet({ title, quantity, callback }))
+    ) => dispatch(asyncDispensersActions.addDispenser({
+      title,
+      date,
+      duration,
+      callback
+    }))
   }
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QRCreate: FC<ReduxType> = ({
-  addQRSet,
-  qrs,
-  loading,
-  uploadLoader
+  addDispenser,
+  loading
 }) => {
+  const history = useHistory()
   const momentNoOffset = (date: Date, hour: number, minute: number) => {
     var m = moment(date).utcOffset(0)
     m.set({ hour, minute, seconds: 0 })
@@ -68,6 +71,18 @@ const QRCreate: FC<ReduxType> = ({
   const [ date, setDate ] = useState<Date>(new Date())
   const [ duration, setDuration ] = useState<string>('')
   const [ time, setTime ] = useState(defaultValue)
+
+  // const selectCurrentValue = () => {
+  //   const currentOption = selectOptions.find(option => option.value === time.value)
+  //   if (!currentOption) {
+  //     return {label: time.value, value: '12:33'}
+  //   }
+  //   if (currentOption) {
+  //     return currentOption
+  //   }
+  // }
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   return <Container>
     <WidgetComponent title='New dispenser'>
@@ -92,8 +107,14 @@ const QRCreate: FC<ReduxType> = ({
           title='Start Time'
           value={time}
           options={selectOptions}
-          onChange={(value) => {
-            setTime(value)
+          onChange={(option) => {
+            setTime(option)
+            const input: HTMLInputElement | null = inputRef.current
+            if (!input) { return }
+            input && input.focus()
+          }}
+          notFoundActiveCondition={(value) => {
+            return /^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$/.test(value)
           }}
         />
 
@@ -104,6 +125,7 @@ const QRCreate: FC<ReduxType> = ({
       <InputComponent
         title='Duration'
         placeholder='90'
+        refProp={inputRef}
         value={duration}
         note='Enter duration in minutes '
         onChange={(value) => {
@@ -114,16 +136,31 @@ const QRCreate: FC<ReduxType> = ({
         }}
       />
       <Buttons>
-
-        <ContainerButton onClick={() => {
-          const timeSplitted = time.value.split(':')
-          const dateString = momentNoOffset(date, Number(timeSplitted[0]), Number(timeSplitted[1]))
-          alert(`
-            UTC+0 Time: ${dateString}
-            UTC current: ${new Date(dateString)}
-          `)
-        }}>
-        Create
+        <ContainerButton
+          to='/dispensers'
+        >
+          Back
+        </ContainerButton>
+        <ContainerButton
+          disabled={!title || !isDuration}
+          appearance='action'
+          loading={loading}
+          onClick={() => {
+            const timeSplitted = time.value.split(':')
+            const dateString = momentNoOffset(date, Number(timeSplitted[0]), Number(timeSplitted[1]))
+            alert(`
+              UTC+0 Time: ${dateString}
+              UTC current: ${new Date(dateString)}
+            `)
+            addDispenser(
+              title,
+              dateString,
+              Number(duration),
+              (id) => history.push(`/dispensers/${id}`)
+            )
+          }}
+        >
+          Create
         </ContainerButton>
         
       </Buttons>

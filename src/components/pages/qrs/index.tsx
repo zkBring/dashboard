@@ -100,8 +100,6 @@ const QRs: FC<ReduxType> = ({
         })}
       </BatchListStyled>}
     </WidgetComponent>
-    
-    
   </Container>
 }
 

@@ -16,7 +16,11 @@ export const Container = styled.div`
 
 export const ContainerButton = styled(Button)`
   align-self: end;
-  margin-bottom: 20px;
+  margin-right: 20px;
+
+  &:last-child {
+    margin-right: 0px;
+  }
 `
 
 export const InputComponent = styled(Input)`

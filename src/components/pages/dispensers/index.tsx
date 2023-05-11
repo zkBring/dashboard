@@ -1,29 +1,34 @@
-import { FC, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { FC } from 'react'
 import {
   Container,
   Header,
   WidgetTitleStyled,
-  ContainerButton
+  ContainerButton,
+  DispensersListLabelStyled,
+  DispensersListValueStyled,
+  DispensersListStyled,
+  SecondaryTextSpan
 } from './styled-components'
-
+import { Button } from 'components/common'
 import {
+  BatchListLabel,
+  BatchListValue,
   WidgetComponent
 } from 'components/pages/common'
+import { formatDate, formatTime } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  qrs: { qrs, loading, uploadLoader },
+  dispensers: { dispensers, loading },
   user: { address, chainId },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  qrs,
-  uploadLoader,
+  dispensers,
   loading
 })
 
@@ -41,14 +46,9 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 
 const Dispensers: FC<ReduxType> = ({
   addQRSet,
-  qrs,
-  loading,
-  uploadLoader
+  dispensers,
+  loading
 }) => {
-  const history = useHistory()
-  const [ title, setTitle ] = useState<string>('')
-  const [ amount, setAmount ] = useState<string>('')
-
   return <Container>
     <WidgetComponent>
       <Header>
@@ -60,6 +60,41 @@ const Dispensers: FC<ReduxType> = ({
           to='/dispensers/new'
         />
       </Header>
+      {dispensers.length > 0 && <DispensersListStyled>
+        <BatchListLabel>Date created</BatchListLabel>
+        <BatchListLabel>Title</BatchListLabel>
+        <BatchListLabel>Start date (UTC+0)</BatchListLabel>
+        <BatchListLabel>Duration</BatchListLabel>
+        <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
+        <BatchListLabel></BatchListLabel>
+        {dispensers.map(dispenser => {
+          const dateCreatedFormatted = formatDate(dispenser.created_at || '')
+          const timeCreatedFormatted = formatTime(dispenser.created_at || '')
+          return <>
+            <BatchListValue>
+              {dateCreatedFormatted} <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
+            </BatchListValue>
+            <DispensersListLabelStyled>{dispenser.title}</DispensersListLabelStyled>
+            <BatchListValue>
+              {dispenser.claim_start }
+            </BatchListValue>
+            <BatchListValue>{dispenser.claim_duration} min(s)</BatchListValue>
+            <BatchListValue>
+              {dispenser.claim_links_count}
+            </BatchListValue>
+            <BatchListValue>{dispenser.status}</BatchListValue>
+            <DispensersListValueStyled>
+              <Button
+                appearance='additional'
+                size='extra-small'
+                title='Manage'
+                to={`/dispensers/${dispenser.dispenser_id}`}
+              />
+            </DispensersListValueStyled>
+          </>
+        })}
+      </DispensersListStyled>}
       
     </WidgetComponent>
   </Container>

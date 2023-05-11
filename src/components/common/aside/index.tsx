@@ -63,10 +63,10 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
 
     <AsideMenu>
       <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
-        <Icons.CampaignsIcon />Campaigns
+        <Icons.CampaignsIcon />Claim Links
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-        <Icons.QRManagerIcon />QR-manager
+        <Icons.QRManagerIcon />QR Manager
       </AsideMenuItem>
       <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
         <Icons.QRManagerIcon />Dispenser

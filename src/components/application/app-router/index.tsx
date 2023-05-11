@@ -18,7 +18,8 @@ import {
   QRDownload,
   QRCreate,
   Dispensers,
-  DispenserCreate
+  DispenserCreate,
+  Dispenser
 } from 'components/pages'
 
 import { connect } from 'react-redux'
@@ -73,6 +74,13 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={DispenserCreate}
+        />
+
+        <ProtectedRoute
+          path='/dispensers/:id'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Dispenser}
         />
 
         <ProtectedRoute

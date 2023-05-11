@@ -9537,10 +9537,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-linkdrop-sdk@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/linkdrop-sdk/-/linkdrop-sdk-2.0.1.tgz#bbd3a2e94ff84ff0a20fe577e8e046ab4b706b28"
-  integrity sha512-+ElvUVc3DYX8QfwQrTPzoP2afBt47ER1vYJ9/5L6V0GgYxHLo9O+/XcsoyXtA2WIiHxCkcmdTHZCkPNuqWHswA==
+linkdrop-sdk@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/linkdrop-sdk/-/linkdrop-sdk-2.0.3.tgz#b905f75855745ac32074e94845e2a8a71ef80184"
+  integrity sha512-ec7yK1Qnw59iRaZ0UIVGHLsQp2NZG0wmK1s0rdaSXwZQ8JggTHdt6mtlBWCTskva9i6exlH4R/9m7caM8mq5uw==
   dependencies:
     "@stablelib/x25519" "^1.0.3"
     "@walletconnect/utils" "2.0.0-beta.100"
@@ -9552,10 +9552,10 @@ linkdrop-sdk@^2.0.0:
     typescript "^4.8.2"
     uint8arrays "^3.1.1"
 
-linkdrop-ui@^0.0.32:
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/linkdrop-ui/-/linkdrop-ui-0.0.32.tgz#a104d894207b207ad5c57590fd99fd8c97f65fc6"
-  integrity sha512-wWUCBs5iGXGNY+uZAUp5fnGfJM4z5wAnt3qL0ghFNY4Vvo3vcO1pKELvJhqR9iIUVSqK9cv/2McWxOgKnSRLWA==
+linkdrop-ui@^0.0.34:
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/linkdrop-ui/-/linkdrop-ui-0.0.34.tgz#167a2573b774cab6e17d2faf32533e3809b70cf8"
+  integrity sha512-GFiPziNR7mLWfEQt2Dv97q3KXZNEWXNn+7h7/82fDgbvcTEGd392DVZG0t7eoCamog29Q44ac5GfM+vABJRhOw==
   dependencies:
     react-datepicker "^4.11.0"
     react-router-dom "^6.10.0"
