@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent } from 'react'
-import { Popup, Note } from 'linkdrop-ui'
+import { Popup } from 'linkdrop-ui'
 import { TProps } from './types'
 import {
   InputComponent,
@@ -7,15 +7,16 @@ import {
   WidgetButton,
   PopupFormContent,
   Buttons
-} from '../../styled-components'
+} from './styled-components'
 import { alertError } from 'helpers'
 
-const LinksPopup: FC<TProps> = ({
+const UploadLinksPopup: FC<TProps> = ({
   onClose,
   onSubmit,
   quantity,
   loader,
-  loading
+  loading,
+  children
 }) => {
   const [ data, setData ] = useState<any>('')
   const onSubmitCallback = (evt: FormEvent<HTMLFormElement>) => {
@@ -43,7 +44,7 @@ const LinksPopup: FC<TProps> = ({
         }
       })
 
-      if (links.length !== Number(quantity)) {
+      if (quantity && links.length !== Number(quantity)) {
         return alertError(`Amount of links should be equal to an amount of QRs. Number of links is ${links.length}, but ${quantity} needed`)
       }
       onSubmit(links)
@@ -68,9 +69,7 @@ const LinksPopup: FC<TProps> = ({
           }}
           placeholder='Quantity'
         />
-        <Note>
-          You will not be able to change quantity of QR's after upload of links
-        </Note>
+        {children}
       </PopupFormContent>
       <Buttons>
         <WidgetButton
@@ -85,4 +84,4 @@ const LinksPopup: FC<TProps> = ({
   </Popup>
 }
 
-export default LinksPopup
+export default UploadLinksPopup

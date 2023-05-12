@@ -146,18 +146,19 @@ export class QRsWorker {
     this.currentPercentageFinished = 0
     return qrArray
   }
-
   public prepareLinksForDispenser (
     encrypted_multiscan_qr_enc_code: string,
     links: TLinkDecrypted[],
     dashboard_key: string,
   ) {
     const result = []
+    console.log({ encrypted_multiscan_qr_enc_code })
     const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboard_key)
     for (let i = 0; i < links.length; i++) {
       const claim_link = links[i].claim_link
+      const linkKey = ethers.utils.id(multiscanQREncCode)
       const link = {
-        encrypted_claim_link: encrypt(claim_link, multiscanQREncCode),
+        encrypted_claim_link: encrypt(claim_link, linkKey.replace('0x', '')),
         claim_link_id: links[i].link_id
       }
       result.push(link)

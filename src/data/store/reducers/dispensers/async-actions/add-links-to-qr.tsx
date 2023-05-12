@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import * as actionsQR from '../actions'
+import * as actionsDispenser from '../actions'
 import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
 import { TQRItem, TLinkDecrypted, TDispenser } from 'types'
@@ -32,13 +32,14 @@ const addLinksToQR = ({
       if (!dashboardKey) {
         throw new Error('dashboardKey is not provided')
       }
-      dispatch(actionsQR.setLoading(true))
+      dispatch(actionsDispenser.setLoading(true))
       const start = +(new Date())
 
       const updateProgressbar = async (value: number) => {
+        console.log({ value })
         if (value === currentPercentage || value < currentPercentage) { return }
         currentPercentage = value
-        dispatch(actionsQR.setMappingLoader(currentPercentage))
+        dispatch(actionsDispenser.setMappingLoader(currentPercentage))
         await sleep(1)
       }
 
@@ -51,24 +52,26 @@ const addLinksToQR = ({
         dashboardKey
       )
       console.log((+ new Date()) - start)
-      const result = await dispensersApi.mapLinks(dispenserId, qrArrayMapped)
+      console.log({ qrArrayMapped })
+      callback && callback()
+      // const result = await dispensersApi.mapLinks(dispenserId, qrArrayMapped)
       
-      if (result.data.success) {
-        plausibleApi.invokeEvent({
-          eventName: 'qr_connect',
-          data: {
-            success: 'yes'
-          }
-        })
-        const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
-        dispatch(actionsQR.setDispensers(result.data.dispensers))
-        callback && callback()
-      }
+      // if (result.data.success) {
+      //   plausibleApi.invokeEvent({
+      //     eventName: 'qr_connect',
+      //     data: {
+      //       success: 'yes'
+      //     }
+      //   })
+      //   const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
+      //   dispatch(actionsDispenser.setDispensers(result.data.dispensers))
+      //   callback && callback()
+      // }
       
-      if (!result.data.success) {
-        alertError('Couldn’t connect links to QRs, please try again')
-      }
-      dispatch(actionsQR.setMappingLoader(0))
+      // if (!result.data.success) {
+      //   alertError('Couldn’t connect links to QRs, please try again')
+      // }
+      dispatch(actionsDispenser.setMappingLoader(0))
     } catch (err) {
       plausibleApi.invokeEvent({
         eventName: 'qr_connect',
@@ -77,10 +80,10 @@ const addLinksToQR = ({
         }
       })
       alertError('Couldn’t connect links to QRs, please try again')
-      dispatch(actionsQR.setMappingLoader(0))
+      dispatch(actionsDispenser.setMappingLoader(0))
       console.error(err)
     }
-    dispatch(actionsQR.setLoading(false))
+    dispatch(actionsDispenser.setLoading(false))
   }
 }
 

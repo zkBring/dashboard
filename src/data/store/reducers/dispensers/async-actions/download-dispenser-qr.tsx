@@ -3,20 +3,18 @@ import * as actionsQR from '../actions'
 import {  DispensersActions } from '../types'
 import { RootState } from 'data/store'
 import { downloadBase64FilesAsZip } from 'helpers'
-import { TQRItem } from "types"
 import {
-  sleep,
   loadImage,
-  createDataGroups,
-  createWorkers,
-  terminateWorkers,
   alertError,
   defineQROptions,
   defineIfQRIsDeeplink
 } from 'helpers'
-import { Remote } from 'comlink';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
+import { wrap, Remote, proxy } from 'comlink'
 import { plausibleApi } from 'data/api'
+
 const {
   REACT_APP_CLAIM_APP
 } = process.env
@@ -57,36 +55,26 @@ const downloadQR = ({
         qrOption.icon
       )
 
-      const linkGroups = createDataGroups([{}], 1)
-      const workers = await createWorkers(linkGroups, 'qrs', async (value) => { console.log('qr created') })
+      const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
+      const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(() => console.log('QR created')))
       const isDeeplink = defineIfQRIsDeeplink(address)
-      const result = await Promise.all(workers.map(({
-        worker
-      }) => {
-        console.log('here')
-        return (worker as Remote<QRsWorker>).downloadMultiQR(
-          encrypted_multiscan_qr_secret,
-          encrypted_multiscan_qr_enc_code,
-          width, // qr width
-          height, // qr height
-          dashboardKey,
-          logoImageLoaded.width,
-          logoImageLoaded.height,
-          img, // image bitmap to render in canvas
-          qrOption,
-          isDeeplink,
-          REACT_APP_CLAIM_APP
-        )}
-      ))
 
+      const result = await qrsWorker.downloadMultiQR(
+        encrypted_multiscan_qr_secret,
+        encrypted_multiscan_qr_enc_code,
+        width, // qr width
+        height, // qr height
+        dashboardKey,
+        logoImageLoaded.width,
+        logoImageLoaded.height,
+        img, // image bitmap to render in canvas
+        qrOption,
+        isDeeplink,
+        REACT_APP_CLAIM_APP
+      )
 
-      for (let y = 0; y < result.length; y++) {
-        console.log(`started download of ${y + 1} part of result`)
-        await downloadBase64FilesAsZip('png', result[y], `${qrDispenserName}-${y + 1}`, y * result[0].length)
-        console.log(`finished download of ${y + 1} part of result`)
-      }
+      await downloadBase64FilesAsZip('png', result, qrDispenserName, 0)
   
-      terminateWorkers(workers)
       plausibleApi.invokeEvent({
         eventName: 'qr_download',
         data: {

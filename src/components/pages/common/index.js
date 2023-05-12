@@ -3,7 +3,8 @@ import Aside from './aside'
 import AssetsList from './assets-list'
 import InstructionNote from './instruction-note'
 import InitialGuide from './initial-guide'
-import DownloadQRPopup from './download-qr'
+import DownloadQRPopup from './download-qr-popup'
+import UploadLinksPopup from './upload-links-popup'
 
 import {
   Container,
@@ -46,5 +47,6 @@ export {
   TableValue,
   AssetsList,
   InitialGuide,
-  DownloadQRPopup
+  DownloadQRPopup,
+  UploadLinksPopup
 }

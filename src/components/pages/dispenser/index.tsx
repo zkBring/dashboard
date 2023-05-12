@@ -6,7 +6,8 @@ import {
   TableRow,
   TableText,
   TableValue,
-  DownloadQRPopup
+  DownloadQRPopup,
+  UploadLinksPopup
 } from 'components/pages/common'
 import {
   Buttons,
@@ -21,7 +22,6 @@ import { TextLink } from 'components/common'
 import { Redirect, useParams } from 'react-router-dom'
 import { TDispenser, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
-import { LinksPopup } from './components'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { decrypt } from 'lib/crypto'
 
@@ -113,7 +113,7 @@ const Dispenser: FC<ReduxType> = ({
   const { title, multiscan_qr_id, dispenser_id, claim_duration, claim_start, claim_links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
 
   return <Container>
-    {updateLinksPopup && <LinksPopup
+    {updateLinksPopup && <UploadLinksPopup
       loader={mappingLoader}
       loading={loading}
       onClose={() => toggleUpdateLinksPopup(false)}

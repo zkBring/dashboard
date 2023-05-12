@@ -30,15 +30,17 @@ const addDispenser = ({
       throw new Error('dashboardKey is not provided')
     }
     try {
-      const generatedAccount = sdk?.utils.generateAccount(12, true)
-      if (generatedAccount) {
-        const { address: linkId, privateKey: linkKey, shortCode } = generatedAccount
-        const encryptedMultiscanQRSecret = encrypt(linkKey, dashboardKey)
-        const encryptedMultiscanQREncCode = encrypt(shortCode, dashboardKey)
+      const secretKeyPair = sdk?.utils.generateAccount(12, true)
+      const encKeyPair = sdk?.utils.generateAccount(12, true)
+
+      if (secretKeyPair && encKeyPair) {
+        
+        const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey)
+        const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey)
         const dispenserId = String(+new Date())
         const newDispenser: TDispenser = {
           encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
-          multiscan_qr_id: linkId,
+          multiscan_qr_id: secretKeyPair.address,
           claim_links_count: 0,
           dispenser_id: dispenserId,
           claim_duration: duration,
@@ -55,6 +57,8 @@ const addDispenser = ({
         // }
         dispatch(actionsDispensers.addDispenser(newDispenser))
         if (callback) { callback(dispenserId) }
+      } else {
+
       }
       
     } catch (err) {
