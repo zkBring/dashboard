@@ -9,16 +9,19 @@ import {
   PopupFormContent
 } from '../../styled-components'
 import { WidgetSubtitle } from 'components/pages/common'
+const { REACT_APP_STARTER_PLAN_LINKS_LIMIT, REACT_APP_PRO_PLAN_LINKS_LIMIT } = process.env
 
 const QuantityPopup: FC<TProps> = ({
   onClose,
   onSubmit,
   quantity,
   loader,
-  loading
+  loading,
+  whitelisted
 }) => {
   const [ formQuantity, setFormQuantity ] = useState(quantity || '0')
-  const showError = Number(formQuantity) > 300000
+  const limit = Number(whitelisted ? REACT_APP_PRO_PLAN_LINKS_LIMIT : REACT_APP_STARTER_PLAN_LINKS_LIMIT)
+  const showError = Number(formQuantity) > limit
   return <Popup
     title='Quantity of QRs in a set'
     onClose={() => {
@@ -40,8 +43,8 @@ const QuantityPopup: FC<TProps> = ({
             return value
           }}
           title='Quantity'
-          error={showError ? 'Maximum quantity in a batch is limited by 300,000' : undefined}
-          note={showError ? undefined : 'Maximum quantity in a batch is limited by 300,000'}
+          error={showError ? `Maximum quantity in a batch is limited by ${limit}` : undefined}
+          note={showError ? undefined : `Maximum quantity in a batch is limited by ${limit}`}
         />
       </PopupFormContent>
 

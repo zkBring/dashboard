@@ -8,6 +8,7 @@
 - 'sponsored' property migration to campaign from batch
 - Coinbase deeplink added
 - Wallets array specification for address
+- Fixed bug with QR-limits
 
 ## 2.1.10
 - "Refund" transaction fix

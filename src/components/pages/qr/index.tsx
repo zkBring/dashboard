@@ -32,7 +32,7 @@ import { useHistory } from 'react-router-dom'
 const mapStateToProps = ({
   campaigns: { campaigns },
   qrs: { qrs, loading, mappingLoader, uploadLoader },
-  user: { address, chainId, dashboardKey },
+  user: { address, chainId, dashboardKey, whitelisted },
 }: RootState) => ({
   campaigns,
   address,
@@ -40,7 +40,7 @@ const mapStateToProps = ({
   qrs,
   loading,
   dashboardKey,
-  mappingLoader, uploadLoader
+  mappingLoader, uploadLoader, whitelisted
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -80,7 +80,8 @@ const QR: FC<ReduxType> = ({
   mappingLoader,
   uploadLoader,
   dashboardKey,
-  address
+  address,
+  whitelisted
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
@@ -168,6 +169,7 @@ const QR: FC<ReduxType> = ({
    {updateQuantityPopup && <QuantityPopup
       onClose={() => toggleUpdateQuantityPopup(false)}
       quantity={qr.qr_quantity}
+      whitelisted={Boolean(whitelisted)}
       loading={loading}
       loader={uploadLoader}
       onSubmit={value => {
