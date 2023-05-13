@@ -155,6 +155,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
   useEffect(() => {
     const init = async () => {
+      // !!! THE COMMENTED SECTION OF THE CODE IS NEEDED TO TEST THE SDK UPDATES
       // if (!currentCampaign || !dashboardKey) { return }
       // const encryptionKey = createEncryptionKey(
       //   dashboardKey,
