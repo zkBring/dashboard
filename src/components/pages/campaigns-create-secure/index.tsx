@@ -22,6 +22,7 @@ import {
   AsideDivider
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
+import addressSpecificOptions from 'configs/address-specific-options'
 import {
   StyledInput,
   StyledSelect
@@ -35,7 +36,8 @@ import { BigNumber } from 'ethers'
 const mapStateToProps = ({
   user: {
     chainId,
-    comission
+    comission,
+    address
   },
   campaigns: {
     campaigns
@@ -65,7 +67,8 @@ const mapStateToProps = ({
   claimPattern,
   sdk,
   sponsored,
-  comission
+  comission,
+  address
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -99,13 +102,20 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   assetsOriginal,
   sdk,
   sponsored,
-  comission
+  comission,
+  address
 }) => {
   
   const walletsOptions = useMemo(() => {
     const options = wallets
       .filter(wallet => {
-        return chainId && wallet.chains.includes(String(chainId))
+        if (!chainId) { return false }
+        const walletsOnlyAvailableToAddress = addressSpecificOptions[address.toLowerCase()]
+        const isAvailableOnCurrentChain = wallet.chains.includes(String(chainId))
+        if (!walletsOnlyAvailableToAddress || !walletsOnlyAvailableToAddress.walletApps) {
+          return isAvailableOnCurrentChain
+        }
+        return walletsOnlyAvailableToAddress.walletApps.includes(wallet.id) && isAvailableOnCurrentChain
       })
       .map(wallet => ({
         label: wallet.name,
@@ -113,6 +123,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       }))
     return options
   }, [chainId])
+
   const [
     currentWallet,
     setCurrentWallet
@@ -159,7 +170,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         />}
         <StyledSelect
           options={walletsOptions}
-          disabled={loading}
+          disabled={loading || walletsOptions.length <= 1}
           value={currentWallet}
           onChange={value => setCurrentWallet(value)}
           placeholder='Preferred wallet'

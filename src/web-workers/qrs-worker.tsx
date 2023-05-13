@@ -38,6 +38,7 @@ export class QRsWorker {
     this.currentPercentageFinished = 0
     return qrArray
   }
+
   public async downloadQRs (
     qrsArray: TQRItem[],
     width: number,
@@ -47,15 +48,16 @@ export class QRsWorker {
     logoImageHeight: number,
     img: ImageBitmap,
     qrOption: TQROption,
+    isDeeplink?: string,
     claimAppUrl?: string
   ) {
-
-    console.log({ qrOption })
     let qrs: Blob[] = []
     for (let i = 0; i < qrsArray.length; i++) {
       const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
+      const originalLink = `${claimAppUrl}/#/qr/${decrypted_qr_secret}`
+      const QRLink = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
       const qrCode = new QRCodeStyling({
-        data: `${claimAppUrl}/#/qr/${decrypted_qr_secret}`,
+        data: QRLink,
         width,
         height,
         margin: width / 60,

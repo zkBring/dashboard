@@ -21,8 +21,18 @@ export const WidgetComponent = styled(Widget)`
   position: relative;
 `
 
-export const WidgetButton = styled(Button)`
-  
+export const WidgetButton = styled(Button)``
+
+export const AsideButton = styled(Button)`
+  margin-bottom: 12px;
+  width: 100%;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+`
+
+export const AsideButtonsContainer = styled.div`
+  margin-top: 20px;
 `
 
 export const SecondaryTextSpan = styled.span`
@@ -30,7 +40,7 @@ export const SecondaryTextSpan = styled.span`
 `
 
 export const AsideStyled = styled(Aside)`
-  min-width: 100%;
+  min-width: 100%!important;
   margin: 0;
 `
 

@@ -8,20 +8,24 @@ export type TQRStatus =
   'SHIPPED'
 
 export type TQRItem = {
-  qr_id: string,
-  encrypted_qr_secret: string,
-  encrypted_claim_link?: string,
+  qr_id: string
+  encrypted_qr_secret: string
+  encrypted_claim_link?: string
   claim_link_id?: string
 }
 
 export type TQRSet = {
-  set_name: string,
-  qr_quantity: number,
-  status: TQRStatus,
-  set_id?: number | string,
-  creator_address: string,
-  created_at?: string,
-  qr_array?: TQRItem[],
-  links_uploaded?: boolean,
+  set_name: string
+  qr_quantity: number
+  status: TQRStatus
+  set_id?: number | string
+  creator_address: string
+  created_at?: string
+  qr_array?: TQRItem[]
+  links_uploaded?: boolean
   updated_at?: string
+  campaign: {
+    campaign_id: string
+    title: string
+  }
 }

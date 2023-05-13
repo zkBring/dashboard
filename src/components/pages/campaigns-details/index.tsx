@@ -16,7 +16,9 @@ import {
   WidgetButton,
   WidgetTitleStyled,
   AsideStyled,
-  AsideContainer
+  AsideContainer,
+  AsideButton,
+  AsideButtonsContainer
 } from './styled-components'
 import {
   shortenString,
@@ -34,7 +36,7 @@ import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
-import { getCampaignBatches, downloadLinks } from 'data/store/reducers/campaigns/async-actions'
+import { getCampaignBatches, downloadLinks, downloadReport } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
@@ -60,6 +62,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     getCampaignBatches: (campaign_id: string | number) => {
       dispatch(
         getCampaignBatches({ campaign_id })
+      )
+    },
+    downloadReport: (
+      campaign_id: string
+    ) => {
+      dispatch(
+        downloadReport(
+          campaign_id
+        )
       )
     },
     downloadLinks: (
@@ -103,6 +114,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   match: { params },
   getCampaignBatches,
   downloadLinks,
+  downloadReport,
   signer,
   address,
   provider
@@ -215,7 +227,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     signer_address,
     campaign_number,
     encrypted_signer_key,
-    wallet
+    wallet,
+    sponsored,
+    links_claimed
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -396,6 +410,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <BatchesList
           batches={batches}
+          sponsored={sponsored}
           title={title}
           campaignId={campaign_id}
           sdk={sdk}
@@ -436,9 +451,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         masterAddress={creator_address}
         signingKey={decrypt(encrypted_signer_key, dashboardKey)}
       />
-
       <HowToUseSDK sdk={sdk} />
-
     </WidgetContainer>
     
     <AsideContainer>
@@ -484,37 +497,40 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <TableText>Token standard</TableText>
           <TableValue>{token_standard}</TableValue>
         </TableRow>
-        {links_count && links_count !== 0 && <TableRow>
-          <TableText>Links</TableText>
+        <TableRow>
+          <TableText>Links amount</TableText>
           <TableValue>{links_count}</TableValue>
+        </TableRow>
+        {sponsored && <TableRow>
+          <TableText>Links claimed</TableText>
+          <TableValue>{links_claimed}</TableValue>
         </TableRow>}
+        <TableRow>
+          <TableText>Sponsorship</TableText>
+          <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
+        </TableRow>
+
+        {sponsored && <AsideButtonsContainer>
+          <AsideButton onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
+        </AsideButtonsContainer>}
+        
       </AsideStyled>
 
-      {sdk && <AsideStyled
+      <AsideStyled
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
-        next={{
-          action: async () => {
-            plausibleApi.invokeEvent({
-              eventName: 'view_docs'
-            })
-            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
-          },
-          title: 'Read Docs'
-        }}
-        back={{
-          action: async () => {
-            plausibleApi.invokeEvent({
-              eventName: 'view_github'
-            })
-            window.open(`https://github.com/LinkdropHQ/linkdrop-sdk`, '_blank');
-          },
-          title: 'View on GitHub',
-          appearance: 'action'
-        }}
       >
-       
-      </AsideStyled>}
+       <AsideButton
+          onClick={() => {
+              plausibleApi.invokeEvent({
+                eventName: 'view_docs'
+              })
+              window.open(`https://docs.linkdrop.io/sdk`, '_blank')
+          }}
+        >
+          Read Docs
+        </AsideButton>
+      </AsideStyled>
     </AsideContainer>
   </Container>
 }

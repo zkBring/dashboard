@@ -60,7 +60,11 @@ const addQRSet = ({
         qr_quantity: quantity,
         status: 'NOT_SENT_TO_PRINTER',
         creator_address: address,
-        qr_array: qrArray.flat()
+        qr_array: qrArray.flat(),
+        campaign: {
+          title: '',
+          campaign_id: '1'
+        }
       }
 
       console.log((+ new Date()) - start)

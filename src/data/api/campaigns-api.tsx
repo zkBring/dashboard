@@ -24,14 +24,12 @@ const requests = {
   saveBatch: (
     campaign_id: string | number,
     claim_links: TLink[],
-    sponsored: boolean,
     batch_description: string
   ) => {
     return campaignsApi.post(
       `/linkdrop/campaigns/${campaign_id}/save-batch`,
       {
         claim_links,
-        sponsored,
         batch_description
       },
       { withCredentials: true }
@@ -41,6 +39,11 @@ const requests = {
     campaign_id: string | number
   ) => {
     return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}/batches`, { withCredentials: true })
+  },
+  getReport: (
+    campaign_id: string | number
+  ) => {
+    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}/report`, { withCredentials: true })
   },
   getBatch: (
     campaign_id: string | number,
