@@ -155,6 +155,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
   useEffect(() => {
     const init = async () => {
+      // !!! THE COMMENTED SECTION OF THE CODE IS NEEDED TO TEST THE SDK UPDATES
       // if (!currentCampaign || !dashboardKey) { return }
       // const encryptionKey = createEncryptionKey(
       //   dashboardKey,
@@ -168,7 +169,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
       // )
       // console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
       // const sdk = new LinkdropSDK({
-      //   claimHostUrl: 'https://staging.claim.ledger.com'
+      //   apiHost: 'https://dev.dashboard-api.linkdrop.io'
       // })
       // console.log({ sdk })
       // const campaign = await sdk.getCampaign(
@@ -178,6 +179,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
       // )
       // console.log({ campaign })
       // if (!campaign) { return }
+      // const newBatch = await campaign.createBatch(
+      //   [{ 
+      //     id: '0x10ae0a185dd6eaef2a3692c42ae52d4e8b1c4e6d',
+      //     amount: '1',
+      //     links: '1'
+      //   }]
+      // )
       // const batches = await campaign?.getBatches()
       // console.log({ batches })
       // if (!batches || !batches.batches) { return }
@@ -188,6 +196,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
       // console.log({ batch })
       // if (!batch) { return }
       // const links = batch.getLinks()
+      
       // console.log({ links })
       // if (!links) { return }
       // const lastLink = links[links.length - 1]
