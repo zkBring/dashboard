@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.12-rc.0
+- Added Dispensers (Multi QR)
+- Updated version of Linkdrop-UI package
+
 ## 2.1.11
 - Reload of campaigns after batch creation
 - Wallets list config updated

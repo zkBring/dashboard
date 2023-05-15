@@ -5,7 +5,7 @@ import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { defineQRStatusName, defineIfQRIsDeeplink, downloadQRsAsCSV } from 'helpers'
 import qrStatus from 'configs/qr-status'
-import { QuantityPopup, LinksPopup, DownloadPopup } from './components'
+import { QuantityPopup } from './components'
 import { TextLink } from 'components/common'
 import { Note } from 'linkdrop-ui'
 import {
@@ -23,9 +23,12 @@ import {
   Aside,
   WidgetSubtitle,
   TableRow,
-  TableValue
+  TableValue,
+  DownloadQRPopup,
+  UploadLinksPopup
 } from 'components/pages/common'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import { useHistory } from 'react-router-dom'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -84,6 +87,7 @@ const QR: FC<ReduxType> = ({
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
+  const history = useHistory()
 
   const [
     updateQuantityPopup,
@@ -93,6 +97,7 @@ const QR: FC<ReduxType> = ({
     updateLinksPopup,
     toggleUpdateLinksPopup
   ] = useState<boolean>(false)
+
   const [
     downloadPopup,
     toggleDownloadPopup
@@ -178,7 +183,7 @@ const QR: FC<ReduxType> = ({
       }
     />}
 
-    {updateLinksPopup && <LinksPopup
+    {updateLinksPopup && <UploadLinksPopup
       quantity={qr.qr_quantity}
       loader={mappingLoader}
       loading={loading}
@@ -189,10 +194,14 @@ const QR: FC<ReduxType> = ({
           toggleUpdateLinksPopup(false)
         })
       }}
-    />}
+    >
+      <Note>
+        You will not be able to change quantity of QR's after upload of links
+      </Note>
+    </UploadLinksPopup>}
 
-    {id && downloadPopup && <DownloadPopup
-      id={id}  
+    {id && downloadPopup && <DownloadQRPopup
+      onSubmit={(size: number) => history.push(`/qrs/${id}/download?width=${encodeURIComponent(size)}&height=${encodeURIComponent(size)}`)}
       onClose={() => toggleDownloadPopup(false)}
     />}
     <WidgetComponent title='Manage set'>

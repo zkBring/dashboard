@@ -1,5 +1,5 @@
-import { action } from 'typesafe-actions';
-import { Constants } from './constants';
+import { action } from 'typesafe-actions'
+import { Constants } from './constants'
 import { TQRSet } from 'types'
 
 export function addQr(qr: TQRSet) {

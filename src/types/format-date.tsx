@@ -1,3 +1,3 @@
-type TFormatDate = (date: string) => string
+type TFormatDate = (date: string | number) => string
 
 export default TFormatDate

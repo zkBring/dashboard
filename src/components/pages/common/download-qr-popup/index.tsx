@@ -7,8 +7,7 @@ import {
   WidgetButton,
   PopupFormContent,
   Buttons
-} from '../../styled-components'
-import { useHistory } from 'react-router-dom'
+} from './styled-components'
 import { alertError } from 'helpers'
 
 const DPI = 300
@@ -21,9 +20,8 @@ const convertInchesToPixels = (value: string) => {
 
 const DownloadPopup: FC<TProps> = ({
   onClose,
-  id
+  onSubmit
 }) => {
-  const history = useHistory()
   const [ formSize, setFormSize ] = useState('2')
   const showError = Number(formSize) > 5
   
@@ -56,7 +54,7 @@ const DownloadPopup: FC<TProps> = ({
           onClick={() => {
             const currentSize = convertInchesToPixels(formSize)
             if (currentSize) {
-              history.push(`/qrs/${id}/download?width=${encodeURIComponent(currentSize)}&height=${encodeURIComponent(currentSize)}`)
+              onSubmit(currentSize)
             }
           }}
           title='Download'
