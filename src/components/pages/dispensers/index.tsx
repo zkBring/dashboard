@@ -13,12 +13,17 @@ import { Button } from 'components/common'
 import {
   BatchListLabel,
   BatchListValue,
-  WidgetComponent
+  WidgetComponent,
+  ErrorSpan,
+  UploadedSpan
 } from 'components/pages/common'
-import { formatDate, formatTime } from 'helpers'
+import { TDispenserStatus } from 'types'
+import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import moment from 'moment'
+import Icons from 'icons'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -44,17 +49,31 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
+const defineStatusAppearance = (status: TDispenserStatus) => {
+  const statusName = defineDispenserStatusName(status)
+  if (status === 'NOT_UPLOADED') {
+    return <ErrorSpan>
+      <Icons.NotUploadedIcon />
+      {statusName}
+    </ErrorSpan>
+  }
+
+  return <UploadedSpan>{statusName}</UploadedSpan>
+}
+
 const Dispensers: FC<ReduxType> = ({
   addQRSet,
   dispensers,
   loading
 }) => {
+
   return <Container>
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>My dispensers</WidgetTitleStyled>
         <ContainerButton
           title='+ Create new'
+          disabled={loading}
           size='extra-small'
           appearance='action'
           to='/dispensers/new'
@@ -69,27 +88,32 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
         {dispensers.map(dispenser => {
-          const dateCreatedFormatted = formatDate(dispenser.created_at || '')
-          const timeCreatedFormatted = formatTime(dispenser.created_at || '')
+          const { title, links_count, dispenser_id, claim_duration, created_at, claim_start } = dispenser
+          const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0)
+          const dateCreatedFormatted = formatDate(created_at || '')
+          const timeCreatedFormatted = formatTime(created_at || '')
+          const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
+          const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
+          const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
           return <>
             <BatchListValue>
-              {dateCreatedFormatted} <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
+              {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
             </BatchListValue>
-            <DispensersListLabelStyled>{dispenser.title}</DispensersListLabelStyled>
+            <DispensersListLabelStyled>{title}</DispensersListLabelStyled>
             <BatchListValue>
-              {dispenser.claim_start }
+              {claimStartDate}, <SecondaryTextSpan>{claimStartTime}</SecondaryTextSpan>
             </BatchListValue>
-            <BatchListValue>{dispenser.claim_duration} min(s)</BatchListValue>
+            <BatchListValue>{claim_duration} min(s)</BatchListValue>
             <BatchListValue>
-              {dispenser.claim_links_count}
+              {links_count || 0}
             </BatchListValue>
-            <BatchListValue>{dispenser.status}</BatchListValue>
+            <BatchListValue>{defineStatusAppearance(currentStatus)}</BatchListValue>
             <DispensersListValueStyled>
               <Button
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
-                to={`/dispensers/${dispenser.dispenser_id}`}
+                to={`/dispensers/${dispenser_id}`}
               />
             </DispensersListValueStyled>
           </>

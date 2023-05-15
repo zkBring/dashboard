@@ -41,22 +41,21 @@ const addDispenser = ({
         const newDispenser: TDispenser = {
           encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
           multiscan_qr_id: secretKeyPair.address,
-          claim_links_count: 0,
+          links_count: 0,
           dispenser_id: dispenserId,
           claim_duration: duration,
-          created_at: new Date().toString(),
-          claim_start: date,
+          claim_start: +(new Date(date)),
           status: 'READY',
           encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
           title
         }
-        // const { data } = await dispensersApi.create(newDispenser)
-        // if (data.success) {
-        //   dispatch(actionsDispensers.addDispenser(newDispenser))
-        //   if (callback) { callback(data.dispenser.dispenser_id) }
-        // }
-        dispatch(actionsDispensers.addDispenser(newDispenser))
-        if (callback) { callback(dispenserId) }
+        const { data } = await dispensersApi.create(newDispenser)
+        if (data.success) {
+          dispatch(actionsDispensers.addDispenser(data.dispenser))
+          if (callback) { callback(data.dispenser.dispenser_id) }
+        }
+        // dispatch(actionsDispensers.addDispenser(newDispenser))
+        // if (callback) { callback(dispenserId) }
       } else {
 
       }

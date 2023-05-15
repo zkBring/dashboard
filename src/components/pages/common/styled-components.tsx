@@ -102,3 +102,17 @@ export const BatchListValue = styled.div`
   color: ${props => props.theme.primaryTextColor};
   padding: 14px 0;
 `
+
+export const ErrorSpan = styled.span`
+  display: flex;
+  align-items: center;
+  color: ${props => props.theme.dangerTextColor};
+
+  svg {
+    margin-right: 8px;
+  }
+`
+
+export const UploadedSpan = styled.span`
+  color: ${props => props.theme.primaryHighlightColor};
+`

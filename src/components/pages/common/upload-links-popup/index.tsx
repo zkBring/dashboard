@@ -73,7 +73,7 @@ const UploadLinksPopup: FC<TProps> = ({
       </PopupFormContent>
       <Buttons>
         <WidgetButton
-          disabled={loading}
+          disabled={loading || !data}
           title={loading ? `Uploading ${Math.ceil(loader * 100)}%` : 'Upload'}
           type='submit'
           loading={loading}

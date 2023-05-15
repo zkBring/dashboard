@@ -50,9 +50,13 @@ import prepareERC20Url from './prepare-erc20-list'
 import defineIfUserHasEnoughERC20Tokens from './define-if-user-has-enough-erc20-token'
 import defineQROptions from './define-qr-options'
 import defineIfQRIsDeeplink from './define-if-qr-is-deeplink'
+import defineDispenserStatus from './define-dispenser-status'
+import defineDispenserStatusName from './define-dispenser-status-name'
 
 export {
   alertError,
+  defineDispenserStatus,
+  defineDispenserStatusName,
   defineQROptions,
   defineIfQRIsDeeplink,
   prepareERC20Url,

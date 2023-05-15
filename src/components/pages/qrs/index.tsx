@@ -7,15 +7,15 @@ import {
   Header,
   WidgetTitleStyled,
   BatchListValueStyled,
-  ErrorSpan,
-  UploadedSpan,
   BatchListLabelStyled
 } from './styled-components'
 import {
   BatchListLabel,
   BatchListValue,
   WidgetComponent,
-  InitialGuide
+  InitialGuide,
+  ErrorSpan,
+  UploadedSpan,
 } from 'components/pages/common'
 import Icons from 'icons'
 import { defineQRStatusName, formatDate, shortenString } from 'helpers'

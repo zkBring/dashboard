@@ -22,7 +22,9 @@ import {
   BatchListLabel,
   BatchListValue,
   AsideContent,
-  TableValueShorten
+  TableValueShorten,
+  ErrorSpan,
+  UploadedSpan
 } from './styled-components'
 
 export {
@@ -31,6 +33,8 @@ export {
   WidgetComponent,
   InstructionNote,
   WidgetAside,
+  ErrorSpan,
+  UploadedSpan,
   AsideContent,
   BatchList,
   BatchListLabel,

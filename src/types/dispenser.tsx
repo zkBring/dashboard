@@ -13,10 +13,10 @@ export type TDispenser = {
   encrypted_multiscan_qr_secret: string
   multiscan_qr_id: string
   dispenser_id?: string  
-  claim_links_count: number
+  links_count: number
   claim_duration: number
   created_at?: string
-  claim_start: string
+  claim_start: number
   status?: TDispenserStatus
   title: string
   encrypted_multiscan_qr_enc_code: string

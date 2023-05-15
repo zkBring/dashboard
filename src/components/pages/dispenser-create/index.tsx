@@ -8,7 +8,7 @@ import {
   ContainerButton,
   DateTimeContainer
 } from './styled-components'
-import moment, { isDuration } from 'moment'
+import moment from 'moment'
 import {
   WidgetComponent,
   WidgetSubtitle
@@ -101,6 +101,7 @@ const QRCreate: FC<ReduxType> = ({
           note='Enter starting day in MM/DD/YYYY format'
           onChange={(value) => setDate(value)}
           value={date}
+          minDate={new Date()}
         />
 
         <SelectStyled
@@ -142,16 +143,12 @@ const QRCreate: FC<ReduxType> = ({
           Back
         </ContainerButton>
         <ContainerButton
-          disabled={!title || !isDuration}
+          disabled={!title || !duration}
           appearance='action'
           loading={loading}
           onClick={() => {
             const timeSplitted = time.value.split(':')
             const dateString = momentNoOffset(date, Number(timeSplitted[0]), Number(timeSplitted[1]))
-            alert(`
-              UTC+0 Time: ${dateString}
-              UTC current: ${new Date(dateString)}
-            `)
             addDispenser(
               title,
               dateString,

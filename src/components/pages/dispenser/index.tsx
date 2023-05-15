@@ -7,7 +7,9 @@ import {
   TableText,
   TableValue,
   DownloadQRPopup,
-  UploadLinksPopup
+  UploadLinksPopup,
+  ErrorSpan,
+  UploadedSpan,
 } from 'components/pages/common'
 import {
   Buttons,
@@ -16,14 +18,18 @@ import {
   CopyContainerStyled,
   AsideContent,
   AsideSubtitle,
-  Counter
+  Counter,
+  SecondaryTextSpan
 } from './styled-components'
 import { TextLink } from 'components/common'
+import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName } from 'helpers'
 import { Redirect, useParams } from 'react-router-dom'
-import { TDispenser, TLinkDecrypted } from 'types'
+import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { decrypt } from 'lib/crypto'
+import Icons from 'icons'
+import moment from 'moment'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -73,6 +79,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
+const defineStatusAppearance = (status: TDispenserStatus) => {
+  const statusName = defineDispenserStatusName(status)
+  if (status === 'NOT_UPLOADED') {
+    return <ErrorSpan>
+      <Icons.NotUploadedIcon />
+      {statusName}
+    </ErrorSpan>
+  }
+
+  return <UploadedSpan>{statusName}</UploadedSpan>
+}
+
 const Dispenser: FC<ReduxType> = ({
   dispensers,
   loading,
@@ -110,7 +128,11 @@ const Dispenser: FC<ReduxType> = ({
     return <Redirect to='/dispensers' />
   }
 
-  const { title, multiscan_qr_id, dispenser_id, claim_duration, claim_start, claim_links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
+  const { title, multiscan_qr_id, dispenser_id, claim_duration, claim_start, links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
+  const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0)
+  const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
+  const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
+  const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
 
   return <Container>
     {updateLinksPopup && <UploadLinksPopup
@@ -166,21 +188,21 @@ const Dispenser: FC<ReduxType> = ({
       title="Connect to claim links"
     >
       <WidgetSubtitle>
-        Upload a CSV file with claim links in the required format. <TextLink>Download example file</TextLink> or <TextLink>read the docs</TextLink>.
+          Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
       </WidgetSubtitle>
       <WidgetSubtitle>
         If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>
       </WidgetSubtitle>
       <AsideContent>
         <AsideSubtitle>Amount of links</AsideSubtitle>
-        <Counter>{claim_links_count}</Counter>
+        <Counter>{links_count || 0}</Counter>
         <TableRow>
           <TableText>Status</TableText>
-          <TableValue>{claim_links_count === 0 ? 'Not uploaded' : dispenser.status}</TableValue>
+          <TableValue>{defineStatusAppearance(currentStatus)}</TableValue>
         </TableRow>
         <TableRow>
           <TableText>Start date</TableText>
-          <TableValue>{claim_start}</TableValue>
+          <TableValue>{claimStartDate}, <SecondaryTextSpan>{claimStartTime} (UTC+0)</SecondaryTextSpan></TableValue>
         </TableRow>
         <TableRow>
           <TableText>Duration</TableText>
@@ -189,11 +211,12 @@ const Dispenser: FC<ReduxType> = ({
       </AsideContent>
 
       <WidgetButton
-          title='Upload file'
-          appearance='action'
-          onClick={() => {
-            toggleUpdateLinksPopup(true)
-          }}
+        title='Upload file'
+        disabled={currentStatus === 'FINISHED' || currentStatus === 'ACTIVE'}
+        appearance='action'
+        onClick={() => {
+          toggleUpdateLinksPopup(true)
+        }}
         /> 
     </WidgetComponentStyled>
   </Container>

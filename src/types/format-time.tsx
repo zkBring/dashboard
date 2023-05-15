@@ -1,3 +1,3 @@
-type TFormatTime = (time: string) => string
+type TFormatTime = (time: string | number) => string
 
 export default TFormatTime

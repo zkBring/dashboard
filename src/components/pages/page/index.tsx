@@ -43,7 +43,7 @@ const defineTitle: TDefineTitle = (location) => {
     case locationUpdated.includes('/dispensers/new'):
       return "New Dispenser"
     case locationUpdated.includes('/dispensers'):
-      return "Dispenser"
+      return "Dispensers"
     case locationUpdated.includes('/qrs'):
       return "QR manager"
     

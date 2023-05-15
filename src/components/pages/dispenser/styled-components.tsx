@@ -61,3 +61,7 @@ export const Counter = styled.div`
   font-weight: 600;
   margin-bottom: 16px;
 `
+
+export const SecondaryTextSpan = styled.span`
+  color: ${props => props.theme.additionalTextColor};
+`

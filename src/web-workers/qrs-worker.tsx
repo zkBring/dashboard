@@ -146,6 +146,8 @@ export class QRsWorker {
     this.currentPercentageFinished = 0
     return qrArray
   }
+
+  
   public prepareLinksForDispenser (
     encrypted_multiscan_qr_enc_code: string,
     links: TLinkDecrypted[],
@@ -159,7 +161,7 @@ export class QRsWorker {
       const linkKey = ethers.utils.id(multiscanQREncCode)
       const link = {
         encrypted_claim_link: encrypt(claim_link, linkKey.replace('0x', '')),
-        claim_link_id: links[i].link_id
+        link_id: links[i].link_id
       }
       result.push(link)
       const percentageFinished = Math.round(i / links.length * 100) / 100

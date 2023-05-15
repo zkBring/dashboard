@@ -17,7 +17,7 @@ const requests = {
     return qrsSetApi.get(`/multiscan-qrs/${id}`, { withCredentials: true })
   },
   mapLinks: (id: string | number, links: TDispenserLinks) => {
-    return qrsSetApi.patch(`/multiscan-qrs/${id}/upload-links`, {
+    return qrsSetApi.post(`/multiscan-qrs/${id}/upload-links`, {
       encrypted_claim_links: links
     }, { withCredentials: true })
   }

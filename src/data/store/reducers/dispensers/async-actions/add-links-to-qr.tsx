@@ -54,23 +54,23 @@ const addLinksToQR = ({
       console.log((+ new Date()) - start)
       console.log({ qrArrayMapped })
       callback && callback()
-      // const result = await dispensersApi.mapLinks(dispenserId, qrArrayMapped)
+      const result = await dispensersApi.mapLinks(dispenserId, qrArrayMapped)
       
-      // if (result.data.success) {
-      //   plausibleApi.invokeEvent({
-      //     eventName: 'qr_connect',
-      //     data: {
-      //       success: 'yes'
-      //     }
-      //   })
-      //   const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
-      //   dispatch(actionsDispenser.setDispensers(result.data.dispensers))
-      //   callback && callback()
-      // }
+      if (result.data.success) {
+        // plausibleApi.invokeEvent({
+        //   eventName: 'qr_connect',
+        //   data: {
+        //     success: 'yes'
+        //   }
+        // })
+        const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
+        dispatch(actionsDispenser.setDispensers(result.data.dispensers))
+        callback && callback()
+      }
       
-      // if (!result.data.success) {
-      //   alertError('Couldn’t connect links to QRs, please try again')
-      // }
+      if (!result.data.success) {
+        alertError('Couldn’t connect links to QRs, please try again')
+      }
       dispatch(actionsDispenser.setMappingLoader(0))
     } catch (err) {
       plausibleApi.invokeEvent({
