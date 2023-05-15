@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.11-rc.0
+## 2.1.11
 - Reload of campaigns after batch creation
 - Wallets list config updated
 - Report download for claimed links
@@ -9,6 +9,7 @@
 - Coinbase deeplink added
 - Wallets array specification for address
 - Fixed bug with QR-limits
+- Update linkdrop-sdk version to 2.0.4
 
 ## 2.1.10
 - "Refund" transaction fix

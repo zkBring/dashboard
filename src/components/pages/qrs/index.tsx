@@ -84,7 +84,7 @@ const QRs: FC<ReduxType> = ({
             <BatchListValue>
               {
                 (!qr.links_uploaded || !qr.campaign || !qr.campaign.campaign_id) ?
-                  '-' : <TextLink to={`/campaigns/${(qr.campaign || {}).campaign_id}`}>{shortenString((qr.campaign || {}).title)}{`->`}</TextLink>
+                  '-' : shortenString((qr.campaign || {}).title)
               }
             </BatchListValue>
             <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
