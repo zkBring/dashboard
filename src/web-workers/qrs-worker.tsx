@@ -102,7 +102,6 @@ export class QRsWorker {
     const decrypted_qr_enc_code = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
     const originalLink = `${claimAppUrl}/#/mqr/${decrypted_qr_secret}/${decrypted_qr_enc_code}`
     const QRLink = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
-    console.log({ QRLink })
     const qrCode = new QRCodeStyling({
       data: QRLink,
       width,
@@ -154,7 +153,6 @@ export class QRsWorker {
     dashboard_key: string,
   ) {
     const result = []
-    console.log({ encrypted_multiscan_qr_enc_code })
     const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboard_key)
     for (let i = 0; i < links.length; i++) {
       const claim_link = links[i].claim_link

@@ -36,7 +36,6 @@ const addLinksToQR = ({
       const start = +(new Date())
 
       const updateProgressbar = async (value: number) => {
-        console.log({ value })
         if (value === currentPercentage || value < currentPercentage) { return }
         currentPercentage = value
         dispatch(actionsDispenser.setMappingLoader(currentPercentage))
