@@ -8,16 +8,16 @@ const qrsSetApi = axios.create({
 
 const requests = {
   create: (qr_set: TDispenser) => {
-    return qrsSetApi.post('/multiscan-qrs', qr_set, { withCredentials: true })
+    return qrsSetApi.post('/dispensers', qr_set, { withCredentials: true })
   },
   get: () => {
-    return qrsSetApi.get('/multiscan-qrs', { withCredentials: true })
+    return qrsSetApi.get('/dispensers', { withCredentials: true })
   },
   getOne: (id: string | number) => {
-    return qrsSetApi.get(`/multiscan-qrs/${id}`, { withCredentials: true })
+    return qrsSetApi.get(`/dispensers/${id}`, { withCredentials: true })
   },
   mapLinks: (id: string | number, links: TDispenserLinks) => {
-    return qrsSetApi.post(`/multiscan-qrs/${id}/upload-links`, {
+    return qrsSetApi.post(`/dispensers/${id}/upload-links`, {
       encrypted_claim_links: links
     }, { withCredentials: true })
   }
