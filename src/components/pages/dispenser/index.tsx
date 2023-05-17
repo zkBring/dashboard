@@ -30,6 +30,9 @@ import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-ac
 import { decrypt } from 'lib/crypto'
 import Icons from 'icons'
 import moment from 'moment'
+const {
+  REACT_APP_CLAIM_APP
+} = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -101,12 +104,7 @@ const Dispenser: FC<ReduxType> = ({
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
-
-  useEffect(() => {
-    if (!dispenser) { return }
-    const { encrypted_multiscan_qr_secret, encrypted_multiscan_qr_enc_code } = dispenser
-    setInitialized(true)
-  }, [])
+  console.log({ dispenser })
 
   const [
     updateLinksPopup,
@@ -116,11 +114,6 @@ const Dispenser: FC<ReduxType> = ({
   const [
     downloadPopup,
     toggleDownloadPopup
-  ] = useState<boolean>(false)
-
-  const [
-    initialized,
-    setInitialized
   ] = useState<boolean>(false)
 
 
@@ -165,7 +158,7 @@ const Dispenser: FC<ReduxType> = ({
     <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
       <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
       <CopyContainerStyled
-        text={initialized ? `https://claim.linkdrop.io/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)}` : 'Loading'}
+        text={`${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)}`}
         title='Scan the code to see claim page'
       />
       

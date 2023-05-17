@@ -146,7 +146,6 @@ export class QRsWorker {
     return qrArray
   }
 
-  
   public prepareLinksForDispenser (
     encrypted_multiscan_qr_enc_code: string,
     links: TLinkDecrypted[],
