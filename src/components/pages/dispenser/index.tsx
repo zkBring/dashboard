@@ -150,7 +150,8 @@ const Dispenser: FC<ReduxType> = ({
           multiscan_qr_id,
           encrypted_multiscan_qr_secret,
           encrypted_multiscan_qr_enc_code,
-          title
+          title,
+          () => { toggleDownloadPopup(false) }
         )
       }}
       onClose={() => toggleDownloadPopup(false)}
