@@ -37,21 +37,30 @@ export const Buttons = styled.div`
 
 export const DatePickerStyled = styled(DatePicker)`
   margin-bottom: 32px;
-  
+
   
 `
 
 export const SelectStyled = styled(Select)`
-  
-  
+  max-width: 100px;
+`
+
+export const Note = styled.div`
+  padding-top: 42px;
 `
 
 export const DateTimeContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  &> div:last-child {
-    max-width: 220px;
+
+  &> div {
+    width: fit-content;
     margin-left: 12px;
+
+    &:first-child {
+      flex: 3;
+      margin-left: 0px;
+    }
   }
 `
