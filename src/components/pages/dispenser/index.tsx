@@ -22,7 +22,7 @@ import {
   SecondaryTextSpan
 } from './styled-components'
 import { TextLink } from 'components/common'
-import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName } from 'helpers'
+import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink } from 'helpers'
 import { Redirect, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
@@ -100,6 +100,7 @@ const Dispenser: FC<ReduxType> = ({
   mappingLoader,
   addLinksToQR,
   dashboardKey,
+  address,
   downloadQR
 }) => {
   const { id } = useParams<{id: string}>()
@@ -126,6 +127,9 @@ const Dispenser: FC<ReduxType> = ({
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
   const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
+  const isDeeplink = defineIfQRIsDeeplink(address)
+  const originalLink = `${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)}`
+  const claimUrl = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
 
   return <Container>
     {updateLinksPopup && <UploadLinksPopup
@@ -159,7 +163,7 @@ const Dispenser: FC<ReduxType> = ({
     <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
       <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
       <CopyContainerStyled
-        text={`${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)}`}
+        text={claimUrl}
         title='Scan the code to see claim page'
       />
       
