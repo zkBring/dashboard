@@ -6,7 +6,8 @@ import {
   DatePickerStyled,
   SelectStyled,
   ContainerButton,
-  DateTimeContainer
+  DateTimeContainer,
+  Note
 } from './styled-components'
 import moment from 'moment'
 import {
@@ -29,13 +30,19 @@ const mapStateToProps = ({
   loading
 })
 
-const defaultValue = { label: '0:00 UTC+0', value: '0:00'}
+const defaultValue = { label: '00', value: '0'}
 
-const selectOptions = [defaultValue].concat(Array.from({ length: 47 }, (_: any, i: number) => {
-  const hours = Math.ceil(i / 2)
-  const minutes = (i * 30) % 60 === 0 ? '30' : '00'
-  return { label: `${hours}:${minutes} UTC+0`, value: `${hours}:${minutes}` }
-}))
+const createSelectOptions = (values: number, defaultValue: { label: string, value: string }) => {
+  return [defaultValue].concat(Array.from({ length: values }, (_: any, i: number) => {
+    const num = i + 1
+    const label = num < 10 ? `0${num}` : `${num}`
+    return { label, value: `${num}` }
+  }))
+}
+
+
+const selectOptionsHours = createSelectOptions(23, defaultValue)
+const selectOptionsMinutes = createSelectOptions(59, defaultValue)
 
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -70,7 +77,8 @@ const QRCreate: FC<ReduxType> = ({
   const [ title, setTitle ] = useState<string>('')
   const [ date, setDate ] = useState<Date>(new Date())
   const [ duration, setDuration ] = useState<string>('')
-  const [ time, setTime ] = useState(defaultValue)
+  const [ hours, setHours ] = useState(defaultValue)
+  const [ minutes, setMinutes ] = useState(defaultValue)
 
   // const selectCurrentValue = () => {
   //   const currentOption = selectOptions.find(option => option.value === time.value)
@@ -98,26 +106,38 @@ const QRCreate: FC<ReduxType> = ({
 
         <DatePickerStyled
           title='Start date'
-          note='Enter starting day in MM/DD/YYYY format'
+          note='Enter start date in the “dd MMM yyyy” format, e.g. “19 Apr 2022”'
+          dateFormat='dd MMM yyyy'
           onChange={(value) => setDate(value)}
           value={date}
           minDate={new Date()}
         />
 
         <SelectStyled
-          title='Start Time'
-          value={time}
-          options={selectOptions}
+          title='Hours'
+          value={hours}
+          options={selectOptionsHours}
           onChange={(option) => {
-            setTime(option)
+            setHours(option)
             const input: HTMLInputElement | null = inputRef.current
             if (!input) { return }
             input && input.focus()
           }}
-          notFoundActiveCondition={(value) => {
-            return /^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$/.test(value)
+        />
+
+        <SelectStyled
+          title='Minutes'
+          value={minutes}
+          options={selectOptionsMinutes}
+          onChange={(option) => {
+            setMinutes(option)
+            const input: HTMLInputElement | null = inputRef.current
+            if (!input) { return }
+            input && input.focus()
           }}
         />
+
+        <Note>UTC+0</Note>
 
       </DateTimeContainer>
 
@@ -147,8 +167,7 @@ const QRCreate: FC<ReduxType> = ({
           appearance='action'
           loading={loading}
           onClick={() => {
-            const timeSplitted = time.value.split(':')
-            const dateString = momentNoOffset(date, Number(timeSplitted[0]), Number(timeSplitted[1]))
+            const dateString = momentNoOffset(date, Number(hours.value), Number(minutes.value))
             addDispenser(
               title,
               dateString,
