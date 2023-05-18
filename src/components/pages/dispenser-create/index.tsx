@@ -32,17 +32,17 @@ const mapStateToProps = ({
 
 const defaultValue = { label: '00', value: '0'}
 
-const selectOptionsHours = [defaultValue].concat(Array.from({ length: 23 }, (_: any, i: number) => {
-  const hours = i + 1
-  const label = hours < 10 ? `0${hours}` : `${hours}`
-  return { label, value: `${hours}` }
-}))
+const createSelectOptions = (values: number, defaultValue: { label: string, value: string }) => {
+  return [defaultValue].concat(Array.from({ length: values }, (_: any, i: number) => {
+    const num = i + 1
+    const label = num < 10 ? `0${num}` : `${num}`
+    return { label, value: `${num}` }
+  }))
+}
 
-const selectOptionsMinutes = [defaultValue].concat(Array.from({ length: 59 }, (_: any, i: number) => {
-  const minutes = i + 1
-  const label = minutes < 10 ? `0${minutes}` : `${minutes}`
-  return { label, value: `${minutes}` }
-}))
+
+const selectOptionsHours = createSelectOptions(23, defaultValue)
+const selectOptionsMinutes = createSelectOptions(59, defaultValue)
 
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
