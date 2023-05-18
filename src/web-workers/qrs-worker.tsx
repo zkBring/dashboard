@@ -83,7 +83,6 @@ export class QRsWorker {
     }
     return qrs
   }
-
   public async downloadMultiQR (
     encrypted_multiscan_qr_secret: string,
     encrypted_multiscan_qr_enc_code: string,
