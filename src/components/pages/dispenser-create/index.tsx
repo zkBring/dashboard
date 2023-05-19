@@ -40,10 +40,8 @@ const createSelectOptions = (values: number, defaultValue: { label: string, valu
   }))
 }
 
-
 const selectOptionsHours = createSelectOptions(23, defaultValue)
 const selectOptionsMinutes = createSelectOptions(59, defaultValue)
-
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
