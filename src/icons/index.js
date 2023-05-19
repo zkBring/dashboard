@@ -29,6 +29,7 @@ import { ReactComponent as PauseIcon } from './pause-icon.svg'
 import { ReactComponent as UnpauseIcon } from './unpause-icon.svg'
 import { ReactComponent as RefundIcon } from './refund-icon.svg'
 import { ReactComponent as ClipboardCopyIcon } from './clipboard-copy-icon.svg'
+import { ReactComponent as ClipboardCopiedIcon } from './clipboard-copied-icon.svg'
 import { ReactComponent as EyeOpenIcon } from './eye-open-icon.svg'
 import { ReactComponent as EyeClosedIcon } from './eye-closed-icon.svg'
 import { ReactComponent as MonitorIcon } from './monitor-icon.svg'
@@ -43,6 +44,7 @@ import { ReactComponent as DispenserIcon } from './dispenser-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  ClipboardCopiedIcon,
   DispenserIcon,
   GoToOldVersionIcon,
   CloseCircleIcon,
