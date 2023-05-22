@@ -152,3 +152,9 @@ export function setLinksGenerateLoader(linksGenerateLoader: number) {
     linksGenerateLoader
   })
 }
+
+export function setOnlyPreferredWallet(onlyPreferredWallet: boolean) {
+  return action(Constants.CAMPAIGN_SET_ONLY_PREFERRED_WALLET, {
+    onlyPreferredWallet
+  })
+}
