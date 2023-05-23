@@ -18,16 +18,20 @@ import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { TLinkParams } from './types'
+import { TDispenser } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  dispensers: { loading },
+  dispensers: { loading, dispensers },
   user: { address, chainId },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  loading
+  loading,
+  dispensers
 })
 
 const defaultValue = { label: '00', value: '0'}
@@ -59,39 +63,46 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+const momentNoOffsetWithTimeUpdate = (date: Date, hour: number, minute: number) => {
+  const m = moment(date).utcOffset(0)
+  m.set({ hour, minute, seconds: 0 })
+  m.toISOString()
+  return m.format()
+}
+
+const momentNoOffsetGetTime = (date?: number) => {
+  const m = moment(date || new Date()).utcOffset(0)
+  const hours = m.format('HH')
+  const minutes = m.format('mm')
+  return {
+    hours: { label: hours, value: hours },
+    minutes: { label: minutes, value: minutes }
+  }
+}
+
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QRCreate: FC<ReduxType> = ({
   addDispenser,
-  loading
+  loading,
+  dispensers
 }) => {
   const history = useHistory()
-  const momentNoOffset = (date: Date, hour: number, minute: number) => {
-    var m = moment(date).utcOffset(0)
-    m.set({ hour, minute, seconds: 0 })
-    m.toISOString()
-    return m.format()
-  }
-  const [ title, setTitle ] = useState<string>('')
-  const [ date, setDate ] = useState<Date>(new Date())
-  const [ duration, setDuration ] = useState<string>('')
-  const [ hours, setHours ] = useState(defaultValue)
-  const [ minutes, setMinutes ] = useState(defaultValue)
-
-  // const selectCurrentValue = () => {
-  //   const currentOption = selectOptions.find(option => option.value === time.value)
-  //   if (!currentOption) {
-  //     return {label: time.value, value: '12:33'}
-  //   }
-  //   if (currentOption) {
-  //     return currentOption
-  //   }
-  // }
+  const { dispenserId } = useParams<TLinkParams>()
+  const currentDispenser: TDispenser | null | undefined = dispenserId ? dispensers.find(item => item.dispenser_id === dispenserId) : null
+  const dispenserTitle = currentDispenser ? currentDispenser.title : ''
+  const dispenserDate = currentDispenser ? new Date(currentDispenser.claim_start) : new Date()
+  const dispenserDuration = currentDispenser ? String(currentDispenser.claim_duration) : ''
+  const dispenserTime = momentNoOffsetGetTime(currentDispenser?.claim_start)
+  const [ title, setTitle ] = useState<string>(dispenserTitle)
+  const [ date, setDate ] = useState<Date>(dispenserDate)
+  const [ duration, setDuration ] = useState<string>(dispenserDuration)
+  const [ hours, setHours ] = useState(dispenserTime.hours)
+  const [ minutes, setMinutes ] = useState(dispenserTime.minutes)
 
   const inputRef = useRef<HTMLInputElement>(null)
-
   return <Container>
-    <WidgetComponent title='New dispenser'>
+    <WidgetComponent title={currentDispenser ? 'Dispenser edit' : 'New dispenser'}>
       <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
       <InputComponent
         title='Title'
@@ -156,7 +167,7 @@ const QRCreate: FC<ReduxType> = ({
       />
       <Buttons>
         <ContainerButton
-          to='/dispensers'
+          to={currentDispenser ? `/dispensers/${currentDispenser.dispenser_id}` : '/dispensers'}
         >
           Back
         </ContainerButton>
@@ -165,7 +176,7 @@ const QRCreate: FC<ReduxType> = ({
           appearance='action'
           loading={loading}
           onClick={() => {
-            const dateString = momentNoOffset(date, Number(hours.value), Number(minutes.value))
+            const dateString = momentNoOffsetWithTimeUpdate(date, Number(hours.value), Number(minutes.value))
             addDispenser(
               title,
               dateString,
@@ -174,9 +185,8 @@ const QRCreate: FC<ReduxType> = ({
             )
           }}
         >
-          Create
+          {currentDispenser ? 'Update' : 'Create'}
         </ContainerButton>
-        
       </Buttons>
       
     </WidgetComponent>
