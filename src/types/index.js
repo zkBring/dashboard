@@ -21,6 +21,11 @@ import {
   TQRSet,
   TQRItem
 } from './qr'
+import {
+  TDispenserStatus,
+  TDispenser,
+  TDispenserLinks
+} from './dispenser'
 import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
 import TCampaignNew from './campaign-new'
@@ -52,6 +57,9 @@ export {
   TSingleLinkData,
   TButtonAppearance,
   TQROption,
+  TDispenserStatus,
+  TDispenser,
+  TDispenserLinks,
   DotType,
   CornerSquareType,
   CornerDotType,

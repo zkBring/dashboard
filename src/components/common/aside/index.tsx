@@ -23,12 +23,14 @@ const mapStateToProps = ({
   user: {
     address,
     authorizationStep,
-    chainId
+    chainId,
+    whitelisted
   }
 }: RootState) => ({
   address,
   authorizationStep,
-  chainId
+  chainId,
+  whitelisted
 })
 
 interface AsideProps {}
@@ -42,7 +44,8 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 const AsideComponent: FC<AsideProps & ReduxType> = ({
   authorizationStep,
-  chainId
+  chainId,
+  whitelisted
 }) => {
   const location = useLocation<LocationType>()
   if (authorizationStep !== 'authorized') {
@@ -63,11 +66,14 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
 
     <AsideMenu>
       <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
-        <Icons.CampaignsIcon />Campaigns
+        <Icons.CampaignsIcon />Claim Links
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-        <Icons.QRManagerIcon />QR-manager
+        <Icons.QRManagerIcon />QR Manager
       </AsideMenuItem>
+      {whitelisted && <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
+        <Icons.DispenserIcon />Dispensers
+      </AsideMenuItem>}
     </AsideMenu>
 
     <AsideFooter>

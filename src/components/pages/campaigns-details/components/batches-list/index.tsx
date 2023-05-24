@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { TProps } from './types'
 import {
   BatchList,
@@ -17,6 +17,23 @@ import {
 } from '../../styled-components'
 import { ClipboardCopy, BatchId } from './styled-components'
 import Icons from 'icons'
+
+
+const BatchIdContainer: FC<{batchId: string}> = ({ batchId }) => {
+  const [ copied, setCopied ] = useState<boolean>(false)
+  return <BatchId onClick={() => {
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
+    copyToClipboard({ value: batchId })
+  }}>
+    {shortenString(batchId)}
+    <ClipboardCopy>
+      {copied ? <Icons.ClipboardCopiedIcon /> : <Icons.ClipboardCopyIcon /> }
+    </ClipboardCopy>
+  </BatchId>
+}
 
 const BatchesList: FC<TProps> = ({
   batches,
@@ -46,16 +63,9 @@ const BatchesList: FC<TProps> = ({
           {idx + 1}
         </BatchListValue>
         <BatchListValue>
-          <BatchId onClick={() => {
-            copyToClipboard({ value: batch.batch_id })
-          }}>
-            {shortenString(batch.batch_id)}
-            <ClipboardCopy><Icons.ClipboardCopyIcon /></ClipboardCopy>
-          </BatchId>
+          <BatchIdContainer batchId={batch.batch_id} />
         </BatchListValue>
 
-
-        
         <BatchListValue>
           {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
         </BatchListValue>

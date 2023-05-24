@@ -46,18 +46,3 @@ export const BatchListLabelStyled = styled(BatchListLabel)`
   text-overflow: ellipsis;
   max-width: 200px;
 `
-
-
-export const ErrorSpan = styled.span`
-  display: flex;
-  align-items: center;
-  color: ${props => props.theme.dangerTextColor};
-
-  svg {
-    margin-right: 8px;
-  }
-`
-
-export const UploadedSpan = styled.span`
-  color: ${props => props.theme.primaryHighlightColor};
-`

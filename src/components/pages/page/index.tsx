@@ -37,8 +37,13 @@ const defineTitle: TDefineTitle = (location) => {
     case locationUpdated.includes('/campaigns/edit/erc1155'):
       return 'New Batch'
     
-      case locationUpdated.includes('/qrs/'):
+    case locationUpdated.includes('/qrs/'):
       return "QR set manager"
+
+    case locationUpdated.includes('/dispensers/new'):
+      return "New Dispenser"
+    case locationUpdated.includes('/dispensers'):
+      return "Dispensers"
     case locationUpdated.includes('/qrs'):
       return "QR manager"
     

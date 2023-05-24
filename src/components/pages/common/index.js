@@ -3,6 +3,8 @@ import Aside from './aside'
 import AssetsList from './assets-list'
 import InstructionNote from './instruction-note'
 import InitialGuide from './initial-guide'
+import DownloadQRPopup from './download-qr-popup'
+import UploadLinksPopup from './upload-links-popup'
 
 import {
   Container,
@@ -20,7 +22,9 @@ import {
   BatchListLabel,
   BatchListValue,
   AsideContent,
-  TableValueShorten
+  TableValueShorten,
+  ErrorSpan,
+  UploadedSpan
 } from './styled-components'
 
 export {
@@ -29,6 +33,8 @@ export {
   WidgetComponent,
   InstructionNote,
   WidgetAside,
+  ErrorSpan,
+  UploadedSpan,
   AsideContent,
   BatchList,
   BatchListLabel,
@@ -44,5 +50,7 @@ export {
   TableText,
   TableValue,
   AssetsList,
-  InitialGuide
+  InitialGuide,
+  DownloadQRPopup,
+  UploadLinksPopup
 }

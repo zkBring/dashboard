@@ -1,4 +1,4 @@
 export type TProps = {
   onClose: () => void,
-  id: string | number
+  onSubmit: (size: number) => void
 }

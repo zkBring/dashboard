@@ -83,6 +83,46 @@ export class QRsWorker {
     }
     return qrs
   }
+  public async downloadMultiQR (
+    encrypted_multiscan_qr_secret: string,
+    encrypted_multiscan_qr_enc_code: string,
+    width: number,
+    height: number,
+    dashboardKey: string,
+    logoImageWidth: number,
+    logoImageHeight: number,
+    img: ImageBitmap,
+    qrOption: TQROption,
+    isDeeplink?: string,
+    claimAppUrl?: string
+  ) {
+    let qrs: Blob[] = []
+    const decrypted_qr_secret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
+    const decrypted_qr_enc_code = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
+    const originalLink = `${claimAppUrl}/#/mqr/${decrypted_qr_secret}/${decrypted_qr_enc_code}`
+    const QRLink = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
+    const qrCode = new QRCodeStyling({
+      data: QRLink,
+      width,
+      height,
+      margin: width / 60,
+      type: 'canvas',
+      cornersSquareOptions: qrOption.cornersSquareOptions,
+      cornersDotOptions: qrOption.cornersDotOptions,
+      dotsOptions: qrOption.dotsOptions,
+      backgroundOptions: qrOption.backgroundOptions,
+      image: img,
+      imageOptions: qrOption.imageOptions,
+      logoImageWidth,
+      logoImageHeight
+    })
+
+    const blob = await qrCode.getRawData('png')
+    if (blob) {
+      qrs.push(blob)
+    }
+    return qrs
+  }
 
   public mapQrsWithLinks (
     qrs: TQRItem[],
@@ -103,6 +143,31 @@ export class QRsWorker {
     }
     this.currentPercentageFinished = 0
     return qrArray
+  }
+
+  public prepareLinksForDispenser (
+    encrypted_multiscan_qr_enc_code: string,
+    links: TLinkDecrypted[],
+    dashboard_key: string,
+  ) {
+    const result = []
+    const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboard_key)
+    for (let i = 0; i < links.length; i++) {
+      const claim_link = links[i].claim_link
+      const linkKey = ethers.utils.id(multiscanQREncCode)
+      const link = {
+        encrypted_claim_link: encrypt(claim_link, linkKey.replace('0x', '')),
+        link_id: links[i].link_id
+      }
+      result.push(link)
+      const percentageFinished = Math.round(i / links.length * 100) / 100
+      if (this.currentPercentageFinished < percentageFinished) {
+        this.currentPercentageFinished = percentageFinished
+        this.cb(this.currentPercentageFinished)
+      }
+    }
+    this.currentPercentageFinished = 0
+    return result
   }
 }
 

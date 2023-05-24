@@ -1,8 +1,9 @@
 import { Dispatch } from 'redux'
 import * as userActions from '../actions'
-import { TQRSet, TCampaign } from 'types'
+import { TQRSet, TCampaign, TDispenser } from 'types'
 import * as qrsActions from '../../qrs/actions'
 import * as campaignsActions from '../../campaigns/actions'
+import * as dispensersActions from '../../dispensers/actions'
 import {
   UserActions,
 } from '../types'
@@ -12,9 +13,12 @@ import {
 import {
   CampaignsActions
 } from '../../campaigns/types'
+import {
+  DispensersActions
+} from '../../dispensers/types'
 import LinkdropSDK from 'linkdrop-sdk'
 import { RootState } from 'data/store'
-import { campaignsApi, qrsApi } from 'data/api'
+import { campaignsApi, qrsApi, dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
 
 const {
@@ -25,7 +29,7 @@ const {
 
 const initialization = () => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions>,
+    dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions> & Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
     const { user: { address, chainId, provider }} = getState()
@@ -46,6 +50,8 @@ const initialization = () => {
       dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
       const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
       dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
+      const dispensers: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
+      dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
     } catch (err) {
       console.log(err)
       alertError('Error occured with data fetch, check console for information')
