@@ -1,7 +1,7 @@
 # Ledger Dashboard
 
-## 2.1.12-rc.0
-- Added Dispensers (Multi QR)
+## 2.1.12
+- Added Dispensers page for whitelisted users (Multi QR)
 - Updated version of Linkdrop-UI package
 
 ## 2.1.11
