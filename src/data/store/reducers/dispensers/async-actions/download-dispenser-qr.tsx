@@ -44,8 +44,8 @@ const downloadQR = ({
     const { user: { dashboardKey, workersCount, address } } = getState()
     try {
       if (!dashboardKey) { return alertError('dashboardKey is not provided') }
-      if (!encrypted_multiscan_qr_secret) { return alertError('encrypted_qr_secret is not provided') }
-      if (!multiscan_qr_id) { return alertError('qr_id is not provided') }
+      if (!encrypted_multiscan_qr_secret) { return alertError('encrypted_multiscan_qr_secret is not provided') }
+      if (!multiscan_qr_id) { return alertError('multiscan_qr_id is not provided') }
       const qrOption = defineQROptions(address)
       const resp = await fetch(qrOption.icon)
       const blob = await resp.blob()
@@ -76,7 +76,7 @@ const downloadQR = ({
       await downloadBase64FilesAsZip('png', result, qrDispenserName, 0)
   
       plausibleApi.invokeEvent({
-        eventName: 'qr_download',
+        eventName: 'multiqr_download',
         data: {
           format: 'png'
         }

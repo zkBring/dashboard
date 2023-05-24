@@ -32,33 +32,31 @@ const addDispenser = ({
     try {
       const secretKeyPair = sdk?.utils.generateAccount(12, true)
       const encKeyPair = sdk?.utils.generateAccount(12, true)
-
-      if (secretKeyPair && encKeyPair) {
+      if (!secretKeyPair) { return alertError('secretKeyPair is not provided') }
+      if (!encKeyPair) { return alertError('encKeyPair is not provided') }
         
-        const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey)
-        const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey)
-        const dispenserId = String(+new Date())
-        const newDispenser: TDispenser = {
-          encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
-          multiscan_qr_id: secretKeyPair.address,
-          links_count: 0,
-          dispenser_id: dispenserId,
-          claim_duration: duration,
-          claim_start: +(new Date(date)),
-          status: 'READY',
-          encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
-          title
-        }
-        const { data } = await dispensersApi.create(newDispenser)
-        if (data.success) {
-          dispatch(actionsDispensers.addDispenser(data.dispenser))
-          if (callback) { callback(data.dispenser.dispenser_id) }
-        }
-        // dispatch(actionsDispensers.addDispenser(newDispenser))
-        // if (callback) { callback(dispenserId) }
-      } else {
-
+      const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey)
+      const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey)
+      const dispenserId = String(+new Date())
+      const newDispenser: TDispenser = {
+        encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
+        multiscan_qr_id: secretKeyPair.address,
+        links_count: 0,
+        dispenser_id: dispenserId,
+        claim_duration: duration,
+        claim_start: +(new Date(date)),
+        status: 'READY',
+        encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
+        title
       }
+      const { data } = await dispensersApi.create(newDispenser)
+      if (data.success) {
+        dispatch(actionsDispensers.addDispenser(data.dispenser))
+        if (callback) { callback(data.dispenser.dispenser_id) }
+      } else {
+        return alertError('Dispenser was not created. Check console for more information')
+      }
+
       
     } catch (err) {
       alertError('Couldn’t create Dispanser, please check console')

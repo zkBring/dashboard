@@ -33,7 +33,6 @@ const addLinksToQR = ({
         throw new Error('dashboardKey is not provided')
       }
       dispatch(actionsDispenser.setLoading(true))
-      const start = +(new Date())
 
       const updateProgressbar = async (value: number) => {
         if (value === currentPercentage || value < currentPercentage) { return }
@@ -50,18 +49,16 @@ const addLinksToQR = ({
         links,
         dashboardKey
       )
-      console.log((+ new Date()) - start)
-      console.log({ qrArrayMapped })
       callback && callback()
       const result = await dispensersApi.mapLinks(dispenserId, qrArrayMapped)
       
       if (result.data.success) {
-        // plausibleApi.invokeEvent({
-        //   eventName: 'qr_connect',
-        //   data: {
-        //     success: 'yes'
-        //   }
-        // })
+        plausibleApi.invokeEvent({
+          eventName: 'multiqr_connect',
+          data: {
+            success: 'yes'
+          }
+        })
         const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
         dispatch(actionsDispenser.setDispensers(result.data.dispensers))
         callback && callback()
@@ -73,7 +70,7 @@ const addLinksToQR = ({
       dispatch(actionsDispenser.setMappingLoader(0))
     } catch (err) {
       plausibleApi.invokeEvent({
-        eventName: 'qr_connect',
+        eventName: 'multiqr_connect',
         data: {
           success: 'no'
         }
