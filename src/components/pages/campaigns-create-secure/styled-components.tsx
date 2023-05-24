@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { Input, Radio, Select } from 'linkdrop-ui'
+import { Input, Radio, Select, Checkbox } from 'linkdrop-ui'
 
 export const StyledRadio = styled(Radio)`
-  margin-bottom: 20px;
+  margin-top: 20px;
 `
 
 export const WidgetSecure = styled.div`
@@ -16,3 +16,7 @@ export const StyledInput = styled(Input)`
 `
 
 export const StyledSelect = styled(Select)``
+
+export const CheckboxStyled = styled(Checkbox)`
+  margin-top: 10px;
+`

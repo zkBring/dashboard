@@ -22,6 +22,7 @@ const initialState: CampaignState = {
   sdk: false,
   links: [],
   nativeTokensPerLink: null,
+  onlyPreferredWallet: false,
   linksGenerateLoader: 0
 }
 
@@ -68,6 +69,8 @@ export function newRetroDropReducer(
           return {...state, claimPattern: action.payload.claimPattern }
         case Constants.CAMPAIGN_SET_NATIVE_TOKENS_PER_LINK:
           return {...state, nativeTokensPerLink: action.payload.nativeTokensPerLink }
+        case Constants.CAMPAIGN_SET_ONLY_PREFERRED_WALLET:
+          return {...state, onlyPreferredWallet: action.payload.onlyPreferredWallet }
         case Constants.CAMPAIGN_SET_LINKS:
           return {...state, links: [
             ...state.links,

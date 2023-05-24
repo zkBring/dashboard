@@ -64,7 +64,8 @@ const generateERC20Link = ({
         tokenStandard,
         claimPattern,
         sdk,
-        nativeTokensPerLink
+        nativeTokensPerLink,
+        onlyPreferredWallet
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -177,6 +178,7 @@ const generateERC20Link = ({
           claim_pattern: claimPattern,
           proxy_contract_version: version,
           sponsored,
+          only_preferred_wallet: onlyPreferredWallet,
           ...batch
         }
 
