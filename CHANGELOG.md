@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+
+## 2.1.13-rc.0
+- only_preferred_wallet option support
+
 ## 2.1.12
 - Added Dispensers page for whitelisted users (Multi QR)
 - Updated version of Linkdrop-UI package
