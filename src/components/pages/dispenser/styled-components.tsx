@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Button } from 'components/common'
 import {
-  WidgetComponent,
+  WidgetComponent, Aside, WidgetTitle
 } from 'components/pages/common'
 import { CopyContainer, Input } from 'linkdrop-ui'
 
@@ -64,4 +64,9 @@ export const Counter = styled.div`
 
 export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
+`
+
+export const AsideStyled = styled(Aside)`
+  min-width: 50%;
+  margin: 0;
 `

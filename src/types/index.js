@@ -24,6 +24,7 @@ import {
 import {
   TDispenserStatus,
   TDispenser,
+  TDispenserUpdateData,
   TDispenserLinks
 } from './dispenser'
 import TLinksBatch from './links-batch'
@@ -70,6 +71,7 @@ export {
   TAlchemyERC20Contract,
   TAuthorizationStep,
   TTokenType,
+  TDispenserUpdateData,
   TCampaignStatus,
   TAssetsData,
   TOwners,

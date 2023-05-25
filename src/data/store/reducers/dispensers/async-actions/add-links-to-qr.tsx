@@ -15,11 +15,13 @@ const addLinksToQR = ({
   dispenserId,
   encryptedMultiscanQREncCode,
   links,
+  linksCount,
   callback
 }: {
   dispenserId: string,
   encryptedMultiscanQREncCode: string,
   links: TLinkDecrypted[],
+  linksCount: number,
   callback?: () => void,
 }) => {
   return async (
@@ -50,7 +52,8 @@ const addLinksToQR = ({
         dashboardKey
       )
       callback && callback()
-      const result = await dispensersApi.mapLinks(dispenserId, qrArrayMapped)
+      const apiMethod = linksCount > 0 ? dispensersApi.updateLinks : dispensersApi.mapLinks
+      const result = await apiMethod(dispenserId, qrArrayMapped)
       
       if (result.data.success) {
         plausibleApi.invokeEvent({

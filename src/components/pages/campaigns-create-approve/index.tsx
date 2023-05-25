@@ -7,7 +7,7 @@ import { Erc20, Erc721, Erc1155, CSVUploadPopup, SDKLinks, AsideContents } from 
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TAssetsData, TLinkContent, TLinkParams, TClaimPattern, TTotalAmount } from 'types'
+import { TAssetsData, TLinkContent, TLinkParams, TTotalAmount } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'

@@ -19,11 +19,12 @@ import {
   AsideContent,
   AsideSubtitle,
   Counter,
-  SecondaryTextSpan
+  SecondaryTextSpan,
+  AsideStyled
 } from './styled-components'
 import { TextLink } from 'components/common'
 import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink } from 'helpers'
-import { Redirect, useParams } from 'react-router-dom'
+import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
@@ -48,17 +49,30 @@ const mapStateToProps = ({
   mappingLoader
 })
 
+const defineOptions = (redirectCallback: () => void, status?: TDispenserStatus) => {
+  return [
+    {
+      title: 'Edit',
+      icon: <Icons.EditDispenserIcon />,
+      disabled: status === 'ACTIVE' || status === 'FINISHED',
+      action: redirectCallback
+    },
+  ]
+}
+
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     addLinksToQR: (
       dispenserId: string,
       links: TLinkDecrypted[],
       encryptedMultiscanQREncCode: string,
+      linksCount: number,
       callback?: () => void,
     ) => dispatch(asyncDispensersActions.addLinksToQR({
       dispenserId,
       links,
       encryptedMultiscanQREncCode,
+      linksCount,
       callback
     })),
     downloadQR: (
@@ -105,7 +119,7 @@ const Dispenser: FC<ReduxType> = ({
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
-  console.log({ dispenser })
+  const history = useHistory()
 
   const [
     updateLinksPopup,
@@ -124,6 +138,7 @@ const Dispenser: FC<ReduxType> = ({
 
   const { title, multiscan_qr_id, dispenser_id, claim_duration, claim_start, links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
   const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0)
+  const dispenserOptions = defineOptions(() => history.push(`/dispensers/edit/${dispenser.dispenser_id}`), currentStatus)
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
   const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
@@ -142,7 +157,7 @@ const Dispenser: FC<ReduxType> = ({
         if (!encrypted_multiscan_qr_enc_code) { return alert('encrypted_multiscan_qr_enc_code not found') }
         if (!links) { return alert('Links not found') }
 
-        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, () => {
+        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, links_count, () => {
           toggleUpdateLinksPopup(false)
         })
       }}
@@ -182,8 +197,9 @@ const Dispenser: FC<ReduxType> = ({
         /> 
       </Buttons>
     </WidgetComponentStyled>
-    <WidgetComponentStyled
+    <AsideStyled
       title="Connect to claim links"
+      options={dispenserOptions}
     >
       <WidgetSubtitle>
           Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
@@ -216,7 +232,7 @@ const Dispenser: FC<ReduxType> = ({
           toggleUpdateLinksPopup(true)
         }}
         /> 
-    </WidgetComponentStyled>
+    </AsideStyled>
   </Container>
 }
 

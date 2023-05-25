@@ -17,9 +17,15 @@ export type TDispenser = {
   claim_duration: number
   created_at?: string
   claim_start: number
-  status?: TDispenserStatus
   title: string
   encrypted_multiscan_qr_enc_code: string
+}
+
+export type TDispenserUpdateData = {
+  claim_duration: number
+  claim_start: number
+  title: string
+  dispenser_id: string
 }
 
 

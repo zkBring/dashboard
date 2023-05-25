@@ -1,8 +1,10 @@
 # Ledger Dashboard
 
 
-## 2.1.13-rc.0
+## 2.1.13-rc.1
 - only_preferred_wallet option support
+- added dispenser edit page
+- updates for /dispensers endpoints
 
 ## 2.1.12
 - Added Dispensers page for whitelisted users (Multi QR)
