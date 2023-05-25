@@ -6,6 +6,7 @@ import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
 import { TDispenser } from 'types'
 import { encrypt } from 'lib/crypto'
+import { plausibleApi } from 'data/api'
 
 type TAddDispenserArgs = {
   title: string,
@@ -24,7 +25,7 @@ const addDispenser = ({
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
-    const { user: { sdk, dashboardKey } } = getState()
+    const { user: { sdk, dashboardKey, address } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     if (!dashboardKey) {
       throw new Error('dashboardKey is not provided')
@@ -53,13 +54,32 @@ const addDispenser = ({
       const { data } = await dispensersApi.create(newDispenser)
       if (data.success) {
         dispatch(actionsDispensers.addDispenser(data.dispenser))
+        plausibleApi.invokeEvent({
+          eventName: 'multiqr_add',
+          data: {
+            success: 'yes',
+            address
+          }
+        })
         if (callback) { callback(data.dispenser.dispenser_id) }
       } else {
+        plausibleApi.invokeEvent({
+          eventName: 'multiqr_add',
+          data: {
+            success: 'no',
+            address
+          }
+        })
         return alertError('Dispenser was not created. Check console for more information')
       }
-
-      
     } catch (err) {
+      plausibleApi.invokeEvent({
+        eventName: 'multiqr_add',
+        data: {
+          success: 'no',
+          address
+        }
+      })
       alertError('Couldn’t create Dispanser, please check console')
       console.error(err)
     }

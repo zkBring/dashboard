@@ -28,7 +28,7 @@ const addLinksToQR = ({
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
-    const { qrs: { qrs: qrSets }, user: { dashboardKey } } = getState()
+    const { user: { dashboardKey, address } } = getState()
     try {
       let currentPercentage = 0
       if (!dashboardKey) {
@@ -59,7 +59,9 @@ const addLinksToQR = ({
         plausibleApi.invokeEvent({
           eventName: 'multiqr_connect',
           data: {
-            success: 'yes'
+            success: 'yes',
+            address,
+            dispenserId
           }
         })
         const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
@@ -68,6 +70,14 @@ const addLinksToQR = ({
       }
       
       if (!result.data.success) {
+        plausibleApi.invokeEvent({
+          eventName: 'multiqr_connect',
+          data: {
+            success: 'no',
+            address,
+            dispenserId
+          }
+        })
         alertError('Couldn’t connect links to QRs, please try again')
       }
       dispatch(actionsDispenser.setMappingLoader(0))
@@ -75,7 +85,9 @@ const addLinksToQR = ({
       plausibleApi.invokeEvent({
         eventName: 'multiqr_connect',
         data: {
-          success: 'no'
+          success: 'no',
+          address,
+          dispenserId
         }
       })
       alertError('Couldn’t connect links to QRs, please try again')
