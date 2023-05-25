@@ -25,7 +25,7 @@ const addDispenser = ({
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
-    const { user: { sdk, dashboardKey, address, chainId } } = getState()
+    const { user: { sdk, dashboardKey, address } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     if (!dashboardKey) {
       throw new Error('dashboardKey is not provided')

@@ -41,7 +41,7 @@ const downloadQR = ({
     getState: () => RootState
   ) => {
     dispatch(actionsQR.setLoading(true))
-    const { user: { dashboardKey, workersCount, address } } = getState()
+    const { user: { dashboardKey, address } } = getState()
     try {
       if (!dashboardKey) { return alertError('dashboardKey is not provided') }
       if (!encrypted_multiscan_qr_secret) { return alertError('encrypted_multiscan_qr_secret is not provided') }
@@ -78,11 +78,21 @@ const downloadQR = ({
       plausibleApi.invokeEvent({
         eventName: 'multiqr_download',
         data: {
-          format: 'png'
+          success: 'yes',
+          format: 'png',
+          address,
         }
       })
       callback && callback()
     } catch (err) {
+      plausibleApi.invokeEvent({
+        eventName: 'multiqr_download',
+        data: {
+          success: 'no',
+          format: 'png',
+          address
+        }
+      })
       callback && callback()
       alertError('check console for more information')
       console.error(err)

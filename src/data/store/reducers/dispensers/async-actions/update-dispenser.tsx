@@ -26,7 +26,7 @@ const updateDispenser = ({
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
-    const { user: { dashboardKey }, dispensers: { dispensers } } = getState()
+    const { user: { dashboardKey, address }, dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     if (!dashboardKey) {
       throw new Error('dashboardKey is not provided')
@@ -50,7 +50,9 @@ const updateDispenser = ({
         plausibleApi.invokeEvent({
           eventName: 'multiqr_update',
           data: {
-            success: 'yes'
+            success: 'yes',
+            address,
+            dispenserId: dispenser_id
           }
         })
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
@@ -59,7 +61,9 @@ const updateDispenser = ({
         plausibleApi.invokeEvent({
           eventName: 'multiqr_update',
           data: {
-            success: 'no'
+            success: 'no',
+            address,
+            dispenserId: dispenser_id
           }
         })
         return alertError('Dispenser was not updated. Check console for more information')
@@ -69,7 +73,9 @@ const updateDispenser = ({
       plausibleApi.invokeEvent({
         eventName: 'multiqr_update',
         data: {
-          success: 'no'
+          success: 'no',
+          address,
+          dispenserId: dispenser_id
         }
       })
       alertError('Couldn’t update Dispanser, please check console')
