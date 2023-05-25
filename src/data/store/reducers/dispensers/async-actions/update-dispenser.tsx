@@ -5,7 +5,7 @@ import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
 import { TDispenser, TDispenserUpdateData } from 'types'
-import { encrypt } from 'lib/crypto'
+import { plausibleApi } from 'data/api'
 
 type TUpdateDispenserArgs = {
   title: string,
@@ -32,7 +32,6 @@ const updateDispenser = ({
       throw new Error('dashboardKey is not provided')
     }
     try {
-      
       const updatedDispenser: TDispenserUpdateData = {
         claim_duration: duration,
         claim_start: +(new Date(date)),
@@ -48,14 +47,31 @@ const updateDispenser = ({
           }
           return item
         })
-        console.log({ dispensersUpdated })
+        plausibleApi.invokeEvent({
+          eventName: 'multiqr_update',
+          data: {
+            success: 'yes'
+          }
+        })
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
         if (callback) { callback(data.dispenser.dispenser_id as string) }
       } else {
+        plausibleApi.invokeEvent({
+          eventName: 'multiqr_update',
+          data: {
+            success: 'no'
+          }
+        })
         return alertError('Dispenser was not updated. Check console for more information')
       }
       
     } catch (err) {
+      plausibleApi.invokeEvent({
+        eventName: 'multiqr_update',
+        data: {
+          success: 'no'
+        }
+      })
       alertError('Couldn’t update Dispanser, please check console')
       console.error(err)
     }
