@@ -59,7 +59,20 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       date,
       duration,
       callback
-    }))
+    })),
+    updateDispenser: (
+      dispenser_id: string,
+      title: string,
+      date: string,
+      duration: number,
+      callback: (id: string | number) => void
+    ) => dispatch(asyncDispensersActions.updateDispenser({
+      dispenser_id,
+      title,
+      date,
+      duration,
+      callback
+    })),
   }
 }
 
@@ -85,7 +98,8 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 const QRCreate: FC<ReduxType> = ({
   addDispenser,
   loading,
-  dispensers
+  dispensers,
+  updateDispenser
 }) => {
   const history = useHistory()
   const { dispenserId } = useParams<TLinkParams>()
@@ -119,7 +133,7 @@ const QRCreate: FC<ReduxType> = ({
           dateFormat='dd MMM yyyy'
           onChange={(value) => setDate(value)}
           value={date}
-          minDate={new Date()}
+          minDate={new Date(new Date().setDate(new Date().getDate() -1))}
         />
 
         <SelectStyled
@@ -177,12 +191,23 @@ const QRCreate: FC<ReduxType> = ({
           loading={loading}
           onClick={() => {
             const dateString = momentNoOffsetWithTimeUpdate(date, Number(hours.value), Number(minutes.value))
-            addDispenser(
-              title,
-              dateString,
-              Number(duration),
-              (id) => history.push(`/dispensers/${id}`)
-            )
+            if (currentDispenser) {
+              updateDispenser(
+                currentDispenser.dispenser_id as string,
+                title,
+                dateString,
+                Number(duration),
+                (id) => history.push(`/dispensers/${id}`)
+              )
+            } else {
+              addDispenser(
+                title,
+                dateString,
+                Number(duration),
+                (id) => history.push(`/dispensers/${id}`)
+              )
+            }
+            
           }}
         >
           {currentDispenser ? 'Update' : 'Create'}

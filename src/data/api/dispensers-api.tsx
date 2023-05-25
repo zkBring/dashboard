@@ -7,8 +7,8 @@ const qrsSetApi = axios.create({
 })
 
 const requests = {
-  create: (qr_set: TDispenser) => {
-    return qrsSetApi.post('/dispensers', qr_set, { withCredentials: true })
+  create: (dispenser: TDispenser) => {
+    return qrsSetApi.post('/dispensers', dispenser, { withCredentials: true })
   },
   get: () => {
     return qrsSetApi.get('/dispensers', { withCredentials: true })
@@ -20,7 +20,29 @@ const requests = {
     return qrsSetApi.post(`/dispensers/${id}/upload-links`, {
       encrypted_claim_links: links
     }, { withCredentials: true })
-  }
+  },
+  updateLinks: (id: string | number, links: TDispenserLinks) => {
+    return qrsSetApi.put(`/dispensers/${id}/upload-links`, {
+      encrypted_claim_links: links
+    }, { withCredentials: true })
+  },
+  updateDispenserData: ({
+    dispenser_id,
+    title,
+    claim_start,
+    claim_duration
+  }: {
+    dispenser_id: string,
+    title: string,
+    claim_start: number,
+    claim_duration: number
+  }) => {
+    return qrsSetApi.patch(`/dispensers/${dispenser_id}`, {
+      title,
+      claim_start,
+      claim_duration
+    }, { withCredentials: true })
+  },
 }
 
 export default requests

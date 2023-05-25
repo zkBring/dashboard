@@ -21,4 +21,11 @@ export type TDispenser = {
   encrypted_multiscan_qr_enc_code: string
 }
 
+export type TDispenserUpdateData = {
+  claim_duration: number
+  claim_start: number
+  title: string
+  dispenser_id: string
+}
+
 

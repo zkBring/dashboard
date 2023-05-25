@@ -53,7 +53,7 @@ const defineOptions = (redirectCallback: () => void, status?: TDispenserStatus) 
   return [
     {
       title: 'Edit',
-      icon: <Icons.RefundIcon />,
+      icon: <Icons.EditDispenserIcon />,
       disabled: status === 'ACTIVE' || status === 'FINISHED',
       action: redirectCallback
     },
@@ -66,11 +66,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispenserId: string,
       links: TLinkDecrypted[],
       encryptedMultiscanQREncCode: string,
+      linksCount: number,
       callback?: () => void,
     ) => dispatch(asyncDispensersActions.addLinksToQR({
       dispenserId,
       links,
       encryptedMultiscanQREncCode,
+      linksCount,
       callback
     })),
     downloadQR: (
@@ -155,7 +157,7 @@ const Dispenser: FC<ReduxType> = ({
         if (!encrypted_multiscan_qr_enc_code) { return alert('encrypted_multiscan_qr_enc_code not found') }
         if (!links) { return alert('Links not found') }
 
-        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, () => {
+        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, links_count, () => {
           toggleUpdateLinksPopup(false)
         })
       }}
