@@ -45,10 +45,11 @@ const addDispenser = ({
         dispenser_id: dispenserId,
         claim_duration: duration,
         claim_start: +(new Date(date)),
-        status: 'READY',
         encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
         title
       }
+
+
       const { data } = await dispensersApi.create(newDispenser)
       if (data.success) {
         dispatch(actionsDispensers.addDispenser(data.dispenser))
