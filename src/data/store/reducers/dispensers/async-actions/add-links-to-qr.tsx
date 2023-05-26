@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import * as actionsDispenser from '../actions'
 import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRItem, TLinkDecrypted, TDispenser } from 'types'
+import { TLinkDecrypted, TDispenser } from 'types'
 import {  dispensersApi } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
@@ -10,6 +10,7 @@ import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 import { sleep, alertError } from 'helpers'
 import { plausibleApi } from 'data/api'
+import axios, { AxiosError } from 'axios'
 
 const addLinksToQR = ({
   dispenserId,
@@ -90,7 +91,15 @@ const addLinksToQR = ({
           dispenserId
         }
       })
-      alertError('Couldn’t connect links to QRs, please try again')
+      if (axios.isAxiosError(err)) {
+        const { response } = err
+        if (response && response.data && response.data.error) {
+          alertError(response.data.error)
+        } else {
+          alertError('Some error occured. Please check console')
+        }
+      }
+      
       dispatch(actionsDispenser.setMappingLoader(0))
       console.error(err)
     }
