@@ -54,7 +54,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
         chainsAvailable
       )
     ),
-    authorize: (address: string) => dispatch(asyncUserActions.authorize(address)),
+    authorize: () => dispatch(asyncUserActions.authorize()),
+    getDashboardKey: () => dispatch(asyncUserActions.getDashboardKey()),
     initialLoad: () => dispatch(asyncUserActions.initialLoad())
   }
 }
@@ -123,6 +124,7 @@ const Main: FC<ReduxType> = ({
   loading,
   authorizationStep,
   initialLoad,
+  getDashboardKey,
   chainsAvailable
 }) => {
   const { address: connectorAddress, connector } = useAccount()
@@ -252,7 +254,7 @@ const Main: FC<ReduxType> = ({
         if (authorizationStep === 'connect') { 
           return connect({ connector: injectedProvider })
         }
-        return authorize(address)
+        return authorize()
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />
