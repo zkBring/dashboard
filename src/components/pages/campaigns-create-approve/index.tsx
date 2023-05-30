@@ -7,7 +7,7 @@ import { Erc20, Erc721, Erc1155, CSVUploadPopup, SDKLinks, AsideContents } from 
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TAssetsData, TLinkContent, TLinkParams, TTotalAmount } from 'types'
+import { TAssetsData, TLinkContent, TLinkParams, TTokenType, TTotalAmount } from 'types'
 import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
@@ -98,6 +98,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assetsOriginal: TLinkContent[],
       sdk: boolean,
       sponsored: boolean,
+      isNewCampaign: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -107,6 +108,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assetsOriginal,
           sdk,
           sponsored,
+          isNewCampaign,
           callback
         )
         )
@@ -116,6 +118,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assetsOriginal: TLinkContent[],
       sdk: boolean,
       sponsored: boolean,
+      isNewCampaign: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -124,6 +127,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assetsOriginal,
           sdk,
           sponsored,
+          isNewCampaign,
           callback
         )
         )
@@ -133,6 +137,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assetsOriginal: TLinkContent[],
       sdk: boolean,
       sponsored: boolean,
+      isNewCampaign: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -141,6 +146,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assetsOriginal,
           sdk,
           sponsored,
+          isNewCampaign,
           callback
         )
       )
@@ -150,6 +156,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assetsOriginal: TLinkContent[],
       sdk: boolean,
       sponsored: boolean,
+      isNewCampaign: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -158,6 +165,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assetsOriginal,
           sdk,
           sponsored,
+          isNewCampaign,
           callback
         )
       )
@@ -167,6 +175,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       assetsOriginal: TLinkContent[],
       sdk: boolean,
       sponsored: boolean,
+      isNewCampaign: boolean,
       callback: () => void
     ) => {
       dispatch(
@@ -175,6 +184,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
           assetsOriginal,
           sdk,
           sponsored,
+          isNewCampaign,
           callback
         )
       )
@@ -183,6 +193,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions
       id?: string
     ) => dispatch(
       campaignAsyncActions.createProxyContract(id)
+    ),
+    getUserNFTs: (
+      tokenType: TTokenType
+    ) => dispatch(
+      campaignAsyncActions.getUserNFTs(tokenType)
     ),
     setAssetsData: (
       assets: TAssetsData,
@@ -327,7 +342,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   setApproved,
   approveAllERC20,
   comission: comissionPrice,
-  whitelisted
+  whitelisted,
+  getUserNFTs
 }) => {
   const [
     assetsParsed,
@@ -399,6 +415,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
+
+  useEffect(() => {
+    getUserNFTs(type)
+  }, [])
 
   const isSponsored = [
     { value: true, label: `Sponsor claiming gas fees (+ ${comissionPrice} ${nativeTokenSymbol} per link)` },
@@ -485,6 +505,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
               data,
               sdk,
               sponsored,
+              !Boolean(id),
               callback
             )
           }
@@ -495,6 +516,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
                 data,
                 sdk,
                 sponsored,
+                !Boolean(id),
                 callback
               )
             }
@@ -504,6 +526,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
               data,
               sdk,
               sponsored,
+              !Boolean(id),
               callback
             )
           } else if (tokenStandard === 'ERC721') {
@@ -512,6 +535,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
               data,
               sdk,
               sponsored,
+              !Boolean(id),
               callback
             )
           } else {
@@ -520,6 +544,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
               data,
               sdk,
               sponsored,
+              !Boolean(id),
               callback
             )
           }

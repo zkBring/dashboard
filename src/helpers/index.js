@@ -52,9 +52,15 @@ import defineQROptions from './define-qr-options'
 import defineIfQRIsDeeplink from './define-if-qr-is-deeplink'
 import defineDispenserStatus from './define-dispenser-status'
 import defineDispenserStatusName from './define-dispenser-status-name'
+import writeCampaignToLS from './write-campaign-to-ls'
+import getCampaignsFromLS from './get-campaigns-from-ls'
+import defineIfFeatureIsAvailable from './define-if-feature-is-available'
 
 export {
   alertError,
+  getCampaignsFromLS,
+  defineIfFeatureIsAvailable,
+  writeCampaignToLS,
   defineDispenserStatus,
   defineDispenserStatusName,
   defineQROptions,

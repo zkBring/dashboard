@@ -21,7 +21,6 @@ import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import { TTokenType, TLinkParams, TAlchemyContract, TAlchemyERC20Contract } from 'types'
 import { useHistory } from 'react-router-dom'
-import * as campaignActions from 'data/store/reducers/campaign/actions'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
 import { alertError } from 'helpers'
@@ -35,7 +34,8 @@ const mapStateToProps = ({
     loading,
     symbol,
     title,
-    tokenAddress
+    tokenAddress,
+    proxyContractAddress
   },
   campaigns: {
     campaigns
@@ -60,16 +60,12 @@ const mapStateToProps = ({
   tokenAddress,
   signer,
   contracts,
-  contractsERC20
+  contractsERC20,
+  proxyContractAddress
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
   return {
-    createProxyContract: (
-      id?: string
-    ) => dispatch(
-      campaignAsyncActions.createProxyContract(id)
-    ),
     setTokenContractData: (
       tokenAddress: string,
       type: TTokenType
@@ -80,17 +76,21 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
     setInitialData: (
       tokenStandard: TTokenType,
       title: string,
+      isNewCampaign: boolean,
       callback?: () => void
     ) => dispatch(
       campaignAsyncActions.setInitialData(
         tokenStandard,
         title,
+        isNewCampaign,
         callback
       )
     ),
-    clearCampaign: () => {
+    resetCampaign: (
+      campaingId?: string
+    ) => {
       dispatch(
-        campaignActions.clearCampaign()
+        campaignAsyncActions.resetCampaign(campaingId)
       )
     },
     getContracts: () => {
@@ -135,7 +135,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   campaigns,
   setTokenContractData,
   setInitialData,
-  clearCampaign,
+  resetCampaign,
   loading,
   getContracts,
   getERC20Contracts,
@@ -143,9 +143,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   userLoading,
   tokenAddress: appliedTokenAddress,
   contractsERC20,
-  signer
+  signer,
+  proxyContractAddress
 }) => {
-
+  console.log({ proxyContractAddress })
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
 
@@ -170,8 +171,9 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   const [ currentSwitcherValue, setCurrentSwitcherValue ] = useState<string>(currentCampaignType === 'ERC1155' || currentCampaignType === 'ERC721' || !currentCampaignType ? 'nfts' : 'tokens')
 
   useEffect(() => {
-    clearCampaign()
+    resetCampaign(campaign?.campaign_number)
   }, [])
+
 
   useEffect(() => {
     if ((!currentType || currentType === 'ERC721' || currentType === 'ERC1155') && contracts.length === 0) {
@@ -189,7 +191,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   }, [tokenAddress, currentType])
 
   const defineIfNextDisabled = () => {
-    return !title || !tokenAddress || !appliedTokenSymbol || loading
+    return !title || !tokenAddress || !appliedTokenSymbol || loading || !proxyContractAddress
   }
 
   const selectTokenOptions: any[] = defineContractsOptions(contracts, contractsERC20, currentType)
@@ -299,6 +301,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             setInitialData(
               currentType as TTokenType,
               title,
+              !Boolean(id),
               () => {
                 if (campaign) {
                   return history.push(`/campaigns/edit/${currentType}/${campaign.campaign_id}/initial`)

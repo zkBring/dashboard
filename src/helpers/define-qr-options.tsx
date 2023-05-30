@@ -1,5 +1,5 @@
 import qrOptions from 'configs/qr-options'
-import addressSpecificOptions from 'configs/address-specific-options'
+import { addressSpecificOptions } from 'configs/address-specific-options'
 
 const {
   REACT_APP_QR_OPTIONS

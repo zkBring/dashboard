@@ -1,9 +1,10 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
-import { TCampaign } from 'types'
+import { TCampaign, TCampaignDraft } from 'types'
 
 export interface CampaignsState {
-  campaigns: TCampaign[],
+  campaigns: TCampaign[]
+  drafts: TCampaignDraft[]
   loading: boolean
 }
 

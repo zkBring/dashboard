@@ -1,4 +1,4 @@
-import addressSpecificOptions from 'configs/address-specific-options'
+import { addressSpecificOptions } from 'configs/address-specific-options'
 
 const defineIfQRIsDeeplink = (address: string) => {
   const addressFormatted = address.toLowerCase()

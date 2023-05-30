@@ -4,6 +4,9 @@ import setTokenContractData from './set-token-contract-data'
 import generateLinks from './generate-links'
 import setInitialData from './set-initial-data'
 import applyClaimPattern from './apply-claim-pattern'
+import resetCampaign from './reset-campaign'
+import openDraft from './open-draft'
+import getUserNFTs from './get-user-nfts'
 
 export {
   createProxyContract,
@@ -11,5 +14,8 @@ export {
   setTokenContractData,
   applyClaimPattern,
   generateLinks,
-  setInitialData
+  setInitialData,
+  resetCampaign,
+  openDraft,
+  getUserNFTs
 }

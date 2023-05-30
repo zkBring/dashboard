@@ -24,6 +24,8 @@ export const WidgetButton = styled(Button)`
 
 export const WidgetComponentStyled = styled(WidgetComponent)`
   margin-right: 24px;
+  flex: 1 0 50%;
+  max-width: 548px;
   &:last-child {
     margin-right: 0px;
   }
@@ -67,6 +69,6 @@ export const SecondaryTextSpan = styled.span`
 `
 
 export const AsideStyled = styled(Aside)`
-  min-width: 50%;
+  max-width: 50%;
   margin: 0;
 `

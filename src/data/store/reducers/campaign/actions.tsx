@@ -1,7 +1,8 @@
-import { action } from 'typesafe-actions';
-import { Constants } from './constants';
+import { action } from 'typesafe-actions'
+import { Constants } from './constants'
 import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern } from 'types'
 import { BigNumber } from 'ethers'
+import { CampaignState } from './types'
 
 export function setTokenAddress(tokenAddress: string | null) {
   return action(Constants.CAMPAIGN_SET_TOKEN_ADDRESS, {
@@ -77,6 +78,12 @@ export function setWallet(wallet: string | null) {
 
 export function clearCampaign() {
   return action(Constants.CAMPAIGN_CLEAR)
+}
+
+export function setCampaign(campaign: CampaignState) {
+  return action(Constants.CAMPAIGN_SET_CAMPAIGN, {
+    campaign
+  })
 }
 
 export function setProxyContractAddress(proxyContractAddress: string | null) {

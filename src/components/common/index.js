@@ -15,6 +15,7 @@ import CheckListItem from './check-list-item'
 import InformationContainer from './information-container'
 import Tooltip from './tooltip'
 import Button from './button'
+import Draft from './draft'
 
 export {
   Header,
@@ -36,5 +37,6 @@ export {
   WidgetTextBlock,
   TransactionDetails,
   WidgetData,
-  Tooltip
+  Tooltip,
+  Draft
 }
