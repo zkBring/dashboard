@@ -7,21 +7,23 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { utils, ethers } from 'ethers'
-import { RootState } from 'data/store'
+import { IAppDispatch, RootState } from 'data/store'
 import { ERC20Contract } from 'abi'
 import { TAssetsData, TLinkContent } from 'types'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName, alertError } from 'helpers'
+import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
 
 const approve = (
   assets: TAssetsData,
   assetsOriginal: TLinkContent[],
   sdk: boolean,
   sponsored: boolean,
+  isNewCampaign: boolean,
   callback?: () => void
 ) => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
+    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     dispatch(campaignActions.setAssets(assets))
@@ -113,6 +115,10 @@ const approve = (
           }
         })
         dispatch(campaignActions.setApproved(true))
+              // initial step passed
+        isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+          'secure'
+        ))
         if (callback) { callback() }
       }
     } catch (err) {

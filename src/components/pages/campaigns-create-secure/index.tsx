@@ -22,7 +22,7 @@ import {
   AsideDivider
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
-import addressSpecificOptions from 'configs/address-specific-options'
+import { addressSpecificOptions } from 'configs/address-specific-options'
 import {
   StyledInput,
   StyledSelect,

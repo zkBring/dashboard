@@ -45,10 +45,16 @@ import TAlchemyERC20Contract from './alchemy-erc20-contract'
 import { TAlchemyNFTToken } from './alchemy-nft-token'
 import { TERC20TokenList, TERC20TokenItem } from './erc20-token-list'
 import TButtonAppearance from './button-appearance'
+import TCampaignCreateStep from './campaign-create-step'
+import TCampaignDraft from './campaign-draft'
+import TFeatureName from './feature-name'
 
 export {
   TCampaign,
+  TCampaignCreateStep,
+  TFeatureName,
   TButtonAppearance,
+  TCampaignDraft,
   TERC20TokenItem,
   TERC20TokenList,
   TAlchemyContract,

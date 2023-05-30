@@ -6,7 +6,7 @@ import { BigNumber } from 'ethers'
 export interface CampaignState {
   title?: string | null
   tokenAddress: string | null
-  campaignAddress?: string | null
+  campaignAddress?: string | null 
   tokenStandard: TTokenType | null
   assets: TAssetsData | null
   assetsOriginal: TLinkContent[] | null

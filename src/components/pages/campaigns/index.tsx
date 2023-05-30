@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import { Campaign } from 'components/common'
+import { Campaign, Draft } from 'components/common'
 import {
   Container,
   StyledWidget,
@@ -13,20 +13,25 @@ import { InitialGuide } from 'components/pages/common'
 import { TProps } from './types'
 
 const mapStateToProps = ({
-  campaigns: { campaigns },
+  campaigns: { campaigns, drafts },
   user: { address, chainId, loading },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  loading
+  loading,
+  drafts
 })
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
-const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading }) => {
+const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, drafts }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
+  })
+
+  const currentAddressDrafts = drafts.filter(draft => {
+    return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
 
   const createNewCampaignWidget = <StyledWidget title='New campaign'>
@@ -44,6 +49,27 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading }) 
     return <>
       <InitialGuide />
       {createNewCampaignWidget}
+      {currentAddressDrafts && currentAddressDrafts.length > 0 && <>
+        <Title>Drafts</Title>
+        <Container>
+          {currentAddressDrafts.map(draft => {
+            const { campaign, chainId, createdAt, step } = draft
+            return <Draft
+              title={campaign.title}
+              createdAt={createdAt}
+              id={campaign.id}
+              key={campaign.id}
+              chainId={chainId}
+              type={campaign.tokenStandard}
+              proxyContractAddress={campaign.proxyContractAddress}
+              claimPattern={campaign.claimPattern}
+              sponsored={campaign.sponsored || false}
+              stepToOpen={step}
+              linksAmount={campaign.assets ? campaign.assets.length : 0}
+            />
+          })}
+        </Container>
+      </>}
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <>
         <Title>Campaigns</Title>
         <Container>
