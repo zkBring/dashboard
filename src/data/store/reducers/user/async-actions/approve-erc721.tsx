@@ -50,7 +50,7 @@ const approve = (
     if (approved) {
       await sleep(2000)
       dispatch(campaignActions.setLoading(false))
-      dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+      isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
         'secure'
       ))
       if (callback) { callback() }
