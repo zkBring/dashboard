@@ -18,9 +18,11 @@ import getContracts from './get-contracts'
 import getERC20Contracts from './get-erc20-contracts'
 import getComission from './get-comission'
 import getERC20TokenList from './get-erc20-token-list'
+import getDashboardKey from './get-dashboard-key'
 
 export {
   approveERC20,
+  getDashboardKey,
   getERC20TokenList,
   approveAllERC20,
   getNativeTokenAmount,

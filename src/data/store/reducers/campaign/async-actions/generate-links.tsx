@@ -1,9 +1,10 @@
 import { Dispatch } from 'redux'
 import * as actionsCampaign from '../actions'
 import * as actionsCampaigns from '../../campaigns/actions'
+import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import { TCampaignNew, TCampaign } from 'types'
 import { CampaignsActions } from '../../campaigns/types'
 import { campaignsApi } from 'data/api'
@@ -32,7 +33,7 @@ const generateERC20Link = ({
   id: currentCampaignId
 }: { callback?: (id: string) => void, id?: string  }) => {
   return async (
-    dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions>,
+    dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     
@@ -64,7 +65,8 @@ const generateERC20Link = ({
         tokenStandard,
         claimPattern,
         sdk,
-        nativeTokensPerLink
+        nativeTokensPerLink,
+        onlyPreferredWallet
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -177,6 +179,7 @@ const generateERC20Link = ({
           claim_pattern: claimPattern,
           proxy_contract_version: version,
           sponsored,
+          only_preferred_wallet: onlyPreferredWallet,
           ...batch
         }
 
@@ -195,6 +198,7 @@ const generateERC20Link = ({
               preferred_wallet: wallet
             }
           })
+          dispatch(actionsAsyncCampaigns.removeCurrentCampaignFromDrafts())
           if (callback) {
             const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
             dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))

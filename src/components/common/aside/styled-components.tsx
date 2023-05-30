@@ -23,7 +23,7 @@ export const AsideLogoZone = styled.div<{ noAside?: boolean }>`
 `
 
 export const AsideLogoIcon = styled.img`
-  width: 32px;
+  max-width: 100px;
   margin-right: 6px;
 `
 

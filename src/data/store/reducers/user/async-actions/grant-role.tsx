@@ -7,22 +7,24 @@ import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
 import { utils, ethers } from 'ethers'
-import { RootState } from 'data/store'
+import { IAppDispatch, RootState } from 'data/store'
 import contracts from 'configs/contracts'
 import { defineContract, alertError } from 'helpers'
 import { TAssetsData, TLinkContent } from 'types'
 import { sleep, defineNetworkName } from 'helpers'
 import { plausibleApi } from 'data/api'
+import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
 
 const grantRole = (
   assets: TAssetsData,
   assetsOriginal: TLinkContent[],
   sdk: boolean,
   sponsored: boolean,
+  isNewCampaign: boolean,
   callback?: () => void
 ) => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
+    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     dispatch(campaignActions.setLoading(true))
@@ -49,6 +51,9 @@ const grantRole = (
     if (approved) {
       await sleep(2000)
       dispatch(campaignActions.setLoading(false))
+      isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+        'secure'
+      ))
       if (callback) { callback() }
       return
     }
@@ -129,6 +134,9 @@ const grantRole = (
           }
         })
         dispatch(campaignActions.setApproved(true))
+        isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+          'secure'
+        ))
         if (callback) { callback() }
       }
     } catch (err) {

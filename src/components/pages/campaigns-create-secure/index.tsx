@@ -22,10 +22,12 @@ import {
   AsideDivider
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
-import addressSpecificOptions from 'configs/address-specific-options'
+import { addressSpecificOptions } from 'configs/address-specific-options'
 import {
   StyledInput,
-  StyledSelect
+  StyledSelect,
+  CheckboxStyled,
+  StyledRadio
 } from './styled-components'
 import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
@@ -77,10 +79,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       totalNativeTokensAmountToSecure: BigNumber,
       nativeTokensPerLink: string,
       walletApp: string,
+      onlyPreferredWallet: boolean,
       callback: () => void
     ) => {
       dispatch(
-        userAsyncActions.secure(totalNativeTokensAmountToSecure, nativeTokensPerLink, walletApp, callback)
+        userAsyncActions.secure(
+          totalNativeTokensAmountToSecure,
+          nativeTokensPerLink,
+          walletApp,
+          onlyPreferredWallet,
+          callback
+        )
       )
     }
   }
@@ -128,19 +137,25 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     currentWallet,
     setCurrentWallet
   ] = useState<TSelectOption>(walletsOptions[0])
+
   const history = useHistory()
   const [ nativeTokensAmount, setNativeTokensAmount ] = useState<string>('')
+  
   const { id } = useParams<TLinkParams>()
-  if (!assets || !symbol || !chainId) { return null }
+  
   
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
+  const currentCampaignOnlyPreferredWallet = currentCampaign ? currentCampaign.only_preferred_wallet : false
   const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
   const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignTokenSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
+
+  const [ onlyPreferredWallet, setOnlyPreferredWallet ] = useState<boolean>(Boolean(walletsOptions.length <= 1 || currentCampaignOnlyPreferredWallet))
+  if (!assets || !symbol || !chainId) { return null }
 
   const {
     totalNativeTokensAmount,
@@ -175,7 +190,17 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           onChange={value => setCurrentWallet(value)}
           placeholder='Preferred wallet'
           title='Preferred wallet'
-          note='User will be suggested to claim with selected wallet by default, but still having other options available'
+        />
+        <StyledRadio
+          disabled={Boolean(currentCampaign) || loading || walletsOptions.length <= 1}
+          radios={[
+            { label: 'Show all wallets in the claim app. Preferred wallet will be highlighted', value: false },
+            { label: 'Show only preferred wallet in the claim app. All other options will be hidden', value: true }
+          ]}
+          value={onlyPreferredWallet}
+          onChange={value => {
+            setOnlyPreferredWallet(value)
+          }}
         />
       </WidgetComponent>
 
@@ -194,6 +219,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             totalNativeTokensAmountToSecure,
             nativeTokensAmount,
             String(currentWallet.value),
+            onlyPreferredWallet,
             () => history.push(redirectURL)
           )
         },

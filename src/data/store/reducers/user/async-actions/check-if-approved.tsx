@@ -37,9 +37,8 @@ const checkIfApproved = () => {
       }
       
       const contractABI = tokenStandard === 'ERC1155' ? ERC1155Contract : ERC721Contract
-      const contractInstance = await new ethers.Contract(tokenAddress, contractABI.abi, signer)
+      const contractInstance = new ethers.Contract(tokenAddress, contractABI.abi, signer)
       const isApproved: boolean = await contractInstance.isApprovedForAll(address, proxyContractAddress)
-      console.log({ isApproved })
       dispatch(campaignActions.setApproved(isApproved))
 
     } catch (err) {

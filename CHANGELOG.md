@@ -1,5 +1,14 @@
 # Ledger Dashboard
 
+## 2.1.13
+- only_preferred_wallet option support
+- added dispenser edit page
+- updates for /dispensers endpoints
+- new events for Plausible
+- auth process split for error handling
+- drafts for campaigns in localstorage
+- updated logo
+
 ## 2.1.12
 - Added Dispensers page for whitelisted users (Multi QR)
 - Updated version of Linkdrop-UI package

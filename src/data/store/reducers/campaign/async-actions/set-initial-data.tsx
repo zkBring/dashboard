@@ -10,11 +10,13 @@ import { Alchemy } from 'alchemy-sdk'
 import { defineAlchemyNetwork, defineNetworkName, alertError } from 'helpers'
 import { RootState } from 'data/store'
 import { plausibleApi } from 'data/api'
+import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 function setInitialData(
   tokenStandard: TTokenType,
   title: string,
+  isNewCampaign: boolean,
   callback?: () => void
 ) {
   return async (
@@ -34,21 +36,6 @@ function setInitialData(
         return alertError('No tokenAddress provided in state of user')
       }
 
-      if (tokenStandard !== 'ERC20') {
-        const alchemy = new Alchemy({
-          apiKey: REACT_APP_ALCHEMY_API_KEY,
-          network: defineAlchemyNetwork(chainId)
-        })
-    
-        const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
-          contractAddresses: [ tokenAddress ]
-        })
-        
-        if (ownedNfts && ownedNfts.length > 0) {
-          dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
-        }
-      }
-
       plausibleApi.invokeEvent({
         eventName: 'camp_step1_passed',
         data: {
@@ -56,6 +43,10 @@ function setInitialData(
           token_type: tokenStandard
         }
       })
+
+      isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+        'initial'
+      ))
 
       if (callback) {
         callback()

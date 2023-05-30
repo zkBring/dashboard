@@ -20,7 +20,7 @@ Trace:
 npm manifest: 
   {
     "name": "linkdrop-dashboard",
-    "version": "2.1.11-rc.0",
+    "version": "2.1.12-rc.0",
     "private": true,
     "dependencies": {
       "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
@@ -51,9 +51,10 @@ npm manifest:
       "is-ios": "^2.1.0",
       "jest": "26.6.0",
       "jszip": "^3.10.0",
-      "linkdrop-sdk": "^2.0.0",
-      "linkdrop-ui": "^0.0.31",
+      "linkdrop-sdk": "^2.0.4",
+      "linkdrop-ui": "^0.0.41",
       "mathjs": "^10.5.0",
+      "moment": "^2.29.4",
       "qr-code-styling": "^1.6.0-rc.1",
       "qr-code-styling-bigmac": "^1.5.5",
       "react": "^17.0.2",
@@ -9657,10 +9658,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
     integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
   
-  linkdrop-sdk@^2.0.0:
-    version "2.0.1"
-    resolved "https://registry.yarnpkg.com/linkdrop-sdk/-/linkdrop-sdk-2.0.1.tgz#bbd3a2e94ff84ff0a20fe577e8e046ab4b706b28"
-    integrity sha512-+ElvUVc3DYX8QfwQrTPzoP2afBt47ER1vYJ9/5L6V0GgYxHLo9O+/XcsoyXtA2WIiHxCkcmdTHZCkPNuqWHswA==
+  linkdrop-sdk@^2.0.4:
+    version "2.0.4"
+    resolved "https://registry.yarnpkg.com/linkdrop-sdk/-/linkdrop-sdk-2.0.4.tgz#a0c69151c2045c36c0aa4590fb12af17a53c55a7"
+    integrity sha512-a5psMgLS8ho8z1YOxX11h81gAu0N6KyF6rf8rtztWFK9g3D64S3c8V9UEyoX0lqjpo0Co2jgo7y2vBhRZip7Qw==
     dependencies:
       "@stablelib/x25519" "^1.0.3"
       "@walletconnect/utils" "2.0.0-beta.100"
@@ -9672,10 +9673,10 @@ Lockfile:
       typescript "^4.8.2"
       uint8arrays "^3.1.1"
   
-  linkdrop-ui@^0.0.30:
-    version "0.0.30"
-    resolved "https://registry.yarnpkg.com/linkdrop-ui/-/linkdrop-ui-0.0.30.tgz#6a61a904f2639d86243b005a694b471d50b7aab2"
-    integrity sha512-udrGVXn3qstiT8B0bh4PzTiHj5dTFpo5obt8gvdIaG23saacc62HDZ5hWV1rnVP+cz1q6Ptg+ZdXmeqRYf7dlA==
+  linkdrop-ui@^0.0.40:
+    version "0.0.40"
+    resolved "https://registry.yarnpkg.com/linkdrop-ui/-/linkdrop-ui-0.0.40.tgz#017dd6ed583a8ab31f4ab08d2715ca57630cd3e6"
+    integrity sha512-76LmQC/ghhTGQINsWQMEt+tguU5ZkroarOH+3uz6DbzjyrwmifH2BpmiuKuJj8Dxil6zC1iYTBEsdds2rVA4fA==
     dependencies:
       react-datepicker "^4.11.0"
       react-router-dom "^6.10.0"
@@ -10239,6 +10240,11 @@ Lockfile:
       yargs "16.2.0"
       yargs-parser "20.2.4"
       yargs-unparser "2.0.0"
+  
+  moment@^2.29.4:
+    version "2.29.4"
+    resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+    integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
   
   motion@10.15.5:
     version "10.15.5"

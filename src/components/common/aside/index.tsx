@@ -16,21 +16,20 @@ import LinkDropLogo from 'images/linkdrop-logo.png'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import Icons from 'icons'
-import { defineNetworkName } from 'helpers'
+import { defineNetworkName, defineIfFeatureIsAvailable } from 'helpers'
 import { plausibleApi } from 'data/api'
+import { addressSpecificOptions } from 'configs/address-specific-options'
 
 const mapStateToProps = ({
   user: {
     address,
     authorizationStep,
-    chainId,
-    whitelisted
+    chainId
   }
 }: RootState) => ({
   address,
   authorizationStep,
-  chainId,
-  whitelisted
+  chainId
 })
 
 interface AsideProps {}
@@ -45,14 +44,13 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 const AsideComponent: FC<AsideProps & ReduxType> = ({
   authorizationStep,
   chainId,
-  whitelisted
+  address
 }) => {
   const location = useLocation<LocationType>()
   if (authorizationStep !== 'authorized') {
     return <AsideLogoZone noAside>
       <AsideTextLink to='/'>
         <AsideLogoIcon src={LinkDropLogo} />
-        <AsideLogoText>LinkDrop</AsideLogoText>
       </AsideTextLink>
     </AsideLogoZone>
   }
@@ -60,7 +58,6 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
     <AsideLogoZone>
       <AsideTextLink to='/campaigns'>
         <AsideLogoIcon src={LinkDropLogo} />
-        <AsideLogoText>LinkDrop</AsideLogoText>
       </AsideTextLink>
     </AsideLogoZone>
 
@@ -71,7 +68,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
         <Icons.QRManagerIcon />QR Manager
       </AsideMenuItem>
-      {whitelisted && <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
+      {defineIfFeatureIsAvailable(address, 'dispenser') && <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
         <Icons.DispenserIcon />Dispensers
       </AsideMenuItem>}
     </AsideMenu>

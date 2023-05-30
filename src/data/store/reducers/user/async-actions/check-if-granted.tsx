@@ -50,7 +50,7 @@ const checkIfGranted = () => {
       const contract = contracts[chainId]
       
       const contractABI = defineContract(tokenStandard)
-      const contractInstance = await new ethers.Contract(tokenAddress, contractABI.abi, signer)
+      const contractInstance = new ethers.Contract(tokenAddress, contractABI.abi, signer)
       const isGranted = await contractInstance.hasRole(contract.minter_role, proxyContractAddress)
       dispatch(campaignActions.setApproved(isGranted))
 

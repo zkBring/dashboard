@@ -77,6 +77,13 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
+          path='/dispensers/edit/:dispenserId'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DispenserCreate}
+        />
+
+        <ProtectedRoute
           path='/dispensers/:id'
           exact={true}
           loggedIn={Boolean(address)}

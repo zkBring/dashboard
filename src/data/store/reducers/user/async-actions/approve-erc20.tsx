@@ -11,10 +11,11 @@ import {
   alertError
 } from 'helpers'
 import { utils, ethers } from 'ethers'
-import { RootState } from 'data/store';
+import { IAppDispatch, RootState } from 'data/store'
 import { ERC20Contract } from 'abi'
 import { TAssetsData, TLinkContent, TTotalAmount } from 'types'
 import { plausibleApi } from 'data/api'
+import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
 
 const approve = (
   assets: TAssetsData,
@@ -22,10 +23,11 @@ const approve = (
   assetsOriginal: TLinkContent[],
   sdk: boolean,
   sponsored: boolean,
+  isNewCampaign: boolean,
   callback?: () => void
 ) => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>,
+    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     dispatch(campaignActions.setAssets(assets))
@@ -86,8 +88,6 @@ const approve = (
         return alertError(`No tokens to approve`)
       }
 
-      console.log({ amountToApprove, tokenAmount })
-
       if (amountToApprove.gt(tokenAmount)) {
         dispatch(campaignActions.setLoading(false))
         return alertError(
@@ -140,6 +140,9 @@ const approve = (
           }
         })
         dispatch(campaignActions.setApproved(true))
+        isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+          'secure'
+        ))
         if (callback) { callback() }
       }
     } catch (err) {

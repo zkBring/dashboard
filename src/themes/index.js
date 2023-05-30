@@ -42,6 +42,7 @@ const themes = {
 		buttonAdditionalTextHoverColor: '#357AFF',
 		buttonAdditionalBackgroundActiveColor: '#E4EDFF',
 		buttonAdditionalTextActiveColor: '#095AF5',
+		buttonDangerTextColor: '#FF5252',
 
 		buttonGradient: 'linear-gradient(to right, #00B2FF 0%, #FA00FF 50%, #00B2FF 100%)',
 

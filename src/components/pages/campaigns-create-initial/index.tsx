@@ -59,15 +59,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     applyClaimPattern:(
       claimPattern: TClaimPattern,
+      isNewCampaign: boolean,
       callback: () => void
     ) => dispatch(
-      campaignAsyncActions.applyClaimPattern(claimPattern, callback)
-    ),
-    createProxyContract: (
-      id?: string
-    ) => dispatch(
-      campaignAsyncActions.createProxyContract(id)
-    ),
+      campaignAsyncActions.applyClaimPattern(claimPattern, isNewCampaign, callback)
+    )
   }
 }
 
@@ -85,7 +81,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   title,
   tokenAddress,
   chainId,
-  createProxyContract,
   applyClaimPattern,
   symbol,
   whitelisted
@@ -100,10 +95,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
 
   const history = useHistory()
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
-
-  useEffect(() => {
-    createProxyContract(campaign?.campaign_number)
-  }, [])
 
   return <Container>
     <WidgetContainer>
@@ -133,6 +124,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
         action: () => {
           applyClaimPattern(
             claimPattern,
+            !Boolean(id),
             () => {
               // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
               //   if (currentCampaign) {
