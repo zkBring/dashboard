@@ -25,13 +25,13 @@ const mapStateToProps = ({
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
-const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, drafts }) => {
+const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, drafts, chainId }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
 
   const currentAddressDrafts = drafts.filter(draft => {
-    return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+    return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
   })
 
   const createNewCampaignWidget = <StyledWidget title='New campaign'>
