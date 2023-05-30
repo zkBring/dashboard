@@ -146,7 +146,6 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   signer,
   proxyContractAddress
 }) => {
-  console.log({ proxyContractAddress })
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
 

@@ -86,7 +86,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   whitelisted
 }) => {
   const { type, id } = useParams<TLinkParams>()
-  console.log({ boolean: Boolean(id)})
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentCampaignTitle = campaign ? campaign.title : title
   const currentTokenAddress = campaign ? campaign.token_address : tokenAddress
