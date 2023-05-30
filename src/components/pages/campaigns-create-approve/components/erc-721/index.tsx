@@ -278,6 +278,7 @@ const Erc721: FC<ReduxType > = ({
   const checkIfAllTokensDisabled = () => {
     if (!tokenAddress) { return true }
     if (!nfts || nfts.length === 0) { return true }
+    if (sdk) { return true }
     return false
   }
 
