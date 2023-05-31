@@ -92,6 +92,7 @@ const QRCreate: FC<ReduxType> = ({
               title, 
               Number(amount),
               (id) => {
+                console.log({ id })
                 history.push(`/qrs/${id}`)
               }
             )

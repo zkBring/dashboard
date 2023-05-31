@@ -92,7 +92,6 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
       }
     }
   })
-  console.log({ result })
   return result
 }
 

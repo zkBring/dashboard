@@ -106,7 +106,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
   type,
   proxyContractAddress,
   title,
-  linksAmount,
+  tokenAddress,
   claimPattern,
   sponsored,
   comission,
@@ -116,7 +116,9 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
   deleteDraft
 }) => {
   const dateFormatted = createdAt && formatDate(createdAt)
-  const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
+  const proxyContractUrl = proxyContractAddress ? defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`) : '#'
+  const tokenContract = tokenAddress ? defineEtherscanUrl(Number(chainId), `/address/${tokenAddress}`) : '#'
+
   const networkName = defineNetworkName(Number(chainId))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const history = useHistory()
@@ -130,7 +132,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
       <CampaignText>Contract</CampaignText>
       <CampaignValue>
         {proxyContractAddress ? <TextLink
-          href={scanUrl}
+          href={proxyContractUrl}
           target='_blank'
         >{shortenString(proxyContractAddress)}</TextLink> : '-'}
       </CampaignValue>
@@ -144,8 +146,13 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
       <CampaignValue>{type}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>Links</CampaignText>
-      <CampaignValue>{linksAmount || '-'}</CampaignValue>
+      <CampaignText>Token address</CampaignText>
+      <CampaignValue>
+        {tokenAddress ? <TextLink
+          href={tokenContract}
+          target='_blank'
+        >{shortenString(tokenAddress)}</TextLink> : '-'}
+      </CampaignValue>
     </CampaignRow>
     <Divider />
     <CampaignRow>
