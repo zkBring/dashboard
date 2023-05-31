@@ -16,6 +16,7 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
 import {
   formatDate,
+  formatTime,
   defineEtherscanUrl,
   shortenString,
   defineNetworkName,
@@ -116,6 +117,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
   deleteDraft
 }) => {
   const dateFormatted = createdAt && formatDate(createdAt)
+  const timeFormatted = createdAt && formatTime(createdAt)
   const proxyContractUrl = proxyContractAddress ? defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`) : '#'
   const tokenContract = tokenAddress ? defineEtherscanUrl(Number(chainId), `/address/${tokenAddress}`) : '#'
 
@@ -176,7 +178,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
     </CampaignRow>
     <CampaignRow>
       <CampaignText>Date created</CampaignText>
-      <CampaignValue>{dateFormatted}</CampaignValue>
+      <CampaignValue>{dateFormatted}, {timeFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButtonDelete
