@@ -77,7 +77,7 @@ const addQRSet = ({
         })
         dispatch(actionsQR.addQr(result.data.qr_set))
         dispatch(actionsQR.setUploadLoader(0))
-        callback && callback(result.data._id)
+        callback && callback((result.data.qr_set || {}).set_id || '')
       }
     } catch (err) {
       console.error(err)

@@ -18,6 +18,7 @@ import {
   shortenString,
   defineNetworkName,
   capitalize,
+  formatTime,
   defineNativeTokenSymbol
 } from 'helpers'
 
@@ -60,6 +61,7 @@ const CampaignComponent: FC<TProps & ReduxType> = ({
   whitelisted
 }) => {
   const dateFormatted = created_at && formatDate(created_at)
+  const timeFormatted = created_at && formatTime(created_at)
   const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
   const networkName = defineNetworkName(Number(chainId))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
@@ -112,7 +114,7 @@ const CampaignComponent: FC<TProps & ReduxType> = ({
     </CampaignRow>
     <CampaignRow>
       <CampaignText>Date created</CampaignText>
-      <CampaignValue>{dateFormatted}</CampaignValue>
+      <CampaignValue>{dateFormatted}, {timeFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButton

@@ -16,6 +16,7 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
 import {
   formatDate,
+  formatTime,
   defineEtherscanUrl,
   shortenString,
   defineNetworkName,
@@ -106,7 +107,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
   type,
   proxyContractAddress,
   title,
-  linksAmount,
+  tokenAddress,
   claimPattern,
   sponsored,
   comission,
@@ -116,7 +117,10 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
   deleteDraft
 }) => {
   const dateFormatted = createdAt && formatDate(createdAt)
-  const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
+  const timeFormatted = createdAt && formatTime(createdAt)
+  const proxyContractUrl = proxyContractAddress ? defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`) : '#'
+  const tokenContract = tokenAddress ? defineEtherscanUrl(Number(chainId), `/address/${tokenAddress}`) : '#'
+
   const networkName = defineNetworkName(Number(chainId))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const history = useHistory()
@@ -130,7 +134,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
       <CampaignText>Contract</CampaignText>
       <CampaignValue>
         {proxyContractAddress ? <TextLink
-          href={scanUrl}
+          href={proxyContractUrl}
           target='_blank'
         >{shortenString(proxyContractAddress)}</TextLink> : '-'}
       </CampaignValue>
@@ -144,8 +148,13 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
       <CampaignValue>{type}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>Links</CampaignText>
-      <CampaignValue>{linksAmount || '-'}</CampaignValue>
+      <CampaignText>Token address</CampaignText>
+      <CampaignValue>
+        {tokenAddress ? <TextLink
+          href={tokenContract}
+          target='_blank'
+        >{shortenString(tokenAddress)}</TextLink> : '-'}
+      </CampaignValue>
     </CampaignRow>
     <Divider />
     <CampaignRow>
@@ -169,7 +178,7 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
     </CampaignRow>
     <CampaignRow>
       <CampaignText>Date created</CampaignText>
-      <CampaignValue>{dateFormatted}</CampaignValue>
+      <CampaignValue>{dateFormatted}, {timeFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignButtons>
       <CampaignButtonDelete

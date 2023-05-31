@@ -6,7 +6,6 @@ import {
 import { utils, BigNumber } from 'ethers'
 
 const countAssetsTotalAmountERC20: TDefineTotalAmountERC20 = (assets, decimals) => {
-  console.log({ assets })
   const count = assets.reduce<BigNumber>((sum: BigNumber, item: TAsset) => {
     const { amount } = item
     return amount ? BigNumber.from(item.amount).add(sum) : sum
