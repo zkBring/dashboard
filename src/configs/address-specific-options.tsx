@@ -36,5 +36,8 @@ export const addressSpecificOptions: TAddressConfig = {
   },
   '0x1dadf1f992ed2448baa284d0fca6a62536136612': {
     betaFeaturesAvailable: ['dispenser']
+  },
+  '0xe2f91e21c6689382c1c3dd8cd70633c39c911c4a': {
+    betaFeaturesAvailable: ['dispenser']
   }
 }
