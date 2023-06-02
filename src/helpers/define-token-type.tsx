@@ -4,9 +4,9 @@ import { TTokenType } from 'types'
 const interfaceIdERC721 = "0x80ac58cd"
 const interfaceIdERC1155 = "0xd9b67a26"
 
-type TDefineTokeType = (address: string, provider: any) => Promise<TTokenType | null>
+type TDefineTokenType = (address: string, provider: any) => Promise<TTokenType | null>
 
-const defineTokenType: TDefineTokeType = async (address, signer) => {
+const defineTokenType: TDefineTokenType = async (address, signer) => {
   const contractInstanceERC721 = await new ethers.Contract(address, ERC721Contract.abi, signer)
   const isERC721 = await contractInstanceERC721.supportsInterface(interfaceIdERC721)
   if (isERC721) {

@@ -16,14 +16,16 @@ const requests = {
   getOne: (id: string | number) => {
     return qrsSetApi.get(`/dispensers/${id}`, { withCredentials: true })
   },
-  mapLinks: (id: string | number, links: TDispenserLinks) => {
+  mapLinks: (id: string | number, links: TDispenserLinks, linksHasEqualContents: boolean) => {
     return qrsSetApi.post(`/dispensers/${id}/upload-links`, {
-      encrypted_claim_links: links
+      encrypted_claim_links: links,
+      preview_setting: linksHasEqualContents ? 'token' : 'stub'
     }, { withCredentials: true })
   },
-  updateLinks: (id: string | number, links: TDispenserLinks) => {
+  updateLinks: (id: string | number, links: TDispenserLinks, linksHasEqualContents: boolean) => {
     return qrsSetApi.put(`/dispensers/${id}/upload-links`, {
-      encrypted_claim_links: links
+      encrypted_claim_links: links,
+      preview_setting: linksHasEqualContents ? 'token' : 'stub'
     }, { withCredentials: true })
   },
   updateDispenserData: ({

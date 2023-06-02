@@ -58,7 +58,6 @@ function setTokenContractData (
       }
       if (type.toUpperCase() === 'ERC721') {
         const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
-        const symbol = await contractInstance.symbol()
         
         try {
           const symbol = await contractInstance.name()
@@ -67,7 +66,7 @@ function setTokenContractData (
           console.log({ e })
           dispatch(actionsCampaign.setSymbol('ERC721 Token'))
         }
-        dispatch(actionsCampaign.setDecimals(0))
+        dispatch(actionsCampaign.setDecimals(1))
       }
       if (type.toUpperCase() === 'ERC1155') {
         const contractInstance = await new ethers.Contract(tokenAddress, ERC1155Contract.abi, signer)
@@ -78,7 +77,7 @@ function setTokenContractData (
           console.log({ e })
           dispatch(actionsCampaign.setSymbol('ERC1155 Token'))
         }
-        dispatch(actionsCampaign.setDecimals(0))
+        dispatch(actionsCampaign.setDecimals(1))
       }
       dispatch(actionsCampaign.setLoading(false))
     } catch (err) {
