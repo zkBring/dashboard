@@ -14,7 +14,6 @@ export class LinksWorker {
   ) {
     this.cb = cb
   }
-
   private createSDK (
     claimHost: string
   ) {

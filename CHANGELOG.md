@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.15
+- update request data for dispenser links mapping
+
 ## 2.1.14
 - update for drafts (links array is defined dynamically)
 - redirect to qr page after success POST request

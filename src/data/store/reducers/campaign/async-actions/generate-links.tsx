@@ -157,6 +157,7 @@ const generateERC20Link = ({
     
       } else {
         const batchLinks= newLinks.flat()
+        console.log({ batchLinks })
         const batch = {
           claim_links: batchLinks.length === 0 ? undefined : newLinks.flat(),
           batch_description: 'legacy property'
