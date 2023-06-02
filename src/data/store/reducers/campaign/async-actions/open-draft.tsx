@@ -23,7 +23,6 @@ const openDraft = (
       return alertError('Draft id is not correct')
     }
     const draftCampaign = draft.campaign
-    console.log({ draftCampaign })
     const campaign = {
       ...draftCampaign,
       assets: draftCampaign.assetsOriginal && draftCampaign.decimals ? convertLinksContent(
