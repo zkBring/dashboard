@@ -38,12 +38,9 @@ const addDispenser = ({
         
       const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey)
       const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey)
-      const dispenserId = String(+new Date())
       const newDispenser: TDispenser = {
         encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
         multiscan_qr_id: secretKeyPair.address,
-        links_count: 0,
-        dispenser_id: dispenserId,
         claim_duration: duration,
         claim_start: +(new Date(date)),
         encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
