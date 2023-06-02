@@ -155,7 +155,7 @@ const Dispenser: FC<ReduxType> = ({
         
         if (!dispenser_id) { return alert('Dispenser ID not found') }
         if (!encrypted_multiscan_qr_enc_code) { return alert('encrypted_multiscan_qr_enc_code not found') }
-        if (!links_count) { return alert('links_count not found') }
+        if (links_count === undefined) { return alert('links_count not found') }
         if (!links) { return alert('Links not found') }
 
         addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, links_count, () => {
