@@ -28,7 +28,6 @@ export const addressSpecificOptions: TAddressConfig = {
   },
   '0xb4c3d57327d4fc9bcc3499963e21db1a5435d537': COINBASE_CONFIG,
   '0x3e12f31db4f1250e077171568263d0856d897428': {
-    ...COINBASE_CONFIG,
     betaFeaturesAvailable: ['dispenser']
   },
   '0x0553ada5829184a7818dc866367d77334183603e': {
