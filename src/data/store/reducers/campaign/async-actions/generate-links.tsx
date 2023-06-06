@@ -162,7 +162,6 @@ const generateERC20Link = ({
           batch_description: 'legacy property'
         }
         
-
         const newCampaign: TCampaignNew = {
           campaign_number: id,
           encrypted_signer_key: encrypt(signerKey, dashboardKey),

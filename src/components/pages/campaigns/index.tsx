@@ -65,7 +65,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
               claimPattern={campaign.claimPattern}
               sponsored={campaign.sponsored || false}
               stepToOpen={step}
-              linksAmount={campaign.assets ? campaign.assets.length : 0}
+              tokenAddress={campaign.tokenAddress}
             />
           })}
         </Container>

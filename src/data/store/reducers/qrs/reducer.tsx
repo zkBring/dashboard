@@ -16,7 +16,7 @@ export function qrsReducer(
 ): QRsState {
     switch (action.type) {
       case Constants.QRS_ADD_NEW_QR:
-        return {...state, qrs: [ ...state.qrs, action.payload ] }
+        return {...state, qrs: [ action.payload, ...state.qrs ] }
       case Constants.QRS_UPDATE_QRS:
         return {...state, qrs: action.payload }
       case Constants.QRS_SET_LOADING:

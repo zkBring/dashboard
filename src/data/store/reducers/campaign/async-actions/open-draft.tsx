@@ -4,7 +4,7 @@ import * as actionsCampaign from '../actions'
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
-import { alertError } from 'helpers'
+import { alertError, convertLinksContent } from 'helpers'
 
 const openDraft = (
   id: string,
@@ -22,7 +22,17 @@ const openDraft = (
     if (!draft) {
       return alertError('Draft id is not correct')
     }
-    dispatch(actionsCampaign.setCampaign(draft.campaign))
+    const draftCampaign = draft.campaign
+    const campaign = {
+      ...draftCampaign,
+      assets: draftCampaign.assetsOriginal && draftCampaign.decimals ? convertLinksContent(
+        draftCampaign.assetsOriginal,
+        draftCampaign.decimals,
+        draftCampaign.claimPattern,
+        draftCampaign.sdk
+      ) : []
+    }
+    dispatch(actionsCampaign.setCampaign(campaign))
     dispatch(actionsCampaign.setLoading(false))
     callback && callback() 
   }

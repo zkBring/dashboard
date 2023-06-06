@@ -28,7 +28,7 @@ const addCampaignToDrafts = (
       const newDraft = {
         id: campaign.id as string,
         step,
-        campaign,
+        campaign: {...campaign, assets: [] },
         creatorAddress: address as string,
         chainId: chainId as number,
         updatedAt: +(new Date())

@@ -1,5 +1,12 @@
 # Ledger Dashboard
 
+## 2.1.15
+- update request data for dispenser links mapping
+
+## 2.1.14
+- update for drafts (links array is defined dynamically)
+- redirect to qr page after success POST request
+
 ## 2.1.13
 - only_preferred_wallet option support
 - added dispenser edit page

@@ -8,8 +8,8 @@ export type TProps = {
   type: TTokenType | null
   proxyContractAddress: string | null
   title?: string | null
-  linksAmount?: number
   claimPattern?: TClaimPattern
   sponsored?: boolean
   stepToOpen: TCampaignCreateStep
+  tokenAddress: string | null
 }

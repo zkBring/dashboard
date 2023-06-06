@@ -8,9 +8,9 @@ import {  dispensersApi } from 'data/api'
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
-import { sleep, alertError } from 'helpers'
+import { sleep, alertError, defineIfLinksHasEqualContents } from 'helpers'
 import { plausibleApi } from 'data/api'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 
 const addLinksToQR = ({
   dispenserId,
@@ -52,9 +52,9 @@ const addLinksToQR = ({
         links,
         dashboardKey
       )
-      callback && callback()
       const apiMethod = linksCount > 0 ? dispensersApi.updateLinks : dispensersApi.mapLinks
-      const result = await apiMethod(dispenserId, qrArrayMapped)
+      const linksHasEqualContents = defineIfLinksHasEqualContents(links)
+      const result = await apiMethod(dispenserId, qrArrayMapped, linksHasEqualContents)
       
       if (result.data.success) {
         plausibleApi.invokeEvent({
