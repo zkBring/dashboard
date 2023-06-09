@@ -68,9 +68,9 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
         <Icons.QRManagerIcon />QR Manager
       </AsideMenuItem>
-      {defineIfFeatureIsAvailable(address, 'dispenser') && <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
+      <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
         <Icons.DispenserIcon />Dispensers
-      </AsideMenuItem>}
+      </AsideMenuItem>
     </AsideMenu>
 
     <AsideFooter>
