@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.16
+- Dispensers public release
+
 ## 2.1.15
 - update request data for dispenser links mapping
 
