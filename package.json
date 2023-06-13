@@ -1,6 +1,6 @@
 {
   "name": "linkdrop-dashboard",
-  "version": "2.1.16",
+  "version": "2.1.16-hotfix.0",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
