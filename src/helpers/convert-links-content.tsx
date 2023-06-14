@@ -37,7 +37,7 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
       const amountOfLinks = Number(item.linksAmount)
       for (let i = 0; i < amountOfLinks; i++) {
         result.push({
-          amount: String(utils.parseUnits(String(item.tokenAmount), decimals)),
+          amount: item.tokenAmount,
           id: item.tokenId,
           original_amount: item.tokenAmount
         })

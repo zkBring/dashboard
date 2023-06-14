@@ -25,7 +25,7 @@ const openDraft = (
     const draftCampaign = draft.campaign
     const campaign = {
       ...draftCampaign,
-      assets: draftCampaign.assetsOriginal && draftCampaign.decimals ? convertLinksContent(
+      assets: draftCampaign.assetsOriginal && draftCampaign.decimals !== null ? convertLinksContent(
         draftCampaign.assetsOriginal,
         draftCampaign.decimals,
         draftCampaign.claimPattern,
