@@ -37,9 +37,9 @@ const convertLinksContent: TConvertLinksContent = (linksContents, decimals, clai
       const amountOfLinks = Number(item.linksAmount)
       for (let i = 0; i < amountOfLinks; i++) {
         result.push({
-          amount: '1', // HOTFIX: String(utils.parseUnits(String(item.tokenAmount), decimals)),
+          amount: item.tokenAmount,
           id: item.tokenId,
-          original_amount: '1' // HOTFIX: item.tokenAmount
+          original_amount: item.tokenAmount
         })
       }
     } else if (item.type === 'ERC721') {

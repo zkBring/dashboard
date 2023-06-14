@@ -257,8 +257,6 @@ const Erc1155: FC<ReduxType > = ({
   userLoading,
   chainId
 }) => {
-  
-
   const { type } = useParams<{ type: TTokenType }>()
   const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
   const getDefaultValues: () => TLinkContent = () => {
