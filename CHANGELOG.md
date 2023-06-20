@@ -2,6 +2,7 @@
 
 ## 2.1.17
 - Fix for token amount
+- Fix for getGasPrice method
 
 ## 2.1.16
 - Dispensers public release

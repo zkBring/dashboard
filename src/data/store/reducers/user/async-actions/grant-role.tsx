@@ -34,7 +34,6 @@ const grantRole = (
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
     const {
       user: {
-        provider,
         address,
         chainId,
         signer
@@ -81,7 +80,7 @@ const grantRole = (
 
       dispatch(campaignActions.setClaimPattern('mint'))
       const contract = contracts[chainId]
-      const gasPrice = await provider.getGasPrice()
+      const gasPrice = await signer.getGasPrice()
       const oneGwei = utils.parseUnits('1', 'gwei')
       const contractABI = (defineContract(tokenStandard)).abi
       const contractInstance = await new ethers.Contract(tokenAddress, contractABI, signer)
