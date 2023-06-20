@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.17
+- Fix for token amount
+
 ## 2.1.16
 - Dispensers public release
 
