@@ -94,7 +94,7 @@ const CSVUploadPopup: FC<TProps> = ({
       </IconContainer>
         <PopupTitle>Upload .csv file with links</PopupTitle>
         <PopupText>
-          Read the information about the required file format <TextLink href='https://linkdrop-docs.notion.site/Using-CSV-to-add-tokens-217684e66db24b45b791a4a5a92c0585'>here</TextLink>
+          Read the information about the required file format <TextLink target='_blank' href='https://linkdrop-docs.notion.site/Using-CSV-to-add-tokens-217684e66db24b45b791a4a5a92c0585'>here</TextLink>
         </PopupText>
       </PopupFormContent>
       <Buttons>

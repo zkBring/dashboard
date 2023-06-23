@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.18
+- Bug fix for QR links mapping (csv file download enable)
+
 ## 2.1.17
 - Fix for token amount
 - Fix for getGasPrice method
