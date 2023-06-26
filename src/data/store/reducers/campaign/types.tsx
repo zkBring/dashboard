@@ -25,7 +25,7 @@ export interface CampaignState {
   nativeTokensPerLink: BigNumber | null
   linksGenerateLoader: number
   sdk: boolean
-  onlyPreferredWallet: boolean
+  availableWallets: string[]
   links: {
     date: string,
     links: TLink[],

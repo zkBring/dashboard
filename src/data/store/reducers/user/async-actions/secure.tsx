@@ -17,7 +17,7 @@ const secure = (
   totalNativeTokensAmountToSecure: BigNumber,
   nativeTokensPerLink: string,
   walletApp: string,
-  onlyPreferredWallet: boolean,
+  availableWallets: string[],
   callback?: () => void
 ) => {
   return async (
@@ -131,7 +131,7 @@ const secure = (
       const finished = await checkTransaction()
       if (finished) {
         dispatch(campaignActions.setSecured(true))
-        dispatch(campaignActions.setOnlyPreferredWallet(onlyPreferredWallet))
+        dispatch(campaignActions.setAvailableWallets(availableWallets))
         dispatch(campaignActions.setNativeTokensPerLink(
           utils.parseEther(
             String(

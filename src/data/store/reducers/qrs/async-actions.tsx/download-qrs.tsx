@@ -60,7 +60,6 @@ const downloadQRs = ({
       const blob = await resp.blob()
       const img = await createImageBitmap(blob as ImageBitmapSource)
 
-
       const logoImageLoaded = await loadImage(
         qrOption.imageOptions,
         qrOption.icon
