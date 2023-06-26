@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from 'react'
+import { FC, useState, useMemo, useEffect } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import {
@@ -34,7 +34,7 @@ import {
 import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { useHistory } from 'react-router-dom'
-import { shortenString, defineNetworkName } from 'helpers'
+import { shortenString, defineNetworkName, preventPageClose } from 'helpers'
 import { BigNumber } from 'ethers'
 
 const mapStateToProps = ({
@@ -169,6 +169,10 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     availableWallets,
     setAvailableWallets
   ] =  useState<string[]>(walletsAvailable)
+
+  useEffect(() => {
+    preventPageClose()
+  }, [])
 
   const walletsCheckboxes = useMemo(() => {
     const options = allWallets

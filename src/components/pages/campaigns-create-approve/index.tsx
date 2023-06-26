@@ -29,7 +29,8 @@ import {
   defineNativeTokenSymbol,
   countNativeTokensToSecure,
   alertError,
-  countAssetsTotalAmountERC20
+  countAssetsTotalAmountERC20,
+  preventPageClose
 } from 'helpers'
 import { TAsideContentsProps } from './components/aside-contents/types'
 import { plausibleApi } from 'data/api'
@@ -246,6 +247,10 @@ const defineComponent: TDefineComponent = (
       setAssetsData={setAssetsData}
     />
   }
+
+  useEffect(() => {
+    preventPageClose()
+  }, [])
 
   const UploadInstructionNote = type === 'ERC721' &&  claimPattern === 'mint' ? null : <InstructionNoteStyled
     icon={<Icons.UploadFileIcon />}
