@@ -24,7 +24,6 @@ import {
   WidgetSectionSubtitle
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
-import { addressSpecificOptions } from 'configs/address-specific-options'
 import {
   StyledInput,
   CheckboxContainer,
@@ -131,12 +130,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     const options = wallets
       .filter(wallet => {
         if (!chainId) { return false }
-        const walletsOnlyAvailableToAddress = addressSpecificOptions[address.toLowerCase()]
-        const isAvailableOnCurrentChain = wallet.chains.includes(String(chainId))
-        if (!walletsOnlyAvailableToAddress || !walletsOnlyAvailableToAddress.walletApps) {
-          return isAvailableOnCurrentChain
-        }
-        return walletsOnlyAvailableToAddress.walletApps.includes(wallet.id) && isAvailableOnCurrentChain
+        return wallet.chains.includes(String(chainId))
       })
     return options
   }, [chainId])

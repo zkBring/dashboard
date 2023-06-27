@@ -1,6 +1,5 @@
 import { TFeatureName } from 'types'
 
-type TAddressWalletConfig = string[]
 type TAddressQRConfig = string
 type TAddressQRDeeplinkConfig = string
 
@@ -8,14 +7,12 @@ type TAddressConfig = Record<
   string,
   {
     qrConfig?: TAddressQRConfig
-    walletApps?: TAddressWalletConfig
     qrDeeplink?: TAddressQRDeeplinkConfig
     betaFeaturesAvailable?: TFeatureName[] 
   }
 >
 
 const COINBASE_CONFIG = {
-  walletApps: ['coinbase_wallet'],
   qrConfig: 'coinbase',
   qrDeeplink: 'https://go.cb-w.com/dapp?cb_url=%URL%'
 }

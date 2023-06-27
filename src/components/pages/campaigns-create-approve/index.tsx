@@ -248,10 +248,6 @@ const defineComponent: TDefineComponent = (
     />
   }
 
-  useEffect(() => {
-    preventPageClose()
-  }, [])
-
   const UploadInstructionNote = type === 'ERC721' &&  claimPattern === 'mint' ? null : <InstructionNoteStyled
     icon={<Icons.UploadFileIcon />}
   >
@@ -402,6 +398,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       return setApproved(false)
     }
     checkIfApproved()
+  }, [])
+
+  useEffect(() => {
+    preventPageClose()
   }, [])
 
   const defineNextButtonTitle = () => {
