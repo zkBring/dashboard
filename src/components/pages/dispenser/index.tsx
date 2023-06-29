@@ -138,7 +138,6 @@ const Dispenser: FC<ReduxType> = ({
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
   const history = useHistory()
-  console.log({ dispenser })
   const [
     updateLinksPopup,
     toggleUpdateLinksPopup
