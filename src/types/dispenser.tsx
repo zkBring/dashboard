@@ -2,7 +2,8 @@ export type TDispenserStatus =
   'READY' |
   'ACTIVE' |
   'FINISHED' |
-  'NOT_UPLOADED'
+  'NOT_UPLOADED' |
+  'STOPPED'
 
 export type TDispenserLinks = {
   encrypted_claim_link?: string
@@ -19,6 +20,7 @@ export type TDispenser = {
   claim_start: number
   title: string
   encrypted_multiscan_qr_enc_code: string
+  active?: boolean
 }
 
 export type TDispenserUpdateData = {
@@ -27,5 +29,3 @@ export type TDispenserUpdateData = {
   title: string
   dispenser_id: string
 }
-
-

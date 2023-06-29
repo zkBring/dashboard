@@ -4,24 +4,19 @@ import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
-import { TDispenser, TDispenserUpdateData } from 'types'
 import { plausibleApi } from 'data/api'
 
-type TUpdateDispenserArgs = {
-  title: string,
-  dispenser_id: string,
-  date: string,
-  duration: number,
-  callback?: (id: string) => void,
+type TUpdateStatusArgs = {
+  dispenser_id: string
+  active: boolean
+  callback?: () => void
 }
 
-const updateDispenser = ({
+const updateStatus = ({
   dispenser_id,
-  title,
-  date,
-  duration,
+  active,
   callback
-}: TUpdateDispenserArgs) => {
+}: TUpdateStatusArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
@@ -29,23 +24,17 @@ const updateDispenser = ({
     const { user: { address }, dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
-      const updatedDispenser: TDispenserUpdateData = {
-        claim_duration: duration,
-        claim_start: +(new Date(date)),
-        title,
-        dispenser_id
-      }
 
-      const { data } : { data: { dispenser: TDispenser, success: boolean } } = await dispensersApi.updateDispenserData(updatedDispenser)
+      const { data } : { data: { success: boolean } } = await dispensersApi.updateStatus({ dispenser_id, active })
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
-          if (item.dispenser_id === dispenser_id) {
-            return { ...item, ...data.dispenser }
+          if (item.dispenser_id === dispenser_id) { 
+            return { ...item, active }
           }
           return item
         })
         plausibleApi.invokeEvent({
-          eventName: 'multiqr_update',
+          eventName: 'multiqr_update_status',
           data: {
             success: 'yes',
             address,
@@ -53,10 +42,10 @@ const updateDispenser = ({
           }
         })
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
-        if (callback) { callback(data.dispenser.dispenser_id as string) }
+        if (callback) { callback() }
       } else {
         plausibleApi.invokeEvent({
-          eventName: 'multiqr_update',
+          eventName: 'multiqr_update_status',
           data: {
             success: 'no',
             address,
@@ -68,7 +57,7 @@ const updateDispenser = ({
       
     } catch (err) {
       plausibleApi.invokeEvent({
-        eventName: 'multiqr_update',
+        eventName: 'multiqr_update_status',
         data: {
           success: 'no',
           address,
@@ -82,4 +71,4 @@ const updateDispenser = ({
   }
 }
 
-export default updateDispenser
+export default updateStatus

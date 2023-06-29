@@ -88,8 +88,8 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
         {dispensers.map(dispenser => {
-          const { title, links_count, dispenser_id, claim_duration, created_at, claim_start } = dispenser
-          const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0)
+          const { title, links_count, dispenser_id, claim_duration, created_at, claim_start, active } = dispenser
+          const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active)
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           const claimStartWithNoOffset = moment(claim_start).utcOffset(0)

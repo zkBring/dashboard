@@ -23,7 +23,7 @@ import {
   AsideStyled
 } from './styled-components'
 import { TextLink } from 'components/common'
-import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink } from 'helpers'
+import { defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink } from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
@@ -49,13 +49,22 @@ const mapStateToProps = ({
   mappingLoader
 })
 
-const defineOptions = (redirectCallback: () => void, status?: TDispenserStatus) => {
+const defineOptions = (
+  status: TDispenserStatus,
+  editCallback: () => void,
+  stopCallback: () => void
+) => {
   return [
     {
       title: 'Edit',
       icon: <Icons.EditDispenserIcon />,
       disabled: status === 'ACTIVE' || status === 'FINISHED',
-      action: redirectCallback
+      action: editCallback
+    }, {
+      title: 'Stop',
+      icon: <Icons.StopDispenserIcon />,
+      disabled: status !== 'ACTIVE',
+      action: stopCallback
     },
   ]
 }
@@ -91,6 +100,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       height: size,
       callback
     })),
+    stopDispenser: (
+      dispenser_id: string,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.updateStatus({
+      dispenser_id,
+      active: false,
+      callback
+    })),
   }
 }
 
@@ -115,12 +132,13 @@ const Dispenser: FC<ReduxType> = ({
   addLinksToQR,
   dashboardKey,
   address,
-  downloadQR
+  downloadQR,
+  stopDispenser
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
   const history = useHistory()
-
+  console.log({ dispenser })
   const [
     updateLinksPopup,
     toggleUpdateLinksPopup
@@ -136,9 +154,13 @@ const Dispenser: FC<ReduxType> = ({
     return <Redirect to='/dispensers' />
   }
 
-  const { title, multiscan_qr_id, dispenser_id, claim_duration, claim_start, links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
-  const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0)
-  const dispenserOptions = defineOptions(() => history.push(`/dispensers/edit/${dispenser.dispenser_id}`), currentStatus)
+  const { title, multiscan_qr_id, dispenser_id, active, claim_duration, claim_start, links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
+  const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active)
+  const dispenserOptions = defineOptions(
+    currentStatus,
+    () => history.push(`/dispensers/edit/${dispenser.dispenser_id}`),
+    () => stopDispenser(id, () => {})
+  )
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
   const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
@@ -225,7 +247,7 @@ const Dispenser: FC<ReduxType> = ({
 
       <WidgetButton
         title='Upload file'
-        disabled={currentStatus === 'FINISHED' || currentStatus === 'ACTIVE'}
+        disabled={currentStatus === 'FINISHED' || currentStatus === 'ACTIVE' || currentStatus === 'STOPPED'}
         appearance='action'
         onClick={() => {
           toggleUpdateLinksPopup(true)

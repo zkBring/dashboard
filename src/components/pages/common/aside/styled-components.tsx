@@ -68,6 +68,10 @@ export const OptionsListItem = styled.li<TOptionItem>`
       path {
         fill: ${props => props.theme.disabledTextColor};
       }
+
+      rect {
+        fill: ${props => props.theme.disabledTextColor};
+      }
     }
     &:hover {
       color: ${props => props.theme.disabledTextColor};

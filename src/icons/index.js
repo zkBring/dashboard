@@ -42,10 +42,12 @@ import { ReactComponent as CloseCircleIcon } from './close-circle-icon.svg'
 import { ReactComponent as BookIcon } from './book-icon.svg'
 import { ReactComponent as DispenserIcon } from './dispenser-icon.svg'
 import { ReactComponent as EditDispenserIcon } from './edit-dispenser-icon.svg'
+import { ReactComponent as StopDispenserIcon } from './stop-icon.svg'
 
 const Icons = {
   EthereumLogo,
   ClipboardCopiedIcon,
+  StopDispenserIcon,
   EditDispenserIcon,
   DispenserIcon,
   GoToOldVersionIcon,
