@@ -2,6 +2,7 @@
 
 ## 2.1.18
 - Bug fix for QR links mapping (csv file download enable)
+- Dispenser can be stopped
 
 ## 2.1.17
 - Fix for token amount
