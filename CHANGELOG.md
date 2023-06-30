@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.19
+- added 'available_wallets' option support
+
 ## 2.1.18
 - Bug fix for QR links mapping (csv file download enable)
 - Dispenser can be stopped
