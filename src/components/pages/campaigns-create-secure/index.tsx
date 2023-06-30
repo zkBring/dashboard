@@ -219,7 +219,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           {walletsCheckboxes.map(checkbox => <CheckboxStyled
             value={checkbox.value}
             label={checkbox.label}
-            disabled={checkbox.disabled || Boolean(currentCampaign)}
+            disabled={checkbox.disabled || Boolean(currentCampaign) || loading}
             onChange={
               (value) => {
                 const updatedAvailableWallets = !value ? availableWallets.filter(item => item !== checkbox.id) : availableWallets.concat(checkbox.id)
