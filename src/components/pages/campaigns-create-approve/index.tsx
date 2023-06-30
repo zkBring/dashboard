@@ -29,7 +29,8 @@ import {
   defineNativeTokenSymbol,
   countNativeTokensToSecure,
   alertError,
-  countAssetsTotalAmountERC20
+  countAssetsTotalAmountERC20,
+  preventPageClose
 } from 'helpers'
 import { TAsideContentsProps } from './components/aside-contents/types'
 import { plausibleApi } from 'data/api'
@@ -397,6 +398,10 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       return setApproved(false)
     }
     checkIfApproved()
+  }, [])
+
+  useEffect(() => {
+    preventPageClose()
   }, [])
 
   const defineNextButtonTitle = () => {

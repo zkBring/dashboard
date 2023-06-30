@@ -23,7 +23,7 @@ import { TTokenType, TLinkParams, TAlchemyContract, TAlchemyERC20Contract } from
 import { useHistory } from 'react-router-dom'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
-import { alertError } from 'helpers'
+import { alertError, preventPageClose } from 'helpers'
 import { utils } from 'ethers'
 import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract, defineIfUserOwnsContractERC20 } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
@@ -148,6 +148,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 }) => {
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
+
+  useEffect(() => {
+    preventPageClose()
+  }, [])
 
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentTokenAddress = campaign ? campaign.token_address : ''

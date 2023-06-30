@@ -20,7 +20,7 @@ type TCampaignNew = {
   claim_pattern: TClaimPattern
   sdk: boolean
   proxy_contract_version: string | number
-  only_preferred_wallet: boolean
+  available_wallets: string[] 
 }
 
 export default TCampaignNew

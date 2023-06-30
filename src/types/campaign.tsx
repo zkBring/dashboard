@@ -22,7 +22,7 @@ type TCampaign = {
   proxy_contract_version: string | number
   sponsored: boolean
   links_claimed: number
-  only_preferred_wallet: boolean
+  available_wallets: string[] 
 }
 
 export default TCampaign
