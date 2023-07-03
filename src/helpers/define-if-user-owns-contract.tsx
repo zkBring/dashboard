@@ -10,7 +10,9 @@ const defineIfUserOwnsContract: TDefineIfUserOwnsContract = async (userAddress, 
       apiKey: REACT_APP_ALCHEMY_API_KEY,
       network: defineAlchemyNetwork(chainId)
     })
-    return await alchemy.nft.verifyNftOwnership(userAddress, tokenAddress)
+    const result = await alchemy.nft.verifyNftOwnership(userAddress, tokenAddress)
+    if (result) { return true }
+    return false
   } catch (err) {
     console.log({
       err
