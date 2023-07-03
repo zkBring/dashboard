@@ -50,7 +50,8 @@ export class QRsWorker {
     isDeeplink?: string,
     claimAppUrl?: string
   ) {
-    let qrs: Blob[] = []
+    const qrs: Blob[] = []
+    const data: { link: string }[] = []
     for (let i = 0; i < qrsArray.length; i++) {
       const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
       const originalLink = `${claimAppUrl}/#/qr/${decrypted_qr_secret}`
@@ -74,13 +75,17 @@ export class QRsWorker {
       const blob = await qrCode.getRawData('png')
       if (!blob) { continue }
       qrs.push(blob)
+      data.push({ link: QRLink })
       const percentageFinished = Math.round(i / qrsArray.length * 100) / 100
       if (this.currentPercentageFinished < percentageFinished) {
         this.currentPercentageFinished = percentageFinished
         this.cb(this.currentPercentageFinished)
       }
     }
-    return qrs
+    return {
+      qrs,
+      data
+    }
   }
 
   public async downloadMultiQR (

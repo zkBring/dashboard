@@ -90,7 +90,13 @@ const downloadQRs = ({
 
       for (let y = 0; y < result.length; y++) {
         console.log(`started download of ${y + 1} part of result`)
-        await downloadBase64FilesAsZip('png', result[y], `${qrSetName}-${y + 1}`, y * result[0].length)
+        await downloadBase64FilesAsZip(
+          'png',
+          result[y].qrs,
+          result[y].data,
+          `${qrSetName}-${y + 1}`,
+          y * result[0].qrs.length
+        )
         console.log(`finished download of ${y + 1} part of result`)
       }
   
