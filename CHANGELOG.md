@@ -2,6 +2,7 @@
 
 ## 2.1.19
 - added 'available_wallets' option support
+- added csv file download with png qr-codes
 
 ## 2.1.18
 - Bug fix for QR links mapping (csv file download enable)
