@@ -37,7 +37,6 @@ export class QRsWorker {
     this.currentPercentageFinished = 0
     return qrArray
   }
-
   public async downloadQRs (
     qrsArray: TQRItem[],
     width: number,
