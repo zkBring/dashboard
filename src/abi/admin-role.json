@@ -1,0 +1,6 @@
+{
+  "abi": [
+    "function getRoleAdmin(bytes32 role) public view returns (bytes32)",
+    "function hasRole(bytes32 role, address account) public view returns (bool)"
+  ]
+}
