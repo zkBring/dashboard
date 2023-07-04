@@ -73,7 +73,7 @@ const downloadQR = ({
         REACT_APP_CLAIM_APP
       )
 
-      await downloadBase64FilesAsZip('png', result, qrDispenserName, 0)
+      await downloadBase64FilesAsZip('png', result, null, qrDispenserName, 0)
   
       plausibleApi.invokeEvent({
         eventName: 'multiqr_download',
