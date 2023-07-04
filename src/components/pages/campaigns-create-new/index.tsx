@@ -278,7 +278,12 @@ const CampaignsCreateNew: FC<ReduxType> = ({
                 if (!tokenType) {
                   return alertError('No tokenType provided')
                 }
-                const tokenOwnership = await defineIfUserOwnsContract(address, value, chainId)
+                const tokenOwnership = await defineIfUserOwnsContract(
+                  address,
+                  value,
+                  chainId,
+                  signer
+                )
                 if (!tokenOwnership) {
                   return alertError('No tokens of provided contract found')
                 }

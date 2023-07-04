@@ -1,5 +1,5 @@
-import sha3  from 'js-sha3'
+import { convertStringToBytes32 } from './'
 
 export default () => {
-  return sha3.keccak256('MINTER_ROLE')
+  return convertStringToBytes32('MINTER_ROLE')
 }

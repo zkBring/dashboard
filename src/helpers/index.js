@@ -59,8 +59,10 @@ import defineIfLinksHasEqualContents from './define-if-links-has-equal-contents'
 import defineLinkTokenType from './define-link-token-type'
 import preventPageClose from './prevent-page-close'
 import getMinterRole from './get-minter-role'
+import convertStringToBytes32 from './convert-string-to-bytes32'
 
 export {
+  convertStringToBytes32,
   preventPageClose,
   alertError,
   defineLinkTokenType,

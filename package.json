@@ -30,7 +30,6 @@
     "is-android": "^1.0.1",
     "is-ios": "^2.1.0",
     "jest": "26.6.0",
-    "js-sha3": "^0.8.0",
     "jszip": "^3.10.0",
     "linkdrop-sdk": "^2.0.4",
     "linkdrop-ui": "^0.0.46",
