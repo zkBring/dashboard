@@ -65,9 +65,7 @@ const QR: FC<ReduxType> = ({
     })
   }, [])
 
-  useEffect(() => {
-    preventPageClose()
-  }, [])
+  useEffect(preventPageClose(), [])
 
   if (!qr) {
     return <Redirect to='/qrs' /> 

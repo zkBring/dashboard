@@ -94,9 +94,8 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
 
   const history = useHistory()
-  useEffect(() => {
-    preventPageClose()
-  }, [])
+  useEffect(preventPageClose(), [])
+
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
 
   return <Container>

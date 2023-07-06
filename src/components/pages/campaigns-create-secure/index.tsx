@@ -164,9 +164,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     setAvailableWallets
   ] =  useState<string[]>(walletsAvailable)
 
-  useEffect(() => {
-    preventPageClose()
-  }, [])
+  useEffect(preventPageClose(), [])
 
   const walletsCheckboxes = useMemo(() => {
     const options = allWallets
