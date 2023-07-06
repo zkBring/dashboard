@@ -149,9 +149,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   const history = useHistory()
   const { id } = useParams<TLinkParams>()
 
-  useEffect(() => {
-    preventPageClose()
-  }, [])
+  useEffect(preventPageClose(), [])
+
 
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentTokenAddress = campaign ? campaign.token_address : ''

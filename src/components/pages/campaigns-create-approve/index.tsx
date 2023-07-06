@@ -400,9 +400,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     checkIfApproved()
   }, [])
 
-  useEffect(() => {
-    preventPageClose()
-  }, [])
+  useEffect(preventPageClose(), [])
+
 
   const defineNextButtonTitle = () => {
     if (loading) {

@@ -57,9 +57,7 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
     }, id)
   }, [])
 
-  useEffect(() => {
-    preventPageClose()
-  }, [])
+  useEffect(preventPageClose(), [])
 
   if (sdk) {
     return null
