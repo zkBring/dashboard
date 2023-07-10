@@ -26,6 +26,7 @@ export interface CampaignState {
   linksGenerateLoader: number
   sdk: boolean
   availableWallets: string[]
+  expirationDate: number
   links: {
     date: string,
     links: TLink[],

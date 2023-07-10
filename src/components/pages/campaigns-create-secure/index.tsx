@@ -55,7 +55,8 @@ const mapStateToProps = ({
     claimPattern,
     assetsOriginal,
     sdk,
-    sponsored
+    sponsored,
+    expirationDate
   },
 }: RootState) => ({
   assets,
@@ -71,7 +72,8 @@ const mapStateToProps = ({
   sdk,
   sponsored,
   comission,
-  address
+  address,
+  expirationDate
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -113,9 +115,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   sdk,
   sponsored,
   comission,
-  address
+  expirationDate
 }) => {
-  
   const { id } = useParams<TLinkParams>()
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -164,6 +165,16 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     setAvailableWallets
   ] =  useState<string[]>(walletsAvailable)
 
+  const [
+    linksExpirationDate,
+    setLinksExpirationDate
+  ] =  useState<Date>(new Date())
+
+  const [
+    enableExpirationDate,
+    setEnableExpirationDate
+  ] =  useState<boolean>(false)
+
   useEffect(preventPageClose(), [])
 
   const walletsCheckboxes = useMemo(() => {
@@ -195,7 +206,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   return <Container>
     <WidgetContainer>
-      <WidgetComponent title='Options'>
+      <WidgetComponent title='Wallet options'>
         <WidgetSectionTitle>Preferred wallet</WidgetSectionTitle>
         <WidgetSectionSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSectionSubtitle>
         <StyledRadio
@@ -226,8 +237,13 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             }
           />)}
         </CheckboxContainer>
+      </WidgetComponent>
+
+      <WidgetComponent title='Link expiration'>
         
-        
+      </WidgetComponent>
+
+      <WidgetComponent title={`Include extra ${nativeTokenSymbol}`}>
         {!sdk && <StyledInput
           title={`${nativeTokenSymbol} to include`}
           value={nativeTokensAmount}
@@ -240,7 +256,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             return value
           }}
         />}
-
       </WidgetComponent>
 
     </WidgetContainer>

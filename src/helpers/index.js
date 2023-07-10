@@ -60,11 +60,13 @@ import defineLinkTokenType from './define-link-token-type'
 import preventPageClose from './prevent-page-close'
 import getMinterRole from './get-minter-role'
 import convertStringToBytes32 from './convert-string-to-bytes32'
+import addDaysToDate from './add-days-to-date'
 
 export {
   convertStringToBytes32,
   preventPageClose,
   alertError,
+  addDaysToDate,
   defineLinkTokenType,
   getMinterRole,
   getCampaignsFromLS,
