@@ -30,10 +30,21 @@ const wallets: TWallet[] = [
     id: 'zerion',
     name: 'Zerion',
     chains: ['1', '5', '137', '80001']
-  }, {
+  },
+  {
     id: 'rainbow',
     name: 'Rainbow',
     chains: ['1', '5']
+  },
+  {
+    id: 'manual_address',
+    name: 'ENS or address',
+    chains: ['1', '5', '137', '80001']
+  },
+  {
+    id: 'crossmint',
+    name: 'Crossmint',
+    chains: ['1', '5', '137', '80001']
   }
 ]
 
