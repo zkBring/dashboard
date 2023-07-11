@@ -21,6 +21,7 @@ import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { TLinkParams } from './types'
 import { TDispenser } from 'types'
+import { momentNoOffsetGetTime, createSelectOptions, momentNoOffsetWithTimeUpdate } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -35,14 +36,6 @@ const mapStateToProps = ({
 })
 
 const defaultValue = { label: '00', value: '0'}
-
-const createSelectOptions = (values: number, defaultValue: { label: string, value: string }) => {
-  return [defaultValue].concat(Array.from({ length: values }, (_: any, i: number) => {
-    const num = i + 1
-    const label = num < 10 ? `0${num}` : `${num}`
-    return { label, value: `${num}` }
-  }))
-}
 
 const selectOptionsHours = createSelectOptions(23, defaultValue)
 const selectOptionsMinutes = createSelectOptions(59, defaultValue)
@@ -73,23 +66,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       duration,
       callback
     })),
-  }
-}
-
-const momentNoOffsetWithTimeUpdate = (date: Date, hour: number, minute: number) => {
-  const m = moment(date).utcOffset(0)
-  m.set({ hour, minute, seconds: 0 })
-  m.toISOString()
-  return m.format()
-}
-
-const momentNoOffsetGetTime = (date?: number) => {
-  const m = moment(date || new Date()).utcOffset(0)
-  const hours = m.format('HH')
-  const minutes = m.format('mm')
-  return {
-    hours: { label: hours, value: hours },
-    minutes: { label: minutes, value: minutes }
   }
 }
 

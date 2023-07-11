@@ -18,6 +18,7 @@ const secure = (
   nativeTokensPerLink: string,
   walletApp: string,
   availableWallets: string[],
+  expirationDate: number,
   callback?: () => void
 ) => {
   return async (
@@ -132,6 +133,7 @@ const secure = (
       if (finished) {
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setAvailableWallets(availableWallets))
+        dispatch(campaignActions.setExpirationDate(expirationDate))
         dispatch(campaignActions.setNativeTokensPerLink(
           utils.parseEther(
             String(

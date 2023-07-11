@@ -21,19 +21,33 @@ import {
   AssetsList,
   AsideDivider,
   WidgetSectionTitle,
-  WidgetSectionSubtitle
+  WidgetSubtitle
 } from 'components/pages/common'
 import wallets from 'configs/wallets'
 import {
   StyledInput,
   CheckboxContainer,
   CheckboxStyled,
-  StyledRadio
+  StyledRadio,
+  Header,
+  WidgetTitleStyled,
+  ToggleStyled,
+  SelectStyled,
+  DateTimeContainer,
+  Note,
+  DatePickerStyled
 } from './styled-components'
 import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { useHistory } from 'react-router-dom'
-import { shortenString, defineNetworkName, preventPageClose } from 'helpers'
+import {
+  shortenString,
+  defineNetworkName,
+  preventPageClose,
+  momentNoOffsetGetTime,
+  createSelectOptions,
+  momentNoOffsetWithTimeUpdate
+} from 'helpers'
 import { BigNumber } from 'ethers'
 
 const mapStateToProps = ({
@@ -76,6 +90,10 @@ const mapStateToProps = ({
   expirationDate
 })
 
+const defaultValue = { label: '00', value: '0'}
+const selectOptionsHours = createSelectOptions(23, defaultValue)
+const selectOptionsMinutes = createSelectOptions(59, defaultValue)
+
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     secure: (
@@ -83,6 +101,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       nativeTokensPerLink: string,
       walletApp: string,
       availableWallets: string[],
+      expirationDate: number,
       callback: () => void
     ) => {
       dispatch(
@@ -91,6 +110,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           nativeTokensPerLink,
           walletApp,
           availableWallets,
+          expirationDate,
           callback
         )
       )
@@ -99,6 +119,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps> 
+
 
 const CampaignsCreateSecure: FC<ReduxType> = ({
   assets,
@@ -126,6 +147,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignTokenSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
+  const expirationTime = momentNoOffsetGetTime()
 
   const allWallets = useMemo(() => {
     const options = wallets
@@ -175,6 +197,14 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     setEnableExpirationDate
   ] =  useState<boolean>(false)
 
+  const [
+    addNativeTokens,
+    setAddNativeTokens
+  ] =  useState<boolean>(false)
+
+  const [ hours, setHours ] = useState(expirationTime.hours)
+  const [ minutes, setMinutes ] = useState(expirationTime.minutes)
+
   useEffect(preventPageClose(), [])
 
   const walletsCheckboxes = useMemo(() => {
@@ -208,7 +238,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     <WidgetContainer>
       <WidgetComponent title='Wallet options'>
         <WidgetSectionTitle>Preferred wallet</WidgetSectionTitle>
-        <WidgetSectionSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSectionSubtitle>
+        <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
           radios={walletsOptions.map(item => ({...item, disabled: !availableWallets.includes(item.value)}))}
@@ -223,7 +253,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         />
 
         <WidgetSectionTitle>Display wallets</WidgetSectionTitle>
-        <WidgetSectionSubtitle>Select the wallets user will see as other connection options</WidgetSectionSubtitle>
+        <WidgetSubtitle>Select the wallets user will see as other connection options</WidgetSubtitle>
         <CheckboxContainer>
           {walletsCheckboxes.map(checkbox => <CheckboxStyled
             value={checkbox.value}
@@ -239,12 +269,64 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         </CheckboxContainer>
       </WidgetComponent>
 
-      <WidgetComponent title='Link expiration'>
-        
+      <WidgetComponent>
+        <Header>
+          <WidgetTitleStyled>
+            Link expiration
+          </WidgetTitleStyled>
+          <ToggleStyled
+            value={enableExpirationDate}
+            onChange={((value) => {
+              setEnableExpirationDate(value)
+            })}
+          />
+        </Header>
+        <WidgetSubtitle>
+          You can set up the link expiration, so that users will not be able to claim after certain day and time
+        </WidgetSubtitle>
+        {enableExpirationDate && <DateTimeContainer>
+          <DatePickerStyled
+            title='Expiration date'
+            note='Enter expiration date'
+            dateFormat='dd MMM yyyy'
+            onChange={(value) => setLinksExpirationDate(value)}
+            value={linksExpirationDate}
+            minDate={new Date(new Date().setDate(new Date().getDate() -1))}
+          />
+
+          <SelectStyled
+            title='Hours'
+            value={hours}
+            options={selectOptionsHours}
+            onChange={(option) => setHours(option)}
+          />
+
+          <SelectStyled
+            title='Minutes'
+            value={minutes}
+            options={selectOptionsMinutes}
+            onChange={(option) => setMinutes(option)}
+          />
+
+          <Note>UTC+0</Note>
+
+        </DateTimeContainer>}
       </WidgetComponent>
 
-      <WidgetComponent title={`Include extra ${nativeTokenSymbol}`}>
-        {!sdk && <StyledInput
+      {!sdk && <WidgetComponent>
+        <Header>
+          <WidgetTitleStyled>
+            Include extra {nativeTokenSymbol}
+          </WidgetTitleStyled>
+          <ToggleStyled value={addNativeTokens} onChange={((value) => {
+            if (!value) {
+              setNativeTokensAmount('')
+            }
+            setAddNativeTokens(value)
+          })} />
+        </Header>
+        <WidgetSubtitle>Include native tokens to each link as an extra bonus for receiver</WidgetSubtitle>
+        {addNativeTokens && <StyledInput
           title={`${nativeTokenSymbol} to include`}
           value={nativeTokensAmount}
           disabled={loading}
@@ -256,7 +338,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             return value
           }}
         />}
-      </WidgetComponent>
+      </WidgetComponent>}
 
     </WidgetContainer>
       
@@ -268,12 +350,15 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       }}
       next={{
         action: () => {
+          const finalExpirationDate = enableExpirationDate ? +new Date(momentNoOffsetWithTimeUpdate(linksExpirationDate, Number(hours.value), Number(minutes.value))) : expirationDate
+
           const redirectURL = currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/generate` : `/campaigns/new/${tokenStandard}/generate`
           secure(
             totalNativeTokensAmountToSecure,
             nativeTokensAmount,
             String(currentWallet),
             availableWallets,
+            finalExpirationDate,
             () => history.push(redirectURL)
           )
         },

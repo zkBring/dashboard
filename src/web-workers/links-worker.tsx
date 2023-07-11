@@ -1,7 +1,6 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { expose } from 'comlink'
 import { TLink, TAssetsData, TTokenType } from 'types'
-import { EXPIRATION_DATE } from 'configs/app'
 const { REACT_APP_SERVER_URL } = process.env
 
 export class LinksWorker {
@@ -122,20 +121,10 @@ export class LinksWorker {
     nativeTokensPerLink: string,
     dashboardKey: string,
     proxyContractAddress: string,
-    proxyContractVersion: string
+    proxyContractVersion: string,
+    expirationDate: number
   ) : Promise<any> {
-    console.log({
-      type,
-      linkdropMasterAddress,
-      chainId,
-      assets,
-      tokenAddress,
-      signerKey,
-      nativeTokensPerLink,
-      dashboardKey,
-      proxyContractAddress,
-      proxyContractVersion
-    })
+
     try {
       this.createSDK(
         linkdropMasterAddress
@@ -148,7 +137,7 @@ export class LinksWorker {
             String(nativeTokensPerLink),
             tokenAddress,
             assets[i].amount || '0',
-            EXPIRATION_DATE,
+            String(expirationDate),
             chainId,
             signerKey,
             dashboardKey,
@@ -160,7 +149,7 @@ export class LinksWorker {
             String(nativeTokensPerLink),
             tokenAddress,
             String(assets[i].id || '0'),
-            EXPIRATION_DATE,
+            String(expirationDate),
             chainId,
             signerKey,
             dashboardKey,
@@ -173,7 +162,7 @@ export class LinksWorker {
             tokenAddress,
             String(assets[i].id || '0'),
             assets[i].amount || '0',
-            EXPIRATION_DATE,
+            String(expirationDate),
             chainId,
             signerKey,
             dashboardKey,
@@ -189,7 +178,7 @@ export class LinksWorker {
             token_amount: assets[i].amount || '0',
             link_id: result.link_id,
             sender_signature: result.sender_signature,
-            expiration_time: EXPIRATION_DATE,
+            expiration_time: String(expirationDate),
             wei_amount: String(nativeTokensPerLink)
           }
           
