@@ -119,7 +119,7 @@ const QR: FC<ReduxType> = ({
     if (!qr) { return }
     if (!qr.set_id) { return }
     getQRsArray(qr.set_id)
-  }, [])
+  }, [qr?.updated_at])
 
   if (!qr) {
     return <Redirect to='/qrs' /> 

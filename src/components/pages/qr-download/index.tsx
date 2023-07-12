@@ -4,7 +4,7 @@ import { TLinkParams, TQRSet, TQRItem } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { alertError } from 'helpers'
+import { alertError, preventPageClose } from 'helpers'
 import {
   Container,
   GenerateProgressBar,
@@ -64,6 +64,8 @@ const QR: FC<ReduxType> = ({
       history.push(`/qrs/${id}`)
     })
   }, [])
+
+  useEffect(preventPageClose(), [])
 
   if (!qr) {
     return <Redirect to='/qrs' /> 

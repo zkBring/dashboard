@@ -30,19 +30,34 @@ export const ButtonsContainer = styled.div`
   justify-content: flex-end;
 `
 
-export const WidgetTitle = styled.h3`
+export const WidgetTitle = styled.h3` // main title in widget
   font-size: 22px;
   font-weight: 600;
   margin: 0 0 16px;
   color: ${props => props.theme.primaryTextColor};
 `
 
-export const WidgetSubtitle = styled.p`
+export const WidgetSubtitle = styled.p` 
   font-size: 16px;
   margin: 0 0 20px;
   font-weight: 500;
   color: ${props => props.theme.additionalTextColor};
 `
+
+export const WidgetSectionTitle = styled.h4` // main title in widget
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: ${props => props.theme.primaryTextColor};
+`
+
+export const WidgetSectionSubtitle = styled.h4` // main title in widget
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 12px;
+  color: ${props => props.theme.additionalTextColor};
+`
+
 
 export const TableText = styled.span`
   font-size: 14px;

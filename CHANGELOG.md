@@ -1,5 +1,14 @@
 # Ledger Dashboard
 
+## 2.1.19
+- added 'available_wallets' option support
+- added csv file download with png qr-codes
+- manual token address for ERC721/ERC1155 enter check updated
+
+## 2.1.18
+- Bug fix for QR links mapping (csv file download enable)
+- Dispenser can be stopped
+
 ## 2.1.17
 - Fix for token amount
 - Fix for getGasPrice method

@@ -24,7 +24,9 @@ import {
   AsideContent,
   TableValueShorten,
   ErrorSpan,
-  UploadedSpan
+  UploadedSpan,
+  WidgetSectionTitle,
+  WidgetSectionSubtitle
 } from './styled-components'
 
 export {
@@ -52,5 +54,7 @@ export {
   AssetsList,
   InitialGuide,
   DownloadQRPopup,
-  UploadLinksPopup
+  UploadLinksPopup,
+  WidgetSectionTitle,
+  WidgetSectionSubtitle
 }

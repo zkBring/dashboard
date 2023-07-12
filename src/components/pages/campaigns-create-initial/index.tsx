@@ -23,7 +23,7 @@ import {
   WidgetContainer
 } from 'components/pages/common'
 import { Note } from 'linkdrop-ui'
-import { shortenString, defineNetworkName } from 'helpers'
+import { shortenString, defineNetworkName, preventPageClose } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: {
@@ -94,6 +94,8 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
 
   const history = useHistory()
+  useEffect(preventPageClose(), [])
+
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
 
   return <Container>

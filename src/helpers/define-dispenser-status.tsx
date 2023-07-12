@@ -3,13 +3,15 @@ import { TDispenserStatus } from 'types'
 type TDefineDispenserStatus = (
   claim_start: number,
   claim_duration: number,
-  links_count: number
+  links_count: number,
+  active?: boolean
 ) => TDispenserStatus
 
 const defineDispenserStatus: TDefineDispenserStatus = (
   claim_start,
   claim_duration,
-  links_count
+  links_count,
+  active = true
 ) => {
   const currentDate = +new Date()
   if (currentDate > (claim_start + claim_duration * 60 * 1000)) {
@@ -17,6 +19,9 @@ const defineDispenserStatus: TDefineDispenserStatus = (
   }
   if (links_count === 0) {
     return 'NOT_UPLOADED'
+  }
+  if (!active) {
+    return 'STOPPED'
   }
   if (currentDate > claim_start) {
     return 'ACTIVE'

@@ -45,6 +45,17 @@ const requests = {
       claim_duration
     }, { withCredentials: true })
   },
+  updateStatus: ({
+    dispenser_id,
+    active
+  }: {
+    dispenser_id: string,
+    active: boolean
+  }) => {
+    return qrsSetApi.patch(`/dispensers/${dispenser_id}/update-status`, {
+      active
+    }, { withCredentials: true })
+  },
 }
 
 export default requests

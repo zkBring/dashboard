@@ -6,13 +6,14 @@ import {
   GenerateSubtitle,
   GenerateProgress
 } from './styled-components'
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import { useHistory } from 'react-router-dom'
 import { TLinkParams } from 'types'
 import { useParams } from 'react-router-dom'
 import { TCallback } from './types'
+import { preventPageClose } from 'helpers'
 
 const mapStateToProps = ({
   campaign: {
@@ -55,6 +56,8 @@ const CampaignsCreateGenerate: FC<ReduxType> = ({
       history.push(`/campaigns/${id}`)
     }, id)
   }, [])
+
+  useEffect(preventPageClose(), [])
 
   if (sdk) {
     return null
