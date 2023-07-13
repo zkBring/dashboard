@@ -16,7 +16,7 @@ const qrOptions: TQROptions = {
       type: 'square'
     },
     dotsOptions: {
-      color: "#9D9D9D",
+      color: "#121212",
       type: "dots"
     },
     backgroundOptions: {
