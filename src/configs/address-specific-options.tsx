@@ -19,7 +19,7 @@ const COINBASE_CONFIG = {
 
 export const addressSpecificOptions: TAddressConfig = {
   '0xe78f82c63f9237ce12c415afc547fa80e1575629': COINBASE_CONFIG,
-  '0x902b0BC91546a454BC70320dD9917f0DEf81c033': COINBASE_CONFIG,
+  '0x902b0bc91546a454bc70320dd9917f0def81c033': COINBASE_CONFIG,
   '0xf2b95635fc6cf3ebc8b5ca01c4e683a22b2e662c': {
     ...COINBASE_CONFIG,
     betaFeaturesAvailable: ['dispenser']
