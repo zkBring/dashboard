@@ -289,6 +289,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             title='Expiration date'
             note='Enter expiration date'
             dateFormat='dd MMM yyyy'
+            disabled={loading}
             onChange={(value) => setLinksExpirationDate(value)}
             value={linksExpirationDate}
             minDate={new Date(new Date().setDate(new Date().getDate() -1))}
@@ -297,12 +298,14 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <SelectStyled
             title='Hours'
             value={hours}
+            disabled={loading}
             options={selectOptionsHours}
             onChange={(option) => setHours(option)}
           />
 
           <SelectStyled
             title='Minutes'
+            disabled={loading}
             value={minutes}
             options={selectOptionsMinutes}
             onChange={(option) => setMinutes(option)}

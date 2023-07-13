@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.20
+- added expiration_time edit
+- updates for secure page
+
 ## 2.1.19
 - added 'available_wallets' option support
 - added csv file download with png qr-codes

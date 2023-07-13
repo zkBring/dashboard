@@ -66,7 +66,8 @@ const generateERC20Link = ({
         claimPattern,
         sdk,
         nativeTokensPerLink,
-        availableWallets
+        availableWallets,
+        expirationDate
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -117,7 +118,8 @@ const generateERC20Link = ({
         String(nativeTokensPerLink || '0'),
         dashboardKey !== null ? dashboardKey : '',
         proxyContractAddress,
-        version
+        version,
+        expirationDate
       )))
 
 
