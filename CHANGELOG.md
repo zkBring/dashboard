@@ -3,6 +3,7 @@
 ## 2.1.20
 - added expiration_time edit
 - updates for secure page
+- new version of linkdrop-ui
 
 ## 2.1.19
 - added 'available_wallets' option support

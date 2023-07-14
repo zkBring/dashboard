@@ -276,6 +276,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           </WidgetTitleStyled>
           <ToggleStyled
             value={enableExpirationDate}
+            disabled={loading}
             onChange={((value) => {
               setEnableExpirationDate(value)
             })}
@@ -321,7 +322,10 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <WidgetTitleStyled>
             Include extra {nativeTokenSymbol}
           </WidgetTitleStyled>
-          <ToggleStyled value={addNativeTokens} onChange={((value) => {
+          <ToggleStyled
+            value={addNativeTokens}
+            disabled={loading}
+            onChange={((value) => {
             if (!value) {
               setNativeTokensAmount('')
             }
