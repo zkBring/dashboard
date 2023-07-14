@@ -9552,10 +9552,10 @@ linkdrop-sdk@^2.0.4:
     typescript "^4.8.2"
     uint8arrays "^3.1.1"
 
-linkdrop-ui@^0.0.46:
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/linkdrop-ui/-/linkdrop-ui-0.0.46.tgz#b8b31d649b2603052446c28d5e9305a0b015339f"
-  integrity sha512-Uz/Z8vV2etTDMH0aHH9qCHyDoxk3CaGtodclMcrlinU6tBJz/ZtmDYPE/4jd2FP1GMbW6Eaglye6vYMdXP5rsA==
+linkdrop-ui@^0.0.49:
+  version "0.0.49"
+  resolved "https://registry.yarnpkg.com/linkdrop-ui/-/linkdrop-ui-0.0.49.tgz#75954b02361f58629c0e3404be306b6cf5ee87f7"
+  integrity sha512-Tqiwxa+xez3kzARKZgwcPMdmtwHx4n17QjvlPLrOXMv4k7fFmr/R3Ni8+5nQMdzXX1AJRATbin87GkRGtPohOg==
   dependencies:
     react-datepicker "^4.11.0"
     react-router-dom "^6.10.0"

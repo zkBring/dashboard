@@ -1,5 +1,7 @@
-import { CampaignState, CampaignActions } from './types';
-import { Constants } from './constants';
+import { CampaignState, CampaignActions } from './types'
+import { Constants } from './constants'
+import { addDaysToDate } from 'helpers'
+const initialExpirationDate = +(addDaysToDate(new Date(), 178000))
 
 const initialState: CampaignState = {
   title: '',
@@ -23,7 +25,8 @@ const initialState: CampaignState = {
   links: [],
   nativeTokensPerLink: null,
   availableWallets: [],
-  linksGenerateLoader: 0
+  linksGenerateLoader: 0,
+  expirationDate: initialExpirationDate
 }
 
 export function newRetroDropReducer(
@@ -51,6 +54,8 @@ export function newRetroDropReducer(
           return {...state, wallet: action.payload.wallet }
         case Constants.CAMPAIGN_SET_PROXY_CONTRACT_ADDRESS:
           return {...state, proxyContractAddress: action.payload.proxyContractAddress }
+        case Constants.CAMPAIGN_SET_EXPIRATION_DATE:
+          return {...state, expirationDate: action.payload.expirationDate }
         case Constants.CAMPAIGN_SET_SDK:
           return {...state, sdk: action.payload.sdk }
         case Constants.CAMPAIGN_SET_APPROVED:

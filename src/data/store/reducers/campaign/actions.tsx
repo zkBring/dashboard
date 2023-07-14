@@ -165,3 +165,9 @@ export function setAvailableWallets (availableWallets: string[]) {
     availableWallets
   })
 }
+
+export function setExpirationDate (expirationDate: number) {
+  return action(Constants.CAMPAIGN_SET_EXPIRATION_DATE, {
+    expirationDate
+  })
+}

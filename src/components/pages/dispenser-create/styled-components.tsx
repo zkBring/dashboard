@@ -37,8 +37,6 @@ export const Buttons = styled.div`
 
 export const DatePickerStyled = styled(DatePicker)`
   margin-bottom: 32px;
-
-  
 `
 
 export const SelectStyled = styled(Select)`
