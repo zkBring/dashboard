@@ -6,6 +6,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 `
 
 export const StyledRadio = styled(Radio)`
@@ -37,6 +38,7 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 `
 
 export const ToggleStyled = styled(Toggle)`
