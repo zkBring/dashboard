@@ -76,12 +76,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       links: TLinkDecrypted[],
       encryptedMultiscanQREncCode: string,
       linksCount: number,
+      currentStatus: TDispenserStatus,
       callback?: () => void,
     ) => dispatch(asyncDispensersActions.addLinksToQR({
       dispenserId,
       links,
       encryptedMultiscanQREncCode,
       linksCount,
+      currentStatus,
       callback
     })),
     downloadQR: (
@@ -177,7 +179,7 @@ const Dispenser: FC<ReduxType> = ({
         if (!encrypted_multiscan_qr_enc_code) { return alert('encrypted_multiscan_qr_enc_code not found') }
         if (links_count === undefined) { return alert('links_count not found') }
         if (!links) { return alert('Links not found') }
-        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, links_count, () => {
+        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, links_count, currentStatus, () => {
           toggleUpdateLinksPopup(false)
         })
       }}
@@ -246,7 +248,7 @@ const Dispenser: FC<ReduxType> = ({
 
       <WidgetButton
         title='Upload file'
-        disabled={currentStatus === 'FINISHED' || currentStatus === 'ACTIVE' || currentStatus === 'STOPPED'}
+        disabled={currentStatus === 'FINISHED'}
         appearance='action'
         onClick={() => {
           toggleUpdateLinksPopup(true)
