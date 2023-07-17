@@ -52,7 +52,8 @@ const mapStateToProps = ({
 const defineOptions = (
   status: TDispenserStatus,
   editCallback: () => void,
-  stopCallback: () => void
+  pauseCallback: () => void,
+  unpauseCallback: () => void
 ) => {
   return [
     {
@@ -61,10 +62,9 @@ const defineOptions = (
       disabled: status === 'ACTIVE' || status === 'FINISHED',
       action: editCallback
     }, {
-      title: 'Stop',
-      icon: <Icons.StopDispenserIcon />,
-      disabled: status !== 'ACTIVE',
-      action: stopCallback
+      title: status === 'PAUSED' ? 'Unpause' : 'Pause',
+      icon: status === 'PAUSED' ? <Icons.UnpauseIcon /> : <Icons.PauseIcon />,
+      action: status === 'PAUSED' ? unpauseCallback : pauseCallback
     },
   ]
 }
@@ -102,12 +102,20 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       height: size,
       callback
     })),
-    stopDispenser: (
+    pauseDispenser: (
       dispenser_id: string,
       callback?: () => void
     ) => dispatch(asyncDispensersActions.updateStatus({
       dispenser_id,
       active: false,
+      callback
+    })),
+    unpauseDispenser: (
+      dispenser_id: string,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.updateStatus({
+      dispenser_id,
+      active: true,
       callback
     })),
   }
@@ -135,7 +143,8 @@ const Dispenser: FC<ReduxType> = ({
   dashboardKey,
   address,
   downloadQR,
-  stopDispenser
+  pauseDispenser,
+  unpauseDispenser
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
@@ -150,7 +159,6 @@ const Dispenser: FC<ReduxType> = ({
     toggleDownloadPopup
   ] = useState<boolean>(false)
 
-
   if (!dispenser || !dashboardKey) {
     return <Redirect to='/dispensers' />
   }
@@ -160,7 +168,8 @@ const Dispenser: FC<ReduxType> = ({
   const dispenserOptions = defineOptions(
     currentStatus,
     () => history.push(`/dispensers/edit/${dispenser.dispenser_id}`),
-    () => stopDispenser(id, () => {})
+    () => pauseDispenser(id, () => {}),
+    () => unpauseDispenser(id, () => {})
   )
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')

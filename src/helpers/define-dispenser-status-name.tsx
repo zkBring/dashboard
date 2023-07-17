@@ -8,8 +8,8 @@ const defineDispenserStatusName = (status: TDispenserStatus) => {
       return 'Finished'
     case 'READY':
       return 'Ready'
-    case 'STOPPED':
-      return 'Stopped'
+    case 'PAUSED':
+      return 'Paused'
     default:
       return 'Not uploaded'
   }
