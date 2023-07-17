@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import * as actionsDispenser from '../actions'
 import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
-import { TLinkDecrypted, TDispenser } from 'types'
+import { TLinkDecrypted, TDispenser, TDispenserStatus } from 'types'
 import {  dispensersApi } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
@@ -17,12 +17,14 @@ const addLinksToQR = ({
   encryptedMultiscanQREncCode,
   links,
   linksCount,
+  currentStatus,
   callback
 }: {
   dispenserId: string,
   encryptedMultiscanQREncCode: string,
   links: TLinkDecrypted[],
   linksCount: number,
+  currentStatus: TDispenserStatus,
   callback?: () => void,
 }) => {
   return async (
@@ -52,7 +54,7 @@ const addLinksToQR = ({
         links,
         dashboardKey
       )
-      const apiMethod = linksCount > 0 ? dispensersApi.updateLinks : dispensersApi.mapLinks
+      const apiMethod = linksCount > 0 && currentStatus === 'ACTIVE' ? dispensersApi.updateLinks : dispensersApi.mapLinks
       const linksHasEqualContents = defineIfLinksHasEqualContents(links)
       const result = await apiMethod(dispenserId, qrArrayMapped, linksHasEqualContents)
       

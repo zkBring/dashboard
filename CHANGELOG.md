@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.21
+- allow adding links to the dispenser until it's finished
+- updateLinks method call if status of dispenser is ACTIVE
+
 ## 2.1.20
 - added expiration_time edit
 - updates for secure page
