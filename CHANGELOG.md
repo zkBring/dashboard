@@ -2,6 +2,7 @@
 
 ## 2.1.22
 - allow pause and unpause dispenser
+- added check for UNKNOWN token type from Alchemy API
 
 ## 2.1.21
 - allow adding links to the dispenser until it's finished
