@@ -292,7 +292,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
                 alertError('No chainId provided')
               }
             } else {
-              setCurrentType(String(value.tokenType))
+              const tokenType = String(value.tokenType)
+              if (tokenType === 'UNKNOWN') {
+                return alertError('Token type is UNKNOWN. Unable to select')
+              }
+              setCurrentType(tokenType)
               setTokenAddress(String(value.address))
             }
           }}
