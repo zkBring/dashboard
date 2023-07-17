@@ -38,6 +38,7 @@ const updateStatus = ({
           data: {
             success: 'yes',
             address,
+            newStatusActive: String(active),
             dispenserId: dispenser_id
           }
         })
@@ -49,6 +50,7 @@ const updateStatus = ({
           data: {
             success: 'no',
             address,
+            newStatusActive: String(active),
             dispenserId: dispenser_id
           }
         })
@@ -61,6 +63,7 @@ const updateStatus = ({
         data: {
           success: 'no',
           address,
+          newStatusActive: String(active),
           dispenserId: dispenser_id
         }
       })

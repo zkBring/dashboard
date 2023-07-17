@@ -21,7 +21,7 @@ const defineDispenserStatus: TDefineDispenserStatus = (
     return 'NOT_UPLOADED'
   }
   if (!active) {
-    return 'STOPPED'
+    return 'PAUSED'
   }
   if (currentDate > claim_start) {
     return 'ACTIVE'
