@@ -40,14 +40,6 @@ export const HeaderLogoLink = styled(NavLink)`
   color: ${props => props.theme.primaryTextColor};
 `
 
-export const ConnectionIndicator = styled.div`
-  width: 16px;
-  height: 16px;
-  border-radius: 16px;
-  background-color: ${props => props.theme.tagSuccessColor};
-  margin-right: 8px;
-`
-
 export const HeaderInfo = styled.div`
   display: flex;
   align-items: center;

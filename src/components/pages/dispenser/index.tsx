@@ -20,10 +20,13 @@ import {
   AsideSubtitle,
   Counter,
   SecondaryTextSpan,
-  AsideStyled
+  AsideStyled,
+  AsideWidgetButton,
+  MainContent
 } from './styled-components'
+import { Statistics, RedirectWidget } from './components'
 import { TextLink } from 'components/common'
-import { defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink } from 'helpers'
+import { defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink, defineDispenserStatusTag } from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
@@ -123,18 +126,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
-const defineStatusAppearance = (status: TDispenserStatus) => {
-  const statusName = defineDispenserStatusName(status)
-  if (status === 'NOT_UPLOADED') {
-    return <ErrorSpan>
-      <Icons.NotUploadedIcon />
-      {statusName}
-    </ErrorSpan>
-  }
-
-  return <UploadedSpan>{statusName}</UploadedSpan>
-}
-
 const Dispenser: FC<ReduxType> = ({
   dispensers,
   loading,
@@ -206,64 +197,72 @@ const Dispenser: FC<ReduxType> = ({
       }}
       onClose={() => toggleDownloadPopup(false)}
     />}
-    <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
-      <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
-      <CopyContainerStyled
-        text={claimUrl}
-        title='Scan the code to see claim page'
-      />
-      
-      <Buttons>
-        <WidgetButton
-          title='Back'
-          appearance='default'
-          to='/dispensers'
-        /> 
-        <WidgetButton
-          title='Download PNG'
+    <MainContent>
+      <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
+        <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
+        <CopyContainerStyled
+          text={claimUrl}
+          title='Scan the code to see claim page'
+        />
+        <Buttons>
+          <WidgetButton
+            title='Back'
+            appearance='default'
+            to='/dispensers'
+          /> 
+          <WidgetButton
+            title='Download PNG'
+            appearance='action'
+            onClick={() => {
+              toggleDownloadPopup(true)
+            }}
+          /> 
+        </Buttons>
+      </WidgetComponentStyled>
+
+      <RedirectWidget dispenserStatus={currentStatus} />
+    </MainContent>
+    
+    <div>
+      <AsideStyled
+        title="Connect to claim links"
+        options={dispenserOptions}
+      >
+        <WidgetSubtitle>
+            Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
+        </WidgetSubtitle>
+        <WidgetSubtitle>
+          If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>
+        </WidgetSubtitle>
+        <AsideContent>
+          <AsideSubtitle>Amount of links</AsideSubtitle>
+          <Counter>{links_count || 0}</Counter>
+          <TableRow>
+            <TableText>Status</TableText>
+            <TableValue>{defineDispenserStatusTag(currentStatus)}</TableValue>
+          </TableRow>
+          <TableRow>
+            <TableText>Start date</TableText>
+            <TableValue>{claimStartDate}, <SecondaryTextSpan>{claimStartTime} (UTC+0)</SecondaryTextSpan></TableValue>
+          </TableRow>
+          <TableRow>
+            <TableText>Duration</TableText>
+            <TableValue>{claim_duration} mins</TableValue>
+          </TableRow>
+        </AsideContent>
+
+        <AsideWidgetButton
+          title='Upload file'
+          disabled={currentStatus === 'FINISHED'}
           appearance='action'
           onClick={() => {
-            toggleDownloadPopup(true)
+            toggleUpdateLinksPopup(true)
           }}
         /> 
-      </Buttons>
-    </WidgetComponentStyled>
-    <AsideStyled
-      title="Connect to claim links"
-      options={dispenserOptions}
-    >
-      <WidgetSubtitle>
-          Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
-      </WidgetSubtitle>
-      <WidgetSubtitle>
-        If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>
-      </WidgetSubtitle>
-      <AsideContent>
-        <AsideSubtitle>Amount of links</AsideSubtitle>
-        <Counter>{links_count || 0}</Counter>
-        <TableRow>
-          <TableText>Status</TableText>
-          <TableValue>{defineStatusAppearance(currentStatus)}</TableValue>
-        </TableRow>
-        <TableRow>
-          <TableText>Start date</TableText>
-          <TableValue>{claimStartDate}, <SecondaryTextSpan>{claimStartTime} (UTC+0)</SecondaryTextSpan></TableValue>
-        </TableRow>
-        <TableRow>
-          <TableText>Duration</TableText>
-          <TableValue>{claim_duration} mins</TableValue>
-        </TableRow>
-      </AsideContent>
-
-      <WidgetButton
-        title='Upload file'
-        disabled={currentStatus === 'FINISHED'}
-        appearance='action'
-        onClick={() => {
-          toggleUpdateLinksPopup(true)
-        }}
-        /> 
-    </AsideStyled>
+      </AsideStyled>
+      <Statistics dispenserStatus={currentStatus} />
+    </div>
+    
   </Container>
 }
 

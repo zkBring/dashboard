@@ -64,11 +64,13 @@ import addDaysToDate from './add-days-to-date'
 import momentNoOffsetGetTime from './moment-no-offset-get-time'
 import createSelectOptions from './create-select-options'
 import momentNoOffsetWithTimeUpdate from './moment-no-offset-with-time-update'
+import defineDispenserStatusTag from './define-dispenser-status-tag'
 
 export {
   momentNoOffsetGetTime,
   convertStringToBytes32,
   momentNoOffsetWithTimeUpdate,
+  defineDispenserStatusTag,
   createSelectOptions,
   preventPageClose,
   alertError,
