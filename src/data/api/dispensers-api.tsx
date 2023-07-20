@@ -56,6 +56,28 @@ const requests = {
       active
     }, { withCredentials: true })
   },
+  updateRedirectOn: ({
+    dispenser_id,
+    redirect_on
+  }: {
+    dispenser_id: string,
+    redirect_on: boolean
+  }) => {
+    return qrsSetApi.patch(`/dispensers/${dispenser_id}/redirect-on`, {
+      redirect_on
+    }, { withCredentials: true })
+  },
+  updateRedirectUrl: ({
+    dispenser_id,
+    redirect_url
+  }: {
+    dispenser_id: string,
+    redirect_url: string
+  }) => {
+    return qrsSetApi.patch(`/dispensers/${dispenser_id}/redirect-link`, {
+      redirect_url
+    }, { withCredentials: true })
+  },
 }
 
 export default requests

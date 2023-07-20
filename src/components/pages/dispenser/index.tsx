@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import {
   Container,
@@ -8,8 +8,6 @@ import {
   TableValue,
   DownloadQRPopup,
   UploadLinksPopup,
-  ErrorSpan,
-  UploadedSpan,
 } from 'components/pages/common'
 import {
   Buttons,
@@ -26,7 +24,11 @@ import {
 } from './styled-components'
 import { Statistics, RedirectWidget } from './components'
 import { TextLink } from 'components/common'
-import { defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink, defineDispenserStatusTag } from 'helpers'
+import {
+  defineDispenserStatus,
+  defineIfQRIsDeeplink,
+  defineDispenserStatusTag
+} from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
@@ -121,6 +123,28 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: true,
       callback
     })),
+    toggleRedirectURL: (
+      dispenser_id: string,
+      redirect_on: boolean,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.toggleRedirectOn({
+      dispenser_id,
+      redirect_on,
+      successCallback,
+      errorCallback
+    })),
+    updateRedirectURL: (
+      dispenser_id: string,
+      redirect_url: string,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.updateRedirectURL({
+      dispenser_id,
+      redirect_url,
+      successCallback,
+      errorCallback
+    })),
   }
 }
 
@@ -135,7 +159,9 @@ const Dispenser: FC<ReduxType> = ({
   address,
   downloadQR,
   pauseDispenser,
-  unpauseDispenser
+  unpauseDispenser,
+  updateRedirectURL,
+  toggleRedirectURL
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
@@ -149,6 +175,8 @@ const Dispenser: FC<ReduxType> = ({
     downloadPopup,
     toggleDownloadPopup
   ] = useState<boolean>(false)
+
+
 
   if (!dispenser || !dashboardKey) {
     return <Redirect to='/dispensers' />
@@ -197,12 +225,12 @@ const Dispenser: FC<ReduxType> = ({
       }}
       onClose={() => toggleDownloadPopup(false)}
     />}
+
     <MainContent>
       <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
         <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
         <CopyContainerStyled
           text={claimUrl}
-          title='Scan the code to see claim page'
         />
         <Buttons>
           <WidgetButton
@@ -220,7 +248,35 @@ const Dispenser: FC<ReduxType> = ({
         </Buttons>
       </WidgetComponentStyled>
 
-      <RedirectWidget dispenserStatus={currentStatus} />
+      <RedirectWidget
+        hasRedirect={dispenser.redirect_on}
+        redirectUrl={dispenser.redirect_url}
+        claimUrl={claimUrl}
+        updateNewRedirectUrl={(
+          newRedirectUrl,
+          successCallback,
+          errorCallback
+        ) => {
+          updateRedirectURL(
+            dispenser.dispenser_id as string,
+            newRedirectUrl,
+            successCallback,
+            errorCallback
+          )
+        }}
+        toggleRedirectOn={(
+          redirectOn,
+          successCallback,
+          errorCallback
+        ) => {
+          toggleRedirectURL(
+            dispenser.dispenser_id as string,
+            redirectOn,
+            successCallback,
+            errorCallback
+          )
+        }}
+      />
     </MainContent>
     
     <div>
@@ -260,7 +316,10 @@ const Dispenser: FC<ReduxType> = ({
           }}
         /> 
       </AsideStyled>
-      <Statistics dispenserStatus={currentStatus} />
+      <Statistics
+        linksCount={links_count || 0}
+        dispenserStatus={currentStatus}
+      />
     </div>
     
   </Container>

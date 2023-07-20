@@ -1,6 +1,6 @@
 import { Widget } from "components/common"
 import styled from "styled-components"
-import { Toggle } from 'linkdrop-ui'
+import { Toggle, Input } from 'linkdrop-ui'
 import { WidgetTitle } from 'components/pages/common'
 
 export const WidgetStyled = styled(Widget)`
@@ -23,5 +23,9 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
 `
 
 export const ToggleStyled = styled(Toggle)`
+
+`
+
+export const InputStyled = styled(Input)`
 
 `

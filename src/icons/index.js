@@ -44,11 +44,13 @@ import { ReactComponent as DispenserIcon } from './dispenser-icon.svg'
 import { ReactComponent as EditDispenserIcon } from './edit-dispenser-icon.svg'
 import { ReactComponent as StopDispenserIcon } from './stop-icon.svg'
 import { ReactComponent as DownloadReportIcon } from './download-report-icon.svg'
+import { ReactComponent as PopupWarningIcon } from './popup-warning-icon.svg'
 
 const Icons = {
   EthereumLogo,
   ClipboardCopiedIcon,
   StopDispenserIcon,
+  PopupWarningIcon,
   EditDispenserIcon,
   DownloadReportIcon,
   DispenserIcon,
