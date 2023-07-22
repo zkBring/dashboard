@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.22-rc.0
+## 2.1.23-rc.0
 - added dispenser redirect
 - added dispenser report download
 
