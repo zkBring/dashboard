@@ -3,11 +3,27 @@ import { WidgetStyled, Header, ToggleStyled, WidgetTitleStyled, InputStyled } fr
 import { TProps, TEditInputProps, TCopyContainerProps } from './types'
 import { WidgetSubtitle } from 'components/pages/common'
 import ConfirmPopup from '../confirm-popup'
+import { isURL } from 'helpers'
 import {
   CopyContainerStyled,
   Buttons,
   WidgetButton
 } from '../../styled-components'
+
+const defineError = (currentRedirectUrl: string, claimUrl?: string | null) => {
+  if (currentRedirectUrl === claimUrl) {
+    return 'Cannot set current dispenser link as redirect link'
+  }
+  if (!currentRedirectUrl || currentRedirectUrl === '') {
+    return 'Cannot be empty'
+  }
+  if (!isURL(currentRedirectUrl)) {
+    return 'Should be a valid URL'
+  }
+
+  return undefined
+}
+
 
 const EditInput: FC<TEditInputProps> = ({
   redirectUrl,
@@ -32,6 +48,9 @@ const EditInput: FC<TEditInputProps> = ({
     }
   }, [ redirectUrl ])
 
+
+  const error = defineError(currentRedirectUrl, claimUrl)
+
   return <>
     {showPopup && <ConfirmPopup
       onSubmit={() => {
@@ -48,6 +67,7 @@ const EditInput: FC<TEditInputProps> = ({
     <InputStyled
       value={currentRedirectUrl}
       placeholder='https://'
+      error={error}
       onChange={value => {
         setCurrentRedirectUrl(value)
         return value
@@ -57,7 +77,11 @@ const EditInput: FC<TEditInputProps> = ({
       <WidgetButton onClick={() => onCancel()}>
         Cancel
       </WidgetButton>
-      <WidgetButton onClick={() => setShowPopup(true)} appearance='action'>
+      <WidgetButton
+        onClick={() => setShowPopup(true)}
+        appearance='action'
+        disabled={Boolean(error)}
+      >
         Apply
       </WidgetButton>
     </Buttons>
