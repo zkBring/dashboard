@@ -48,9 +48,11 @@ import TButtonAppearance from './button-appearance'
 import TCampaignCreateStep from './campaign-create-step'
 import TCampaignDraft from './campaign-draft'
 import TFeatureName from './feature-name'
+import TDispenserStats from './dispenser-stats'
 
 export {
   TCampaign,
+  TDispenserStats,
   TCampaignCreateStep,
   TFeatureName,
   TButtonAppearance,

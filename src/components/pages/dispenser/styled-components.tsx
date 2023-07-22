@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 import { Button } from 'components/common'
 import {
-  WidgetComponent, Aside, WidgetTitle
+  WidgetComponent,
+  Aside
 } from 'components/pages/common'
-import { CopyContainer, Input } from 'linkdrop-ui'
+import {
+  CopyContainer,
+  Input
+} from 'linkdrop-ui'
 
 export const WidgetValue = styled.div`
   font-weight: 600;
@@ -22,18 +26,27 @@ export const Buttons = styled.div`
 export const WidgetButton = styled(Button)`
 `
 
-export const WidgetComponentStyled = styled(WidgetComponent)`
+export const AsideWidgetButton = styled(Button)`
+  width: 100%;
+
+  svg {
+    margin-right: 4px;
+  }
+`
+
+export const MainContent = styled.div`
   margin-right: 24px;
   flex: 1 0 50%;
-  max-width: 548px;
-  &:last-child {
-    margin-right: 0px;
-  }
+  
+`
+
+export const WidgetComponentStyled = styled(WidgetComponent)`
+  max-width: 740px;
 `
 
 export const CopyContainerStyled = styled(CopyContainer)`
   margin-bottom: 32px;
-  max-width: 500px;
+  max-width: 100%;
 `
 
 export const InputComponent = styled(Input)`
@@ -69,6 +82,7 @@ export const SecondaryTextSpan = styled.span`
 `
 
 export const AsideStyled = styled(Aside)`
-  max-width: 50%;
+  max-width: 358px;
+  min-width: 358px;
   margin: 0;
 `

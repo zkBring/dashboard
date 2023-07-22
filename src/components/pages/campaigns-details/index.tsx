@@ -520,7 +520,12 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         </TableRow>
 
         {sponsored && <AsideButtonsContainer>
-          <AsideButton onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
+          <AsideButton
+            onClick={() => downloadReport(campaign_id)}
+          >
+            <Icons.DownloadReportIcon />
+            Download full report
+          </AsideButton>
         </AsideButtonsContainer>}
         
       </AsideStyled>
