@@ -78,6 +78,11 @@ const requests = {
       redirect_url
     }, { withCredentials: true })
   },
+  getReport: (
+    dispenser_id: string | number
+  ) => {
+    return qrsSetApi.get(`/dispensers/${dispenser_id}/report`, { withCredentials: true })
+  },
 }
 
 export default requests

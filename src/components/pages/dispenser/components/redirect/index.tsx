@@ -16,6 +16,7 @@ const EditInput: FC<TEditInputProps> = ({
   claimUrl,
   loading
 }) => {
+
   const [
     currentRedirectUrl, setCurrentRedirectUrl
   ] = useState<string>(redirectUrl || '')

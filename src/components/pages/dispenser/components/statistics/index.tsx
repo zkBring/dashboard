@@ -14,7 +14,10 @@ import { TProps } from './types'
 
 const Statistics: FC<TProps> = ({
   dispenserStatus,
-  linksCount
+  linksCount,
+  linksAssigned,
+  linksClaimed,
+  downloadReport
 }) => {
   if (dispenserStatus === 'NOT_UPLOADED') {
     return null
@@ -27,20 +30,20 @@ const Statistics: FC<TProps> = ({
       </TableRow>
       <TableRow>
         <TableText>Scanned</TableText>
-        <TableValue>Not available</TableValue>
+        <TableValue>{linksAssigned}</TableValue>
       </TableRow>
       <TableRow>
         <TableText>Links left</TableText>
-        <TableValue>Not available</TableValue>
+        <TableValue>{linksCount - linksAssigned}</TableValue>
       </TableRow>
       <TableRow>
         <TableText>Claimed</TableText>
-        <TableValue>Not available</TableValue>
+        <TableValue>{linksClaimed}</TableValue>
       </TableRow>
     </AsideContent>
     <AsideWidgetButton
       onClick={() => {
-        alert('Not available')
+        downloadReport()
       }}
     >
       <Icons.DownloadReportIcon />

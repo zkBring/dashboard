@@ -2,7 +2,7 @@ import { TDispenserStatus } from "types"
 
 export type TProps = {
   hasRedirect?: boolean
-  redirectUrl: string | null
+  redirectUrl?: string | null
   claimUrl: string
   updateNewRedirectUrl: (
     newRedirectUrl: string,
@@ -17,7 +17,7 @@ export type TProps = {
 }
 
 export type TEditInputProps = {
-  redirectUrl: string | null
+  redirectUrl?: string | null
   onSubmit: (value: string) => void
   onCancel: () => void
   claimUrl: string
@@ -25,6 +25,6 @@ export type TEditInputProps = {
 }
 
 export type TCopyContainerProps = {
-  redirectUrl: string | null
+  redirectUrl?: string | null
   onClick: () => void
 }

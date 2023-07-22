@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.22-rc.0
+- added dispenser redirect
+- added dispenser report download
+
 ## 2.1.22
 - allow pause and unpause dispenser
 - added check for UNKNOWN token type from Alchemy API

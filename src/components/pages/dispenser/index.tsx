@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useMemo, useEffect } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import {
   Container,
@@ -33,9 +33,10 @@ import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
-import { decrypt } from 'lib/crypto'
+import { decrypt, encrypt } from 'lib/crypto'
 import Icons from 'icons'
 import moment from 'moment'
+import { ethers } from 'ethers'
 const {
   REACT_APP_CLAIM_APP
 } = process.env
@@ -115,6 +116,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: false,
       callback
     })),
+    getDispenserStats: (
+      dispenser_id: string,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.getDispenserStats({
+      dispenser_id,
+      callback
+    })),
     unpauseDispenser: (
       dispenser_id: string,
       callback?: () => void
@@ -137,14 +145,21 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     updateRedirectURL: (
       dispenser_id: string,
       redirect_url: string,
+      encrypted_multiscan_qr_enc_code: string,
       successCallback: () => void,
       errorCallback: () => void
     ) => dispatch(asyncDispensersActions.updateRedirectURL({
       dispenser_id,
       redirect_url,
+      encrypted_multiscan_qr_enc_code,
       successCallback,
       errorCallback
     })),
+    downloadReport: (
+      dispenser_id: string,
+    ) => dispatch(asyncDispensersActions.downloadReport(
+      dispenser_id
+    ))
   }
 }
 
@@ -161,7 +176,9 @@ const Dispenser: FC<ReduxType> = ({
   pauseDispenser,
   unpauseDispenser,
   updateRedirectURL,
-  toggleRedirectURL
+  toggleRedirectURL,
+  getDispenserStats,
+  downloadReport
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
@@ -172,17 +189,80 @@ const Dispenser: FC<ReduxType> = ({
   ] = useState<boolean>(false)
 
   const [
+    statsLoading,
+    setStatsLoading
+  ] = useState<boolean>(true)
+
+  const [
     downloadPopup,
     toggleDownloadPopup
   ] = useState<boolean>(false)
 
 
+  useEffect(() => {
+    if (!dispenser) { return }
+    getDispenserStats(
+      dispenser.dispenser_id as string,
+      () => setStatsLoading(false)
+    )
+  }, [])
+
+  const isDeeplink = defineIfQRIsDeeplink(address)
+
+  const {
+    claimURLDecrypted,
+    redirectURLDecrypted
+  } = useMemo<{claimURLDecrypted: string, redirectURLDecrypted: string}>(() => {
+    if (!dispenser || !dashboardKey) { return { claimURLDecrypted: '', redirectURLDecrypted: '' } }
+      const {
+        redirect_url,
+        encrypted_multiscan_qr_enc_code,
+        encrypted_multiscan_qr_secret,
+      } = dispenser 
+      const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
+      const originalLink = `${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${multiscanQREncCode}`
+      const claimURLDecrypted = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
+      const linkKey = ethers.utils.id(multiscanQREncCode)
+      try {
+        const redirectURLDecrypted = redirect_url ? decrypt(redirect_url, linkKey.replace('0x', '')) : ''
+        return {
+          claimURLDecrypted,
+          redirectURLDecrypted
+        }
+      } catch (e) {
+        console.log({ e })
+        return {
+          claimURLDecrypted,
+          redirectURLDecrypted: ''
+        }
+      }
+      
+
+  }, dispenser ? [
+    dispenser.encrypted_multiscan_qr_enc_code,
+    dispenser.encrypted_multiscan_qr_secret,
+    dispenser.redirect_url
+  ] : []) 
 
   if (!dispenser || !dashboardKey) {
     return <Redirect to='/dispensers' />
   }
 
-  const { title, multiscan_qr_id, dispenser_id, active, claim_duration, claim_start, links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
+  const {
+    dispenser_id,
+    redirect_url,
+    active,
+    claim_duration,
+    claim_start,
+    links_count,
+    encrypted_multiscan_qr_enc_code,
+    encrypted_multiscan_qr_secret,
+    multiscan_qr_id,
+    title,
+    redirect_on,
+    links_claimed,
+    links_assigned
+  } = dispenser 
   const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active)
   const dispenserOptions = defineOptions(
     currentStatus,
@@ -193,9 +273,6 @@ const Dispenser: FC<ReduxType> = ({
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
   const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
-  const isDeeplink = defineIfQRIsDeeplink(address)
-  const originalLink = `${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)}`
-  const claimUrl = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
 
   return <Container>
     {updateLinksPopup && <UploadLinksPopup
@@ -230,7 +307,7 @@ const Dispenser: FC<ReduxType> = ({
       <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
         <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
         <CopyContainerStyled
-          text={claimUrl}
+          text={claimURLDecrypted}
         />
         <Buttons>
           <WidgetButton
@@ -249,17 +326,18 @@ const Dispenser: FC<ReduxType> = ({
       </WidgetComponentStyled>
 
       <RedirectWidget
-        hasRedirect={dispenser.redirect_on}
-        redirectUrl={dispenser.redirect_url}
-        claimUrl={claimUrl}
+        hasRedirect={redirect_on}
+        redirectUrl={redirectURLDecrypted}
+        claimUrl={claimURLDecrypted}
         updateNewRedirectUrl={(
           newRedirectUrl,
           successCallback,
           errorCallback
         ) => {
           updateRedirectURL(
-            dispenser.dispenser_id as string,
+            dispenser_id as string,
             newRedirectUrl,
+            encrypted_multiscan_qr_enc_code,
             successCallback,
             errorCallback
           )
@@ -319,6 +397,9 @@ const Dispenser: FC<ReduxType> = ({
       <Statistics
         linksCount={links_count || 0}
         dispenserStatus={currentStatus}
+        linksAssigned={links_assigned || 0}
+        linksClaimed={links_claimed || 0}
+        downloadReport={() => downloadReport(dispenser_id as string)}
       />
     </div>
     
