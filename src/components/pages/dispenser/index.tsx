@@ -27,7 +27,8 @@ import { TextLink } from 'components/common'
 import {
   defineDispenserStatus,
   defineIfQRIsDeeplink,
-  defineDispenserStatusTag
+  defineDispenserStatusTag,
+  alertError
 } from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
@@ -231,6 +232,7 @@ const Dispenser: FC<ReduxType> = ({
         }
       } catch (e) {
         console.log({ e })
+        alertError('Some error occured. Please check console for more info')
         return {
           claimURLDecrypted,
           redirectURLDecrypted: ''
