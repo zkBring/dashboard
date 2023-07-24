@@ -3,6 +3,7 @@
 ## 2.1.23-rc.0
 - added dispenser redirect
 - added dispenser report download
+- added Crossmint, ENS, WalletConnect as a wallet options
 
 ## 2.1.22
 - allow pause and unpause dispenser
