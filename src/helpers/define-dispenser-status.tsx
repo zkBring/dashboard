@@ -20,7 +20,6 @@ const defineDispenserStatus: TDefineDispenserStatus = (
 
   const currentDate = +new Date()
   if (redirect_on && redirect_url) {
-    console.log('here')
     return 'REDIRECT'
   }
   if (currentDate > (claim_start + claim_duration * 60 * 1000)) {
