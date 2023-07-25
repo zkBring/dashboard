@@ -254,6 +254,7 @@ const Dispenser: FC<ReduxType> = ({
     dispenser_id,
     redirect_url,
     active,
+    redirect_on,
     claim_duration,
     claim_start,
     links_count,
@@ -261,11 +262,18 @@ const Dispenser: FC<ReduxType> = ({
     encrypted_multiscan_qr_secret,
     multiscan_qr_id,
     title,
-    redirect_on,
     links_claimed,
     links_assigned
-  } = dispenser 
-  const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active)
+  } = dispenser
+
+  const currentStatus = defineDispenserStatus(
+    claim_start,
+    claim_duration,
+    links_count || 0,
+    active,
+    redirect_on,
+    redirect_url
+  )
   const dispenserOptions = defineOptions(
     currentStatus,
     () => history.push(`/dispensers/edit/${dispenser.dispenser_id}`),
