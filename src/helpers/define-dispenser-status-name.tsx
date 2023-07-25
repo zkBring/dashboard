@@ -10,6 +10,8 @@ const defineDispenserStatusName = (status: TDispenserStatus) => {
       return 'Ready'
     case 'PAUSED':
       return 'Paused'
+    case 'REDIRECT':
+      return 'Redirecting'
     default:
       return 'Not uploaded'
   }
