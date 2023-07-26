@@ -22,7 +22,7 @@ import {
   AsideWidgetButton,
   MainContent
 } from './styled-components'
-import { Statistics, RedirectWidget } from './components'
+import { Statistics, RedirectWidget, ContactUs } from './components'
 import { TextLink } from 'components/common'
 import {
   defineDispenserStatus,
@@ -179,7 +179,8 @@ const Dispenser: FC<ReduxType> = ({
   updateRedirectURL,
   toggleRedirectURL,
   getDispenserStats,
-  downloadReport
+  downloadReport,
+  chainId
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
@@ -411,6 +412,7 @@ const Dispenser: FC<ReduxType> = ({
         linksClaimed={links_claimed || 0}
         downloadReport={() => downloadReport(dispenser_id as string)}
       />
+      <ContactUs chainId={chainId}/>
     </div>
     
   </Container>

@@ -45,7 +45,7 @@ import { TClaimPattern, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
-  user: { address, dashboardKey, signer, jsonRPCProvider },
+  user: { address, dashboardKey, signer, jsonRPCProvider, chainId },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
@@ -54,7 +54,8 @@ const mapStateToProps = ({
   loading,
   dashboardKey,
   signer,
-  provider: jsonRPCProvider
+  provider: jsonRPCProvider,
+  chainId
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -117,7 +118,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   downloadReport,
   signer,
   address,
-  provider
+  provider,
+  chainId
 }) => {
 
   const history = useHistory()
@@ -537,7 +539,11 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
        <AsideButton
           onClick={() => {
               plausibleApi.invokeEvent({
-                eventName: 'view_docs'
+                eventName: 'view_docs',
+                data: {
+                  network: defineNetworkName(chainId),
+                  component: 'campaign_details'
+                }
               })
               window.open(`https://docs.linkdrop.io/sdk`, '_blank')
           }}
