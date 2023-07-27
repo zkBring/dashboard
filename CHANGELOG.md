@@ -4,6 +4,7 @@
 - added dispenser redirect
 - added dispenser report download
 - added Crossmint, ENS, WalletConnect as a wallet options
+- bug fix for signer when checking ownership of tokens
 
 ## 2.1.22
 - allow pause and unpause dispenser
