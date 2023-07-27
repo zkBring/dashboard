@@ -27,7 +27,7 @@ import { plausibleApi } from 'data/api'
 const mapStateToProps = ({
   user: {
     address,
-    provider,
+    signer,
     chainId,
     loading: userLoading,
     nfts
@@ -43,7 +43,7 @@ const mapStateToProps = ({
 }: RootState) => ({
   loading,
   address,
-  provider,
+  signer,
   decimals,
   chainId,
   symbol,
@@ -122,7 +122,7 @@ const createSelectContainer = (
   nfts: TAlchemyNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
-  provider: any,
+  signer: any,
   checkIfDisabled: () => boolean,
 ) => {
   return <InputsContainer>
@@ -141,7 +141,7 @@ const createSelectContainer = (
             userAddress,
             'ERC721',
             tokenAddress as string,
-            provider,
+            signer,
             tokenId
           )
 
@@ -203,7 +203,7 @@ const createTextInputOrSelect = (
   nfts: TAlchemyNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
-  provider: any
+  signer: any
 ) => {
 
   if (claimPattern === 'mint' || enabledInput) {
@@ -226,7 +226,7 @@ const createTextInputOrSelect = (
     nfts,
     tokenAddress,
     userAddress,
-    provider,
+    signer,
     checkIfDisabled
   )
 
@@ -241,7 +241,7 @@ const Erc721: FC<ReduxType > = ({
   sdk,
   tokenAddress,
   nfts,
-  provider,
+  signer,
   address,
   loading,
   userLoading,
@@ -349,7 +349,7 @@ const Erc721: FC<ReduxType > = ({
         nfts,
         tokenAddress,
         address,
-        provider
+        signer
       )}
       <LinksContents
         type={type}

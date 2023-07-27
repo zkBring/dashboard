@@ -31,7 +31,6 @@ import { utils, BigNumber } from 'ethers'
 const mapStateToProps = ({
   user: {
     address,
-    provider,
     chainId,
     loading: userLoading,
     tokenAmount
@@ -46,7 +45,6 @@ const mapStateToProps = ({
 }: RootState) => ({
   loading,
   address,
-  provider,
   decimals,
   chainId,
   symbol,
