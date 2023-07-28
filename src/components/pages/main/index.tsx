@@ -23,7 +23,8 @@ import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-import { useAccount, useChainId, useConnect } from 'wagmi'
+import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
+import { useEthersSigner } from 'hooks'
 
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
@@ -45,12 +46,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
       connectorAddress: string,
       connectorChainID: number,
       connector: any,
+      signer: any,
       chainsAvailable: (number | string)[]
     ) => dispatch(
       asyncUserActions.connectWallet(
         connectorAddress,
         connectorChainID,
         connector,
+        signer,
         chainsAvailable
       )
     ),
@@ -131,6 +134,7 @@ const Main: FC<ReduxType> = ({
   const connectorChainID = useChainId()
   const { connect, connectors } = useConnect()
   const injectedProvider = connectors.find(connector => connector.id === "injected")
+  const signer = useEthersSigner()
 
   useEffect(() => {
     initialLoad()
@@ -141,6 +145,7 @@ const Main: FC<ReduxType> = ({
       !connectorAddress ||
       !connectorChainID ||
       !connector ||
+      !signer ||
       authorizationStep !== 'connect'
     ) { return }
 
@@ -148,6 +153,7 @@ const Main: FC<ReduxType> = ({
       connectorAddress,
       connectorChainID,
       connector,
+      signer,
       chainsAvailable
     )
   }, [connectorAddress, connectorChainID, connector, authorizationStep])

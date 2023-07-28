@@ -75,6 +75,21 @@ const chains: TChains = {
       'https://mumbai.polygonscan.com'
     ]
   },
+  8453: {
+    chainName: 'Base',
+    displayName: 'Base',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    rpcUrls: [
+      'https://developer-access-mainnet.base.org'
+    ],
+    blockExplorerUrls: [
+      'https://basescan.org'
+    ]
+  },
   // 4: {
   //   chainName: 'Rinkeby Testnet',
   //   displayName: 'Rinkeby',
