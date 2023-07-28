@@ -19,6 +19,9 @@ const mapStateToProps = ({
 const defineTitle: TDefineTitle = (location) => {
   const locationUpdated = location.toLowerCase()
   switch(true) {
+    case locationUpdated.includes('/invite-links'):
+      return 'Invite Links'
+
     case locationUpdated.includes('/campaigns/new'):
     case locationUpdated.includes('/campaigns/new/initial'):
     case locationUpdated.includes('/campaigns/new/erc20/secure'):

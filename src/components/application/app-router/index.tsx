@@ -19,7 +19,8 @@ import {
   QRCreate,
   Dispensers,
   DispenserCreate,
-  Dispenser
+  Dispenser,
+  InviteLinks
 } from 'components/pages'
 
 import { connect } from 'react-redux'
@@ -104,12 +105,18 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           component={CampaignsCreateInitial}
         />
         
-
         <ProtectedRoute
           path='/campaigns/new/:type/approve'
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateApprove}
+        />
+
+        <ProtectedRoute
+          path='/invite-links'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={InviteLinks}
         />
 
         <ProtectedRoute

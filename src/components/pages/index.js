@@ -15,9 +15,11 @@ import QRCreate from './qr-create'
 import Dispensers from './dispensers'
 import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
+import InviteLinks from './invite-links'
 
 export {
   Page,
+  InviteLinks,
   Dispenser,
   NotFound,
   Campaigns,
