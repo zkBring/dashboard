@@ -8,7 +8,6 @@ import {
   AsideLogoIcon,
   AsideTextLink,
   AsideMenuItemExternal,
-  AsideLogoText,
   AsideTitle
 } from './styled-components'
 import { useLocation } from 'react-router-dom'
@@ -18,7 +17,6 @@ import { connect } from 'react-redux'
 import Icons from 'icons'
 import { defineNetworkName, defineIfFeatureIsAvailable } from 'helpers'
 import { plausibleApi } from 'data/api'
-import { addressSpecificOptions } from 'configs/address-specific-options'
 
 const mapStateToProps = ({
   user: {
@@ -70,6 +68,9 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       </AsideMenuItem>
       <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
         <Icons.DispenserIcon />Dispensers
+      </AsideMenuItem>
+      <AsideMenuItem to='/invite-links' active={location.pathname.includes('/invite-links')}>
+        <Icons.InviteLinksIcon />Invite Links
       </AsideMenuItem>
     </AsideMenu>
 
