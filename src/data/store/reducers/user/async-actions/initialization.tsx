@@ -19,11 +19,10 @@ import {
 import LinkdropSDK from 'linkdrop-sdk'
 import { RootState } from 'data/store'
 import { campaignsApi, qrsApi, dispensersApi } from 'data/api'
-import { alertError } from 'helpers'
+import { alertError, defineClaimAppURL } from 'helpers'
 
 const {
   REACT_APP_INFURA_ID,
-  REACT_APP_CLAIM_APP,
   REACT_APP_SERVER_URL
 } = process.env
 
@@ -33,9 +32,8 @@ const initialization = () => {
     getState: () => RootState
   ) => {
     const { user: { address, chainId, provider }} = getState()
-    if (!REACT_APP_CLAIM_APP) {
-      return alertError('REACT_APP_CLAIM_APP is not provided in .env file')
-    }
+    const claimAppURL = defineClaimAppURL(address)
+
     if (!REACT_APP_SERVER_URL) {
       return alertError('REACT_APP_SERVER_URL is not provided in .env file')
     }
@@ -58,7 +56,7 @@ const initialization = () => {
     }
 
     const sdk = new LinkdropSDK({
-      claimHostUrl: REACT_APP_CLAIM_APP,
+      claimHostUrl: claimAppURL,
       apiHost: REACT_APP_SERVER_URL
     })
 
