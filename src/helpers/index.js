@@ -66,9 +66,11 @@ import createSelectOptions from './create-select-options'
 import momentNoOffsetWithTimeUpdate from './moment-no-offset-with-time-update'
 import defineDispenserStatusTag from './define-dispenser-status-tag'
 import isURL from './is-url'
+import defineClaimAppURL from './define-claim-app-url'
 
 export {
   isURL,
+  defineClaimAppURL,
   momentNoOffsetGetTime,
   convertStringToBytes32,
   momentNoOffsetWithTimeUpdate,

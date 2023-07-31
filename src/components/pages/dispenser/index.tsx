@@ -38,9 +38,7 @@ import { decrypt, encrypt } from 'lib/crypto'
 import Icons from 'icons'
 import moment from 'moment'
 import { ethers } from 'ethers'
-const {
-  REACT_APP_CLAIM_APP
-} = process.env
+import { defineClaimAppURL } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -210,6 +208,7 @@ const Dispenser: FC<ReduxType> = ({
   }, [])
 
   const isDeeplink = defineIfQRIsDeeplink(address)
+  const claimAppURL = defineClaimAppURL(address)
 
   const {
     claimURLDecrypted,
@@ -222,7 +221,7 @@ const Dispenser: FC<ReduxType> = ({
         encrypted_multiscan_qr_secret,
       } = dispenser 
       const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
-      const originalLink = `${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${multiscanQREncCode}`
+      const originalLink = `${claimAppURL}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${multiscanQREncCode}`
       const claimURLDecrypted = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
       const linkKey = ethers.utils.id(multiscanQREncCode)
       try {

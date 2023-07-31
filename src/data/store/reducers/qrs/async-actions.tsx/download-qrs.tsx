@@ -12,14 +12,12 @@ import {
   terminateWorkers,
   alertError,
   defineQROptions,
-  defineIfQRIsDeeplink
+  defineIfQRIsDeeplink,
+  defineClaimAppURL
 } from 'helpers'
-import { Remote } from 'comlink';
+import { Remote } from 'comlink'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { plausibleApi } from 'data/api'
-const {
-  REACT_APP_CLAIM_APP
-} = process.env
 
 const downloadQRs = ({
   qrsArray,
@@ -40,6 +38,8 @@ const downloadQRs = ({
   ) => {
     dispatch(actionsQR.setLoading(true))
     const { user: { dashboardKey, workersCount, address } } = getState()
+    const claimAppURL = defineClaimAppURL(address)
+
     let currentPercentage = 0
     try {
       const neededWorkersCount = qrsArray.length <= 1000 ? 1 : workersCount
@@ -83,7 +83,7 @@ const downloadQRs = ({
         img, // image bitmap to render in canvas
         qrOption,
         isDeeplink,
-        REACT_APP_CLAIM_APP
+        claimAppURL
       )))
 
       console.log((+ new Date()) - start)

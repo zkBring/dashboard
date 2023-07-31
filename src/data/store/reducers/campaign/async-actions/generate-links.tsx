@@ -25,7 +25,6 @@ import * as campaignsActions from '../../campaigns/actions'
 
 const {
   REACT_APP_INFURA_ID,
-  REACT_APP_CLAIM_APP
 } = process.env
 
 const generateERC20Link = ({
@@ -84,9 +83,6 @@ const generateERC20Link = ({
         return alertError('REACT_APP_INFURA_ID is not provided in .env file')
       }
 
-      if (!REACT_APP_CLAIM_APP) {
-        return alertError('REACT_APP_CLAIM_APP is not provided in .env file')
-      }
       const start = +(new Date())
       const neededWorkersCount = assets.length <= 1000 ? 1 : workersCount
 

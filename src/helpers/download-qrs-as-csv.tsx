@@ -1,18 +1,19 @@
-import { TQRItem } from "types"
+import { TQRItem } from 'types'
 import { decrypt } from 'lib/crypto'
-const {
-  REACT_APP_CLAIM_APP
-} = process.env
+import { defineClaimAppURL } from 'helpers'
+
 
 const downloadQRsAsCSV = (
   arr: TQRItem[],
   title: string,
   dashboardKey: string,
+  userAddress: string,
   isDeeplink?: string,
   createdAt?: string
 ) => {
+  const claimAppURL = defineClaimAppURL(userAddress)
   const values = arr.map(item => {
-    const originalLink = `${REACT_APP_CLAIM_APP}/#/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
+    const originalLink = `${claimAppURL}/#/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
     const QRLink = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
     const updatedItem = {
       ar_link: QRLink
