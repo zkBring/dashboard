@@ -35,12 +35,12 @@ import {
   w3mProvider
 } from "@web3modal/ethereum"
 import { configureChains, createConfig } from "wagmi"
-import { mainnet, polygon, goerli, polygonMumbai, base } from "wagmi/chains"
+import { mainnet, polygon, goerli, polygonMumbai, base, baseGoerli } from "wagmi/chains"
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const { REACT_APP_WC_PROJECT_ID } = process.env
-const chains = [mainnet, polygon, goerli, polygonMumbai, base]
+const chains = [mainnet, polygon, goerli, polygonMumbai, base, baseGoerli]
 
 // Wagmi client
 const { publicClient } = configureChains(chains, [
