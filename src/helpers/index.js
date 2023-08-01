@@ -5,7 +5,7 @@ import defineJSONRpcUrl from './define-json-rpc-url'
 import copyToClipboard from './copy-to-clipboard'
 import downloadLinksAsCSV from './download-links-as-csv'
 import downloadQRsAsCSV from './download-qrs-as-csv'
-import defineEtherscanUrl from './define-etherscan-url'
+import defineExplorerUrl from './define-explorer-url'
 import toHex from './to-hex'
 import defineNativeTokenSymbol from './define-native-token-symbol'
 import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
@@ -122,7 +122,7 @@ export {
   defineJSONRpcUrl,
   copyToClipboard,
   createQuantityGroups,
-  defineEtherscanUrl,
+  defineExplorerUrl,
   toHex,
   defineNativeTokenSymbol,
   countAssetsTotalAmountERC20,
