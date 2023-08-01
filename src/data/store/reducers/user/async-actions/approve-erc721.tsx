@@ -86,7 +86,9 @@ const approve = (
       const checkTransaction = async function (): Promise<boolean> {
         return new Promise((resolve, reject) => {
           const checkInterval = setInterval(async () => {
+            console.log('here')
             const isApproved = await contractInstance.isApprovedForAll(address, proxyContractAddress)
+            console.log({ isApproved })
             if (isApproved) {
               resolve(true)
               clearInterval(checkInterval)

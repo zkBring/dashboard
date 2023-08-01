@@ -35,6 +35,7 @@ const resetCampaign = (id?: string) => {
       address,
       campaignId
     )
+
     if (!proxyContractAddress) { return }
     dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
     dispatch(actionsCampaign.setId(campaignId))
