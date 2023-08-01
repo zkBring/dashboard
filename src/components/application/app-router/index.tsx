@@ -20,7 +20,8 @@ import {
   Dispensers,
   DispenserCreate,
   Dispenser,
-  InviteLinks
+  InviteLinks,
+  Collections
 } from 'components/pages'
 
 import { connect } from 'react-redux'
@@ -68,6 +69,13 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={Dispensers}
+        />
+
+        <ProtectedRoute
+          path='/collections'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Collections}
         />
 
         <ProtectedRoute

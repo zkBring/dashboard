@@ -16,6 +16,7 @@ import Dispensers from './dispensers'
 import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
 import InviteLinks from './invite-links'
+import Collections from './collections'
 
 export {
   Page,
@@ -35,5 +36,6 @@ export {
   Main,
   QRCreate,
   Dispensers,
-  DispenserCreate
+  DispenserCreate,
+  Collections
 }
