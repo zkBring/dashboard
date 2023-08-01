@@ -119,67 +119,7 @@ const chains: TChains = {
     blockExplorerUrls: [
       'https://goerli.basescan.org'
     ]
-  },
-  // 4: {
-  //   chainName: 'Rinkeby Testnet',
-  //   displayName: 'Rinkeby',
-  //   nativeCurrency: {
-  //     name: 'ETH',
-  //     symbol: 'ETH',
-  //     decimals: 18
-  //   },
-  //   rpcUrls: [
-  //     `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_ID}`
-  //   ],
-  //   blockExplorerUrls: [
-  //     'https://rinkeby.etherscan.io'
-  //   ]
-  // },
-  // 1313161554: {
-  //   chainName: 'Aurora Mainnet',
-  //   displayName: 'Aurora',
-  //   nativeCurrency: {
-  //     name: 'ETH',
-  //     symbol: 'ETH',
-  //     decimals: 18
-  //   },
-  //   rpcUrls: [
-  //     'https://mainnet.aurora.dev/'
-  //   ],
-  //   blockExplorerUrls: [
-  //     'https://aurorascan.dev'
-  //   ]
-  // },
-  // 80001: {
-  //   chainName: 'Matic(Polygon) Testnet Mumbai',
-  //   displayName: 'Mumbai',
-  //   nativeCurrency: {
-  //     name: 'tMATIC',
-  //     symbol: 'tMATIC',
-  //     decimals: 18
-  //   },
-  //   rpcUrls: [
-  //     'https://rpc-mumbai.matic.today'
-  //   ],
-  //   blockExplorerUrls: [
-  //     'https://mumbai.polygonscan.com'
-  //   ]
-  // },
-  // 100: {
-  //   chainName: 'xDai',
-  //   displayName: 'xDai',
-  //   nativeCurrency: {
-  //     name: 'xDai',
-  //     symbol: 'xDai',
-  //     decimals: 18
-  //   },
-  //   rpcUrls: [
-  //     'https://rpc.xdaichain.com/'
-  //   ],
-  //   blockExplorerUrls: [
-  //     'https://blockscout.com/xdai/mainnet'
-  //   ]
-  // }
+  }
 }
 
 export default chains

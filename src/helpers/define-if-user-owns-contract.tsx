@@ -25,11 +25,12 @@ const defineIfUserOwnsContract: TDefineIfUserOwnsContract = async (
 ) => {
   try {
     const chain = chains[chainId]
-    if (chain.alchemySupport) {
+    const network = defineAlchemyNetwork(chainId)
+    if (chain.alchemySupport && network) {
       // if supported by alchemy
       const alchemy = new Alchemy({
         apiKey: REACT_APP_ALCHEMY_API_KEY,
-        network: defineAlchemyNetwork(chainId)
+        network
       })
       const result = await alchemy.nft.verifyNftOwnership(userAddress, tokenAddress)
       if (result) {
