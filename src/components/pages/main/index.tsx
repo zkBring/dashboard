@@ -86,33 +86,33 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const defineDashboardName = () => {
-  if (REACT_APP_CHAINS === '[5,80001]') {
+  if (REACT_APP_CHAINS === '[5,80001,84531]') {
     return 'Testnets Dashboard'
   }
-  if (REACT_APP_CHAINS === '[1,137]') {
+  if (REACT_APP_CHAINS === '[1,137,8453]') {
     return 'Mainnets Dashboard'
   }
   return 'Development Dashboard'
 }
 
 const defineSwitchNetworkText = () => {
-  if (REACT_APP_CHAINS === '[5,80001]') {
-    return <Text>Please switch the network to <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>
+  if (REACT_APP_CHAINS === '[5,80001,84531]') {
+    return <Text>Please switch the network to <TextBold>Goerli</TextBold>, <TextBold>Mumbai</TextBold> or <TextBold>BaseGoerli</TextBold> to continue</Text>
   }
-  if (REACT_APP_CHAINS === '[1,137]') {
-    return <Text>Please switch the network to <TextBold>Polygon</TextBold> or <TextBold>Mainnet</TextBold> to continue</Text>
+  if (REACT_APP_CHAINS === '[1,137,8453]') {
+    return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold> or <TextBold>Base</TextBold> to continue</Text>
   }
-  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Goerli</TextBold> or <TextBold>Mumbai</TextBold> to continue</Text>  
+  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>Goerli</TextBold>, <TextBold>Mumbai</TextBold> or <TextBold>BaseGoerli</TextBold>, to continue</Text>  
 }
 
 const defineRedirectButton = () => {
   if (!REACT_APP_CHAINS) { return null }
-  if (REACT_APP_CHAINS === '[5,80001]') {
+  if (REACT_APP_CHAINS === '[5,80001,84531]') {
     return <WidgetButton appearance='action' href={REACT_APP_MAINNETS_URL}>
       Switch to Main Dashboard
     </WidgetButton>
   }
-  if (REACT_APP_CHAINS === '[1,137]') {
+  if (REACT_APP_CHAINS === '[1,137,8453]') {
     return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
       Switch to Testnet Dashboard
     </WidgetButton>
