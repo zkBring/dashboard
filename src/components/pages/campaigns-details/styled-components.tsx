@@ -29,6 +29,10 @@ export const AsideButton = styled(Button)`
   &:last-child {
     margin-bottom: 0px;
   }
+
+  svg {
+    margin-right: 4px;
+  }
 `
 
 export const AsideButtonsContainer = styled.div`

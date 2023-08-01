@@ -538,14 +538,14 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
       >
        <AsideButton
           onClick={() => {
-              plausibleApi.invokeEvent({
-                eventName: 'view_docs',
-                data: {
-                  network: defineNetworkName(chainId),
-                  component: 'campaign_details'
-                }
-              })
-              window.open(`https://docs.linkdrop.io/sdk`, '_blank')
+            plausibleApi.invokeEvent({
+              eventName: 'view_docs',
+              data: {
+                network: defineNetworkName(chainId),
+                component: 'campaign_details'
+              }
+            })
+            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
           }}
         >
           Read Docs

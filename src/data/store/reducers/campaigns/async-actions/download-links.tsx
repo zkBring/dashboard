@@ -14,8 +14,6 @@ import { TClaimPattern, TTokenType } from 'types'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
 
-const { REACT_APP_CLAIM_APP } = process.env
-
 const downloadLinks = (
   batchId: string | number,
   campaignId: string,
@@ -35,7 +33,7 @@ const downloadLinks = (
   ) => {
 
     let {
-      user: { dashboardKey },
+      user: { dashboardKey, address },
     } = getState()
 
     
@@ -49,7 +47,6 @@ const downloadLinks = (
       dashboardKey = encryptionKey
     }
 
-    if (!REACT_APP_CLAIM_APP) { return alertError ('REACT_APP_CLAIM_APP is not provided in .env') }
     if (!tokenAddress) { return alertError ('tokenAddress is not provided') }
     try {
       dispatch(actionsCampaigns.setLoading(true))
@@ -61,7 +58,8 @@ const downloadLinks = (
         const decryptedLinks = decryptLinks({
           links: claim_links,
           dashboardKey: String(dashboardKey),
-          tokenAddress
+          tokenAddress,
+          userAddress: address
         })
 
         console.log({ batch })

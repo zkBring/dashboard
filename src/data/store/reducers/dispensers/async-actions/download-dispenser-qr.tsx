@@ -7,17 +7,14 @@ import {
   loadImage,
   alertError,
   defineQROptions,
-  defineIfQRIsDeeplink
+  defineIfQRIsDeeplink,
+  defineClaimAppURL
 } from 'helpers'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 import { plausibleApi } from 'data/api'
-
-const {
-  REACT_APP_CLAIM_APP
-} = process.env
 
 const downloadQR = ({
   multiscan_qr_id,
@@ -46,6 +43,7 @@ const downloadQR = ({
       if (!dashboardKey) { return alertError('dashboardKey is not provided') }
       if (!encrypted_multiscan_qr_secret) { return alertError('encrypted_multiscan_qr_secret is not provided') }
       if (!multiscan_qr_id) { return alertError('multiscan_qr_id is not provided') }
+      const claimAppURL = defineClaimAppURL(address)
       const qrOption = defineQROptions(address)
       const resp = await fetch(qrOption.icon)
       const blob = await resp.blob()
@@ -70,7 +68,7 @@ const downloadQR = ({
         img, // image bitmap to render in canvas
         qrOption,
         isDeeplink,
-        REACT_APP_CLAIM_APP
+        claimAppURL
       )
 
       await downloadBase64FilesAsZip('png', result, null, qrDispenserName, 0)
