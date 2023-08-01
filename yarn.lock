@@ -9669,10 +9669,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-linkdrop-sdk@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/linkdrop-sdk/-/linkdrop-sdk-2.0.4.tgz#a0c69151c2045c36c0aa4590fb12af17a53c55a7"
-  integrity sha512-a5psMgLS8ho8z1YOxX11h81gAu0N6KyF6rf8rtztWFK9g3D64S3c8V9UEyoX0lqjpo0Co2jgo7y2vBhRZip7Qw==
+linkdrop-sdk@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/linkdrop-sdk/-/linkdrop-sdk-2.0.8.tgz#9e716fbedfa3f8eb8e31d9a3383365d930da3705"
+  integrity sha512-AB4HmrCBOfYncAOSB2pkNHr3d57dIGtuxi/FUD6bClykMQvoDgvJXmo4APtxWO9DAO6upfKNossdvwvPzpIk+w==
   dependencies:
     "@stablelib/x25519" "^1.0.3"
     "@walletconnect/utils" "2.0.0-beta.100"
