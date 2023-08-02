@@ -5,6 +5,7 @@ import InstructionNote from './instruction-note'
 import InitialGuide from './initial-guide'
 import DownloadQRPopup from './download-qr-popup'
 import UploadLinksPopup from './upload-links-popup'
+import TokenImage from './token-image'
 
 import {
   Container,
@@ -56,5 +57,6 @@ export {
   DownloadQRPopup,
   UploadLinksPopup,
   WidgetSectionTitle,
-  WidgetSectionSubtitle
+  WidgetSectionSubtitle,
+  TokenImage
 }

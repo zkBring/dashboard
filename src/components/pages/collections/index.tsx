@@ -7,7 +7,9 @@ import {
   CollectionsListLabelStyled,
   CollectionsListValueStyled,
   CollectionsListStyled,
-  SecondaryTextSpan
+  SecondaryTextSpan,
+  CollectionsListLabelAligned,
+  TokenImageStyled
 } from './styled-components'
 import { Button } from 'components/common'
 import {
@@ -15,11 +17,10 @@ import {
   BatchListValue,
   WidgetComponent,
 } from 'components/pages/common'
-import { formatDate, formatTime } from 'helpers'
+import { formatDate, formatTime, shortenString, defineCollectionStatusTag } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
-import moment from 'moment'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -43,6 +44,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// ignore to avoid IDE problem, should be solved soon
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Collections: FC<ReduxType> = ({
@@ -50,17 +53,16 @@ const Collections: FC<ReduxType> = ({
   collections,
   loading
 }) => {
-
   return <Container>
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>My dispensers</WidgetTitleStyled>
+        <WidgetTitleStyled>My NFT Contracts</WidgetTitleStyled>
         <ContainerButton
-          title='+ Create new'
+          title='+ Deploy new contract'
           disabled={loading}
           size='extra-small'
           appearance='action'
-          to='/dispensers/new'
+          to='/collections/new'
         />
       </Header>
       {collections.length > 0 && <CollectionsListStyled>
@@ -68,23 +70,25 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Address</BatchListLabel>
         <BatchListLabel>All Tokens & Copies</BatchListLabel>
-        <BatchListLabel>Actions</BatchListLabel>
+        <CollectionsListLabelAligned>Actions</CollectionsListLabelAligned>
         {collections.map(collection => {
-          const { title, collection_id, created_at, tokens_amount, address } = collection
+          const { title, collection_id, created_at, tokens_amount, address, thumbnail } = collection
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           return <>
-            <CollectionsListLabelStyled>{title}</CollectionsListLabelStyled>
+            <CollectionsListLabelStyled>
+              <TokenImageStyled src={thumbnail} address={address} />
+              {title}
+            </CollectionsListLabelStyled>
             <BatchListValue>
               {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
             </BatchListValue>
             <BatchListValue>
-              {address}
+              {shortenString(address)}
             </BatchListValue>
             <BatchListValue>
-              {tokens_amount}
+              {defineCollectionStatusTag(tokens_amount)}
             </BatchListValue>
-            <BatchListValue>...</BatchListValue>
             <CollectionsListValueStyled>
               <Button
                 appearance='additional'

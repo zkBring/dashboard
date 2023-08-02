@@ -238,8 +238,6 @@ const Dispenser: FC<ReduxType> = ({
           redirectURLDecrypted: ''
         }
       }
-      
-
   }, dispenser ? [
     dispenser.encrypted_multiscan_qr_enc_code,
     dispenser.encrypted_multiscan_qr_secret,

@@ -1,23 +1,10 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 import { Widget, Button } from 'components/common'
 
 export const Container = styled.div`
-  margin-bottom: 36px;
-  background: ${props => props.theme.blankColor};
   display: grid;
-  grid-template-columns: repeat(auto-fit, 260px);
-  grid-gap: 30px;
-`
-
-export const Title = styled.h2`
-  margin: 0 0 24px;
-  font-size: 24px;
-`
-
-export const Text = styled.p`
-  max-width: 350px;
-  margin: 0 0 36px;
-  font-size: 16px;
+  grid-template-columns: repeat(3, 263px);
+  grid-gap: 23px;
 `
 
 export const StyledWidget = styled(Widget)`
@@ -31,7 +18,7 @@ export const StyledWidget = styled(Widget)`
 `
 
 export const WidgetDescription = styled.p`
-  font-size: 14px;
+  font-size: 12px;
   margin: 0 0 40px;
 `
 

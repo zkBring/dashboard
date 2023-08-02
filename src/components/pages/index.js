@@ -17,9 +17,13 @@ import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
 import InviteLinks from './invite-links'
 import Collections from './collections'
+import CollectionsCreateInitial from './collections-create-initial'
+import CollectionsCreateNew from './collections-create-new'
 
 export {
   Page,
+  CollectionsCreateNew,
+  CollectionsCreateInitial,
   InviteLinks,
   Dispenser,
   NotFound,

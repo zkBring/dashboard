@@ -67,10 +67,12 @@ import momentNoOffsetWithTimeUpdate from './moment-no-offset-with-time-update'
 import defineDispenserStatusTag from './define-dispenser-status-tag'
 import isURL from './is-url'
 import defineClaimAppURL from './define-claim-app-url'
+import defineCollectionStatusTag from './define-collection-status-tag'
 
 export {
   isURL,
   defineClaimAppURL,
+  defineCollectionStatusTag,
   momentNoOffsetGetTime,
   convertStringToBytes32,
   momentNoOffsetWithTimeUpdate,

@@ -15,7 +15,7 @@ export type TCollection = {
   thumbnail: string
   sbt: boolean
   tokenType: TTokenType
-  address: string
+  address?: string
   tokens?: TCollectionToken[]
   tokens_amount: number
 }

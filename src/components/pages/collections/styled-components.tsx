@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Button } from 'components/common'
-import { WidgetTitle, BatchListValue, BatchList, BatchListLabel } from 'components/pages/common'
+import { WidgetTitle, BatchListValue, BatchList, BatchListLabel, TokenImage } from 'components/pages/common'
 
 export const Container = styled.div`
   max-width: 1120px;
@@ -34,11 +34,15 @@ export const CollectionsListValueStyled = styled(BatchListValue)`
   justify-content: flex-end;
 `
 
-export const CollectionsListLabelStyled = styled(BatchListLabel)`
+export const CollectionsListLabelStyled = styled(BatchListValue)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+`
+
+export const CollectionsListLabelAligned = styled(BatchListLabel)`
+  text-align: right;
 `
 
 export const ErrorSpan = styled.span`
@@ -57,4 +61,9 @@ export const UploadedSpan = styled.span`
 
 export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
+`
+
+export const TokenImageStyled = styled(TokenImage)`
+  margin-right: 10px;
+  vertical-align: middle;
 `
