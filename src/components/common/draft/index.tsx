@@ -17,7 +17,7 @@ import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-acti
 import {
   formatDate,
   formatTime,
-  defineEtherscanUrl,
+  defineExplorerUrl,
   shortenString,
   defineNetworkName,
   capitalize,
@@ -118,8 +118,8 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
 }) => {
   const dateFormatted = createdAt && formatDate(createdAt)
   const timeFormatted = createdAt && formatTime(createdAt)
-  const proxyContractUrl = proxyContractAddress ? defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`) : '#'
-  const tokenContract = tokenAddress ? defineEtherscanUrl(Number(chainId), `/address/${tokenAddress}`) : '#'
+  const proxyContractUrl = proxyContractAddress ? defineExplorerUrl(Number(chainId), `/address/${proxyContractAddress}`) : '#'
+  const tokenContract = tokenAddress ? defineExplorerUrl(Number(chainId), `/address/${tokenAddress}`) : '#'
 
   const networkName = defineNetworkName(Number(chainId))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
@@ -133,10 +133,13 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
     <CampaignRow>
       <CampaignText>Contract</CampaignText>
       <CampaignValue>
-        {proxyContractAddress ? <TextLink
-          href={proxyContractUrl}
-          target='_blank'
-        >{shortenString(proxyContractAddress)}</TextLink> : '-'}
+        {
+          proxyContractAddress ? (
+            proxyContractUrl ?
+              <TextLink href={proxyContractUrl} target='_blank'>{shortenString(proxyContractAddress)}</TextLink> :
+              shortenString(proxyContractAddress)
+            ) : '-'
+        }
       </CampaignValue>
     </CampaignRow>
     <CampaignRow>
@@ -150,10 +153,13 @@ const CampaignDraftComponent: FC<TProps & ReduxType> = ({
     <CampaignRow>
       <CampaignText>Token address</CampaignText>
       <CampaignValue>
-        {tokenAddress ? <TextLink
-          href={tokenContract}
-          target='_blank'
-        >{shortenString(tokenAddress)}</TextLink> : '-'}
+        {
+          tokenAddress ? (
+            tokenContract ?
+              <TextLink href={tokenContract} target='_blank'>{shortenString(tokenAddress)}</TextLink> :
+              shortenString(tokenAddress)
+          ) : '-'
+        }
       </CampaignValue>
     </CampaignRow>
     <Divider />

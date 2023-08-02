@@ -37,7 +37,7 @@ const decryptLinks: TDecryptLink = ({
         const decryptedClaimCode = decrypt(encryptedClaimCode, dashboardKey)
         decryptedLinks.push({
           link_id: links[i].link_id,
-          token_id: links[i].token_id !== '0' ? links[i].token_id : undefined,
+          token_id: links[i].token_id !== '0' ? links[i].token_id : '0',
           token_amount: links[i].token_amount !== '0' ? links[i].token_amount : undefined,
           token_address: tokenAddress,
           claim_code: decryptedClaimCode,
