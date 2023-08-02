@@ -82,6 +82,7 @@ const CSVUploadPopup: FC<TProps> = ({
       onUpload(assets)
     }
   }
+
   return <PopupStyled
     onClose={() => {
       onClose()
