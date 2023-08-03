@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { Widget } from 'components/common'
-import { FileInput } from 'components/common'
-import { Input } from 'linkdrop-ui'
+import { Widget, FileInput, Button } from 'components/common'
+import { Input, Radio, Toggle } from 'linkdrop-ui'
 import {
   WidgetSubtitle
 } from 'components/pages/common'
@@ -9,7 +8,6 @@ import {
 export const WidgetStyled = styled(Widget)`
   max-width: 740px;
 `
-
 export const ThumbnailContainer = styled.div`
   display: flex;
   align-items: center;
@@ -48,4 +46,44 @@ export const InputTitleAdditional = styled.span`
 
 export const WidgetSubtitleStyled = styled(WidgetSubtitle)`
   margin-bottom: 32px;
+`
+
+export const StyledRadio = styled(Radio)`
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
+    flex: 1;
+    padding-right: 70px;
+  }
+`
+
+export const InputTitleWithToggle = styled(InputTitle)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const ToggleStyled = styled(Toggle)`
+
+`
+
+export const InputSubtitle = styled.h2`
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: ${props => props.theme.additionalTextColor};
+`
+
+
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+`
+
+export const ButtonStyled = styled(Button)`
+  margin-left: 12px;
 `
