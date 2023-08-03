@@ -1,3 +1,4 @@
+import TClaimPattern from "./claim-pattern"
 import TTokenType from "./token-type"
 
 export type TCollectionToken = {
@@ -14,9 +15,11 @@ export type TCollection = {
   symbol: string
   thumbnail: string
   sbt: boolean
-  tokenType: TTokenType
+  token_type: TTokenType
   address?: string
   tokens?: TCollectionToken[]
   tokens_amount: number
+  claim_pattern: TClaimPattern
+  chain_id: number
 }
 

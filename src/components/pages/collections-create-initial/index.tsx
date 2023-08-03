@@ -20,6 +20,15 @@ import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import CollectionPlaceholder from 'images/collection-placeholder.png'
 
+
+const defineIfButtonDisabled = (
+  title: string,
+  symbol: string,
+  thumbnail: string
+) => {
+  return !title || !symbol || !thumbnail
+}
+
 const mapStateToProps = ({
   collections: {
     collections,
@@ -77,7 +86,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       <InputStyled
         value={symbol}
         onChange={(value) => {
-          setSymbol(value)
+          setSymbol(value.toUpperCase())
           return value
         }}
         note='If you don’t know what a symbol is, keep it blank, and we will use the auto-generated one based on title'
@@ -105,12 +114,15 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
         radios={radios}
         value={mint}
         onChange={value => {
+          if (!value) {
+            setSBT(false)
+          }
           setMint(value)
         }}
       />
     </InputContainer>
 
-    <InputContainer>
+    {mint && <InputContainer>
       <InputTitleWithToggle>
         Make tokens non-transferrable (SBT)
         <ToggleStyled
@@ -125,7 +137,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       <InputSubtitle>
         If this setting is enabled, tokens minted within the collection could not be transferred, which makes them soulbound tokens. Please read docs to learn more about this setting and other options. 
       </InputSubtitle>
-    </InputContainer>
+    </InputContainer>}
 
     <Buttons>
       <ButtonStyled>
@@ -134,6 +146,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
 
       <ButtonStyled
         appearance='action'
+        disabled={defineIfButtonDisabled(title, symbol, thumbnail)}
       >
         Deploy Collection
       </ButtonStyled>

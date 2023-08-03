@@ -19,9 +19,11 @@ import InviteLinks from './invite-links'
 import Collections from './collections'
 import CollectionsCreateInitial from './collections-create-initial'
 import CollectionsCreateNew from './collections-create-new'
+import Collection from './collection'
 
 export {
   Page,
+  Collection,
   CollectionsCreateNew,
   CollectionsCreateInitial,
   InviteLinks,

@@ -20,6 +20,7 @@ export const Thumbnail = styled.img`
   height: 126px;
   margin-right: 24px;
   border-radius: 10px;
+  object-fit: cover;
 `
 
 export const FileInputStyled = styled(FileInput)`

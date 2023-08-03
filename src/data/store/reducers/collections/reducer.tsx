@@ -12,10 +12,12 @@ const collections: TCollection[] = [
     thumbnail: 'https://i.seadn.io/gae/NZ0WI9Fxr69mfjNye3t2Ct_Uk-JnPTqWoA7TF4RK18wslgZkR2I1WJ1Uw6PzLK9oj-r02r5r30VR7TVNYqidtg4b75rBqD5p7E1S9g?auto=format&dpr=1&w=48',
     address: '0x0553aDA5829184A7818dC866367D77334183603E',
     sbt: false,
-    tokenType: 'ERC1155',
+    token_type: 'ERC1155',
     tokens: [],
     tokens_amount: 1000,
-    created_at: 'Wed Aug 02 2023 14:37:57 GMT+0200 (Central European Summer Time)'
+    created_at: 'Wed Aug 02 2023 14:37:57 GMT+0200 (Central European Summer Time)',
+    claim_pattern: 'mint',
+    chain_id: 137
   },
   {
     title: 'Test collection2',
@@ -24,10 +26,12 @@ const collections: TCollection[] = [
     thumbnail: 'https://i.seadn.io/gae/NZ0WI9Fxr69mfjNye3t2Ct_Uk-JnPTqWoA7TF4RK18wslgZkR2I1WJ1Uw6PzLK9oj-r02r5r30VR7TVNYqidtg4b75rBqD5p7E1S9g?auto=format&dpr=1&w=48',
     address: '0x0553aDA5829184A7818dC866367D77334183603E',
     sbt: false,
-    tokenType: 'ERC1155',
+    token_type: 'ERC1155',
     tokens: [],
     tokens_amount: 0,
-    created_at: 'Wed Aug 02 2023 14:37:57 GMT+0200 (Central European Summer Time)'
+    created_at: 'Wed Aug 02 2023 14:37:57 GMT+0200 (Central European Summer Time)',
+    claim_pattern: 'transfer',
+    chain_id: 137
   }
 ]
 
