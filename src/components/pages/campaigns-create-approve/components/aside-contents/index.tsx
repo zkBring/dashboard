@@ -16,7 +16,7 @@ import {
 } from 'components/pages/common'
 import { TextLink } from 'components/common'
 import {
-  defineEtherscanUrl,
+  defineExplorerUrl,
   shortenString,
   defineNetworkName,
   defineNativeTokenSymbol
@@ -112,7 +112,7 @@ const AsideContents: FC<TAsideContentsProps> = ({
   symbol,
   totalAmount
 }) => {
-  const scannerUrl = defineEtherscanUrl(campaignChainId, `/address/${tokenAddress || ''}`)
+  const scannerUrl = defineExplorerUrl(campaignChainId, `/address/${tokenAddress || ''}`)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId: campaignChainId })
 
   const approvedNote = () => {
@@ -142,7 +142,7 @@ const AsideContents: FC<TAsideContentsProps> = ({
       {tokenAddress && <TableRow>
         <TableText>Token address</TableText>
         <TableValue>
-          <TextLink href={scannerUrl} target='_blank'>{shortenString(tokenAddress)}</TextLink>
+          {scannerUrl ? <TextLink href={scannerUrl} target='_blank'>{shortenString(tokenAddress)}</TextLink> : shortenString(tokenAddress)}
         </TableValue>
       </TableRow>}
 

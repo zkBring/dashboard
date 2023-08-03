@@ -17,9 +17,9 @@ import {
   ErrorSpan,
   UploadedSpan,
 } from 'components/pages/common'
+import { Tag } from 'components/common'
 import Icons from 'icons'
 import { defineQRStatusName, formatDate, shortenString } from 'helpers'
-
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
@@ -44,6 +44,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       callback: (id: string | number) => void
     ) => dispatch(asyncQRsActions.addQRSet({ title, quantity, callback }))
   }
+}
+
+const defineUploadedStatusAppearance = (uploaded?: boolean) => {
+  if (!uploaded) {
+    return <Tag status='error' title='Not uploaded' />
+  }
+  return <Tag status='success' title='Uploaded' />
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
@@ -77,10 +84,7 @@ const QRs: FC<ReduxType> = ({
             <BatchListLabelStyled>{qr.set_name}</BatchListLabelStyled>
             <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
-            <BatchListValue>{qr.links_uploaded ? <UploadedSpan>Uploaded</UploadedSpan> : <ErrorSpan>
-              <Icons.NotUploadedIcon />
-              Not uploaded
-            </ErrorSpan>}</BatchListValue>
+            <BatchListValue>{defineUploadedStatusAppearance(qr.links_uploaded)}</BatchListValue>
             <BatchListValue>
               {
                 (!qr.links_uploaded || !qr.campaign || !qr.campaign.campaign_id) ?

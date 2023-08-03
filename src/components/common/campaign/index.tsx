@@ -14,7 +14,7 @@ import {
 
 import {
   formatDate,
-  defineEtherscanUrl,
+  defineExplorerUrl,
   shortenString,
   defineNetworkName,
   capitalize,
@@ -62,7 +62,7 @@ const CampaignComponent: FC<TProps & ReduxType> = ({
 }) => {
   const dateFormatted = created_at && formatDate(created_at)
   const timeFormatted = created_at && formatTime(created_at)
-  const scanUrl = defineEtherscanUrl(Number(chainId), `/address/${proxyContractAddress}`)
+  const scanUrl = defineExplorerUrl(Number(chainId), `/address/${proxyContractAddress}`)
   const networkName = defineNetworkName(Number(chainId))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   return <Campaign>
@@ -70,10 +70,14 @@ const CampaignComponent: FC<TProps & ReduxType> = ({
     <CampaignRow>
       <CampaignText>Contract</CampaignText>
       <CampaignValue>
-        <TextLink
-          href={scanUrl}
-          target='_blank'
-        >{shortenString(proxyContractAddress)}</TextLink>
+        {
+          scanUrl ? <TextLink
+            href={scanUrl}
+            target='_blank'
+          >
+            {shortenString(proxyContractAddress)}
+          </TextLink> : shortenString(proxyContractAddress)
+        }
       </CampaignValue>
     </CampaignRow>
     <CampaignRow>

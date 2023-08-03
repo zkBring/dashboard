@@ -1,25 +1,29 @@
 import { TLink, TLinkDecrypted }  from 'types'
 import { decrypt } from 'lib/crypto'
-const { REACT_APP_CLAIM_APP } = process.env
+import { defineClaimAppURL } from 'helpers'
 
 type TDecryptLink = ({
   links,
   dashboardKey,
-  tokenAddress
+  tokenAddress,
+  userAddress
 } : {
   links: TLink[],
   dashboardKey: string,
-  tokenAddress: string
+  tokenAddress: string,
+  userAddress: string
 }
 ) => TLinkDecrypted[]
 
 const decryptLinks: TDecryptLink = ({
   links,
   dashboardKey,
-  tokenAddress
+  tokenAddress,
+  userAddress
 }) => {
   const decryptedLinks = []
   const start = +new Date()
+  const claimAppURL = defineClaimAppURL(userAddress)
   for (let i = 0; i < links.length; i++) {
     const encryptedLink = links[i].encrypted_claim_link
     if (encryptedLink && encryptedLink !== 'NO_DATA') {
@@ -33,11 +37,11 @@ const decryptLinks: TDecryptLink = ({
         const decryptedClaimCode = decrypt(encryptedClaimCode, dashboardKey)
         decryptedLinks.push({
           link_id: links[i].link_id,
-          token_id: links[i].token_id !== '0' ? links[i].token_id : undefined,
+          token_id: links[i].token_id !== '0' ? links[i].token_id : '0',
           token_amount: links[i].token_amount !== '0' ? links[i].token_amount : undefined,
           token_address: tokenAddress,
           claim_code: decryptedClaimCode,
-          claim_link: `${REACT_APP_CLAIM_APP}/#/redeem/${decryptedClaimCode}`
+          claim_link: `${claimAppURL}/#/redeem/${decryptedClaimCode}`
         })
       }
     }

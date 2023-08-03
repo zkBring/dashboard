@@ -17,12 +17,14 @@ import * as userActions from '../actions'
 import {
   CampaignActions
 } from 'data/store/reducers/campaign/types'
+
 const { REACT_APP_INFURA_ID } = process.env
 
 function connectWallet (
   connectorAddress: string,
   connectorChainID: number,
   connector: any,
+  signer: any,
   chainsAvailable: (number | string)[]
 ) {
 
@@ -49,7 +51,6 @@ function connectWallet (
             dispatch(asyncActions.logout())
           }
         })
-        const signer = await connector.getSigner()
         dispatch(actions.setSigner(signer))
         dispatch(actions.setProvider(provider))
         dispatch(actions.setAddress(connectorAddress))

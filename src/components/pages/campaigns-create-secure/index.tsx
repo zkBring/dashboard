@@ -153,7 +153,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     const options = wallets
       .filter(wallet => {
         if (!chainId) { return false }
-        return wallet.chains.includes(String(chainId))
+        return wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
       })
     return options
   }, [chainId])
@@ -167,7 +167,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [chainId])
 
-
   const walletsOptions = useMemo(() => {
     const options = allWallets
       .map(wallet => ({
@@ -177,10 +176,13 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [chainId])
 
+  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : walletsOptions[0].value
+
+
   const [
     currentWallet,
     setCurrentWallet
-  ] = useState<string>(walletsOptions[0].value)
+  ] = useState<string>(currentCampaignWallet)
 
   const [
     availableWallets,

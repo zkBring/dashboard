@@ -23,19 +23,24 @@ const getContracts = () => {
       if (!chainId) {
         return alertError('chainId is not provided')
       }
-      const alchemy = new Alchemy({
-        apiKey: REACT_APP_ALCHEMY_API_KEY,
-        network: defineAlchemyNetwork(chainId)
-      })
 
-      const filters = chainId === 1 || chainId === 137 ? {
-        excludeFilters: [ NftFilters.SPAM]
-      } : undefined
-
-      const { contracts } = await alchemy.nft.getContractsForOwner(address, filters)
-      if (contracts && contracts.length > 0) {
-        dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
+      const network = defineAlchemyNetwork(chainId)
+      if (network) {
+        const alchemy = new Alchemy({
+          apiKey: REACT_APP_ALCHEMY_API_KEY,
+          network
+        })
+  
+        const filters = chainId === 1 || chainId === 137 ? {
+          excludeFilters: [ NftFilters.SPAM]
+        } : undefined
+  
+        const { contracts } = await alchemy.nft.getContractsForOwner(address, filters)
+        if (contracts && contracts.length > 0) {
+          dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
+        }
       }
+      
     } catch (err) {
       alertError('Check console for more information')
       console.error({ err })

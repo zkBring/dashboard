@@ -33,6 +33,7 @@ const downloadReport = (
         eventName: 'download_report',
         data: {
           network: defineNetworkName(chainId),
+          type: 'campaign',
           campaignId
         }
       })

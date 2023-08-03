@@ -1,5 +1,15 @@
 # Ledger Dashboard
 
+## 2.1.23
+- added dispenser redirect
+- added dispenser report download
+- added Crossmint, ENS, WalletConnect as a wallet options
+- bug fix for signer when checking ownership of tokens
+- added Invite Links page
+- added support for custom claim app urls
+- added support for Base and BaseGoerli networks
+- added fix for Mumbai network explorer url
+
 ## 2.1.22
 - allow pause and unpause dispenser
 - added check for UNKNOWN token type from Alchemy API

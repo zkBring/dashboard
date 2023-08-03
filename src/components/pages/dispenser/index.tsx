@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState, useMemo, useEffect } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import {
   Container,
@@ -8,8 +8,6 @@ import {
   TableValue,
   DownloadQRPopup,
   UploadLinksPopup,
-  ErrorSpan,
-  UploadedSpan,
 } from 'components/pages/common'
 import {
   Buttons,
@@ -20,20 +18,27 @@ import {
   AsideSubtitle,
   Counter,
   SecondaryTextSpan,
-  AsideStyled
+  AsideStyled,
+  AsideWidgetButton,
+  MainContent
 } from './styled-components'
+import { Statistics, RedirectWidget, ContactUs } from './components'
 import { TextLink } from 'components/common'
-import { defineDispenserStatus, defineDispenserStatusName, defineIfQRIsDeeplink } from 'helpers'
+import {
+  defineDispenserStatus,
+  defineIfQRIsDeeplink,
+  defineDispenserStatusTag,
+  alertError
+} from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
-import { decrypt } from 'lib/crypto'
+import { decrypt, encrypt } from 'lib/crypto'
 import Icons from 'icons'
 import moment from 'moment'
-const {
-  REACT_APP_CLAIM_APP
-} = process.env
+import { ethers } from 'ethers'
+import { defineClaimAppURL } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -110,6 +115,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: false,
       callback
     })),
+    getDispenserStats: (
+      dispenser_id: string,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.getDispenserStats({
+      dispenser_id,
+      callback
+    })),
     unpauseDispenser: (
       dispenser_id: string,
       callback?: () => void
@@ -118,22 +130,39 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: true,
       callback
     })),
+    toggleRedirectURL: (
+      dispenser_id: string,
+      redirect_on: boolean,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.toggleRedirectOn({
+      dispenser_id,
+      redirect_on,
+      successCallback,
+      errorCallback
+    })),
+    updateRedirectURL: (
+      dispenser_id: string,
+      redirect_url: string,
+      encrypted_multiscan_qr_enc_code: string,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.updateRedirectURL({
+      dispenser_id,
+      redirect_url,
+      encrypted_multiscan_qr_enc_code,
+      successCallback,
+      errorCallback
+    })),
+    downloadReport: (
+      dispenser_id: string,
+    ) => dispatch(asyncDispensersActions.downloadReport(
+      dispenser_id
+    ))
   }
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
-
-const defineStatusAppearance = (status: TDispenserStatus) => {
-  const statusName = defineDispenserStatusName(status)
-  if (status === 'NOT_UPLOADED') {
-    return <ErrorSpan>
-      <Icons.NotUploadedIcon />
-      {statusName}
-    </ErrorSpan>
-  }
-
-  return <UploadedSpan>{statusName}</UploadedSpan>
-}
 
 const Dispenser: FC<ReduxType> = ({
   dispensers,
@@ -144,7 +173,12 @@ const Dispenser: FC<ReduxType> = ({
   address,
   downloadQR,
   pauseDispenser,
-  unpauseDispenser
+  unpauseDispenser,
+  updateRedirectURL,
+  toggleRedirectURL,
+  getDispenserStats,
+  downloadReport,
+  chainId
 }) => {
   const { id } = useParams<{id: string}>()
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
@@ -155,16 +189,91 @@ const Dispenser: FC<ReduxType> = ({
   ] = useState<boolean>(false)
 
   const [
+    statsLoading,
+    setStatsLoading
+  ] = useState<boolean>(true)
+
+  const [
     downloadPopup,
     toggleDownloadPopup
   ] = useState<boolean>(false)
+
+
+  useEffect(() => {
+    if (!dispenser) { return }
+    getDispenserStats(
+      dispenser.dispenser_id as string,
+      () => setStatsLoading(false)
+    )
+  }, [])
+
+  const isDeeplink = defineIfQRIsDeeplink(address)
+  const claimAppURL = defineClaimAppURL(address)
+
+  const {
+    claimURLDecrypted,
+    redirectURLDecrypted
+  } = useMemo<{claimURLDecrypted: string, redirectURLDecrypted: string}>(() => {
+    if (!dispenser || !dashboardKey) { return { claimURLDecrypted: '', redirectURLDecrypted: '' } }
+      const {
+        redirect_url,
+        encrypted_multiscan_qr_enc_code,
+        encrypted_multiscan_qr_secret,
+      } = dispenser 
+      const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
+      const originalLink = `${claimAppURL}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${multiscanQREncCode}`
+      const claimURLDecrypted = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
+      const linkKey = ethers.utils.id(multiscanQREncCode)
+      try {
+        const redirectURLDecrypted = redirect_url ? decrypt(redirect_url, linkKey.replace('0x', '')) : ''
+        return {
+          claimURLDecrypted,
+          redirectURLDecrypted
+        }
+      } catch (e) {
+        console.log({ e })
+        alertError('Some error occured. Please check console for more info')
+        return {
+          claimURLDecrypted,
+          redirectURLDecrypted: ''
+        }
+      }
+      
+
+  }, dispenser ? [
+    dispenser.encrypted_multiscan_qr_enc_code,
+    dispenser.encrypted_multiscan_qr_secret,
+    dispenser.redirect_url
+  ] : []) 
 
   if (!dispenser || !dashboardKey) {
     return <Redirect to='/dispensers' />
   }
 
-  const { title, multiscan_qr_id, dispenser_id, active, claim_duration, claim_start, links_count, encrypted_multiscan_qr_enc_code, encrypted_multiscan_qr_secret } = dispenser 
-  const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active)
+  const {
+    dispenser_id,
+    redirect_url,
+    active,
+    redirect_on,
+    claim_duration,
+    claim_start,
+    links_count,
+    encrypted_multiscan_qr_enc_code,
+    encrypted_multiscan_qr_secret,
+    multiscan_qr_id,
+    title,
+    links_claimed,
+    links_assigned
+  } = dispenser
+
+  const currentStatus = defineDispenserStatus(
+    claim_start,
+    claim_duration,
+    links_count || 0,
+    active,
+    redirect_on,
+    redirect_url
+  )
   const dispenserOptions = defineOptions(
     currentStatus,
     () => history.push(`/dispensers/edit/${dispenser.dispenser_id}`),
@@ -174,9 +283,6 @@ const Dispenser: FC<ReduxType> = ({
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
   const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
-  const isDeeplink = defineIfQRIsDeeplink(address)
-  const originalLink = `${REACT_APP_CLAIM_APP}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)}`
-  const claimUrl = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
 
   return <Container>
     {updateLinksPopup && <UploadLinksPopup
@@ -206,64 +312,108 @@ const Dispenser: FC<ReduxType> = ({
       }}
       onClose={() => toggleDownloadPopup(false)}
     />}
-    <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
-      <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
-      <CopyContainerStyled
-        text={claimUrl}
-        title='Scan the code to see claim page'
+
+    <MainContent>
+      <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
+        <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
+        <CopyContainerStyled
+          text={claimURLDecrypted}
+        />
+        <Buttons>
+          <WidgetButton
+            title='Back'
+            appearance='default'
+            to='/dispensers'
+          /> 
+          <WidgetButton
+            title='Download PNG'
+            appearance='action'
+            onClick={() => {
+              toggleDownloadPopup(true)
+            }}
+          /> 
+        </Buttons>
+      </WidgetComponentStyled>
+
+      <RedirectWidget
+        hasRedirect={redirect_on}
+        redirectUrl={redirectURLDecrypted}
+        claimUrl={claimURLDecrypted}
+        updateNewRedirectUrl={(
+          newRedirectUrl,
+          successCallback,
+          errorCallback
+        ) => {
+          updateRedirectURL(
+            dispenser_id as string,
+            newRedirectUrl,
+            encrypted_multiscan_qr_enc_code,
+            successCallback,
+            errorCallback
+          )
+        }}
+        toggleRedirectOn={(
+          redirectOn,
+          successCallback,
+          errorCallback
+        ) => {
+          toggleRedirectURL(
+            dispenser.dispenser_id as string,
+            redirectOn,
+            successCallback,
+            errorCallback
+          )
+        }}
       />
-      
-      <Buttons>
-        <WidgetButton
-          title='Back'
-          appearance='default'
-          to='/dispensers'
-        /> 
-        <WidgetButton
-          title='Download PNG'
+    </MainContent>
+    
+    <div>
+      <AsideStyled
+        title="Connect to claim links"
+        options={dispenserOptions}
+      >
+        <WidgetSubtitle>
+            Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
+        </WidgetSubtitle>
+        <WidgetSubtitle>
+          If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>
+        </WidgetSubtitle>
+        <AsideContent>
+          <AsideSubtitle>Amount of links</AsideSubtitle>
+          <Counter>{links_count || 0}</Counter>
+          <TableRow>
+            <TableText>Status</TableText>
+            <TableValue>{defineDispenserStatusTag(currentStatus)}</TableValue>
+          </TableRow>
+          <TableRow>
+            <TableText>Start date</TableText>
+            <TableValue>{claimStartDate}, <SecondaryTextSpan>{claimStartTime} (UTC+0)</SecondaryTextSpan></TableValue>
+          </TableRow>
+          <TableRow>
+            <TableText>Duration</TableText>
+            <TableValue>{claim_duration} mins</TableValue>
+          </TableRow>
+        </AsideContent>
+
+        <AsideWidgetButton
+          title='Upload file'
+          disabled={currentStatus === 'FINISHED'}
           appearance='action'
           onClick={() => {
-            toggleDownloadPopup(true)
+            toggleUpdateLinksPopup(true)
           }}
         /> 
-      </Buttons>
-    </WidgetComponentStyled>
-    <AsideStyled
-      title="Connect to claim links"
-      options={dispenserOptions}
-    >
-      <WidgetSubtitle>
-          Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
-      </WidgetSubtitle>
-      <WidgetSubtitle>
-        If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>
-      </WidgetSubtitle>
-      <AsideContent>
-        <AsideSubtitle>Amount of links</AsideSubtitle>
-        <Counter>{links_count || 0}</Counter>
-        <TableRow>
-          <TableText>Status</TableText>
-          <TableValue>{defineStatusAppearance(currentStatus)}</TableValue>
-        </TableRow>
-        <TableRow>
-          <TableText>Start date</TableText>
-          <TableValue>{claimStartDate}, <SecondaryTextSpan>{claimStartTime} (UTC+0)</SecondaryTextSpan></TableValue>
-        </TableRow>
-        <TableRow>
-          <TableText>Duration</TableText>
-          <TableValue>{claim_duration} mins</TableValue>
-        </TableRow>
-      </AsideContent>
-
-      <WidgetButton
-        title='Upload file'
-        disabled={currentStatus === 'FINISHED'}
-        appearance='action'
-        onClick={() => {
-          toggleUpdateLinksPopup(true)
-        }}
-        /> 
-    </AsideStyled>
+      </AsideStyled>
+      <Statistics
+        linksCount={links_count || 0}
+        dispenserStatus={currentStatus}
+        linksAssigned={links_assigned || 0}
+        linksClaimed={links_claimed || 0}
+        downloadReport={() => downloadReport(dispenser_id as string)}
+      />
+      <ContactUs chainId={chainId}/>
+    </div>
+    
   </Container>
 }
 

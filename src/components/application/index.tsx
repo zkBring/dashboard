@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import RouterProvider from './router-provider'
 import store from 'data/store'
-import { ethereumClient, wagmiClient } from './connectors'
+import { ethereumClient, wagmiConfig } from './connectors'
 import { WagmiConfig } from "wagmi"
 import { Web3Modal } from "@web3modal/react"
 const { REACT_APP_WC_PROJECT_ID } = process.env
@@ -10,7 +10,7 @@ const { REACT_APP_WC_PROJECT_ID } = process.env
 class Application extends React.Component {
   render () {
     return <>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={wagmiConfig}>
         <Provider store={store}>
           <RouterProvider />
         </Provider>

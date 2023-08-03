@@ -23,7 +23,7 @@ import {
 import {
   shortenString,
   defineNetworkName,
-  defineEtherscanUrl,
+  defineExplorerUrl,
   defineCampaignStatus,
   campaignPause,
   campaignUnpause,
@@ -45,7 +45,7 @@ import { TClaimPattern, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns, loading },
-  user: { address, dashboardKey, signer, jsonRPCProvider },
+  user: { address, dashboardKey, signer, jsonRPCProvider, chainId },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
@@ -54,7 +54,8 @@ const mapStateToProps = ({
   loading,
   dashboardKey,
   signer,
-  provider: jsonRPCProvider
+  provider: jsonRPCProvider,
+  chainId
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -117,7 +118,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   downloadReport,
   signer,
   address,
-  provider
+  provider,
+  chainId
 }) => {
 
   const history = useHistory()
@@ -248,9 +250,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   )
 
 
-  const tokenUrl = defineEtherscanUrl(Number(chain_id), `/address/${token_address || ''}`)
-  const ownerUrl = defineEtherscanUrl(Number(chain_id), `/address/${creator_address || ''}`)
-  const contractUrl = defineEtherscanUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
+  const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
+  const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
+  const contractUrl = defineExplorerUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
   const copyToClipboardButton = {
     title: 'Copy debug data',
     icon: <Icons.ClipboardCopyIcon />,
@@ -471,7 +473,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
       >
         <TableRow>
           <TableText>Created by</TableText>
-          <TableValue><TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink></TableValue>
+          <TableValue>
+            {ownerUrl ? <TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink> : shortenString(creator_address)}
+          </TableValue>
         </TableRow>
         {status !== null && <TableRow>
           <TableText>Status</TableText>
@@ -482,11 +486,15 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <TableRow>
           <TableText>Token address</TableText>
-          <TableValue><TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink></TableValue>
+          <TableValue>
+            {tokenUrl ? <TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink> : shortenString(token_address)}
+          </TableValue>
         </TableRow>
         <TableRow>
           <TableText>Campaign contract</TableText>
-          <TableValue><TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink></TableValue>
+          <TableValue>
+            {contractUrl ? <TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink> : shortenString(proxy_contract_address)}
+          </TableValue>
         </TableRow>
 
         <AsideDivider />
@@ -520,7 +528,12 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         </TableRow>
 
         {sponsored && <AsideButtonsContainer>
-          <AsideButton onClick={() => downloadReport(campaign_id)}>Download full report</AsideButton>
+          <AsideButton
+            onClick={() => downloadReport(campaign_id)}
+          >
+            <Icons.DownloadReportIcon />
+            Download full report
+          </AsideButton>
         </AsideButtonsContainer>}
         
       </AsideStyled>
@@ -531,10 +544,14 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
       >
        <AsideButton
           onClick={() => {
-              plausibleApi.invokeEvent({
-                eventName: 'view_docs'
-              })
-              window.open(`https://docs.linkdrop.io/sdk`, '_blank')
+            plausibleApi.invokeEvent({
+              eventName: 'view_docs',
+              data: {
+                network: defineNetworkName(chainId),
+                component: 'campaign_details'
+              }
+            })
+            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
           }}
         >
           Read Docs

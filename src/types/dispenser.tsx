@@ -3,7 +3,8 @@ export type TDispenserStatus =
   'ACTIVE' |
   'FINISHED' |
   'NOT_UPLOADED' |
-  'PAUSED'
+  'PAUSED' |
+  'REDIRECT'
 
 export type TDispenserLinks = {
   encrypted_claim_link?: string
@@ -21,6 +22,10 @@ export type TDispenser = {
   title: string
   encrypted_multiscan_qr_enc_code: string
   active?: boolean
+  redirect_on?: boolean
+  redirect_url?: string | null
+  links_claimed?: number
+  links_assigned?: number
 }
 
 export type TDispenserUpdateData = {

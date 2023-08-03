@@ -1,14 +1,10 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import {
   TagContainer
 } from './styled-components'
+import { TProps } from './types'
 
-interface Props {
-  title: string,
-  status: 'error' | 'info' | 'default'
-}
-
-const Tag: FC<Props> = ({
+const Tag: FC<TProps> = ({
   title,
   status
 }) => <TagContainer status={status}>{title}</TagContainer>

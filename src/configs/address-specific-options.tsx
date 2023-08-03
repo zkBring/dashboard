@@ -8,7 +8,8 @@ type TAddressConfig = Record<
   {
     qrConfig?: TAddressQRConfig
     qrDeeplink?: TAddressQRDeeplinkConfig
-    betaFeaturesAvailable?: TFeatureName[] 
+    betaFeaturesAvailable?: TFeatureName[]
+    claimAppUrl?: string
   }
 >
 

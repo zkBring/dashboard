@@ -31,18 +31,22 @@ function getUserNFTs(
       }
 
       if (tokenStandard !== 'ERC20') {
-        const alchemy = new Alchemy({
-          apiKey: REACT_APP_ALCHEMY_API_KEY,
-          network: defineAlchemyNetwork(chainId)
-        })
-    
-        const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
-          contractAddresses: [ tokenAddress ]
-        })
-        
-        if (ownedNfts && ownedNfts.length > 0) {
-          dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
+        const network = defineAlchemyNetwork(chainId)
+        if (network) {
+          const alchemy = new Alchemy({
+            apiKey: REACT_APP_ALCHEMY_API_KEY,
+            network
+          })
+      
+          const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
+            contractAddresses: [ tokenAddress ]
+          })
+          
+          if (ownedNfts && ownedNfts.length > 0) {
+            dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
+          }
         }
+        
       }
 
     } catch (err) {

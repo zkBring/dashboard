@@ -262,6 +262,7 @@ const QR: FC<ReduxType> = ({
               qr.qr_array,
               qr.set_name,
               dashboardKey,
+              address,
               isDeeplink,
               qr.created_at
             )

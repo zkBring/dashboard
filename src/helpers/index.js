@@ -5,7 +5,7 @@ import defineJSONRpcUrl from './define-json-rpc-url'
 import copyToClipboard from './copy-to-clipboard'
 import downloadLinksAsCSV from './download-links-as-csv'
 import downloadQRsAsCSV from './download-qrs-as-csv'
-import defineEtherscanUrl from './define-etherscan-url'
+import defineExplorerUrl from './define-explorer-url'
 import toHex from './to-hex'
 import defineNativeTokenSymbol from './define-native-token-symbol'
 import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
@@ -64,11 +64,17 @@ import addDaysToDate from './add-days-to-date'
 import momentNoOffsetGetTime from './moment-no-offset-get-time'
 import createSelectOptions from './create-select-options'
 import momentNoOffsetWithTimeUpdate from './moment-no-offset-with-time-update'
+import defineDispenserStatusTag from './define-dispenser-status-tag'
+import isURL from './is-url'
+import defineClaimAppURL from './define-claim-app-url'
 
 export {
+  isURL,
+  defineClaimAppURL,
   momentNoOffsetGetTime,
   convertStringToBytes32,
   momentNoOffsetWithTimeUpdate,
+  defineDispenserStatusTag,
   createSelectOptions,
   preventPageClose,
   alertError,
@@ -116,7 +122,7 @@ export {
   defineJSONRpcUrl,
   copyToClipboard,
   createQuantityGroups,
-  defineEtherscanUrl,
+  defineExplorerUrl,
   toHex,
   defineNativeTokenSymbol,
   countAssetsTotalAmountERC20,

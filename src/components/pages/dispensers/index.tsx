@@ -17,13 +17,11 @@ import {
   ErrorSpan,
   UploadedSpan
 } from 'components/pages/common'
-import { TDispenserStatus } from 'types'
-import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusName } from 'helpers'
+import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusTag } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 import moment from 'moment'
-import Icons from 'icons'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -48,18 +46,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
-
-const defineStatusAppearance = (status: TDispenserStatus) => {
-  const statusName = defineDispenserStatusName(status)
-  if (status === 'NOT_UPLOADED') {
-    return <ErrorSpan>
-      <Icons.NotUploadedIcon />
-      {statusName}
-    </ErrorSpan>
-  }
-
-  return <UploadedSpan>{statusName}</UploadedSpan>
-}
 
 const Dispensers: FC<ReduxType> = ({
   addQRSet,
@@ -88,8 +74,8 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
         {dispensers.map(dispenser => {
-          const { title, links_count, dispenser_id, claim_duration, created_at, claim_start, active } = dispenser
-          const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active)
+          const { title, links_count, dispenser_id, claim_duration, created_at, claim_start, active, redirect_on, redirect_url } = dispenser
+          const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active, redirect_on, redirect_url)
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
@@ -107,7 +93,7 @@ const Dispensers: FC<ReduxType> = ({
             <BatchListValue>
               {links_count || 0}
             </BatchListValue>
-            <BatchListValue>{defineStatusAppearance(currentStatus)}</BatchListValue>
+            <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
             <DispensersListValueStyled>
               <Button
                 appearance='additional'

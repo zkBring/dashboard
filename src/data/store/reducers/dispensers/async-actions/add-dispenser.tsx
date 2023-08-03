@@ -47,7 +47,6 @@ const addDispenser = ({
         title
       }
 
-
       const { data } = await dispensersApi.create(newDispenser)
       if (data.success) {
         dispatch(actionsDispensers.addDispenser(data.dispenser))
