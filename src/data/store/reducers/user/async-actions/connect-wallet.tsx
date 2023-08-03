@@ -51,7 +51,6 @@ function connectWallet (
             dispatch(asyncActions.logout())
           }
         })
-        console.log({ connectorChainID })
         dispatch(actions.setSigner(signer))
         dispatch(actions.setProvider(provider))
         dispatch(actions.setAddress(connectorAddress))

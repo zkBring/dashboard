@@ -7,7 +7,6 @@ type TDefineAlchemyNetwork = (
 const defineAlchemyNetwork: TDefineAlchemyNetwork = (
   chainId
 ) => {
-  console.log({ chainId })
   switch (chainId) {
     case 1:
       return Network.ETH_MAINNET

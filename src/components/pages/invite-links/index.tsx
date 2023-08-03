@@ -28,13 +28,13 @@ const InviteLinks: FC<ReduxType> = ({
         <ButtonStyled
           onClick={() => {
             plausibleApi.invokeEvent({
-              eventName: 'start_guide',
+              eventName: 'learn_more',
               data: {
                 network: defineNetworkName(chainId),
                 component: 'invite_links'
               }
             })
-            window.open('https://docs.linkdrop.io/use-cases/run-nft-based-referral-invite-campaigns', '_blank')
+            window.open('https://www.linkdrop.io/invite-links', '_blank')
           }}
         >
           Learn more
