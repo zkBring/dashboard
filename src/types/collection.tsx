@@ -5,6 +5,9 @@ export type TCollectionToken = {
   name: string
   description?: string
   copies: number
+  properties: Record<string, string>
+  token_id: string
+  thumbnail?: string
 }
 
 export type TCollection = {
@@ -13,7 +16,7 @@ export type TCollection = {
   created_at?: string
   updated_at?: string
   symbol: string
-  thumbnail: string
+  thumbnail?: string
   sbt: boolean
   token_type: TTokenType
   address?: string

@@ -1,25 +1,23 @@
 import { FC, useState } from 'react'
 import {
   WidgetStyled,
-  ThumbnailContainer,
-  Thumbnail,
-  FileInputStyled,
   InputStyled,
-  InputContainer, 
-  InputTitleAdditional,
-  InputTitle,
   WidgetSubtitleStyled,
   StyledRadio,
   InputTitleWithToggle,
   ToggleStyled,
-  InputSubtitle,
-  Buttons,
   ButtonStyled
 } from './styled-components'
 import { RootState } from 'data/store'
+import {
+  ThumbnailUpload,
+  InputTitleAdditional,
+  InputTitle,
+  InputContainer,
+  InputSubtitle,
+  ButtonsContainer
+} from 'components/pages/common'
 import { connect } from 'react-redux'
-import CollectionPlaceholder from 'images/collection-placeholder.png'
-
 
 const defineIfButtonDisabled = (
   title: string,
@@ -92,18 +90,13 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
         note='If you don’t know what a symbol is, keep it blank, and we will use the auto-generated one based on title'
       />
     </InputContainer>
-    
-    <ThumbnailContainer>
-      <Thumbnail
-        src={thumbnail || CollectionPlaceholder}
-        alt='image'
-      />
-      <FileInputStyled
-        onChange={(data) => {
-          setThumbnail(data)
-        }}
-      />
-    </ThumbnailContainer>
+
+    <ThumbnailUpload
+      thumbnail={thumbnail}
+      setThumbnail={setThumbnail}
+      title='Collection Thumbnail'
+      note='(at least 200x200 px)'
+    />
 
     <InputContainer>
       <InputTitle>
@@ -139,7 +132,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       </InputSubtitle>
     </InputContainer>}
 
-    <Buttons>
+    <ButtonsContainer>
       <ButtonStyled>
         Back
       </ButtonStyled>
@@ -150,7 +143,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       >
         Deploy Collection
       </ButtonStyled>
-    </Buttons>
+    </ButtonsContainer>
     
   </WidgetStyled>
 }

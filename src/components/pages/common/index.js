@@ -6,6 +6,7 @@ import InitialGuide from './initial-guide'
 import DownloadQRPopup from './download-qr-popup'
 import UploadLinksPopup from './upload-links-popup'
 import TokenImage from './token-image'
+import ThumbnailUpload from './thumbnail-upload'
 
 import {
   Container,
@@ -27,14 +28,20 @@ import {
   ErrorSpan,
   UploadedSpan,
   WidgetSectionTitle,
-  WidgetSectionSubtitle
+  WidgetSectionSubtitle,
+  InputTitle,
+  InputTitleAdditional,
+  InputContainer,
+  InputSubtitle
 } from './styled-components'
 
 export {
   TransactionAside,
   Container,
   WidgetComponent,
+  InputContainer,
   InstructionNote,
+  InputSubtitle,
   WidgetAside,
   ErrorSpan,
   UploadedSpan,
@@ -55,8 +62,11 @@ export {
   AssetsList,
   InitialGuide,
   DownloadQRPopup,
+  InputTitle,
+  InputTitleAdditional,
   UploadLinksPopup,
   WidgetSectionTitle,
   WidgetSectionSubtitle,
-  TokenImage
+  TokenImage,
+  ThumbnailUpload
 }

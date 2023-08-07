@@ -23,6 +23,7 @@ import {
   InviteLinks,
   Collections,
   CollectionsCreateNew,
+  CollectionAddToken,
   CollectionsCreateInitial,
   Collection
 } from 'components/pages'
@@ -106,7 +107,7 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           path='/collections/:collection_id/token/new'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CollectionsCreateNew}
+          component={CollectionAddToken}
         />
 
         <ProtectedRoute

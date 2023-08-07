@@ -5,28 +5,26 @@ import {
   WidgetSubtitle,
   TableRow,
   TableText,
-  TableValue
+  TableValue,
+  ButtonsContainer
 } from 'components/pages/common'
 import {
   AsideContent,
-  SecondaryTextSpan,
   AsideStyled,
   MainContent,
-  TableValueFlex
+  TableValueFlex,
+  WidgetComponentStyled,
+  ButtonStyled,
+  TokensList,
+  TokenItem
 } from './styled-components'
-import {
-  defineDispenserStatusTag,
-} from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
-import { TCollection } from 'types'
+import { TCollection, TCollectionToken } from 'types'
 import { connect } from 'react-redux'
-import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
-import { decrypt, encrypt } from 'lib/crypto'
 import Icons from 'icons'
-import moment from 'moment'
-import { ethers } from 'ethers'
 import { shortenString, defineExplorerUrl } from 'helpers'
 import { TextLink } from 'components/common'
+import { Token } from './components'
 
 const mapStateToProps = ({
   collections: { collections, loading },
@@ -38,6 +36,16 @@ const mapStateToProps = ({
   loading,
   dashboardKey
 })
+
+const renderTokens = (tokens?: TCollectionToken[]) => {
+  if (!tokens || tokens.length === 0) {
+    return  <WidgetSubtitle>No tokens in this collection yet :(</WidgetSubtitle>
+  }
+
+  return <TokensList>
+    {tokens.map(token => <TokenItem><Token {...token} /></TokenItem>)}
+  </TokensList>
+}
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
@@ -65,8 +73,6 @@ const Dispenser: FC<ReduxType> = ({
     //   () => setStatsLoading(false)
     // )
   }, [])
-
-
   if (!collection || !dashboardKey) {
     return <Redirect to='/collections' />
   }
@@ -76,12 +82,26 @@ const Dispenser: FC<ReduxType> = ({
     token_type,
     claim_pattern,
     address,
-    chain_id
+    chain_id,
+    tokens
   } = collection
   const scannerUrl = defineExplorerUrl(chain_id, `/address/${address || ''}`)
 
+  const tokensList = renderTokens(tokens)
+
   return <Container>
     <MainContent>
+      <WidgetComponentStyled title='Tokens'>
+        {tokensList}
+        <ButtonsContainer>
+          <ButtonStyled
+            to={`/collections/${collection_id}/token/new`}
+            appearance='action'
+          >
+            Add token
+          </ButtonStyled>
+        </ButtonsContainer>
+      </WidgetComponentStyled>
       
     </MainContent>
 
@@ -111,12 +131,14 @@ const Dispenser: FC<ReduxType> = ({
           <TableRow>
             <TableText>Address</TableText>
             <TableValueFlex>
-              <Icons.MiniClipboardCopyIcon />
-              <TextLink
-                href={scannerUrl}
-              >
-                {shortenString(address)}
-              </TextLink>
+              {scannerUrl ? <>
+                <Icons.MiniClipboardCopyIcon />
+                <TextLink
+                  href={scannerUrl}
+                >
+                  {shortenString(address)}
+                </TextLink>
+              </> : shortenString(address)}
             </TableValueFlex>
           </TableRow>
         </AsideContent>

@@ -20,10 +20,12 @@ import Collections from './collections'
 import CollectionsCreateInitial from './collections-create-initial'
 import CollectionsCreateNew from './collections-create-new'
 import Collection from './collection'
+import CollectionAddToken from './collection-add-token'
 
 export {
   Page,
   Collection,
+  CollectionAddToken,
   CollectionsCreateNew,
   CollectionsCreateInitial,
   InviteLinks,
