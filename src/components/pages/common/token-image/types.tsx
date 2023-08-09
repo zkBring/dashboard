@@ -1,5 +1,5 @@
 export type TProps = {
-  src: string
+  src?: string
   className?: string
   address?: string
 }

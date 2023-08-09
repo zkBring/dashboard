@@ -20,7 +20,6 @@ import {
 import { formatDate, formatTime, shortenString, defineCollectionStatusTag } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -35,13 +34,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    addQRSet: (
-      title: string,
-      quantity: number,
-      callback: (id: string | number) => void
-    ) => dispatch(asyncQRsActions.addQRSet({ title, quantity, callback }))
-  }
+  return {}
 }
 
 // ignore to avoid IDE problem, should be solved soon
@@ -49,7 +42,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Collections: FC<ReduxType> = ({
-  addQRSet,
   collections,
   loading
 }) => {
@@ -72,19 +64,19 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabel>All Tokens & Copies</BatchListLabel>
         <CollectionsListLabelAligned>Actions</CollectionsListLabelAligned>
         {collections.map(collection => {
-          const { title, collection_id, created_at, tokens_amount, address, thumbnail } = collection
+          const { title, collection_id, created_at, tokens_amount, token_address, thumbnail } = collection
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           return <>
             <CollectionsListLabelStyled>
-              <TokenImageStyled src={thumbnail} address={address} />
+              <TokenImageStyled src={thumbnail} address={token_address} />
               {title}
             </CollectionsListLabelStyled>
             <BatchListValue>
               {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
             </BatchListValue>
             <BatchListValue>
-              {shortenString(address)}
+              {shortenString(token_address)}
             </BatchListValue>
             <BatchListValue>
               {defineCollectionStatusTag(tokens_amount)}

@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import {
   Container,
@@ -25,6 +25,8 @@ import Icons from 'icons'
 import { shortenString, defineExplorerUrl } from 'helpers'
 import { TextLink } from 'components/common'
 import { Token } from './components'
+import { collectionsApi } from 'data/api'
+import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
 
 const mapStateToProps = ({
   collections: { collections, loading },
@@ -49,43 +51,49 @@ const renderTokens = (tokens?: TCollectionToken[]) => {
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    
+    getCollectionData: (
+      collection_id: string
+    ) => {
+      return dispatch(asyncCollectionsActions.getCollectionData(collection_id))
+    }
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Dispenser: FC<ReduxType> = ({
   collections,
   loading,
   dashboardKey,
-  chainId
+  chainId,
+  getCollectionData
 }) => {
   const { collection_id } = useParams<{collection_id: string}>()
   const collection: TCollection | undefined = collections.find(collection => String(collection.collection_id) === collection_id)
   const history = useHistory()
 
-
   useEffect(() => {
-    // if (!dispenser) { return }
-    // getDispenserStats(
-    //   dispenser.dispenser_id as string,
-    //   () => setStatsLoading(false)
-    // )
+    if (collection_id) {
+      getCollectionData(collection_id)
+    }
   }, [])
+
   if (!collection || !dashboardKey) {
     return <Redirect to='/collections' />
   }
 
+
   const {
     symbol,
-    token_type,
+    token_standard,
     claim_pattern,
-    address,
+    token_address,
     chain_id,
     tokens
   } = collection
-  const scannerUrl = defineExplorerUrl(chain_id, `/address/${address || ''}`)
+
+  const scannerUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
 
   const tokensList = renderTokens(tokens)
 
@@ -95,6 +103,7 @@ const Dispenser: FC<ReduxType> = ({
         {tokensList}
         <ButtonsContainer>
           <ButtonStyled
+            loading={loading}
             to={`/collections/${collection_id}/token/new`}
             appearance='action'
           >
@@ -120,7 +129,7 @@ const Dispenser: FC<ReduxType> = ({
 
           <TableRow>
             <TableText>Token type</TableText>
-            <TableValue>{token_type}</TableValue>
+            <TableValue>{token_standard}</TableValue>
           </TableRow>
 
           <TableRow>
@@ -136,9 +145,9 @@ const Dispenser: FC<ReduxType> = ({
                 <TextLink
                   href={scannerUrl}
                 >
-                  {shortenString(address)}
+                  {shortenString(token_address)}
                 </TextLink>
-              </> : shortenString(address)}
+              </> : shortenString(token_address)}
             </TableValueFlex>
           </TableRow>
         </AsideContent>

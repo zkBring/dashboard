@@ -6,7 +6,7 @@ export function addCollection(collection: TCollection) {
   return action(Constants.COLLECTIONS_ADD_NEW_COLLECTION, collection)
 }
 
-export function setaddCollections(collections: TCollection[]) {
+export function setCollections(collections: TCollection[]) {
   return action(Constants.COLLECTIONS_SET_COLLECTIONS, collections)
 }
 

@@ -76,7 +76,7 @@ const mapStateToProps = ({
   whitelisted
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch  & Dispatch<CampaignActions>) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
   return {
     checkIfApproved: () => {
       dispatch(

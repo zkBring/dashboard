@@ -4,7 +4,7 @@ import TTokenType from "./token-type"
 export type TCollectionToken = {
   name: string
   description?: string
-  copies: number
+  copies: string
   properties: Record<string, string>
   token_id: string
   thumbnail?: string
@@ -12,17 +12,17 @@ export type TCollectionToken = {
 
 export type TCollection = {
   title: string
-  collection_id: string
+  collection_id?: string
   created_at?: string
   updated_at?: string
   symbol: string
   thumbnail?: string
   sbt: boolean
-  token_type: TTokenType
-  address?: string
+  token_standard: TTokenType
+  token_address?: string
   tokens?: TCollectionToken[]
-  tokens_amount: number
+  tokens_amount: string
   claim_pattern: TClaimPattern
-  chain_id: number
+  chain_id: String
 }
 

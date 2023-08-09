@@ -16,6 +16,7 @@ import {
 const ThumbnailUpload: FC<TProps> = ({
   thumbnail,
   setThumbnail,
+  setFile,
   title,
   note,
   subtitle
@@ -33,8 +34,10 @@ const ThumbnailUpload: FC<TProps> = ({
         alt='image'
       />
       <FileInputStyled
-        onChange={(data) => {
-          setThumbnail(data)
+        onChange={(thumbnail, file) => {
+          console.log({ thumbnail, file })
+          thumbnail && setThumbnail(thumbnail)
+          file && setFile(file)
         }}
       />
     </ThumbnailContainer>

@@ -8,7 +8,7 @@ import {
   ToggleStyled,
   ButtonStyled
 } from './styled-components'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import {
   ThumbnailUpload,
   InputTitleAdditional,
@@ -17,14 +17,17 @@ import {
   InputSubtitle,
   ButtonsContainer
 } from 'components/pages/common'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
 
 const defineIfButtonDisabled = (
   title: string,
   symbol: string,
-  thumbnail: string
+  thumbnail: string,
+  loading: boolean
 ) => {
-  return !title || !symbol || !thumbnail
+  return !title || !symbol || !thumbnail || loading
 }
 
 const mapStateToProps = ({
@@ -37,16 +40,42 @@ const mapStateToProps = ({
   loading
 })
 
-type ReduxType = ReturnType<typeof mapStateToProps>
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    createCollectionERC1155: (
+      title: string,
+      symbol: string,
+      mint: boolean,
+      sbt: boolean,
+      file?: File,
+      thumbnail?: string,
+      callback?: () => void
+    ) => dispatch(asyncCollectionsActions.createCollectionERC1155(
+      title,
+      symbol,
+      mint,
+      sbt,
+      file,
+      thumbnail,
+      callback
+    ))
+  }
+}
+
+// @ts-ignore
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const CollectionsCreateInitial: FC<ReduxType> = ({
-  loading
+  loading,
+  createCollectionERC1155
 }) => {
   const [ thumbnail, setThumbnail ] = useState<string>('')
   const [ title, setTitle ] = useState<string>('')
   const [ symbol, setSymbol ] = useState<string>('')
   const [ mint, setMint ] = useState<boolean>(false)
-  const [ SBT, setSBT ] = useState<boolean>(false)
+  const [ file, setFile ] = useState<File | undefined>(undefined)
+  const [ sbt, setSbt ] = useState<boolean>(false)
+  const history = useHistory()
 
   const radios = [
     {
@@ -69,6 +98,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
         Collection Title <InputTitleAdditional>(max. 200 symbols)</InputTitleAdditional>
       </InputTitle>
       <InputStyled
+        disabled={loading}
         value={title}
         onChange={(value) => {
           setTitle(value)
@@ -82,6 +112,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
         Collection Symbol <InputTitleAdditional>(optional, not more than 5 symbols recommended)</InputTitleAdditional>
       </InputTitle>
       <InputStyled
+        disabled={loading}
         value={symbol}
         onChange={(value) => {
           setSymbol(value.toUpperCase())
@@ -95,6 +126,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       thumbnail={thumbnail}
       setThumbnail={setThumbnail}
       title='Collection Thumbnail'
+      setFile={setFile}
       note='(at least 200x200 px)'
     />
 
@@ -108,7 +140,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
         value={mint}
         onChange={value => {
           if (!value) {
-            setSBT(false)
+            setSbt(false)
           }
           setMint(value)
         }}
@@ -119,11 +151,11 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       <InputTitleWithToggle>
         Make tokens non-transferrable (SBT)
         <ToggleStyled
-          value={SBT}
+          value={sbt}
           size='small'
-          disabled={loading}
+          disabled={true} // for now we disable it
           onChange={((value) => {
-            setSBT(value)
+            setSbt(value)
           })}
         />
       </InputTitleWithToggle>
@@ -139,7 +171,19 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
 
       <ButtonStyled
         appearance='action'
-        disabled={defineIfButtonDisabled(title, symbol, thumbnail)}
+        loading={loading}
+        disabled={defineIfButtonDisabled(title, symbol, thumbnail, loading)}
+        onClick={() => {  
+          createCollectionERC1155(
+            title,
+            symbol,
+            mint,
+            sbt,
+            file,
+            thumbnail,
+            () => history.push('/collections')
+          )
+        }}
       >
         Deploy Collection
       </ButtonStyled>
@@ -148,4 +192,4 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
   </WidgetStyled>
 }
 
-export default connect(mapStateToProps)(CollectionsCreateInitial)
+export default connect(mapStateToProps, mapDispatcherToProps)(CollectionsCreateInitial)
