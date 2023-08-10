@@ -4,13 +4,11 @@ import * as actionsCollections from '../actions'
 import { CollectionsActions } from '../types'
 import { UserActions } from '../../user/types'
 import { IAppDispatch } from 'data/store'
-import {  defineThirdwebNetworkName, alertError } from 'helpers'
+import {  alertError } from 'helpers'
 import { RootState } from 'data/store'
-import { ThirdwebSDK } from '@thirdweb-dev/sdk'
 import { collectionsApi } from 'data/api'
-import { TCollection, TClaimPattern, TCollectionToken } from 'types'
+import { TCollectionToken } from 'types'
 
-const { REACT_APP_THIRDWEB_CLIENT_ID } = process.env
 
 function getCollectionData (
   collectionId: string,
