@@ -35,7 +35,6 @@ const ThumbnailUpload: FC<TProps> = ({
       />
       <FileInputStyled
         onChange={(thumbnail, file) => {
-          console.log({ thumbnail, file })
           thumbnail && setThumbnail(thumbnail)
           file && setFile(file)
         }}
