@@ -176,8 +176,9 @@ const Dispenser: FC<ReduxType> = ({
             Create Claim Links 
           </ButtonFullWidth>
       </WidgetAsideStyled>
-
-      <AttentionContainer
+      
+      {/* hide for now */}
+      {false && <AttentionContainer
         title='Appearance on marketplaces'
         text='Your collection can look different on marketplaces like Rarible and Opensea. Read our small guide on how to set up you collection appearance on marketplaces.'
         actions={[
@@ -195,7 +196,7 @@ const Dispenser: FC<ReduxType> = ({
             }
           }
         ]}
-      />
+      />}
     </div>
     
   </Container>
