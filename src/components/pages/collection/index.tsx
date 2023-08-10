@@ -6,7 +6,8 @@ import {
   TableRow,
   TableText,
   TableValue,
-  ButtonsContainer
+  ButtonsContainer,
+  AttentionContainer
 } from 'components/pages/common'
 import {
   AsideContent,
@@ -16,16 +17,18 @@ import {
   WidgetComponentStyled,
   ButtonStyled,
   TokensList,
-  TokenItem
+  TokenItem,
+  WidgetAsideStyled,
+  ButtonFullWidth
 } from './styled-components'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TCollection, TCollectionToken } from 'types'
 import { connect } from 'react-redux'
 import Icons from 'icons'
-import { shortenString, defineExplorerUrl } from 'helpers'
+import { shortenString, defineExplorerUrl, defineNetworkName } from 'helpers'
 import { TextLink } from 'components/common'
 import { Token } from './components'
-import { collectionsApi } from 'data/api'
+import { plausibleApi } from 'data/api'
 import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
 
 const mapStateToProps = ({
@@ -39,7 +42,14 @@ const mapStateToProps = ({
   dashboardKey
 })
 
-const renderTokens = (tokens?: TCollectionToken[]) => {
+const renderTokens = (
+  loading: boolean,
+  tokens?: TCollectionToken[]
+) => {
+  if (loading) {
+    return  <WidgetSubtitle>Loading</WidgetSubtitle>
+  }
+
   if (!tokens || tokens.length === 0) {
     return  <WidgetSubtitle>No tokens in this collection yet :(</WidgetSubtitle>
   }
@@ -83,7 +93,6 @@ const Dispenser: FC<ReduxType> = ({
     return <Redirect to='/collections' />
   }
 
-
   const {
     symbol,
     token_standard,
@@ -95,7 +104,10 @@ const Dispenser: FC<ReduxType> = ({
 
   const scannerUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
 
-  const tokensList = renderTokens(tokens)
+  const tokensList = renderTokens(
+    loading,
+    tokens
+  )
 
   return <Container>
     <MainContent>
@@ -152,6 +164,38 @@ const Dispenser: FC<ReduxType> = ({
           </TableRow>
         </AsideContent>
       </AsideStyled>
+
+      <WidgetAsideStyled title='Whats next?'>
+        <WidgetSubtitle>
+          You got your first token minted, go ahead and create your first set of Linkdrop Claim Links, using this NFT contract
+        </WidgetSubtitle>
+        <ButtonFullWidth
+          to={`/campaigns/new`}
+          appearance='action'
+        >
+            Create Claim Links 
+          </ButtonFullWidth>
+      </WidgetAsideStyled>
+
+      <AttentionContainer
+        title='Appearance on marketplaces'
+        text='Your collection can look different on marketplaces like Rarible and Opensea. Read our small guide on how to set up you collection appearance on marketplaces.'
+        actions={[
+          {
+            title: 'Read guide',
+            onClick: () => {
+              plausibleApi.invokeEvent({
+                eventName: 'start_guide',
+                data: {
+                  network: defineNetworkName(chainId),
+                  component: 'aside'
+                }
+              })
+              window.open('https://docs.linkdrop.io/how-tos/main-guide/', '_blank')
+            }
+          }
+        ]}
+      />
     </div>
     
   </Container>

@@ -208,7 +208,7 @@ const CollectionAddToken: FC<ReduxType> = ({
           <ButtonStyled
             size='extra-small'
             appearance='additional'
-            disabled={!propertyValue || !propertyName}
+            disabled={!propertyValue || !propertyName || loading}
             onClick={() => {
               setPropertyValue('')
               setPropertyName('')
@@ -239,7 +239,9 @@ const CollectionAddToken: FC<ReduxType> = ({
               properties,
               file,
               thumbnail,
-              () => {}
+              () => {
+                history.push(`/collections/${collection_id}`)
+              }
             )
           }}
           appearance='action'

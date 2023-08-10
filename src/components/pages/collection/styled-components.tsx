@@ -11,6 +11,10 @@ export const WidgetComponentStyled = styled(WidgetComponent)`
   max-width: 740px;
 `
 
+export const WidgetAsideStyled = styled(WidgetComponent)`
+  max-width: 358px;
+`
+
 export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
 `
@@ -41,6 +45,11 @@ export const TableValueFlex = styled(TableValue)`
 
 export const ButtonStyled = styled(Button)`
   
+`
+
+export const ButtonFullWidth = styled(Button)`
+  width: 100%;
+  margin-top: 32px;
 `
 
 export const TokensList = styled.ul`

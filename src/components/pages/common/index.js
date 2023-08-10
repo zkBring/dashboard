@@ -7,6 +7,7 @@ import DownloadQRPopup from './download-qr-popup'
 import UploadLinksPopup from './upload-links-popup'
 import TokenImage from './token-image'
 import ThumbnailUpload from './thumbnail-upload'
+import AttentionContainer from './attention-container'
 
 import {
   Container,
@@ -55,6 +56,7 @@ export {
   WidgetSubtitle,
   WidgetTitle,
   AsideDivider,
+  AttentionContainer,
   TableRow,
   TableValueShorten,
   TableText,

@@ -79,7 +79,7 @@ const Collections: FC<ReduxType> = ({
               {shortenString(token_address)}
             </BatchListValue>
             <BatchListValue>
-              {defineCollectionStatusTag(tokens_amount)}
+              {defineCollectionStatusTag(tokens_amount || '0')}
             </BatchListValue>
             <CollectionsListValueStyled>
               <Button

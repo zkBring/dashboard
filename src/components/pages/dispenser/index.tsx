@@ -8,6 +8,7 @@ import {
   TableValue,
   DownloadQRPopup,
   UploadLinksPopup,
+  AttentionContainer
 } from 'components/pages/common'
 import {
   Buttons,
@@ -22,7 +23,7 @@ import {
   AsideWidgetButton,
   MainContent
 } from './styled-components'
-import { Statistics, RedirectWidget, ContactUs } from './components'
+import { Statistics, RedirectWidget } from './components'
 import { TextLink } from 'components/common'
 import {
   defineDispenserStatus,
@@ -38,7 +39,8 @@ import { decrypt, encrypt } from 'lib/crypto'
 import Icons from 'icons'
 import moment from 'moment'
 import { ethers } from 'ethers'
-import { defineClaimAppURL } from 'helpers'
+import { defineClaimAppURL, defineNetworkName } from 'helpers'
+import { plausibleApi } from 'data/api'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -409,7 +411,38 @@ const Dispenser: FC<ReduxType> = ({
         linksClaimed={links_claimed || 0}
         downloadReport={() => downloadReport(dispenser_id as string)}
       />
-      <ContactUs chainId={chainId}/>
+      <AttentionContainer
+        title='Got questions?'
+        text='If you are facing troubles with dispenser app, read documentation or contacts us and we help resolve your issue'
+        actions={[
+          {
+            title: 'Contact us',
+            onClick: () => {
+              plausibleApi.invokeEvent({
+                eventName: 'contact',
+                data: {
+                  network: defineNetworkName(chainId),
+                  component: 'dispenser'
+                }
+              })
+              window.open('https://linkdrop.io/contact-us', '_blank')
+            }
+          },
+          {
+            title: 'Read FAQ',
+            onClick: () => {
+              plausibleApi.invokeEvent({
+                eventName: 'view_docs',
+                data: {
+                  network: defineNetworkName(chainId),
+                  component: 'dispenser'
+                }
+              })
+              window.open('https://docs.linkdrop.io/how-tos/multi-scannable-qr-code', '_blank')
+            }
+          }
+        ]}
+      />
     </div>
     
   </Container>

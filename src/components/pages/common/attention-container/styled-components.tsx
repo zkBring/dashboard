@@ -24,9 +24,9 @@ export const Text = styled.p`
 `
 
 export const ButtonsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 `
 
 export const ButtonStyled = styled(Button)`

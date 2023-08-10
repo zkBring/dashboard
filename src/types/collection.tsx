@@ -21,7 +21,7 @@ export type TCollection = {
   token_standard: TTokenType
   token_address?: string
   tokens?: TCollectionToken[]
-  tokens_amount: string
+  tokens_amount?: string
   claim_pattern: TClaimPattern
   chain_id: String
 }

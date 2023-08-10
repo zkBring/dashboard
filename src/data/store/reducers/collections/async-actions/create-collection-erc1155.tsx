@@ -36,7 +36,7 @@ function createCollectionERC1155(
         clientId: REACT_APP_THIRDWEB_CLIENT_ID as string
       })
 
-      const contract = await sdk.deployer.deployBuiltInContract("edition", {
+      const contract = await sdk.deployer.deployBuiltInContract("edition-drop", {
         name: title,
         primary_sale_recipient: address,
         voting_token_address: address,
@@ -51,7 +51,6 @@ function createCollectionERC1155(
         sbt,
         token_standard: 'ERC1155',
         token_address: contract,
-        tokens_amount: '0',
         claim_pattern: mint ? 'mint' : 'transfer',
         chain_id: String(chainId)
       })
