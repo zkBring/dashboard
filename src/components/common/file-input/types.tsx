@@ -1,3 +1,5 @@
+import { TFileFormat } from 'types'
+
 export type TProps = {
   onChange: (
     data: string | null,
@@ -6,4 +8,6 @@ export type TProps = {
   name?: string
   placeholder?: string
   className?: string
+  sizeAllowed?: number
+  formatAllowed?: TFileFormat[]
 }

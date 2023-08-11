@@ -24,3 +24,12 @@ export const Thumbnail = styled.img`
 export const FileInputStyled = styled(FileInput)`
   flex: 1;
 `
+
+export const ThumbnailVideo = styled.video`
+  min-width: 126px;
+  max-width: 126px;
+  height: 126px;
+  margin-right: 24px;
+  border-radius: 10px;
+  object-fit: cover;
+`

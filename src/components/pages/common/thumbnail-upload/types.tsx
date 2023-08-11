@@ -1,3 +1,5 @@
+import { TFileFormat } from 'types'
+
 export type TProps = {
   thumbnail?: string
   setThumbnail: (value: string) => void
@@ -5,4 +7,6 @@ export type TProps = {
   title: string
   note: string
   subtitle?: string
+  sizeAllowed?: number
+  formatAllowed?: TFileFormat[]
 }

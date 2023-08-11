@@ -1,6 +1,12 @@
 import styled from "styled-components"
 import { Button } from 'components/common'
-import { WidgetTitle, BatchListValue, BatchList, BatchListLabel, TokenImage } from 'components/pages/common'
+import {
+  WidgetTitle,
+  BatchListValue,
+  BatchList,
+  BatchListLabel,
+  TokenImage
+} from 'components/pages/common'
 
 export const Container = styled.div`
   max-width: 1120px;

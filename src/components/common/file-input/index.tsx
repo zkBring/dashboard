@@ -6,12 +6,15 @@ import {
   ButtonStyled
 } from './styled-components'
 import { TProps } from './types'
+import { TFileFormat } from 'types'
 
 const FileInput: FC<TProps> = ({
   onChange,
   name,
   placeholder,
-  className
+  className,
+  sizeAllowed,
+  formatAllowed
 }) => {
   const inputRef = useRef(null)
 
@@ -22,6 +25,18 @@ const FileInput: FC<TProps> = ({
     if (!file || !file.files) { return }
     const fileObject = file.files && file.files[0]
     if (fileObject) {
+      if (sizeAllowed) {
+        if (sizeAllowed < fileObject.size) {
+          return alert(`Allowed size is ${sizeAllowed}. Size of the file is ${fileObject.size}`)
+        }
+        
+      }
+      if (formatAllowed) {
+        if (!formatAllowed.includes(fileObject.type as TFileFormat)) {
+          return alert(`Format ${fileObject.type} is not allowed`)
+        }
+      }
+      
       setFileName(fileObject.name)
     }
     const reader = new FileReader()
