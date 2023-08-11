@@ -24,7 +24,6 @@ const FileInput: FC<TProps> = ({
     const file = inputRef.current as HTMLInputElement | null
     if (!file || !file.files) { return }
     const fileObject = file.files && file.files[0]
-    console.log({ fileObject })
     if (fileObject) {
       if (sizeAllowed) {
         if (sizeAllowed < fileObject.size) {
@@ -33,7 +32,6 @@ const FileInput: FC<TProps> = ({
         
       }
       if (formatAllowed) {
-        console.log({ formatAllowed, type: fileObject.type })
         if (!formatAllowed.includes(fileObject.type as TFileFormat)) {
           return alert(`Format ${fileObject.type} is not allowed`)
         }

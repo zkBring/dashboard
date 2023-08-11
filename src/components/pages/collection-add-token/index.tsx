@@ -138,7 +138,7 @@ const CollectionAddToken: FC<ReduxType> = ({
         sizeAllowed={5000000}
         formatAllowed={[ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4' ]}
         title='Upload a  file'
-        note='(.PNG, .JPG at least 200x200 px)'
+        note='(.PNG, .JPG, .GIF, .MP4. Max 5mb)'
       />
 
       <InputContainer>
