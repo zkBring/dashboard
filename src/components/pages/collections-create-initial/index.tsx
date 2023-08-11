@@ -147,7 +147,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       />
     </InputContainer>
 
-    {mint && <InputContainer>
+    {false && mint && <InputContainer>
       <InputTitleWithToggle>
         Make tokens non-transferrable (SBT)
         <ToggleStyled

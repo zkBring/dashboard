@@ -14,6 +14,7 @@ export const ThumbnailContainer = styled.div`
 
 export const Thumbnail = styled.img`
   min-width: 126px;
+  max-width: 126px;
   height: 126px;
   margin-right: 24px;
   border-radius: 10px;

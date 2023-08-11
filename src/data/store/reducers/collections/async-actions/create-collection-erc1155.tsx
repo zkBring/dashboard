@@ -36,7 +36,7 @@ function createCollectionERC1155(
         clientId: REACT_APP_THIRDWEB_CLIENT_ID as string
       })
 
-      const contract = await sdk.deployer.deployBuiltInContract("edition-drop", {
+      const contract = await sdk.deployer.deployBuiltInContract("edition", {
         name: title,
         primary_sale_recipient: address,
         voting_token_address: address,

@@ -8,11 +8,16 @@ export const InputComponent = styled(Input)`
   top: 0;
   left: 0;
   right: 0;
-  cursor: pointer;
   bottom: 0;
   margin-bottom: 0;
   z-index: 2;
+
+  input {
+    padding-left: 100%;
+    cursor: pointer;
+  }
 `
+
 
 export const InputContainer = styled.div`
   height: 42px;
@@ -21,6 +26,7 @@ export const InputContainer = styled.div`
   border-radius: 8px;
   width: 100%;
   padding: 0 120px 0 12px;
+  overflow:hidden;
   position: relative;
   white-space: nowrap;
   overflow: hidden;

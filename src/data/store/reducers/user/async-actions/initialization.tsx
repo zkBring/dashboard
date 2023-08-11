@@ -45,7 +45,7 @@ const initialization = () => {
       const dispensers: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
       dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
       const collections: { data: { collections: TCollection[] } } = await collectionsApi.get()
-      dispatch(colllectionsActions.setCollections(collections.data.collections))
+      dispatch(colllectionsActions.setCollections(collections.data.collections.filter(collection => collection.chain_id === String(chainId))))
     } catch (err) {
       console.log(err)
       alertError('Error occured with data fetch, check console for information')

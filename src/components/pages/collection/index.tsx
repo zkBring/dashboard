@@ -178,25 +178,25 @@ const Dispenser: FC<ReduxType> = ({
       </WidgetAsideStyled>
       
       {/* hide for now */}
-      {false && <AttentionContainer
-        title='Appearance on marketplaces'
-        text='Your collection can look different on marketplaces like Rarible and Opensea. Read our small guide on how to set up you collection appearance on marketplaces.'
+      <AttentionContainer
+        title='Make Non-Transferable (SBT)'
+        text='Contact us for instructions on how to make you tokens non-transferable (turning them to Soulbound Tokens) '
         actions={[
           {
-            title: 'Read guide',
+            title: 'Contact Us',
             onClick: () => {
               plausibleApi.invokeEvent({
-                eventName: 'start_guide',
+                eventName: 'contact',
                 data: {
                   network: defineNetworkName(chainId),
-                  component: 'aside'
+                  component: 'dispenser'
                 }
               })
-              window.open('https://docs.linkdrop.io/how-tos/main-guide/', '_blank')
+              window.open('https://linkdrop.io/contact-us', '_blank')
             }
           }
         ]}
-      />}
+      />
     </div>
     
   </Container>
