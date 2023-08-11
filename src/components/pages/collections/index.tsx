@@ -61,7 +61,7 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabel>Title</BatchListLabel>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Address</BatchListLabel>
-        <BatchListLabel>All Tokens & Copies</BatchListLabel>
+        <BatchListLabel>All token copies</BatchListLabel>
         <CollectionsListLabelAligned>Actions</CollectionsListLabelAligned>
         {collections.map(collection => {
           const { title, collection_id, created_at, tokens_amount, token_address, thumbnail } = collection
