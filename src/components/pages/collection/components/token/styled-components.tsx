@@ -5,11 +5,21 @@ export const Container = styled.div`
 `
 
 export const TokenImage = styled.img`
-  width: 104px;
+  max-width: 104px;
+  min-width: 104px;
   height: 105px;
   margin-right: 24px;
   border-radius: 10px;
-  object-fit: 10px;
+  object-fit: cover;
+`
+
+export const TokenVideo = styled.video`
+  max-width: 104px;
+  min-width: 104px;
+  height: 105px;
+  margin-right: 24px;
+  border-radius: 10px;
+  object-fit: cover;
 `
 
 export const TokenData = styled.ul`

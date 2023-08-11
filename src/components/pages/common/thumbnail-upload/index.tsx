@@ -1,8 +1,9 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
   ThumbnailContainer,
   FileInputStyled,
-  Thumbnail
+  Thumbnail,
+  ThumbnailVideo
 } from './styled-component'
 import { TProps } from './types'
 import CollectionPlaceholder from 'images/collection-placeholder.png'
@@ -12,6 +13,7 @@ import {
   InputContainer,
   InputSubtitle
 } from 'components/pages/common'
+import { TFileFormat } from 'types'
 
 const ThumbnailUpload: FC<TProps> = ({
   thumbnail,
@@ -19,8 +21,29 @@ const ThumbnailUpload: FC<TProps> = ({
   setFile,
   title,
   note,
-  subtitle
+  subtitle,
+  sizeAllowed,
+  formatAllowed
 }) => {
+  const renderThumbnail = () => {
+    if (!thumbnail) {
+      return <Thumbnail
+        src={CollectionPlaceholder}
+        alt='image'
+      />
+    }
+    if (thumbnail.includes('video')) {
+      return <ThumbnailVideo autoPlay loop muted key={thumbnail}>
+        <source src={thumbnail} />
+        Your browser does not support the video tag.
+      </ThumbnailVideo>
+    }
+
+    return <Thumbnail
+      src={thumbnail}
+      alt='image'
+    />
+  }
   return <InputContainer>
     <InputTitle>
       {title} <InputTitleAdditional>{note}</InputTitleAdditional>
@@ -29,14 +52,15 @@ const ThumbnailUpload: FC<TProps> = ({
       {subtitle}
     </InputSubtitle>}
     <ThumbnailContainer>
-      <Thumbnail
-        src={thumbnail || CollectionPlaceholder}
-        alt='image'
-      />
+      {renderThumbnail()}
       <FileInputStyled
+        sizeAllowed={sizeAllowed}
+        formatAllowed={formatAllowed}
         onChange={(thumbnail, file) => {
           thumbnail && setThumbnail(thumbnail)
-          file && setFile(file)
+          if (file) {
+            setFile(file)
+          }
         }}
       />
     </ThumbnailContainer>

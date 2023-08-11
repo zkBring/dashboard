@@ -9,7 +9,8 @@ import {
   TokenDataLabel,
   TokenDataValue,
   TokenDataProperties,
-  TokenDataProperty
+  TokenDataProperty,
+  TokenVideo
 } from './styled-components'
 import CollectionPlaceholder from 'images/collection-placeholder.png'
 
@@ -21,12 +22,29 @@ export const Token: FC<TCollectionToken> = ({
   token_id,
   thumbnail
 }) => {
-  return <Container>
-    <TokenImage
-      src={thumbnail || CollectionPlaceholder}
-      alt='name'
-    />
 
+  const renderThumbnail = () => {
+    if (!thumbnail) {
+      return <TokenImage
+        src={CollectionPlaceholder}
+        alt={name}
+      />
+    }
+    if (thumbnail.includes('video')) {
+      return <TokenVideo autoPlay loop muted key={thumbnail}>
+        <source src={thumbnail} />
+        Your browser does not support the video tag.
+      </TokenVideo>
+    }
+
+    return <TokenImage
+      src={thumbnail}
+      alt={name}
+    />
+  }
+
+  return <Container>
+    {renderThumbnail()}
     <TokenData>
       <TokenDataItem>
         <TokenDataLabel>Copies: </TokenDataLabel>

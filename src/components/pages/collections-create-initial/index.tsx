@@ -75,6 +75,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
   const [ mint, setMint ] = useState<boolean>(false)
   const [ file, setFile ] = useState<File | undefined>(undefined)
   const [ sbt, setSbt ] = useState<boolean>(false)
+  console.log({ thumbnail })
   const history = useHistory()
 
   const radios = [
@@ -125,9 +126,11 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
     <ThumbnailUpload
       thumbnail={thumbnail}
       setThumbnail={setThumbnail}
+      sizeAllowed={5000000}
+      formatAllowed={[ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4' ]}
       title='Collection Thumbnail'
       setFile={setFile}
-      note='(at least 200x200 px)'
+      note='(.PNG, .JPG at least 200x200 px)'
     />
 
     <InputContainer>

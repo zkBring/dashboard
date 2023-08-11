@@ -15,6 +15,7 @@ import TLink from './link'
 import TFormatDate from './format-date'
 import TFormatTime from './format-time'
 import TLinkParams from './link-params'
+import TFileFormat from './file-format'
 import { TSystem } from './system'
 import {
   TQRStatus,
@@ -77,6 +78,7 @@ export {
   DotType,
   CornerSquareType,
   CornerDotType,
+  TFileFormat,
   TQRImageOptions,
   TClaimPattern,
   TLinkContent,

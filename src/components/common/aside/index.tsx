@@ -72,7 +72,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
         <Icons.InviteLinksIcon />Invite Links
       </AsideMenuItem>
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
-        <Icons.InviteLinksIcon />Minter
+        <Icons.QRManagerIcon />Minter
       </AsideMenuItem>
     </AsideMenu>
 
