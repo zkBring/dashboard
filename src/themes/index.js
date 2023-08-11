@@ -4,6 +4,8 @@ const themes = {
 		secondaryTextColor: '#FFF', // secondary color of text
 		additionalTextColor: '#9D9D9D', // secondary color of text
 		linkTextColor: '#0C5EFF',
+		propertyTextColor: '#6294F5', //
+
 		disabledTextColor: '#979797', // disabled color of text
 		dangerTextColor: '#FF2C2C', // danger color of text
 		noteTextColor: '#C5C7CD', // note color of text
@@ -11,6 +13,7 @@ const themes = {
 		primaryBorderColor: '#E4E4E4',
 		secondaryBorderColor: '#FFF',
 		extraBorderColor: '#979797',
+		additionalBorderColor: '#9D9D9D',
 		disabledBorderColor: '#C5C7CD',
 
 		disabledColor: '#DFE0EB',
@@ -61,7 +64,9 @@ const themes = {
 		noteWarningBorderColor: '#D71E1E',
 
 		statusSuccessColor: '#19E46A',
-		statusStoppedColor: '#DFE0EB'
+		statusStoppedColor: '#DFE0EB',
+
+
 	},
 	dark: {
 		primaryTextColor: 'red',

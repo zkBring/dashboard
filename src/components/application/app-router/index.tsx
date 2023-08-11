@@ -20,7 +20,12 @@ import {
   Dispensers,
   DispenserCreate,
   Dispenser,
-  InviteLinks
+  InviteLinks,
+  Collections,
+  CollectionsCreateNew,
+  CollectionAddToken,
+  CollectionsCreateInitial,
+  Collection
 } from 'components/pages'
 
 import { connect } from 'react-redux'
@@ -68,6 +73,41 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={Dispensers}
+        />
+
+        <ProtectedRoute
+          path='/collections'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Collections}
+        />
+
+        <ProtectedRoute
+          path='/collections/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CollectionsCreateNew}
+        />
+
+        <ProtectedRoute
+          path='/collections/new/:type/initial'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CollectionsCreateInitial}
+        />
+
+        <ProtectedRoute
+          path='/collections/:collection_id'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Collection}
+        />
+
+        <ProtectedRoute
+          path='/collections/:collection_id/token/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CollectionAddToken}
         />
 
         <ProtectedRoute

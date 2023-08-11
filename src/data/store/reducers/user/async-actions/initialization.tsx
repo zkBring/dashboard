@@ -1,24 +1,18 @@
 import { Dispatch } from 'redux'
 import * as userActions from '../actions'
-import { TQRSet, TCampaign, TDispenser } from 'types'
+import { TQRSet, TCampaign, TDispenser, TCollection } from 'types'
 import * as qrsActions from '../../qrs/actions'
 import * as campaignsActions from '../../campaigns/actions'
 import * as dispensersActions from '../../dispensers/actions'
-import {
-  UserActions,
-} from '../types'
-import {
-  QRsActions
-} from '../../qrs/types'
-import {
-  CampaignsActions
-} from '../../campaigns/types'
-import {
-  DispensersActions
-} from '../../dispensers/types'
+import * as colllectionsActions from '../../collections/actions'
+import { UserActions } from '../types'
+import { QRsActions } from '../../qrs/types'
+import { CampaignsActions } from '../../campaigns/types'
+import { DispensersActions } from '../../dispensers/types'
+import { CollectionsActions } from '../../collections/types'
 import LinkdropSDK from 'linkdrop-sdk'
 import { RootState } from 'data/store'
-import { campaignsApi, qrsApi, dispensersApi } from 'data/api'
+import { campaignsApi, qrsApi, dispensersApi, collectionsApi } from 'data/api'
 import { alertError, defineClaimAppURL } from 'helpers'
 
 const {
@@ -28,7 +22,7 @@ const {
 
 const initialization = () => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions> & Dispatch<DispensersActions>,
+    dispatch: Dispatch<UserActions> & Dispatch<QRsActions> & Dispatch<CampaignsActions> & Dispatch<DispensersActions> & Dispatch<CollectionsActions>,
     getState: () => RootState
   ) => {
     const { user: { address, chainId, provider }} = getState()
@@ -50,6 +44,8 @@ const initialization = () => {
       dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
       const dispensers: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
       dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
+      const collections: { data: { collections: TCollection[] } } = await collectionsApi.get()
+      dispatch(colllectionsActions.setCollections(collections.data.collections.filter(collection => collection.chain_id === String(chainId))))
     } catch (err) {
       console.log(err)
       alertError('Error occured with data fetch, check console for information')

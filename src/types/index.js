@@ -48,7 +48,12 @@ import TButtonAppearance from './button-appearance'
 import TCampaignCreateStep from './campaign-create-step'
 import TCampaignDraft from './campaign-draft'
 import TFeatureName from './feature-name'
-import TDispenserStats from './dispenser-stats'
+import { TDispenserStats } from './dispenser-stats'
+
+import {
+  TCollection,
+  TCollectionToken
+} from './collection'
 
 export {
   TCampaign,
@@ -100,5 +105,7 @@ export {
   TBase64File,
   TCampaignNew,
   TLinkDecrypted,
-  TDistributionPattern
+  TDistributionPattern,
+  TCollection,
+  TCollectionToken
 }

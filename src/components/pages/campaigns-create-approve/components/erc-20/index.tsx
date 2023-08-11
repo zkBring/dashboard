@@ -113,7 +113,7 @@ const Erc20: FC<ReduxType > = ({
           }}
         />
         <InputsContainer>
-        <InputStyled
+          <InputStyled
             value={formData.tokenAmount}
             placeholder='Amount per link'
             onChange={value => {

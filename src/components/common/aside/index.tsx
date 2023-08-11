@@ -41,8 +41,7 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 const AsideComponent: FC<AsideProps & ReduxType> = ({
   authorizationStep,
-  chainId,
-  address
+  chainId
 }) => {
   const location = useLocation<LocationType>()
   if (authorizationStep !== 'authorized') {
@@ -71,6 +70,9 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       </AsideMenuItem>
       <AsideMenuItem to='/invite-links' active={location.pathname.includes('/invite-links')}>
         <Icons.InviteLinksIcon />Invite Links
+      </AsideMenuItem>
+      <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
+        <Icons.InviteLinksIcon />Minter
       </AsideMenuItem>
     </AsideMenu>
 

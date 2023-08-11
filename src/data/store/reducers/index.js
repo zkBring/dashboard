@@ -4,6 +4,7 @@ import campaign from './campaign/campaign'
 import campaigns from './campaigns/reducer'
 import qrs from './qrs/reducer'
 import dispensers from './dispensers/reducer'
+import collections from './collections/reducer'
 
 const reducers = {
   userReducer: user,
@@ -11,7 +12,8 @@ const reducers = {
   campaignReducer: campaign,
   campaignsReducer: campaigns,
   qrsReducer: qrs,
-  dispensersReducer: dispensers 
+  dispensersReducer: dispensers,
+  collectionsReducer: collections
 }
 
 export default reducers

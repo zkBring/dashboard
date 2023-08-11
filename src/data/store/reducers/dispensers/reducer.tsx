@@ -1,7 +1,5 @@
 import { DispensersState, DispensersActions } from './types'
 import { Constants } from './constants'
-import { TDispenser } from 'types'
-
 
 const initialState: DispensersState = {
   dispensers: [],

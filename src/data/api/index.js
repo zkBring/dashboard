@@ -6,6 +6,7 @@ import dashboardKeyApi from './dashboard-key-api'
 import plausibleApi from './plausible-api'
 import getTokenERC20List from './get-erc20-token-list'
 import dispensersApi from './dispensers-api'
+import collectionsApi from './collections-api'
 
 export {
   authorizationApi,
@@ -15,5 +16,6 @@ export {
   dashboardKeyApi,
   plausibleApi,
   getTokenERC20List,
-  dispensersApi
+  dispensersApi,
+  collectionsApi
 }
