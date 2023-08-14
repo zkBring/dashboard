@@ -21,8 +21,10 @@ const invokeEvent: TInvokeEvent = async ({
   try {
     return plausible.trackEvent(
       eventName,
-      {},
-      data
+      {
+        callback: () => console.log(`Plausible event sent: ${eventName}`),
+        props: data
+      }
     )
   } catch (err) {
     console.error(err)
