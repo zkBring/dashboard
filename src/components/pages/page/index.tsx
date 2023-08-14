@@ -162,12 +162,12 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   }
 }
 
-const PageComponent: FC<ReduxType> = ({ children, authorizationStep }) => {
-  
+const PageComponent: FC<ReduxType> = ({ children, authorizationStep }) => {  
   const location = useLocation<ILocationType>()
   const title = defineTitle(location.pathname)
   const breadcrumbs = defineBreadcrumbs(location.pathname)
   const withHeader = authorizationStep === 'authorized'
+
 
   return (
     <ThemeProvider theme={themes.light}>

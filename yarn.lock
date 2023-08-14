@@ -11466,6 +11466,11 @@ pkg-up@3.1.0:
   dependencies:
     find-up "^3.0.0"
 
+plausible-tracker-linkdrop@^0.3.9:
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/plausible-tracker-linkdrop/-/plausible-tracker-linkdrop-0.3.9.tgz#d6aeec3a875604fc38cee6e1c00160829ec11e0f"
+  integrity sha512-8/YmKXilt6eBnq8W+ZRWFJITSI3T6vhvxX82kA9ZV04brbWkYRqb5kozK3dVeN/TCYbVbOyJjcV47F+obZ7ZoQ==
+
 pngjs@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-5.0.0.tgz#e79dd2b215767fd9c04561c01236df960bce7fbb"
