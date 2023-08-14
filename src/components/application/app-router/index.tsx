@@ -27,7 +27,6 @@ import {
   CollectionsCreateInitial,
   Collection
 } from 'components/pages'
-
 import { connect } from 'react-redux'
 import { RootState } from 'data/store'
 
@@ -35,11 +34,9 @@ const mapStateToProps = ({ user: { provider, address } }: RootState) => ({ provi
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 const AppRouter: FC<ReduxType> = ({ address }) => {
-
   return <HashRouter>
     <Page>
       <Switch>
-
         <ProtectedRoute
           path='/campaigns/new'
           exact={true}
