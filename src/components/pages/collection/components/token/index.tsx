@@ -62,7 +62,7 @@ export const Token: FC<TCollectionToken> = ({
         <TokenDataLabel>Description: </TokenDataLabel>
         <TokenDataValue>{description}</TokenDataValue>
       </TokenDataItem>
-      <TokenDataItemProperties>
+      {properties && Object.entries(properties).length > 0 && <TokenDataItemProperties>
         <TokenDataLabel>Properties: </TokenDataLabel>
         <TokenDataValue>
           <TokenDataProperties>
@@ -74,7 +74,7 @@ export const Token: FC<TCollectionToken> = ({
           </TokenDataProperties>
           
         </TokenDataValue>
-      </TokenDataItemProperties>
+      </TokenDataItemProperties>}
     </TokenData>
     
   </Container>
