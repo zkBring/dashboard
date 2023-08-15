@@ -233,7 +233,7 @@ const CollectionAddToken: FC<ReduxType> = ({
         <ButtonStyled
           disabled={defineIfButtonDisabled(
             tokenName,
-            description,
+            thumbnail,
             loading
           )}
           loading={loading}
