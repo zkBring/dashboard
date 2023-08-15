@@ -19,13 +19,14 @@ import {
   TokensList,
   TokenItem,
   WidgetAsideStyled,
-  ButtonFullWidth
+  ButtonFullWidth,
+  CopyIcon
 } from './styled-components'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TCollection, TCollectionToken } from 'types'
 import { connect } from 'react-redux'
 import Icons from 'icons'
-import { shortenString, defineExplorerUrl, defineNetworkName } from 'helpers'
+import { shortenString, defineExplorerUrl, defineNetworkName, copyToClipboard } from 'helpers'
 import { TextLink } from 'components/common'
 import { Token } from './components'
 import { plausibleApi } from 'data/api'
@@ -152,10 +153,17 @@ const Dispenser: FC<ReduxType> = ({
           <TableRow>
             <TableText>Address</TableText>
             <TableValueFlex>
-              {scannerUrl ? <>
+              <CopyIcon
+                onClick={() => {
+                  copyToClipboard({ value: token_address as string })
+                }}
+              >
                 <Icons.MiniClipboardCopyIcon />
+              </CopyIcon>
+              {scannerUrl ? <>                
                 <TextLink
                   href={scannerUrl}
+                  target="_blank"
                 >
                   {shortenString(token_address)}
                 </TextLink>
