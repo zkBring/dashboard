@@ -63,3 +63,7 @@ export const TokensList = styled.ul`
 export const TokenItem = styled.li`
   margin-bottom: 32px;
 `
+
+export const CopyIcon = styled.span`
+  cursor: pointer;
+`

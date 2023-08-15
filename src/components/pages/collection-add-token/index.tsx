@@ -35,10 +35,10 @@ const mapStateToProps = ({
 
 const defineIfButtonDisabled = (
   tokenName: string,
-  description: string,
+  thumbnail: string,
   loading: boolean
 ) => {
-  return !tokenName || !description  || loading
+  return !tokenName  || loading || !thumbnail
 }
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -72,7 +72,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 const renderCopiesContainer = (
   copiesAmount: string,
   setCopiesAmount: (value: string) => void,
-  claimPattern: TClaimPattern
+  claimPattern: TClaimPattern,
+  loading: boolean
 ) => {
   if (claimPattern === 'mint') {
     return <InputContainer>
@@ -89,6 +90,7 @@ const renderCopiesContainer = (
       Number of copies
     </InputTitle>
     <InputStyled
+      disabled={loading}
       placeholder='e.g. 100'
       value={copiesAmount}
       onChange={(value) => {
@@ -149,6 +151,7 @@ const CollectionAddToken: FC<ReduxType> = ({
         <InputStyled
           placeholder='e.g. The Raffle Participation Pass NFT'
           value={tokenName}
+          disabled={loading}
           onChange={(value) => {
             setTokenName(value)
             return value
@@ -164,6 +167,7 @@ const CollectionAddToken: FC<ReduxType> = ({
         <TextAreaStyled
           placeholder='e.g. Here’s the Raffle Pass, all owners will be eligible to participate in our amazing upcoming campaign in collaboration with top web3 brands'
           value={description}
+          disabled={loading}
           onChange={(value) => {
             setDescription(value)
             return value
@@ -174,7 +178,8 @@ const CollectionAddToken: FC<ReduxType> = ({
       {renderCopiesContainer(
         copiesAmount,
         setCopiesAmount,
-        claimPattern
+        claimPattern,
+        loading
       )}
 
       <InputContainer>
@@ -193,6 +198,7 @@ const CollectionAddToken: FC<ReduxType> = ({
           <PropertiesInputStyled
             value={propertyName}
             placeholder='e.g. Event'
+            disabled={loading}
             onChange={value => {
               setPropertyName(value)
               return value
@@ -201,6 +207,7 @@ const CollectionAddToken: FC<ReduxType> = ({
           <PropertiesInputStyled
             value={propertyValue}
             placeholder='e.g. Raffle'
+            disabled={loading}
             onChange={value => {
               setPropertyValue(value)
               return value
@@ -226,7 +233,7 @@ const CollectionAddToken: FC<ReduxType> = ({
         <ButtonStyled
           disabled={defineIfButtonDisabled(
             tokenName,
-            description,
+            thumbnail,
             loading
           )}
           loading={loading}
