@@ -3,8 +3,7 @@ import Plausible from 'plausible-tracker-linkdrop'
 const { REACT_APP_PLAUSIBLE_DOMAIN } = process.env
 
 export const plausible = Plausible({
-  domain: REACT_APP_PLAUSIBLE_DOMAIN,
-  trackLocalhost: true
+  domain: REACT_APP_PLAUSIBLE_DOMAIN
 })
 
 type TEventData = {
