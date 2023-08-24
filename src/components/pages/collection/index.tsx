@@ -97,7 +97,6 @@ const Dispenser: FC<ReduxType> = ({
   const {
     symbol,
     token_standard,
-    claim_pattern,
     token_address,
     chain_id,
     tokens
