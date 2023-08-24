@@ -15,7 +15,6 @@ const { REACT_APP_THIRDWEB_CLIENT_ID } = process.env
 function createCollectionERC1155(
   title: string,
   symbol: string,
-  mint: boolean,
   sbt: boolean,
   file?: File,
   base64File?: string,
@@ -51,7 +50,6 @@ function createCollectionERC1155(
         sbt,
         token_standard: 'ERC1155',
         token_address: contract,
-        claim_pattern: mint ? 'mint' : 'transfer',
         chain_id: String(chainId)
       })
 

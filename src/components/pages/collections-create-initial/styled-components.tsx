@@ -18,17 +18,6 @@ export const WidgetSubtitleStyled = styled(WidgetSubtitle)`
   margin-bottom: 32px;
 `
 
-export const StyledRadio = styled(Radio)`
-  margin-bottom: 32px;
-  display: flex;
-  justify-content: space-between;
-
-  & > div {
-    flex: 1;
-    padding-right: 70px;
-  }
-`
-
 export const InputTitleWithToggle = styled(InputTitle)`
   display: flex;
   justify-content: space-between;

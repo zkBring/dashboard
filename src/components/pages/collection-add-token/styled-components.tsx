@@ -34,3 +34,14 @@ export const PropertiesInputStyled = styled(Input)`
 export const ButtonStyled = styled(Button)`
   
 `
+
+export const StyledRadio = styled(Radio)`
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
+    flex: 1;
+    padding-right: 70px;
+  }
+`

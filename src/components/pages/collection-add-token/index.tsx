@@ -6,7 +6,8 @@ import {
   TextAreaStyled,
   PropertiesInputStyled,
   InputsContainer,
-  ButtonStyled
+  ButtonStyled,
+  StyledRadio
 } from './styled-components'
 import {
   ThumbnailUpload,
@@ -48,7 +49,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       contractAddress: string,
       tokenName: string,
       description: string,
-      claimPattern: TClaimPattern,
       copiesAmount: string,
       properties: Record<string, string>,
       file?: File,
@@ -59,7 +59,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       contractAddress,
       tokenName,
       description,
-      claimPattern,
       copiesAmount,
       properties,
       file,
@@ -72,10 +71,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 const renderCopiesContainer = (
   copiesAmount: string,
   setCopiesAmount: (value: string) => void,
-  claimPattern: TClaimPattern,
+  lazyMint: boolean,
   loading: boolean
 ) => {
-  if (claimPattern === 'mint') {
+  if (lazyMint) {
     return <InputContainer>
       <InputTitle>
         Number of copies &#x2192; 0
@@ -114,7 +113,6 @@ const CollectionAddToken: FC<ReduxType> = ({
   const { collection_id } = useParams<{collection_id: string}>()
   const collection: TCollection | undefined = collections.find(collection => String(collection.collection_id) === collection_id)
   const history = useHistory()
-
   const [ thumbnail, setThumbnail ] = useState<string>('')
   const [ file, setFile ] = useState<File | undefined>(undefined)
   const [ tokenName, setTokenName ] = useState<string>('')
@@ -123,11 +121,25 @@ const CollectionAddToken: FC<ReduxType> = ({
   const [ properties, setProperties ] = useState<Record<string, string>>({})
   const [ propertyName, setPropertyName ] = useState<string>('')
   const [ propertyValue, setPropertyValue ] = useState<string>('')
+  const [ lazyMint, setLazyMint ] = useState<boolean>(true)
+
+  const radios = [
+    {
+      value: true,
+      label: 'Mint at Claim',
+      note: 'metadata will be uploaded now and tokens will be minted later via Claim Links'
+    }, {
+      value: false,
+      label: 'Mint Now',
+      note: 'tokens will be pre-minted  to your account'
+    }
+  ]
 
   if (!collection) {
     return <Redirect to='/collections' />
   }
-  const { claim_pattern: claimPattern, token_address: tokenAddress, collection_id: collectionId } = collection
+
+  const { token_address: tokenAddress, collection_id: collectionId } = collection
 
   return <Container>
     <WidgetComponentStyled title='Add token'>
@@ -175,10 +187,24 @@ const CollectionAddToken: FC<ReduxType> = ({
         />
       </InputContainer>
 
+      <InputContainer>
+        <InputTitle>
+          Claim Pattern support <InputTitleAdditional>(for using with Linkdrop)</InputTitleAdditional>
+        </InputTitle>
+        <StyledRadio
+          disabled={loading}
+          radios={radios}
+          value={lazyMint}
+          onChange={value => {
+            setLazyMint(value)
+          }}
+        />
+      </InputContainer>
+
       {renderCopiesContainer(
         copiesAmount,
         setCopiesAmount,
-        claimPattern,
+        lazyMint,
         loading
       )}
 
@@ -243,14 +269,11 @@ const CollectionAddToken: FC<ReduxType> = ({
               tokenAddress as string,
               tokenName,
               description,
-              claimPattern,
               copiesAmount || '0',
               properties,
               file,
               thumbnail,
-              () => {
-                history.push(`/collections/${collection_id}`)
-              }
+              () => { history.push(`/collections/${collection_id}`) }
             )
           }}
           appearance='action'
