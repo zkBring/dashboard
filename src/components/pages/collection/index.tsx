@@ -146,11 +146,6 @@ const Dispenser: FC<ReduxType> = ({
           </TableRow>
 
           <TableRow>
-            <TableText>Claim Pattern Support</TableText>
-            <TableValue>{claim_pattern}</TableValue>
-          </TableRow>
-
-          <TableRow>
             <TableText>Address</TableText>
             <TableValueFlex>
               <CopyIcon
