@@ -69,9 +69,11 @@ import isURL from './is-url'
 import defineClaimAppURL from './define-claim-app-url'
 import defineCollectionStatusTag from './define-collection-status-tag'
 import defineThirdwebNetworkName from './define-thirdweb-network-name'
+import generateTokenSymbol from './generate-token-symbol'
 
 export {
   defineThirdwebNetworkName,
+  generateTokenSymbol,
   isURL,
   defineClaimAppURL,
   defineCollectionStatusTag,

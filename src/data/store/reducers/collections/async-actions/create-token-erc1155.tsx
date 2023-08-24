@@ -17,7 +17,6 @@ function createTokenERC1155 (
   contractAddress: string,
   tokenName: string,
   description: string,
-  claimPattern: TClaimPattern,
   copiesAmount: string,
   properties: Record<string, string>,
   file?: File,

@@ -3,7 +3,6 @@ import {
   WidgetStyled,
   InputStyled,
   WidgetSubtitleStyled,
-  StyledRadio,
   InputTitleWithToggle,
   ToggleStyled,
   ButtonStyled
@@ -17,17 +16,17 @@ import {
   InputSubtitle,
   ButtonsContainer
 } from 'components/pages/common'
+import { generateTokenSymbol } from 'helpers'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
 
 const defineIfButtonDisabled = (
   title: string,
-  symbol: string,
   thumbnail: string,
   loading: boolean
 ) => {
-  return !title || !symbol || !thumbnail || loading
+  return !title || !thumbnail || loading
 }
 
 const mapStateToProps = ({
@@ -45,7 +44,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     createCollectionERC1155: (
       title: string,
       symbol: string,
-      mint: boolean,
       sbt: boolean,
       file?: File,
       thumbnail?: string,
@@ -53,7 +51,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => dispatch(asyncCollectionsActions.createCollectionERC1155(
       title,
       symbol,
-      mint,
       sbt,
       file,
       thumbnail,
@@ -72,22 +69,9 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
   const [ thumbnail, setThumbnail ] = useState<string>('')
   const [ title, setTitle ] = useState<string>('')
   const [ symbol, setSymbol ] = useState<string>('')
-  const [ mint, setMint ] = useState<boolean>(false)
   const [ file, setFile ] = useState<File | undefined>(undefined)
   const [ sbt, setSbt ] = useState<boolean>(false)
   const history = useHistory()
-
-  const radios = [
-    {
-      value: false,
-      label: 'Transfer Pattern',
-      note: 'tokens used with Claim Links will have to be pre-minted'
-    }, {
-      value: true,
-      label: 'Mint Pattern (supports SBT)',
-      note: 'tokens will not be pre-minted, but will be minted using Claim Links at claim'
-    }
-  ]
 
   return <WidgetStyled title='Collection setup'>
     <WidgetSubtitleStyled>
@@ -132,24 +116,9 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       note='(.PNG, .JPG, .GIF, .MP4. Max 5mb)'
     />
 
-    <InputContainer>
-      <InputTitle>
-      Claim Pattern support <InputTitleAdditional>(for using with Linkdrop)</InputTitleAdditional>
-      </InputTitle>
-      <StyledRadio
-        disabled={loading}
-        radios={radios}
-        value={mint}
-        onChange={value => {
-          if (!value) {
-            setSbt(false)
-          }
-          setMint(value)
-        }}
-      />
-    </InputContainer>
-
-    {false && mint && <InputContainer>
+    
+    {/* not available for now */}
+    {false && <InputContainer>
       <InputTitleWithToggle>
         Make tokens non-transferrable (SBT)
         <ToggleStyled
@@ -174,12 +143,12 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       <ButtonStyled
         appearance='action'
         loading={loading}
-        disabled={defineIfButtonDisabled(title, symbol, thumbnail, loading)}
-        onClick={() => {  
+        disabled={defineIfButtonDisabled(title, thumbnail, loading)}
+        onClick={() => {
+          const actualSymbol = symbol || generateTokenSymbol(title)
           createCollectionERC1155(
             title,
-            symbol,
-            mint,
+            actualSymbol,
             sbt,
             file,
             thumbnail,
