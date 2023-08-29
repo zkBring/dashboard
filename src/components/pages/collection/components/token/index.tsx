@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { TCollectionToken } from 'types'
 import {
   TokenImage,
@@ -10,18 +10,52 @@ import {
   TokenDataValue,
   TokenDataProperties,
   TokenDataProperty,
-  TokenVideo
+  TokenVideo,
+  Content,
+  TokenControls
 } from './styled-components'
+import { useHistory } from 'react-router-dom'
+import { IAppDispatch } from 'data/store'
+import { Button } from 'components/common'
 import CollectionPlaceholder from 'images/collection-placeholder.png'
+import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
+import { connect } from 'react-redux'
+import { TProps } from './types'
+import LinksAmountPopup from '../links-amount-popup'
 
-export const Token: FC<TCollectionToken> = ({
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    createClaimLinks: (
+      collection_id: string,
+      token_id: string,
+      links_amount: string,
+      callback: (location: string) => void
+    ) => {
+      return dispatch(asyncCollectionsActions.createClaimLinks(
+        collection_id,
+        token_id,
+        links_amount,
+        'ERC1155',
+        callback
+      ))
+    }
+  }
+}
+
+type ReduxType = ReturnType<typeof mapDispatcherToProps> & TCollectionToken & TProps
+
+export const Token: FC<ReduxType> = ({
   name,
   description,
   copies,
   properties,
   token_id,
-  thumbnail
+  thumbnail,
+  collectionId,
+  createClaimLinks
 }) => {
+  const history = useHistory()
+  const [ showPopup, setShowPopup ] = useState<boolean>(false)
 
   const renderThumbnail = () => {
     if (!thumbnail) {
@@ -36,7 +70,6 @@ export const Token: FC<TCollectionToken> = ({
         Your browser does not support the video tag.
       </TokenVideo>
     }
-
     return <TokenImage
       src={thumbnail}
       alt={name}
@@ -44,6 +77,20 @@ export const Token: FC<TCollectionToken> = ({
   }
 
   return <Container>
+    {showPopup && <LinksAmountPopup
+      onClose={() => setShowPopup(false)}
+      onSubmit={(links_amount) => {
+        createClaimLinks(
+          collectionId,
+          token_id,
+          links_amount,
+          (location: string) => history.push(location)
+        )
+      }}
+      initialValue={copies}
+      limit={copies === '0' ? undefined : copies}
+    />}
+    <Content>
     {renderThumbnail()}
     <TokenData>
       <TokenDataItem>
@@ -76,9 +123,18 @@ export const Token: FC<TCollectionToken> = ({
         </TokenDataValue>
       </TokenDataItemProperties>}
     </TokenData>
-    
-  </Container>
+    </Content>
+    <TokenControls>
+      <Button
+        appearance='action'
+        onClick={() => {
+          setShowPopup(true)
+        }}
+      >
+        Create Claim Links
+      </Button>
+    </TokenControls>
+  </Container>  
 }
 
-
-export default Token
+export default connect(null, mapDispatcherToProps)(Token)

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import {
   Container,
@@ -6,8 +6,7 @@ import {
   TableRow,
   TableText,
   TableValue,
-  ButtonsContainer,
-  AttentionContainer
+  ButtonsContainer
 } from 'components/pages/common'
 import {
   AsideContent,
@@ -20,7 +19,11 @@ import {
   TokenItem,
   WidgetAsideStyled,
   ButtonFullWidth,
-  CopyIcon
+  CopyIcon,
+  Header,
+  WidgetTitleStyled,
+  ContainerButton,
+  AttentionContainerStyled
 } from './styled-components'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { TCollection, TCollectionToken } from 'types'
@@ -45,6 +48,7 @@ const mapStateToProps = ({
 
 const renderTokens = (
   loading: boolean,
+  collection_id: string,
   tokens?: TCollectionToken[]
 ) => {
   if (loading) {
@@ -56,7 +60,12 @@ const renderTokens = (
   }
 
   return <TokensList>
-    {tokens.map(token => <TokenItem><Token {...token} /></TokenItem>)}
+    {tokens.map(token => <TokenItem>
+      <Token
+        collectionId={collection_id}
+        {...token}
+      />
+    </TokenItem>)}
   </TokensList>
 }
 
@@ -73,7 +82,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
-const Dispenser: FC<ReduxType> = ({
+const Collection: FC<ReduxType> = ({
   collections,
   loading,
   dashboardKey,
@@ -106,14 +115,25 @@ const Dispenser: FC<ReduxType> = ({
 
   const tokensList = renderTokens(
     loading,
+    collection_id,
     tokens
   )
 
   return <Container>
     <MainContent>
-      <WidgetComponentStyled title='Tokens'>
+      <WidgetComponentStyled>
+        <Header>
+          <WidgetTitleStyled>My NFT Contracts</WidgetTitleStyled>
+          {tokens && tokens.length > 0 && <ContainerButton
+            title='+ Add token'
+            disabled={loading}
+            size='extra-small'
+            to={`/collections/${collection_id}/token/new`}
+            appearance='action'
+          />}
+        </Header>
         {tokensList}
-        <ButtonsContainer>
+        {!tokens || tokens.length === 0 && <ButtonsContainer>
           <ButtonStyled
             loading={loading}
             to={`/collections/${collection_id}/token/new`}
@@ -121,7 +141,7 @@ const Dispenser: FC<ReduxType> = ({
           >
             Add token
           </ButtonStyled>
-        </ButtonsContainer>
+        </ButtonsContainer>}
       </WidgetComponentStyled>
       
     </MainContent>
@@ -167,41 +187,34 @@ const Dispenser: FC<ReduxType> = ({
         </AsideContent>
       </AsideStyled>
 
-      <WidgetAsideStyled title='Whats next?'>
+      <AttentionContainerStyled
+        title='Claim Links'
+        text='Claim Links are web links that allow anyone who follow them mint a token'
+      />
+
+      <WidgetAsideStyled title='Make Non-Transferable (SBT)'>
         <WidgetSubtitle>
-          You got your first token minted, go ahead and create your first set of Linkdrop Claim Links, using this NFT contract
+          Contact us for instructions on how to make you tokens non-transferable (turning them to Soulbound Tokens) 
         </WidgetSubtitle>
         <ButtonFullWidth
-          to={`/campaigns/new`}
-          appearance='action'
+          onClick={() => {
+            plausibleApi.invokeEvent({
+              eventName: 'contact',
+              data: {
+                network: defineNetworkName(chainId),
+                component: 'collection'
+              }
+            })
+            window.open('https://linkdrop.io/contact-us', '_blank')
+          }}
         >
-            Create Claim Links 
-          </ButtonFullWidth>
+          Contact Us
+        </ButtonFullWidth>
       </WidgetAsideStyled>
-      
-      {/* hide for now */}
-      <AttentionContainer
-        title='Make Non-Transferable (SBT)'
-        text='Contact us for instructions on how to make you tokens non-transferable (turning them to Soulbound Tokens) '
-        actions={[
-          {
-            title: 'Contact Us',
-            onClick: () => {
-              plausibleApi.invokeEvent({
-                eventName: 'contact',
-                data: {
-                  network: defineNetworkName(chainId),
-                  component: 'dispenser'
-                }
-              })
-              window.open('https://linkdrop.io/contact-us', '_blank')
-            }
-          }
-        ]}
-      />
+            
     </div>
     
   </Container>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(Dispenser)
+export default connect(mapStateToProps, mapDispatcherToProps)(Collection)

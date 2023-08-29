@@ -4,8 +4,8 @@ import * as actionsCampaign from '../actions'
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState } from 'data/store'
-import contracts from 'configs/contracts'
 import { alertError } from 'helpers'
+import createProxyAddress from './create-proxy-address'
 
 const resetCampaign = (id?: string) => {
   return async (
@@ -28,17 +28,13 @@ const resetCampaign = (id?: string) => {
         return
       }
     }
-    const contract = contracts[chainId]
-    const campaignId = String(+(new Date()))
-    const proxyContractAddress = await sdk?.utils.computeProxyAddress(
-      contract.factory,
-      address,
-      campaignId
+    await createProxyAddress(
+      dispatch,
+      chainId,
+      sdk,
+      address
     )
-
-    if (!proxyContractAddress) { return }
-    dispatch(actionsCampaign.setProxyContractAddress(proxyContractAddress))
-    dispatch(actionsCampaign.setId(campaignId))
+    
   }
 }
 

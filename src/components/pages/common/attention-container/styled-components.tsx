@@ -21,13 +21,14 @@ export const Title = styled.h3`
 export const Text = styled.p`
   font-size: 16px;
   line-height: 24px;
-  margin: 0 0 32px;
+  margin: 0;
 `
 
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 12px;
+  margin-top: 32px;
 `
 
 export const ButtonStyled = styled(Button)`

@@ -12,6 +12,7 @@ import { TDefineComponent, TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import Icons from 'icons'
+import { useQuery } from 'hooks'
 import { TextLink } from 'components/common'
 import {
   WidgetComponent,
@@ -57,11 +58,15 @@ const mapStateToProps = ({
     chainId,
     comission,
     whitelisted
+  },
+  collections: {
+    collections
   }
 }: RootState) => ({
   tokenStandard,
   loading,
   campaigns,
+  collections,
   claimPattern,
   sdk,
   proxyContractAddress,
@@ -190,11 +195,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
         )
       )
     },
-    createProxyContract: (
-      id?: string
-    ) => dispatch(
-      campaignAsyncActions.createProxyContract(id)
-    ),
     getUserNFTs: (
       tokenType: TTokenType
     ) => dispatch(
@@ -344,7 +344,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   approveAllERC20,
   comission: comissionPrice,
   whitelisted,
-  getUserNFTs
+  getUserNFTs,
+  collections
 }) => {
   const [
     assetsParsed,
@@ -353,8 +354,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   const history = useHistory()
   const { type, id } = useParams<TLinkParams>()
+  const queryParams = useQuery()
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-
   const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
   const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
@@ -374,8 +375,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
   const content = defineComponent(
     type,
-    data,
-    setData,
+    data, // assetsData
+    setData, // setAssetsData
     claimPattern,
     () => setUploadCSVPopup(true),
     sponsored,
@@ -419,6 +420,33 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     if (!assets) { return setAssetsParsedValue([]) }
     setAssetsParsedValue(assets)
   }, [data])
+
+  useEffect(() => {
+
+    // it will work for ouwn collection (from minter)
+    if (tokenStandard === 'ERC1155') {
+      const tokenId = queryParams.get('token_id')
+      const linksAmount = queryParams.get('links_amount')
+      const collectionId = queryParams.get('collection_id')
+      if (tokenId && linksAmount && collectionId) {
+        const collection = collections.find(collection => collection.collection_id === collectionId)
+        if (collection) {
+          const token = collection.tokens && collection.tokens.find(token => token.token_id === tokenId)
+          if (token) {
+            setData([{
+              tokenId: tokenId as string,
+              tokenAmount: "1",
+              linksAmount: linksAmount as string,
+              type: 'ERC1155',
+              id: data.length,
+              tokenName: token.name,
+              tokenImage: token.thumbnail
+            }])
+          }
+        }
+      }
+    }
+  }, [])
 
   useEffect(() => {
     getUserNFTs(type)

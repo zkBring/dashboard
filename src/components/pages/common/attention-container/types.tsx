@@ -1,7 +1,8 @@
 export type TProps = {
   title: string
   text: string
-  actions: {
+  className?: string
+  actions?: {
     title: string,
     onClick: () => void
   }[]

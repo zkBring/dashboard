@@ -11,12 +11,13 @@ import { TProps } from './types'
 const AttentionContainer: FC<TProps> = ({
   title,
   text,
-  actions
+  actions,
+  className
 }) => {
-  return <Container>
+  return <Container className={className}>
     <Title>{title}</Title>
     <Text>{text}</Text>
-    <ButtonsContainer>
+    {actions && <ButtonsContainer>
       {actions.map(action => {
         return <ButtonStyled
           onClick={action.onClick}
@@ -24,7 +25,7 @@ const AttentionContainer: FC<TProps> = ({
           {action.title}
         </ButtonStyled>
       })}
-    </ButtonsContainer>
+    </ButtonsContainer>}
   </Container>
 }
 

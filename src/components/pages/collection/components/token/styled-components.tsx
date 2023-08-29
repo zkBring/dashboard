@@ -1,6 +1,8 @@
 import styled from "styled-components"
 
-export const Container = styled.div`
+export const Container = styled.div``
+
+export const Content = styled.div`
   display: flex;
 `
 
@@ -26,6 +28,7 @@ export const TokenData = styled.ul`
   font-size: 16px;
   line-height: 24px;
   list-style: none;
+  padding: 0;
   color: ${props => props.theme.primaryTextColor}
 `
 
@@ -55,4 +58,9 @@ export const TokenDataProperties = styled.ul`
 export const TokenDataProperty = styled.li`
   color: ${props => props.theme.propertyTextColor};
   margin-bottom: 4px;
+`
+
+export const TokenControls = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
