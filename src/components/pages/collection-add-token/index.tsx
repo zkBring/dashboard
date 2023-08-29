@@ -19,6 +19,9 @@ import {
   ButtonsContainer
 } from 'components/pages/common'
 import {
+  TextLink
+} from 'components/common'
+import {
   PropertiesList
 } from './components'
 import { TClaimPattern, TCollection } from 'types'
@@ -189,8 +192,11 @@ const CollectionAddToken: FC<ReduxType> = ({
 
       <InputContainer>
         <InputTitle>
-          Claim Pattern support <InputTitleAdditional>(for using with Linkdrop)</InputTitleAdditional>
+          Minting
         </InputTitle>
+        <InputSubtitle>
+          Your tokens can be minted now or later at claim. <TextLink href="#" target='_blank'>Learn more.</TextLink>
+        </InputSubtitle>
         <StyledRadio
           disabled={loading}
           radios={radios}

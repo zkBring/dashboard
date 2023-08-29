@@ -32,7 +32,6 @@ function setTokenContractData (
     const { user: { chainId, address, signer } } = getState()
     try {
       dispatch(actionsCampaign.setLoading(true))
-      console.log('added', { tokenAddress })
       dispatch(actionsCampaign.setTokenAddress(tokenAddress))
       dispatch(actionsCampaign.setLoading(true))
       
@@ -40,7 +39,7 @@ function setTokenContractData (
         let decimals = 18
         let symbol = defineNativeTokenSymbol({ chainId })
         if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
-  
+          return alert('Cannot create links for native tokens')
         } else {
           const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
           decimals = await contractInstance.decimals()

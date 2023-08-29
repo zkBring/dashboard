@@ -1,5 +1,7 @@
 import { useEthersSigner } from "./use-ethers-signer"
+import useQuery from "./use-query"
 
 export {
-  useEthersSigner
+  useEthersSigner,
+  useQuery
 }

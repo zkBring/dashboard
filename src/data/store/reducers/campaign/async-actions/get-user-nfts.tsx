@@ -41,10 +41,7 @@ function getUserNFTs(
           const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
             contractAddresses: [ tokenAddress ]
           })
-          
-          if (ownedNfts && ownedNfts.length > 0) {
-            dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
-          }
+          dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
         }
         
       }

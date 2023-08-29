@@ -1,2 +1,3 @@
-import { TCollectionToken } from 'types'
-
+export type TProps = {
+  collectionId: string
+}

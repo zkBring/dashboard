@@ -3,6 +3,7 @@
 ## 2.1.24-rc.0
 - added Minter
 - update for pluasible library
+- added Create Links button ffor Collections
 
 ## 2.1.23
 - added dispenser redirect

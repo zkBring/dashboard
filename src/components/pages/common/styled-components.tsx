@@ -135,7 +135,7 @@ export const UploadedSpan = styled.span`
 export const InputTitle = styled.h3`
   font-size: 16px;
   line-height: 24px;
-  margin: 0 0 12px; 
+  margin: 0 0 8px; 
   font-weight: 500;
   color: ${props => props.theme.primaryTextColor};
 `
