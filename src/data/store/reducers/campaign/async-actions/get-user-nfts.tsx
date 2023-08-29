@@ -30,8 +30,6 @@ function getUserNFTs(
         return alertError('No tokenAddress provided in state of user')
       }
 
-      console.log({ tokenAddress })
-
       if (tokenStandard !== 'ERC20') {
         const network = defineAlchemyNetwork(chainId)
         if (network) {
