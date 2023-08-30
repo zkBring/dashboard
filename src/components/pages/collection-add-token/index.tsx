@@ -24,7 +24,7 @@ import {
 import {
   PropertiesList
 } from './components'
-import { TClaimPattern, TCollection } from 'types'
+import { TCollection } from 'types'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import { RootState, IAppDispatch} from 'data/store'
 import { connect } from 'react-redux'
@@ -78,14 +78,7 @@ const renderCopiesContainer = (
   loading: boolean
 ) => {
   if (lazyMint) {
-    return <InputContainer>
-      <InputTitle>
-        Number of copies &#x2192; 0
-      </InputTitle>
-      <InputSubtitle>
-        You token will not be pre-minted, but will be minted in future using Claim Links when you will create Linkdrop campaign.
-      </InputSubtitle>
-    </InputContainer> 
+    return null
   }
   return <InputContainer>
     <InputTitle>
