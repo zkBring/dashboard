@@ -8,7 +8,7 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { RootState } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
-import { TAlchemyERC20Contract } from 'types'
+import { TERC20Contract } from 'types'
 import { defineAlchemyNetwork, alertError } from 'helpers'
 import { BigNumber } from 'ethers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
@@ -33,7 +33,7 @@ const getERC20Contracts = () => {
         const start = +new Date()
         const { tokenBalances } = await alchemy.core.getTokenBalances(address)
         if (tokenBalances && tokenBalances.length > 0) {
-            const contractsWithMetadata: TAlchemyERC20Contract[] = []
+            const contractsWithMetadata: TERC20Contract[] = []
             for (let token of tokenBalances) {
               if (token.tokenBalance && parseInt(token.tokenBalance, 16) === 0) {
                 continue
@@ -45,7 +45,7 @@ const getERC20Contracts = () => {
               // const symbol = await contractInstance.symbol()
   
               
-              // const tokenWithMetadata: TAlchemyERC20Contract = {
+              // const tokenWithMetadata: TERC20Contract = {
               //   address: token.contractAddress,
               //   totalBalance: !token.tokenBalance ? '0' : String(
               //     ethers.utils.formatUnits(
@@ -69,7 +69,7 @@ const getERC20Contracts = () => {
                 continue
               }
   
-              const tokenWithMetadata: TAlchemyERC20Contract = {
+              const tokenWithMetadata: TERC20Contract = {
                 address: token.contractAddress,
                 tokenType: 'ERC20',
                 totalBalance: !token.tokenBalance ? '0' : String(
@@ -83,7 +83,7 @@ const getERC20Contracts = () => {
               
               contractsWithMetadata.push(tokenWithMetadata)
             }
-            dispatch(userActions.setContractsERC20(contractsWithMetadata as TAlchemyERC20Contract[]))
+            dispatch(userActions.setContractsERC20(contractsWithMetadata as TERC20Contract[]))
         }
         const totalTimeToFetch = +new Date() - start
       }

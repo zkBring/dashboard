@@ -1,6 +1,6 @@
 import { TTokenType } from './index.js'
 
-type TAlchemyContract = {
+type TNFTContract = {
   address: string
   name: string
   numDistinctTokensOwned: number
@@ -11,4 +11,4 @@ type TAlchemyContract = {
   totalBalance: number
 }
 
-export default TAlchemyContract
+export default TNFTContract

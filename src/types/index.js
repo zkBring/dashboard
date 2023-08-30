@@ -41,8 +41,8 @@ import TQROption, { DotType, CornerSquareType, CornerDotType } from './qr-option
 import TSingleLinkData from './single-link-data'
 import TLinkDetails from './link-details'
 import TButtonAppearance from './button-appearance'
-import TAlchemyContract from './alchemy-contract'
-import TAlchemyERC20Contract from './alchemy-erc20-contract'
+import TNFTContract from './nft-contract'
+import TERC20Contract from './erc20-contract'
 import { TAlchemyNFTToken } from './alchemy-nft-token'
 import { TERC20TokenList, TERC20TokenItem } from './erc20-token-list'
 import TButtonAppearance from './button-appearance'
@@ -50,6 +50,7 @@ import TCampaignCreateStep from './campaign-create-step'
 import TCampaignDraft from './campaign-draft'
 import TFeatureName from './feature-name'
 import { TDispenserStats } from './dispenser-stats'
+import TMnemonicContract from './mnemonic-contract'
 
 import {
   TCollection,
@@ -59,13 +60,14 @@ import {
 export {
   TCampaign,
   TDispenserStats,
+  TMnemonicContract,
   TCampaignCreateStep,
   TFeatureName,
   TButtonAppearance,
   TCampaignDraft,
   TERC20TokenItem,
   TERC20TokenList,
-  TAlchemyContract,
+  TNFTContract,
   TAlchemyNFTToken,
   TLinkDetails,
   TSystem,
@@ -83,7 +85,7 @@ export {
   TClaimPattern,
   TLinkContent,
   TFormatTime,
-  TAlchemyERC20Contract,
+  TERC20Contract,
   TAuthorizationStep,
   TTokenType,
   TDispenserUpdateData,

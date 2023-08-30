@@ -7,6 +7,7 @@ import plausibleApi from './plausible-api'
 import getTokenERC20List from './get-erc20-token-list'
 import dispensersApi from './dispensers-api'
 import collectionsApi from './collections-api'
+import getMnemonicCollections from './get-mnemonic-collections'
 
 export {
   authorizationApi,
@@ -17,5 +18,6 @@ export {
   plausibleApi,
   getTokenERC20List,
   dispensersApi,
-  collectionsApi
+  collectionsApi,
+  getMnemonicCollections
 }

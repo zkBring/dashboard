@@ -8,8 +8,10 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { RootState } from 'data/store'
 import { Alchemy, NftFilters } from 'alchemy-sdk'
-import { TAlchemyContract } from 'types'
+import { TNFTContract } from 'types'
 import { defineAlchemyNetwork, alertError } from 'helpers'
+import { getMnemonicCollections } from 'data/api'
+import { convertMnemonicContracts } from 'helpers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 const getContracts = () => {
@@ -36,8 +38,18 @@ const getContracts = () => {
         } : undefined
   
         const { contracts } = await alchemy.nft.getContractsForOwner(address, filters)
-        if (contracts && contracts.length > 0) {
-          dispatch(userActions.setContracts(contracts as TAlchemyContract[]))
+        if (contracts) {
+          dispatch(userActions.setContracts(contracts as TNFTContract[]))
+        }
+      } else if (chainId === 8453) {
+        const response = await getMnemonicCollections(
+          chainId,
+          address
+        )
+        if (response) {
+          const { data: { nfts } } = response
+          const contracts = convertMnemonicContracts(nfts)
+          console.log({ contracts })
         }
       }
       

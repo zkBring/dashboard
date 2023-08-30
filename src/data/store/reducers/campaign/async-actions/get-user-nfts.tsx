@@ -43,6 +43,17 @@ function getUserNFTs(
           })
           dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
         }
+        // else if (chainId === 8453) {
+        //   const response = await getMnemonicCollections(
+        //     chainId,
+        //     address
+        //   )
+        //   if (response) {
+        //     const { data: { nfts } } = response
+        //     const contracts = convertMnemonicContracts(nfts)
+        //     console.log({ contracts })
+        //   }
+        // }
         
       }
 
