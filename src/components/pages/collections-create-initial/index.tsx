@@ -136,7 +136,11 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
     </InputContainer>}
 
     <ButtonsContainer>
-      <ButtonStyled>
+      <ButtonStyled
+        onClick={() => {
+          history.push('/collections')
+        }}
+      >
         Back
       </ButtonStyled>
 
