@@ -19,7 +19,7 @@ import {
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import { TTokenType, TLinkParams, TAlchemyContract, TAlchemyERC20Contract } from 'types'
+import { TTokenType, TLinkParams, TNFTContract, TERC20Contract } from 'types'
 import { useHistory } from 'react-router-dom'
 import { CampaignActions } from 'data/store/reducers/campaign/types'
 import { Dispatch } from 'redux'
@@ -106,7 +106,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
   }
 }
 
-const defineContractsOptions = (contracts: TAlchemyContract[], contractsERC20: TAlchemyERC20Contract[], tokenType: string | null) => {
+const defineContractsOptions = (contracts: TNFTContract[], contractsERC20: TERC20Contract[], tokenType: string | null) => {
 
   if (tokenType === 'ERC20') {
     return contractsERC20.map(contract => {
@@ -178,7 +178,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
 
   useEffect(() => {
-    if ((!currentType || currentType === 'ERC721' || currentType === 'ERC1155') && contracts.length === 0) {
+    if ((!currentType || currentType === 'ERC721' || currentType === 'ERC1155')) {
       return getContracts()
     }
 
@@ -264,7 +264,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
         <SelectStyled
           disabled={Boolean(campaign) || loading || userLoading}
-          onChange={async ({ value }: { value: TAlchemyContract | string}) => {
+          onChange={async ({ value }: { value: TNFTContract | string}) => {
             if (typeof value === 'string') {
               if (currentType === 'ERC20' && chainId) {
                 const tokenOwnership = await defineIfUserOwnsContractERC20(address, value, signer)
