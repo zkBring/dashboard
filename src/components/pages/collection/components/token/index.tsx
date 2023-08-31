@@ -87,7 +87,7 @@ export const Token: FC<ReduxType> = ({
           (location: string) => history.push(location)
         )
       }}
-      initialValue={copies}
+      initialValue={copies === '0' ? '1' : copies}
       limit={copies === '0' ? undefined : copies}
     />}
     <Content>
