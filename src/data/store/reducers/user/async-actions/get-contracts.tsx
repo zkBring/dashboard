@@ -38,9 +38,7 @@ const getContracts = () => {
         } : undefined
   
         const { contracts } = await alchemy.nft.getContractsForOwner(address, filters)
-        if (contracts) {
-          dispatch(userActions.setContracts(contracts as TNFTContract[]))
-        }
+        dispatch(userActions.setContracts(contracts as TNFTContract[]))
       } else if (chainId === 8453) {
         const response = await getMnemonicCollections(
           chainId,
@@ -49,7 +47,7 @@ const getContracts = () => {
         if (response) {
           const { data: { nfts } } = response
           const contracts = convertMnemonicContracts(nfts)
-          console.log({ contracts })
+          dispatch(userActions.setContracts(contracts as TNFTContract[]))
         }
       }
       

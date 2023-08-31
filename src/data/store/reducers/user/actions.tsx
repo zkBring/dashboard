@@ -1,7 +1,7 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TAuthorizationStep, TNFTContract, TAlchemyNFTToken, TERC20Contract, TERC20TokenList } from 'types'
+import { TAuthorizationStep, TNFTContract, TNFTToken, TERC20Contract, TERC20TokenList } from 'types'
 import { BigNumber } from 'ethers'
 
 export function setAddress(address: string) {
@@ -51,7 +51,7 @@ export function setContractsERC20(contractsERC20: TERC20Contract[]) {
   )
 }
 
-export function setNFTs(nfts: TAlchemyNFTToken[]) {
+export function setNFTs(nfts: TNFTToken[]) {
   return action(
     Constants.USER_SET_NFTS,
     {

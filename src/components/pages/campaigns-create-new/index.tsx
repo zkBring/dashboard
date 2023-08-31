@@ -106,7 +106,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
   }
 }
 
-const defineContractsOptions = (contracts: TContract[], contractsERC20: TERC20Contract[], tokenType: string | null) => {
+const defineContractsOptions = (contracts: TNFTContract[], contractsERC20: TERC20Contract[], tokenType: string | null) => {
 
   if (tokenType === 'ERC20') {
     return contractsERC20.map(contract => {
@@ -178,7 +178,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
 
   useEffect(() => {
-    if ((!currentType || currentType === 'ERC721' || currentType === 'ERC1155') && contracts.length === 0) {
+    if ((!currentType || currentType === 'ERC721' || currentType === 'ERC1155')) {
       return getContracts()
     }
 

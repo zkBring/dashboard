@@ -43,7 +43,7 @@ import TLinkDetails from './link-details'
 import TButtonAppearance from './button-appearance'
 import TNFTContract from './nft-contract'
 import TERC20Contract from './erc20-contract'
-import { TAlchemyNFTToken } from './alchemy-nft-token'
+import { TNFTToken } from './nft-token'
 import { TERC20TokenList, TERC20TokenItem } from './erc20-token-list'
 import TButtonAppearance from './button-appearance'
 import TCampaignCreateStep from './campaign-create-step'
@@ -68,7 +68,7 @@ export {
   TERC20TokenItem,
   TERC20TokenList,
   TNFTContract,
-  TAlchemyNFTToken,
+  TNFTToken,
   TLinkDetails,
   TSystem,
   TSingleLinkData,

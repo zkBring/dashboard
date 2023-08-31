@@ -2,7 +2,7 @@ import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
 import { Dispatch } from 'redux'
 import LinkdropSDK from 'linkdrop-sdk'
-import { TAuthorizationStep, TNFTContract, TAlchemyNFTToken, TERC20Contract, TERC20TokenList } from 'types'
+import { TAuthorizationStep, TNFTContract, TNFTToken, TERC20Contract, TERC20TokenList } from 'types'
 import { BigNumber } from 'ethers'
 
 export interface UserState {
@@ -22,7 +22,7 @@ export interface UserState {
   contracts: TNFTContract[]
   contractsERC20: TERC20Contract[]
   tokenListERC20: TERC20TokenList
-  nfts: TAlchemyNFTToken[]
+  nfts: TNFTToken[]
   whitelisted: boolean | null
   comission: string
 }
