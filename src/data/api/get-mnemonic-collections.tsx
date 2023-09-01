@@ -16,7 +16,7 @@ const getMnemonicCollections:TGetCollection = (
   address
 ) => {
   const apiURL = defineMnemonicApiURL(chainId)
-  return axios.get(`${apiURL}/foundational/v1beta2/nfts/by_owner/${address}`, {
+  return axios.get(`${apiURL}/foundational/v1beta2/nfts/by_owner/${address}?limit=500`, {
     headers: {
       'X-API-Key': REACT_APP_MNEMONIC_API_KEY as string
     }
