@@ -40,7 +40,6 @@ const defineIfUserOwnsContract: TDefineIfUserOwnsContract = async (
         }
       }
     } else if (chain.mnemonicSupport) {
-      console.log('here0')
       const response = await getMnemonicCollections(
         chainId,
         userAddress,
@@ -57,19 +56,10 @@ const defineIfUserOwnsContract: TDefineIfUserOwnsContract = async (
       // if not supported by alchemy and mnemonic we assume that token is available for user
       return true
     }
-    console.log('here')
     const minterRole = getMinterRole()
-    console.log('here1')
-
     const contractInstance = new ethers.Contract(tokenAddress, AdminRole.abi, signer)
-    console.log('here2')
-
     const adminRole = await contractInstance.getRoleAdmin(minterRole)
-    console.log('here3')
-
     const hasAdminRole = await contractInstance.hasRole(adminRole, userAddress)
-    console.log('here4')
-
     return hasAdminRole as boolean
   } catch (err) {
     console.log({
