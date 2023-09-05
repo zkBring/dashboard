@@ -18,7 +18,7 @@ function createCollectionERC1155(
   sbt: boolean,
   file?: File,
   base64File?: string,
-  callback?: () => void 
+  callback?: (collection_id: string) => void 
 ) {
   // @ts-ignore
   return async (
@@ -57,7 +57,7 @@ function createCollectionERC1155(
         dispatch(actionsCollections.addCollection(result.data.collection))
 
         if (callback) {
-          callback()
+          callback(result.data.collection.collection_id as string)
         }
       }
 
