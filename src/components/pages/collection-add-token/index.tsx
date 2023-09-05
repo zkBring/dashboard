@@ -195,6 +195,7 @@ const CollectionAddToken: FC<ReduxType> = ({
           radios={radios}
           value={lazyMint}
           onChange={value => {
+            setCopiesAmount('')
             setLazyMint(value)
           }}
         />

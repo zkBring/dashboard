@@ -47,7 +47,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       sbt: boolean,
       file?: File,
       thumbnail?: string,
-      callback?: () => void
+      callback?: (collection_id: string) => void
     ) => dispatch(asyncCollectionsActions.createCollectionERC1155(
       title,
       symbol,
@@ -156,7 +156,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
             sbt,
             file,
             thumbnail,
-            () => history.push('/collections')
+            (collection_id: string) => history.push(`/collections/${collection_id}`)
           )
         }}
       >

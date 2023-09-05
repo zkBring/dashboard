@@ -444,7 +444,6 @@ const Dispenser: FC<ReduxType> = ({
         ]}
       />
     </div>
-    
   </Container>
 }
 
