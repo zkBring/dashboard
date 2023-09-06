@@ -123,7 +123,7 @@ const Collection: FC<ReduxType> = ({
     <MainContent>
       <WidgetComponentStyled>
         <Header>
-          <WidgetTitleStyled>My NFT Contracts</WidgetTitleStyled>
+          <WidgetTitleStyled>My NFTs</WidgetTitleStyled>
           {tokens && tokens.length > 0 && <ContainerButton
             title='+ Add token'
             disabled={loading}
