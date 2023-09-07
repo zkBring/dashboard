@@ -103,18 +103,6 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
         }}>
           <Icons.LegalIcon />Legal
         </AsideMenuItemExternal>
-        <AsideMenuItemExternal onClick={() => {
-          plausibleApi.invokeEvent({
-            eventName: 'old',
-            data: {
-              network: defineNetworkName(chainId),
-              component: 'aside'
-            }
-          })
-          window.open('https://dashboard.linkdrop.io', '_blank')
-        }}>
-          <Icons.GoToOldVersionIcon />Go to old version
-        </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={async () => {
           plausibleApi.invokeEvent({
             eventName: 'contact',
