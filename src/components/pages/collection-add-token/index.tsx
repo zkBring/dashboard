@@ -188,7 +188,7 @@ const CollectionAddToken: FC<ReduxType> = ({
           Minting
         </InputTitle>
         <InputSubtitle>
-          Your tokens can be minted now or later at claim. <TextLink href="#" target='_blank'>Learn more.</TextLink>
+          Your tokens can be minted now or later at claim. <TextLink href="https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign" target='_blank'>Learn more.</TextLink>
         </InputSubtitle>
         <StyledRadio
           disabled={loading}
