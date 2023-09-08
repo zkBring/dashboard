@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.24-rc.0
+## 2.1.24
 - added Minter
 - update for pluasible library
 - added Create Links button ffor Collections
