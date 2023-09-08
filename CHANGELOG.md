@@ -1,5 +1,11 @@
 # Ledger Dashboard
 
+## 2.1.24
+- added Minter
+- update for pluasible library
+- added Create Links button ffor Collections
+- added Mnemonic network support
+
 ## 2.1.23
 - added dispenser redirect
 - added dispenser report download

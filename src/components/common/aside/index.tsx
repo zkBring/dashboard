@@ -41,8 +41,7 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 
 const AsideComponent: FC<AsideProps & ReduxType> = ({
   authorizationStep,
-  chainId,
-  address
+  chainId
 }) => {
   const location = useLocation<LocationType>()
   if (authorizationStep !== 'authorized') {
@@ -52,6 +51,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       </AsideTextLink>
     </AsideLogoZone>
   }
+
 	return <Aside>
     <AsideLogoZone>
       <AsideTextLink to='/campaigns'>
@@ -71,6 +71,9 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       </AsideMenuItem>
       <AsideMenuItem to='/invite-links' active={location.pathname.includes('/invite-links')}>
         <Icons.InviteLinksIcon />Invite Links
+      </AsideMenuItem>
+      <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
+        <Icons.QRManagerIcon />Minter
       </AsideMenuItem>
     </AsideMenu>
 
@@ -100,18 +103,6 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
           window.open('https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58', '_blank')
         }}>
           <Icons.LegalIcon />Legal
-        </AsideMenuItemExternal>
-        <AsideMenuItemExternal onClick={() => {
-          plausibleApi.invokeEvent({
-            eventName: 'old',
-            data: {
-              network: defineNetworkName(chainId),
-              component: 'aside'
-            }
-          })
-          window.open('https://dashboard.linkdrop.io', '_blank')
-        }}>
-          <Icons.GoToOldVersionIcon />Go to old version
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={async () => {
           plausibleApi.invokeEvent({

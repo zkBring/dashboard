@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { Widget } from 'components/common'
-import { Button } from 'components/common'
+import { Widget, Button } from 'components/common'
 
 export const Container = styled.div`
   margin-bottom: 36px;
@@ -32,7 +31,7 @@ export const StyledWidget = styled(Widget)`
 `
 
 export const WidgetDescription = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   margin: 0 0 40px;
 `
 

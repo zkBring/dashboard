@@ -4,7 +4,13 @@ import { ERC20Contract, ERC721Contract, ERC1155Contract } from 'abi'
 
 type TDefineIfUserOwnsToken = (userAddress: string, tokenType: TTokenType, tokenAddress: string, signer: any, tokenId: string) => Promise<{ owns: boolean, balance: string }>
 
-const defineIfUserOwnsToken: TDefineIfUserOwnsToken = async (userAddress, tokenType, tokenAddress, signer, tokenId) => {
+const defineIfUserOwnsToken: TDefineIfUserOwnsToken = async (
+  userAddress,
+  tokenType,
+  tokenAddress,
+  signer,
+  tokenId
+) => {
   try {
 
     if (tokenType === 'ERC721') {

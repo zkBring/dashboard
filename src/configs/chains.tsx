@@ -6,6 +6,7 @@ type TChains = {
     displayName: string
     testnet: boolean
     alchemySupport: boolean
+    mnemonicSupport: boolean
     nativeCurrency: {
       name: string
       symbol: string
@@ -22,6 +23,7 @@ const chains: TChains = {
     displayName: 'Polygon',
     testnet: false,
     alchemySupport: true,
+    mnemonicSupport: false,
     nativeCurrency: {
       name: 'MATIC',
       symbol: 'MATIC',
@@ -39,6 +41,7 @@ const chains: TChains = {
     displayName: 'Mainnet',
     testnet: false,
     alchemySupport: true,
+    mnemonicSupport: false,
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
@@ -56,6 +59,7 @@ const chains: TChains = {
     displayName: 'Goerli',
     testnet: true,
     alchemySupport: true,
+    mnemonicSupport: false,
     nativeCurrency: {
       name: 'GoerliETH',
       symbol: 'GoerliETH',
@@ -72,6 +76,7 @@ const chains: TChains = {
     chainName: 'Mumbai',
     displayName: 'Mumbai',
     alchemySupport: true,
+    mnemonicSupport: false,
     testnet: true,
     nativeCurrency: {
       
@@ -91,6 +96,7 @@ const chains: TChains = {
     displayName: 'Base',
     testnet: false,
     alchemySupport: false,
+    mnemonicSupport: true,
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
@@ -108,6 +114,7 @@ const chains: TChains = {
     displayName: 'BaseGoerli',
     testnet: true,
     alchemySupport: false,
+    mnemonicSupport: false,
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',

@@ -16,10 +16,12 @@ import InformationContainer from './information-container'
 import Tooltip from './tooltip'
 import Button from './button'
 import Draft from './draft'
+import FileInput from './file-input'
 
 export {
   Header,
   Aside,
+  FileInput,
   Button,
   InformationContainer,
   CheckListItem,

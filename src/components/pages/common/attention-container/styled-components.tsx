@@ -13,6 +13,7 @@ export const Container = styled.div`
 export const Title = styled.h3`
   font-size: 22px;
   line-height: 28px;
+  font-weight: 600;
   color: ${props => props.theme.primaryTextColor};
   margin: 0 0 16px;
 `
@@ -20,13 +21,14 @@ export const Title = styled.h3`
 export const Text = styled.p`
   font-size: 16px;
   line-height: 24px;
-  margin: 0 0 32px;
+  margin: 0;
 `
 
 export const ButtonsContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
 `
 
 export const ButtonStyled = styled(Button)`

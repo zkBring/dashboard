@@ -27,7 +27,7 @@ const approve = (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
     getState: () => RootState
   ) => {
-    dispatch(campaignActions.setLoading(true))
+    
     dispatch(campaignActions.setAssets(assets))
     dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setSponsored(sponsored))
@@ -48,6 +48,7 @@ const approve = (
     } = getState()
 
     if (approved) {
+      dispatch(campaignActions.setLoading(true))
       await sleep(2000)
       dispatch(campaignActions.setLoading(false))
       isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
@@ -70,6 +71,7 @@ const approve = (
       if (!address) {
         return alertError('No user address provided')
       }
+      dispatch(campaignActions.setLoading(true))
       const contractInstance = await new ethers.Contract(tokenAddress, ERC721Contract.abi, signer)
       plausibleApi.invokeEvent({
         eventName: 'camp_step3_filled',

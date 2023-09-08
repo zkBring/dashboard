@@ -131,3 +131,25 @@ export const ErrorSpan = styled.span`
 export const UploadedSpan = styled.span`
   color: ${props => props.theme.primaryHighlightColor};
 `
+
+export const InputTitle = styled.h3`
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 0 8px; 
+  font-weight: 500;
+  color: ${props => props.theme.primaryTextColor};
+`
+
+export const InputTitleAdditional = styled.span`
+  color: ${props => props.theme.additionalTextColor};
+`
+
+export const InputContainer = styled.div``
+
+export const InputSubtitle = styled.h2`
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: ${props => props.theme.additionalTextColor};
+`

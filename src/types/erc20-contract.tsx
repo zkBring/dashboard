@@ -1,6 +1,6 @@
 import TTokenType from "./token-type"
 
-type TAlchemyERC20Contract = {
+type TERC20Contract = {
   address: string
   totalBalance: string | null
   tokenType: TTokenType
@@ -8,4 +8,4 @@ type TAlchemyERC20Contract = {
   decimals: number
 }
 
-export default TAlchemyERC20Contract
+export default TERC20Contract

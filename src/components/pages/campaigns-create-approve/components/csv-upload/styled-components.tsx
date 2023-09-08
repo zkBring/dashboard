@@ -49,7 +49,6 @@ export const InputComponent = styled(Input)`
   bottom: 0;
   right: 0;
   z-index: 2;
-
 `
 
 export const Buttons = styled.div`

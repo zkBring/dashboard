@@ -4,12 +4,13 @@ import * as actionsCampaign from '../actions'
 import * as actionsUser from '../../user/actions'
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
-import { TAlchemyNFTToken, TTokenType } from 'types'
+import { TNFTToken, TTokenType } from 'types'
 import { IAppDispatch } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
 import { defineAlchemyNetwork, defineNetworkName, alertError } from 'helpers'
 import { RootState } from 'data/store'
-
+import { getMnemonicCollections } from 'data/api'
+import { convertMnemonicNFTs } from 'helpers'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 function getUserNFTs(
@@ -41,9 +42,16 @@ function getUserNFTs(
           const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
             contractAddresses: [ tokenAddress ]
           })
-          
-          if (ownedNfts && ownedNfts.length > 0) {
-            dispatch(actionsUser.setNFTs(ownedNfts as TAlchemyNFTToken[]))
+          dispatch(actionsUser.setNFTs(ownedNfts as TNFTToken[]))
+        } else if (chainId === 8453) {
+          const response = await getMnemonicCollections(
+            chainId,
+            address
+          )
+          if (response) {
+            const { data: { nfts } } = response
+            const nftsConverted = convertMnemonicNFTs(nfts, tokenAddress)
+            dispatch(actionsUser.setNFTs(nftsConverted as TNFTToken[]))
           }
         }
         

@@ -1,4 +1,10 @@
 import axios, { AxiosResponse } from 'axios'
+import Plausible from 'plausible-tracker-linkdrop'
+const { REACT_APP_PLAUSIBLE_DOMAIN } = process.env
+
+export const plausible = Plausible({
+  domain: REACT_APP_PLAUSIBLE_DOMAIN
+})
 
 type TEventData = {
   eventName: string
@@ -13,17 +19,16 @@ const invokeEvent: TInvokeEvent = async ({
   eventName, data
 }) => {
   try {
-    return axios.post('https://plausible.io/api/event', {
-      name: eventName,
-      url: window.location.href,
-      domain: window.location.host,
-      props: data
-    }, {
-      headers: {
-        // 'X-Forwarded-For': '127.0.0.1',
-        'Content-Type': 'application/json'
+    return plausible.trackEvent(
+      eventName,
+      {
+        callback: () => console.log(`Plausible event sent: ${eventName}`),
+        props: data,
+      },
+      {
+        url: window.location.origin
       }
-    })
+    )
   } catch (err) {
     console.error(err)
   }

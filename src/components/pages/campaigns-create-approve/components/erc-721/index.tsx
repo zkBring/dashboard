@@ -18,7 +18,7 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TClaimPattern, TAlchemyNFTToken } from 'types'
+import { TTokenType, TLinkContent, TClaimPattern, TNFTToken } from 'types'
 import {
   WidgetComponent
 } from 'components/pages/common'
@@ -54,7 +54,7 @@ const mapStateToProps = ({
   nfts
 })
 
-const defineNFTTokensOptions = (nftTokens: TAlchemyNFTToken[], tokenAddress: string | null) => {
+const defineNFTTokensOptions = (nftTokens: TNFTToken[], tokenAddress: string | null) => {
   if (!tokenAddress) { return [] }
   if (!nftTokens) { return [] }
   const options = nftTokens.map(singleToken => {
@@ -119,7 +119,7 @@ const createSelectContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   getDefaultValues: () => TLinkContent,
-  nfts: TAlchemyNFTToken[],
+  nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   signer: any,
@@ -200,7 +200,7 @@ const createTextInputOrSelect = (
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
   getDefaultValues: () => TLinkContent,
-  nfts: TAlchemyNFTToken[],
+  nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   signer: any

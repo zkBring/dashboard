@@ -19,7 +19,7 @@ import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TAlchemyNFTToken } from 'types'
+import { TTokenType, TLinkContent, TNFTToken, TClaimPattern } from 'types'
 import {
   WidgetComponent
 } from 'components/pages/common'
@@ -61,7 +61,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {}
 }
 
-const defineNFTTokensOptions = (nftTokens: TAlchemyNFTToken[], tokenAddress: string | null) => {
+const defineNFTTokensOptions = (nftTokens: TNFTToken[], tokenAddress: string | null) => {
   if (!tokenAddress) { return [] }
   const options = nftTokens.map(singleToken => {
     return {
@@ -134,24 +134,37 @@ const createSelectContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   getDefaultValues: () => TLinkContent,
-  nfts: TAlchemyNFTToken[],
+  nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
   signer: any,
-  checkIfDisabled: () => boolean
+  checkIfDisabled: () => boolean,
+  claimPattern: TClaimPattern
 ) => {
   return <InputsContainer>
     <SelectStyled
       disabled={checkIfDisabled()}
-      onChange={async ({ value }: { value: string | TAlchemyNFTToken }) => {
+      onChange={async ({ value }: { value: string | TNFTToken }) => {
         const tokenId = typeof value === 'string' ? value : value.tokenId
         const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
         if (tokenAlreadyAdded) {
           return alertError(`Token #${tokenId} was already added`)
         }
 
+        // if "not found" was clicked
         if (typeof value === 'string') {
-          // if "not found" was clicked
+          if (claimPattern === 'mint') {
+            return setAssetsData([
+              ...assetsData, {
+                tokenId: value,
+                tokenAmount: "1",
+                linksAmount: "1",
+                type: 'ERC1155',
+                id: assetsData.length,
+                tokenName: 'Token ERC1155'
+              }
+            ])
+          }
           const userOwnership = await defineIfUserOwnsToken(
             userAddress,
             'ERC1155',
@@ -207,10 +220,11 @@ const createTextInputOrSelect = (
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
   getDefaultValues: () => TLinkContent,
-  nfts: TAlchemyNFTToken[],
+  nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
-  signer: any
+  signer: any,
+  claimPattern: TClaimPattern
 ) => {
 
   if (enabledInput) {
@@ -233,7 +247,8 @@ const createTextInputOrSelect = (
     tokenAddress,
     userAddress,
     signer,
-    checkIfDisabled
+    checkIfDisabled,
+    claimPattern
   )
 
 }
@@ -378,7 +393,8 @@ const Erc1155: FC<ReduxType > = ({
         nfts,
         tokenAddress,
         address,
-        signer
+        signer,
+        claimPattern
       )}
       <LinksContents
         type={type}

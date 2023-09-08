@@ -5,6 +5,9 @@ import InstructionNote from './instruction-note'
 import InitialGuide from './initial-guide'
 import DownloadQRPopup from './download-qr-popup'
 import UploadLinksPopup from './upload-links-popup'
+import TokenImage from './token-image'
+import ThumbnailUpload from './thumbnail-upload'
+import AttentionContainer from './attention-container'
 
 import {
   Container,
@@ -26,14 +29,20 @@ import {
   ErrorSpan,
   UploadedSpan,
   WidgetSectionTitle,
-  WidgetSectionSubtitle
+  WidgetSectionSubtitle,
+  InputTitle,
+  InputTitleAdditional,
+  InputContainer,
+  InputSubtitle
 } from './styled-components'
 
 export {
   TransactionAside,
   Container,
   WidgetComponent,
+  InputContainer,
   InstructionNote,
+  InputSubtitle,
   WidgetAside,
   ErrorSpan,
   UploadedSpan,
@@ -47,6 +56,7 @@ export {
   WidgetSubtitle,
   WidgetTitle,
   AsideDivider,
+  AttentionContainer,
   TableRow,
   TableValueShorten,
   TableText,
@@ -54,7 +64,11 @@ export {
   AssetsList,
   InitialGuide,
   DownloadQRPopup,
+  InputTitle,
+  InputTitleAdditional,
   UploadLinksPopup,
   WidgetSectionTitle,
-  WidgetSectionSubtitle
+  WidgetSectionSubtitle,
+  TokenImage,
+  ThumbnailUpload
 }

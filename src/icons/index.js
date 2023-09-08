@@ -28,6 +28,7 @@ import { ReactComponent as OptionsIcon } from './options-icon.svg'
 import { ReactComponent as PauseIcon } from './pause-icon.svg'
 import { ReactComponent as UnpauseIcon } from './unpause-icon.svg'
 import { ReactComponent as RefundIcon } from './refund-icon.svg'
+import { ReactComponent as MiniClipboardCopyIcon } from './mini-clipboard-copy-icon.svg'
 import { ReactComponent as ClipboardCopyIcon } from './clipboard-copy-icon.svg'
 import { ReactComponent as ClipboardCopiedIcon } from './clipboard-copied-icon.svg'
 import { ReactComponent as EyeOpenIcon } from './eye-open-icon.svg'
@@ -58,6 +59,7 @@ const Icons = {
   DispenserIcon,
   GoToOldVersionIcon,
   CloseCircleIcon,
+  MiniClipboardCopyIcon,
   BookIcon,
   ContactUsIcon,
   TrashIcon,

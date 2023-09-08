@@ -22,6 +22,9 @@ const defineTitle: TDefineTitle = (location) => {
     case locationUpdated.includes('/invite-links'):
       return 'Invite Links'
 
+    case locationUpdated.includes('/collections'):
+      return 'Minter'
+
     case locationUpdated.includes('/campaigns/new'):
     case locationUpdated.includes('/campaigns/new/initial'):
     case locationUpdated.includes('/campaigns/new/erc20/secure'):
@@ -159,12 +162,12 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   }
 }
 
-const PageComponent: FC<ReduxType> = ({ children, authorizationStep }) => {
-  
+const PageComponent: FC<ReduxType> = ({ children, authorizationStep }) => {  
   const location = useLocation<ILocationType>()
   const title = defineTitle(location.pathname)
   const breadcrumbs = defineBreadcrumbs(location.pathname)
   const withHeader = authorizationStep === 'authorized'
+
 
   return (
     <ThemeProvider theme={themes.light}>

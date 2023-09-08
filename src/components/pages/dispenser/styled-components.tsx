@@ -34,12 +34,6 @@ export const AsideWidgetButton = styled(Button)`
   }
 `
 
-export const MainContent = styled.div`
-  margin-right: 24px;
-  flex: 1 0 50%;
-  
-`
-
 export const WidgetComponentStyled = styled(WidgetComponent)`
   max-width: 740px;
 `
@@ -59,10 +53,6 @@ export const PopupFormContent = styled.div`
 `
 
 export const PopupForm = styled.form`
-`
-
-export const AsideContent = styled.div`
-  margin-bottom: 32px;
 `
 
 export const AsideSubtitle = styled.h3`
@@ -85,4 +75,14 @@ export const AsideStyled = styled(Aside)`
   max-width: 358px;
   min-width: 358px;
   margin: 0;
+`
+
+export const AsideContent = styled.div`
+  margin-bottom: 32px;
+`
+
+export const MainContent = styled.div`
+  margin-right: 24px;
+  flex: 1 0 50%;
+  
 `

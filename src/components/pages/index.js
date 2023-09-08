@@ -16,9 +16,18 @@ import Dispensers from './dispensers'
 import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
 import InviteLinks from './invite-links'
+import Collections from './collections'
+import CollectionsCreateInitial from './collections-create-initial'
+import CollectionsCreateNew from './collections-create-new'
+import Collection from './collection'
+import CollectionAddToken from './collection-add-token'
 
 export {
   Page,
+  Collection,
+  CollectionAddToken,
+  CollectionsCreateNew,
+  CollectionsCreateInitial,
   InviteLinks,
   Dispenser,
   NotFound,
@@ -35,5 +44,6 @@ export {
   Main,
   QRCreate,
   Dispensers,
-  DispenserCreate
+  DispenserCreate,
+  Collections
 }
