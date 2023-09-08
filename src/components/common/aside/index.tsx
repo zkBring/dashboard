@@ -51,6 +51,7 @@ const AsideComponent: FC<AsideProps & ReduxType> = ({
       </AsideTextLink>
     </AsideLogoZone>
   }
+
 	return <Aside>
     <AsideLogoZone>
       <AsideTextLink to='/campaigns'>
