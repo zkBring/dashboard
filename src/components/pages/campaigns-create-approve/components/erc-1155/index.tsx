@@ -6,15 +6,15 @@ import {
   TextBold,
   InstructionNoteStyled,
   NotesContainer,
-  SelectStyled
+  SelectStyled,
+  Container,
+  Header,
+  WidgetTitleStyled,
+  HeaderButtons,
+  ButtonHeaderStyled
 } from '../../styled-components'
 import Icons from 'icons'
 import { TProps } from './type'
-import {
-  Container,
-  Header,
-  WidgetTitleStyled
-} from './styled-components'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
@@ -273,7 +273,7 @@ const Erc1155: FC<ReduxType > = ({
   chainId
 }) => {
   const { type } = useParams<{ type: TTokenType }>()
-  const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
+  const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
   const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
@@ -295,7 +295,7 @@ const Erc1155: FC<ReduxType > = ({
 
   const checkIfDisabled = () => {
     if (userLoading || loading) { return true }
-    if (oldStyleInputs) {
+    if (rangeInput) {
       return !formData.tokenId || !formData.linksAmount || !formData.tokenAmount
     }
     return false
@@ -355,9 +355,16 @@ const Erc1155: FC<ReduxType > = ({
     />}
     <Header>
       <WidgetTitleStyled>
-        <span>
-          Add token IDs <span onClick={async () => {
-            const newValue = !oldStyleInputs
+        {claimPattern === 'mint' ? 'Specify number of NFTs' : 'Add token IDs to distribute'}
+      </WidgetTitleStyled>
+
+      <HeaderButtons>
+        {claimPattern !== 'mint' && <ButtonHeaderStyled
+          disabled={checkIfAllTokensDisabled()}
+          appearance='additional'
+          size='extra-small'
+          onClick={() => {
+            const newValue = !rangeInput
             if (newValue) {
               plausibleApi.invokeEvent({
                 eventName: 'camp_step3_range',
@@ -367,23 +374,24 @@ const Erc1155: FC<ReduxType > = ({
                 }
               })
             }
-            toggleOldStyleInputs(newValue)
-          }}>to</span> distribute
-        </span>
-      </WidgetTitleStyled>
-
-      <ButtonStyled
-        disabled={checkIfAllTokensDisabled()}
-        appearance='additional'
-        size='extra-small'
-        onClick={addAllTokens}
-      >
-        Select All
-      </ButtonStyled>
+            toggleRangeInput(newValue)
+          }}
+        >
+          {rangeInput ? 'Pick token IDs' : 'Set range'}
+        </ButtonHeaderStyled>}
+        {claimPattern !== 'mint' && <ButtonHeaderStyled
+          disabled={checkIfAllTokensDisabled()}
+          appearance='action'
+          size='extra-small'
+          onClick={addAllTokens}
+        >
+          Select All
+        </ButtonHeaderStyled>}
+      </HeaderButtons>
     </Header>
     <Container>
       {createTextInputOrSelect(
-        oldStyleInputs,
+        rangeInput,
         formData,
         assetsData,
         setFormData,
@@ -410,7 +418,7 @@ const Erc1155: FC<ReduxType > = ({
       />
       
       <NotesContainer>
-        {oldStyleInputs && <><InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
+        {rangeInput && <><InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
           <TextBold>Copies per link</TextBold> — amount of copies that you would like to include in every link
         </InstructionNoteStyled>
         <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >

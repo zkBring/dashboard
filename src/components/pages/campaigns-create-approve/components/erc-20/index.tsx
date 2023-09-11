@@ -5,13 +5,13 @@ import {
   ButtonStyled,
   TextBold,
   NotesContainer,
-  InstructionNoteStyled
+  InstructionNoteStyled,
+  Container,
+  Header,
+  WidgetTitleStyled
 } from '../../styled-components'
 import { TProps } from './type'
 import {
-  Container,
-  Header,
-  WidgetTitleStyled,
   TokenBalance,
   TokenBalanceValue
 } from './styled-components'
