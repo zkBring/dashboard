@@ -1,9 +1,14 @@
 import styled from 'styled-components'
-import { Radio, Input, Select } from 'linkdrop-ui'
+import {
+  Radio,
+  Input,
+  Select
+} from 'linkdrop-ui'
 import { Button } from 'components/common'
 
 import {
-  InstructionNote
+  InstructionNote,
+  WidgetTitle
 } from 'components/pages/common'
 
 
@@ -23,8 +28,14 @@ export const InputStyled = styled(Input)`
   margin-bottom: 0px;
 `
 
-export const ButtonStyled = styled(Button)`
-  
+export const ButtonStyled = styled(Button)``
+
+export const ButtonHeaderStyled = styled(Button)`
+  margin-right: 12px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 `
 
 export const NotesContainer = styled.div`
@@ -41,4 +52,23 @@ export const TextBold = styled.span`
 
 export const SelectStyled = styled(Select)`
   width: 100%;
+`
+
+export const Container = styled.div``
+
+export const WidgetTitleStyled = styled(WidgetTitle)`
+  margin: 0;
+  user-select: none;
+`
+
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  align-items: center;
+`
+
+export const HeaderButtons = styled.div`
+  display: flex;
+  align-items: center;
 `

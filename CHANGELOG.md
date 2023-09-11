@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.25-rc.0
+- added switcher for range of token ids
+
 ## 2.1.24
 - added Minter
 - update for pluasible library
