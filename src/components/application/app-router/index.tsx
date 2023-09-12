@@ -18,6 +18,8 @@ import {
   QRDownload,
   QRCreate,
   Dispensers,
+  DispenserWhitelists,
+  DispenserWhitelistsAddresses,
   DispenserCreate,
   Dispenser,
   InviteLinks,
@@ -119,6 +121,20 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={DispenserCreate}
+        />
+
+        <ProtectedRoute
+          path='/dispensers/:id/whitelists'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DispenserWhitelists}
+        />
+
+        <ProtectedRoute
+          path='/dispensers/:id/whitelists/addresses'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DispenserWhitelistsAddresses}
         />
 
         <ProtectedRoute

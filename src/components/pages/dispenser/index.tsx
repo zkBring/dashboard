@@ -23,7 +23,7 @@ import {
   AsideWidgetButton,
   MainContent
 } from './styled-components'
-import { Statistics, RedirectWidget } from './components'
+import { Statistics, RedirectWidget, WhitelistWidget } from './components'
 import { TextLink } from 'components/common'
 import {
   defineDispenserStatus,
@@ -164,6 +164,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Dispenser: FC<ReduxType> = ({
@@ -364,6 +365,10 @@ const Dispenser: FC<ReduxType> = ({
             errorCallback
           )
         }}
+      />
+      <WhitelistWidget
+        isWhitelisted={true}
+        dispenserId={dispenser_id as string}
       />
     </MainContent>
     
