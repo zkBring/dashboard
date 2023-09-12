@@ -2,6 +2,7 @@
 
 ## 2.1.25-rc.0
 - added switcher for range of token ids
+- removed crossmint option in wallets if not sponsored links
 
 ## 2.1.24
 - added Minter
