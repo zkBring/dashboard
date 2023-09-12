@@ -78,14 +78,16 @@ const createInputsContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
-  getDefaultValues: () => TLinkContent
+  getDefaultValues: () => TLinkContent,
+  claimPattern: TClaimPattern
 ) => {
   return <InputsContainer>
     <InputStyled
       value={formData.tokenId}
       placeholder='Token ID'
       onChange={value => {
-        if (/^[0-9]+$/.test(value) || value === '') {
+        const pattern = /^[0-9]+$/
+        if (pattern.test(value)) {
           setFormData({ ...formData, tokenId: value })
         }
         return value
@@ -226,7 +228,6 @@ const createTextInputOrSelect = (
   signer: any,
   claimPattern: TClaimPattern
 ) => {
-
   if (enabledInput) {
     return createInputsContainer(
       formData,
@@ -234,7 +235,8 @@ const createTextInputOrSelect = (
       setFormData,
       setAssetsData,
       checkIfDisabled,
-      getDefaultValues
+      getDefaultValues,
+      claimPattern
     )
   }
 
@@ -377,7 +379,7 @@ const Erc1155: FC<ReduxType > = ({
             toggleRangeInput(newValue)
           }}
         >
-          {rangeInput ? 'Pick token IDs' : 'Set range'}
+          {rangeInput ? 'Pick token IDs' : 'Set manually'}
         </ButtonHeaderStyled>}
         {claimPattern !== 'mint' && <ButtonHeaderStyled
           disabled={checkIfAllTokensDisabled()}
