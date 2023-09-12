@@ -153,6 +153,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     const options = wallets
       .filter(wallet => {
         if (!chainId) { return false }
+        if (!sponsored && !wallet.available_for_not_sponsored) {return false }
         return wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
       })
     return options
