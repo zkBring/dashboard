@@ -7,6 +7,7 @@ import {
   WidgetSubtitleStyled,
   TextAreaStyled
 } from './styled-components'
+import { parseWhitelistAddresses } from 'helpers'
 import { TProps } from './types'
 
 const DispenserWhitelistsAddresses: FC<TProps> = ({
@@ -40,7 +41,11 @@ const DispenserWhitelistsAddresses: FC<TProps> = ({
           disabled={!value}
           appearance='action'
           onClick={() => {
-            alert('Submit')
+            const addresses = parseWhitelistAddresses(value)
+            if (!addresses) {
+              return alert('Check format')
+            }
+            console.log({ addresses })
           }}
         >
           Apply

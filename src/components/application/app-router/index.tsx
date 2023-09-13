@@ -124,14 +124,14 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
-          path='/dispensers/:id/whitelists'
+          path='/dispensers/:dispenserId/whitelists'
           exact={true}
           loggedIn={Boolean(address)}
           component={DispenserWhitelists}
         />
 
         <ProtectedRoute
-          path='/dispensers/:id/whitelists/addresses'
+          path='/dispensers/:dispenserId/whitelists/addresses'
           exact={true}
           loggedIn={Boolean(address)}
           component={DispenserWhitelistsAddresses}

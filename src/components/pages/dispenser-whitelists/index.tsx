@@ -10,10 +10,15 @@ import {
   WidgetSubtitleStyled
 } from './styled-components'
 import { TProps } from './types'
+import { useLocation, useParams } from 'react-router-dom'
 
-const DispenserWhitelists: FC<TProps> = ({
-  dispenserId
-}) => {
+const DispenserWhitelists: FC<TProps> = () => {
+  const {
+    dispenserId
+  } = useParams<{
+    dispenserId: string
+  }>()
+
   return <Container>
     <Options>
       <Option>
