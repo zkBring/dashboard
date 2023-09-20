@@ -23,7 +23,7 @@ import {
   AsideWidgetButton,
   MainContent
 } from './styled-components'
-import { Statistics, RedirectWidget } from './components'
+import { Statistics, RedirectWidget, WhitelistWidget } from './components'
 import { TextLink } from 'components/common'
 import {
   defineDispenserStatus,
@@ -156,6 +156,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+    toggleWhitelist: (
+      dispenser_id: string,
+      whitelist_on: boolean,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.toggleWhitelistOn({
+      dispenser_id,
+      whitelist_on,
+      successCallback,
+      errorCallback
+    })),
     downloadReport: (
       dispenser_id: string,
     ) => dispatch(asyncDispensersActions.downloadReport(
@@ -164,6 +175,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Dispenser: FC<ReduxType> = ({
@@ -180,6 +192,7 @@ const Dispenser: FC<ReduxType> = ({
   toggleRedirectURL,
   getDispenserStats,
   downloadReport,
+  toggleWhitelist,
   chainId
 }) => {
   const { id } = useParams<{id: string}>()
@@ -263,7 +276,9 @@ const Dispenser: FC<ReduxType> = ({
     multiscan_qr_id,
     title,
     links_claimed,
-    links_assigned
+    links_assigned,
+    whitelist_on,
+    whitelist_type
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -360,6 +375,23 @@ const Dispenser: FC<ReduxType> = ({
           toggleRedirectURL(
             dispenser.dispenser_id as string,
             redirectOn,
+            successCallback,
+            errorCallback
+          )
+        }}
+      />
+      <WhitelistWidget
+        isWhitelisted={whitelist_on}
+        whitelistType={whitelist_type}
+        dispenserId={dispenser_id as string}
+        toggleWhitelistOn={(
+          whitelistOn,
+          successCallback,
+          errorCallback
+        ) => {
+          toggleWhitelist(
+            dispenser_id as string,
+            whitelistOn,
             successCallback,
             errorCallback
           )

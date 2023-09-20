@@ -11,6 +11,12 @@ export type TDispenserLinks = {
   claim_link_id?: string
 }[]
 
+export type TDispenserWhitelistType = 'address' | 'email' | 'twitter'
+export type TDispenserWhitelistItemAddress = {
+  address: string
+  dispenser_id: string
+  type: TDispenserWhitelistType
+}
 export type TDispenser = {
   encrypted_multiscan_qr_secret: string
   multiscan_qr_id: string
@@ -26,6 +32,11 @@ export type TDispenser = {
   redirect_url?: string | null
   links_claimed?: number
   links_assigned?: number
+  whitelisted: boolean
+  whitelist_type: TDispenserWhitelistType
+  whitelist: TDispenserWhitelistItemAddress[]
+  whitelist_count: number
+  whitelist_on: boolean
 }
 
 export type TDispenserUpdateData = {

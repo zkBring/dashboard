@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { TDispenser, TDispenserLinks, TQRItem } from 'types'
+import { TDispenser, TDispenserLinks, TDispenserWhitelistType } from 'types'
 
 const { REACT_APP_SERVER_URL } = process.env
 const dispensersApi = axios.create({
@@ -83,6 +83,43 @@ const requests = {
   ) => {
     return dispensersApi.get(`/dispensers/${dispenser_id}/report`, { withCredentials: true })
   },
+
+
+  // whitelist
+  updateWitelistOn: (
+    dispenser_id: string | number,
+    whitelist_on: boolean
+  ) => {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}/whitelist-on`, {
+      whitelist_on
+    }, {
+      withCredentials: true
+    })
+  },
+
+  getWhitelist: (
+    dispenser_id: string | number
+  ) => {
+    return dispensersApi.get(`/dispensers/${dispenser_id}/whitelist`, {
+      withCredentials: true
+    })
+  },
+
+  createWhitelist: (
+    dispenser_id: string | number,
+    whitelist_type: TDispenserWhitelistType,
+    whitelist: string[]
+  ) => {
+    return dispensersApi.post(`/dispensers/${dispenser_id}/whitelist`, {
+      whitelist_type,
+      whitelist
+    }, {
+      withCredentials: true
+    })
+  },
+
+
+
 }
 
 export default requests

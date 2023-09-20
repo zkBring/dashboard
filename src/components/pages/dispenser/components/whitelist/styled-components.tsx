@@ -1,10 +1,13 @@
 import { Widget } from "components/common"
 import styled from "styled-components"
 import { Toggle, Input } from 'linkdrop-ui'
-import { WidgetTitle } from 'components/pages/common'
+import { WidgetTitle, WidgetSubtitle } from 'components/pages/common'
+import {
+  WidgetButton
+} from '../../styled-components'
 
 export const WidgetStyled = styled(Widget)`
-  margin-bottom: 24px;
+  
 `
 
 export const Header = styled.div`
@@ -26,6 +29,14 @@ export const ToggleStyled = styled(Toggle)`
 
 `
 
-export const InputStyled = styled(Input)`
+export const WidgetContent = styled.div`
+  margin-bottom: 26px;
+`
 
+export const WidgetSubtitleStyled = styled(WidgetSubtitle)`
+  margin-bottom: 32px;
+`
+
+export const WidgetButtonStyled = styled(WidgetButton)`
+  min-width: 160px;
 `

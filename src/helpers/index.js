@@ -9,7 +9,7 @@ import defineExplorerUrl from './define-explorer-url'
 import toHex from './to-hex'
 import defineNativeTokenSymbol from './define-native-token-symbol'
 import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
-import formatDate from './format-date'
+import formatDate, { months } from './format-date'
 import formatTime from './format-time'
 import defineQRStatusName from './define-qr-status-name'
 import mapQRsWithLinks from './map-qrs-with-links'
@@ -73,9 +73,13 @@ import generateTokenSymbol from './generate-token-symbol'
 import convertMnemonicContracts from './convert-mnemonic-contracts'
 import convertMnemonicNFTs from './convert-mnemonic-nfts'
 import defineMnemonicApiURL from './define-mnemonic-api-url'
+import checkWhitelistAddresses from './check-whitelist-addresses'
+import parseWhitelistAddresses from './parse-whitelist-addresses'
 
 export {
   defineThirdwebNetworkName,
+  checkWhitelistAddresses,
+  parseWhitelistAddresses,
   convertMnemonicNFTs,
   defineMnemonicApiURL,
   convertMnemonicContracts,

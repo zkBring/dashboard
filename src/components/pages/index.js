@@ -15,6 +15,8 @@ import QRCreate from './qr-create'
 import Dispensers from './dispensers'
 import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
+import DispenserWhitelists from './dispenser-whitelists'
+import DispenserWhitelistsAddresses from './dispenser-whitelists-addresses'
 import InviteLinks from './invite-links'
 import Collections from './collections'
 import CollectionsCreateInitial from './collections-create-initial'
@@ -24,6 +26,8 @@ import CollectionAddToken from './collection-add-token'
 
 export {
   Page,
+  DispenserWhitelistsAddresses,
+  DispenserWhitelists,
   Collection,
   CollectionAddToken,
   CollectionsCreateNew,
