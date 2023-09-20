@@ -43,7 +43,7 @@ const InformationContainer: FC<TProps> = ({
     </CloseButton>
     {title && <Title>{title}</Title>}
     <Content>
-      {contents.map(content => <ContentItem>
+      {contents.map(content => <ContentItem key={content.title}>
         <ContentItemText>{content.title}</ContentItemText>
         {content.link && <ContentItemLink href={content.link.href} target='_blank'>{content.link.title}</ContentItemLink>}
       </ContentItem>)}

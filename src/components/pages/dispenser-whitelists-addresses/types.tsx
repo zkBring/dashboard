@@ -1,3 +1,1 @@
-export type TProps = {
-  dispenserId: string
-}
+export type TProps = {}

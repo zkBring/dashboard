@@ -14,22 +14,23 @@ import {
   
 } from '../../styled-components'
 import {
-  Container,
   TableRow,
   TableText,
-  TableValue,
-  DownloadQRPopup,
-  UploadLinksPopup,
-  AttentionContainer
+  TableValue
 } from 'components/pages/common'
 
 const Whitelist: FC<TProps> = ({
   isWhitelisted,
-  dispenserId
+  dispenserId,
+  whitelistType,
+  toggleWhitelistOn
 }) => {
   const [
     enabled, setEnabled
   ] = useState<boolean>(Boolean(isWhitelisted))
+  const [
+    loading, setLoading
+  ] = useState<boolean>(false)
 
   return <WidgetStyled>
     <Header>
@@ -39,7 +40,17 @@ const Whitelist: FC<TProps> = ({
       <ToggleStyled
         value={enabled}
         onChange={(value => {
-          
+          setLoading(true)
+          toggleWhitelistOn(
+            !enabled,
+            () => {
+              setLoading(false)
+              setEnabled(!enabled)
+            },
+            () => {
+              setLoading(true)
+            }
+          )
         })}
       />
     </Header>
@@ -50,7 +61,7 @@ const Whitelist: FC<TProps> = ({
       <WidgetContent>
         <TableRow>
           <TableText>Conditions</TableText>
-          <TableValue>Anyone can claim</TableValue>
+          <TableValue>{!whitelistType ? 'Anyone can claim' : 'By address'}</TableValue>
         </TableRow>
 
        

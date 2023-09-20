@@ -43,6 +43,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Dispensers: FC<ReduxType> = ({
@@ -75,7 +76,6 @@ const Dispensers: FC<ReduxType> = ({
           const { title, links_count, dispenser_id, claim_duration, created_at, claim_start, active, redirect_on, redirect_url } = dispenser
           const currentStatus = defineDispenserStatus(claim_start, claim_duration, links_count || 0, active, redirect_on, redirect_url)
           const dateCreatedFormatted = formatDate(created_at || '')
-          console.log({ dateCreatedFormatted })
           const timeCreatedFormatted = formatTime(created_at || '')
           const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
           const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')

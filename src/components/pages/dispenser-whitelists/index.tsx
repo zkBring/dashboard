@@ -10,7 +10,8 @@ import {
   WidgetSubtitleStyled
 } from './styled-components'
 import { TProps } from './types'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { plausibleApi } from 'data/api'
 
 const DispenserWhitelists: FC<TProps> = () => {
   const {
@@ -46,7 +47,18 @@ const DispenserWhitelists: FC<TProps> = () => {
               Whitelist twitter handles
               
             </WidgetTitleStyled>
-            <ButtonStyled size='extra-small'>Contact us</ButtonStyled>
+            <ButtonStyled
+              onClick={() => {
+                plausibleApi.invokeEvent({
+                  eventName: 'contact',
+                  data: {
+                    component: 'dispenser_whitelists_twitter'
+                  }
+                })
+                window.open('https://linkdrop.io/contact-us', '_blank')
+              }}
+              size='extra-small'
+            >Contact us</ButtonStyled>
           </Header>
           <WidgetSubtitleStyled>
             Set up who can claim by whitelisting users by their twitter handles
@@ -61,7 +73,20 @@ const DispenserWhitelists: FC<TProps> = () => {
               Whitelist emails
               
             </WidgetTitleStyled>
-            <ButtonStyled size='extra-small'>Contact us</ButtonStyled>
+            <ButtonStyled
+              size='extra-small'
+              onClick={() => {
+                plausibleApi.invokeEvent({
+                  eventName: 'contact',
+                  data: {
+                    component: 'dispenser_whitelists_emails'
+                  }
+                })
+                window.open('https://linkdrop.io/contact-us', '_blank')
+              }}
+            >
+              Contact us
+            </ButtonStyled>
           </Header>
           <WidgetSubtitleStyled>
             Set up who can claim by whitelisting users by their email addresses
