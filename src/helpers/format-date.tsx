@@ -9,7 +9,6 @@ const formatDate: TFormatDate = (date) => {
   const day = dateObj.getDate()
   const month = dateObj.getMonth()
   const year = dateObj.getFullYear()
-  console.log('hello', months[month])
   return ` ${months[month]} ${day}, ${year}`
 }
 

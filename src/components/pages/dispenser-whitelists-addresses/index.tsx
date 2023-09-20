@@ -96,7 +96,7 @@ const DispenserWhitelistsAddresses: FC<ReduxType> = ({
 
 0xdfs7d8f7s8df98df09s8df98s0df9s80df90sdf
 0xdfs7d8f7s8df98df09s8df98s0df9s80df90sdf
-0xdfs7d8f7s8df98df09s8df98s0df9s80df90sdfand so on
+0xdfs7d8f7s8df98df09s8df98s0df9s80df90sdf and so on
         `}
       />
       <Buttons>
@@ -110,7 +110,6 @@ const DispenserWhitelistsAddresses: FC<ReduxType> = ({
           loading={loading}
           appearance='action'
           onClick={() => {
-            console.log({ value })
             const addresses = parseWhitelistAddresses(value)
             if (!addresses) {
               return alert('Check format')

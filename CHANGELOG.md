@@ -1,6 +1,9 @@
 # Ledger Dashboard
 
-## 2.1.25-rc.0
+## 2.1.26-rc.0
+- added addresses whitelist for dispensers
+
+## 2.1.25
 - added switcher for range of token ids
 - removed crossmint option in wallets if not sponsored links
 
