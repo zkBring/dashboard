@@ -4,74 +4,56 @@ import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
-import { plausibleApi } from 'data/api'
+import { TDispenserWhitelistType } from 'types'
 
-type TToggleWhitelistOnArgs = {
+type TUpdateWhitelistArgs = {
   dispenser_id: string
-  whitelist_on: boolean
+  whitelist: string[]
+  whitelist_type: TDispenserWhitelistType
   successCallback: () => void
   errorCallback: () => void
 }
 
-const toggleWhitelistOn = ({
+const updateWhitelist = ({
   dispenser_id,
-  whitelist_on,
+  whitelist,
+  whitelist_type,
   successCallback,
   errorCallback
-}: TToggleWhitelistOnArgs) => {
+}: TUpdateWhitelistArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
-    const { user: { address }, dispensers: { dispensers } } = getState()
+    const { dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
-      const { data } : { data: { success: boolean } } = await dispensersApi.updateWhitelistOn(
+      const { data } : { data: { success: boolean } } = await  dispensersApi.updateWhitelist(
         dispenser_id,
-        whitelist_on
+        undefined,
+        whitelist_type,
+        whitelist
       )
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenser_id) { 
-            return { ...item, whitelist_on }
+            return {
+              ...item,
+              whitelist_type: whitelist_type,
+              whitelist_count: whitelist.length
+            }
           }
           return item
         })
-        plausibleApi.invokeEvent({
-          eventName: 'multiqr_update_whitelist_on',
-          data: {
-            success: 'yes',
-            address,
-            newWhitelistOnValue: String(whitelist_on),
-            dispenserId: dispenser_id
-          }
-        })
+        
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
         if (successCallback) { successCallback() }
       } else {
-        plausibleApi.invokeEvent({
-          eventName: 'multiqr_update_whitelist_on',
-          data: {
-            success: 'no',
-            address,
-            newWhitelistOnValue: String(whitelist_on),
-            dispenserId: dispenser_id
-          }
-        })
         if (errorCallback) { errorCallback() }
         return alertError('Dispenser was not updated. Check console for more information')
       }
       
     } catch (err) {
-      plausibleApi.invokeEvent({
-        eventName: 'multiqr_update_whitelist_on',
-        data: {
-          success: 'no',
-          address,
-          newWhitelistOnValue: String(whitelist_on),
-          dispenserId: dispenser_id
-        }
-      })
       if (errorCallback) { errorCallback() }
       alertError('Dispenser was not updated. Check console for more information')
       console.error(err)
@@ -80,4 +62,4 @@ const toggleWhitelistOn = ({
   }
 }
 
-export default toggleWhitelistOn
+export default updateWhitelist

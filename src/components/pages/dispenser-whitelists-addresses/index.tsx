@@ -9,7 +9,7 @@ import {
 } from './styled-components'
 import { parseWhitelistAddresses } from 'helpers'
 import { TProps } from './types'
-import { TDispenser } from 'types'
+import { TDispenser, TDispenserWhitelistType } from 'types'
 import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import { RootState, IAppDispatch } from 'data/store'
@@ -29,12 +29,27 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     createAddressWhitelist: (
       dispenserId: string,
-      addresses: string[],
+      whitelist: string[],
+      whitelistType: TDispenserWhitelistType,
       successCallback: () => void,
       errorCallback: () => void
-    ) => dispatch(asyncDispensersActions.createAddressWhitelist({
+    ) => dispatch(asyncDispensersActions.createWhitelist({
       dispenser_id: dispenserId,
-      addresses,
+      whitelist,
+      whitelist_type: whitelistType,
+      successCallback,
+      errorCallback
+    })),
+    updateAddressWhitelist: (
+      dispenserId: string,
+      whitelist: string[],
+      whitelistType: TDispenserWhitelistType,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.updateWhitelist({
+      dispenser_id: dispenserId,
+      whitelist,
+      whitelist_type: whitelistType,
       successCallback,
       errorCallback
     })),
@@ -54,6 +69,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 
 const DispenserWhitelistsAddresses: FC<ReduxType> = ({
   createAddressWhitelist,
+  updateAddressWhitelist,
   loading,
   dispensers,
   getDispenserWhitelist
@@ -114,9 +130,11 @@ const DispenserWhitelistsAddresses: FC<ReduxType> = ({
             if (!addresses) {
               return alert('Check format')
             }
-            createAddressWhitelist(
+            const method = dispenser?.whitelist_type ? updateAddressWhitelist : createAddressWhitelist
+            method(
               dispenserId,
               addresses,
+              'address',
               () => {
                 history.push(`/dispensers/${dispenserId}`)
               },

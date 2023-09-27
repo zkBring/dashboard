@@ -86,7 +86,22 @@ const requests = {
 
 
   // whitelist
-  updateWitelistOn: (
+  updateWhitelist: (
+    dispenser_id: string | number,
+    whitelist_on?: boolean,
+    whitelist_type?: TDispenserWhitelistType,
+    whitelist?: string[]
+  ) => {
+    return dispensersApi.put(`/dispensers/${dispenser_id}/whitelist`, {
+      whitelist_type,
+      whitelist_on,
+      whitelist
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateWhitelistOn: (
     dispenser_id: string | number,
     whitelist_on: boolean
   ) => {
@@ -107,11 +122,13 @@ const requests = {
 
   createWhitelist: (
     dispenser_id: string | number,
+    whitelist_on: boolean,
     whitelist_type: TDispenserWhitelistType,
     whitelist: string[]
   ) => {
     return dispensersApi.post(`/dispensers/${dispenser_id}/whitelist`, {
       whitelist_type,
+      whitelist_on,
       whitelist
     }, {
       withCredentials: true

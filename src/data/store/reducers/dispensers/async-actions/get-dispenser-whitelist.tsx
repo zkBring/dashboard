@@ -41,20 +41,17 @@ const getDispenserWhitelist = ({
         }
       } = await dispensersApi.getWhitelist(dispenser_id)
       
-      
-      const dispensersUpdated = dispensers.map(item => {
-        if (item.dispenser_id === dispenser_id) {
-          let itemUpdated = item
-
-          if (whitelistSuccess) {
-            itemUpdated = { ...itemUpdated, whitelist }
+      if (whitelistSuccess) {
+        const dispensersUpdated = dispensers.map(item => {
+          if (item.dispenser_id === dispenser_id) {
+            let itemUpdated = { ...item, whitelist }
+            return itemUpdated
           }
-          return itemUpdated
-        }
-        return item
-      })
-      dispatch(actionsDispensers.setDispensers(dispensersUpdated))
-      if (callback) { callback() }
+          return item
+        })
+        dispatch(actionsDispensers.setDispensers(dispensersUpdated))
+        if (callback) { callback() }
+      }
       
     } catch (err) {
       alertError('Couldn’t fetch Dispanser data, please check console')

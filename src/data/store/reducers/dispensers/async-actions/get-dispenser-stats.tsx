@@ -37,21 +37,18 @@ const getDispenserStats = ({
           success: boolean,
           dispenser: TDispenser
         }
-      }= await dispensersApi.getOne(dispenser_id)
-      
-      const dispensersUpdated = dispensers.map(item => {
-        if (item.dispenser_id === dispenser_id) {
-          let itemUpdated = item
-          if (statsSuccess) {
-            itemUpdated = { ...itemUpdated, links_assigned: dispenser.links_assigned }
+      } = await dispensersApi.getOne(dispenser_id)
+      if (statsSuccess) {
+        const dispensersUpdated = dispensers.map(item => {
+          if (item.dispenser_id === dispenser_id) {
+            const itemUpdated = { ...item, links_assigned: dispenser.links_assigned }
+            return itemUpdated
           }
-
-          return itemUpdated
-        }
-        return item
-      })
-      dispatch(actionsDispensers.setDispensers(dispensersUpdated))
-      if (callback) { callback() }
+          return item
+        })
+        dispatch(actionsDispensers.setDispensers(dispensersUpdated))
+        if (callback) { callback() }
+      }
       
     } catch (err) {
       alertError('Couldn’t fetch Dispanser data, please check console')
