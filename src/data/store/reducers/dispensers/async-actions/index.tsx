@@ -8,17 +8,19 @@ import updateRedirectURL from './update-redirect-url'
 import getDispenserStats from './get-dispenser-stats'
 import downloadReport from './download-report'
 import toggleWhitelistOn from './toggle-whitelist-on'
-import createAddressWhitelist from './create-address-whitelist'
+import createWhitelist from './create-whitelist'
+import updateWhitelist from './update-whitelist'
 import getDispenserWhitelist from './get-dispenser-whitelist'
 
 export {
   addDispenser,
+  updateWhitelist,
   toggleWhitelistOn,
   getDispenserWhitelist,
   downloadDispenserQR,
   downloadReport,
   addLinksToQR,
-  createAddressWhitelist,
+  createWhitelist,
   updateDispenser,
   updateStatus,
   toggleRedirectOn,

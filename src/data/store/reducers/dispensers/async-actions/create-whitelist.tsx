@@ -6,38 +6,42 @@ import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
 import { TDispenserWhitelistType } from 'types'
 
-type TCreateAddressWhitelistArgs = {
+type TCreateWhitelistArgs = {
   dispenser_id: string
-  addresses: string[]
+  whitelist: string[]
+  whitelist_type: TDispenserWhitelistType
   successCallback: () => void
   errorCallback: () => void
 }
 
-const createAddressWhitelist = ({
+const createWhitelist = ({
   dispenser_id,
-  addresses,
+  whitelist,
+  whitelist_type,
   successCallback,
   errorCallback
-}: TCreateAddressWhitelistArgs) => {
+}: TCreateWhitelistArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
-    const { user: { address }, dispensers: { dispensers } } = getState()
+    const { dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
       const { data } : { data: { success: boolean } } = await dispensersApi.createWhitelist(
         dispenser_id,
-        'address',
-        addresses
+        true,
+        whitelist_type,
+        whitelist
       )
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenser_id) { 
             return {
               ...item,
-              whitelist_type: 'address' as TDispenserWhitelistType,
-              whitelist_count: addresses.length
+              whitelist_on: true,
+              whitelist_type: whitelist_type,
+              whitelist_count: whitelist.length
             }
           }
           return item
@@ -59,4 +63,4 @@ const createAddressWhitelist = ({
   }
 }
 
-export default createAddressWhitelist
+export default createWhitelist

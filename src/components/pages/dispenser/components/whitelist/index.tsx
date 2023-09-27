@@ -18,12 +18,53 @@ import {
   TableText,
   TableValue
 } from 'components/pages/common'
+import { TDispenserWhitelistType } from 'types'
+
+const renderContent = (
+  dispenserId: string,
+  enabled: boolean,
+  loading: boolean,
+  whitelistType?: TDispenserWhitelistType,
+) => {
+  if (!enabled && !whitelistType) {
+    return <Buttons>
+      <WidgetButtonStyled
+        appearance='action'
+        disabled={loading}
+        to={`/dispensers/${dispenserId}/whitelists`}
+      >
+        Set up
+      </WidgetButtonStyled>
+    </Buttons>
+  }
+
+  return <>
+    <WidgetContent>
+      <TableRow>
+        <TableText>Conditions</TableText>
+        <TableValue>By address</TableValue>
+      </TableRow>
+
+    
+    </WidgetContent>
+    <Buttons>
+      <WidgetButtonStyled
+        disabled={loading}
+        appearance='action'
+        to={`/dispensers/${dispenserId}/whitelists`}
+      >
+        Edit
+      </WidgetButtonStyled>
+    </Buttons>
+  </>
+}
 
 const Whitelist: FC<TProps> = ({
   isWhitelisted,
   dispenserId,
   whitelistType,
-  toggleWhitelistOn
+  toggleWhitelistOn,
+  loading: storeLoading
 }) => {
   const [
     enabled, setEnabled
@@ -37,8 +78,9 @@ const Whitelist: FC<TProps> = ({
       <WidgetTitleStyled>
         Whitelist
       </WidgetTitleStyled>
-      <ToggleStyled
+      {whitelistType && <ToggleStyled
         value={enabled}
+        disabled={loading || storeLoading}
         onChange={(value => {
           setLoading(true)
           toggleWhitelistOn(
@@ -52,30 +94,17 @@ const Whitelist: FC<TProps> = ({
             }
           )
         })}
-      />
+      />}
     </Header>
     <WidgetSubtitleStyled>
       You can set up who can claim by whitelisting users by addresses, emails or twitter handles
     </WidgetSubtitleStyled>
-    {enabled && <>
-      <WidgetContent>
-        <TableRow>
-          <TableText>Conditions</TableText>
-          <TableValue>{!whitelistType ? 'Anyone can claim' : 'By address'}</TableValue>
-        </TableRow>
-
-       
-      </WidgetContent>
-      <Buttons>
-        <WidgetButtonStyled
-          appearance='action'
-          to={`/dispensers/${dispenserId}/whitelists`}
-        >
-          Edit
-        </WidgetButtonStyled>
-      </Buttons>
-    </>}
-
+    {renderContent(
+      dispenserId,
+      enabled,
+      loading || storeLoading,
+      whitelistType
+    )}
   </WidgetStyled>
 }
 

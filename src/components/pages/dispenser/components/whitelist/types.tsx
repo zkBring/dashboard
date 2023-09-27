@@ -1,9 +1,10 @@
-import { TDispenserWhitelistType } from "types"
+import { TDispenserWhitelistItemAddress, TDispenserWhitelistType } from "types"
 
 export type TProps = {
   isWhitelisted?: boolean
   dispenserId: string
-  whitelistType: TDispenserWhitelistType
+  whitelistType?: TDispenserWhitelistType
+  loading: boolean
   toggleWhitelistOn: (
     whitelistOn: boolean,
     successCallback: () => void,

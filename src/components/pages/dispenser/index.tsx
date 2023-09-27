@@ -32,7 +32,13 @@ import {
   alertError
 } from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
-import { TDispenser, TDispenserStatus, TLinkDecrypted } from 'types'
+import {
+  TDispenser,
+  TDispenserStatus,
+  TLinkDecrypted,
+  TDispenserWhitelistType,
+  TDispenserWhitelistItemAddress
+} from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { decrypt, encrypt } from 'lib/crypto'
@@ -196,6 +202,7 @@ const Dispenser: FC<ReduxType> = ({
   chainId
 }) => {
   const { id } = useParams<{id: string}>()
+  // @ts-ignore
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
   const history = useHistory()
   const [
@@ -278,7 +285,8 @@ const Dispenser: FC<ReduxType> = ({
     links_claimed,
     links_assigned,
     whitelist_on,
-    whitelist_type
+    whitelist_type,
+    whitelist
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -381,6 +389,7 @@ const Dispenser: FC<ReduxType> = ({
         }}
       />
       <WhitelistWidget
+        loading={loading}
         isWhitelisted={whitelist_on}
         whitelistType={whitelist_type}
         dispenserId={dispenser_id as string}
