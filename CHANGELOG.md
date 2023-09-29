@@ -1,6 +1,6 @@
 # Ledger Dashboard
 
-## 2.1.26-rc.0
+## 2.1.26
 - added addresses whitelist for dispensers
 
 ## 2.1.25
