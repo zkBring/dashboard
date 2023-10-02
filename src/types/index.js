@@ -26,7 +26,9 @@ import {
   TDispenserStatus,
   TDispenser,
   TDispenserUpdateData,
-  TDispenserLinks
+  TDispenserLinks,
+  TDispenserWhitelistType,
+  TDispenserWhitelistItemAddress
 } from './dispenser'
 import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
@@ -51,7 +53,6 @@ import TCampaignDraft from './campaign-draft'
 import TFeatureName from './feature-name'
 import { TDispenserStats } from './dispenser-stats'
 import TMnemonicContract from './mnemonic-contract'
-
 import {
   TCollection,
   TCollectionToken
@@ -63,6 +64,7 @@ export {
   TMnemonicContract,
   TCampaignCreateStep,
   TFeatureName,
+  TDispenserWhitelistType,
   TButtonAppearance,
   TCampaignDraft,
   TERC20TokenItem,
@@ -79,6 +81,7 @@ export {
   TDispenserLinks,
   DotType,
   CornerSquareType,
+  TDispenserWhitelistItemAddress,
   CornerDotType,
   TFileFormat,
   TQRImageOptions,

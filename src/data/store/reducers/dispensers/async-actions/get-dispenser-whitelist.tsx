@@ -5,7 +5,6 @@ import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
 import {
-  TDispenser,
   TDispenserWhitelistType,
   TDispenserWhitelistItemAddress
 } from 'types'
@@ -15,7 +14,7 @@ type TGetDispenserStatsArgs = {
   callback?: () => void
 }
 
-const getDispenserStats = ({
+const getDispenserWhitelist = ({
   dispenser_id,
   callback
 }: TGetDispenserStatsArgs) => {
@@ -27,21 +26,25 @@ const getDispenserStats = ({
    
     const { dispensers: { dispensers } } = getState()
     try {
+ 
       const {
         data: {
-          success: statsSuccess,
-          dispenser
+          success: whitelistSuccess,
+          whitelist,
+          whitelist_type
         }
       } : {
         data: {
           success: boolean,
-          dispenser: TDispenser
+          whitelist_type: TDispenserWhitelistType,
+          whitelist: TDispenserWhitelistItemAddress[]
         }
-      } = await dispensersApi.getOne(dispenser_id)
-      if (statsSuccess) {
+      } = await dispensersApi.getWhitelist(dispenser_id)
+      
+      if (whitelistSuccess) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenser_id) {
-            const itemUpdated = { ...item, links_assigned: dispenser.links_assigned }
+            let itemUpdated = { ...item, whitelist }
             return itemUpdated
           }
           return item
@@ -59,4 +62,4 @@ const getDispenserStats = ({
   }
 }
 
-export default getDispenserStats
+export default getDispenserWhitelist

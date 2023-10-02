@@ -14,8 +14,6 @@ import {
   BatchListLabel,
   BatchListValue,
   WidgetComponent,
-  ErrorSpan,
-  UploadedSpan
 } from 'components/pages/common'
 import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusTag } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
@@ -45,6 +43,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const Dispensers: FC<ReduxType> = ({

@@ -4,15 +4,16 @@ import {
   InputStyled,
   ButtonStyled,
   NotesContainer,
-  SelectStyled
+  SelectStyled,
+  Container,
+  Header,
+  WidgetTitleStyled,
+  HeaderButtons,
+  ButtonHeaderStyled
 } from '../../styled-components'
 import { defineIfUserOwnsToken, shortenString, defineNetworkName } from 'helpers'
 import { TProps } from './type'
-import {
-  Container,
-  Header,
-  WidgetTitleStyled
-} from './styled-components'
+
 import { alertError } from 'helpers'
 import LinksContents from '../links-contents'
 import { RootState, IAppDispatch } from 'data/store';
@@ -249,7 +250,7 @@ const Erc721: FC<ReduxType > = ({
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
-  const [ oldStyleInputs, toggleOldStyleInputs ] = useState<boolean>(false)
+  const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
   const getDefaultValues: () => TLinkContent = () => {
     return {
       linksAmount: '',
@@ -269,7 +270,7 @@ const Erc721: FC<ReduxType > = ({
     if (claimPattern === 'mint') {
       return Boolean(assetsData.length)
     }
-    if (oldStyleInputs) {
+    if (rangeInput) {
       return !formData.tokenId || formData.tokenId.length === 0
     }
     return false
@@ -309,11 +310,15 @@ const Erc721: FC<ReduxType > = ({
   return <WidgetComponent>
     <Header>
       <WidgetTitleStyled>
-        {claimPattern === 'mint' ?  <span>
-          Specify number of NFTs
-        </span> : <span>
-          Add token IDs <span onClick={() => {
-            const newValue = !oldStyleInputs
+        {claimPattern === 'mint' ? 'Specify number of NFTs' : 'Add token IDs to distribute'}
+      </WidgetTitleStyled>
+      <HeaderButtons>
+        {claimPattern !== 'mint' && <ButtonHeaderStyled
+          disabled={checkIfAllTokensDisabled()}
+          appearance='additional'
+          size='extra-small'
+          onClick={() => {
+            const newValue = !rangeInput
             if (newValue) {
               plausibleApi.invokeEvent({
                 eventName: 'camp_step3_range',
@@ -323,22 +328,24 @@ const Erc721: FC<ReduxType > = ({
                 }
               })
             }
-            toggleOldStyleInputs(newValue)
-          }}>to</span> distribute
-        </span>}
-      </WidgetTitleStyled>
-      <ButtonStyled
-        disabled={checkIfAllTokensDisabled()}
-        appearance='additional'
-        size='extra-small'
-        onClick={addAllTokens}
-      >
-        Select All
-      </ButtonStyled>
+            toggleRangeInput(newValue)
+          }}
+        >
+          {rangeInput ? 'Pick token IDs' : 'Set range'}
+        </ButtonHeaderStyled>}
+        {claimPattern !== 'mint' && <ButtonHeaderStyled
+          disabled={checkIfAllTokensDisabled()}
+          appearance='action'
+          size='extra-small'
+          onClick={addAllTokens}
+        >
+          Select All
+        </ButtonHeaderStyled>}
+      </HeaderButtons>
     </Header>
     <Container>
       {createTextInputOrSelect(
-        oldStyleInputs,
+        rangeInput,
         formData,
         claimPattern,
         assetsData,

@@ -1,5 +1,12 @@
 # Ledger Dashboard
 
+## 2.1.26
+- added addresses whitelist for dispensers
+
+## 2.1.25
+- added switcher for range of token ids
+- removed crossmint option in wallets if not sponsored links
+
 ## 2.1.24
 - added Minter
 - update for pluasible library
