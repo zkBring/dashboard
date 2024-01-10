@@ -69,7 +69,7 @@ const wallets: TWallet[] = [
     name: 'LedgerLive',
     chains: ['1', '137'],
     token_types: ['ERC1155', 'ERC721', 'ERC20'],
-    available_for_not_sponsored: false
+    available_for_not_sponsored: true
   }
 ]
 
