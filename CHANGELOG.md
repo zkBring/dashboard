@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.27
+- added src param to link (src=d)
+
 ## 2.1.26
 - added addresses whitelist for dispensers
 

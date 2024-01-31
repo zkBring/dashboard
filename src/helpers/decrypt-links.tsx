@@ -41,7 +41,7 @@ const decryptLinks: TDecryptLink = ({
           token_amount: links[i].token_amount !== '0' ? links[i].token_amount : undefined,
           token_address: tokenAddress,
           claim_code: decryptedClaimCode,
-          claim_link: `${claimAppURL}/#/redeem/${decryptedClaimCode}`
+          claim_link: `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
         })
       }
     }

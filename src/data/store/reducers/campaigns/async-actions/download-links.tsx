@@ -62,8 +62,6 @@ const downloadLinks = (
           userAddress: address
         })
 
-        console.log({ batch })
-
         downloadLinksAsCSV(
           decryptedLinks,
           title,
