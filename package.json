@@ -1,6 +1,6 @@
 {
   "name": "linkdrop-dashboard",
-  "version": "2.1.26",
+  "version": "2.1.27",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-numeric-separator": "^7.18.6",
