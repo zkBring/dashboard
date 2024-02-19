@@ -18,6 +18,10 @@ const COINBASE_CONFIG = {
   qrDeeplink: 'https://go.cb-w.com/dapp?cb_url=%URL%'
 }
 
+const LEDGER_CONFIG = {
+  qrConfig: 'ledger'
+}
+
 const ALPHEMY_CONFIG = {
   claimAppUrl: 'https://alphemy.linkdrop.io'
 }
@@ -32,5 +36,6 @@ export const addressSpecificOptions: TAddressConfig = {
   '0x241365e6eed258ac4a2824424b6802c0240e13eb': ALPHEMY_CONFIG,
   '0xb4c3d57327d4fc9bcc3499963e21db1a5435d537': ALPHEMY_CONFIG,
   '0x1e5fac5151e7d6db73a0aa7d740e9fd7063d6dbb': ALPHEMY_CONFIG,
-  '0x2254c74edd4220883d881894f349b954e15ec7a0': ALPHEMY_CONFIG
+  '0x2254c74edd4220883d881894f349b954e15ec7a0': ALPHEMY_CONFIG,
+  '0xadf49b9f133fb137e82b24f06d23e49c51f586c7': LEDGER_CONFIG
 }
