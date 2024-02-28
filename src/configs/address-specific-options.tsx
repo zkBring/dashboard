@@ -19,7 +19,8 @@ const COINBASE_CONFIG = {
 }
 
 const LEDGER_CONFIG = {
-  qrConfig: 'ledger'
+  qrConfig: 'ledger',
+  claimAppUrl: 'https://ldgr.linkdrop.io'
 }
 
 const ALPHEMY_CONFIG = {
@@ -38,4 +39,5 @@ export const addressSpecificOptions: TAddressConfig = {
   '0x1e5fac5151e7d6db73a0aa7d740e9fd7063d6dbb': ALPHEMY_CONFIG,
   '0x2254c74edd4220883d881894f349b954e15ec7a0': ALPHEMY_CONFIG,
   '0xadf49b9f133fb137e82b24f06d23e49c51f586c7': LEDGER_CONFIG
+
 }
