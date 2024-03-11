@@ -30,15 +30,14 @@ const getERC20Contracts = () => {
           apiKey: REACT_APP_ALCHEMY_API_KEY,
           network
         })
-        const start = +new Date()
         const { tokenBalances } = await alchemy.core.getTokenBalances(address)
+
         if (tokenBalances && tokenBalances.length > 0) {
             const contractsWithMetadata: TERC20Contract[] = []
             for (let token of tokenBalances) {
               if (token.tokenBalance && parseInt(token.tokenBalance, 16) === 0) {
                 continue
               }
-  
               // commented for now, possible to use later
               // const contractInstance = await new ethers.Contract(token.contractAddress, ERC20Contract.abi, signer)
               // const decimals = await contractInstance.decimals()
@@ -64,7 +63,7 @@ const getERC20Contracts = () => {
               }
   
               const tokenListInstance = tokenListERC20[token.contractAddress.toLocaleLowerCase()]
-  
+
               if (!tokenListInstance) {
                 continue
               }
@@ -85,7 +84,6 @@ const getERC20Contracts = () => {
             }
             dispatch(userActions.setContractsERC20(contractsWithMetadata as TERC20Contract[]))
         }
-        const totalTimeToFetch = +new Date() - start
       }
       
     } catch (err) {
