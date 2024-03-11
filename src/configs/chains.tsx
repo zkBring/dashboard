@@ -95,7 +95,7 @@ const chains: TChains = {
     chainName: 'Base',
     displayName: 'Base',
     testnet: false,
-    alchemySupport: false,
+    alchemySupport: true,
     mnemonicSupport: true,
     nativeCurrency: {
       name: 'ETH',
@@ -113,7 +113,7 @@ const chains: TChains = {
     chainName: 'Base Goerli Testnet',
     displayName: 'BaseGoerli',
     testnet: true,
-    alchemySupport: false,
+    alchemySupport: true,
     mnemonicSupport: false,
     nativeCurrency: {
       name: 'ETH',

@@ -71,7 +71,6 @@ export class QRsWorker {
         logoImageWidth,
         logoImageHeight
       })
-  
       const blob = await qrCode.getRawData('png')
       if (!blob) { continue }
       qrs.push(blob)
