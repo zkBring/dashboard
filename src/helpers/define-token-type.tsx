@@ -1,13 +1,21 @@
 import { ethers } from 'ethers'
 import { ERC721Contract, ERC1155Contract } from 'abi'
 import { TTokenType } from 'types'
+import { contractSpecificOptions } from 'configs/contract-specific-options'
+
 const interfaceIdERC721 = "0x80ac58cd"
 const interfaceIdERC1155 = "0xd9b67a26"
+
 
 type TDefineTokenType = (address: string, provider: any) => Promise<TTokenType | null>
 
 const defineTokenType: TDefineTokenType = async (address, signer) => {
   try {
+    const contractSpecificOption = contractSpecificOptions[address.toLowerCase()]
+    if (contractSpecificOption) {
+      return contractSpecificOption.tokenType
+    }
+
     const contractInstanceERC721 = new ethers.Contract(address, ERC721Contract.abi, signer)
     const isERC721 = await contractInstanceERC721.supportsInterface(interfaceIdERC721)
     if (isERC721) {
