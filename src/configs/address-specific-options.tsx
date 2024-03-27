@@ -16,7 +16,6 @@ type TAddressConfig = Record<
 
 const COINBASE_CONFIG = {
   qrConfig: 'coinbase',
-  qrDeeplink: 'https://go.cb-w.com/dapp?cb_url=%URL%',
   claimUrlSchema: 'https://wallet.coinbase.com/claim?tk=code&k=<CODE>&c=<CHAIN_ID>&v=<VERSION>&src=d'
 }
 
