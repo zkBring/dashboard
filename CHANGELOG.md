@@ -3,6 +3,7 @@
 ## 2.1.27
 - added src param to link (src=d)
 - added new version of alchemy sdk (base and baseGoerli support for NFT/ERC20)
+- added special options for token contracts
 
 ## 2.1.26
 - added addresses whitelist for dispensers
