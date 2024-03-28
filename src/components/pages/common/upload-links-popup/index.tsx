@@ -38,6 +38,7 @@ const UploadLinksPopup: FC<TProps> = ({
 
       const links = lines.map(item => {
         const [ link_id, token_id, token_amount, token_address, claim_code, claim_link ] = item.split(',')
+
         return {
           link_id,
           token_id,

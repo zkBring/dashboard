@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-import contracts from 'configs/contracts'
 import { prepareERC20Url, alertError } from 'helpers'
 
 const getERC20TokenList = async (

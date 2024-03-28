@@ -16,6 +16,10 @@ const defineAlchemyNetwork: TDefineAlchemyNetwork = (
       return Network.MATIC_MAINNET
     case 80001:
       return Network.MATIC_MUMBAI
+    case 8453:
+      return Network.BASE_MAINNET
+    case 84531:
+      return Network.BASE_GOERLI
     default: 
       return
   }

@@ -12,6 +12,7 @@ import { TNFTContract } from 'types'
 import { defineAlchemyNetwork, alertError } from 'helpers'
 import { getMnemonicCollections } from 'data/api'
 import { convertMnemonicContracts } from 'helpers'
+import chains from 'configs/chains'
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 const getContracts = () => {
@@ -25,9 +26,10 @@ const getContracts = () => {
       if (!chainId) {
         return alertError('chainId is not provided')
       }
+      const chainConfig = chains[chainId]
+      if (chainConfig && chainConfig.alchemySupport) {
+        const network = defineAlchemyNetwork(chainId)
 
-      const network = defineAlchemyNetwork(chainId)
-      if (network) {
         const alchemy = new Alchemy({
           apiKey: REACT_APP_ALCHEMY_API_KEY,
           network
@@ -38,8 +40,10 @@ const getContracts = () => {
         } : undefined
   
         const { contracts } = await alchemy.nft.getContractsForOwner(address, filters)
+
+        // @ts-ignore
         dispatch(userActions.setContracts(contracts as TNFTContract[]))
-      } else if (chainId === 8453) {
+      } else if (chainConfig.mnemonicSupport) {
         const response = await getMnemonicCollections(
           chainId,
           address

@@ -59,7 +59,8 @@ const downloadLinks = (
           links: claim_links,
           dashboardKey: String(dashboardKey),
           tokenAddress,
-          userAddress: address
+          userAddress: address,
+          chainId
         })
 
         downloadLinksAsCSV(

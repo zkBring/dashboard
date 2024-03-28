@@ -4,7 +4,7 @@ export type TNFTToken = {
   title: string
   tokenType: TTokenType
   tokenId: string
-  balance: number
+  balance: string
   media: {
     bytes?: number
     gateway: string

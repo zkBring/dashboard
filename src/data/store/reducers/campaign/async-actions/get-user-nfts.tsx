@@ -11,11 +11,14 @@ import { defineAlchemyNetwork, defineNetworkName, alertError } from 'helpers'
 import { RootState } from 'data/store'
 import { getMnemonicCollections } from 'data/api'
 import { convertMnemonicNFTs } from 'helpers'
+import chains from 'configs/chains';
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 function getUserNFTs(
   tokenStandard: TTokenType
 ) {
+
+  // @ts-ignore
   return async (
     dispatch: Dispatch<CampaignActions> & Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState
@@ -33,7 +36,8 @@ function getUserNFTs(
 
       if (tokenStandard !== 'ERC20') {
         const network = defineAlchemyNetwork(chainId)
-        if (network) {
+        const chainConfig = chains[chainId]
+        if (network && chainConfig.alchemySupport) {
           const alchemy = new Alchemy({
             apiKey: REACT_APP_ALCHEMY_API_KEY,
             network
@@ -42,8 +46,22 @@ function getUserNFTs(
           const { ownedNfts } = await alchemy.nft.getNftsForOwner(address, {
             contractAddresses: [ tokenAddress ]
           })
-          dispatch(actionsUser.setNFTs(ownedNfts as TNFTToken[]))
-        } else if (chainId === 8453) {
+
+          const nfts = ownedNfts.map(nft => {
+            return {
+              title: nft.name || 'No title',
+              tokenType: nft.tokenType as TTokenType,
+              tokenId: nft.tokenId,
+              balance: nft.balance,
+              media: [{
+                bytes: nft.image.size,
+                gateway: nft.image.pngUrl || nft.image.thumbnailUrl || ''
+              }]
+            }
+          })
+
+          dispatch(actionsUser.setNFTs(nfts))
+        } else if (chainConfig.mnemonicSupport) {
           const response = await getMnemonicCollections(
             chainId,
             address

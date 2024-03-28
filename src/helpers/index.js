@@ -75,9 +75,11 @@ import convertMnemonicNFTs from './convert-mnemonic-nfts'
 import defineMnemonicApiURL from './define-mnemonic-api-url'
 import checkWhitelistAddresses from './check-whitelist-addresses'
 import parseWhitelistAddresses from './parse-whitelist-addresses'
+import defineUrlSchema from './define-url-schema'
 
 export {
   defineThirdwebNetworkName,
+  defineUrlSchema,
   checkWhitelistAddresses,
   parseWhitelistAddresses,
   convertMnemonicNFTs,

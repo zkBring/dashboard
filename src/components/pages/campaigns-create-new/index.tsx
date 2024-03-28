@@ -27,6 +27,7 @@ import { alertError, preventPageClose } from 'helpers'
 import { utils } from 'ethers'
 import { defineNetworkName, shortenString, defineTokenType, defineIfUserOwnsContract, defineIfUserOwnsContractERC20 } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
+import { contractSpecificOptions } from 'configs/contract-specific-options'
 
 const mapStateToProps = ({
   campaign: {
@@ -273,6 +274,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
                 }
                 setTokenAddress(value)
               } else if (currentType !== 'ERC20' && chainId) {
+
+                // ERC721 / ERC1155
                 const tokenType = await defineTokenType(value, signer)
                 if (!tokenType) {
                   return alertError('No tokenType provided')
@@ -292,12 +295,21 @@ const CampaignsCreateNew: FC<ReduxType> = ({
                 alertError('No chainId provided')
               }
             } else {
+              const contractAddress = String(value.address).toLowerCase()
+              const contractSpecificOption = contractSpecificOptions[contractAddress]
+              if (contractSpecificOption) {
+                setCurrentType(contractSpecificOption.tokenType)
+                setTokenAddress(contractAddress)
+                return 
+              }
+  
               const tokenType = String(value.tokenType)
+
               if (tokenType === 'UNKNOWN') {
                 return alertError('Token type is UNKNOWN. Unable to select')
               }
               setCurrentType(tokenType)
-              setTokenAddress(String(value.address))
+              setTokenAddress(contractAddress)
             }
           }}
           placeholder={selectCurrentPlaceholder()}
