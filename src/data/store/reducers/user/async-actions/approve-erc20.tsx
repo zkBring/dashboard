@@ -120,7 +120,7 @@ const approve = (
         return new Promise((resolve) => {
           const checkInterval = setInterval(async () => {
             const allowed = await contractInstance.allowance(address, proxyContractAddress)
-            if (allowed >= amountToApprove) {
+            if (allowed.gte(amountToApprove)) {
               resolve(true)
               clearInterval(checkInterval)
             }

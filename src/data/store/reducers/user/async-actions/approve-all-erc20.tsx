@@ -30,6 +30,7 @@ const approve = (
     dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setSponsored(sponsored))
     dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
+
     const {
       user: {
         signer,
@@ -95,7 +96,7 @@ const approve = (
         return new Promise((resolve, reject) => {
           const checkInterval = setInterval(async () => {
             const allowed = await contractInstance.allowance(address, proxyContractAddress)
-            if (allowed >= ethers.constants.MaxUint256) {
+            if (allowed.eq(ethers.constants.MaxUint256)) {
               resolve(true)
               clearInterval(checkInterval)
             }
