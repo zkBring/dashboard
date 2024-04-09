@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.28
+- allowance check with BigNumber methods
+
 ## 2.1.27
 - added src param to link (src=d)
 - added new version of alchemy sdk (base and baseGoerli support for NFT/ERC20)
