@@ -60,7 +60,8 @@ const downloadLinks = (
           dashboardKey: String(dashboardKey),
           tokenAddress,
           userAddress: address,
-          chainId
+          chainId,
+          wallet
         })
 
         downloadLinksAsCSV(
