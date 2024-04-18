@@ -29,7 +29,8 @@ import {
   defineDispenserStatus,
   defineIfQRIsDeeplink,
   defineDispenserStatusTag,
-  alertError
+  alertError,
+  defineDispenserAppUrl
 } from 'helpers'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 import {
@@ -229,7 +230,6 @@ const Dispenser: FC<ReduxType> = ({
     )
   }, [])
 
-  const isDeeplink = defineIfQRIsDeeplink(address)
   const claimAppURL = defineClaimAppURL(address)
 
   const {
@@ -241,10 +241,20 @@ const Dispenser: FC<ReduxType> = ({
         redirect_url,
         encrypted_multiscan_qr_enc_code,
         encrypted_multiscan_qr_secret,
+        whitelist_on
       } = dispenser 
       const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
-      const originalLink = `${claimAppURL}/#/mqr/${decrypt(encrypted_multiscan_qr_secret, dashboardKey)}/${multiscanQREncCode}`
-      const claimURLDecrypted = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
+      const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
+      // 
+      const claimURLDecrypted = defineDispenserAppUrl(
+        address,
+        claimAppURL,
+        decryptedMultiscanQRSecret,
+        multiscanQREncCode,
+        whitelist_on
+      )
+
+
       const linkKey = ethers.utils.id(multiscanQREncCode)
       try {
         const redirectURLDecrypted = redirect_url ? decrypt(redirect_url, linkKey.replace('0x', '')) : ''
@@ -263,7 +273,8 @@ const Dispenser: FC<ReduxType> = ({
   }, dispenser ? [
     dispenser.encrypted_multiscan_qr_enc_code,
     dispenser.encrypted_multiscan_qr_secret,
-    dispenser.redirect_url
+    dispenser.redirect_url,
+    dispenser.whitelist_on
   ] : []) 
 
   if (!dispenser || !dashboardKey) {
