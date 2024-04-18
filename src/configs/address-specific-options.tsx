@@ -4,6 +4,7 @@ type TAddressConfig = Record<
   string,
   {
     qrConfig?: string
+    qrDeeplink?: string
     betaFeaturesAvailable?: TFeatureName[]
     claimAppUrl?: string,
     dispenserAppUrl?: string,
@@ -13,6 +14,11 @@ type TAddressConfig = Record<
     }
   }
 >
+
+const TEST_CONFIG = {
+  qrConfig: 'coinbase',
+  dispenserAppUrl: 'https://dispenser.linkdrop.io'
+}
 
 const COINBASE_CONFIG = {
   qrConfig: 'coinbase',
@@ -35,6 +41,7 @@ const ALPHEMY_CONFIG = {
 export const addressSpecificOptions: TAddressConfig = {
   '0xe78f82c63f9237ce12c415afc547fa80e1575629': COINBASE_CONFIG,
   '0x902b0bc91546a454bc70320dd9917f0def81c033': COINBASE_CONFIG,
+  '0xaf62901baef02ea76eda62793bcbd66770a20bf7': COINBASE_CONFIG,
   '0xb3c21190212fbac3972565a1ca3939ebc7d23527': COINBASE_CONFIG,
   '0xd756da6e34522f534a811c96e5e3668b38a76a22': COINBASE_CONFIG,
   '0xf96f058d4197f0e8e8284ae4123b38e4701c93fd': COINBASE_CONFIG,
