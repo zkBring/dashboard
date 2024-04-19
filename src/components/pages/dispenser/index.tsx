@@ -106,6 +106,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       encrypted_multiscan_qr_secret: string,
       encrypted_multiscan_qr_enc_code: string,
       qrDispenserName: string,
+      whitelistOn: boolean,
       callback?: () => void
     ) => dispatch(asyncDispensersActions.downloadDispenserQR({
       multiscan_qr_id,
@@ -114,6 +115,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrDispenserName,
       width: size,
       height: size,
+      whitelist_on: whitelistOn,
       callback
     })),
     pauseDispenser: (
@@ -341,6 +343,7 @@ const Dispenser: FC<ReduxType> = ({
           encrypted_multiscan_qr_secret,
           encrypted_multiscan_qr_enc_code,
           title,
+          whitelist_on,
           () => { toggleDownloadPopup(false) }
         )
       }}
