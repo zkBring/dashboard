@@ -6,6 +6,7 @@ import { ethers } from 'ethers'
 import { decrypt, encrypt } from 'lib/crypto'
 import QRCodeStyling from 'qr-code-styling-bigmac'
 
+
 export class QRsWorker {
   private cb: (value: number) => void;
   private currentPercentageFinished: number = 0;
@@ -88,25 +89,19 @@ export class QRsWorker {
   }
 
   public async downloadMultiQR (
-    encrypted_multiscan_qr_secret: string,
-    encrypted_multiscan_qr_enc_code: string,
+    data: string,
     width: number,
     height: number,
-    dashboardKey: string,
     logoImageWidth: number,
     logoImageHeight: number,
     img: ImageBitmap,
-    qrOption: TQROption,
-    isDeeplink?: string,
-    claimAppUrl?: string
+    qrOption: TQROption
   ) {
     let qrs: Blob[] = []
-    const decrypted_qr_secret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
-    const decrypted_qr_enc_code = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
-    const originalLink = `${claimAppUrl}/#/mqr/${decrypted_qr_secret}/${decrypted_qr_enc_code}`
-    const QRLink = isDeeplink ? isDeeplink.replace('%URL%', encodeURIComponent(originalLink)) : originalLink
+
+    
     const qrCode = new QRCodeStyling({
-      data: QRLink,
+      data,
       width,
       height,
       margin: width / 60,

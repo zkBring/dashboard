@@ -7,7 +7,7 @@ import {
   loadImage,
   alertError,
   defineQROptions,
-  defineIfQRIsDeeplink,
+  defineDispenserAppUrl,
   defineClaimAppURL
 } from 'helpers'
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -15,6 +15,7 @@ import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 import { plausibleApi } from 'data/api'
+import { decrypt, encrypt } from 'lib/crypto'
 
 const downloadQR = ({
   multiscan_qr_id,
@@ -23,6 +24,7 @@ const downloadQR = ({
   qrDispenserName,
   width,
   height,
+  whitelist_on,
   callback
 }: {
   multiscan_qr_id: string,
@@ -31,6 +33,7 @@ const downloadQR = ({
   qrDispenserName: string,
   width: number,
   height: number,
+  whitelist_on: boolean,
   callback?: () => void
 }) => {
   return async (
@@ -55,20 +58,25 @@ const downloadQR = ({
 
       const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
       const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(() => console.log('QR created')))
-      const isDeeplink = defineIfQRIsDeeplink(address)
 
+      const decryptedQrSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
+      const decryptedQrEncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
+      const claimURLDecrypted = defineDispenserAppUrl(
+        address,
+        claimAppURL,
+        decryptedQrSecret,
+        decryptedQrEncCode,
+        whitelist_on
+      )
+    
       const result = await qrsWorker.downloadMultiQR(
-        encrypted_multiscan_qr_secret,
-        encrypted_multiscan_qr_enc_code,
+        claimURLDecrypted,
         width, // qr width
         height, // qr height
-        dashboardKey,
         logoImageLoaded.width,
         logoImageLoaded.height,
         img, // image bitmap to render in canvas
-        qrOption,
-        isDeeplink,
-        claimAppURL
+        qrOption
       )
 
       await downloadBase64FilesAsZip('png', result, null, qrDispenserName, 0)
