@@ -27,7 +27,6 @@ function connectWallet (
   signer: any,
   chainsAvailable: (number | string)[]
 ) {
-
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
   ) => {
@@ -74,7 +73,7 @@ function connectWallet (
           dispatch(userActions.setComission(comission))
         }
 
-        if (connectorChainID === 1 || connectorChainID === 137) {
+        if (connectorChainID === 1 || connectorChainID === 137 || connectorChainID === 8453) {
           const tokenList = await getERC20TokenList(connectorChainID)
           if (tokenList) {
             dispatch(userActions.setTokenListERC20(tokenList))
