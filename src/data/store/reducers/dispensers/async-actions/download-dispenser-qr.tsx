@@ -62,7 +62,6 @@ const downloadQR = ({
       const decryptedQrSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
       const decryptedQrEncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
       const claimURLDecrypted = defineDispenserAppUrl(
-        address,
         claimAppURL,
         decryptedQrSecret,
         decryptedQrEncCode,

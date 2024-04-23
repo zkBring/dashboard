@@ -249,7 +249,6 @@ const Dispenser: FC<ReduxType> = ({
       const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
       // 
       const claimURLDecrypted = defineDispenserAppUrl(
-        address,
         claimAppURL,
         decryptedMultiscanQRSecret,
         multiscanQREncCode,
