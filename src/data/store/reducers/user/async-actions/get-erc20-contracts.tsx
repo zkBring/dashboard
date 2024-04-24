@@ -61,7 +61,6 @@ const getERC20Contracts = () => {
               //   symbol
               // }
 
-              console.log({ tokenListERC20 })
   
               if (!tokenListERC20) {
                 continue
@@ -71,19 +70,19 @@ const getERC20Contracts = () => {
               const tokenListInstance = tokenListERC20[contractAddress]
 
               if (!tokenListInstance) {
-                const contractInstance = new ethers.Contract(contractAddress, ERC20Contract.abi, signer)
-                const tokenWithMetadata: TERC20Contract = {
-                  address: token.contractAddress,
-                  tokenType: 'ERC20',
-                  totalBalance: !token.tokenBalance ? '0' : String(
-                    BigNumber.from(
-                      token.tokenBalance.toString()
-                    ).toString(),
-                  ),
-                  symbol: await contractInstance.symbol(),
-                  decimals: await contractInstance.decimals()
-                }
-                contractsWithMetadata.push(tokenWithMetadata)
+                // const contractInstance = new ethers.Contract(contractAddress, ERC20Contract.abi, signer)
+                // const tokenWithMetadata: TERC20Contract = {
+                //   address: token.contractAddress,
+                //   tokenType: 'ERC20',
+                //   totalBalance: !token.tokenBalance ? '0' : String(
+                //     BigNumber.from(
+                //       token.tokenBalance.toString()
+                //     ).toString(),
+                //   ),
+                //   symbol: await contractInstance.symbol(),
+                //   decimals: await contractInstance.decimals()
+                // }
+                // contractsWithMetadata.push(tokenWithMetadata)
                 continue
               }
 
