@@ -10,7 +10,9 @@ import { RootState } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
 import { TERC20Contract } from 'types'
 import { defineAlchemyNetwork, alertError } from 'helpers'
-import { BigNumber } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
+import { ERC20Contract } from 'abi'
+
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
 const getERC20Contracts = () => {
@@ -31,6 +33,7 @@ const getERC20Contracts = () => {
           network
         })
         const { tokenBalances } = await alchemy.core.getTokenBalances(address)
+
 
         if (tokenBalances && tokenBalances.length > 0) {
             const contractsWithMetadata: TERC20Contract[] = []
@@ -57,16 +60,32 @@ const getERC20Contracts = () => {
               //   tokenType: 'ERC20',
               //   symbol
               // }
+
   
               if (!tokenListERC20) {
                 continue
               }
-  
-              const tokenListInstance = tokenListERC20[token.contractAddress.toLocaleLowerCase()]
+
+              const contractAddress = token.contractAddress.toLocaleLowerCase()
+              const tokenListInstance = tokenListERC20[contractAddress]
 
               if (!tokenListInstance) {
+                // const contractInstance = new ethers.Contract(contractAddress, ERC20Contract.abi, signer)
+                // const tokenWithMetadata: TERC20Contract = {
+                //   address: token.contractAddress,
+                //   tokenType: 'ERC20',
+                //   totalBalance: !token.tokenBalance ? '0' : String(
+                //     BigNumber.from(
+                //       token.tokenBalance.toString()
+                //     ).toString(),
+                //   ),
+                //   symbol: await contractInstance.symbol(),
+                //   decimals: await contractInstance.decimals()
+                // }
+                // contractsWithMetadata.push(tokenWithMetadata)
                 continue
               }
+
   
               const tokenWithMetadata: TERC20Contract = {
                 address: token.contractAddress,

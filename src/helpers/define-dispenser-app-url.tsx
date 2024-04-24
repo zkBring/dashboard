@@ -1,7 +1,7 @@
-import { addressSpecificOptions } from 'configs/address-specific-options'
 const {
   REACT_APP_TESTNETS_URL,
-  REACT_APP_MAINNETS_URL
+  REACT_APP_MAINNETS_URL,
+  REACT_APP_DISPENSER_APP_URL
 } = process.env
 
 
@@ -16,23 +16,20 @@ const defineApiParam = () => {
 }
 
 const defineDispenserAppUrl = (
-  address: string,
   claimAppURL: string,
   decryptedMultiscanQRSecret: string,
   multiscanQREncCode: string,
   whitelist: boolean
 ) => {
-  const addressFormatted = address.toLowerCase()
-  const configForAddress = addressSpecificOptions[addressFormatted]
   const originalLink = `${claimAppURL}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}`
 
-  if (!configForAddress || !configForAddress.dispenserAppUrl || whitelist) {
+  if (whitelist) {
     return originalLink
   }
 
   const applicationParam = defineApiParam()
 
-  return `${configForAddress.dispenserAppUrl}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}?api=${applicationParam}`
+  return `${REACT_APP_DISPENSER_APP_URL as string}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}?api=${applicationParam}`
 }
 
 export default defineDispenserAppUrl

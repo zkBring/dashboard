@@ -7,7 +7,6 @@ type TAddressConfig = Record<
     qrDeeplink?: string
     betaFeaturesAvailable?: TFeatureName[]
     claimAppUrl?: string,
-    dispenserAppUrl?: string,
     claimUrlSchema?: {
       schema: string,
       wallet: string
@@ -15,14 +14,8 @@ type TAddressConfig = Record<
   }
 >
 
-const TEST_CONFIG = {
-  qrConfig: 'coinbase',
-  dispenserAppUrl: 'https://dispenser.linkdrop.io'
-}
-
 const COINBASE_CONFIG = {
   qrConfig: 'coinbase',
-  dispenserAppUrl: 'https://dispenser.linkdrop.io',
   claimUrlSchema: {
     schema: 'https://wallet.coinbase.com/claim?tk=code&k=<CODE>&c=<CHAIN_ID>&v=<VERSION>&src=d',
     wallet: 'coinbase_wallet'
