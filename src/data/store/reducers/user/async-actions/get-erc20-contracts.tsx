@@ -9,9 +9,14 @@ import {
 import { RootState } from 'data/store'
 import { Alchemy } from 'alchemy-sdk'
 import { TERC20Contract } from 'types'
-import { defineAlchemyNetwork, alertError } from 'helpers'
+import {
+  defineAlchemyNetwork,
+  alertError,
+  defineNetworkName,
+  truncate
+} from 'helpers'
 import { BigNumber, ethers } from 'ethers'
-import { ERC20Contract } from 'abi'
+import { zerionApi } from 'data/api'
 
 const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
@@ -22,20 +27,56 @@ const getERC20Contracts = () => {
   ) => {
     dispatch(userActions.setLoading(true))
     try {
-      const { user: { address, chainId, signer, tokenListERC20 } } = getState()
+      const { user: { address, chainId, tokenListERC20 } } = getState()
       if (!chainId) {
         return alertError('chainId is not provided')
       }
-      const network = defineAlchemyNetwork(chainId)
-      if (network) {
-        const alchemy = new Alchemy({
-          apiKey: REACT_APP_ALCHEMY_API_KEY,
-          network
-        })
-        const { tokenBalances } = await alchemy.core.getTokenBalances(address)
 
 
-        if (tokenBalances && tokenBalances.length > 0) {
+      if (chainId === 8453) {
+        const currentNetworkName = defineNetworkName(chainId)
+        const networks = await zerionApi.getNetworks()
+        if (networks.data.data.find(item => item.id === currentNetworkName)) {
+          const zerionItems = await zerionApi.getERC20Item(
+            address,
+            currentNetworkName
+          )
+    
+          const zerionData = zerionItems.data.data
+    
+          if (zerionData.length > 0) {
+            const dataConverted = zerionData.map(item => {
+              console.log({ item })
+              const decimals = item.attributes.quantity.decimals
+              const quantity = item.attributes.quantity.int
+              const symbol = item.attributes.fungible_info.symbol
+              const icon = (item.attributes.fungible_info.icon || {}).url
+              const address = item.attributes.fungible_info.implementations[0].address
+              if (!address) {
+                return undefined
+              }
+              return {
+                totalBalance: quantity,
+                decimals,
+                symbol,
+                address,
+                tokenType: 'ERC20',
+              }
+    
+            }).filter(item => item)
+            dispatch(userActions.setContractsERC20(dataConverted as TERC20Contract[]))
+          }
+      } else {
+        const network = defineAlchemyNetwork(chainId)
+        if (network) {
+          const alchemy = new Alchemy({
+            apiKey: REACT_APP_ALCHEMY_API_KEY,
+            network
+          })
+          const { tokenBalances } = await alchemy.core.getTokenBalances(address)
+
+
+          if (tokenBalances && tokenBalances.length > 0) {
             const contractsWithMetadata: TERC20Contract[] = []
             for (let token of tokenBalances) {
               if (token.tokenBalance && parseInt(token.tokenBalance, 16) === 0) {
@@ -102,8 +143,10 @@ const getERC20Contracts = () => {
               contractsWithMetadata.push(tokenWithMetadata)
             }
             dispatch(userActions.setContractsERC20(contractsWithMetadata as TERC20Contract[]))
+          }
         }
       }
+    }
       
     } catch (err) {
       alertError('Check console for more information')
