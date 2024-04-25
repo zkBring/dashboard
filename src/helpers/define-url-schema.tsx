@@ -1,27 +1,29 @@
 import { addressSpecificOptions } from 'configs/address-specific-options'
+import { COINBASE_CLAIM_URL } from 'configs/app'
 
 const defineUrlSchema = (
-  address: string,
   decryptedClaimCode: string,
   chainId: number,
   claimAppURL: string,
   version: number,
-  wallet: string
+  wallet: string,
+  availableWallets: string[]
 ) => {
-  const addressFormatted = address.toLowerCase()
-  const configForAddress = addressSpecificOptions[addressFormatted]
   const defaultLink = `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
 
-  if (!configForAddress || !configForAddress.claimUrlSchema) {
-    return defaultLink
-  }
-  const schemaObj = configForAddress.claimUrlSchema
-
-  if (wallet !== schemaObj.wallet) {
+  if (wallet !== 'coinbase_wallet') {
     return defaultLink
   }
 
-  const url = schemaObj.schema
+  if (availableWallets[0] !== 'coinbase_wallet') {
+    return defaultLink
+  }
+
+  if (availableWallets.length !== 1) {
+    return defaultLink
+  }
+
+  const url = COINBASE_CLAIM_URL
     .replace('<CODE>', decryptedClaimCode)
     .replace('<CHAIN_ID>', String(chainId))
     .replace('<VERSION>', String(version))
