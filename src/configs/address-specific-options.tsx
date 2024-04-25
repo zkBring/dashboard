@@ -6,20 +6,12 @@ type TAddressConfig = Record<
     qrConfig?: string
     qrDeeplink?: string
     betaFeaturesAvailable?: TFeatureName[]
-    claimAppUrl?: string,
-    claimUrlSchema?: {
-      schema: string,
-      wallet: string
-    }
+    claimAppUrl?: string
   }
 >
 
 const COINBASE_CONFIG = {
-  qrConfig: 'coinbase',
-  claimUrlSchema: {
-    schema: 'https://wallet.coinbase.com/claim?tk=code&k=<CODE>&c=<CHAIN_ID>&v=<VERSION>&src=d',
-    wallet: 'coinbase_wallet'
-  }
+  qrConfig: 'coinbase'
 }
 
 const LEDGER_CONFIG = {

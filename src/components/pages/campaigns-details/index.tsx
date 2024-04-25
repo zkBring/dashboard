@@ -85,6 +85,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       sponsored: boolean,
       claimPattern: TClaimPattern,
       wallet: string,
+      availableWallets: string[],
       encryptionKey?: string
     ) => {
       dispatch(
@@ -99,6 +100,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           sponsored,
           claimPattern,
           wallet,
+          availableWallets,
           encryptionKey
         )
       )
@@ -240,7 +242,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     encrypted_signer_key,
     wallet,
     sponsored,
-    links_claimed
+    links_claimed,
+    available_wallets
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -433,7 +436,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
             sponsored,
             encryptionKey
           ) => {
-
             downloadLinks(
               batchId,
               campaignId,
@@ -445,6 +447,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
               sponsored,
               claim_pattern,
               wallet,
+              available_wallets,
               encryptionKey
             )
           }}
