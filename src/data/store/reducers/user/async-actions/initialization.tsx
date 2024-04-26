@@ -12,7 +12,7 @@ import { DispensersActions } from '../../dispensers/types'
 import { CollectionsActions } from '../../collections/types'
 import LinkdropSDK from 'linkdrop-sdk'
 import { RootState } from 'data/store'
-import { campaignsApi, qrsApi, dispensersApi, collectionsApi } from 'data/api'
+import { campaignsApi, qrsApi, dispensersApi, collectionsApi, countriesApi } from 'data/api'
 import { alertError, defineClaimAppURL } from 'helpers'
 
 const {
@@ -46,6 +46,12 @@ const initialization = () => {
       dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
       const collections: { data: { collections: TCollection[] } } = await collectionsApi.get()
       dispatch(colllectionsActions.setCollections(collections.data.collections.filter(collection => collection.chain_id === String(chainId))))
+      const countries = await countriesApi.get()
+      if (countries) {
+        dispatch(userActions.setCountries(countries.data))
+      }
+
+
     } catch (err) {
       console.log(err)
       alertError('Error occured with data fetch, check console for information')

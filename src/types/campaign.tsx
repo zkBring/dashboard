@@ -1,5 +1,5 @@
 import { TTokenType } from './index.js'
-import { TLinksBatch, TClaimPattern, TDistributionPattern } from 'types'
+import { TLinksBatch, TClaimPattern } from 'types'
 
 type TCampaign = {
   title: string
@@ -22,7 +22,8 @@ type TCampaign = {
   proxy_contract_version: string | number
   sponsored: boolean
   links_claimed: number
-  available_wallets: string[] 
+  available_wallets: string[]
+  available_countries: string[] 
 }
 
 export default TCampaign

@@ -57,10 +57,12 @@ import {
   TCollection,
   TCollectionToken
 } from './collection'
+import TCountry from './country'
 
 export {
   TCampaign,
   TDispenserStats,
+  TCountry,
   TMnemonicContract,
   TCampaignCreateStep,
   TFeatureName,

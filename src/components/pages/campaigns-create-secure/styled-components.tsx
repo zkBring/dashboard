@@ -48,9 +48,17 @@ export const ToggleStyled = styled(Toggle)`
 export const DatePickerStyled = styled(DatePicker)`
 `
 
-export const SelectStyled = styled(Select)`
-  max-width: 100px;
+export const InputsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 `
+
+
+export const SelectStyled = styled(Select)`
+  width: 100%;
+`
+
 
 export const Note = styled.div`
   padding-top: 42px;

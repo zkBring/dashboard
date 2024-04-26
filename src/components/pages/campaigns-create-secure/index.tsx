@@ -1,12 +1,8 @@
 import { FC, useState, useMemo, useEffect } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import {
-  defineNativeTokenSymbol,
-  countNativeTokensToSecure
-} from 'helpers'
 import { useParams } from 'react-router-dom'
-import { TLinkParams, TSelectOption } from 'types'
+import { TCountry, TLinkParams, TSelectOption } from 'types'
 import { utils } from 'ethers'
 import {
   WidgetComponent,
@@ -35,8 +31,10 @@ import {
   SelectStyled,
   DateTimeContainer,
   Note,
-  DatePickerStyled
+  DatePickerStyled,
+  InputsContainer
 } from './styled-components'
+import { CountriesList } from './components'
 import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { useHistory } from 'react-router-dom'
@@ -46,7 +44,10 @@ import {
   preventPageClose,
   momentNoOffsetGetTime,
   createSelectOptions,
-  momentNoOffsetWithTimeUpdate
+  momentNoOffsetWithTimeUpdate,
+  defineNativeTokenSymbol,
+  countNativeTokensToSecure,
+  alertError
 } from 'helpers'
 import { BigNumber } from 'ethers'
 
@@ -54,7 +55,8 @@ const mapStateToProps = ({
   user: {
     chainId,
     comission,
-    address
+    address,
+    countries
   },
   campaigns: {
     campaigns
@@ -77,6 +79,7 @@ const mapStateToProps = ({
   symbol,
   title,
   chainId,
+  countriesList: countries,
   tokenAddress,
   campaigns,
   tokenStandard,
@@ -101,6 +104,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       nativeTokensPerLink: string,
       walletApp: string,
       availableWallets: string[],
+      availableCountries: TCountry[],
       expirationDate: number,
       callback: () => void
     ) => {
@@ -110,6 +114,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           nativeTokensPerLink,
           walletApp,
           availableWallets,
+          availableCountries,
           expirationDate,
           callback
         )
@@ -118,8 +123,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
-type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps> 
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
+const defineSelectOptions = (countries: TCountry[]) => {
+  return countries.map(country => ({
+    value: country.id,
+    label: country.name
+  }))
+}
 
 const CampaignsCreateSecure: FC<ReduxType> = ({
   assets,
@@ -136,7 +147,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   sdk,
   sponsored,
   comission,
-  expirationDate
+  expirationDate,
+  countriesList
 }) => {
   const { id } = useParams<TLinkParams>()
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
@@ -179,6 +191,21 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : walletsOptions[0].value
 
+  const currentCampaignAvailableCountries = useMemo(() => {
+    if (!currentCampaign) {
+      return []
+    }
+    const countries = currentCampaign.available_countries
+      .map(countryId => {
+        const country = countriesList.find(country => country.id === countryId) as TCountry
+        return {
+          id: country.id,
+          name: country.name
+        }
+      })
+
+    return countries
+  }, [chainId])
 
   const [
     currentWallet,
@@ -194,6 +221,11 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     linksExpirationDate,
     setLinksExpirationDate
   ] =  useState<Date>(new Date())
+
+  const [
+    countries,
+    setCountries
+  ] =  useState<TCountry[]>(currentCampaignAvailableCountries)
 
   const [
     enableExpirationDate,
@@ -320,6 +352,43 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         </DateTimeContainer>}
       </WidgetComponent>
 
+      <WidgetComponent>
+        <Header>
+          <WidgetTitleStyled>
+            Countries whitelist
+          </WidgetTitleStyled>
+        </Header>
+        <WidgetSubtitle>
+          If you want to make the campaign available only in certain countries, please add them to the list below
+        </WidgetSubtitle>
+        <CountriesList
+          data={countries}
+          onRemove={(id) => {
+            setCountries(countries.filter(item => item.id !== id))
+          }}
+          disabled={Boolean(currentCampaign) || loading}
+        />
+        <InputsContainer>
+          <SelectStyled
+            onChange={async ({ value, label }) => {
+              const countryId = value
+              const countryAlreadyAdded = countries.find(country => country.id === countryId)
+              if (countryAlreadyAdded) {
+                return alertError(`Country ${countryId} was already added`)
+              }
+              setCountries([...countries, {
+                id: value,
+                name: label
+              }])
+            }}
+            value={null}
+            disabled={Boolean(currentCampaign) || loading}
+            placeholder='Select Country'
+            options={defineSelectOptions(countriesList)}
+          />
+        </InputsContainer>
+      </WidgetComponent>
+
       {!sdk && <WidgetComponent>
         <Header>
           <WidgetTitleStyled>
@@ -349,7 +418,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           }}
         />}
       </WidgetComponent>}
-
     </WidgetContainer>
       
     <Aside
@@ -368,6 +436,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             nativeTokensAmount,
             String(currentWallet),
             availableWallets,
+            countries,
             finalExpirationDate,
             () => history.push(redirectURL)
           )
