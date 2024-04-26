@@ -26,7 +26,8 @@ const initialState: CampaignState = {
   nativeTokensPerLink: null,
   availableWallets: [],
   linksGenerateLoader: 0,
-  expirationDate: initialExpirationDate
+  expirationDate: initialExpirationDate,
+  countriesWhitelist: []
 }
 
 export function newRetroDropReducer(
@@ -36,6 +37,8 @@ export function newRetroDropReducer(
     switch (action.type) {
         case Constants.CAMPAIGN_SET_TOKEN_ADDRESS:
           return {...state, tokenAddress: action.payload.tokenAddress }
+        case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST:
+          return {...state, countriesWhitelist: action.payload.countriesWhitelist }
         case Constants.CAMPAIGN_SET_TITLE:
           return {...state, title: action.payload.title }
         case Constants.CAMPAIGN_SET_LOADING:

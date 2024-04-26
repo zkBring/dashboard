@@ -31,6 +31,7 @@ export interface CampaignState {
     date: string,
     links: TLink[],
   }[]
+  countriesWhitelist: string[]
 }
 
 export type CampaignActions = ActionType<typeof actions>;

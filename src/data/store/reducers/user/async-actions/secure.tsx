@@ -12,12 +12,14 @@ import { LinkdropFactory, LinkdropMastercopy } from 'abi'
 import contracts from 'configs/contracts'
 import { defineNativeTokenSymbol, defineNetworkName, alertError } from 'helpers'
 import { plausibleApi } from 'data/api'
+import { TCountry } from 'types'
 
 const secure = (
   totalNativeTokensAmountToSecure: BigNumber,
   nativeTokensPerLink: string,
   walletApp: string,
   availableWallets: string[],
+  availableСountries: TCountry[],
   expirationDate: number,
   callback?: () => void
 ) => {
@@ -133,6 +135,7 @@ const secure = (
       if (finished) {
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setAvailableWallets(availableWallets))
+        dispatch(campaignActions.setCountriesWhitelist(availableСountries.map(country => country.id)))
         dispatch(campaignActions.setExpirationDate(expirationDate))
         dispatch(campaignActions.setNativeTokensPerLink(
           utils.parseEther(

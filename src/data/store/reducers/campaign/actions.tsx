@@ -16,6 +16,12 @@ export function setTitle (title: string) {
   })
 }
 
+export function setCountriesWhitelist (countriesWhitelist: string[]) {
+  return action(Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST, {
+    countriesWhitelist
+  })
+}
+
 export function setDescription (description: string) {
   return action(Constants.CAMPAIGN_SET_DESCRIPTION, {
     description

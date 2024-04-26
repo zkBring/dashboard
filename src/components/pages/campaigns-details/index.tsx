@@ -107,6 +107,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+
 type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
 
 const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
@@ -155,70 +156,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
 
-  useEffect(() => {
-    const init = async () => {
-      // !!! THE COMMENTED SECTION OF THE CODE IS NEEDED TO TEST THE SDK UPDATES
-      // if (!currentCampaign || !dashboardKey) { return }
-      // const encryptionKey = createEncryptionKey(
-      //   dashboardKey,
-      //   currentCampaign.signer_address,
-      //   currentCampaign.campaign_number
-      // )
-      // console.log(
-      //   currentCampaign.campaign_id,
-      //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
-      //   encryptionKey.replace('0x', '')
-      // )
-      // console.log({ signer: new ethers.Wallet(decrypt(currentCampaign.encrypted_signer_key, dashboardKey)) })
-      // const sdk = new LinkdropSDK({
-      //   apiHost: 'https://dev.dashboard-api.linkdrop.io'
-      // })
-      // console.log({ sdk })
-      // const campaign = await sdk.getCampaign(
-      //   currentCampaign.campaign_id,
-      //   decrypt(currentCampaign.encrypted_signer_key, dashboardKey),
-      //   encryptionKey
-      // )
-      // console.log({ campaign })
-      // if (!campaign) { return }
-      // const newBatch = await campaign.createBatch(
-      //   [{ 
-      //     id: '0x10ae0a185dd6eaef2a3692c42ae52d4e8b1c4e6d',
-      //     amount: '1',
-      //     links: '1'
-      //   }]
-      // )
-      // const batches = await campaign?.getBatches()
-      // console.log({ batches })
-      // if (!batches || !batches.batches) { return }
-      // const batchLast = batches.batches[batches.batches.length - 1]
-      // console.log({ batchLast })
-      // if (!batchLast) { return }
-      // const batch = await campaign?.getBatch(batchLast.batch_id)
-      // console.log({ batch })
-      // if (!batch) { return }
-      // const links = batch.getLinks()
-      
-      // console.log({ links })
-      // if (!links) { return }
-      // const lastLink = links[links.length - 1]
-      // console.log({ lastLink })
-      // if (!lastLink) { return }
-      // const status = await sdk.getLinkStatus(lastLink.linkId)
-      // console.log({ status })
-
-      // const deactivated = await campaign.deactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
-      // console.log({ deactivated })
-      // const reactivated = await campaign.reactivate('0xe80700f612Abc6778fb5a92AeaF028af7B23cCA0')
-      // console.log({ reactivated })
-
-      // const claim = await sdk.redeem('6bd57626fa2633d2c9f907a35c661b0142daf68efcc45a048ff67f9f949a9a74', '0x0553aDA5829184A7818dC866367D77334183603E')
-      // console.log({ claim })
-
-    }
-    init()
-  }, [])
-  
   if (!currentCampaign || !dashboardKey) {
     return null
   }
