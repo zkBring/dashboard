@@ -63,11 +63,13 @@ import  {
   TZerionERC20ItemAttributes
 } from './zerion-erc20-item'
 import { TZerionNetworkItem } from './zerion-network-item'
+import TCountry from './country'
 
 export {
   TCampaign,
   TZerionNetworkItem,
   TDispenserStats,
+  TCountry,
   TMnemonicContract,
   TZerionERC20Item,
   TZerionERC20ItemRelationships,
