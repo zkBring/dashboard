@@ -26,6 +26,7 @@ const getERC20Contracts = () => {
     getState: () => RootState
   ) => {
     dispatch(userActions.setLoading(true))
+
     try {
       const { user: { address, chainId, tokenListERC20 } } = getState()
       if (!chainId) {
@@ -66,6 +67,7 @@ const getERC20Contracts = () => {
             }).filter(item => item)
             dispatch(userActions.setContractsERC20(dataConverted as TERC20Contract[]))
           }
+        }
       } else {
         const network = defineAlchemyNetwork(chainId)
         if (network) {
@@ -146,7 +148,6 @@ const getERC20Contracts = () => {
           }
         }
       }
-    }
       
     } catch (err) {
       alertError('Check console for more information')
