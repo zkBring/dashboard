@@ -47,12 +47,13 @@ const getERC20Contracts = () => {
     
           if (zerionData.length > 0) {
             const dataConverted = zerionData.map(item => {
-              console.log({ item })
               const decimals = item.attributes.quantity.decimals
               const quantity = item.attributes.quantity.int
               const symbol = item.attributes.fungible_info.symbol
               const icon = (item.attributes.fungible_info.icon || {}).url
-              const address = item.attributes.fungible_info.implementations[0].address
+
+              const implementation = item.attributes.fungible_info.implementations.find(impl => impl.chain_id === currentNetworkName)
+              const address = (implementation || {}).address
               if (!address) {
                 return undefined
               }
