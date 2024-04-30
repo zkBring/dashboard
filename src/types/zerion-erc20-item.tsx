@@ -12,6 +12,7 @@ export type TZerionERC20ItemAttributes = {
     symbol: string
     implementations: {
       address: string
+      chain_id: string
     }[]
     icon: {
       url: string
