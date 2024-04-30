@@ -24,7 +24,8 @@ const initialState: UserState = {
   nfts: [],
   whitelisted: null,
   comission: '0',
-  tokenListERC20: {}
+  tokenListERC20: {},
+  countries: []
 };
 
 export function userReducer(
@@ -34,6 +35,8 @@ export function userReducer(
     switch (action.type) {
       case Constants.USER_SET_ADDRESS:
         return { ...state, address: action.payload.address }
+      case Constants.USER_SET_COUNTRIES:
+        return { ...state, countries: action.payload.countries }
       case Constants.USER_SET_LOADING:
         return {...state, loading: action.payload.loading }
       case Constants.USER_SET_PROVIDER:

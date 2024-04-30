@@ -8,6 +8,8 @@ import getTokenERC20List from './get-erc20-token-list'
 import dispensersApi from './dispensers-api'
 import collectionsApi from './collections-api'
 import getMnemonicCollections from './get-mnemonic-collections'
+import zerionApi from './zerion-api'
+import countriesApi from './countries-api'
 
 export {
   authorizationApi,
@@ -17,7 +19,9 @@ export {
   dashboardKeyApi,
   plausibleApi,
   getTokenERC20List,
+  zerionApi,
   dispensersApi,
   collectionsApi,
-  getMnemonicCollections
+  getMnemonicCollections,
+  countriesApi
 }

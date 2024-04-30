@@ -1,7 +1,7 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TAuthorizationStep, TNFTContract, TNFTToken, TERC20Contract, TERC20TokenList } from 'types'
+import { TAuthorizationStep, TNFTContract, TNFTToken, TERC20Contract, TERC20TokenList, TCountry } from 'types'
 import { BigNumber } from 'ethers'
 
 export function setAddress(address: string) {
@@ -18,6 +18,15 @@ export function setLoading(loading: boolean) {
     Constants.USER_SET_LOADING,
     {
       loading
+    }
+  )
+}
+
+export function setCountries(countries: TCountry[]) {
+  return action(
+    Constants.USER_SET_COUNTRIES,
+    {
+      countries
     }
   )
 }

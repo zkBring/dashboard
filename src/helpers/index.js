@@ -77,13 +77,17 @@ import defineMnemonicApiURL from './define-mnemonic-api-url'
 import checkWhitelistAddresses from './check-whitelist-addresses'
 import parseWhitelistAddresses from './parse-whitelist-addresses'
 import defineUrlSchema from './define-url-schema'
+import createQueryString from './create-query-string'
+import truncate from './truncate'
 
 export {
   defineThirdwebNetworkName,
   defineUrlSchema,
+  truncate,
   checkWhitelistAddresses,
   parseWhitelistAddresses,
   convertMnemonicNFTs,
+  createQueryString,
   defineMnemonicApiURL,
   convertMnemonicContracts,
   generateTokenSymbol,

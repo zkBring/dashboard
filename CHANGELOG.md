@@ -1,5 +1,9 @@
 # Ledger Dashboard
 
+## 2.1.30
+- zerion api for base network erc20 tokens
+- added "available countries" whitelist 
+
 ## 2.1.29
 - update for claimUrlSchema
 - added dispenser new url (if not whitelisted)

@@ -66,6 +66,7 @@ const generateERC20Link = ({
         sdk,
         nativeTokensPerLink,
         availableWallets,
+        countriesWhitelist,
         expirationDate
       } = campaign
 
@@ -177,6 +178,7 @@ const generateERC20Link = ({
           proxy_contract_version: version,
           sponsored,
           available_wallets: availableWallets,
+          available_countries: countriesWhitelist,
           ...batch
         }
 
