@@ -7,9 +7,9 @@ import {
   SelectStyled,
   ContainerButton,
   DateTimeContainer,
-  Note
+  Note,
+  CheckboxStyled
 } from './styled-components'
-import moment from 'moment'
 import {
   WidgetComponent,
   WidgetSubtitle
@@ -46,11 +46,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       title: string,
       date: string,
       duration: number,
+      dynamic: boolean,
       callback: (id: string | number) => void
     ) => dispatch(asyncDispensersActions.addDispenser({
       title,
       date,
       duration,
+      dynamic,
       callback
     })),
     updateDispenser: (
@@ -89,6 +91,7 @@ const QRCreate: FC<ReduxType> = ({
   const [ duration, setDuration ] = useState<string>(dispenserDuration)
   const [ hours, setHours ] = useState(dispenserTime.hours)
   const [ minutes, setMinutes ] = useState(dispenserTime.minutes)
+  const [ dynamic, setDynamic ] = useState(false)
 
   const inputRef = useRef<HTMLInputElement>(null)
   return <Container>
@@ -140,8 +143,6 @@ const QRCreate: FC<ReduxType> = ({
 
       </DateTimeContainer>
 
-      
-
       <InputComponent
         title='Duration'
         placeholder='90'
@@ -154,6 +155,14 @@ const QRCreate: FC<ReduxType> = ({
           }
           return value
         }}
+      />
+
+      <CheckboxStyled
+        label='Dynamic'
+        value={dynamic}
+        disabled={Boolean(currentDispenser)}
+        onChange={value => setDynamic(value)}
+        note='Select the checkbox if you want a dynamic QR code after each scan'
       />
       <Buttons>
         <ContainerButton
@@ -180,10 +189,10 @@ const QRCreate: FC<ReduxType> = ({
                 title,
                 dateString,
                 Number(duration),
+                dynamic,
                 (id) => history.push(`/dispensers/${id}`)
               )
             }
-            
           }}
         >
           {currentDispenser ? 'Update' : 'Create'}
