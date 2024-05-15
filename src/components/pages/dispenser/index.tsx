@@ -107,6 +107,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       encrypted_multiscan_qr_enc_code: string,
       qrDispenserName: string,
       whitelistOn: boolean,
+      dynamic: boolean,
       callback?: () => void
     ) => dispatch(asyncDispensersActions.downloadDispenserQR({
       multiscan_qr_id,
@@ -116,6 +117,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       width: size,
       height: size,
       whitelist_on: whitelistOn,
+      dynamic,
       callback
     })),
     pauseDispenser: (
@@ -262,7 +264,8 @@ const Dispenser: FC<ReduxType> = ({
         redirect_url,
         encrypted_multiscan_qr_enc_code,
         encrypted_multiscan_qr_secret,
-        whitelist_on
+        whitelist_on,
+        dynamic
       } = dispenser 
       const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
       const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
@@ -271,7 +274,8 @@ const Dispenser: FC<ReduxType> = ({
         claimAppURL,
         decryptedMultiscanQRSecret,
         multiscanQREncCode,
-        Boolean(whitelist_on)
+        Boolean(whitelist_on),
+        Boolean(dynamic)
       )
 
       const linkKey = ethers.utils.id(multiscanQREncCode)
@@ -367,6 +371,7 @@ const Dispenser: FC<ReduxType> = ({
           encrypted_multiscan_qr_enc_code,
           title,
           Boolean(whitelist_on),
+          Boolean(dynamic),
           () => { toggleDownloadPopup(false) }
         )
       }}

@@ -25,6 +25,7 @@ const downloadQR = ({
   width,
   height,
   whitelist_on,
+  dynamic,
   callback
 }: {
   multiscan_qr_id: string,
@@ -34,6 +35,7 @@ const downloadQR = ({
   width: number,
   height: number,
   whitelist_on: boolean,
+  dynamic: boolean,
   callback?: () => void
 }) => {
   return async (
@@ -65,7 +67,8 @@ const downloadQR = ({
         claimAppURL,
         decryptedQrSecret,
         decryptedQrEncCode,
-        whitelist_on
+        whitelist_on,
+        dynamic
       )
     
       const result = await qrsWorker.downloadMultiQR(
