@@ -5,8 +5,7 @@ import Icons from 'icons'
 
 const CheckListItem: FC<TProps> = ({
     title,
-    checked,
-    id
+    checked
 }) => {
   return <Container>
     <CheckBox checked={checked}>

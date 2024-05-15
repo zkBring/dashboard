@@ -12,6 +12,7 @@ type TAddDispenserArgs = {
   title: string,
   date: string,
   duration: number,
+  dynamic: boolean,
   callback?: (id: string | number) => void,
 }
 
@@ -19,6 +20,7 @@ const addDispenser = ({
   title,
   date,
   duration,
+  dynamic,
   callback
 }: TAddDispenserArgs) => {
   return async (
@@ -44,7 +46,8 @@ const addDispenser = ({
         claim_duration: duration,
         claim_start: +(new Date(date)),
         encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
-        title
+        title,
+        dynamic
       }
 
       const { data } = await dispensersApi.create(newDispenser)

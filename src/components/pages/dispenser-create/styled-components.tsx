@@ -2,7 +2,8 @@ import styled from "styled-components";
 import {
   Input,
   DatePicker,
-  Select
+  Select,
+  Checkbox
 } from 'linkdrop-ui'
 import { Button } from 'components/common'
 
@@ -61,4 +62,8 @@ export const DateTimeContainer = styled.div`
       margin-left: 0px;
     }
   }
+`
+
+export const CheckboxStyled = styled(Checkbox)`
+  
 `
