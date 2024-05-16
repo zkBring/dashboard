@@ -201,7 +201,12 @@ const renderMainButton = (
         return
       }
 
-      alert('APPLICATION REDIRECT')
+      if (redirectUrl) {
+        window.open(redirectUrl, '_blank')
+      }
+
+      alert('Redirect URL not defined')
+
     }}
   /> 
 }
@@ -344,7 +349,7 @@ const Dispenser: FC<ReduxType> = ({
   const mainButton = renderMainButton(
     dynamic as boolean,
     toggleDownloadPopup,
-    'HTTPS://GOOGLE>COM'
+    claimURLDecrypted
   )
 
   return <Container>
