@@ -10,7 +10,7 @@ const defineApiParam = () => {
   if (window.location.href.includes(REACT_APP_TESTNETS_URL as string)) {
     return 'testnets'
   } else if (window.location.href.includes(REACT_APP_MAINNETS_URL as string)) {
-    return 'mainnets'
+    return ''
   }
 
   return 'dev'
@@ -30,12 +30,13 @@ const defineDispenserAppUrl = (
   }
 
   const applicationParam = defineApiParam()
+  const params = applicationParam ? `?api=${applicationParam}` : ''
 
   if (dynamic) {
-    return `${REACT_APP_DYNAMIC_DISPENSER_APP_URL as string}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}?api=${applicationParam}`
+    return `${REACT_APP_DYNAMIC_DISPENSER_APP_URL as string}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}${params}`
   }
 
-  return `${REACT_APP_DISPENSER_APP_URL as string}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}?api=${applicationParam}`
+  return `${REACT_APP_DISPENSER_APP_URL as string}/#/mqr/${decryptedMultiscanQRSecret}/${multiscanQREncCode}${params}`
 }
 
 export default defineDispenserAppUrl
