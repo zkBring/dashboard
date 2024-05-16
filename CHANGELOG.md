@@ -1,5 +1,8 @@
 # Ledger Dashboard
 
+## 2.1.31
+- dynamic QR dispenser
+
 ## 2.1.30
 - zerion api for base network erc20 tokens
 - added "available countries" whitelist 

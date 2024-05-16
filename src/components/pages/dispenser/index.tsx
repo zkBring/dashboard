@@ -107,6 +107,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       encrypted_multiscan_qr_enc_code: string,
       qrDispenserName: string,
       whitelistOn: boolean,
+      dynamic: boolean,
       callback?: () => void
     ) => dispatch(asyncDispensersActions.downloadDispenserQR({
       multiscan_qr_id,
@@ -116,6 +117,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       width: size,
       height: size,
       whitelist_on: whitelistOn,
+      dynamic,
       callback
     })),
     pauseDispenser: (
@@ -184,6 +186,26 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+const renderMainButton = (
+  dynamic: boolean,
+  toggleDownloadPopup: (downloadPopup: boolean) => void,
+  redirectUrl?: string
+) => {
+  const title = !dynamic ? 'Download PNG' : 'Launch Dynamic QR App'
+  return <WidgetButton
+    title={title}
+    appearance='action'
+    onClick={() => {
+      if (!dynamic) {
+        toggleDownloadPopup(true)
+        return
+      }
+
+      alert('APPLICATION REDIRECT')
+    }}
+  /> 
+}
+
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
@@ -231,7 +253,6 @@ const Dispenser: FC<ReduxType> = ({
       () => setStatsLoading(false)
     )
   }, [])
-
   const claimAppURL = defineClaimAppURL(address)
 
   const {
@@ -243,7 +264,8 @@ const Dispenser: FC<ReduxType> = ({
         redirect_url,
         encrypted_multiscan_qr_enc_code,
         encrypted_multiscan_qr_secret,
-        whitelist_on
+        whitelist_on,
+        dynamic
       } = dispenser 
       const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
       const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
@@ -252,9 +274,9 @@ const Dispenser: FC<ReduxType> = ({
         claimAppURL,
         decryptedMultiscanQRSecret,
         multiscanQREncCode,
-        whitelist_on
+        Boolean(whitelist_on),
+        Boolean(dynamic)
       )
-
 
       const linkKey = ethers.utils.id(multiscanQREncCode)
       try {
@@ -298,7 +320,7 @@ const Dispenser: FC<ReduxType> = ({
     links_assigned,
     whitelist_on,
     whitelist_type,
-    whitelist
+    dynamic
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -318,6 +340,12 @@ const Dispenser: FC<ReduxType> = ({
   const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
   const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
   const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
+
+  const mainButton = renderMainButton(
+    dynamic as boolean,
+    toggleDownloadPopup,
+    'HTTPS://GOOGLE>COM'
+  )
 
   return <Container>
     {updateLinksPopup && <UploadLinksPopup
@@ -342,7 +370,8 @@ const Dispenser: FC<ReduxType> = ({
           encrypted_multiscan_qr_secret,
           encrypted_multiscan_qr_enc_code,
           title,
-          whitelist_on,
+          Boolean(whitelist_on),
+          Boolean(dynamic),
           () => { toggleDownloadPopup(false) }
         )
       }}
@@ -361,17 +390,11 @@ const Dispenser: FC<ReduxType> = ({
             appearance='default'
             to='/dispensers'
           /> 
-          <WidgetButton
-            title='Download PNG'
-            appearance='action'
-            onClick={() => {
-              toggleDownloadPopup(true)
-            }}
-          /> 
+          {mainButton}
         </Buttons>
       </WidgetComponentStyled>
 
-      <RedirectWidget
+      {!dynamic && <RedirectWidget
         hasRedirect={redirect_on}
         redirectUrl={redirectURLDecrypted}
         claimUrl={claimURLDecrypted}
@@ -400,8 +423,8 @@ const Dispenser: FC<ReduxType> = ({
             errorCallback
           )
         }}
-      />
-      <WhitelistWidget
+      />}
+      {!dynamic && <WhitelistWidget
         loading={loading}
         isWhitelisted={whitelist_on}
         whitelistType={whitelist_type}
@@ -418,7 +441,7 @@ const Dispenser: FC<ReduxType> = ({
             errorCallback
           )
         }}
-      />
+      />}
     </MainContent>
     
     <div>

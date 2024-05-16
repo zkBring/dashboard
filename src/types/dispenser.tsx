@@ -26,17 +26,18 @@ export type TDispenser = {
   created_at?: string
   claim_start: number
   title: string
+  dynamic?: boolean
   encrypted_multiscan_qr_enc_code: string
   active?: boolean
   redirect_on?: boolean
   redirect_url?: string | null
   links_claimed?: number
   links_assigned?: number
-  whitelisted: boolean
-  whitelist_type: TDispenserWhitelistType
-  whitelist: TDispenserWhitelistItemAddress[]
-  whitelist_count: number
-  whitelist_on: boolean
+  whitelisted?: boolean
+  whitelist_type?: TDispenserWhitelistType
+  whitelist?: TDispenserWhitelistItemAddress[]
+  whitelist_count?: number
+  whitelist_on?: boolean
 }
 
 export type TDispenserUpdateData = {
