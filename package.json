@@ -5,6 +5,8 @@
   "dependencies": {
     "@babel/plugin-proposal-numeric-separator": "^7.18.6",
     "@craco/craco": "^6.4.0",
+    "@datadog/browser-logs": "^5.18.0",
+    "@datadog/browser-rum": "^5.18.0",
     "@progress/kendo-file-saver": "^1.1.1",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.11.4",
