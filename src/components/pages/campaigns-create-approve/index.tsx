@@ -548,7 +548,6 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       next={{
         title: defineNextButtonTitle(),
         action: () => {
-          console.log({ formData })
           if ((!data.length || !assetsParsed) && !sdk) {
             if (tokenStandard === 'ERC20') {
               if (!formData.linksAmount && !formData.tokenAmount) {
