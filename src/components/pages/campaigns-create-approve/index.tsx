@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import {
   StyledRadio,
   InstructionNoteStyled,
@@ -80,6 +80,15 @@ const mapStateToProps = ({
   comission,
   whitelisted
 })
+
+const getDefaultValues = (type: TTokenType) => {
+  return {
+    linksAmount: '',
+    tokenId: '',
+    tokenAmount: '',
+    type: type
+  }
+}
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
   return {
@@ -219,10 +228,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
 }
 
 
-type ReduxType = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatcherToProps>
-
-
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 const defineComponent: TDefineComponent = (
   type,
   assetsData,
@@ -231,7 +237,10 @@ const defineComponent: TDefineComponent = (
   setUploadCSVPopup,
   sponsored,
   sdk,
-  campaign
+  formData,
+  setFormData,
+  getDefaultValues,
+  campaign,
 ) => {
 
   if (!sponsored && sdk) {
@@ -258,6 +267,9 @@ const defineComponent: TDefineComponent = (
     case 'ERC20':
       return <Erc20
         sdk={sdk}
+        formData={formData}
+        setFormData={setFormData}
+        getDefaultValues={getDefaultValues}
         type={type}
         campaign={campaign}
         assetsData={assetsData}
@@ -269,6 +281,9 @@ const defineComponent: TDefineComponent = (
       return <Erc721
         sdk={sdk}
         type={type}
+        formData={formData}
+        setFormData={setFormData}
+        getDefaultValues={getDefaultValues}
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
@@ -279,6 +294,9 @@ const defineComponent: TDefineComponent = (
       return <Erc1155
         type={type}
         sdk={sdk}
+        formData={formData}
+        setFormData={setFormData}
+        getDefaultValues={getDefaultValues}
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
@@ -370,6 +388,12 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
 
   const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
   const [ data, setData ] = useState<TLinksContent>([])
+
+  const [
+    formData,
+    setFormData
+  ] = useState<TLinkContent>(getDefaultValues(type))
+
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
   const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
@@ -381,11 +405,14 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     () => setUploadCSVPopup(true),
     sponsored,
     sdk,
+    formData,
+    setFormData,
+    getDefaultValues,
     currentCampaign
   )
 
   const defineIfNextDisabled = () => {
-    return ((!data.length || !assetsParsed) && !sdk) || loading
+    return loading
   }
 
   useEffect(() => {
@@ -402,7 +429,6 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   }, [])
 
   useEffect(preventPageClose(), [])
-
 
   const defineNextButtonTitle = () => {
     if (loading) {
@@ -482,7 +508,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       claimPattern={claimPattern}
     />}
     <WidgetContainer>
-      <WidgetComponent title='Distribution'>
+      {false && <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
@@ -496,7 +522,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             setSdk(value)
           }}
         />
-      </WidgetComponent>
+      </WidgetComponent>}
       <WidgetComponent title='Gasless Claiming'>
         <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
         <StyledRadio
@@ -522,6 +548,30 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       next={{
         title: defineNextButtonTitle(),
         action: () => {
+          console.log({ formData })
+          if ((!data.length || !assetsParsed) && !sdk) {
+            if (tokenStandard === 'ERC20') {
+              if (!formData.linksAmount && !formData.tokenAmount) {
+                return alert('No assets added for distribution')
+              }
+            }
+            if (tokenStandard === 'ERC721') {
+              if (!formData.tokenId) {
+                return alert('No assets added for distribution')
+              }
+            }
+            if (tokenStandard === 'ERC1155') {
+              if (!formData.tokenId) {
+                return alert('No assets added for distribution')
+              }
+            }
+            setData([ ...data, {
+              ...formData,
+              id: data.length
+            }])
+            setFormData(getDefaultValues(tokenStandard as TTokenType))
+            return alert('Your assets data was submitted. Please continue')
+          }
           const callback = () => {
             history.push(defineRedirectUrl())
           }

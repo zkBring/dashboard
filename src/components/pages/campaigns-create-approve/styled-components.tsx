@@ -51,6 +51,10 @@ export const InputsContainer = styled.div`
   margin-bottom: 20px;
 `
 
+export const Form = styled.form`
+
+`
+
 
 export const SelectStyled = styled(Select)`
   width: 100%;

@@ -478,7 +478,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         
       </AsideStyled>
 
-      <AsideStyled
+      {sdk && <AsideStyled
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
       >
@@ -496,7 +496,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         >
           Read Docs
         </AsideButton>
-      </AsideStyled>
+      </AsideStyled>}
     </AsideContainer>
   </Container>
 }

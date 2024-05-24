@@ -156,7 +156,7 @@ const Main: FC<ReduxType> = ({
       signer,
       chainsAvailable
     )
-  }, [connectorAddress, connectorChainID, connector, authorizationStep])
+  }, [connectorAddress, signer, connectorChainID, connector, authorizationStep])
 
 
   if (authorizationStep === 'wrong_device') {

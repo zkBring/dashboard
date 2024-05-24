@@ -20,13 +20,14 @@ const InitialGuide: FC = () => {
           title: 'Read the guide ->',
           href: 'https://docs.linkdrop.io/how-tos/distribution-qrs-claim-codes-or-links'
         }
-      }, {
-        title: 'Integrating SDK for custom logic',
-        link: {
-          title: 'Read the guide ->',
-          href: 'https://docs.linkdrop.io/sdk'
-        }
-      }
+      },
+      // {
+      //   title: 'Integrating SDK for custom logic',
+      //   link: {
+      //     title: 'Read the guide ->',
+      //     href: 'https://docs.linkdrop.io/sdk'
+      //   }
+      // }
     ]}
   />
 }

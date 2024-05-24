@@ -38,7 +38,6 @@ function connectWallet (
         })
         return dispatch(actions.setAuthorizationStep('wrong_network'))
       }
-
       if (connector) {
         const provider = await connector.getProvider()
         provider.on("accountsChanged", async () => {
@@ -54,6 +53,7 @@ function connectWallet (
         dispatch(actions.setProvider(provider))
         dispatch(actions.setAddress(connectorAddress))
         dispatch(actions.setChainId(connectorChainID))
+
         dispatch(actions.setAuthorizationStep('login'))
 
         plausibleApi.invokeEvent({
