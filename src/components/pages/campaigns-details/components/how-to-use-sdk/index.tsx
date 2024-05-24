@@ -9,6 +9,8 @@ import { NoteStyled } from '../../styled-components'
 const HowToUseSDK: FC<TProps> = ({
   sdk
 }) => {
+  return null
+
   if (!sdk) { return null }
   return <WidgetComponent
     title='How to use'

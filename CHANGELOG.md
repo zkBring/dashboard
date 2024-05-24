@@ -1,5 +1,11 @@
 # Ledger Dashboard
 
+## 2.1.32
+- bug fix for approve (new batches)
+- auto submit of assets form
+- sdk option removed
+- bug fix with login
+
 ## 2.1.31
 - dynamic QR dispenser
 

@@ -94,9 +94,18 @@ const approve = (
           `Not enough tokens to approve. Current balance: ${utils.formatUnits(tokenAmount, decimals)}, tokens to approve: ${amountToApproveFormatted}`
         )
       }
-      const data = await iface.encodeFunctionData('approve', [
-        proxyContractAddress, String(amountToApprove)
-      ])
+
+      let data
+      if (isNewCampaign) {
+        data = iface.encodeFunctionData('approve', [
+          proxyContractAddress, String(amountToApprove)
+        ])
+      } else {
+        data = iface.encodeFunctionData('increaseAllowance', [
+          proxyContractAddress, String(amountToApprove)
+        ])
+      }
+
       
       plausibleApi.invokeEvent({
         eventName: 'camp_step3_filled',
