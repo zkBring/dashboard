@@ -9,7 +9,8 @@ import { datadogLogs } from '@datadog/browser-logs'
 const {
   REACT_APP_DATADOG_CLIENT_TOKEN,
   REACT_APP_DATADOG_APPLICATION_ID,
-  REACT_APP_DATADOG_SERVICE
+  REACT_APP_DATADOG_SERVICE,
+  REACT_APP_DATADOG_SITE
 } = process.env
 
 ReactDOM.render(
@@ -27,14 +28,15 @@ reportWebVitals()
 if (
   REACT_APP_DATADOG_CLIENT_TOKEN &&
   REACT_APP_DATADOG_APPLICATION_ID &&
-  REACT_APP_DATADOG_SERVICE
+  REACT_APP_DATADOG_SERVICE &&
+  REACT_APP_DATADOG_SITE
 ) {
   datadogRum.init({
       applicationId: REACT_APP_DATADOG_APPLICATION_ID as string,
       clientToken: REACT_APP_DATADOG_CLIENT_TOKEN as string,
       // `site` refers to the Datadog site parameter of your organization
       // see https://docs.datadoghq.com/getting_started/site/
-      site: 'us3.datadoghq.com',
+      site: REACT_APP_DATADOG_SITE as string,
       service: REACT_APP_DATADOG_SERVICE as string,
       env: 'production',
       // Specify a version number to identify the deployed version of your application in Datadog
@@ -49,7 +51,7 @@ if (
 
   datadogLogs.init({
     clientToken: REACT_APP_DATADOG_CLIENT_TOKEN as string,
-    site: 'us3.datadoghq.com',
+    site: REACT_APP_DATADOG_SITE as string,
     env: 'production',
     service: REACT_APP_DATADOG_SERVICE as string,
     forwardErrorsToLogs: true,
