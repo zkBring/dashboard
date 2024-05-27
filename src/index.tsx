@@ -8,7 +8,8 @@ import { datadogLogs } from '@datadog/browser-logs'
 
 const {
   REACT_APP_DATADOG_CLIENT_TOKEN,
-  REACT_APP_DATADOG_APPLICATION_ID
+  REACT_APP_DATADOG_APPLICATION_ID,
+  REACT_APP_DATADOG_SERVICE
 } = process.env
 
 ReactDOM.render(
@@ -23,14 +24,18 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
 
-if (REACT_APP_DATADOG_CLIENT_TOKEN && REACT_APP_DATADOG_APPLICATION_ID) {
+if (
+  REACT_APP_DATADOG_CLIENT_TOKEN &&
+  REACT_APP_DATADOG_APPLICATION_ID &&
+  REACT_APP_DATADOG_SERVICE
+) {
   datadogRum.init({
       applicationId: REACT_APP_DATADOG_APPLICATION_ID as string,
       clientToken: REACT_APP_DATADOG_CLIENT_TOKEN as string,
       // `site` refers to the Datadog site parameter of your organization
       // see https://docs.datadoghq.com/getting_started/site/
       site: 'us3.datadoghq.com',
-      service: 'linkdrop-dashboard',
+      service: REACT_APP_DATADOG_SERVICE as string,
       env: 'production',
       // Specify a version number to identify the deployed version of your application in Datadog
       // version: '1.0.0', 
@@ -46,7 +51,7 @@ if (REACT_APP_DATADOG_CLIENT_TOKEN && REACT_APP_DATADOG_APPLICATION_ID) {
     clientToken: REACT_APP_DATADOG_CLIENT_TOKEN as string,
     site: 'us3.datadoghq.com',
     env: 'production',
-    service: 'linkdrop-dashboard',
+    service: REACT_APP_DATADOG_SERVICE as string,
     forwardErrorsToLogs: true,
     sessionSampleRate: 100,
     trackSessionAcrossSubdomains: true
