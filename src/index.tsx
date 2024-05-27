@@ -31,7 +31,7 @@ if (REACT_APP_DATADOG_CLIENT_TOKEN && REACT_APP_DATADOG_APPLICATION_ID) {
       // see https://docs.datadoghq.com/getting_started/site/
       site: 'us3.datadoghq.com',
       service: 'linkdrop-dashboard',
-      env: '<ENV_NAME>',
+      env: 'production',
       // Specify a version number to identify the deployed version of your application in Datadog
       // version: '1.0.0', 
       sessionSampleRate: 100,
@@ -45,6 +45,8 @@ if (REACT_APP_DATADOG_CLIENT_TOKEN && REACT_APP_DATADOG_APPLICATION_ID) {
   datadogLogs.init({
     clientToken: REACT_APP_DATADOG_CLIENT_TOKEN as string,
     site: 'us3.datadoghq.com',
+    env: 'production',
+    service: 'linkdrop-dashboard',
     forwardErrorsToLogs: true,
     sessionSampleRate: 100,
     trackSessionAcrossSubdomains: true
