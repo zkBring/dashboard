@@ -98,6 +98,29 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
 
   const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
 
+  const nextStepAction = () => applyClaimPattern(
+    claimPattern,
+    !Boolean(id),
+    () => {
+      // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
+      //   if (currentCampaign) {
+      //     return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/secure`)
+      //   }
+      //   return history.push(`/campaigns/new/${type}/secure`)
+      // }
+      if (campaign) {
+        return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
+      }
+      history.push(`/campaigns/new/${type}/approve`)
+    }
+  )
+
+  useEffect(() => {
+    if (!whitelisted || campaign || tokenStandard === 'ERC20') {
+      nextStepAction()
+    }
+  }, [])
+
   return <Container>
     <WidgetContainer>
       <WidgetComponent title='Claim pattern'>
@@ -123,24 +146,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
         }
       }}
       next={{
-        action: () => {
-          applyClaimPattern(
-            claimPattern,
-            !Boolean(id),
-            () => {
-              // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
-              //   if (currentCampaign) {
-              //     return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/secure`)
-              //   }
-              //   return history.push(`/campaigns/new/${type}/secure`)
-              // }
-              if (campaign) {
-                return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
-              }
-              history.push(`/campaigns/new/${type}/approve`)
-            }
-          )
-        },
+        action: nextStepAction
       }}
       title="Summary"
       subtitle="Check and confirm details "

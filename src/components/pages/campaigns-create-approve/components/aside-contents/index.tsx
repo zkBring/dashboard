@@ -21,7 +21,7 @@ import {
   defineNetworkName,
   defineNativeTokenSymbol
 } from 'helpers'
-import { TAssetsData, TTokenType, TClaimPattern, TTotalAmount } from 'types'
+import { TAssetsData, TTokenType, TClaimPattern } from 'types'
 import { BigNumber, utils } from 'ethers'
 import { TLinksContent } from '../../types'
 
@@ -54,22 +54,6 @@ const renderSecureAmount = (
       <TableValue>{String(utils.formatUnits(totalComission, 18))} {nativeTokenSymbol}</TableValue>
     </TableRow>
   </>
-}
-
-const renderApproveAmount = (
-  symbol: string | null,
-  campaignTokenStandard: TTokenType | null,
-  claimPattern: TClaimPattern,
-  totalAmount?: TTotalAmount
-) => {
-  if (claimPattern === 'mint' || !campaignTokenStandard || campaignTokenStandard === 'ERC1155' || campaignTokenStandard === 'ERC721' || !totalAmount || !symbol) {
-    return null
-  }
-  const totalToApprove = totalAmount.original_amount
-  return <TableRow>
-    <TableText>To be approved</TableText>
-    <TableValue>{String(totalToApprove)} {symbol}</TableValue>
-  </TableRow>
 }
 
 const renderAssetsList = (
@@ -108,9 +92,7 @@ const AsideContents: FC<TAsideContentsProps> = ({
   sdk,
   data,
   sponsored,
-  totalComission,
-  symbol,
-  totalAmount
+  totalComission
 }) => {
   const scannerUrl = defineExplorerUrl(campaignChainId, `/address/${tokenAddress || ''}`)
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId: campaignChainId })
@@ -177,12 +159,6 @@ const AsideContents: FC<TAsideContentsProps> = ({
         <TableValue>{claimPattern}</TableValue>
       </TableRow>
       {renderSecureAmount(sponsored, totalComission, nativeTokenSymbol)}
-      {false && renderApproveAmount( // hidden for now
-        symbol,
-        campaignTokenStandard,
-        claimPattern,
-        totalAmount
-      )}
 
       <AsideDivider />
       {renderTotal(totalComission, nativeTokenSymbol)}
