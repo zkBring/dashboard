@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Widget, Button } from 'components/common'
 import { Note } from 'linkdrop-ui'
-import { WidgetTitle, Aside } from 'components/pages/common'
+import { WidgetTitle, Aside, TableValue } from 'components/pages/common'
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
   max-width: 400px;
@@ -62,4 +62,15 @@ export const AsideContainer = styled.div`
 
 export const NoteStyled = styled(Note)`
   margin-bottom: 32px;
+`
+
+export const TableValueStyled = styled(TableValue)`
+  display: inline-block;
+  padding: 4px 8px;
+  line-height: 1;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid ${props => props.theme.tagAdditionalBorderColor};
+  background: ${props => props.theme.tagAdditionalBackgroundColor};
+  color: ${props => props.theme.primaryTextColor};
 `

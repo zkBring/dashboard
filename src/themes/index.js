@@ -57,6 +57,8 @@ const themes = {
 		tagInfoBorderColor: '#F6B40A',
 		tagSuccessBackgroundColor: '#D1FAE1',
 		tagSuccessBorderColor: '#19E46A',
+		tagAdditionalBackgroundColor: '#DEF1FE',
+		tagAdditionalBorderColor: '#5CB9FC',
 
 		noteDefaultBackgroundColor: '#E4EDFF',
 		noteWarningBackgroundColor: '#FFB4B4',

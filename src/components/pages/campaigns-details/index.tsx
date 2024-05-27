@@ -18,6 +18,7 @@ import {
   AsideStyled,
   AsideContainer,
   AsideButton,
+  TableValueStyled,
   AsideButtonsContainer
 } from './styled-components'
 import {
@@ -30,9 +31,16 @@ import {
   campaignRefund,
   copyToClipboard,
   defineContractFunds,
-  createEncryptionKey
+  createEncryptionKey,
+  formatDate,
+  formatTime
 } from 'helpers'
-import { BatchesList, CampaignParameters, HowToUseSDK } from './components'
+import {
+  BatchesList,
+  CampaignParameters,
+  HowToUseSDK,
+  LinksStats
+} from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
@@ -42,14 +50,26 @@ import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
 import { plausibleApi } from 'data/api'
 import { TClaimPattern, TTokenType } from 'types'
+import wallets from 'configs/wallets'
 
 const mapStateToProps = ({
-  campaigns: { campaigns, loading },
-  user: { address, dashboardKey, signer, jsonRPCProvider, chainId },
+  campaigns: {
+    campaigns,
+    loading
+  },
+  user: {
+    address,
+    dashboardKey,
+    signer,
+    jsonRPCProvider,
+    chainId,
+    countries
+  },
   campaign: { decimals },
 }: RootState) => ({
   campaigns,
   address,
+  countries,
   decimals,
   loading,
   dashboardKey,
@@ -122,7 +142,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   signer,
   address,
   provider,
-  chainId
+  chainId,
+  countries
 }) => {
 
   const history = useHistory()
@@ -180,7 +201,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     wallet,
     sponsored,
     links_claimed,
-    available_wallets
+    available_wallets,
+    available_countries,
+    expiration_date
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -344,7 +367,14 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   }
 
   return <Container>
+    
     <WidgetContainer>
+
+      <LinksStats
+        linksAmount={links_count}
+        linksClaimed={links_claimed}
+        sponsored={sponsored}
+      />
 
       <WidgetComponent>
         <Header>
@@ -411,6 +441,12 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         options={defineOptions()}
         loading={status === 'pending' || status === 'initial'}
       >
+        {expiration_date && <TableRow>
+          <TableText>Expiration date</TableText>
+          <TableValue>
+            {formatDate(expiration_date)}, {formatTime(expiration_date)}
+          </TableValue>
+        </TableRow>}
         <TableRow>
           <TableText>Created by</TableText>
           <TableValue>
@@ -455,14 +491,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           <TableValue>{token_standard}</TableValue>
         </TableRow>
         <TableRow>
-          <TableText>Links amount</TableText>
-          <TableValue>{links_count}</TableValue>
-        </TableRow>
-        {sponsored && <TableRow>
-          <TableText>Links claimed</TableText>
-          <TableValue>{links_claimed}</TableValue>
-        </TableRow>}
-        <TableRow>
           <TableText>Sponsorship</TableText>
           <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
         </TableRow>
@@ -497,6 +525,30 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           Read Docs
         </AsideButton>
       </AsideStyled>}
+      <AsideStyled
+        title="Wallets"
+        subtitle='The following wallets are available to claim your funds'
+      >
+        {available_wallets.map(currentWallet => {
+          return <TableRow>
+            <TableValue>{wallets.find(wallet => currentWallet === wallet.id)?.name || currentWallet}</TableValue>
+            {currentWallet === wallet && <TableValueStyled>
+              Preferred wallet
+            </TableValueStyled>}  
+          </TableRow>
+        })}
+      </AsideStyled>
+
+      <AsideStyled
+        title="Country Whitelist"
+        subtitle={available_countries.length === 0 ? 'This campaign is available in all countries' : 'This campaign is available in the following countries'}
+      >
+        {available_countries.map(currentCounty => {
+          return <TableRow>
+            <TableValue>{countries.find(country => country.id === currentCounty)?.name || currentCounty}</TableValue>
+          </TableRow>
+        })}
+      </AsideStyled>
     </AsideContainer>
   </Container>
 }
