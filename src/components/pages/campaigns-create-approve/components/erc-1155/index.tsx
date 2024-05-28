@@ -78,7 +78,7 @@ const createInputsContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
-  getDefaultValues: () => TLinkContent,
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent,
   claimPattern: TClaimPattern
 ) => {
   return <InputsContainer>
@@ -123,7 +123,7 @@ const createInputsContainer = (
           ...formData,
           id: assetsData.length
         }])
-        setFormData(getDefaultValues())
+        setFormData(getDefaultValues('ERC1155'))
       }}
     >
       + Add
@@ -135,7 +135,7 @@ const createSelectContainer = (
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
-  getDefaultValues: () => TLinkContent,
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent,
   nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
@@ -202,7 +202,7 @@ const createSelectContainer = (
             }
           ])
         }
-        setFormData(getDefaultValues())
+        setFormData(getDefaultValues('ERC1155'))
       }}
       value={null}
       placeholder='Token ID'
@@ -221,7 +221,7 @@ const createTextInputOrSelect = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
-  getDefaultValues: () => TLinkContent,
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent,
   nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
@@ -272,23 +272,14 @@ const Erc1155: FC<ReduxType > = ({
   signer,
   loading,
   userLoading,
-  chainId
+  chainId,
+  getDefaultValues,
+  formData,
+  setFormData
 }) => {
   const { type } = useParams<{ type: TTokenType }>()
   const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
-  const getDefaultValues: () => TLinkContent = () => {
-    return {
-      linksAmount: '',
-      tokenId: '',
-      tokenAmount: '',
-      type: tokenStandard || 'ERC1155'
-    }
-  }
 
-  const [
-    formData,
-    setFormData
-  ] = useState<TLinkContent>(getDefaultValues())
 
   const [
     itemToEdit,
@@ -331,7 +322,7 @@ const Erc1155: FC<ReduxType > = ({
       }
     })
     setAssetsData(assets)
-    setFormData(getDefaultValues())
+    setFormData(getDefaultValues('ERC1155'))
   }
 
   return <WidgetComponent>

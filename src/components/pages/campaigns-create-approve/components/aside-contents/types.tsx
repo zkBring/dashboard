@@ -1,4 +1,4 @@
-import { TAssetsData, TClaimPattern, TTokenType, TTotalAmount } from "types"
+import { TAssetsData, TClaimPattern, TTokenType } from "types"
 import { TLinksContent } from '../../types'
 import { BigNumber } from 'ethers'
 
@@ -16,5 +16,4 @@ export type TAsideContentsProps = {
   sponsored: boolean
   totalComission: BigNumber
   symbol: string | null
-  totalAmount?: TTotalAmount
 }

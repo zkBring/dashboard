@@ -23,7 +23,8 @@ type TCampaign = {
   sponsored: boolean
   links_claimed: number
   available_wallets: string[]
-  available_countries: string[] 
+  available_countries: string[]
+  expiration_date?: number
 }
 
 export default TCampaign

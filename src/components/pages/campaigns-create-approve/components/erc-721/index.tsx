@@ -82,7 +82,7 @@ const createInputsContainer = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
-  getDefaultValues: () => TLinkContent
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent
 ) => {
   return <InputsContainer>
     <InputStyled
@@ -107,7 +107,7 @@ const createInputsContainer = (
           ...formData,
           id: assetsData.length
         }])
-        setFormData(getDefaultValues())
+        setFormData(getDefaultValues('ERC721'))
       }}
     >
       + Add
@@ -119,7 +119,7 @@ const createSelectContainer = (
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
-  getDefaultValues: () => TLinkContent,
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent,
   nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
@@ -179,7 +179,7 @@ const createSelectContainer = (
               tokenName: value.name
             }
           ])
-          setFormData(getDefaultValues())
+          setFormData(getDefaultValues('ERC721'))
         }
       }}
       value={null}
@@ -200,7 +200,7 @@ const createTextInputOrSelect = (
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
   checkIfDisabled: () => boolean,
-  getDefaultValues: () => TLinkContent,
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent,
   nfts: TNFTToken[],
   tokenAddress: string | null,
   userAddress: string,
@@ -246,24 +246,14 @@ const Erc721: FC<ReduxType > = ({
   address,
   loading,
   userLoading,
-  chainId
+  chainId,
+  formData,
+  setFormData,
+  getDefaultValues
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
   const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
-  const getDefaultValues: () => TLinkContent = () => {
-    return {
-      linksAmount: '',
-      tokenId: '',
-      tokenAmount: '',
-      type: tokenStandard || 'ERC721'
-    }
-  }
-
-  const [
-    formData,
-    setFormData
-  ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
     if (loading || userLoading) { return true }
@@ -304,7 +294,7 @@ const Erc721: FC<ReduxType > = ({
         token_type: tokenStandard as string,
       }
     })
-    setFormData(getDefaultValues())
+    setFormData(getDefaultValues('ERC721'))
   }
 
   return <WidgetComponent>

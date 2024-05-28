@@ -8,7 +8,8 @@ import {
   InstructionNoteStyled,
   Container,
   Header,
-  WidgetTitleStyled
+  WidgetTitleStyled,
+  Form
 } from '../../styled-components'
 import { TProps } from './type'
 import {
@@ -67,24 +68,14 @@ const Erc20: FC<ReduxType > = ({
   claimPattern,
   symbol,
   decimals,
-  tokenAmount
+  tokenAmount,
+  formData,
+  setFormData,
+  getDefaultValues
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
 
-  const getDefaultValues: () => TLinkContent = () => {
-    return {
-      linksAmount: '',
-      tokenId: '',
-      tokenAmount: '',
-      type: tokenStandard || 'ERC20'
-    }
-  }
-
-  const [
-    formData,
-    setFormData
-  ] = useState<TLinkContent>(getDefaultValues())
 
   const checkIfDisabled = () => {
     return !formData.tokenAmount ||
@@ -112,52 +103,58 @@ const Erc20: FC<ReduxType > = ({
             setAssetsData(assetsData.filter(item => item.id !== id))
           }}
         />
-        <InputsContainer>
-          <InputStyled
-            value={formData.tokenAmount}
-            placeholder='Amount per link'
-            onChange={value => {
-              if (/^[0-9.]+$/.test(value) || value === '') {
-                setFormData({ ...formData, tokenAmount: value })
-              }
-              return value
-            }}
-          />
-          <InputStyled
-            value={formData.linksAmount}
-            placeholder='Number of links'
-            onChange={value => {
-              if (/^[0-9]+$/.test(value) || value === '') {
-                setFormData({ ...formData, linksAmount: value })
-              }
-              return value
-            }}
-          />
+        <Form onSubmit={(event) => {
+          event.preventDefault()
+          const hasEnoughTokens = defineIfUserHasEnoughERC20Tokens(
+            tokenAmount as BigNumber,
+            formData.tokenAmount as string,
+            formData.linksAmount as string,
+            decimals,
+          )
+          if (!hasEnoughTokens) {
+            return alert(`Not enough tokens on balance. Current balance: ${tokenAmountFormatted} ${symbol}`)
+          }
+          setAssetsData([ ...assetsData, {
+            ...formData,
+            id: assetsData.length
+          }])
+          setFormData(getDefaultValues(tokenStandard as TTokenType))
+        }}>
+          <InputsContainer>
+            <InputStyled
+              value={formData.tokenAmount}
+              name='amount'
+              placeholder='Amount per link'
+              onChange={value => {
+                if (/^[0-9.]+$/.test(value) || value === '') {
+                  setFormData({ ...formData, tokenAmount: value })
+                }
+                return value
+              }}
+            />
+            <InputStyled
+              value={formData.linksAmount}
+              name='links'
+              placeholder='Number of links'
+              onChange={value => {
+                if (/^[0-9]+$/.test(value) || value === '') {
+                  setFormData({ ...formData, linksAmount: value })
+                }
+                return value
+              }}
+            />
 
-          <ButtonStyled
-            size='extra-small'
-            appearance='additional'
-            disabled={checkIfDisabled()}
-            onClick={() => {
-              const hasEnoughTokens = defineIfUserHasEnoughERC20Tokens(
-                tokenAmount as BigNumber,
-                formData.tokenAmount as string,
-                formData.linksAmount as string,
-                decimals,
-              )
-              if (!hasEnoughTokens) {
-                return alert(`Not enough tokens on balance. Current balance: ${tokenAmountFormatted} ${symbol}`)
-              }
-              setAssetsData([ ...assetsData, {
-                ...formData,
-                id: assetsData.length
-              }])
-              setFormData(getDefaultValues())
-            }}
-          >
-            + Add
-          </ButtonStyled>
-        </InputsContainer>
+            <ButtonStyled
+              size='extra-small'
+              appearance='additional'
+              type='submit'
+              disabled={checkIfDisabled()}
+            >
+              + Add
+            </ButtonStyled>
+          </InputsContainer>
+        </Form>
+        
         <NotesContainer>
           <InstructionNoteStyled icon={<Icons.InputNoteIcon />} >
             <TextBold>Amount per link</TextBold> — amount of tokens that you would like to include in every link

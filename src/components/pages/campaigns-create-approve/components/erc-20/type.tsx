@@ -1,4 +1,4 @@
-import { TTokenType, TCampaign, TClaimPattern, TAssetsData } from 'types'
+import { TTokenType, TCampaign, TClaimPattern, TLinkContent } from 'types'
 import { TLinksContent } from '../../types'
 
 export type TProps = {
@@ -8,4 +8,7 @@ export type TProps = {
   setAssetsData: (newAssets: TLinksContent) => void
   sdk: boolean
   claimPattern: TClaimPattern
+  formData: TLinkContent
+  setFormData: (formData: TLinkContent) => void
+  getDefaultValues: (tokenType: TTokenType) => TLinkContent
 }
