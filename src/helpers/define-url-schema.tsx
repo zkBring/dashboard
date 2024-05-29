@@ -1,5 +1,10 @@
-import { addressSpecificOptions } from 'configs/address-specific-options'
-import { COINBASE_CLAIM_URL } from 'configs/app'
+import {
+  COINBASE_CLAIM_URL
+} from 'configs/app'
+
+const {
+  REACT_APP_CLIENT
+} = process.env
 
 const defineUrlSchema = (
   decryptedClaimCode: string,
@@ -9,6 +14,15 @@ const defineUrlSchema = (
   wallet: string,
   availableWallets: string[]
 ) => {
+
+  if (REACT_APP_CLIENT === 'coinbase') {
+    const url = COINBASE_CLAIM_URL
+      .replace('<CODE>', decryptedClaimCode)
+      .replace('<CHAIN_ID>', String(chainId))
+      .replace('<VERSION>', String(version))
+
+    return url
+  }
   const defaultLink = `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
 
   if (wallet !== 'coinbase_wallet') {

@@ -51,6 +51,8 @@ import {
 } from 'helpers'
 import { BigNumber } from 'ethers'
 
+const { REACT_APP_CLIENT } = process.env
+
 const mapStateToProps = ({
   user: {
     chainId,
@@ -175,6 +177,9 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     if (currentCampaign) {
       return currentCampaign.available_wallets
     }
+    if (REACT_APP_CLIENT === 'coinbase') {
+      return ['coinbase_wallet']
+    }
     const options = allWallets
       .map(wallet => wallet.id)
     return options
@@ -189,7 +194,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [chainId])
 
-  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : walletsOptions[0].value
+  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (REACT_APP_CLIENT === 'coinbase' ? 'coinbase_wallet' : walletsOptions[0].value)
 
   const currentCampaignAvailableCountries = useMemo(() => {
     if (!currentCampaign) {
@@ -271,7 +276,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   return <Container>
     <WidgetContainer>
-      <WidgetComponent title='Wallet options'>
+      {REACT_APP_CLIENT !== 'coinbase' && <WidgetComponent title='Wallet options'>
         <WidgetSectionTitle>Preferred wallet</WidgetSectionTitle>
         <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
         <StyledRadio
@@ -302,7 +307,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             }
           />)}
         </CheckboxContainer>
-      </WidgetComponent>
+      </WidgetComponent>}
 
       <WidgetComponent>
         <Header>
