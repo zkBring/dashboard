@@ -1,7 +1,8 @@
 import { addressSpecificOptions } from 'configs/address-specific-options'
 
 const {
-  REACT_APP_CLAIM_APP
+  REACT_APP_CLAIM_APP,
+  REACT_APP_CLIENT
 } = process.env
 
 const defineClaimAppURL = (address: string) => {
