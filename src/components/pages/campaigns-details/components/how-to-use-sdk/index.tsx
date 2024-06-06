@@ -5,18 +5,20 @@ import {
   WidgetComponent
 } from 'components/pages/common'
 import { NoteStyled } from '../../styled-components'
+import { TextLink } from 'components/common'
 
 const HowToUseSDK: FC<TProps> = ({
   sdk
 }) => {
-  return null
-
   if (!sdk) { return null }
   return <WidgetComponent
     title='How to use'
   >
     <NoteStyled type='warning'>
       Be careful! Code below includes private data. Do not share publicly. Sharing may lead to loss of assets
+    </NoteStyled>
+    <NoteStyled>
+      To request an API key, please contact us at <TextLink href="mailto:hi@linkdrop.io">hi@linkdrop.io.</TextLink>
     </NoteStyled>
     <Code>
 {`// installation: yarn add linkdrop-sdk
@@ -26,9 +28,11 @@ import LinkdropSDK from 'linkdrop-sdk'
 // const LinkdropSDK = require('linkdrop-sdk').default
 
 const sdk = new LinkdropSDK({
+  // required params
+  apiKey: string, // to request an API key, please contact us at hi@linkdrop.io
   // optional params
   mode?: 'testnets', // for goerli and mumbai networks
-  apiHost?: string // parameter to override default api host. Optional. The default value is 'https://dashboard-api.linkdrop.io' for mainnets and 'https://testnets.dashboard-api.linkdrop.io' for testtents.
+  apiHost?: string, // parameter to override default api host. Optional. The default value is 'https://dashboard-api.linkdrop.io' for mainnets and 'https://testnets.dashboard-api.linkdrop.io' for testtents.
 })
 
 const init = async () => {
