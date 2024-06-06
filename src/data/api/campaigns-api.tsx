@@ -1,10 +1,16 @@
 import axios from 'axios'
 import { TLink, TCampaignNew } from 'types'
 
-const { REACT_APP_SERVER_URL } = process.env
+const {
+  REACT_APP_SERVER_URL,
+  REACT_APP_ZUPLO_API_KEY
+} = process.env
 
 const campaignsApi = axios.create({
-  baseURL: `${REACT_APP_SERVER_URL}/api/v2/dashboard`
+  baseURL: `${REACT_APP_SERVER_URL}/api/v2/dashboard`,
+  headers: {
+    Authorization: `Bearer ${REACT_APP_ZUPLO_API_KEY as string}`
+  }
 })
 
 const requests = {

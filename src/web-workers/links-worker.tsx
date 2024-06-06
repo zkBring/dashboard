@@ -1,7 +1,7 @@
 import LinkdropSDK from 'linkdrop-sdk'
 import { expose } from 'comlink'
 import { TLink, TAssetsData, TTokenType } from 'types'
-const { REACT_APP_SERVER_URL } = process.env
+const { REACT_APP_SERVER_URL, REACT_APP_ZUPLO_API_KEY } = process.env
 
 export class LinksWorker {
   private newLinks: Array<TLink> = [];
@@ -18,7 +18,8 @@ export class LinksWorker {
   ) {
     const sdk = new LinkdropSDK({
       claimHostUrl: claimHost,
-      apiHost: REACT_APP_SERVER_URL
+      apiHost: REACT_APP_SERVER_URL,
+      apiKey: REACT_APP_ZUPLO_API_KEY as string
     })
     this.sdk = sdk
   }
