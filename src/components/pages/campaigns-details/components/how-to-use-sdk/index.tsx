@@ -32,7 +32,7 @@ const sdk = new LinkdropSDK({
   apiKey: string, // to request an API key, please contact us at hi@linkdrop.io
   // optional params
   mode?: 'testnets', // for goerli and mumbai networks
-  apiHost?: string, // parameter to override default api host. Optional. The default value is 'https://dashboard-api.linkdrop.io' for mainnets and 'https://testnets.dashboard-api.linkdrop.io' for testtents.
+  apiHost?: string, // parameter to override default api host. Optional
 })
 
 const init = async () => {
