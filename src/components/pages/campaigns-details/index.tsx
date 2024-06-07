@@ -420,6 +420,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           }}
           encryptionKey={encryptionKey}
           tokenAddress={token_address}
+          linksCreated={links_count}
         />
         
       </WidgetComponent>

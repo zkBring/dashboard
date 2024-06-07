@@ -15,5 +15,6 @@ export type TProps = {
     encryptionKey?: string
   ) => void
   encryptionKey: string,
-  tokenAddress: string | null
+  tokenAddress: string | null,
+  linksCreated: number
 }
