@@ -43,8 +43,13 @@ const BatchesList: FC<TProps> = ({
   downloadLinks,
   tokenAddress,
   encryptionKey,
-  sponsored
+  sponsored,
+  linksCreated
 }) => {
+
+  if (linksCreated === 0) {
+    return <span>No links have been created yet.</span>
+  }
   if (!batches || batches.length === 0) {
     return null
   }

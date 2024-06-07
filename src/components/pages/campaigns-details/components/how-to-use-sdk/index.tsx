@@ -30,9 +30,6 @@ import LinkdropSDK from 'linkdrop-sdk'
 const sdk = new LinkdropSDK({
   // required params
   apiKey: string, // to request an API key, please contact us at hi@linkdrop.io
-  // optional params
-  mode?: 'testnets', // for goerli and mumbai networks
-  apiHost?: string, // parameter to override default api host. Optional
 })
 
 const init = async () => {
