@@ -229,6 +229,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
 
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+
 const defineComponent: TDefineComponent = (
   type,
   assetsData,
@@ -504,7 +505,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       claimPattern={claimPattern}
     />}
     <WidgetContainer>
-      {false && <WidgetComponent title='Distribution'>
+      <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
@@ -518,7 +519,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             setSdk(value)
           }}
         />
-      </WidgetComponent>}
+      </WidgetComponent>
       <WidgetComponent title='Gasless Claiming'>
         <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
         <StyledRadio

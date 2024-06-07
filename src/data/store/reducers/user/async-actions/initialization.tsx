@@ -17,7 +17,8 @@ import { alertError, defineClaimAppURL } from 'helpers'
 
 const {
   REACT_APP_INFURA_ID,
-  REACT_APP_SERVER_URL
+  REACT_APP_SERVER_URL,
+  REACT_APP_ZUPLO_API_KEY
 } = process.env
 
 const initialization = () => {
@@ -59,7 +60,8 @@ const initialization = () => {
 
     const sdk = new LinkdropSDK({
       claimHostUrl: claimAppURL,
-      apiHost: REACT_APP_SERVER_URL
+      apiHost: REACT_APP_SERVER_URL,
+      apiKey: REACT_APP_ZUPLO_API_KEY as string
     })
 
     dispatch(userActions.setSDK(sdk))
