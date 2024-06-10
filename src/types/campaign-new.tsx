@@ -3,7 +3,7 @@ import { TLink, TClaimPattern } from 'types'
 
 type TCampaignNew = {
   title: string
-  chain_id: number
+  chain_id: string
   campaign_number: string
   token_address: string
   token_standard: TTokenType
