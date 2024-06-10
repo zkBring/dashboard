@@ -172,7 +172,7 @@ const generateERC20Link = ({
           symbol,
           title: title || '',
           token_standard: tokenStandard,
-          chain_id: chainId,
+          chain_id: String(chainId),
           proxy_contract_address: proxyContractAddress,
           claim_pattern: claimPattern,
           proxy_contract_version: version,
