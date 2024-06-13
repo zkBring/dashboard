@@ -84,6 +84,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const defineDashboardName = () => {
@@ -143,13 +144,6 @@ const Main: FC<ReduxType> = ({
   }, [])
 
   useEffect(() => {
-    console.log({
-      connectorAddress,
-      connectorChainID,
-      connector,
-      signer,
-      authorizationStep
-    })
     if (
       !connectorAddress ||
       !connectorChainID ||
@@ -157,7 +151,6 @@ const Main: FC<ReduxType> = ({
       !signer ||
       authorizationStep !== 'connect'
     ) { return }
-    console.log('here')
     connectWallet(
       connectorAddress,
       connectorChainID,
@@ -187,6 +180,37 @@ const Main: FC<ReduxType> = ({
 
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
+  }
+
+  if (authorizationStep === 'no_injected_extension') {
+    return <ContainerCentered>
+      <IconContainer>
+        <Icons.YellowAttentionIcon />
+      </IconContainer>
+      
+      <Title>
+        Extension required
+      </Title>
+      <Contents>
+
+        <Text>
+          A browser web3 wallet is required to use the Dashboard
+        </Text>
+
+        <List>
+          <ListItem>Download <TextLink href='https://metamask.io/download/' target='_blank'>Metamask</TextLink></ListItem>
+          <ListItem>Return back to this page and click reload</ListItem>
+        </List>
+        
+      </Contents>
+      <WidgetButton
+        appearance='action'
+        onClick={() => {
+          window.location.reload()
+        }}
+        title='Reload page'
+      />
+    </ContainerCentered>
   }
 
   if (authorizationStep === 'wrong_network') {
@@ -233,8 +257,9 @@ const Main: FC<ReduxType> = ({
       disabled={loading || !injectedProvider}
       appearance='action'
       onClick={() => {
+        if (loading || !injectedProvider) { return }
         if (authorizationStep === 'connect') { 
-          return open()
+          return connect({ connector: injectedProvider })
         }
         return authorize()
       }}
