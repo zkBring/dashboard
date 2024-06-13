@@ -16,4 +16,5 @@ export type TAsideContentsProps = {
   sponsored: boolean
   totalComission: BigNumber
   symbol: string | null
+  children?: React.ReactNode
 }

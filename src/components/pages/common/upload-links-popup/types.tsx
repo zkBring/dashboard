@@ -5,5 +5,6 @@ export type TProps = {
   onSubmit: (links: TLinkDecrypted[]) => void,
   quantity?: number,
   loader: number,
-  loading: boolean
+  loading: boolean,
+  children?: React.ReactNode
 }

@@ -3,7 +3,12 @@ import { Header, Aside, Breadcrumbs } from 'components/common'
 import { Page, MainContent, Content } from './styled-components'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
-import { TDefineTitle, TDefineBreadcrumbs, ILocationType } from './types'
+import {
+  TDefineTitle,
+  TDefineBreadcrumbs,
+  ILocationType,
+  TProps
+} from './types'
 import { useLocation } from 'react-router-dom'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -162,7 +167,7 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   }
 }
 
-const PageComponent: FC<ReduxType> = ({ children, authorizationStep }) => {  
+const PageComponent: FC<ReduxType & TProps> = ({ children, authorizationStep }) => {  
   const location = useLocation<ILocationType>()
   const title = defineTitle(location.pathname)
   const breadcrumbs = defineBreadcrumbs(location.pathname)

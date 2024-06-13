@@ -39,3 +39,8 @@ body {
 html, body, #root {
   height: 100%;
 }
+
+
+#webpack-dev-server-client-overlay {
+  display: none;
+}

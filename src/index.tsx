@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/application';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './components/application'
 import reportWebVitals from './reportWebVitals'
 import { datadogRum } from '@datadog/browser-rum'
 import { datadogLogs } from '@datadog/browser-logs'
+import { createRoot } from 'react-dom/client'
 
 const {
   REACT_APP_DATADOG_CLIENT_TOKEN,
@@ -12,13 +13,13 @@ const {
   REACT_APP_DATADOG_SERVICE,
   REACT_APP_DATADOG_SITE
 } = process.env
+const container = document.getElementById('root') as HTMLElement
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+root.render(<React.StrictMode>
+  <App />
+</React.StrictMode>,
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

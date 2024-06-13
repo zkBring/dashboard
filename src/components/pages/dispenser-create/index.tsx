@@ -101,7 +101,7 @@ const QRCreate: FC<ReduxType> = ({
         title='Title'
         placeholder='My first dispenser app...'
         value={title}
-        onChange={(value) => { setTitle(value); return value }}
+        onChange={(value: string) => { setTitle(value); return value }}
       />
 
       <DateTimeContainer>
@@ -110,7 +110,7 @@ const QRCreate: FC<ReduxType> = ({
           title='Start date'
           note='Enter start date in the “dd MMM yyyy” format, e.g. “19 Apr 2022”'
           dateFormat='dd MMM yyyy'
-          onChange={(value) => setDate(value)}
+          onChange={(value: any) => setDate(value)}
           value={date}
           minDate={new Date(new Date().setDate(new Date().getDate() -1))}
         />
@@ -149,7 +149,7 @@ const QRCreate: FC<ReduxType> = ({
         refProp={inputRef}
         value={duration}
         note='Enter duration in minutes '
-        onChange={(value) => {
+        onChange={(value: string) => {
           if (value !== '0' && (/^[0-9]+$/.test(value) || value === '')) {
             setDuration(value)
           }
@@ -161,7 +161,7 @@ const QRCreate: FC<ReduxType> = ({
         label='Dynamic'
         value={dynamic}
         disabled={Boolean(currentDispenser)}
-        onChange={value => setDynamic(value)}
+        onChange={(value: boolean) => setDynamic(value)}
         note='Select the checkbox if you want a dynamic QR code after each scan'
       />
       <Buttons>

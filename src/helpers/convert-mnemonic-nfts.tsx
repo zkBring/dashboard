@@ -28,7 +28,7 @@ const convertMnemonicNFTs:TConvertMnemonicNFTs = (
       title: name,
       tokenId,
       tokenType: type.replace('TYPE_', '') as TTokenType,
-      balance: Number(quantity),
+      balance: quantity,
       media: [{
         gateway: uri
       }]

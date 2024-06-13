@@ -1,11 +1,6 @@
 import { FC } from 'react'
 import { Wrapper, WrapperTitle, WrapperContent } from './styled-components'
-
-type TProps = {
-  title: string,
-  className?: string
-}
-
+import { TProps } from './types'
 
 const InfoBlock: FC<TProps> = ({ title, children, className }) => {
   return <Wrapper className={className}>

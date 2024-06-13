@@ -1,9 +1,6 @@
 import React, { FC } from 'react'
 import { TitleComponent } from './styled-components'
-
-type TProps = {
-  
-}
+import { TProps } from './types'
 
 const Title: FC<TProps> = ({ children }) => {
   return <TitleComponent>{children}</TitleComponent>

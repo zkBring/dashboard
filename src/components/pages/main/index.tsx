@@ -25,6 +25,7 @@ import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
 import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
 import { useEthersSigner } from 'hooks'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
@@ -83,6 +84,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const defineDashboardName = () => {
@@ -135,6 +137,7 @@ const Main: FC<ReduxType> = ({
   const { connect, connectors } = useConnect()
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
+  const { open } = useWeb3Modal()
 
   useEffect(() => {
     initialLoad()
@@ -148,7 +151,6 @@ const Main: FC<ReduxType> = ({
       !signer ||
       authorizationStep !== 'connect'
     ) { return }
-
     connectWallet(
       connectorAddress,
       connectorChainID,
@@ -157,7 +159,6 @@ const Main: FC<ReduxType> = ({
       chainsAvailable
     )
   }, [connectorAddress, signer, connectorChainID, connector, authorizationStep])
-
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>

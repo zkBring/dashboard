@@ -17,6 +17,7 @@ import { connect } from 'react-redux'
 import Icons from 'icons'
 import { defineNetworkName, defineIfFeatureIsAvailable } from 'helpers'
 import { plausibleApi } from 'data/api'
+import { TProps } from './types'
 
 const mapStateToProps = ({
   user: {
@@ -30,7 +31,6 @@ const mapStateToProps = ({
   chainId
 })
 
-interface AsideProps {}
 
 interface LocationType {
   pathname: string
@@ -39,7 +39,7 @@ interface LocationType {
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 
-const AsideComponent: FC<AsideProps & ReduxType> = ({
+const AsideComponent: FC<TProps & ReduxType> = ({
   authorizationStep,
   chainId
 }) => {
