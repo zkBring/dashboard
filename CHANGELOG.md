@@ -1,4 +1,8 @@
-# Ledger Dashboard
+# Linkdrop Dashboard
+
+## 2.1.34
+- wagmi update, web3Modal update
+- authorization update
 
 ## 2.1.33
 - sdk option returned
