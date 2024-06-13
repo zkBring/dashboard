@@ -239,9 +239,9 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           <Main />
         </Route>
 
-        <Route path='*' render={props => <NotFound
-          {...props}
-        />} />
+        <Route path='*'>
+          <NotFound />
+        </Route>
       </Switch>
     </Page>
   </HashRouter>

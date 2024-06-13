@@ -25,6 +25,7 @@ import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
 import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
 import { useEthersSigner } from 'hooks'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
@@ -135,12 +136,20 @@ const Main: FC<ReduxType> = ({
   const { connect, connectors } = useConnect()
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
+  const { open } = useWeb3Modal()
 
   useEffect(() => {
     initialLoad()
   }, [])
 
   useEffect(() => {
+    console.log({
+      connectorAddress,
+      connectorChainID,
+      connector,
+      signer,
+      authorizationStep
+    })
     if (
       !connectorAddress ||
       !connectorChainID ||
@@ -148,7 +157,7 @@ const Main: FC<ReduxType> = ({
       !signer ||
       authorizationStep !== 'connect'
     ) { return }
-
+    console.log('here')
     connectWallet(
       connectorAddress,
       connectorChainID,
@@ -157,7 +166,6 @@ const Main: FC<ReduxType> = ({
       chainsAvailable
     )
   }, [connectorAddress, signer, connectorChainID, connector, authorizationStep])
-
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
@@ -179,37 +187,6 @@ const Main: FC<ReduxType> = ({
 
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
-  }
-
-  if (authorizationStep === 'no_injected_extension') {
-    return <ContainerCentered>
-      <IconContainer>
-        <Icons.YellowAttentionIcon />
-      </IconContainer>
-      
-      <Title>
-        Extension required
-      </Title>
-      <Contents>
-
-        <Text>
-          A browser web3 wallet is required to use the Dashboard
-        </Text>
-
-        <List>
-          <ListItem>Download <TextLink href='https://metamask.io/download/' target='_blank'>Metamask</TextLink></ListItem>
-          <ListItem>Return back to this page and click reload</ListItem>
-        </List>
-        
-      </Contents>
-      <WidgetButton
-        appearance='action'
-        onClick={() => {
-          window.location.reload()
-        }}
-        title='Reload page'
-      />
-    </ContainerCentered>
   }
 
   if (authorizationStep === 'wrong_network') {
@@ -256,9 +233,8 @@ const Main: FC<ReduxType> = ({
       disabled={loading || !injectedProvider}
       appearance='action'
       onClick={() => {
-        if (loading || !injectedProvider) { return }
         if (authorizationStep === 'connect') { 
-          return connect({ connector: injectedProvider })
+          return open()
         }
         return authorize()
       }}

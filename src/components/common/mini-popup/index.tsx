@@ -1,14 +1,9 @@
-import React, { FC, useEffect } from 'react'
-
+import { FC, useEffect } from 'react'
+import { Props } from './types'
 import {
   MiniPopupContainer,
   MiniPopupContainerClass
 } from './styled-components'
-
-type Props = {
-  onClose: () => void,
-  className?: string
-}
 
 const MiniPopup: FC<Props> = ({ children, onClose, className }) => {
   useEffect(() => {

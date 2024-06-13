@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "paths": {
+      "react": [ "./node_modules/@types/react" ]
+    },
     "target": "es5",
     "lib": [
       "dom",
@@ -23,5 +26,8 @@
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

@@ -1,5 +1,5 @@
-export type TProps = {
+export type Props = {
+  onClose: () => void
   className?: string
-  title?: string
   children?: React.ReactNode
 }

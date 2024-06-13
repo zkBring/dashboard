@@ -28,20 +28,8 @@ const initialLoad = () => {
       return dispatch(userActions.setAuthorizationStep('wrong_device'))
     }
     try {
-      await sleep(1000)
-      if (
-        !window.ethereum || (
-          !window.ethereum.isCoinbaseWallet &&
-          !window.ethereum.isMetaMask && 
-          !window.ethereum.isZerion
-        )
-      ) {
-        dispatch(userActions.setLoading(false))
-        plausibleApi.invokeEvent({
-          eventName: 'sign_in_no_injected_wallet'
-        })
-        return dispatch(userActions.setAuthorizationStep('no_injected_extension'))
-      }
+      // await sleep(1000)
+      
       plausibleApi.invokeEvent({
         eventName: 'sign_in_show_connect'
       })

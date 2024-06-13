@@ -16,7 +16,6 @@ export const StyledRadio = styled(Radio)`
   margin-bottom: 20px;
 `
 
-
 export const InputStyled = styled(Input)`
   flex: 1 0;
   margin: 0 16px 0 0;

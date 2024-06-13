@@ -4,7 +4,6 @@ type TAuthorizationStep = 'wrong_network' | // network is not supported in curre
                           'login' | // can be authorized
                           'store-key' | // can generate key
                           'authorized' | // authorized
-                          'no_injected_extension' | // no extension installed
                           'wrong_device' // mobile device
 
 export default TAuthorizationStep

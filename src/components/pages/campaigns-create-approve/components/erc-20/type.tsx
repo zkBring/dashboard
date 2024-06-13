@@ -11,4 +11,5 @@ export type TProps = {
   formData: TLinkContent
   setFormData: (formData: TLinkContent) => void
   getDefaultValues: (tokenType: TTokenType) => TLinkContent
+  children?: React.ReactNode
 }

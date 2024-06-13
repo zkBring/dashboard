@@ -28,4 +28,5 @@ export type TProps = {
   subtitle?: string
   loading?: boolean
   className?: string
+  children?: React.ReactNode
 }

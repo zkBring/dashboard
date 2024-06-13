@@ -8,7 +8,11 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
 import { authorizationApi, plausibleApi } from 'data/api'
-import { defineNetworkName, alertError } from 'helpers'
+import {
+  defineNetworkName,
+  alertError,
+  createSiweMessage
+} from 'helpers'
 import {
   initialization,
   getDashboardKey
@@ -19,6 +23,8 @@ import {
 } from './error-handling'
 
 const authorize = () => {
+
+  // @ts-nocheck
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
     getState: () => RootState
@@ -36,8 +42,11 @@ const authorize = () => {
     const humanReadable = new Date(timestamp).toUTCString()
     
     try {
-      const message = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
-      
+      const message = createSiweMessage(
+        address, 
+        `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`,
+        chainId as number
+      )
       try {
         const sig = await signer.signMessage(message)
         await authorizationApi.authorize(

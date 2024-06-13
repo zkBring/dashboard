@@ -20,6 +20,7 @@ import { CollectionsState, CollectionsActions } from './reducers/collections/typ
 
 import thunkMiddleware, { ThunkDispatch, ThunkMiddleware } from "redux-thunk"
 
+// @ts-ignore
 type TActions = CampaignActions &
                 CampaignsActions &
                 UserActions &
@@ -62,6 +63,7 @@ const store = createStore<RootState, any, any, any>(
   reducers,
   composeEnhancers(
     applyMiddleware<IAppDispatch, any>(
+      // @ts-ignore
       thunkMiddleware as ThunkMiddleware<IAppState, TActions, any>,
     )
   ),
