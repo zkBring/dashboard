@@ -258,7 +258,9 @@ const Dispenser: FC<ReduxType> = ({
       () => setStatsLoading(false)
     )
   }, [])
-  const claimAppURL = defineClaimAppURL(address)
+  const claimAppURL = defineClaimAppURL(
+    address
+  )
 
   const {
     claimURLDecrypted,
