@@ -21,8 +21,12 @@ import {
   ERROR_DASHBOARD_AUTH_REJECTED,
   defineError
 } from './error-handling'
+import { SiweMessage } from 'siwe'
 
-const authorize = () => {
+const authorize = (
+  message: string,
+  timestamp: number
+) => {
 
   // @ts-nocheck
   return async (
@@ -37,18 +41,16 @@ const authorize = () => {
       }
     } = getState()
     dispatch(userActions.setLoading(true))
-
-    const timestamp = Date.now()
-    const humanReadable = new Date(timestamp).toUTCString()
     
     try {
-      const message = createSiweMessage(
-        address, 
-        `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`,
-        chainId as number
-      )
+
       try {
-        const sig = await signer.signMessage(message)
+        const sig = await signer.signMessage(String(message))
+        console.log({
+          sig,
+          message,
+          address
+        })
         await authorizationApi.authorize(
           message,
           timestamp,

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 import {
   WidgetButton,
   ContainerCentered,
@@ -26,6 +26,7 @@ import { IAppDispatch } from 'data/store'
 import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
 import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { SiweMessage } from 'siwe'
 
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
@@ -58,7 +59,13 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
         chainsAvailable
       )
     ),
-    authorize: () => dispatch(asyncUserActions.authorize()),
+    authorize: (
+      message: string,
+      timestamp: number
+    ) => dispatch(asyncUserActions.authorize(
+      message,
+      timestamp
+    )),
     getDashboardKey: () => dispatch(asyncUserActions.getDashboardKey()),
     initialLoad: () => dispatch(asyncUserActions.initialLoad())
   }
@@ -138,6 +145,24 @@ const Main: FC<ReduxType> = ({
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
+
+  const message = useMemo(() => {
+    if (!address || !chainId) { return }
+    const timestamp = Date.now()
+    const humanReadable = new Date(timestamp).toUTCString()
+    return {
+      message: new SiweMessage({
+        domain: document.location.host,
+        address: address,
+        chainId: chainId as number,
+        uri: document.location.origin,
+        version: '1',
+        statement:  `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`,
+        nonce: '12345678'
+      }),
+      timestamp
+    }
+  }, [chainId, address])
 
   useEffect(() => {
     initialLoad()
@@ -257,11 +282,20 @@ const Main: FC<ReduxType> = ({
       disabled={loading || !injectedProvider}
       appearance='action'
       onClick={() => {
-        if (loading || !injectedProvider) { return }
-        if (authorizationStep === 'connect') { 
-          return connect({ connector: injectedProvider })
+        if (loading || !injectedProvider) {
+          return
         }
-        return authorize()
+        if (authorizationStep === 'connect') { 
+          return open()
+        }
+        if (!message) {
+          return alert('Message is not ready')
+        }
+        const preparedMessage = message.message.prepareMessage()
+        return authorize(
+          preparedMessage,
+          message.timestamp
+        )
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />
