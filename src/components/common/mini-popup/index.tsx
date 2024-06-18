@@ -10,7 +10,6 @@ const MiniPopup: FC<Props> = ({ children, onClose, className }) => {
     const callback = (evt: MouseEvent) => {
       const target = evt.target as HTMLDivElement
       if (!target) { return }
-      console.log(`.${MiniPopupContainerClass}`)
       const wasClickedOutside = target.closest(`.${MiniPopupContainerClass}`)
       if (wasClickedOutside) { onClose() }
     }
