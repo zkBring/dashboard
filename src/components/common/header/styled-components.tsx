@@ -45,7 +45,7 @@ export const HeaderInfo = styled.div`
   align-items: center;
 `;
 
-export const HeaderUserInfo = styled.div`
+export const HeaderUserInfo = styled.div<{ onClick?: () => void }>`
   display: flex;
   align-items: center;
   font-size: 14px;

@@ -2,7 +2,6 @@ import { TQRItem } from 'types'
 import { decrypt } from 'lib/crypto'
 import { defineClaimAppURL } from 'helpers'
 
-
 const downloadQRsAsCSV = (
   arr: TQRItem[],
   title: string,
