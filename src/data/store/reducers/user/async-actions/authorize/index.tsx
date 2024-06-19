@@ -11,7 +11,6 @@ import { authorizationApi, plausibleApi } from 'data/api'
 import {
   defineNetworkName,
   alertError,
-  createSiweMessage
 } from 'helpers'
 import {
   initialization,
@@ -55,7 +54,8 @@ const authorize = (
           message,
           timestamp,
           sig,
-          address.toLocaleUpperCase()
+          address.toLowerCase(),
+          chainId as number
         )
       } catch (err) {
         plausibleApi.invokeEvent({

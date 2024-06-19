@@ -16,12 +16,14 @@ const requests = {
     msg: string,
     timestamp: number,
     sig: string,
-    userAddress: string
+    userAddress: string,
+    chainId: number
   ) => authorizationApi.post('/auth', {
     sig,
     timestamp,
     user_address: userAddress,
-    msg
+    msg,
+    chain_id: chainId
   }, { withCredentials: true }),
   logout: () => authorizationApi.post('/logout', {}, { withCredentials: true })
 }

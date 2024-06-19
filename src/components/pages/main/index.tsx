@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import {
   WidgetButton,
   ContainerCentered,
@@ -27,6 +27,7 @@ import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
 import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
+import { nonceApi } from 'data/api'
 
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
@@ -141,15 +142,26 @@ const Main: FC<ReduxType> = ({
 }) => {
   const { address: connectorAddress, connector } = useAccount()
   const connectorChainID = useChainId()
+  const [ nonce, setNonce ] = useState<null | string>(null)
   const { connect, connectors } = useConnect()
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
 
+  useEffect(() => {
+    if (!address) { return }
+    const getNonce = async () => {
+      const { data: { nonce } } = await nonceApi.get(address)
+      setNonce(nonce)
+    }
+    getNonce()
+  }, [ address ])
+
   const message = useMemo(() => {
-    if (!address || !chainId) { return }
+    if (!address || !chainId || !nonce) { return }
     const timestamp = Date.now()
     const humanReadable = new Date(timestamp).toUTCString()
+    
     return {
       message: new SiweMessage({
         domain: document.location.host,
@@ -158,11 +170,11 @@ const Main: FC<ReduxType> = ({
         uri: document.location.origin,
         version: '1',
         statement:  `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`,
-        nonce: '12345678'
+        nonce
       }),
       timestamp
     }
-  }, [chainId, address])
+  }, [chainId, address, nonce])
 
   useEffect(() => {
     initialLoad()
