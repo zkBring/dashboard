@@ -45,11 +45,6 @@ const authorize = (
 
       try {
         const sig = await signer.signMessage(String(message))
-        console.log({
-          sig,
-          message,
-          address
-        })
         await authorizationApi.authorize(
           message,
           timestamp,
@@ -78,7 +73,9 @@ const authorize = (
         }
       })
 
-      dispatch(getDashboardKey())
+      // dispatch(getDashboardKey())
+      dispatch(userActions.setLoading(false))
+
 
     } catch (err) {
       dispatch(userActions.setAuthorizationStep('login'))

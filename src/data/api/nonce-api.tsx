@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { TLink, TCampaignNew } from 'types'
-import { AxiosResponse, AxiosPromise } from 'axios'
+import { AxiosResponse } from 'axios'
 
 const {
   REACT_APP_SERVER_URL,
@@ -22,7 +21,9 @@ const requests: TRequest = {
   get: (
     user_address
   ) => {
-    return nonceApi.post(`/`)
+    return nonceApi.post(`/`, {
+      user_address: user_address.toLowerCase()
+    })
   }
 }
 

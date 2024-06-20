@@ -17,7 +17,11 @@ import {
   defineError
 } from './error-handling'
 
-const getDashboardKey = () => {
+const getDashboardKey = (
+  message: string,
+  key_id: string,
+  encrypted_key?: string
+) => {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
     getState: () => RootState
@@ -25,19 +29,21 @@ const getDashboardKey = () => {
     const {
       user: {
         chainId,
-        signer
+        signer,
+        address,
+        provider
       }
     } = getState()
     dispatch(userActions.setLoading(true))
     try {
       // dashboard key 
-      const dashboardKeyData = await dashboardKeyApi.get()
-      const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
+
       if (!encrypted_key) {
         // register
         const result = await createDashboardKey(
-          signer,
-          sig_message
+          provider,
+          message,
+          address
         )
 
         if (result) {
@@ -59,9 +65,10 @@ const getDashboardKey = () => {
         }
       } else {
         const decrypted_dashboard_key = await retrieveDashboardKey(
-          signer,
+          provider,
           encrypted_key,
-          sig_message
+          message,
+          address
         )
         if (decrypted_dashboard_key) {
           dispatch(userActions.setDashboardKey(decrypted_dashboard_key))

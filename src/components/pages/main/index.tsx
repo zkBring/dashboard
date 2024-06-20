@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect } from 'react'
 import {
   WidgetButton,
   ContainerCentered,
@@ -23,11 +23,11 @@ import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, useConnect } from 'wagmi'
 import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
-import { nonceApi } from 'data/api'
+import { nonceApi, dashboardKeyApi } from 'data/api'
 
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
@@ -67,7 +67,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
       message,
       timestamp
     )),
-    getDashboardKey: () => dispatch(asyncUserActions.getDashboardKey()),
+    getDashboardKey: (
+      message: string,
+      key_id: string,
+      encrypted_key?: string
+    ) => dispatch(asyncUserActions.getDashboardKey(
+      message,
+      key_id,
+      encrypted_key
+    )),
     initialLoad: () => dispatch(asyncUserActions.initialLoad())
   }
 }
@@ -129,6 +137,25 @@ const defineRedirectButton = () => {
   }
 }
 
+const createSigMessage = (
+  statement: string,
+  nonce: string,
+  address: string,
+  chainId: number
+) => {
+
+  return new SiweMessage({
+    domain: document.location.host,
+    address: address,
+    chainId: chainId as number,
+    uri: document.location.origin,
+    version: '1',
+    statement,
+    nonce
+  })
+
+}
+
 const Main: FC<ReduxType> = ({
   chainId,
   address,
@@ -142,39 +169,10 @@ const Main: FC<ReduxType> = ({
 }) => {
   const { address: connectorAddress, connector } = useAccount()
   const connectorChainID = useChainId()
-  const [ nonce, setNonce ] = useState<null | string>(null)
   const { connect, connectors } = useConnect()
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
-
-  useEffect(() => {
-    if (!address) { return }
-    const getNonce = async () => {
-      const { data: { nonce } } = await nonceApi.get(address)
-      setNonce(nonce)
-    }
-    getNonce()
-  }, [ address ])
-
-  const message = useMemo(() => {
-    if (!address || !chainId || !nonce) { return }
-    const timestamp = Date.now()
-    const humanReadable = new Date(timestamp).toUTCString()
-    
-    return {
-      message: new SiweMessage({
-        domain: document.location.host,
-        address: address,
-        chainId: chainId as number,
-        uri: document.location.origin,
-        version: '1',
-        statement:  `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`,
-        nonce
-      }),
-      timestamp
-    }
-  }, [chainId, address, nonce])
 
   useEffect(() => {
     initialLoad()
@@ -293,21 +291,63 @@ const Main: FC<ReduxType> = ({
       loading={loading}
       disabled={loading || !injectedProvider}
       appearance='action'
-      onClick={() => {
+      onClick={async () => {
         if (loading || !injectedProvider) {
           return
         }
         if (authorizationStep === 'connect') { 
           return open()
         }
-        if (!message) {
-          return alert('Message is not ready')
+
+
+        if (authorizationStep === 'login') {
+          const timestamp = Date.now()
+          const humanReadable = new Date(timestamp).toUTCString()
+          const statement = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
+          const { data: { nonce } } = await nonceApi.get(address)
+          const message = createSigMessage(
+            statement,
+            nonce,
+            address,
+            chainId as number
+          )
+
+          const preparedMessage = message.prepareMessage()
+          return authorize(
+            preparedMessage,
+            timestamp
+          )
         }
-        const preparedMessage = message.message.prepareMessage()
-        return authorize(
-          preparedMessage,
-          message.timestamp
-        )
+
+        // for store key
+        if (authorizationStep === 'store-key') {
+          const dashboardKeyData = await dashboardKeyApi.get()
+          const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
+          // const nonce = sig_message.split('Nonce: ')[1]
+          // const message = createSigMessage(
+          //   sig_message,
+          //   nonce,
+          //   address,
+          //   chainId as number
+          // )
+
+          // const preparedMessage = message.prepareMessage()
+          // console.log({
+          //   preparedMessage
+          // })
+          return getDashboardKey(
+            sig_message,
+            key_id,
+            encrypted_key
+          )
+    
+        }
+
+        return alert('PLEASE WAIT...')
+
+
+
+        
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />
