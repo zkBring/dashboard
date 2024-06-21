@@ -22,6 +22,7 @@ import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { utils } from 'ethers'
 import Icons from 'icons'
+import { useAccount } from 'wagmi'
 
 const mapStateToProps = ({
   user: {
@@ -56,6 +57,7 @@ const defineNetworkLogo = (chainId: number | null) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const HeaderComponent: FC<IProps & ReduxType> = ({
@@ -70,7 +72,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   chainsAvailable
 }) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
-  const [ showUserOptions, setShowUserOptions ] = useState(false)
+  const { connector } = useAccount()
   const nativeTokenAmountFormatted = nativeTokenAmount ? utils.formatEther(nativeTokenAmount) : 0
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
     {Object.keys(chains).map((chain: string) => {
@@ -111,6 +113,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
 
       {chainId && address && <Logout
         onClick={() => {
+          connector?.disconnect()
           logout()
         }}
       >
