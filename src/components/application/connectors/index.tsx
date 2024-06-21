@@ -25,8 +25,8 @@ const projectId = REACT_APP_WC_PROJECT_ID as string
 
 // 2. Create wagmiConfig
 const metadata = {
-  name: 'Linkdrop Claim App',
-  description: 'Linkdrop Claim App',
+  name: 'Linkdrop Dashboard App',
+  description: 'Linkdrop Dashboard App',
   url: 'https://linkdrop.io', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
@@ -44,7 +44,6 @@ const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
-  enableEmail: true,
   connectors: [
     walletConnect({
       projectId,
@@ -69,7 +68,6 @@ createWeb3Modal({
   wagmiConfig: config,
   projectId
 })
-
 
 export {
   config,
