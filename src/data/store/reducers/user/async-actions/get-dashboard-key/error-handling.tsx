@@ -8,7 +8,6 @@ const errors: Record<string, string> = {
 }
 
 export const defineError = (err: Error) => {
-  console.log({ err })
   if (!err.message) {
     return errors.DEFAULT
   }

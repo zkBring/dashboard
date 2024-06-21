@@ -315,7 +315,6 @@ const Main: FC<ReduxType> = ({
           const dashboardKeyData = await dashboardKeyApi.get()
           const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
           const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
-          console.log({ isCoinbase })
           return getDashboardKey(
             sig_message,
             key_id,
