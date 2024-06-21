@@ -20,8 +20,10 @@ import {
 const getDashboardKey = (
   message: string,
   key_id: string,
+  is_coinbase: boolean,
   encrypted_key?: string
 ) => {
+
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
     getState: () => RootState
@@ -43,7 +45,9 @@ const getDashboardKey = (
         const result = await createDashboardKey(
           provider,
           message,
-          address
+          address,
+          chainId as number,
+          is_coinbase
         )
 
         if (result) {
@@ -68,7 +72,9 @@ const getDashboardKey = (
           provider,
           encrypted_key,
           message,
-          address
+          address,
+          chainId as number,
+          is_coinbase
         )
         if (decrypted_dashboard_key) {
           dispatch(userActions.setDashboardKey(decrypted_dashboard_key))

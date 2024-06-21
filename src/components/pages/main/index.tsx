@@ -70,10 +70,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
     getDashboardKey: (
       message: string,
       key_id: string,
+      is_coinbase: boolean,
       encrypted_key?: string
     ) => dispatch(asyncUserActions.getDashboardKey(
       message,
       key_id,
+      is_coinbase,
       encrypted_key
     )),
     initialLoad: () => dispatch(asyncUserActions.initialLoad())
@@ -275,9 +277,16 @@ const Main: FC<ReduxType> = ({
   }
 
   return <ContainerCentered>
-    <IconContainer>
+    <IconContainer onClick={() => {
+      localStorage.clear()
+      sessionStorage.clear()
+
+      window.location.reload()
+    }}>
       <Icons.SignInIcon />
     </IconContainer>
+
+    {connector ? <>Connector: {connector.name}</> : undefined}
     
     <Title>
       Welcome to Linkdrop
@@ -323,31 +332,17 @@ const Main: FC<ReduxType> = ({
         if (authorizationStep === 'store-key') {
           const dashboardKeyData = await dashboardKeyApi.get()
           const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
-          // const nonce = sig_message.split('Nonce: ')[1]
-          // const message = createSigMessage(
-          //   sig_message,
-          //   nonce,
-          //   address,
-          //   chainId as number
-          // )
-
-          // const preparedMessage = message.prepareMessage()
-          // console.log({
-          //   preparedMessage
-          // })
+          const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
+          console.log({ isCoinbase })
           return getDashboardKey(
             sig_message,
             key_id,
+            isCoinbase,
             encrypted_key
           )
-    
         }
+        return alert('PLEASE TRY AGAIN...')
 
-        return alert('PLEASE WAIT...')
-
-
-
-        
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />

@@ -3,42 +3,52 @@ import { ethers } from 'ethers'
 import { encrypt, generateKeyPair } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
 import { createWalletClient, custom } from 'viem'
-import {
-  mainnet,
-  polygon,
-  sepolia,
-  base,
-  baseGoerli,
-  polygonMumbai
-} from 'wagmi/chains'
-import { http } from 'wagmi'
+import { defineWagmiNetwork } from 'helpers'
 
 const createDashboardKey: (
   provider: any,
   sig_message: string,
-  account: string
+  account: string,
+  chain_id: number,
+  is_coinbase: boolean
   ) => Promise<{
     dashboard_key: string,
     encrypted_dashboard_key: string
   } | void> = async (
   provider,
   sig_message,
-  account
+  account,
+  chain_id,
+  is_coinbase
 ) => {
+
+  const network = defineWagmiNetwork(chain_id)
+
   try {
     const walletClient = createWalletClient({
-      chain: mainnet,
+      chain: network,
       transport: custom(provider)
     })
 
-    alert('createDashboardKey')
+    console.log({
+      sig_message
+    })
+
     let signature = await walletClient.signMessage({ 
       account: account as `0x${string}`,
       message: sig_message
     })
 
-    if (signature.length > 132) {
+    console.log({
+      originalSignature: signature
+    })
+
+    if (is_coinbase) {
       signature = `${signature.slice(0,832)}${signature.slice(-64)}` as `0x${string}`
+
+      console.log({
+        updatedSignature: `first 832 symbols + last 64 symbols: ${signature}`
+      })
     }
 
     console.log({ signature })

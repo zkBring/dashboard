@@ -9,6 +9,7 @@ export const Container = styled.div`
 
 export const IconContainer = styled.div`
   margin-bottom: 30px;
+  cursor: pointer;
 `
 
 export const Contents = styled.div`

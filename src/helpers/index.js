@@ -79,10 +79,12 @@ import parseWhitelistAddresses from './parse-whitelist-addresses'
 import defineUrlSchema from './define-url-schema'
 import createQueryString from './create-query-string'
 import truncate from './truncate'
+import defineWagmiNetwork from './define-wagmi-network'
 
 export {
   defineThirdwebNetworkName,
   defineUrlSchema,
+  defineWagmiNetwork,
   truncate,
   checkWhitelistAddresses,
   parseWhitelistAddresses,
