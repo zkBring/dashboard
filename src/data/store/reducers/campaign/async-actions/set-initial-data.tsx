@@ -19,6 +19,7 @@ function setInitialData(
   isNewCampaign: boolean,
   callback?: () => void
 ) {
+  // @ts-ignore
   return async (
     dispatch: Dispatch<CampaignActions> & Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState

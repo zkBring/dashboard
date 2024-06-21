@@ -3,9 +3,6 @@ import * as userActions from '../../actions'
 import {
   UserActions,
 } from '../../types'
-import {
-  CampaignActions
-} from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
 import { dashboardKeyApi, plausibleApi } from 'data/api'
 import { sleep, defineNetworkName, alertError } from 'helpers'
@@ -17,27 +14,37 @@ import {
   defineError
 } from './error-handling'
 
-const getDashboardKey = () => {
+const getDashboardKey = (
+  message: string,
+  key_id: string,
+  is_coinbase: boolean,
+  encrypted_key?: string
+) => {
+  // @ts-ignore
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
+    dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     const {
       user: {
         chainId,
-        signer
+        signer,
+        address,
+        provider
       }
     } = getState()
     dispatch(userActions.setLoading(true))
     try {
       // dashboard key 
-      const dashboardKeyData = await dashboardKeyApi.get()
-      const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
+
       if (!encrypted_key) {
         // register
         const result = await createDashboardKey(
-          signer,
-          sig_message
+          provider,
+          message,
+          address,
+          chainId as number,
+          is_coinbase
         )
 
         if (result) {
@@ -59,9 +66,12 @@ const getDashboardKey = () => {
         }
       } else {
         const decrypted_dashboard_key = await retrieveDashboardKey(
-          signer,
+          provider,
           encrypted_key,
-          sig_message
+          message,
+          address,
+          chainId as number,
+          is_coinbase
         )
         if (decrypted_dashboard_key) {
           dispatch(userActions.setDashboardKey(decrypted_dashboard_key))

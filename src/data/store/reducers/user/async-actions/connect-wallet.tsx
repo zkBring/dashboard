@@ -14,10 +14,6 @@ import { ethers } from 'ethers'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName, defineJSONRpcUrl, alertError } from 'helpers'
 import * as userActions from '../actions'
-import {
-  CampaignActions
-} from 'data/store/reducers/campaign/types'
-
 const { REACT_APP_INFURA_ID } = process.env
 
 function connectWallet (
@@ -27,8 +23,9 @@ function connectWallet (
   signer: any,
   chainsAvailable: (number | string)[]
 ) {
+  // @ts-ignore
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
+    dispatch: Dispatch<UserActions> & IAppDispatch,
   ) => {
     try {
       if (!chainsAvailable.find(network => Number(connectorChainID) === Number(network))) {
@@ -85,7 +82,7 @@ function connectWallet (
         const jsonRpcProvider = new ethers.providers.JsonRpcProvider(jsonRpcUrl)
         dispatch(actions.setJsonRPCProvider(jsonRpcProvider))
     
-        await getNativeTokenAmount(
+        getNativeTokenAmount(
           dispatch,
           connectorChainID,
           connectorAddress,

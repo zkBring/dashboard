@@ -3,17 +3,18 @@ import {
   WidgetButton,
   ContainerCentered,
   Title,
-  IconContainer,
+  ImageContainer,
   Contents,
   Text,
   List,
   ListItem,
   TextBold
 } from './styled-components'
+import Image from 'images/connect-image.png'
 import {
   CheckListItem,
   TextLink
-} from 'components/common' 
+} from 'components/common'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
@@ -23,10 +24,11 @@ import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
 import { TAuthorizationStep } from 'types'
 import { IAppDispatch } from 'data/store'
-import { useAccount, useChainId, useConnect, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, useConnect } from 'wagmi'
 import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-
+import { SiweMessage } from 'siwe'
+import { nonceApi, dashboardKeyApi } from 'data/api'
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
 const mapStateToProps = ({
@@ -58,8 +60,24 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
         chainsAvailable
       )
     ),
-    authorize: () => dispatch(asyncUserActions.authorize()),
-    getDashboardKey: () => dispatch(asyncUserActions.getDashboardKey()),
+    authorize: (
+      message: string,
+      timestamp: number
+    ) => dispatch(asyncUserActions.authorize(
+      message,
+      timestamp
+    )),
+    getDashboardKey: (
+      message: string,
+      key_id: string,
+      is_coinbase: boolean,
+      encrypted_key?: string
+    ) => dispatch(asyncUserActions.getDashboardKey(
+      message,
+      key_id,
+      is_coinbase,
+      encrypted_key
+    )),
     initialLoad: () => dispatch(asyncUserActions.initialLoad())
   }
 }
@@ -121,6 +139,25 @@ const defineRedirectButton = () => {
   }
 }
 
+const createSigMessage = (
+  statement: string,
+  nonce: string,
+  address: string,
+  chainId: number
+) => {
+
+  return new SiweMessage({
+    domain: document.location.host,
+    address: address,
+    chainId: chainId as number,
+    uri: document.location.origin,
+    version: '1',
+    statement,
+    nonce
+  })
+
+}
+
 const Main: FC<ReduxType> = ({
   chainId,
   address,
@@ -162,9 +199,7 @@ const Main: FC<ReduxType> = ({
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
-    <IconContainer>
-      <Icons.MonitorIcon />
-    </IconContainer>
+    <ImageContainer src={Image} />
     
     <Title>
       Please, use desktop browser
@@ -184,10 +219,7 @@ const Main: FC<ReduxType> = ({
 
   if (authorizationStep === 'no_injected_extension') {
     return <ContainerCentered>
-      <IconContainer>
-        <Icons.YellowAttentionIcon />
-      </IconContainer>
-      
+      <ImageContainer src={Image} />
       <Title>
         Extension required
       </Title>
@@ -215,10 +247,7 @@ const Main: FC<ReduxType> = ({
 
   if (authorizationStep === 'wrong_network') {
     return <ContainerCentered>
-      <IconContainer>
-        <Icons.YellowAttentionIcon />
-      </IconContainer>
-      
+      <ImageContainer src={Image} />
       <Title>
         Wrong network
       </Title>
@@ -240,12 +269,9 @@ const Main: FC<ReduxType> = ({
   }
 
   return <ContainerCentered>
-    <IconContainer>
-      <Icons.SignInIcon />
-    </IconContainer>
-    
+    <ImageContainer src={Image} />
     <Title>
-      Welcome to Linkdrop
+    Share Tokens and NFTs through Claim Links
     </Title>
     <Contents>
       <CheckListItem title='Connect wallet' id='connect' checked={authorizationStep === 'login' || authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
@@ -256,12 +282,48 @@ const Main: FC<ReduxType> = ({
       loading={loading}
       disabled={loading || !injectedProvider}
       appearance='action'
-      onClick={() => {
-        if (loading || !injectedProvider) { return }
-        if (authorizationStep === 'connect') { 
-          return connect({ connector: injectedProvider })
+      onClick={async () => {
+        if (loading || !injectedProvider) {
+          return
         }
-        return authorize()
+        if (authorizationStep === 'connect') { 
+          return open()
+        }
+
+
+        if (authorizationStep === 'login') {
+          const timestamp = Date.now()
+          const humanReadable = new Date(timestamp).toUTCString()
+          const statement = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
+          const { data: { nonce } } = await nonceApi.get(address)
+          const message = createSigMessage(
+            statement,
+            nonce,
+            address,
+            chainId as number
+          )
+
+          const preparedMessage = message.prepareMessage()
+          return authorize(
+            preparedMessage,
+            timestamp
+          )
+        }
+
+        // for store key
+        if (authorizationStep === 'store-key') {
+          const dashboardKeyData = await dashboardKeyApi.get()
+          const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
+          const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
+          return getDashboardKey(
+            sig_message,
+            key_id,
+            isCoinbase,
+            encrypted_key
+          )
+        }
+        return alert('PLEASE TRY AGAIN...')
+
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />

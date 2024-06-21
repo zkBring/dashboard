@@ -171,18 +171,16 @@ const PageComponent: FC<ReduxType & TProps> = ({ children, authorizationStep }) 
   const location = useLocation<ILocationType>()
   const title = defineTitle(location.pathname)
   const breadcrumbs = defineBreadcrumbs(location.pathname)
-  const withHeader = authorizationStep === 'authorized'
-
 
   return (
     <ThemeProvider theme={themes.light}>
       <Page>
         <Aside />
         <MainContent>
-          {withHeader && <Header
+          <Header
             title={title}
             breadcrumbs={breadcrumbs}
-          />}
+          />
           <Content withBreadcrumbs={breadcrumbs}>
             {children}
           </Content>

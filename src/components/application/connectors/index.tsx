@@ -1,6 +1,5 @@
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-import { WagmiProvider } from 'wagmi'
 import {
   mainnet,
   polygon,
@@ -26,8 +25,8 @@ const projectId = REACT_APP_WC_PROJECT_ID as string
 
 // 2. Create wagmiConfig
 const metadata = {
-  name: 'Linkdrop Claim App',
-  description: 'Linkdrop Claim App',
+  name: 'Linkdrop Dashboard App',
+  description: 'Linkdrop Dashboard App',
   url: 'https://linkdrop.io', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
@@ -45,7 +44,6 @@ const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
-  enableEmail: true,
   connectors: [
     walletConnect({
       projectId,
@@ -68,10 +66,8 @@ const config = defaultWagmiConfig({
 // 3. Create modal
 createWeb3Modal({
   wagmiConfig: config,
-  projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  projectId
 })
-
 
 export {
   config,

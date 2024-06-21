@@ -1,5 +1,4 @@
 import { TTokenType, TCampaign, TLinkContent, TClaimPattern } from 'types'
-import { RefObject } from 'react'
 
 export type TLinksContent = TLinkContent[]
 

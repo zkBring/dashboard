@@ -9,7 +9,7 @@ export const Aside = styled.aside`
   height: 100%;
   min-width: 208px;
   max-width: 208px;
-  background-color: ${props => props.theme.backgroundColor};
+  background-color: ${props => props.theme.primaryBackgroundColor};
 `
 
 export const AsideLogoZone = styled.div<{ noAside?: boolean }>`

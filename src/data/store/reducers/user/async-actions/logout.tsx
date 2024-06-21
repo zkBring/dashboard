@@ -21,13 +21,16 @@ const logout = () => {
     const { user: { chainId } } = getState()
     try {
       const logout = await authorizationApi.logout()
-      if (logout.statusText === 'OK') {
+      if (logout.status === 200) {
         plausibleApi.invokeEvent({
           eventName: 'logout',
           data: {
             network: defineNetworkName(chainId)
           }
         })
+        localStorage.removeItem('wagmi.store')
+        localStorage.removeItem('wagmi.recentConnectorId')
+        sessionStorage.clear()
         window.location.reload()
       }
     } catch (err) {
