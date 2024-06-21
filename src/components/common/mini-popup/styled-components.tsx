@@ -5,7 +5,7 @@ export const MiniPopupContainerClass = 'MiniPopupContainer'
 export const MiniPopupContainer = styled.div`
   padding: 8px 16px;
   border-radius: 16px;
-  background: ${props => props.theme.backgroundColor};
+  background: ${props => props.theme.primaryBackgroundColor};
   min-width: 200px;
   position: absolute;
   transform: translateY(calc(100% + 10px));

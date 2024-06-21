@@ -7,9 +7,9 @@ export const Container = styled.div`
   grid-gap: 30px;
 `
 
-export const IconContainer = styled.div`
-  margin-bottom: 30px;
-  cursor: pointer;
+export const ImageContainer = styled.img`
+  margin-bottom: 32px;
+  max-width: 280px;
 `
 
 export const Contents = styled.div`
@@ -39,6 +39,7 @@ export const WidgetButton = styled(Button)`
   padding: 4px 50px;
   width: 100%;
   margin-bottom: 15px;
+  max-width: 210px;
 `
 
 export const AlignBottomButton = styled(WidgetButton)`
@@ -50,23 +51,19 @@ export const Title = styled.h3`
   font-size: 24px;
   margin: 0 0 24px;
   font-weight: 600;
+  max-width: 350px;
   line-height: 32px;  
 `
 
 export const ContainerCentered = styled.div`
   display: flex;
-  max-width: 358px;
+  max-width: 373px;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
-  box-shadow: 0px 2px 4px rgba(40, 41, 61, 0.04), 0px 8px 16px rgba(96, 97, 112, 0.16);
-  padding: 24px;
   text-align: center;
   margin: 0 auto;
   width: 100%;
   flex-direction: column;
-  background: ${props => props.theme.backgroundColor};
-  margin-top: 100px;
   a {
     width: 100%;
 

@@ -3,17 +3,18 @@ import {
   WidgetButton,
   ContainerCentered,
   Title,
-  IconContainer,
+  ImageContainer,
   Contents,
   Text,
   List,
   ListItem,
   TextBold
 } from './styled-components'
+import Image from 'images/connect-image.png'
 import {
   CheckListItem,
   TextLink
-} from 'components/common' 
+} from 'components/common'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
@@ -28,7 +29,6 @@ import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
 import { nonceApi, dashboardKeyApi } from 'data/api'
-
 const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
 
 const mapStateToProps = ({
@@ -199,9 +199,7 @@ const Main: FC<ReduxType> = ({
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
-    <IconContainer>
-      <Icons.MonitorIcon />
-    </IconContainer>
+    <ImageContainer src={Image} />
     
     <Title>
       Please, use desktop browser
@@ -221,10 +219,7 @@ const Main: FC<ReduxType> = ({
 
   if (authorizationStep === 'no_injected_extension') {
     return <ContainerCentered>
-      <IconContainer>
-        <Icons.YellowAttentionIcon />
-      </IconContainer>
-      
+      <ImageContainer src={Image} />
       <Title>
         Extension required
       </Title>
@@ -252,10 +247,7 @@ const Main: FC<ReduxType> = ({
 
   if (authorizationStep === 'wrong_network') {
     return <ContainerCentered>
-      <IconContainer>
-        <Icons.YellowAttentionIcon />
-      </IconContainer>
-      
+      <ImageContainer src={Image} />
       <Title>
         Wrong network
       </Title>
@@ -277,19 +269,9 @@ const Main: FC<ReduxType> = ({
   }
 
   return <ContainerCentered>
-    <IconContainer onClick={() => {
-      localStorage.clear()
-      sessionStorage.clear()
-
-      window.location.reload()
-    }}>
-      <Icons.SignInIcon />
-    </IconContainer>
-
-    {connector ? <>Connector: {connector.name}</> : undefined}
-    
+    <ImageContainer src={Image} />
     <Title>
-      Welcome to Linkdrop
+    Share Tokens and NFTs through Claim Links
     </Title>
     <Contents>
       <CheckListItem title='Connect wallet' id='connect' checked={authorizationStep === 'login' || authorizationStep === 'store-key' || authorizationStep === 'authorized'} />

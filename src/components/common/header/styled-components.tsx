@@ -23,6 +23,7 @@ export const HeaderTitle = styled.h2`
   font-size: 28px;
   flex: 1;
   font-weight: 600;
+  min-height: 34px;
 `
 
 export const HeaderMode = styled.div`
@@ -57,7 +58,7 @@ export const HeaderUserInfo = styled.div<{ onClick?: () => void }>`
   position: relative;
   text-align: center;
   user-select: none;
-  background: ${props => props.theme.backgroundColor};
+  background: ${props => props.theme.primaryBackgroundColor};
   justify-content: center;
   margin-right: 16px;
   border: 1px solid ${props => props.theme.primaryBorderColor};
@@ -135,4 +136,30 @@ export const NetworkIndicator = styled.div<TNetworkIndicatorProps>`
 
 export const PolygonIcon = styled(Icons.PolygonIcon)`
   margin-right: 8px;
+`
+
+export const Logout = styled.div`
+  border-radius: 36px;
+  border: 1px solid ${props => props.theme.primaryBorderColor};
+  background: ${props => props.theme.primaryBackgroundColor};
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s;
+  svg {
+    path {
+      stroke: ${props => props.theme.primaryTextColor};
+    }
+  }
+  &:hover {
+    ${props => {
+      return css`
+        border-color: transparent;
+        background-color: ${props => props.theme.tagDefaultColor};
+      `
+    }};
+  }
 `
