@@ -18,6 +18,7 @@ function setTokenContractData (
   tokenAddress: string,
   type: TTokenType,
 ) {
+  // @ts-ignore
   return async (
     dispatch: Dispatch<CampaignActions> & Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState

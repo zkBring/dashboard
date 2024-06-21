@@ -20,7 +20,7 @@ const getDashboardKey = (
   is_coinbase: boolean,
   encrypted_key?: string
 ) => {
-
+  // @ts-ignore
   return async (
     dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState

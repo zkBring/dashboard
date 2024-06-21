@@ -13,23 +13,20 @@ import {
   alertError,
 } from 'helpers'
 import {
-  initialization,
-  getDashboardKey
+  initialization
 } from '../index'
 import {
   ERROR_DASHBOARD_AUTH_REJECTED,
   defineError
 } from './error-handling'
-import { SiweMessage } from 'siwe'
 
 const authorize = (
   message: string,
   timestamp: number
 ) => {
-
   // @ts-nocheck
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
+    dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     const {
