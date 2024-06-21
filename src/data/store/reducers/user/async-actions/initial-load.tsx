@@ -1,21 +1,16 @@
 import { Dispatch } from 'redux'
 import * as userActions from 'data/store/reducers/user/actions'
 import { defineSystem } from 'helpers'
-
 import {
   UserActions
 } from '../types'
-import {
-  CampaignActions
-} from 'data/store/reducers/campaign/types'
 import { IAppDispatch } from 'data/store'
-import { sleep } from 'helpers'
 import { RootState } from 'data/store'
 import { plausibleApi } from 'data/api'
 
 const initialLoad = () => {
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
+    dispatch: Dispatch<UserActions>,
     getState: () => RootState
   ) => {
     dispatch(userActions.setLoading(true))

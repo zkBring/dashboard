@@ -3,9 +3,6 @@ import * as userActions from '../../actions'
 import {
   UserActions,
 } from '../../types'
-import {
-  CampaignActions
-} from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
 import { dashboardKeyApi, plausibleApi } from 'data/api'
 import { sleep, defineNetworkName, alertError } from 'helpers'
@@ -25,7 +22,7 @@ const getDashboardKey = (
 ) => {
 
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
+    dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     const {
