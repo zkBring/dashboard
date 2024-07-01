@@ -12,8 +12,8 @@ type TUpdateRedirectURLArgs = {
   dispenser_id: string
   redirect_url: string
   encrypted_multiscan_qr_enc_code: string
-  successCallback: () => void
-  errorCallback: () => void
+  successCallback?: () => void
+  errorCallback?: () => void
 }
 
 const updateRedirectURL = ({

@@ -1,5 +1,9 @@
 import axios from 'axios'
-import { TDispenser, TDispenserLinks, TDispenserWhitelistType } from 'types'
+import {
+  TDispenser,
+  TDispenserLinks,
+  TDispenserWhitelistType
+} from 'types'
 
 const {
   REACT_APP_SERVER_URL,
@@ -51,6 +55,11 @@ const requests = {
       claim_start,
       claim_duration
     }, { withCredentials: true })
+  },
+  getCampaignData: (
+    multiscanQRId: string
+  ) => {
+    return dispensersApi.get(`/dispensers/multiscan-qrs/${multiscanQRId}/campaign`)
   },
   updateStatus: ({
     dispenser_id,

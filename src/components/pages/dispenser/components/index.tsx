@@ -1,11 +1,17 @@
 import Statistics from './statistics'
-import RedirectWidget from './redirect'
 import ConfirmPopup from './confirm-popup'
 import WhitelistWidget from './whitelist'
+import Status from './status'
+import Settings from './settings'
+import ClaimLinks from './claim-links'
+import QRCode from './qr-code'
 
 export {
   Statistics,
-  RedirectWidget,
+  ClaimLinks,
+  Status,
+  QRCode,
   ConfirmPopup,
-  WhitelistWidget
+  WhitelistWidget,
+  Settings
 }

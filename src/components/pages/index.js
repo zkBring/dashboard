@@ -17,22 +17,24 @@ import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
 import DispenserWhitelists from './dispenser-whitelists'
 import DispenserWhitelistsAddresses from './dispenser-whitelists-addresses'
-import InviteLinks from './invite-links'
 import Collections from './collections'
 import CollectionsCreateInitial from './collections-create-initial'
 import CollectionsCreateNew from './collections-create-new'
 import Collection from './collection'
 import CollectionAddToken from './collection-add-token'
+import DynamicQRCreate from './dynamic-qr-create'
+import DynamicQRs from './dynamic-qrs'
 
 export {
   Page,
   DispenserWhitelistsAddresses,
+  DynamicQRs,
+  DynamicQRCreate,
   DispenserWhitelists,
   Collection,
   CollectionAddToken,
   CollectionsCreateNew,
   CollectionsCreateInitial,
-  InviteLinks,
   Dispenser,
   NotFound,
   Campaigns,

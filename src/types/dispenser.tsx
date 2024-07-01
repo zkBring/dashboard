@@ -22,9 +22,16 @@ export type TDispenser = {
   multiscan_qr_id: string
   dispenser_id?: string  
   links_count?: number
+  
   claim_duration: number
-  created_at?: string
+  // больше не будет
+
+  claim_finish?: number
+  // добавляется по аналогии с claim_start
+  
   claim_start: number
+
+  created_at?: string
   title: string
   dynamic?: boolean
   encrypted_multiscan_qr_enc_code: string

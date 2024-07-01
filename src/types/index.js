@@ -64,9 +64,11 @@ import  {
 } from './zerion-erc20-item'
 import { TZerionNetworkItem } from './zerion-network-item'
 import TCountry from './country'
+import { TStatus } from './status'
 
 export {
   TCampaign,
+  TStatus,
   TZerionNetworkItem,
   TDispenserStats,
   TCountry,

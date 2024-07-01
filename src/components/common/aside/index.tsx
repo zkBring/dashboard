@@ -7,17 +7,16 @@ import {
   AsideMenuItem,
   AsideLogoIcon,
   AsideTextLink,
-  AsideMenuItemExternal,
-  AsideTitle
+  AsideMenuItemExternal
 } from './styled-components'
-import { useLocation } from 'react-router-dom'
-import LinkDropLogo from 'images/linkdrop-logo.png'
+import LinkdropLogo from 'images/linkdrop-aside.png'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import Icons from 'icons'
 import { defineNetworkName, defineIfFeatureIsAvailable } from 'helpers'
 import { plausibleApi } from 'data/api'
 import { TProps } from './types'
+import Tooltip from '../tooltip'
 
 const mapStateToProps = ({
   user: {
@@ -43,42 +42,54 @@ const AsideComponent: FC<TProps & ReduxType> = ({
   authorizationStep,
   chainId
 }) => {
-  const location = useLocation<LocationType>()
-  if (authorizationStep !== 'authorized') {
-    return <AsideLogoZone noAside>
-      <AsideTextLink to='/'>
-        <AsideLogoIcon src={LinkDropLogo} />
-      </AsideTextLink>
-    </AsideLogoZone>
-  }
+  // const location = useLocation<LocationType>()
+  // if (authorizationStep !== 'authorized') {
+  //   return <AsideLogoZone noAside>
+  //     <AsideTextLink to='/'>
+  //       <AsideLogoIcon src={LinkdropLogo} />
+  //     </AsideTextLink>
+  //   </AsideLogoZone>
+  // }
 
 	return <Aside>
     <AsideLogoZone>
       <AsideTextLink to='/campaigns'>
-        <AsideLogoIcon src={LinkDropLogo} />
+        <AsideLogoIcon src={LinkdropLogo} />
       </AsideTextLink>
     </AsideLogoZone>
 
     <AsideMenu>
       <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
-        <Icons.CampaignsIcon />Claim Links
+        <Tooltip text='Claim Links'>
+          <Icons.CampaignsIcon />
+        </Tooltip>
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-        <Icons.QRManagerIcon />QR Manager
+        <Tooltip text='Claim QRs'>
+          <Icons.QRManagerIcon />
+        </Tooltip>
+      </AsideMenuItem>
+      <AsideMenuItem to='/dynamic-qrs' active={location.pathname.includes('/dispenser')}>
+        <Tooltip text='Dynamic QR'>
+          <Icons.DynamicQRIcon />
+        </Tooltip>
       </AsideMenuItem>
       <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
-        <Icons.DispenserIcon />Dispensers
+        <Tooltip text='Dispenser QR'>
+          <Icons.DispenserIcon />
+        </Tooltip>
       </AsideMenuItem>
       {/* <AsideMenuItem to='/invite-links' active={location.pathname.includes('/invite-links')}>
         <Icons.InviteLinksIcon />Invite Links
       </AsideMenuItem> */}
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
-        <Icons.QRManagerIcon />Minter
+        <Tooltip text='NFTs'>
+          <Icons.QRManagerIcon />
+        </Tooltip>
       </AsideMenuItem>
     </AsideMenu>
 
     <AsideFooter>
-      <AsideTitle>Misc</AsideTitle>
       <AsideMenu>
         <AsideMenuItemExternal onClick={() => {
           plausibleApi.invokeEvent({
@@ -90,7 +101,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign', '_blank')
         }}>
-          <Icons.BookIcon />Start guide
+          <Icons.CodeIcon />
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={() => {
           plausibleApi.invokeEvent({
@@ -102,7 +113,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58', '_blank')
         }}>
-          <Icons.LegalIcon />Legal
+          <Icons.BookIcon />
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={async () => {
           plausibleApi.invokeEvent({
@@ -114,7 +125,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://linkdrop.io/contact-us', '_blank')
         }}>
-          <Icons.ContactUsIcon />Contact us
+          <Icons.MessagesIcon />
         </AsideMenuItemExternal>
       </AsideMenu>
     </AsideFooter>

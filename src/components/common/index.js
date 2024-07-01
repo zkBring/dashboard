@@ -17,9 +17,13 @@ import Tooltip from './tooltip'
 import Button from './button'
 import Draft from './draft'
 import FileInput from './file-input'
+import AsidePopup from './aside-popup'
+import StatusBar from './status-bar'
 
 export {
   Header,
+  StatusBar,
+  AsidePopup,
   Aside,
   FileInput,
   Button,

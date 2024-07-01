@@ -10,8 +10,8 @@ type TUpdateWhitelistArgs = {
   dispenser_id: string
   whitelist: string[]
   whitelist_type: TDispenserWhitelistType
-  successCallback: () => void
-  errorCallback: () => void
+  successCallback?: () => void
+  errorCallback?: () => void
 }
 
 const updateWhitelist = ({

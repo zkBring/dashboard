@@ -7,15 +7,15 @@ export const Aside = styled.aside`
   flex-direction: column;
   position: relative;
   height: 100%;
-  min-width: 208px;
-  max-width: 208px;
+  min-width: 52px;
+  max-width: 52px;
   background-color: ${props => props.theme.primaryBackgroundColor};
 `
 
 export const AsideLogoZone = styled.div<{ noAside?: boolean }>`
   display: flex;
   align-items: center;
-  padding: 28px 12px;
+  padding: 32px 8px;
 
   ${props => props.noAside && css`{
     position: absolute;
@@ -23,7 +23,7 @@ export const AsideLogoZone = styled.div<{ noAside?: boolean }>`
 `
 
 export const AsideLogoIcon = styled.img`
-  max-width: 100px;
+  max-width: 36px;
   margin-right: 6px;
 `
 
@@ -42,7 +42,7 @@ export const AsideSubtitle = styled.h3`
 
 export const AsideMenu = styled.div`
   margin: 0;
-  padding: 0 12px 0 8px;
+  padding: 0 8px 0 8px;
   list-style: none;
   width: 100%;
 `
@@ -69,20 +69,11 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
   border-radius: 10px;
   transition: background-color .3s;
 
-  svg {
-    margin-right: 8px;
-  }
-
   &:hover {
     ${props => !props.disabled && !props.active && css`
       color: ${props.theme.linkTextColor};
       background: ${props.theme.menuItemActive};
     `}
-    svg {
-      path {
-        fill: ${props => props.theme.linkTextColor};
-      }
-    }
   }
 
   ${props => props.active && css`
@@ -139,18 +130,9 @@ export const AsideMenuItemExternal = styled.div`
   border-radius: 10px;
   transition: background-color .3s;
 
-  svg {
-    margin-right: 8px;
-  }
-
   &:hover {
     color: ${props => props.theme.linkTextColor};
     background: ${props => props.theme.menuItemActive};
-    svg {
-      path {
-        fill: ${props => props.theme.linkTextColor};
-      }
-    }
   }
 
   .${AsideMenuItemIconClassName} {

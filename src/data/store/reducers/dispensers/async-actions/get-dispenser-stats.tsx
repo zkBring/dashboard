@@ -7,16 +7,19 @@ import { alertError } from 'helpers'
 import {
   TDispenser,
   TDispenserWhitelistType,
-  TDispenserWhitelistItemAddress
+  TDispenserWhitelistItemAddress,
+  TCampaign
 } from 'types'
 
 type TGetDispenserStatsArgs = {
   dispenser_id: string
+  multiscan_qr_id: string
   callback?: () => void
 }
 
 const getDispenserStats = ({
   dispenser_id,
+  multiscan_qr_id,
   callback
 }: TGetDispenserStatsArgs) => {
   return async (
@@ -48,6 +51,21 @@ const getDispenserStats = ({
         })
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
         if (callback) { callback() }
+      }
+
+      const {
+        data: {
+          success: campaignSuccess,
+          campaign
+        }
+      } : {
+        data: {
+          success: boolean,
+          campaign: TCampaign
+        }
+      } = await dispensersApi.getCampaignData(multiscan_qr_id)
+      if (campaignSuccess) {
+        dispatch(actionsDispensers.setCurrentDispenserData({ campaign: campaign }))
       }
       
     } catch (err) {

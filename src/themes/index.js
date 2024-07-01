@@ -52,12 +52,16 @@ const themes = {
 
 		tagDefaultBackgroundColor: '#E1E9FE',
 		tagDefaultBorderColor: '#6793FA',
+
 		tagErrorBackgroundColor: '#FFB4B4',
 		tagErrorBorderColor: '#D71E1E',
+
 		tagInfoBackgroundColor: '#FDF0CE',
 		tagInfoBorderColor: '#F6B40A',
+	
 		tagSuccessBackgroundColor: '#D1FAE1',
 		tagSuccessBorderColor: '#19E46A',
+
 		tagAdditionalBackgroundColor: '#DEF1FE',
 		tagAdditionalBorderColor: '#5CB9FC',
 

@@ -48,9 +48,17 @@ import { ReactComponent as DownloadReportIcon } from './download-report-icon.svg
 import { ReactComponent as PopupWarningIcon } from './popup-warning-icon.svg'
 import { ReactComponent as InviteLinksIcon } from './invite-links-icon.svg'
 import { ReactComponent as LogoutIcon } from './logout-icon.svg'
+import { ReactComponent as MessagesIcon } from './messages-icon.svg'
+import { ReactComponent as CodeIcon } from './code-icon.svg'
+import { ReactComponent as DynamicQRIcon } from './dynamic-qr-icon.svg'
+import { ReactComponent as ExpandRightIcon } from './expand-right-icon.svg'
+
 
 const Icons = {
   EthereumLogo,
+  DynamicQRIcon,
+  MessagesIcon,
+  CodeIcon,
   LogoutIcon,
   ClipboardCopiedIcon,
   StopDispenserIcon,
@@ -61,6 +69,7 @@ const Icons = {
   DispenserIcon,
   GoToOldVersionIcon,
   CloseCircleIcon,
+  ExpandRightIcon,
   MiniClipboardCopyIcon,
   BookIcon,
   ContactUsIcon,

@@ -22,12 +22,13 @@ import {
   DispenserWhitelistsAddresses,
   DispenserCreate,
   Dispenser,
-  InviteLinks,
+  DynamicQRCreate,
   Collections,
   CollectionsCreateNew,
   CollectionAddToken,
   CollectionsCreateInitial,
-  Collection
+  Collection,
+  DynamicQRs
 } from 'components/pages'
 import { connect } from 'react-redux'
 import { RootState } from 'data/store'
@@ -166,13 +167,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
-          path='/invite-links'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={InviteLinks}
-        />
-
-        <ProtectedRoute
           path='/campaigns/edit/:type/:id/approve'
           exact={true}
           loggedIn={Boolean(address)}
@@ -212,6 +206,27 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={QRs}
+        />
+
+        <ProtectedRoute
+          path='/dynamic-qrs/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DynamicQRCreate}
+        />
+
+        <ProtectedRoute
+          path='/dynamic-qrs'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DynamicQRs}
+        />
+
+        <ProtectedRoute
+          path='/dynamic-qrs/:id'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Dispenser}
         />
 
         <ProtectedRoute

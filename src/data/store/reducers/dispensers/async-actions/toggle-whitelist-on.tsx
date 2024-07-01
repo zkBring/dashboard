@@ -9,8 +9,8 @@ import { plausibleApi } from 'data/api'
 type TToggleWhitelistOnArgs = {
   dispenser_id: string
   whitelist_on: boolean
-  successCallback: () => void
-  errorCallback: () => void
+  successCallback?: () => void
+  errorCallback?: () => void
 }
 
 const toggleWhitelistOn = ({

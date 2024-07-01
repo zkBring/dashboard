@@ -1,0 +1,1 @@
+export type TStatus = 'success' | 'info' | 'default' | 'error'
