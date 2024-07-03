@@ -1,11 +1,12 @@
-import { TCampaign } from "types"
+import { TCampaign, TDispenser } from "types"
 
 export type TProps = {
   claimUrl: string
   redirectUrl?: string | null
+  loading: boolean
   campaignData: TCampaign | null
   redirectToggleAction?: (value: boolean) => void
-  redirectToggleValue?: boolean,
+  redirectToggleValue?: boolean
   redirectSubmit: (
     value: any,
     onSuccess?: () => void,
@@ -16,11 +17,20 @@ export type TProps = {
     value: any,
     onSuccess?: () => void,
     onError?: () => void
-  ) => void,
-  whitelistValue?: string | null,
-  whitelistToggleAction?: (value: boolean) => void,
-  whitelistToggleValue?: boolean,
+  ) => void
+  whitelistValue?: string | null
+  whitelistToggleAction?: (value: boolean) => void
+  whitelistToggleValue?: boolean
+  currentDispenser?: TDispenser
 
+  timeframeSubmit: (
+    startTimeValue: any,
+    finishTimeValue: any,
+    onSuccess?: () => void,
+    onError?: () => void
+  ) => void
+
+  getDispenserWhitelist: (dispenserId: string) => void
 }
 
 export type TSettingItem = {

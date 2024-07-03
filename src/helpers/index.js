@@ -80,9 +80,11 @@ import defineUrlSchema from './define-url-schema'
 import createQueryString from './create-query-string'
 import truncate from './truncate'
 import defineWagmiNetwork from './define-wagmi-network'
+import getNextDayData from './get-next-day-data'
 
 export {
   defineThirdwebNetworkName,
+  getNextDayData,
   defineUrlSchema,
   defineWagmiNetwork,
   truncate,

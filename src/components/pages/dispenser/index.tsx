@@ -17,7 +17,6 @@ import {
 } from './styled-components'
 import {
   Statistics,
-  WhitelistWidget,
   Status,
   Settings,
   ClaimLinks,
@@ -72,6 +71,7 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
+    
     addLinksToQR: (
       dispenserId: string,
       links: TLinkDecrypted[],
@@ -117,6 +117,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       multiscan_qr_id,
       callback
     })),
+  
     pauseDispenser: (
       dispenser_id: string,
       callback?: () => void
@@ -125,6 +126,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: false,
       callback
     })),
+  
     unpauseDispenser: (
       dispenser_id: string,
       callback?: () => void
@@ -133,6 +135,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: true,
       callback
     })),
+  
     toggleRedirectURL: (
       dispenser_id: string,
       redirect_on: boolean,
@@ -207,6 +210,20 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       callback?: () => void
     ) => dispatch(asyncDispensersActions.getDispenserWhitelist({
       dispenser_id,
+      callback
+    })),
+
+    updateDispenser: (
+      dispenser_id: string,
+      startDate: string,
+      finishDate: string,
+      // duration: number,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.updateDispenserDate({
+      dispenserId: dispenser_id,
+      startDate,
+      finishDate,
+      // duration,
       callback
     })),
   }
@@ -286,7 +303,10 @@ const Dispenser: FC<ReduxType> = ({
   toggleWhitelist,
   chainId,
   updateAddressWhitelist,
-  currentDispenserData
+  currentDispenserData,
+  updateDispenser,
+  getDispenserWhitelist
+
 }) => {
   const { id } = useParams<{id: string}>()
   // @ts-ignore
@@ -381,21 +401,18 @@ const Dispenser: FC<ReduxType> = ({
     links_assigned,
     whitelist_on,
     whitelist_type,
-    dynamic
+    dynamic,
+    claim_finish
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
-    claim_start,
-    claim_duration,
+    claim_start as number,
+    claim_finish || claim_start as number + (claim_duration || 1000000000000),
     links_count || 0,
     active,
     redirect_on,
     redirect_url
   )
-
-  const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
-  const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
-  const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
 
   const mainButton = renderMainButton(
     dynamic as boolean,
@@ -442,22 +459,6 @@ const Dispenser: FC<ReduxType> = ({
           {mainButton}
         </Buttons>
       </WidgetComponentStyled>
-      {!dynamic && <WhitelistWidget
-        loading={loading}
-        isWhitelisted={whitelist_on}
-        whitelistType={whitelist_type}
-        dispenserId={dispenser_id as string}
-        toggleWhitelistOn={(
-          whitelistOn
-        ) => {
-          toggleWhitelist(
-            dispenser_id as string,
-            whitelistOn,
-            () => alert('success'),
-            () => alert('error'),
-          )
-        }}
-      />}
     </MainContent>
 
 
@@ -492,7 +493,11 @@ const Dispenser: FC<ReduxType> = ({
       <Settings
         redirectUrl={redirectURLDecrypted}
         claimUrl={claimURLDecrypted}
+        loading={loading}
         campaignData={currentDispenserData.campaign}
+        getDispenserWhitelist={getDispenserWhitelist}
+
+        currentDispenser={dispenser}
 
         whitelistToggleValue={whitelist_on}
 
@@ -509,6 +514,8 @@ const Dispenser: FC<ReduxType> = ({
           )
         }}
 
+
+
         whitelistSubmit={(
           whitelistAdresses,
           onSuccess
@@ -522,6 +529,7 @@ const Dispenser: FC<ReduxType> = ({
               () => alert('error')
             )
           }
+          
 
           createAddressWhitelist(
             dispenser_id as string,
@@ -556,6 +564,20 @@ const Dispenser: FC<ReduxType> = ({
             encrypted_multiscan_qr_enc_code,
             onSuccess,
             () => alert('error')
+          )
+        }}
+
+        timeframeSubmit={(
+          startTime,
+          finishTime,
+          onSuccess,
+          OnError
+        ) => {
+          updateDispenser(
+            dispenser_id as string,
+            startTime,
+            finishTime,
+            onSuccess,
           )
         }}
       />

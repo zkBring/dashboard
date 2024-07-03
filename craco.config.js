@@ -24,7 +24,9 @@ module.exports = {
           ...webpackConfig.resolve.fallback
         }
       },
-      
+      plugins: [
+        WorkerLoaderPlugin
+      ]
     }
   },
   babel: {

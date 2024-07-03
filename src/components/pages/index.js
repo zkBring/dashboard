@@ -15,8 +15,6 @@ import QRCreate from './qr-create'
 import Dispensers from './dispensers'
 import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
-import DispenserWhitelists from './dispenser-whitelists'
-import DispenserWhitelistsAddresses from './dispenser-whitelists-addresses'
 import Collections from './collections'
 import CollectionsCreateInitial from './collections-create-initial'
 import CollectionsCreateNew from './collections-create-new'
@@ -27,10 +25,8 @@ import DynamicQRs from './dynamic-qrs'
 
 export {
   Page,
-  DispenserWhitelistsAddresses,
   DynamicQRs,
   DynamicQRCreate,
-  DispenserWhitelists,
   Collection,
   CollectionAddToken,
   CollectionsCreateNew,

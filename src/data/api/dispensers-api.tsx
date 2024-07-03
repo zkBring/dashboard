@@ -43,17 +43,17 @@ const requests = {
     dispenser_id,
     title,
     claim_start,
-    claim_duration
+    claim_finish
   }: {
     dispenser_id: string,
-    title: string,
-    claim_start: number,
-    claim_duration: number
+    title?: string,
+    claim_start?: number,
+    claim_finish?: number
   }) => {
     return dispensersApi.patch(`/dispensers/${dispenser_id}`, {
       title,
       claim_start,
-      claim_duration
+      claim_finish
     }, { withCredentials: true })
   },
   getCampaignData: (

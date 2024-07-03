@@ -3,26 +3,31 @@ import * as actionsDispensers from '../actions'
 import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
-import { alertError } from 'helpers'
+import {
+  alertError,
+  momentNoOffsetWithTimeUpdate,
+  momentNoOffsetGetTime,
+  getNextDayData
+} from 'helpers'
 import { TDispenser } from 'types'
 import { encrypt } from 'lib/crypto'
 import { plausibleApi } from 'data/api'
 
-type TAddDispenserArgs = {
+type TCreateDispenserArgs = {
   title: string,
-  date: string,
-  duration: number,
+  // date: string,
+  // duration: number,
   dynamic: boolean,
   callback?: (id: string | number) => void,
 }
 
-const addDispenser = ({
+const createDispenser = ({
   title,
-  date,
-  duration,
+  // date,
+  // duration,
   dynamic,
   callback
-}: TAddDispenserArgs) => {
+}: TCreateDispenserArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
@@ -40,11 +45,14 @@ const addDispenser = ({
         
       const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey)
       const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey)
+      const date = getNextDayData()
+      const dispenserTime = momentNoOffsetGetTime(+date) 
+      const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))
+      
       const newDispenser: TDispenser = {
         encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
         multiscan_qr_id: secretKeyPair.address,
-        claim_duration: duration,
-        claim_start: +(new Date(date)),
+        claim_start: +(new Date(dateString)),
         encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
         title,
         dynamic
@@ -86,4 +94,4 @@ const addDispenser = ({
   }
 }
 
-export default addDispenser
+export default createDispenser

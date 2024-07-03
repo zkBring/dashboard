@@ -25,6 +25,8 @@ type TCampaign = {
   available_wallets: string[]
   available_countries: string[]
   expiration_date?: number
+  claiming_finished_button_title?: string
+  claiming_finished_button_url?: string
 }
 
 export default TCampaign

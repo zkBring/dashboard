@@ -1,8 +1,8 @@
 import { TDispenserStatus } from 'types'
 
 type TDefineDispenserStatus = (
-  claim_start: number,
-  claim_duration: number,
+  claim_start: number | null,
+  claim_finish: number | null,
   links_count: number,
   active?: boolean,
   redirect_on?: boolean,
@@ -11,29 +11,32 @@ type TDefineDispenserStatus = (
 
 const defineDispenserStatus: TDefineDispenserStatus = (
   claim_start,
-  claim_duration,
+  claim_finish,
   links_count,
   active = true,
   redirect_on = false,
   redirect_url
 ) => {
 
+  if (links_count === 0) {
+    return 'NOT_UPLOADED'
+  }
+
   const currentDate = +new Date()
   if (redirect_on && redirect_url) {
     return 'REDIRECT'
   }
-  if (currentDate > (claim_start + claim_duration * 60 * 1000)) {
+  if (claim_finish && (currentDate > claim_finish)) {
     return 'FINISHED'
   }
-  if (links_count === 0) {
-    return 'NOT_UPLOADED'
-  }
+
   if (!active) {
     return 'PAUSED'
   }
-  if (currentDate > claim_start) {
+  if (claim_start && (currentDate > claim_start)) {
     return 'ACTIVE'
   }
+
   return 'READY'
 }
 

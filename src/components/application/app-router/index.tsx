@@ -18,8 +18,6 @@ import {
   QRDownload,
   QRCreate,
   Dispensers,
-  DispenserWhitelists,
-  DispenserWhitelistsAddresses,
   DispenserCreate,
   Dispenser,
   DynamicQRCreate,
@@ -122,20 +120,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={DispenserCreate}
-        />
-
-        <ProtectedRoute
-          path='/dispensers/:dispenserId/whitelists'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DispenserWhitelists}
-        />
-
-        <ProtectedRoute
-          path='/dispensers/:dispenserId/whitelists/addresses'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DispenserWhitelistsAddresses}
         />
 
         <ProtectedRoute

@@ -80,6 +80,7 @@ const defineContent = (
   dispenserStatus: TDispenserStatus,
   campaignData: null | TCampaign
 ) => {
+  console.log({ campaignData, dispenserStatus })
   if (dispenserStatus === 'NOT_UPLOADED') {
     return <>
     <WidgetSubtitle>
@@ -164,21 +165,6 @@ const ClaimLinks: FC<TProps> = ({
     downloadReport
   )
 
-  {updateLinksPopup && <UploadLinksPopup
-    loader={mappingLoader}
-    loading={loading}
-    onClose={() => toggleUpdateLinksPopup(false)}
-    onSubmit={links => {
-      if (!dispenserId) { return alert('Dispenser ID not found') }
-      if (!encryptedMultiscanQREncCode) { return alert('encrypted_multiscan_qr_enc_code not found') }
-      if (linksCount === undefined) { return alert('links_count not found') }
-      if (!links) { return alert('Links not found') }
-      addLinksToQR(dispenserId, links, encryptedMultiscanQREncCode, linksCount, dispenserStatus, () => {
-        toggleUpdateLinksPopup(false)
-      })
-    }}
-  />}
-
   const content = defineContent(
     dispenserStatus,
     campaignData
@@ -189,6 +175,20 @@ const ClaimLinks: FC<TProps> = ({
     options={dispenserOptions}
   >
     <AsideContent>
+      {updateLinksPopup && <UploadLinksPopup
+        loader={mappingLoader}
+        loading={loading}
+        onClose={() => toggleUpdateLinksPopup(false)}
+        onSubmit={links => {
+          if (!dispenserId) { return alert('Dispenser ID not found') }
+          if (!encryptedMultiscanQREncCode) { return alert('encrypted_multiscan_qr_enc_code not found') }
+          if (linksCount === undefined) { return alert('links_count not found') }
+          if (!links) { return alert('Links not found') }
+          addLinksToQR(dispenserId, links, encryptedMultiscanQREncCode, linksCount, dispenserStatus, () => {
+            toggleUpdateLinksPopup(false)
+          })
+        }}
+      />}
       {content}
     </AsideContent>
     {button}

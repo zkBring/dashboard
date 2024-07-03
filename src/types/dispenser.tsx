@@ -23,13 +23,12 @@ export type TDispenser = {
   dispenser_id?: string  
   links_count?: number
   
-  claim_duration: number
-  // больше не будет
+  claim_duration?: number
+  // not used 
 
-  claim_finish?: number
-  // добавляется по аналогии с claim_start
+  claim_finish?: number | null
   
-  claim_start: number
+  claim_start?: number | null
 
   created_at?: string
   title: string
@@ -48,8 +47,8 @@ export type TDispenser = {
 }
 
 export type TDispenserUpdateData = {
-  claim_duration: number
-  claim_start: number
-  title: string
+  claim_finish?: number
+  claim_start?: number
+  title?: string
   dispenser_id: string
 }

@@ -7,21 +7,19 @@ import { alertError } from 'helpers'
 import { TDispenser, TDispenserUpdateData } from 'types'
 import { plausibleApi } from 'data/api'
 
-type TUpdateDispenserArgs = {
-  title: string,
-  dispenser_id: string,
-  date: string,
-  duration: number,
-  callback?: (id: string) => void,
+type TUpdateDispenserDateArgs = {
+  dispenserId: string,
+  startDate: string,
+  finishDate: string,
+  callback?: () => void,
 }
 
-const updateDispenser = ({
-  dispenser_id,
-  title,
-  date,
-  duration,
+const updateDispenserDate = ({
+  dispenserId,
+  startDate,
+  finishDate,
   callback
-}: TUpdateDispenserArgs) => {
+}: TUpdateDispenserDateArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
@@ -30,16 +28,20 @@ const updateDispenser = ({
     dispatch(actionsDispensers.setLoading(true))
     try {
       const updatedDispenser: TDispenserUpdateData = {
-        claim_duration: duration,
-        claim_start: +(new Date(date)),
-        title,
-        dispenser_id
+        claim_finish: +(new Date(finishDate)),
+        claim_start: +(new Date(startDate)),
+        dispenser_id: dispenserId
       }
 
-      const { data } : { data: { dispenser: TDispenser, success: boolean } } = await dispensersApi.updateDispenserData(updatedDispenser)
+      const { data } : {
+        data: {
+          dispenser: TDispenser,
+          success: boolean
+        }
+      } = await dispensersApi.updateDispenserData(updatedDispenser)
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
-          if (item.dispenser_id === dispenser_id) {
+          if (item.dispenser_id === dispenserId) {
             return { ...item, ...data.dispenser }
           }
           return item
@@ -49,18 +51,18 @@ const updateDispenser = ({
           data: {
             success: 'yes',
             address,
-            dispenserId: dispenser_id
+            dispenserId
           }
         })
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
-        if (callback) { callback(data.dispenser.dispenser_id as string) }
+        if (callback) { callback() }
       } else {
         plausibleApi.invokeEvent({
           eventName: 'multiqr_update',
           data: {
             success: 'no',
             address,
-            dispenserId: dispenser_id
+            dispenserId
           }
         })
         return alertError('Dispenser was not updated. Check console for more information')
@@ -72,7 +74,7 @@ const updateDispenser = ({
         data: {
           success: 'no',
           address,
-          dispenserId: dispenser_id
+          dispenserId
         }
       })
       alertError('Couldn’t update Dispanser, please check console')
@@ -82,4 +84,4 @@ const updateDispenser = ({
   }
 }
 
-export default updateDispenser
+export default updateDispenserDate
