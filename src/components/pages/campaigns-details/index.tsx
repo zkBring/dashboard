@@ -39,7 +39,8 @@ import {
   BatchesList,
   CampaignParameters,
   HowToUseSDK,
-  LinksStats
+  LinksStats,
+  Settings
 } from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
@@ -49,7 +50,7 @@ import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
 import { plausibleApi } from 'data/api'
-import { TClaimPattern, TTokenType } from 'types'
+import { TClaimPattern, TCountry, TTokenType } from 'types'
 import wallets from 'configs/wallets'
 
 const mapStateToProps = ({
@@ -128,6 +129,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
@@ -143,7 +145,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   address,
   provider,
   chainId,
-  countries
+  countries,
+  loading
 }) => {
 
   const history = useHistory()
@@ -203,7 +206,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     links_claimed,
     available_wallets,
     available_countries,
-    expiration_date
+    expiration_date,
+    claiming_finished_button_title,
+    claiming_finished_button_url
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -211,7 +216,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     signer_address,
     campaign_number
   )
-
 
   const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
@@ -526,30 +530,42 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           Read Docs
         </AsideButton>
       </AsideStyled>}
-      <AsideStyled
-        title="Wallets"
-        subtitle='The following wallets are available to claim your funds'
-      >
-        {available_wallets.map(currentWallet => {
-          return <TableRow>
-            <TableValue>{wallets.find(wallet => currentWallet === wallet.id)?.name || currentWallet}</TableValue>
-            {currentWallet === wallet && <TableValueStyled>
-              Preferred wallet
-            </TableValueStyled>}  
-          </TableRow>
-        })}
-      </AsideStyled>
 
-      <AsideStyled
-        title="Country Whitelist"
-        subtitle={available_countries.length === 0 ? 'This campaign is available in all countries' : 'This campaign is available in the following countries'}
-      >
-        {available_countries.map(currentCounty => {
-          return <TableRow>
-            <TableValue>{countries.find(country => country.id === currentCounty)?.name || currentCounty}</TableValue>
-          </TableRow>
-        })}
-      </AsideStyled>
+
+      <Settings
+        loading={loading}
+        campaignData={currentCampaign}
+        availableWalletsValue={available_wallets}
+        availableCountriesValue={available_countries.map(currentCountry => {
+          const country = countries.find(country => country.id === currentCountry)
+          return country
+        }).filter(item => item) as TCountry[]}
+        preferredWalletValue={wallet}
+        availableCountriesSubmit={(
+          value,
+          onSuccess,
+          onError
+        ) => {}}
+          
+      
+        walletsSubmit={(
+          availableWalletsValue,
+          wallets,
+          onSuccess,
+          onError,
+        ) => {}}
+
+        finalScreenButtonSubmit={(
+          buttonTitle,
+          buttonHref,
+          onSuccess,
+          onError,
+        ) => {}}
+      
+        buttonTitleValue={claiming_finished_button_title || ''}
+        buttonHrefValue={claiming_finished_button_url || ''}
+      
+      />
     </AsideContainer>
   </Container>
 }

@@ -17,32 +17,24 @@ import {
   TableText,
 } from 'components/pages/common'
 import Icons from 'icons'
-import Timeframe from './timeframe'
-import RedirectScreen from './redirect'
-import Whitelist from './whitelist'
-import { TDispenser } from 'types'
+import { TCountry, TDispenser } from 'types'
+import Wallets from './wallets'
+import Countries from './countries'
+import FinalScreenButton from './final-screen-button'
 
 const settings = [
   {
-    title: 'Whitelist addresses',
-    subtitle: 'You can set up who can claim tokens by whitelisting users by addresses',
-    id: 'whitelist'
-  }, {
     title: 'Country restrictions',
     subtitle: '',
     id: 'available_countries'
   }, {
-    title: 'Timeframe',
-    subtitle: 'You can set up the link expiration, so that users will not be able to claim after certain day and time',
-    id: 'timeframe'
-  }, {
-    title: 'Redirect to another URL',
-    subtitle: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website',
-    id: 'redirect'
-  }, {
     title: 'Wallet options',
-    subtitle: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website',
+    subtitle: '',
     id: 'wallets'
+  }, {
+    title: 'Final Screen Button',
+    subtitle: 'You can add a custom button to the final screen after a user claims your tokens. When clicked, it will redirect the user to the URL you specify below',
+    id: 'final_screen_button'
   }
 ]
 
@@ -74,67 +66,58 @@ const definePopup = (
   setting: TSettingItem,
   onClose: () => void,
 
-  claimUrl: string,
-  redirectSubmit: (value: any, onSuccess?: () => void, onError?: () => void) => void,
+  availableCountriesSubmit: (
+    value: any,
+    onSuccess?: () => void,
+    onError?: () => void,
+  ) => void,
+  availableCountriesValue: TCountry[],
 
-  timeframeSubmit: (value: any, onSuccess?: () => void, onError?: () => void) => void,
-  
-  whitelistSubmit: (value: any, onSuccess?: () => void, onError?: () => void) => void,
+  walletsSubmit: (
+    availableWalletsValue: any,
+    wallets: any,
+    onSuccess?: () => void,
+    onError?: () => void,
+  ) => void,
+  availableWalletsValue: string[],
+  preferredWalletValue: string,
 
-  getDispenserWhitelist: (dispenserId: string) => void,
-  loading: boolean,
-  // redirect
-  redirectUrl?: string | null,
-  redirectToggleAction?: (value: boolean) => void,
-  redirectToggleValue?: boolean,
+  finalScreenButtonSubmit: (
+    buttonTitleValue: string,
+    buttonHrefValue: string,
+    successAction?: () => void,
+    errorAction?: () => void
+  ) => void,
+  buttonTitleValue: string,
+  buttonHrefValue: string,
 
-
-  // whitelist
-  whitelistValue?: string | null,
-  whitelistToggleAction?: (value: boolean) => void,
-  whitelistToggleValue?: boolean,
-
-
-
-
-  campaignId?: string,
-  currentDispenser?: TDispenser
+  campaignId?: string
 ) => {
   switch (setting.id) {
-    case 'redirect':
-      return <RedirectScreen
+    case 'wallets':
+      return <Wallets
         {...setting}
-        redirectUrl={redirectUrl}
         onClose={onClose}
-        claimUrl={claimUrl}
-        toggleAction={redirectToggleAction}
-        toggleValue={redirectToggleValue}
-        action={redirectSubmit}
+        availableWalletsValue={availableWalletsValue}
+        preferredWalletValue={preferredWalletValue}
+        action={walletsSubmit}
       />
-    case 'timeframe':
-      return <Timeframe
+    case 'available_countries':
+      return <Countries
         {...setting}
         onClose={onClose}
-        currentDispenser={currentDispenser}
-        action={timeframeSubmit}
-      />
-    case 'whitelist':
-      return <Whitelist
-        {...setting}
-        loading={loading}
-        onClose={onClose}
-        currentDispenser={currentDispenser}
-        getDispenserWhitelist={getDispenserWhitelist}
-        toggleAction={whitelistToggleAction}
-        toggleValue={whitelistToggleValue}
-        action={whitelistSubmit}
-        whitelistValue={whitelistValue}
+        availableCountriesValue={availableCountriesValue}
+        action={availableCountriesSubmit}
       />
     
-    case 'wallets':
-    case 'available_countries':
-      return <Redirect to={`/campaigns/${campaignId}`} />
-
+    case 'final_screen_button':
+      return <FinalScreenButton
+        {...setting}
+        onClose={onClose}
+        buttonTitleValue={buttonTitleValue}
+        buttonHrefValue={buttonHrefValue}
+        action={finalScreenButtonSubmit}
+      />
 
     default: null
   }
@@ -142,27 +125,9 @@ const definePopup = (
 
 const defineEnabled = (
   settingId: string,
-  redirectToggleValue: boolean,
-  whitelistValue: boolean,
-  wallet: string,
-  claimFinished: boolean
+  
 ) => {
-  if (settingId === 'redirect') {
-    return redirectToggleValue
-  }
-
-  if (settingId === 'whitelist') {
-    return whitelistValue
-  }
-
-  if (settingId === 'wallets') {
-    return Boolean(wallet)
-  }
-
-  if (settingId === 'timeframe') {
-    return claimFinished
-  }
-
+  
   return false
 }
 
@@ -179,24 +144,19 @@ const defineEnabledLabel = (
 
 
 const Settings: FC<TProps> = ({
-  redirectUrl,
-  claimUrl,
+  availableCountriesSubmit,
+  availableCountriesValue,
+
+  walletsSubmit,
+  availableWalletsValue,
+  preferredWalletValue,
+
+  finalScreenButtonSubmit,
+  buttonTitleValue,
+  buttonHrefValue,
+  
   campaignData,
-  redirectToggleAction,
-  redirectToggleValue,
-  redirectSubmit,
-  loading,
-
-  whitelistSubmit,
-  whitelistToggleAction,
-  whitelistToggleValue,
-  whitelistValue,
-
-  timeframeSubmit,
-
-  getDispenserWhitelist,
-
-  currentDispenser
+  loading
 }) => {
 
   if (!campaignData) {
@@ -210,28 +170,17 @@ const Settings: FC<TProps> = ({
   const popup = currentSetting ? definePopup(
     currentSetting,
     () => setCurrentSetting(null),
+    availableCountriesSubmit,
+    availableCountriesValue,
+    walletsSubmit,
+    availableWalletsValue,
+    preferredWalletValue,
 
-    claimUrl,
-
-    redirectSubmit,
-
-    timeframeSubmit,
-    whitelistSubmit,
-
-    getDispenserWhitelist,
-    loading,
-
-    redirectUrl,
-
-    redirectToggleAction,
-    redirectToggleValue,
-
-    whitelistValue,
-    whitelistToggleAction,
-    whitelistToggleValue,
-
-    campaignData.campaign_id,
-    currentDispenser,
+    finalScreenButtonSubmit,
+    buttonTitleValue,
+    buttonHrefValue,
+    campaignData.campaign_id
+    
   ) : null
 
   return <WidgetStyled title='Settings'>
@@ -241,14 +190,11 @@ const Settings: FC<TProps> = ({
 
       const enabled = defineEnabled(
         setting.id,
-        Boolean(redirectToggleValue),
-        Boolean(whitelistToggleValue),
-        campaignData.wallet,
-        Boolean(currentDispenser?.claim_finish)
+        
       )
       const enabledLabel = defineEnabledLabel(
         setting.id,
-        campaignData.wallet
+        preferredWalletValue
       )
 
       return renderSettingItem(
