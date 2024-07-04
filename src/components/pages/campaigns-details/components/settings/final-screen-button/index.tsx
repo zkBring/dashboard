@@ -37,23 +37,26 @@ const FinalScreenButton: FC<TProps> = ({
       )
     }}
   >
-    <InputStyled
-      placeholder="Text on the button"
-      value={buttonTitle}
-      onChange={(value) => {
-        setButtonTitle(value)
-        return value
-      }}
-    />
+    {toggleValue && <>
+      <InputStyled
+        placeholder="Text on the button"
+        value={buttonTitle}
+        onChange={(value) => {
+          setButtonTitle(value)
+          return value
+        }}
+      />
 
-    <InputStyled
-      placeholder="https://"
-      value={buttonHref}
-      onChange={(value) => {
-        setButtonHref(value)
-        return value
-      }}
-    />
+      <InputStyled
+        placeholder="https://"
+        value={buttonHref}
+        onChange={(value) => {
+          setButtonHref(value)
+          return value
+        }}
+      />
+    </>}
+    
 
   </AsidePopup>
 }

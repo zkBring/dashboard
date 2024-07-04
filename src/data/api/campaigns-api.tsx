@@ -22,6 +22,53 @@ const requests = {
   get: (chain_id: number | string) => {
     return campaignsApi.get(`/linkdrop/campaigns?chain_id=${chain_id}`, { withCredentials: true })
   },
+
+  updateAvailableCountriesOn: (
+    campaign_id: string | number,
+    available_countries_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      available_countries_on
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateAvailableCountries: (
+    campaign_id: string | number,
+    available_countries: string[]
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      available_countries
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateClaimingFinishedButtonOn: (
+    campaign_id: string | number,
+    claiming_finished_button_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      claiming_finished_button_on
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateClaimingFinishedButton: (
+    campaign_id: string | number,
+    claiming_finished_button_title: string,
+    claiming_finished_button_url: string
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      claiming_finished_button_title,
+      claiming_finished_button_url
+    }, {
+      withCredentials: true
+    })
+  },
+
   getOne: (
     campaign_id: string | number
   ) => {

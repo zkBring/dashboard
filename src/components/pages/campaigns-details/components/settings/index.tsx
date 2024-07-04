@@ -25,11 +25,11 @@ import FinalScreenButton from './final-screen-button'
 const settings = [
   {
     title: 'Country restrictions',
-    subtitle: '',
+    subtitle: 'If you want to make the campaign available only in certain countries, please toggle on this feature and add countries from the list below',
     id: 'available_countries'
   }, {
     title: 'Wallet options',
-    subtitle: '',
+    subtitle: 'Setup the wallet that will be highlighted as “recommended” and select the wallets that will be displayed as alternative options to connect to Claim App to claim tokens',
     id: 'wallets'
   }, {
     title: 'Final Screen Button',
@@ -90,8 +90,14 @@ const definePopup = (
   ) => void,
   buttonTitleValue: string,
   buttonHrefValue: string,
+  countries: TCountry[],
 
-  campaignId?: string
+  finalScreenButtonToggleAction?: (value: boolean) => void,
+  finalScreenButtonToggleValue?: boolean,
+  availableCountriesToggleAction?: (value: boolean) => void,
+  availableCountriesToggleValue?: boolean,
+
+  campaignId?: string,
 ) => {
   switch (setting.id) {
     case 'wallets':
@@ -108,6 +114,9 @@ const definePopup = (
         onClose={onClose}
         availableCountriesValue={availableCountriesValue}
         action={availableCountriesSubmit}
+        countries={countries}
+        toggleAction={availableCountriesToggleAction}
+        toggleValue={availableCountriesToggleValue}
       />
     
     case 'final_screen_button':
@@ -117,6 +126,8 @@ const definePopup = (
         buttonTitleValue={buttonTitleValue}
         buttonHrefValue={buttonHrefValue}
         action={finalScreenButtonSubmit}
+        toggleAction={finalScreenButtonToggleAction}
+        toggleValue={finalScreenButtonToggleValue}
       />
 
     default: null
@@ -125,8 +136,17 @@ const definePopup = (
 
 const defineEnabled = (
   settingId: string,
-  
+  availableCountriesToggleValue: boolean,
+  finalScreenButtonToggleValue: boolean
 ) => {
+
+  if (settingId === 'available_countries') {
+    return availableCountriesToggleValue
+  }
+
+  if (settingId === 'final_screen_button') {
+    return finalScreenButtonToggleValue
+  }
   
   return false
 }
@@ -156,7 +176,15 @@ const Settings: FC<TProps> = ({
   buttonHrefValue,
   
   campaignData,
-  loading
+  loading,
+
+  finalScreenButtonToggleAction,
+  finalScreenButtonToggleValue,
+  countries,
+  
+
+  availableCountriesToggleAction,
+  availableCountriesToggleValue
 }) => {
 
   if (!campaignData) {
@@ -179,7 +207,12 @@ const Settings: FC<TProps> = ({
     finalScreenButtonSubmit,
     buttonTitleValue,
     buttonHrefValue,
-    campaignData.campaign_id
+    countries,
+    finalScreenButtonToggleAction,
+    finalScreenButtonToggleValue,
+    availableCountriesToggleAction,
+    availableCountriesToggleValue,
+    campaignData.campaign_id,
     
   ) : null
 
@@ -190,7 +223,8 @@ const Settings: FC<TProps> = ({
 
       const enabled = defineEnabled(
         setting.id,
-        
+        Boolean(availableCountriesToggleValue),
+        Boolean(finalScreenButtonToggleValue)
       )
       const enabledLabel = defineEnabledLabel(
         setting.id,

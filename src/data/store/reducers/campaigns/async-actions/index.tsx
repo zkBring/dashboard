@@ -4,12 +4,20 @@ import downloadReport from './download-report'
 import addCampaignToDrafts from './add-campaign-to-drafts'
 import removeCurrentCampaignFromDrafts from './remove-current-campaign-from-drafts'
 import removeCampaignFromDrafts from './remove-campaign-from-drafts'
+import updateAvailableCountriesOn from './update-available-countries-on'
+import updateClaimingFinishedButtonOn from './update-claiming-finished-button-on'
+import updateClaimingFinishedButton from './update-claiming-finished-button'
+import updateAvailableCountries from './update-available-countries'
 
 export {
   getCampaignBatches,
   downloadLinks,
+  updateAvailableCountries,
+  updateClaimingFinishedButton,
   downloadReport,
+  updateClaimingFinishedButtonOn,
   addCampaignToDrafts,
+  updateAvailableCountriesOn,
   removeCurrentCampaignFromDrafts,
   removeCampaignFromDrafts
 }

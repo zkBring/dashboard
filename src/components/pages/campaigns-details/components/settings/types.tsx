@@ -5,7 +5,7 @@ export type TProps = {
   campaignData: TCampaign | null
   
   availableCountriesSubmit: (
-    value: any,
+    value: string[],
     onSuccess?: () => void,
     onError?: () => void,
   ) => void
@@ -21,6 +21,8 @@ export type TProps = {
   availableWalletsValue: string[]
   preferredWalletValue: string
 
+  countries: TCountry[]
+
   buttonTitleValue: string
   buttonHrefValue: string
 
@@ -30,6 +32,13 @@ export type TProps = {
     successAction?: () => void,
     errorAction?: () => void
   ) => void
+
+  finalScreenButtonToggleAction?: (value: boolean) => void
+  finalScreenButtonToggleValue?: boolean
+  
+
+  availableCountriesToggleAction?: (value: boolean) => void
+  availableCountriesToggleValue?: boolean
 
 }
 

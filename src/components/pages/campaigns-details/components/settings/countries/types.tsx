@@ -6,9 +6,13 @@ export type TProps = {
   onClose: () => void
   id: string
   availableCountriesValue: TCountry[]
+  countries: TCountry[]
   action: (
     availableCountriesValue: string[],
     successAction?: () => void,
     errorAction?: () => void
   ) => void
+
+  toggleAction?: (value: boolean) => void
+  toggleValue?: boolean
 }

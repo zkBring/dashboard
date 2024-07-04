@@ -9,6 +9,7 @@ import {
 } from 'components/common'
 import { InputStyled } from './styled-components'
 import { isURL } from 'helpers'
+import { TCountry } from 'types'
 
 
 const Countries: FC<TProps> = ({
@@ -16,13 +17,23 @@ const Countries: FC<TProps> = ({
   subtitle,
   onClose,
   action,
-  availableCountriesValue
+  toggleAction,
+  toggleValue,
+  availableCountriesValue,
+  countries
 }) => {
+
+  const [
+    availableCountries,
+    setAvailableCountries
+  ] = useState<TCountry[]>(availableCountriesValue)
   
   return <AsidePopup
     title={title}
     subtitle={subtitle}
     onClose={onClose}
+    toggleAction={toggleAction}
+    toggleState={toggleValue}
     action={() => {}}
   >
     {availableCountriesValue.length}

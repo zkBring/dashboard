@@ -18,7 +18,6 @@ import {
   AsideStyled,
   AsideContainer,
   AsideButton,
-  TableValueStyled,
   AsideButtonsContainer
 } from './styled-components'
 import {
@@ -45,7 +44,15 @@ import {
 import { TextLink } from 'components/common'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
-import { getCampaignBatches, downloadLinks, downloadReport } from 'data/store/reducers/campaigns/async-actions'
+import {
+  getCampaignBatches,
+  downloadLinks,
+  downloadReport,
+  updateAvailableCountriesOn,
+  updateClaimingFinishedButtonOn,
+  updateClaimingFinishedButton,
+  updateAvailableCountries
+} from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
@@ -95,6 +102,61 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         )
       )
     },
+
+    updateAvailableCountriesOn: (
+      campaign_id: string,
+      available_countries_on: boolean
+    ) => {
+      dispatch(
+        updateAvailableCountriesOn(
+          campaign_id,
+          available_countries_on
+        )
+      )
+    },
+
+    updateAvailableCountries: (
+      campaign_id: string,
+      available_countries: string[],
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateAvailableCountries(
+          campaign_id,
+          available_countries,
+          callback
+        )
+      )
+    },
+
+    updateClaimingFinishedButtonOn: (
+      campaign_id: string,
+      claiming_finished_button_on: boolean
+    ) => {
+      dispatch(
+        updateClaimingFinishedButtonOn(
+          campaign_id,
+          claiming_finished_button_on
+        )
+      )
+    },
+
+    updateClaimingFinishedButton: (
+      campaign_id: string,
+      claiming_finished_button_title: string,
+      claiming_finished_button_href: string,
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateClaimingFinishedButton(
+          campaign_id,
+          claiming_finished_button_title,
+          claiming_finished_button_href,
+          callback
+        )
+      )
+    },
+
     downloadLinks: (
       batch_id: string | number,
       campaign_id: string,
@@ -146,7 +208,11 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   provider,
   chainId,
   countries,
-  loading
+  loading,
+  updateClaimingFinishedButtonOn,
+  updateAvailableCountriesOn,
+  updateClaimingFinishedButton,
+  updateAvailableCountries
 }) => {
 
   const history = useHistory()
@@ -179,7 +245,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     }
     onInit()
   }, [])
-
+  
+  // @ts-ignore
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
 
   if (!currentCampaign || !dashboardKey) {
@@ -204,11 +271,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     wallet,
     sponsored,
     links_claimed,
+    available_countries_on,
     available_wallets,
     available_countries,
     expiration_date,
     claiming_finished_button_title,
-    claiming_finished_button_url
+    claiming_finished_button_url,
+    claiming_finished_button_on
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -534,6 +603,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
       <Settings
         loading={loading}
+        countries={countries}
         campaignData={currentCampaign}
         availableWalletsValue={available_wallets}
         availableCountriesValue={available_countries.map(currentCountry => {
@@ -545,7 +615,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           value,
           onSuccess,
           onError
-        ) => {}}
+        ) => {
+          updateAvailableCountries(
+            campaign_id,
+            value,
+            onSuccess
+          )
+        }}
           
       
         walletsSubmit={(
@@ -560,10 +636,29 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           buttonHref,
           onSuccess,
           onError,
-        ) => {}}
+        ) => {
+          updateClaimingFinishedButton(
+            campaign_id,
+            buttonTitle,
+            buttonHref,
+            onSuccess
+          )
+        }}
       
         buttonTitleValue={claiming_finished_button_title || ''}
         buttonHrefValue={claiming_finished_button_url || ''}
+
+        finalScreenButtonToggleAction={(value) => {
+          updateClaimingFinishedButtonOn(campaign_id, value)
+        }}
+
+        availableCountriesToggleAction={(value) => {
+          updateAvailableCountriesOn(campaign_id, value)
+        }}
+
+        finalScreenButtonToggleValue={claiming_finished_button_on}
+
+        availableCountriesToggleValue={available_countries_on}
       
       />
     </AsideContainer>
