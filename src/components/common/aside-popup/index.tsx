@@ -20,12 +20,13 @@ const AsidePopup: FC<TProps> = ({
   onClose,
   action,
   actionDisabled,
+  className,
   actionTitle = 'OK',
   toggleAction,
   toggleState = false
 }) => {
   return <Overlay>
-    <Container>
+    <Container className={className}>
       <Title>
         {title}
         {toggleAction && <ToggleStyled

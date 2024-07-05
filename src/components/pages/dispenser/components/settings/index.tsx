@@ -2,11 +2,12 @@ import {
   FC,
   useState
 } from 'react'
-import { Redirect } from 'react-router-dom'
 import {
   WidgetStyled,
   TableValueStyled,
-  ButtonStyled
+  ButtonStyled,
+  NoteStyled,
+  TextLinkStyled
 } from './styled-components'
 import {
   TProps,
@@ -14,7 +15,7 @@ import {
 } from './types'
 import {
   TableRow,
-  TableText,
+  TableText
 } from 'components/pages/common'
 import Icons from 'icons'
 import Timeframe from './timeframe'
@@ -28,10 +29,6 @@ const settings = [
     subtitle: 'You can set up who can claim tokens by whitelisting users by addresses',
     id: 'whitelist'
   }, {
-    title: 'Country restrictions',
-    subtitle: '',
-    id: 'available_countries'
-  }, {
     title: 'Timeframe',
     subtitle: 'You can set up the link expiration, so that users will not be able to claim after certain day and time',
     id: 'timeframe'
@@ -39,13 +36,8 @@ const settings = [
     title: 'Redirect to another URL',
     subtitle: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website',
     id: 'redirect'
-  }, {
-    title: 'Wallet options',
-    subtitle: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website',
-    id: 'wallets'
   }
 ]
-
 
 const renderSettingItem = (
   settingItem: TSettingItem,
@@ -130,12 +122,6 @@ const definePopup = (
         action={whitelistSubmit}
         whitelistValue={whitelistValue}
       />
-    
-    case 'wallets':
-    case 'available_countries':
-      return <Redirect to={`/campaigns/${campaignId}`} />
-
-
     default: null
   }
 }
@@ -153,10 +139,6 @@ const defineEnabled = (
 
   if (settingId === 'whitelist') {
     return whitelistValue
-  }
-
-  if (settingId === 'wallets') {
-    return Boolean(wallet)
   }
 
   if (settingId === 'timeframe') {
@@ -234,31 +216,36 @@ const Settings: FC<TProps> = ({
     currentDispenser,
   ) : null
 
-  return <WidgetStyled title='Settings'>
-    {currentSetting && null}
-    {popup}
-    {settings.map(setting => {
+  return <>
+    <WidgetStyled title='Settings'>
+      {currentSetting && null}
+      {popup}
+      {settings.map(setting => {
 
-      const enabled = defineEnabled(
-        setting.id,
-        Boolean(redirectToggleValue),
-        Boolean(whitelistToggleValue),
-        campaignData.wallet,
-        Boolean(currentDispenser?.claim_finish)
-      )
-      const enabledLabel = defineEnabledLabel(
-        setting.id,
-        campaignData.wallet
-      )
+        const enabled = defineEnabled(
+          setting.id,
+          Boolean(redirectToggleValue),
+          Boolean(whitelistToggleValue),
+          campaignData.wallet,
+          Boolean(currentDispenser?.claim_finish)
+        )
+        const enabledLabel = defineEnabledLabel(
+          setting.id,
+          campaignData.wallet
+        )
 
-      return renderSettingItem(
-        setting,
-        enabled,
-        () => setCurrentSetting(setting),
-        enabledLabel
-      )})
-    }
-  </WidgetStyled>
+        return renderSettingItem(
+          setting,
+          enabled,
+          () => setCurrentSetting(setting),
+          enabledLabel
+        )})
+      }
+    </WidgetStyled>
+    <NoteStyled>
+      Preferred wallet and country restriction settings are available on the <TextLinkStyled to={`/campaigns/${campaignData.campaign_id}`}>Claim Links Campaign page</TextLinkStyled>
+    </NoteStyled>
+  </>
 }
 
 export default Settings

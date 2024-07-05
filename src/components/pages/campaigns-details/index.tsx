@@ -51,7 +51,8 @@ import {
   updateAvailableCountriesOn,
   updateClaimingFinishedButtonOn,
   updateClaimingFinishedButton,
-  updateAvailableCountries
+  updateAvailableCountries,
+  updateWallets
 } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
@@ -124,6 +125,22 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         updateAvailableCountries(
           campaign_id,
           available_countries,
+          callback
+        )
+      )
+    },
+
+    updateWallets: (
+      campaign_id: string,
+      available_wallets: string[],
+      wallet: string,
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateWallets(
+          campaign_id,
+          available_wallets,
+          wallet,
           callback
         )
       )
@@ -212,7 +229,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateClaimingFinishedButtonOn,
   updateAvailableCountriesOn,
   updateClaimingFinishedButton,
-  updateAvailableCountries
+  updateAvailableCountries,
+  updateWallets
 }) => {
 
   const history = useHistory()
@@ -606,7 +624,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         countries={countries}
         campaignData={currentCampaign}
         availableWalletsValue={available_wallets}
-        availableCountriesValue={available_countries.map(currentCountry => {
+        availableCountriesValue={available_countries.map((currentCountry) => {
           const country = countries.find(country => country.id === currentCountry)
           return country
         }).filter(item => item) as TCountry[]}
@@ -629,7 +647,14 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           wallets,
           onSuccess,
           onError,
-        ) => {}}
+        ) => {
+          updateWallets(
+            campaign_id,
+            availableWalletsValue,
+            wallets,
+            onSuccess,
+          )
+        }}
 
         finalScreenButtonSubmit={(
           buttonTitle,

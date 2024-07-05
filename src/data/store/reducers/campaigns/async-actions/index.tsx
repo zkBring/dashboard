@@ -8,9 +8,11 @@ import updateAvailableCountriesOn from './update-available-countries-on'
 import updateClaimingFinishedButtonOn from './update-claiming-finished-button-on'
 import updateClaimingFinishedButton from './update-claiming-finished-button'
 import updateAvailableCountries from './update-available-countries'
+import updateWallets from './update-wallets'
 
 export {
   getCampaignBatches,
+  updateWallets,
   downloadLinks,
   updateAvailableCountries,
   updateClaimingFinishedButton,

@@ -17,7 +17,7 @@ import {
   TableText,
 } from 'components/pages/common'
 import Icons from 'icons'
-import { TCountry, TDispenser } from 'types'
+import { TCountry, TDispenser, TTokenType } from 'types'
 import Wallets from './wallets'
 import Countries from './countries'
 import FinalScreenButton from './final-screen-button'
@@ -64,6 +64,7 @@ const renderSettingItem = (
 
 const definePopup = (
   setting: TSettingItem,
+  loading: boolean,
   onClose: () => void,
 
   availableCountriesSubmit: (
@@ -92,6 +93,10 @@ const definePopup = (
   buttonHrefValue: string,
   countries: TCountry[],
 
+  sposored: boolean,
+  chainId: number,
+  tokenType: TTokenType,
+
   finalScreenButtonToggleAction?: (value: boolean) => void,
   finalScreenButtonToggleValue?: boolean,
   availableCountriesToggleAction?: (value: boolean) => void,
@@ -103,10 +108,14 @@ const definePopup = (
     case 'wallets':
       return <Wallets
         {...setting}
+        loading={loading}
+        tokenType={tokenType}
         onClose={onClose}
         availableWalletsValue={availableWalletsValue}
         preferredWalletValue={preferredWalletValue}
         action={walletsSubmit}
+        sponsored={sposored}
+        chainId={chainId}
       />
     case 'available_countries':
       return <Countries
@@ -137,7 +146,8 @@ const definePopup = (
 const defineEnabled = (
   settingId: string,
   availableCountriesToggleValue: boolean,
-  finalScreenButtonToggleValue: boolean
+  finalScreenButtonToggleValue: boolean,
+  wallet: string
 ) => {
 
   if (settingId === 'available_countries') {
@@ -146,6 +156,10 @@ const defineEnabled = (
 
   if (settingId === 'final_screen_button') {
     return finalScreenButtonToggleValue
+  }
+
+  if (settingId === 'wallets') {
+    return Boolean(wallet)
   }
   
   return false
@@ -197,6 +211,7 @@ const Settings: FC<TProps> = ({
 
   const popup = currentSetting ? definePopup(
     currentSetting,
+    loading,
     () => setCurrentSetting(null),
     availableCountriesSubmit,
     availableCountriesValue,
@@ -208,6 +223,9 @@ const Settings: FC<TProps> = ({
     buttonTitleValue,
     buttonHrefValue,
     countries,
+    campaignData.sponsored,
+    campaignData.chain_id,
+    campaignData.token_standard,
     finalScreenButtonToggleAction,
     finalScreenButtonToggleValue,
     availableCountriesToggleAction,
@@ -224,7 +242,8 @@ const Settings: FC<TProps> = ({
       const enabled = defineEnabled(
         setting.id,
         Boolean(availableCountriesToggleValue),
-        Boolean(finalScreenButtonToggleValue)
+        Boolean(finalScreenButtonToggleValue),
+        preferredWalletValue
       )
       const enabledLabel = defineEnabledLabel(
         setting.id,

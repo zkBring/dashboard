@@ -16,7 +16,6 @@ import Icons from 'icons'
 import { defineNetworkName, defineIfFeatureIsAvailable } from 'helpers'
 import { plausibleApi } from 'data/api'
 import { TProps } from './types'
-import Tooltip from '../tooltip'
 
 const mapStateToProps = ({
   user: {
@@ -60,32 +59,27 @@ const AsideComponent: FC<TProps & ReduxType> = ({
 
     <AsideMenu>
       <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
-        <Tooltip text='Claim Links'>
-          <Icons.CampaignsIcon />
-        </Tooltip>
+        <Icons.ClaimLinksIcon />
+        Claim Links
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-        <Tooltip text='Claim QRs'>
-          <Icons.QRManagerIcon />
-        </Tooltip>
+        <Icons.ClaimQRsIcon />
+        Claim QRs
       </AsideMenuItem>
       <AsideMenuItem to='/dynamic-qrs' active={location.pathname.includes('/dispenser')}>
-        <Tooltip text='Dynamic QR'>
-          <Icons.DynamicQRIcon />
-        </Tooltip>
+        <Icons.DynamicQRIcon />
+        Dynamic QR
       </AsideMenuItem>
       <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
-        <Tooltip text='Dispenser QR'>
-          <Icons.DispenserIcon />
-        </Tooltip>
+        <Icons.DispenserQRIcon />
+        Dispenser QR
       </AsideMenuItem>
       {/* <AsideMenuItem to='/invite-links' active={location.pathname.includes('/invite-links')}>
         <Icons.InviteLinksIcon />Invite Links
       </AsideMenuItem> */}
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
-        <Tooltip text='NFTs'>
-          <Icons.QRManagerIcon />
-        </Tooltip>
+        <Icons.NFTsIcon />
+        NFTs
       </AsideMenuItem>
     </AsideMenu>
 
@@ -101,7 +95,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign', '_blank')
         }}>
-          <Icons.CodeIcon />
+          <Icons.CodeIcon /> SDK
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={() => {
           plausibleApi.invokeEvent({
@@ -113,7 +107,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58', '_blank')
         }}>
-          <Icons.BookIcon />
+          <Icons.BookIcon /> Guide
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={async () => {
           plausibleApi.invokeEvent({
@@ -125,7 +119,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://linkdrop.io/contact-us', '_blank')
         }}>
-          <Icons.MessagesIcon />
+          <Icons.MessagesIcon /> Support
         </AsideMenuItemExternal>
       </AsideMenu>
     </AsideFooter>

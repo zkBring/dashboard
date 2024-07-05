@@ -40,11 +40,6 @@ const defineOptions = (
 ) => {
   return [
     {
-      title: 'Edit',
-      icon: <Icons.EditDispenserIcon />,
-      disabled: status === 'ACTIVE' || status === 'FINISHED',
-      action: editCallback
-    }, {
       title: status === 'PAUSED' ? 'Unpause' : 'Pause',
       icon: status === 'PAUSED' ? <Icons.UnpauseIcon /> : <Icons.PauseIcon />,
       action: status === 'PAUSED' ? unpauseCallback : pauseCallback

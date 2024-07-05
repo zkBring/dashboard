@@ -53,9 +53,17 @@ import { ReactComponent as CodeIcon } from './code-icon.svg'
 import { ReactComponent as DynamicQRIcon } from './dynamic-qr-icon.svg'
 import { ReactComponent as ExpandRightIcon } from './expand-right-icon.svg'
 
+import { ReactComponent as DispenserQRIcon } from './dispenser-qr-icon.svg'
+import { ReactComponent as ClaimLinksIcon } from './claim-links-icon.svg'
+import { ReactComponent as ClaimQRsIcon } from './claim-qrs-icon.svg'
+import { ReactComponent as NFTsIcon } from './nfts-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  DispenserQRIcon,
+  ClaimLinksIcon,
+  ClaimQRsIcon,
+  NFTsIcon,
   DynamicQRIcon,
   MessagesIcon,
   CodeIcon,

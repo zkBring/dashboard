@@ -15,6 +15,7 @@ export const Container = styled.div`
 
 export const Overlay = styled.div`
   position: fixed;
+  z-index: 100;
   right: 0;
   background: rgba(0, 0, 0, .3);
   top: 0;

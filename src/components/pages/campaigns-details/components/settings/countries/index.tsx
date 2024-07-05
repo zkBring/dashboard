@@ -7,9 +7,41 @@ import { TProps } from './types'
 import {
   AsidePopup
 } from 'components/common'
-import { InputStyled } from './styled-components'
-import { isURL } from 'helpers'
+import {
+  Content,
+  SelectStyled,
+  CountryItem,
+  ButtonStyled
+} from './styled-components'
+import { alertError } from 'helpers'
 import { TCountry } from 'types'
+
+const CountryContent: FC<TCountry & {
+  onRemove: (id: string) => void
+}> = ({
+  id,
+  name,
+  onRemove
+}) => {
+  return <CountryItem >
+    {name}
+
+    <ButtonStyled
+      onClick={() => onRemove(id)}
+      appearance='additional'
+      size='extra-small'
+    >
+      Remove
+    </ButtonStyled>
+  </CountryItem>
+}
+
+const defineSelectOptions = (countries: TCountry[]) => {
+  return countries.map(country => ({
+    value: country.id,
+    label: country.name
+  }))
+}
 
 
 const Countries: FC<TProps> = ({
@@ -34,9 +66,42 @@ const Countries: FC<TProps> = ({
     onClose={onClose}
     toggleAction={toggleAction}
     toggleState={toggleValue}
-    action={() => {}}
+    action={() => {
+      action(
+        availableCountries.map(country => country.id),
+        onClose
+      )
+    }}
   >
-    {availableCountriesValue.length}
+    {
+      toggleValue && <Content>
+        <SelectStyled
+          onChange={async ({ value, label }) => {
+            const countryId = value
+            const countryAlreadyAdded = availableCountries.find(country => country.id === countryId)
+            if (countryAlreadyAdded) {
+              return alertError(`Country ${countryId} was already added`)
+            }
+            setAvailableCountries([...availableCountries, {
+              id: value,
+              name: label
+            }])
+          }}
+          value={null}
+          placeholder='Select Country'
+          options={defineSelectOptions(countries)}
+        />
+        {availableCountries.map(item => {
+          return <CountryContent
+            {...item}
+            onRemove={(id) => {
+              const updatedAvailableCountries = availableCountries.filter(item => item.id === id)
+              setAvailableCountries(updatedAvailableCountries)
+            }}
+          />
+        })}
+      </Content>
+    }
   </AsidePopup>
 }
 

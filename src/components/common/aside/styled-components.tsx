@@ -7,8 +7,8 @@ export const Aside = styled.aside`
   flex-direction: column;
   position: relative;
   height: 100%;
-  min-width: 52px;
-  max-width: 52px;
+  min-width: 142px;
+  max-width: 142px;
   background-color: ${props => props.theme.primaryBackgroundColor};
 `
 
@@ -57,12 +57,13 @@ export const AsideMenuItemIconClassName = 'AsideMenuItemIcon'
 export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
   margin: 0;
   min-height: 40px;
+
   color: ${props => props.theme.primaryTextColor};
   display: flex;
   align-items: center;
   text-decoration: none;
   padding: 8px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1;
   cursor: pointer;
   margin-bottom: 6px;
@@ -81,7 +82,7 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
     background: ${props.theme.menuItemActive};
     svg {
       path {
-        fill: ${props.theme.linkTextColor};
+        stroke: ${props.theme.linkTextColor};
       }
     }
   `}
@@ -93,6 +94,10 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
 
   .${AsideMenuItemIconClassName} {
     margin-right: 24px;
+  }
+
+  svg {
+    margin-right: 8px;
   }
 `
 
@@ -123,7 +128,7 @@ export const AsideMenuItemExternal = styled.div`
   align-items: center;
   text-decoration: none;
   padding: 8px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1;
   cursor: pointer;
   margin-bottom: 6px;
@@ -137,5 +142,9 @@ export const AsideMenuItemExternal = styled.div`
 
   .${AsideMenuItemIconClassName} {
     margin-right: 24px;
+  }
+
+  svg {
+    margin-right: 8px;
   }
 `

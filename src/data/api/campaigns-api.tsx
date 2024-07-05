@@ -45,6 +45,19 @@ const requests = {
     })
   },
 
+  updateWallets: (
+    campaign_id: string | number,
+    available_wallets: string[],
+    wallet: string
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      available_wallets,
+      wallet
+    }, {
+      withCredentials: true
+    })
+  },
+
   updateClaimingFinishedButtonOn: (
     campaign_id: string | number,
     claiming_finished_button_on: boolean

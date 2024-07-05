@@ -1,9 +1,11 @@
-import { Widget, Button } from "components/common"
+import { Widget, Button, TextLink } from "components/common"
 import { TableValue } from "components/pages/common"
 import styled from "styled-components"
+import { Note } from 'linkdrop-ui'
+
 
 export const WidgetStyled = styled(Widget)`
-
+  margin-bottom: 24px;
 `
 
 export const TableValueStyled = styled(TableValue)`
@@ -15,4 +17,14 @@ export const TableValueStyled = styled(TableValue)`
 
 export const ButtonStyled = styled(Button)`
   
+`
+
+export const NoteStyled = styled(Note)`
+  border: none;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${props => props.theme.primaryTextColor};
+`
+
+export const TextLinkStyled = styled(TextLink)`
 `
