@@ -1,16 +1,64 @@
 import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
-import { Campaign, Draft } from 'components/common'
+import { TextLink } from 'components/common'
+import { TCampaignCreateStep, TClaimPattern, TTokenType } from 'types'
 import {
-  Container,
-  StyledWidget,
-  Title,
-  WidgetDescription,
-  WidgetButton,
+  DraftsListStyled,
+  CampaignsListStyled,
+  Header,
+  WidgetTitleStyled,
+  ContainerButton,
+  ButtonStyled,
+  BatchListValueFixed,
+  WidgetComponentStyled,
+  TagStyled
 } from './styled-components'
+import {
+  BatchListLabel,
+  BatchListValue,
+} from 'components/pages/common'
 import { InitialGuide } from 'components/pages/common'
-import { TProps } from './types'
+import {
+  TProps
+} from './types'
+import {
+  formatDate,
+  shortenString,
+  defineExplorerUrl
+} from 'helpers'
+
+const defineCampaignStatus = (
+  draft: boolean,
+) => {
+  if (draft) {
+    return <TagStyled
+      status='default'
+      title='DRAFT'
+    />
+  }
+
+  return <TagStyled
+  status='success'
+    title='ACTIVE'
+  />
+}
+
+const defineDraftUrl = (
+  createStep: TCampaignCreateStep,
+  tokenStandard: TTokenType
+) => {
+  switch (createStep) {
+    case 'approve':
+      return `/campaigns/new/${tokenStandard}/approve`
+    case 'secure':
+      return `/campaigns/new/${tokenStandard}/secure`
+    case 'initial':
+      return `/campaigns/new/${tokenStandard}/initial`
+    default:
+      return `/campaigns/new`
+  }
+}
 
 const mapStateToProps = ({
   campaigns: { campaigns, drafts },
@@ -34,62 +82,119 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
   })
 
-  const createNewCampaignWidget = <StyledWidget title='New campaign'>
-    <WidgetDescription>
-      Create a campaign to distribute your NFTs via claim links
-    </WidgetDescription>
-    <WidgetButton 
-      title={loading ? 'Loading' : 'Create'}
-      appearance='action'
-      to='/campaigns/new'
-      loading={loading}
-    />
-  </StyledWidget>  
-
   return <>
     <InitialGuide />
-    {createNewCampaignWidget}
-    {currentAddressDrafts && currentAddressDrafts.length > 0 && <>
-      <Title>Drafts</Title>
-      <Container>
-        {currentAddressDrafts.map(draft => {
-          const { campaign, chainId, createdAt, step } = draft
-          return <Draft
-            title={campaign.title}
-            createdAt={createdAt}
-            id={campaign.id}
-            key={campaign.id}
-            chainId={chainId}
-            type={campaign.tokenStandard}
-            proxyContractAddress={campaign.proxyContractAddress}
-            claimPattern={campaign.claimPattern}
-            sponsored={campaign.sponsored || false}
-            stepToOpen={step}
-            tokenAddress={campaign.tokenAddress}
-          />
-        })}
-      </Container>
-    </>}
-    {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <>
-      <Title>Campaigns</Title>
-      <Container>
-        {currentAddressCampaigns.map(campaign => {
-          return <Campaign
-            title={campaign.title}
-            created_at={campaign.created_at}
-            id={campaign.campaign_id}
-            key={campaign.campaign_id}
-            chainId={campaign.chain_id}
-            type={campaign.token_standard}
-            linksAmount={campaign.links_count}
-            proxyContractAddress={campaign.proxy_contract_address}
-            claimPattern={campaign.claim_pattern}
-            sponsored={campaign.sponsored || false}
-            linksClaimed={campaign.links_claimed || 0}
-          />
-        })}
-      </Container>
-    </>}
+    <WidgetComponentStyled>
+      <Header>
+        <WidgetTitleStyled>My dispensers</WidgetTitleStyled>
+        <ContainerButton
+          title='+ New'
+          disabled={loading}
+          size='extra-small'
+          appearance='action'
+          to='/campaigns/new'
+        />
+      </Header>
+      {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <CampaignsListStyled>
+      <BatchListLabel>Created</BatchListLabel>
+      <BatchListLabel>Name</BatchListLabel>
+      <BatchListLabel>Token</BatchListLabel>
+      <BatchListLabel>Claims</BatchListLabel>
+      <BatchListLabel>Status</BatchListLabel>
+      <BatchListLabel>Actions</BatchListLabel>
+      {currentAddressCampaigns.map(campaign => {
+        const {
+          title,
+          created_at,
+          campaign_id,
+          chain_id,
+          links_count,
+          token_address,
+          
+        } = campaign
+        const scanUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address}`)
+
+        const dateCreatedFormatted = formatDate(created_at || '')
+        return <>
+          <BatchListValue>
+            {dateCreatedFormatted}
+          </BatchListValue>
+          <BatchListValueFixed>{title}</BatchListValueFixed>
+          <BatchListValue>
+            <TextLink href={scanUrl as string} target='_blank'>
+              {shortenString(token_address as string)}
+            </TextLink>
+          </BatchListValue>
+          <BatchListValue>
+            {links_count || 0}
+          </BatchListValue>
+          <BatchListValue>
+            {defineCampaignStatus(false)}
+          </BatchListValue>
+          <BatchListValue>
+            <ButtonStyled
+              appearance='additional'
+              size='extra-small'
+              to={`/campaigns/${campaign_id}`}
+            >
+              Edit
+            </ButtonStyled>
+          </BatchListValue>
+        </>})}
+      </CampaignsListStyled>}
+    </WidgetComponentStyled>
+
+
+    {currentAddressDrafts && currentAddressDrafts.length > 0 && <WidgetComponentStyled>
+      <Header>
+        <WidgetTitleStyled>Drafts</WidgetTitleStyled>
+      </Header>
+      <DraftsListStyled>
+        <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
+        <BatchListLabel>Token</BatchListLabel>
+        <BatchListLabel>Claims</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
+        <BatchListLabel>Actions</BatchListLabel>
+        {currentAddressDrafts.map(campaign => {
+        const {
+          id,
+          campaign: campaignData,
+          step,
+          chainId,
+          createdAt
+        } = campaign
+        const scanUrl = defineExplorerUrl(Number(chainId), `/address/${campaignData.tokenAddress}`)
+
+        const dateCreatedFormatted = formatDate(createdAt || '')
+        return <>
+          <BatchListValue>
+            {dateCreatedFormatted}
+          </BatchListValue>
+          <BatchListValueFixed>{campaignData.title}</BatchListValueFixed>
+          <BatchListValue>
+            <TextLink href={scanUrl as string} target='_blank'>
+              {shortenString(campaignData.tokenAddress as string)}
+            </TextLink>
+          </BatchListValue>
+          <BatchListValue>
+            <ButtonStyled
+              appearance='additional'
+              size='extra-small'
+              to={defineDraftUrl(
+                step,
+                campaignData.tokenStandard as TTokenType
+              )}
+            >
+              Continue
+            </ButtonStyled>
+          </BatchListValue>
+        </>})}
+      </DraftsListStyled>
+
+    </WidgetComponentStyled>}
+    
+    
   </>
 }
 

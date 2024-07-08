@@ -43,6 +43,7 @@ const getDispenserStats = ({
           dispenser: TDispenser
         }
       } = await dispensersApi.getOne(dispenser_id)
+      
       if (statsSuccess) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenser_id) {
@@ -71,7 +72,6 @@ const getDispenserStats = ({
       }
       
     } catch (err) {
-      alertError('Couldn’t fetch Dispanser data, please check console')
       console.error(err)
     }
 

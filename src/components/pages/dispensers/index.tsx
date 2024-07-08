@@ -4,7 +4,7 @@ import {
   Header,
   WidgetTitleStyled,
   ContainerButton,
-  DispensersListLabelStyled,
+  DispensersListValueFixed,
   DispensersListValueStyled,
   DispensersListStyled,
   SecondaryTextSpan
@@ -57,7 +57,7 @@ const Dispensers: FC<ReduxType> = ({
       <Header>
         <WidgetTitleStyled>My dispensers</WidgetTitleStyled>
         <ContainerButton
-          title='+ Create new'
+          title='+ New'
           disabled={loading}
           size='extra-small'
           appearance='action'
@@ -68,7 +68,6 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Title</BatchListLabel>
         <BatchListLabel>Start date (UTC+0)</BatchListLabel>
-        <BatchListLabel>Duration</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabel></BatchListLabel>
@@ -103,11 +102,10 @@ const Dispensers: FC<ReduxType> = ({
             <BatchListValue>
               {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
             </BatchListValue>
-            <DispensersListLabelStyled>{title}</DispensersListLabelStyled>
+            <DispensersListValueFixed>{title}</DispensersListValueFixed>
             <BatchListValue>
               {claimStartDate}, <SecondaryTextSpan>{claimStartTime}</SecondaryTextSpan>
             </BatchListValue>
-            <BatchListValue>{claim_duration} min(s)</BatchListValue>
             <BatchListValue>
               {links_count || 0}
             </BatchListValue>

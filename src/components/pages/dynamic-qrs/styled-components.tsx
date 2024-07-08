@@ -17,6 +17,8 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 0;
+  font-size: 16px;
+  line-height: 24px;
 `
 
 export const ContainerButton = styled(Button)`
@@ -25,7 +27,7 @@ export const ContainerButton = styled(Button)`
 `
 
 export const DispensersListStyled = styled(BatchList)`
-  grid-template-columns: auto auto auto auto auto auto 180px;
+  grid-template-columns: 224px 224px auto auto auto auto;
   margin-top: 20px; 
 `
 
@@ -34,11 +36,12 @@ export const DispensersListValueStyled = styled(BatchListValue)`
   justify-content: flex-end;
 `
 
-export const DispensersListLabelStyled = styled(BatchListLabel)`
+export const DispensersListValueFixed = styled(BatchListValue)`
+  width: 224px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
+  padding-right: 24px;
 `
 
 export const ErrorSpan = styled.span`

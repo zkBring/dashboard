@@ -19,7 +19,7 @@ export const InputComponent = styled(Input)`
 `
 
 export const BatchListStyled = styled(BatchList)`
-  grid-template-columns: auto auto auto auto auto auto 180px;
+  grid-template-columns: 224px 224px auto auto auto auto;
   margin-top: 20px; 
 `
 
@@ -34,6 +34,8 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 0;
+  font-size: 16px;
+  line-height: 24px;
 `
 
 export const BatchListValueStyled = styled(BatchListValue)`

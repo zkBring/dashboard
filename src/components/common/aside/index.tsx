@@ -50,6 +50,8 @@ const AsideComponent: FC<TProps & ReduxType> = ({
   //   </AsideLogoZone>
   // }
 
+  if (authorizationStep !== 'authorized') { return null }
+
 	return <Aside>
     <AsideLogoZone>
       <AsideTextLink to='/campaigns'>

@@ -23,6 +23,7 @@ import { defineQRStatusName, formatDate, shortenString } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import { TQRStatus } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -46,13 +47,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
-const defineUploadedStatusAppearance = (uploaded?: boolean) => {
-  if (!uploaded) {
-    return <Tag status='error' title='Not uploaded' />
-  }
-  return <Tag status='success' title='Uploaded' />
+const defineStatus = (
+  status: TQRStatus
+) => {
+  const statusName = defineQRStatusName(status)
+  return <Tag title={statusName} status='info' />
 }
 
+
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QRs: FC<ReduxType> = ({
@@ -72,26 +75,26 @@ const QRs: FC<ReduxType> = ({
       </Header>
     
       {qrs.length > 0 && <BatchListStyled>
-        <BatchListLabel>Name of set</BatchListLabel>
-        <BatchListLabel>Quantity</BatchListLabel>
-        <BatchListLabel>Date created</BatchListLabel>
+        <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
         <BatchListLabel>Claim links</BatchListLabel>
         <BatchListLabel>Linked campaign</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
-        <BatchListLabel></BatchListLabel>
+        <BatchListLabel>Actions</BatchListLabel>
+
+        {/* @ts-ignore */}
         {qrs.map(qr => {
           return <>
-            <BatchListLabelStyled>{qr.set_name}</BatchListLabelStyled>
-            <BatchListValue>{qr.qr_quantity}</BatchListValue>
             <BatchListValue>{qr.created_at && formatDate(qr.created_at)}</BatchListValue>
-            <BatchListValue>{defineUploadedStatusAppearance(qr.links_uploaded)}</BatchListValue>
+            <BatchListLabelStyled>{qr.set_name}</BatchListLabelStyled>
+            <BatchListValue>{qr.qr_quantity || <Tag status='error' title='Not uploaded' />}</BatchListValue>
             <BatchListValue>
               {
                 (!qr.links_uploaded || !qr.campaign || !qr.campaign.campaign_id) ?
                   '-' : shortenString((qr.campaign || {}).title)
               }
             </BatchListValue>
-            <BatchListValue>{defineQRStatusName(qr.status)}</BatchListValue>
+            <BatchListValue>{defineStatus(qr.status)}</BatchListValue>
             <BatchListValueStyled>
               <Button
                 appearance='additional'
