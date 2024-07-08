@@ -4,7 +4,8 @@ import { Constants } from './constants'
 const initialState: DispensersState = {
   dispensers: [],
   loading: false,
-  mappingLoader: 0
+  mappingLoader: 0,
+  currentDispenserData: { campaign: null }
 }
 
 export function dispensersReducer(
@@ -18,6 +19,8 @@ export function dispensersReducer(
         return {...state, loading: action.payload }
       case Constants.DISPENSERS_SET_DISPENSERS:
         return {...state, dispensers: action.payload }
+        case Constants.DISPENSERS_SET_CURRENT_DISPENSER_DATA:
+          return {...state, currentDispenserData: action.payload.currentDispenserData }
       case Constants.DISPENSERS_SET_MAPPING_LOADER:
       return {...state, mappingLoader: action.payload.mappingLoader }
       

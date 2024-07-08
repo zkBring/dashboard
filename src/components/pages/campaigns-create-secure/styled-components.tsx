@@ -13,6 +13,10 @@ export const StyledRadio = styled(Radio)`
   margin-bottom: 32px
 `
 
+export const CheckboxStyled = styled(Checkbox)`
+  margin-bottom: 12px;
+`
+
 export const WidgetSecure = styled.div`
   flex: 1;
   padding-right: 40px;
@@ -25,13 +29,8 @@ export const StyledInput = styled(Input)`
 
 export const StyledSelect = styled(Select)``
 
-export const CheckboxStyled = styled(Checkbox)`
-  margin-bottom: 12px;
-`
 
-export const CheckboxContainer = styled.div`
-
-`
+export const CheckboxContainer = styled.div``
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
   max-width: 400px;

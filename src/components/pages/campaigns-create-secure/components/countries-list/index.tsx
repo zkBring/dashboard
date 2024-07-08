@@ -57,7 +57,6 @@ const CountriesList: FC<TProps> = ({
 }) => {
   return <>
     {data.map(item => {
-      console.log({ item })
       return <CountryContent {...item} onRemove={onRemove} disabled={disabled}/>
     })}
   </>

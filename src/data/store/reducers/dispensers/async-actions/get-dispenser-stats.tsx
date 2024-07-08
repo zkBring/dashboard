@@ -7,16 +7,19 @@ import { alertError } from 'helpers'
 import {
   TDispenser,
   TDispenserWhitelistType,
-  TDispenserWhitelistItemAddress
+  TDispenserWhitelistItemAddress,
+  TCampaign
 } from 'types'
 
 type TGetDispenserStatsArgs = {
   dispenser_id: string
+  multiscan_qr_id: string
   callback?: () => void
 }
 
 const getDispenserStats = ({
   dispenser_id,
+  multiscan_qr_id,
   callback
 }: TGetDispenserStatsArgs) => {
   return async (
@@ -24,6 +27,8 @@ const getDispenserStats = ({
     getState: () => RootState
   ) => {
     dispatch(actionsDispensers.setLoading(true))
+    dispatch(actionsDispensers.setCurrentDispenserData({ campaign: null }))
+
    
     const { dispensers: { dispensers } } = getState()
     try {
@@ -38,6 +43,7 @@ const getDispenserStats = ({
           dispenser: TDispenser
         }
       } = await dispensersApi.getOne(dispenser_id)
+      
       if (statsSuccess) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenser_id) {
@@ -49,9 +55,23 @@ const getDispenserStats = ({
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
         if (callback) { callback() }
       }
+
+      const {
+        data: {
+          success: campaignSuccess,
+          campaign
+        }
+      } : {
+        data: {
+          success: boolean,
+          campaign: TCampaign
+        }
+      } = await dispensersApi.getCampaignData(multiscan_qr_id)
+      if (campaignSuccess) {
+        dispatch(actionsDispensers.setCurrentDispenserData({ campaign: campaign }))
+      }
       
     } catch (err) {
-      alertError('Couldn’t fetch Dispanser data, please check console')
       console.error(err)
     }
 

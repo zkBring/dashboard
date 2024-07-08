@@ -73,6 +73,7 @@ const getDashboardKey = (
           chainId as number,
           is_coinbase
         )
+
         if (decrypted_dashboard_key) {
           dispatch(userActions.setDashboardKey(decrypted_dashboard_key))
         } else {

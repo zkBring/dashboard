@@ -17,6 +17,24 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 0;
+  font-size: 16px;
+  line-height: 24px;
+`
+
+export const DispensersListValueFixed = styled(BatchListValue)`
+  width: 224px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 24px;
+`
+
+export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
+  text-align: right;
+`
+
+export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
+  justify-self: end;
 `
 
 export const ContainerButton = styled(Button)`
@@ -25,20 +43,13 @@ export const ContainerButton = styled(Button)`
 `
 
 export const DispensersListStyled = styled(BatchList)`
-  grid-template-columns: auto auto auto auto auto auto 180px;
+  grid-template-columns: 224px 224px auto auto auto auto;
   margin-top: 20px; 
 `
 
 export const DispensersListValueStyled = styled(BatchListValue)`
   display: flex;
   justify-content: flex-end;
-`
-
-export const DispensersListLabelStyled = styled(BatchListLabel)`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
 `
 
 export const ErrorSpan = styled.span`

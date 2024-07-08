@@ -123,5 +123,5 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   </Header>
 }
 
-
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(HeaderComponent)

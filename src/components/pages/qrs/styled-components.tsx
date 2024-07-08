@@ -19,7 +19,7 @@ export const InputComponent = styled(Input)`
 `
 
 export const BatchListStyled = styled(BatchList)`
-  grid-template-columns: auto auto auto auto auto auto 180px;
+  grid-template-columns: 224px 224px auto auto auto auto;
   margin-top: 20px; 
 `
 
@@ -28,17 +28,23 @@ export const Header = styled.div`
   justify-content: space-between;
 `
 
+export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
+  text-align: right;
+`
+
+export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
+  justify-self: end;
+`
+
+
 export const WidgetTitleStyled = styled(WidgetTitle)`
   max-width: 400px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 0;
-`
-
-export const BatchListValueStyled = styled(BatchListValue)`
-  display: flex;
-  justify-content: flex-end;
+  font-size: 16px;
+  line-height: 24px;
 `
 
 export const BatchListLabelStyled = styled(BatchListLabel)`

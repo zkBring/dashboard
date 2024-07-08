@@ -15,11 +15,14 @@ import CheckListItem from './check-list-item'
 import InformationContainer from './information-container'
 import Tooltip from './tooltip'
 import Button from './button'
-import Draft from './draft'
 import FileInput from './file-input'
+import AsidePopup from './aside-popup'
+import StatusBar from './status-bar'
 
 export {
   Header,
+  StatusBar,
+  AsidePopup,
   Aside,
   FileInput,
   Button,
@@ -39,6 +42,5 @@ export {
   WidgetTextBlock,
   TransactionDetails,
   WidgetData,
-  Tooltip,
-  Draft
+  Tooltip
 }
