@@ -21,6 +21,7 @@ import { TCountry, TDispenser, TTokenType } from 'types'
 import Wallets from './wallets'
 import Countries from './countries'
 import FinalScreenButton from './final-screen-button'
+import wallets from 'configs/wallets'
 
 const settings = [
   {
@@ -170,7 +171,10 @@ const defineEnabledLabel = (
   wallet: string
 ) => {
   if (settingId === 'wallets') {
-    return wallet
+    const walletApp = wallets.find(walletApp =>  walletApp.id === wallet)
+    if (walletApp) {
+      return walletApp?.name
+    }
   }
 
   return 'Enabled'
