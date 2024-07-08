@@ -12,7 +12,9 @@ import {
   ButtonStyled,
   BatchListValueFixed,
   WidgetComponentStyled,
-  TagStyled
+  TagStyled,
+  BatchListLabelTextAlignRight,
+  BatchListValueJustifySelfEnd
 } from './styled-components'
 import {
   BatchListLabel,
@@ -34,13 +36,13 @@ const defineCampaignStatus = (
   if (draft) {
     return <TagStyled
       status='default'
-      title='DRAFT'
+      title='Draft'
     />
   }
 
   return <TagStyled
   status='success'
-    title='ACTIVE'
+    title='Active'
   />
 }
 
@@ -86,7 +88,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
     <InitialGuide />
     <WidgetComponentStyled>
       <Header>
-        <WidgetTitleStyled>My dispensers</WidgetTitleStyled>
+        <WidgetTitleStyled>Claim links</WidgetTitleStyled>
         <ContainerButton
           title='+ New'
           disabled={loading}
@@ -101,7 +103,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
       <BatchListLabel>Token</BatchListLabel>
       <BatchListLabel>Claims</BatchListLabel>
       <BatchListLabel>Status</BatchListLabel>
-      <BatchListLabel>Actions</BatchListLabel>
+      <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
       {currentAddressCampaigns.map(campaign => {
         const {
           title,
@@ -131,7 +133,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
           <BatchListValue>
             {defineCampaignStatus(false)}
           </BatchListValue>
-          <BatchListValue>
+          <BatchListValueJustifySelfEnd>
             <ButtonStyled
               appearance='additional'
               size='extra-small'
@@ -139,7 +141,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
             >
               Edit
             </ButtonStyled>
-          </BatchListValue>
+          </BatchListValueJustifySelfEnd>
         </>})}
       </CampaignsListStyled>}
     </WidgetComponentStyled>
@@ -155,7 +157,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
         <BatchListLabel>Token</BatchListLabel>
         <BatchListLabel>Claims</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
-        <BatchListLabel>Actions</BatchListLabel>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {currentAddressDrafts.map(campaign => {
         const {
           id,

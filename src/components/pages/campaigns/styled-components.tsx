@@ -8,6 +8,7 @@ import {
   BatchList,
   WidgetTitle,
   BatchListValue,
+  BatchListLabel,
   WidgetComponent
 } from '../common'
 
@@ -32,6 +33,14 @@ export const BatchListValueFixed = styled(BatchListValue)`
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 24px;
+`
+
+export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
+  text-align: right;
+`
+
+export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
+  justify-self: end;
 `
 
 export const ContainerButton = styled(Button)`

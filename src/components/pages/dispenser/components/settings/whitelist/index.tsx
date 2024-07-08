@@ -51,8 +51,7 @@ const Whitelist: FC<TProps> = ({
     toggleAction={toggleAction}
     toggleState={toggleValue}
   >
-
-      <TextAreaStyled
+      {toggleValue && <TextAreaStyled
         onChange={(value: string) => {
           setValue(value)
           return value
@@ -66,8 +65,7 @@ const Whitelist: FC<TProps> = ({
 0xdfs7d8f7s8df98df09s8df98s0df9s80df90sdf
 0xdfs7d8f7s8df98df09s8df98s0df9s80df90sdf and so on
         `}
-      />
-    
+      />}
   </AsidePopup>
 }
 

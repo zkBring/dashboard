@@ -31,6 +31,14 @@ export const DispensersListStyled = styled(BatchList)`
   margin-top: 20px; 
 `
 
+export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
+  text-align: right;
+`
+
+export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
+  justify-self: end;
+`
+
 export const DispensersListValueStyled = styled(BatchListValue)`
   display: flex;
   justify-content: flex-end;

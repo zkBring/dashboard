@@ -5,9 +5,10 @@ import {
   WidgetTitleStyled,
   ContainerButton,
   DispensersListValueFixed,
-  DispensersListValueStyled,
   DispensersListStyled,
-  SecondaryTextSpan
+  SecondaryTextSpan,
+  BatchListLabelTextAlignRight,
+  BatchListValueJustifySelfEnd
 } from './styled-components'
 import { Button } from 'components/common'
 import {
@@ -58,7 +59,7 @@ const DynamicQRs: FC<ReduxType> = ({
   return <Container>
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>Dynamic QR codes</WidgetTitleStyled>
+        <WidgetTitleStyled>Dynamic QR code</WidgetTitleStyled>
         <ContainerButton
           title='+ New'
           disabled={loading}
@@ -73,7 +74,7 @@ const DynamicQRs: FC<ReduxType> = ({
         <BatchListLabel>Start date (UTC+0)</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
-        <BatchListLabel></BatchListLabel>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {dynamicQrs.map(dispenser => {
           const {
             title,
@@ -113,14 +114,14 @@ const DynamicQRs: FC<ReduxType> = ({
               {links_count || 0}
             </BatchListValue>
             <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
-            <DispensersListValueStyled>
+            <BatchListValueJustifySelfEnd>
               <Button
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
                 to={`/dynamic-qrs/${dispenser_id}`}
               />
-            </DispensersListValueStyled>
+            </BatchListValueJustifySelfEnd>
           </>
         })}
       </DispensersListStyled>}

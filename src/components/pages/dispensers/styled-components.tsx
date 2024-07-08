@@ -29,6 +29,14 @@ export const DispensersListValueFixed = styled(BatchListValue)`
   padding-right: 24px;
 `
 
+export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
+  text-align: right;
+`
+
+export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
+  justify-self: end;
+`
+
 export const ContainerButton = styled(Button)`
   align-self: end;
   margin-bottom: 0px;

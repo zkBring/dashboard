@@ -16,7 +16,6 @@ const QRCode: FC<TProps> = ({
 
   useEffect(() => {
     const init = async () => {
-      console.log({ qrRef })
       if (!qrRef || !qrRef.current) { return }
       const claimAppURL = defineClaimAppURL(address)
       const qrOption = defineQROptions(address)

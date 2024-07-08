@@ -6,8 +6,9 @@ import {
   BatchListStyled,
   Header,
   WidgetTitleStyled,
-  BatchListValueStyled,
-  BatchListLabelStyled
+  BatchListLabelStyled,
+  BatchListLabelTextAlignRight,
+  BatchListValueJustifySelfEnd
 } from './styled-components'
 import {
   BatchListLabel,
@@ -65,7 +66,7 @@ const QRs: FC<ReduxType> = ({
     <InitialGuide />
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>My QR codes</WidgetTitleStyled>
+        <WidgetTitleStyled>QR Set</WidgetTitleStyled>
         <ContainerButton
           title='+ Create QR codes'
           size='extra-small'
@@ -80,7 +81,7 @@ const QRs: FC<ReduxType> = ({
         <BatchListLabel>Claim links</BatchListLabel>
         <BatchListLabel>Linked campaign</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
-        <BatchListLabel>Actions</BatchListLabel>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
 
         {/* @ts-ignore */}
         {qrs.map(qr => {
@@ -95,14 +96,14 @@ const QRs: FC<ReduxType> = ({
               }
             </BatchListValue>
             <BatchListValue>{defineStatus(qr.status)}</BatchListValue>
-            <BatchListValueStyled>
+            <BatchListValueJustifySelfEnd>
               <Button
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
                 to={`/qrs/${qr.set_id}`}
               />
-            </BatchListValueStyled>
+            </BatchListValueJustifySelfEnd>
           </>
         })}
       </BatchListStyled>}

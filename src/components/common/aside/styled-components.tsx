@@ -2,6 +2,9 @@ import styled, { css } from 'styled-components';
 import TextLink from '../text-link'
 import { Link } from 'react-router-dom'
 
+export const AsideMinimizedClassName = 'AsideMinimized'
+export const AsideMenuItemTitleClassName = 'AsideMenuItemTitleClassName'
+
 export const Aside = styled.aside`
   display: flex;
   flex-direction: column;
@@ -10,12 +13,51 @@ export const Aside = styled.aside`
   min-width: 142px;
   max-width: 142px;
   background-color: ${props => props.theme.primaryBackgroundColor};
+
+  &.${AsideMinimizedClassName} {
+    min-width: 52px;
+    max-width: 52px;
+
+    .${AsideMenuItemTitleClassName} {
+      display: none
+    }
+  }
 `
 
-export const AsideLogoZone = styled.div<{ noAside?: boolean }>`
+export const MenuExpander = styled.div`
+  width: 17px;
+  height: 17px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background-color: ${props => props.theme.blankColor};
+  border-radius: 2px;
+  cursor: pointer;
+`
+
+export const MenuExpanderDot = styled.div`
+  width: 2px;
+  height: 2px;
+  background-color: ${props => props.theme.primaryTextColor};
+  border-radius: 2px;
+`
+
+export const AsideLogoZone = styled.div<{
+  noAside?: boolean,
+  expanded: boolean
+}>`
   display: flex;
   align-items: center;
   padding: 32px 8px;
+  justify-content: space-between;
+
+
+  ${props => !props.expanded && css`{
+    gap: 12px;
+    flex-direction: column;
+  }`}
 
   ${props => props.noAside && css`{
     position: absolute;
@@ -24,7 +66,6 @@ export const AsideLogoZone = styled.div<{ noAside?: boolean }>`
 
 export const AsideLogoIcon = styled.img`
   max-width: 36px;
-  margin-right: 6px;
 `
 
 export const AsideLogoText = styled.h4`
@@ -39,6 +80,12 @@ export const AsideSubtitle = styled.h3`
   padding: 0 16px;
   color: ${props => props.theme.additionalTextColor};
 `
+
+
+export const AsideMenuItemTitle = styled.span`
+  margin-left: 8px;
+`
+
 
 export const AsideMenu = styled.div`
   margin: 0;
@@ -95,10 +142,6 @@ export const AsideMenuItem = styled(Link)<AsideMenuItemProps>`
   .${AsideMenuItemIconClassName} {
     margin-right: 24px;
   }
-
-  svg {
-    margin-right: 8px;
-  }
 `
 
 export const AsideFooter = styled.div`
@@ -142,9 +185,5 @@ export const AsideMenuItemExternal = styled.div`
 
   .${AsideMenuItemIconClassName} {
     margin-right: 24px;
-  }
-
-  svg {
-    margin-right: 8px;
   }
 `

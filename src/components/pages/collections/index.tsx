@@ -5,11 +5,11 @@ import {
   WidgetTitleStyled,
   ContainerButton,
   CollectionsListLabelStyled,
-  CollectionsListValueStyled,
   CollectionsListStyled,
   SecondaryTextSpan,
-  CollectionsListLabelAligned,
-  TokenImageStyled
+  TokenImageStyled,
+  BatchListLabelTextAlignRight,
+  BatchListValueJustifySelfEnd
 } from './styled-components'
 import { Button } from 'components/common'
 import {
@@ -62,7 +62,7 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Address</BatchListLabel>
         <BatchListLabel>All token copies</BatchListLabel>
-        <CollectionsListLabelAligned>Actions</CollectionsListLabelAligned>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {collections.map(collection => {
           const { title, collection_id, created_at, tokens_amount, token_address, thumbnail } = collection
           const dateCreatedFormatted = formatDate(created_at || '')
@@ -81,14 +81,14 @@ const Collections: FC<ReduxType> = ({
             <BatchListValue>
               {defineCollectionStatusTag(tokens_amount || '0')}
             </BatchListValue>
-            <CollectionsListValueStyled>
+            <BatchListValueJustifySelfEnd>
               <Button
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
                 to={`/collections/${collection_id}`}
               />
-            </CollectionsListValueStyled>
+            </BatchListValueJustifySelfEnd>
           </>
         })}
       </CollectionsListStyled>}

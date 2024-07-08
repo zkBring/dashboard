@@ -7,7 +7,9 @@ import {
   DispensersListValueFixed,
   DispensersListValueStyled,
   DispensersListStyled,
-  SecondaryTextSpan
+  SecondaryTextSpan,
+  BatchListLabelTextAlignRight,
+  BatchListValueJustifySelfEnd
 } from './styled-components'
 import { Button } from 'components/common'
 import {
@@ -55,7 +57,7 @@ const Dispensers: FC<ReduxType> = ({
   return <Container>
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>My dispensers</WidgetTitleStyled>
+        <WidgetTitleStyled>Dispenser QR code</WidgetTitleStyled>
         <ContainerButton
           title='+ New'
           disabled={loading}
@@ -70,7 +72,7 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Start date (UTC+0)</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
-        <BatchListLabel></BatchListLabel>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {dispensers.map(dispenser => {
           const {
             title,
@@ -110,14 +112,14 @@ const Dispensers: FC<ReduxType> = ({
               {links_count || 0}
             </BatchListValue>
             <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
-            <DispensersListValueStyled>
+            <BatchListValueJustifySelfEnd>
               <Button
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
                 to={`/dispensers/${dispenser_id}`}
               />
-            </DispensersListValueStyled>
+            </BatchListValueJustifySelfEnd>
           </>
         })}
       </DispensersListStyled>}

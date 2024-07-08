@@ -28,6 +28,15 @@ export const Header = styled.div`
   justify-content: space-between;
 `
 
+export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
+  text-align: right;
+`
+
+export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
+  justify-self: end;
+`
+
+
 export const WidgetTitleStyled = styled(WidgetTitle)`
   max-width: 400px;
   white-space: nowrap;
@@ -36,11 +45,6 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   margin-bottom: 0;
   font-size: 16px;
   line-height: 24px;
-`
-
-export const BatchListValueStyled = styled(BatchListValue)`
-  display: flex;
-  justify-content: flex-end;
 `
 
 export const BatchListLabelStyled = styled(BatchListLabel)`

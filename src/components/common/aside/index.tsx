@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
   Aside,
   AsideFooter,
@@ -7,7 +7,12 @@ import {
   AsideMenuItem,
   AsideLogoIcon,
   AsideTextLink,
-  AsideMenuItemExternal
+  MenuExpanderDot,
+  AsideMenuItemExternal,
+  AsideMinimizedClassName,
+  MenuExpander,
+  AsideMenuItemTitle,
+  AsideMenuItemTitleClassName
 } from './styled-components'
 import LinkdropLogo from 'images/linkdrop-aside.png'
 import { RootState } from 'data/store'
@@ -41,47 +46,47 @@ const AsideComponent: FC<TProps & ReduxType> = ({
   authorizationStep,
   chainId
 }) => {
-  // const location = useLocation<LocationType>()
-  // if (authorizationStep !== 'authorized') {
-  //   return <AsideLogoZone noAside>
-  //     <AsideTextLink to='/'>
-  //       <AsideLogoIcon src={LinkdropLogo} />
-  //     </AsideTextLink>
-  //   </AsideLogoZone>
-  // }
+
+  const [ expanded, setExpanded ] = useState<boolean>(true)
 
   if (authorizationStep !== 'authorized') { return null }
 
-	return <Aside>
-    <AsideLogoZone>
+	return <Aside
+    className={!expanded ? AsideMinimizedClassName : ''}
+  >
+    <AsideLogoZone
+      expanded={expanded}
+    >
       <AsideTextLink to='/campaigns'>
         <AsideLogoIcon src={LinkdropLogo} />
       </AsideTextLink>
+      <MenuExpander onClick={() => setExpanded(!expanded)}>
+        <MenuExpanderDot />
+        <MenuExpanderDot />
+        <MenuExpanderDot />
+      </MenuExpander>
     </AsideLogoZone>
 
     <AsideMenu>
       <AsideMenuItem to='/campaigns' active={location.pathname.includes('/campaigns')}>
         <Icons.ClaimLinksIcon />
-        Claim Links
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Claim Links</AsideMenuItemTitle>
       </AsideMenuItem>
       <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
         <Icons.ClaimQRsIcon />
-        Claim QRs
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Claim QRs</AsideMenuItemTitle>
       </AsideMenuItem>
       <AsideMenuItem to='/dynamic-qrs' active={location.pathname.includes('/dispenser')}>
         <Icons.DynamicQRIcon />
-        Dynamic QR
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Dynamic QR</AsideMenuItemTitle>
       </AsideMenuItem>
       <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
         <Icons.DispenserQRIcon />
-        Dispenser QR
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Dispenser QR</AsideMenuItemTitle>
       </AsideMenuItem>
-      {/* <AsideMenuItem to='/invite-links' active={location.pathname.includes('/invite-links')}>
-        <Icons.InviteLinksIcon />Invite Links
-      </AsideMenuItem> */}
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
         <Icons.NFTsIcon />
-        NFTs
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>NFTs</AsideMenuItemTitle>
       </AsideMenuItem>
     </AsideMenu>
 
@@ -97,7 +102,8 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign', '_blank')
         }}>
-          <Icons.CodeIcon /> SDK
+          <Icons.CodeIcon />
+          <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>SDK</AsideMenuItemTitle>
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={() => {
           plausibleApi.invokeEvent({
@@ -109,7 +115,8 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58', '_blank')
         }}>
-          <Icons.BookIcon /> Guide
+          <Icons.BookIcon />
+          <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Guide</AsideMenuItemTitle>
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={async () => {
           plausibleApi.invokeEvent({
@@ -121,7 +128,8 @@ const AsideComponent: FC<TProps & ReduxType> = ({
           })
           window.open('https://linkdrop.io/contact-us', '_blank')
         }}>
-          <Icons.MessagesIcon /> Support
+          <Icons.MessagesIcon />
+          <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Support</AsideMenuItemTitle>
         </AsideMenuItemExternal>
       </AsideMenu>
     </AsideFooter>

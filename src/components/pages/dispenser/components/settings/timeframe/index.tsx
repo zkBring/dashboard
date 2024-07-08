@@ -52,8 +52,6 @@ const Timeframe: FC<TProps> = ({
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-
-
   return <AsidePopup
     title={title}
     subtitle={subtitle}

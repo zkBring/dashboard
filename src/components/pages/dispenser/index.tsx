@@ -261,6 +261,7 @@ const renderMainButton = (
 
       if (redirectUrl) {
         window.open(redirectUrl, '_blank')
+        return 
       }
 
       alert('Redirect URL not defined')
@@ -508,7 +509,7 @@ const Dispenser: FC<ReduxType> = ({
             dispenser_id as string,
             whitelistOn,
             () => {
-              alert('success')
+              
             },
             () => alert('error')
           )
@@ -548,7 +549,7 @@ const Dispenser: FC<ReduxType> = ({
             dispenser_id as string,
             redirectOn,
             () => {
-              alert('success')
+              
             },
             () => alert('error'),
           )
