@@ -25,7 +25,6 @@ const updateClaimingFinishedButtonOn = (
         claiming_finished_button_on
       )
 
-      console.log({ result })
       if (result.data.success) {
         
         const updatedCampaigns = campaigns.map(campaign => {

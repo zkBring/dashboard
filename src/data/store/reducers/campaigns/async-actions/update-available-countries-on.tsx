@@ -25,7 +25,6 @@ const updateAvailableCountriesOn = (
         available_countries_on
       )
 
-      console.log({ result })
       if (result.data.success) {
         
         const updatedCampaigns = campaigns.map(campaign => {

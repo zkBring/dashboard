@@ -41,11 +41,8 @@ const QRCode: FC<TProps> = ({
         backgroundOptions: qrOption.backgroundOptions,
         imageOptions: qrOption.imageOptions
       })
-
-      console.log({ qrCode })
       qrCode.append(qrRef.current)
       qrCode.update({ data: link } )
-
 
     }
 

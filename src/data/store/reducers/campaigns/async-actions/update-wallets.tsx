@@ -28,7 +28,6 @@ const updateWallets = (
         wallet
       )
 
-      console.log({ result })
       if (result.data.success) {
         
         const updatedCampaigns = campaigns.map(campaign => {

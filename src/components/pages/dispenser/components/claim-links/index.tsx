@@ -75,7 +75,6 @@ const defineContent = (
   dispenserStatus: TDispenserStatus,
   campaignData: null | TCampaign
 ) => {
-  console.log({ campaignData, dispenserStatus })
   if (dispenserStatus === 'NOT_UPLOADED') {
     return <WidgetSubtitle>
       Upload a CSV file with claim links in the required format. If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>.
@@ -133,8 +132,6 @@ const ClaimLinks: FC<TProps> = ({
   campaignData
 
 }) => {
-
-  console.log({ campaignData })
   const dispenserOptions = defineOptions(
     dispenserStatus,
     () => history.push(`/dispensers/edit/${dispenserId}`),
