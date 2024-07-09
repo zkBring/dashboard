@@ -3,39 +3,22 @@ import { ethers } from 'ethers'
 import { decrypt } from 'lib/crypto' 
 import { toString } from "uint8arrays/to-string"
 import { createWalletClient, custom } from 'viem'
-import { mainnet } from 'viem/chains'
 import { defineWagmiNetwork } from 'helpers'
 
-const retrieveDashboardKey: (
-  provider: any,
+const retrieveDashboardKeyWithPass: (
   encrypted_dashboard_key: string,
   sig_message: string,
   account: string,
   chain_id: number
 ) => Promise<string | void> = async (
-  provider,
   encrypted_dashboard_key,
   sig_message,
   account,
   chain_id
 ) => {
-  const network = defineWagmiNetwork(chain_id)
-
   try {
-    const walletClient = createWalletClient({
-      chain: network,
-      transport: custom(provider),
-    })
 
-    console.log({
-      sig_message
-    })
-
-    // const signature = await signer.signMessage(String(sig_message))
-    let signature = await walletClient.signMessage({ 
-      account: account as `0x${string}`,
-      message: sig_message
-    })
+    let signature = '111'
 
     const signature_key = ethers.utils.id(signature)
 
@@ -58,4 +41,4 @@ const retrieveDashboardKey: (
   }
 }
 
-export default retrieveDashboardKey
+export default retrieveDashboardKeyWithPass

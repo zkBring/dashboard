@@ -10,7 +10,6 @@ const createDashboardKey: (
   sig_message: string,
   account: string,
   chain_id: number,
-  is_coinbase: boolean
   ) => Promise<{
     dashboard_key: string,
     encrypted_dashboard_key: string
@@ -18,8 +17,7 @@ const createDashboardKey: (
   provider,
   sig_message,
   account,
-  chain_id,
-  is_coinbase
+  chain_id
 ) => {
 
   const network = defineWagmiNetwork(chain_id)
@@ -38,18 +36,6 @@ const createDashboardKey: (
       account: account as `0x${string}`,
       message: sig_message
     })
-
-    console.log({
-      originalSignature: signature
-    })
-
-    if (is_coinbase) {
-      signature = `${signature.slice(0,832)}${signature.slice(-64)}` as `0x${string}`
-
-      console.log({
-        updatedSignature: `first 832 symbols + last 64 symbols: ${signature}`
-      })
-    }
 
     console.log({ signature })
     const signature_key = ethers.utils.id(signature)
