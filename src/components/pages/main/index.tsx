@@ -43,6 +43,40 @@ const mapStateToProps = ({
   chainsAvailable
 })
 
+const defineTitle = (
+  authorizationStep: TAuthorizationStep
+) => {
+  switch (authorizationStep) {
+    case 'connect':
+      return 'Connect Wallet'
+    case 'login':
+      return 'Login'
+    case 'store-key':
+    default:
+      return 'Store Data Securely'
+  }
+} 
+
+const defineText = (
+  authorizationStep: TAuthorizationStep,
+  isCoinbase: boolean
+) => {
+  switch (authorizationStep) {
+    case 'connect':
+      return 'Enable Linkdrop to view your address and suggest transactions for approval'
+    case 'login':
+      return 'Sign a message in your wallet to log in securely to Linkdrop Dashboard'
+    case 'store-key':
+    default: {
+      if (isCoinbase) {
+        return 'Create a passkey for Linkdrop Dashboard to store your data securely and encrypted'
+      }
+      return 'Sign a message in your wallet to store your data securely and encrypted'
+    }
+
+  }
+} 
+
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) => {
   return {
     connectWallet: (
@@ -175,7 +209,10 @@ const Main: FC<ReduxType> = ({
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
+  const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
 
+  const title = defineTitle(authorizationStep)
+  const text = defineText(authorizationStep, isCoinbase)
   useEffect(() => {
     initialLoad()
   }, [])
@@ -196,6 +233,8 @@ const Main: FC<ReduxType> = ({
       chainsAvailable
     )
   }, [connectorAddress, signer, connectorChainID, connector, authorizationStep])
+
+
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
@@ -271,13 +310,16 @@ const Main: FC<ReduxType> = ({
   return <ContainerCentered>
     <ImageContainer src={Image} />
     <Title>
-    Share Tokens and NFTs through Claim Links
+      {title}
     </Title>
     <Contents>
-      <CheckListItem title='Connect wallet' id='connect' checked={authorizationStep === 'login' || authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
-      <CheckListItem title='Sign message to login to the dashboard' id='login' checked={authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
-      <CheckListItem title='Sign message to store data securely' id='store-key' checked={authorizationStep === 'authorized'} />
+      <CheckListItem id='connect' checked={authorizationStep === 'login' || authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
+      <CheckListItem id='login' checked={authorizationStep === 'store-key' || authorizationStep === 'authorized'} />
+      <CheckListItem id='store-key' checked={authorizationStep === 'authorized'} />
     </Contents>
+    <Text>
+      {text}
+    </Text>
     <WidgetButton
       loading={loading}
       disabled={loading || !injectedProvider}
@@ -314,7 +356,6 @@ const Main: FC<ReduxType> = ({
         if (authorizationStep === 'store-key') {
           const dashboardKeyData = await dashboardKeyApi.get()
           const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
-          const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
           return getDashboardKey(
             sig_message,
             key_id,

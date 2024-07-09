@@ -14,6 +14,9 @@ export const ImageContainer = styled.img`
 
 export const Contents = styled.div`
   margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
+  gap: 32px;
 `
 
 export const InvertedWidget = styled(Widget)`
@@ -78,8 +81,9 @@ export const ConnectWalletContainer = styled.div`
 
 export const Text = styled.p`
   font-size: 16px;
-  margin: 0 0 16px;
+  margin: 0 0 32px;
   line-height: 24px;
+  max-width: 330px;
 `
 
 export const List = styled.ol`

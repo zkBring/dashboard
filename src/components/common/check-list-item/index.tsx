@@ -11,7 +11,7 @@ const CheckListItem: FC<TProps> = ({
     <CheckBox checked={checked}>
       {checked && <Icons.CheckboxIcon />}
     </CheckBox>
-    <Title>{title}</Title>
+    {title && <Title>{title}</Title>}
   </Container>
 }
 

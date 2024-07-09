@@ -15,7 +15,6 @@ export const CheckBox = styled.div<{ checked: boolean }>`
 	height: 16px;
 	border-radius: 16px;
 	background-color: ${props => props.theme.primaryBorderColor};
-	margin-right: 10px;
 
 	${props => props.checked && css`
 		background-color: ${props => props.theme.primaryHighlightColor};
@@ -25,5 +24,6 @@ export const CheckBox = styled.div<{ checked: boolean }>`
 export const Title = styled.h3`
 	font-size: 16px;
 	font-weight: 500;
+	margin-left: 10px;
 	margin: 0;
 `

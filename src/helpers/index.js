@@ -81,8 +81,10 @@ import createQueryString from './create-query-string'
 import truncate from './truncate'
 import defineWagmiNetwork from './define-wagmi-network'
 import getNextDayData from './get-next-day-data'
+import buf2hex from '../helpers/buffer-to-hex'
 
 export {
+  buf2hex,
   defineThirdwebNetworkName,
   getNextDayData,
   defineUrlSchema,
