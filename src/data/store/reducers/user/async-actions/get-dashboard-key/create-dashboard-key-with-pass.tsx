@@ -39,7 +39,7 @@ const createDashboardKeyWithPass: (
       challenge: challenge,
       rp: {
         name: "Linkdrop",
-        id: 'localhost',
+        id: window.location.host.includes('localhost') ? 'localhost' : window.location.host,
       },
       user,
       pubKeyCredParams: [{alg: -7, type: "public-key"}],
