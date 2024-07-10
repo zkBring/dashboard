@@ -6,7 +6,6 @@ export const WidgetComponent = styled.div<TProps>`
   width: 100%;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0px 8px 16px rgba(96,97,112,0.16);
 `
 
 export const WidgetTitle = styled.h3`
