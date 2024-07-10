@@ -57,6 +57,7 @@ const DispenserCreate: FC<ReduxType> = ({
   loading,
   dispensers 
 }) => {
+  const { dispenserId } = useParams<TLinkParams>()
   const history = useHistory()
   // @ts-ignore
   const currentDispenser: TDispenser | null | undefined = dispenserId ? dispensers.find(item => item.dispenser_id === dispenserId) : null
@@ -65,7 +66,7 @@ const DispenserCreate: FC<ReduxType> = ({
   const [ title, setTitle ] = useState<string>(dispenserTitle)
 
   return <Container>
-    <WidgetComponent title={currentDispenser ? 'Dispenser edit' : 'New dispenser'}>
+    <WidgetComponent title='New dispenser'>
       <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
       <InputComponent
         title='Title'
@@ -85,28 +86,14 @@ const DispenserCreate: FC<ReduxType> = ({
           appearance='action'
           loading={loading}
           onClick={() => {
-            // if (currentDispenser) {
-            //   updateDispenser(
-            //     currentDispenser.dispenser_id as string,
-            //     title,
-            //     dateString,
-            //     // Number(duration),
-            //     (id) => history.push(`/dispensers/${id}`)
-            //   )
-            // } else {
-
-              
               createDispenser(
                 title,
-                // dateString,
-                // Number(duration),
                 false, // NOT dynamic
                 (id) => history.push(`/dispensers/${id}`)
               )
-            // }
           }}
         >
-          {currentDispenser ? 'Update' : 'Create'}
+          Create
         </ContainerButton>
       </Buttons>
       

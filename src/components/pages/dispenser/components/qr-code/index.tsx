@@ -3,10 +3,12 @@ import { FC, useEffect, useRef } from 'react'
 import { TProps } from './types'
 import {
   defineClaimAppURL,
-  defineQROptions,
-  loadImage
+  defineQROptions
 } from 'helpers'
-import { QRCodeContainer } from './styled-components'
+import {
+  QRCodeContainer,
+  Container
+} from './styled-components'
 
 const QRCode: FC<TProps> = ({
   address,
@@ -49,9 +51,11 @@ const QRCode: FC<TProps> = ({
     init()
   }, [])
 
-  return <QRCodeContainer
-    ref={qrRef} 
-  />
+  return <Container>
+    <QRCodeContainer
+      ref={qrRef} 
+    />
+  </Container>
 }
 
 export default QRCode

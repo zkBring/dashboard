@@ -8,7 +8,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  max-width: 546px;
+  max-width: 740px;
 `
 
 export const ContainerButton = styled(Button)`

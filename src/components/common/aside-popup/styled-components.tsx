@@ -20,7 +20,7 @@ export const Overlay = styled.div`
   background: rgba(0, 0, 0, .3);
   top: 0;
   height: 100vh;
-  width: calc(100% - 52px);
+  width: 100%;
 `
 
 export const Title = styled.h3`

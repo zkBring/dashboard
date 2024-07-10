@@ -15,6 +15,7 @@ export const CountryItem = styled.div`
   align-items: center;
   font-size: 16px;
   line-height: 1;
+  margin-bottom: 16px;
 `
 
 export const ButtonStyled = styled(Button)`

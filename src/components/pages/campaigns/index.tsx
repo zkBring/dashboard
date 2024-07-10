@@ -155,8 +155,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
         <BatchListLabel>Created</BatchListLabel>
         <BatchListLabel>Name</BatchListLabel>
         <BatchListLabel>Token</BatchListLabel>
-        <BatchListLabel>Claims</BatchListLabel>
-        <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {currentAddressDrafts.map(campaign => {
         const {
