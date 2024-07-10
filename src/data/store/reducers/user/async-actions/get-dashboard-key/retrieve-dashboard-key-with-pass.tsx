@@ -46,12 +46,7 @@ const retrieveDashboardKeyWithPass: (
 
     // @ts-ignore
     const hex = buf2hex(signature?.rawId) 
-    console.log({
-      hex,
-          // @ts-ignore
 
-      original: signature?.rawId
-    })
     const signature_key = ethers.utils.id(hex as string)
     const signature_key_32 = signature_key.slice(0, 32)
     const signature_key_uint_8_array = new TextEncoder().encode(signature_key_32)

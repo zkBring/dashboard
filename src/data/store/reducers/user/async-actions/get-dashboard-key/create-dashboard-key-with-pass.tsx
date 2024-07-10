@@ -52,13 +52,6 @@ const createDashboardKeyWithPass: (
     // @ts-ignore
     const hex = buf2hex(signature?.rawId) 
 
-    console.log({
-      hex,
-          // @ts-ignore
-
-      original: signature?.rawId
-    })
-
     const signature_key = ethers.utils.id(hex as string)    
     const { privateKey: dashboard_key } = generateKeyPair()
     const signature_key_32 = signature_key.slice(0, 32)
