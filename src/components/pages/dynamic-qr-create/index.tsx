@@ -60,20 +60,20 @@ const QRCreate: FC<ReduxType> = ({
   const [ title, setTitle ] = useState<string>(dispenserTitle)
 
   return <Container>
-    <WidgetComponent title='New campaign'>
+    <WidgetComponent title='New dynamic QR'>
       <WidgetSubtitle>
         Enter the name for campaign. It will be visible only for you
       </WidgetSubtitle>
       <InputComponent
         title='Title'
-        placeholder='My dispenser app 01'
+        placeholder='My dynamic QR app 01'
         value={title}
         onChange={(value: string) => { setTitle(value); return value }}
       />
 
       <Buttons>
         <ContainerButton
-          to={currentDispenser ? `/dispensers/${currentDispenser.dispenser_id}` : '/dispensers'}
+          to={currentDispenser ? `/dynamic-qrs/${currentDispenser.dispenser_id}` : '/dynamic-qrs'}
         >
           Back
         </ContainerButton>
@@ -85,11 +85,11 @@ const QRCreate: FC<ReduxType> = ({
             addDispenser(
               title,
               true,
-              (id) => history.push(`/dispensers/${id}`)
+              (id) => history.push(`/dynamic-qrs/${id}`)
             )
           }}
         >
-          {currentDispenser ? 'Update' : 'Create'}
+          Create
         </ContainerButton>
       </Buttons>
       

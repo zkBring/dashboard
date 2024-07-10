@@ -65,3 +65,10 @@ export const DynamicQRImage = styled.img`
   margin: 0 auto 32px;
   display: block;
 `
+
+export const Text = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${props => props.theme.primaryTextColor};
+  margin: 0 0 12px;
+`

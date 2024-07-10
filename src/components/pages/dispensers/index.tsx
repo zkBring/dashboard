@@ -54,6 +54,9 @@ const Dispensers: FC<ReduxType> = ({
   loading
 }) => {
 
+  const notDynamicQrs = dispensers.filter(dispenser => !dispenser.dynamic)
+
+
   return <Container>
     <WidgetComponent>
       <Header>
@@ -66,14 +69,14 @@ const Dispensers: FC<ReduxType> = ({
           to='/dispensers/new'
         />
       </Header>
-      {dispensers.length > 0 && <DispensersListStyled>
+      {notDynamicQrs.length > 0 && <DispensersListStyled>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Title</BatchListLabel>
         <BatchListLabel>Start date (UTC+0)</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
-        {dispensers.map(dispenser => {
+        {notDynamicQrs.map(dispenser => {
           const {
             title,
             links_count,

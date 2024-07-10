@@ -10,8 +10,7 @@ import {
   WidgetButton,
   WidgetComponentStyled,
   CopyContainerStyled,
-  Counter,
-  SecondaryTextSpan,
+  Text,
   DynamicQRImage,
   MainContent
 } from './styled-components'
@@ -283,6 +282,12 @@ const defineQRItem = (
   return <QRCode link={link} address={address} />
 }
 
+const defineQRCodeDescription = () => {
+    return <Text>
+      Tokens you are dispensing can be claimed by anyone who goes to Campaign Website or scans Campaigns QR code
+    </Text>
+}
+
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
@@ -336,6 +341,8 @@ const Dispenser: FC<ReduxType> = ({
   const claimAppURL = defineClaimAppURL(
     address
   )
+
+  const qrCodeDescription = defineQRCodeDescription()
 
   const {
     claimURLDecrypted,
@@ -451,6 +458,8 @@ const Dispenser: FC<ReduxType> = ({
         </WidgetSubtitle>
         
         {qrCodeContainer}
+
+        {qrCodeDescription}
 
         <CopyContainerStyled
           text={claimURLDecrypted}
