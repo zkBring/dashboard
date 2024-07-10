@@ -26,8 +26,8 @@ const createDashboardKeyWithPass: (
     const user = {
       id: Uint8Array.from(
         account, c => c.charCodeAt(0)),
-      name: account,
-      displayName: account
+      name: `LINKDROP_ENCRYPTION_KEY_${account.slice(-6)}`,
+      displayName: `LINKDROP_ENCRYPTION_KEY_${account.slice(-6)}`
     }
     const publicKeyCredentialCreationOptions = {
       challenge: challenge,
