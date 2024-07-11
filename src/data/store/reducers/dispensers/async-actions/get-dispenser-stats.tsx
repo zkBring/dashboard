@@ -67,6 +67,7 @@ const getDispenserStats = ({
           campaign: TCampaign
         }
       } = await dispensersApi.getCampaignData(multiscan_qr_id)
+
       if (campaignSuccess) {
         dispatch(actionsDispensers.setCurrentDispenserData({ campaign }))
       }

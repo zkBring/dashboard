@@ -343,13 +343,14 @@ const Dispenser: FC<ReduxType> = ({
 
 
   useEffect(() => {
-    if (!dispenser || !dispenser?.links_assigned) { return }
+
+    if (!dispenser || !dispenser?.updated_at) { return }
     getDispenserStats(
       dispenser.dispenser_id as string,
       dispenser.multiscan_qr_id as string,
       () => setStatsLoading(false)
     )
-  }, [dispenser?.links_assigned])
+  }, [dispenser?.updated_at])
 
   const claimAppURL = defineClaimAppURL(
     address
