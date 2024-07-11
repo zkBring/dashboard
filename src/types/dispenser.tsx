@@ -33,6 +33,7 @@ export type TDispenser = {
   timeframe_on?: boolean
 
   created_at?: string
+  updated_at?: string
   title: string
   dynamic?: boolean
   encrypted_multiscan_qr_enc_code: string
