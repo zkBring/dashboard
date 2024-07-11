@@ -91,7 +91,7 @@ const requests = {
     dispenser_id: string,
     timeframe_on: boolean
   }) => {
-    return dispensersApi.patch(`/dispensers/${dispenser_id}/redirect-on`, {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}/timeframe-on`, {
       timeframe_on
     }, { withCredentials: true })
   },
