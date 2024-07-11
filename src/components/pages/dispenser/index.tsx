@@ -331,7 +331,6 @@ const Dispenser: FC<ReduxType> = ({
   // @ts-ignore
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
 
-
   const [
     statsLoading,
     setStatsLoading
@@ -344,13 +343,14 @@ const Dispenser: FC<ReduxType> = ({
 
 
   useEffect(() => {
-    if (!dispenser) { return }
+    if (!dispenser || !dispenser?.links_assigned) { return }
     getDispenserStats(
       dispenser.dispenser_id as string,
       dispenser.multiscan_qr_id as string,
       () => setStatsLoading(false)
     )
-  }, [])
+  }, [dispenser?.links_assigned])
+
   const claimAppURL = defineClaimAppURL(
     address
   )
