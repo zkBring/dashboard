@@ -34,6 +34,7 @@ const Timeframe: FC<TProps> = ({
   action,
   onClose,
   toggleAction,
+  toggleValue,
   currentDispenser
 }) => {
 
@@ -56,6 +57,7 @@ const Timeframe: FC<TProps> = ({
     title={title}
     subtitle={subtitle}
     onClose={onClose}
+    toggleState={toggleValue}
     action={() => {
       const dateStartString = momentNoOffsetWithTimeUpdate(
         dateStart,
@@ -71,7 +73,7 @@ const Timeframe: FC<TProps> = ({
       action(
         dateStartString,
         dateFinishString,
-        () => close()
+        () => onClose()
       )
     }}
     toggleAction={toggleAction}

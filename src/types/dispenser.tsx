@@ -30,6 +30,8 @@ export type TDispenser = {
   
   claim_start?: number | null
 
+  timeframe_on?: boolean
+
   created_at?: string
   title: string
   dynamic?: boolean
@@ -39,7 +41,6 @@ export type TDispenser = {
   redirect_url?: string | null
   links_claimed?: number
   links_assigned?: number
-  whitelisted?: boolean
   whitelist_type?: TDispenserWhitelistType
   whitelist?: TDispenserWhitelistItemAddress[]
   whitelist_count?: number

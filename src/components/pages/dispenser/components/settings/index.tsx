@@ -86,7 +86,8 @@ const definePopup = (
   whitelistToggleAction?: (value: boolean) => void,
   whitelistToggleValue?: boolean,
 
-
+  timeframeToggleAction?: (value: boolean) => void,
+  timeframeToggleValue?: boolean,
 
 
   campaignId?: string,
@@ -109,6 +110,8 @@ const definePopup = (
         onClose={onClose}
         currentDispenser={currentDispenser}
         action={timeframeSubmit}
+        toggleAction={timeframeToggleAction}
+        toggleValue={timeframeToggleValue}
       />
     case 'whitelist':
       return <Whitelist
@@ -176,6 +179,9 @@ const Settings: FC<TProps> = ({
 
   timeframeSubmit,
 
+  timeframeToggleAction,
+  timeframeToggleValue,
+
   getDispenserWhitelist,
 
   currentDispenser
@@ -212,6 +218,9 @@ const Settings: FC<TProps> = ({
     whitelistToggleAction,
     whitelistToggleValue,
 
+
+    timeframeToggleAction,
+    timeframeToggleValue,
     campaignData.campaign_id,
     currentDispenser,
   ) : null

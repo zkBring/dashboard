@@ -11,10 +11,12 @@ import toggleWhitelistOn from './toggle-whitelist-on'
 import createWhitelist from './create-whitelist'
 import updateWhitelist from './update-whitelist'
 import getDispenserWhitelist from './get-dispenser-whitelist'
+import toggleTimeframeOn from './toggle-timeframe-on'
 
 export {
   createDispenser,
   updateWhitelist,
+  toggleTimeframeOn,
   toggleWhitelistOn,
   getDispenserWhitelist,
   downloadDispenserQR,
