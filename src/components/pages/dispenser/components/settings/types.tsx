@@ -23,6 +23,8 @@ export type TProps = {
   whitelistToggleValue?: boolean
   currentDispenser?: TDispenser
 
+  timeframeToggleValue?: boolean
+  timeframeToggleAction?: (value: boolean) => void
   timeframeSubmit: (
     startTimeValue: any,
     finishTimeValue: any,

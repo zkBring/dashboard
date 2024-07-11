@@ -146,6 +146,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
+    toggleTimeframe: (
+      dispenser_id: string,
+      timeframe_on: boolean,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.toggleTimeframeOn({
+      dispenser_id,
+      timeframe_on,
+      successCallback,
+      errorCallback
+    })),
     updateRedirectURL: (
       dispenser_id: string,
       redirect_url: string,
@@ -304,6 +316,7 @@ const Dispenser: FC<ReduxType> = ({
   createAddressWhitelist,
   updateRedirectURL,
   toggleRedirectURL,
+  toggleTimeframe,
   getDispenserStats,
   downloadReport,
   toggleWhitelist,
@@ -410,7 +423,8 @@ const Dispenser: FC<ReduxType> = ({
     whitelist_on,
     whitelist_type,
     dynamic,
-    claim_finish
+    claim_finish,
+    timeframe_on
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -506,9 +520,7 @@ const Dispenser: FC<ReduxType> = ({
         loading={loading}
         campaignData={currentDispenserData.campaign}
         getDispenserWhitelist={getDispenserWhitelist}
-
         currentDispenser={dispenser}
-
         whitelistToggleValue={whitelist_on}
 
         whitelistToggleAction={(
@@ -576,6 +588,15 @@ const Dispenser: FC<ReduxType> = ({
             () => alert('error')
           )
         }}
+
+        timeframeToggleValue={timeframe_on}
+
+        timeframeToggleAction={(timeframeOn) => toggleTimeframe(
+          dispenser_id as string,
+          timeframeOn,
+          () => {},
+          () => alert('error'),
+        )}
 
         timeframeSubmit={(
           startTime,

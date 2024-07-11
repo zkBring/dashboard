@@ -5,7 +5,8 @@ export type TProps = {
   subtitle: string
   onClose: () => void
   id: string
-  toggleAction?: () => void
+  toggleAction?: (value: boolean) => void
+  toggleValue?: boolean
   currentDispenser?: TDispenser
   action: (
     startTimeValue: any,

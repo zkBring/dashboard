@@ -83,6 +83,18 @@ const requests = {
       redirect_on
     }, { withCredentials: true })
   },
+
+  updateTimeframeOn: ({
+    dispenser_id,
+    timeframe_on
+  }: {
+    dispenser_id: string,
+    timeframe_on: boolean
+  }) => {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}/redirect-on`, {
+      timeframe_on
+    }, { withCredentials: true })
+  },
   updateRedirectUrl: ({
     dispenser_id,
     redirect_url
