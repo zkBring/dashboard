@@ -7,12 +7,14 @@ import {
   TableValueStyled,
   ButtonStyled,
   NoteStyled,
-  TextLinkStyled
+  TextLinkStyled,
+  WidgetLoaderStyled
 } from './styled-components'
 import {
   TProps,
   TSettingItem
 } from './types'
+import { Loader } from 'components/common'
 import {
   TableRow,
   TableText
@@ -174,13 +176,17 @@ const Settings: FC<TProps> = ({
   currentDispenser
 }) => {
 
-  if (!campaignData) {
-    return null
-  }
+
   const [
     currentSetting,
     setCurrentSetting
   ] = useState<null | TSettingItem>(null)
+
+  if (!campaignData) {
+    return <WidgetLoaderStyled title='Settings'>
+      <Loader size='large' />
+    </WidgetLoaderStyled>
+  }
 
   const popup = currentSetting ? definePopup(
     currentSetting,
@@ -211,6 +217,13 @@ const Settings: FC<TProps> = ({
     campaignData.campaign_id,
     currentDispenser,
   ) : null
+
+  if (loading) {
+    return <WidgetLoaderStyled title='Settings'>
+      {popup}
+      <Loader size='large' />
+    </WidgetLoaderStyled>
+  }
 
   return <>
     <WidgetStyled title='Settings'>

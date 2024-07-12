@@ -18,9 +18,11 @@ import Button from './button'
 import FileInput from './file-input'
 import AsidePopup from './aside-popup'
 import StatusBar from './status-bar'
+import Loader from './loader'
 
 export {
   Header,
+  Loader,
   StatusBar,
   AsidePopup,
   Aside,

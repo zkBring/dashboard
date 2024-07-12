@@ -4,6 +4,7 @@ import {
   Aside
 } from 'components/pages/common'
 
+
 export const AsideStyled = styled(Aside)`
   max-width: 546px;
   min-width: 546px;
@@ -12,6 +13,7 @@ export const AsideStyled = styled(Aside)`
 
 export const AsideContent = styled.div`
   margin-bottom: 32px;
+  min-height: 145px;
 `
 
 export const AsideWidgetButton = styled(Button)`
