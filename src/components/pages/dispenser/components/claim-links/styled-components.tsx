@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Button } from 'components/common'
 import {
   Aside
@@ -11,9 +11,15 @@ export const AsideStyled = styled(Aside)`
   margin: 0;
 `
 
-export const AsideContent = styled.div`
+export const AsideContent = styled.div<{loading: boolean}>`
   margin-bottom: 32px;
-  min-height: 145px;
+
+  ${props => props.loading && css`
+    min-height: 145px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `}
 `
 
 export const AsideWidgetButton = styled(Button)`
