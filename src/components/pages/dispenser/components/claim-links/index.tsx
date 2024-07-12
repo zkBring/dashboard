@@ -1,18 +1,11 @@
 import { FC, useState } from 'react'
 import {
   AsideContent,
-  AsideSubtitle,
   AsideStyled,
   AsideWidgetButton,
 } from './styled-components'
 import {
-  TDispenser,
   TDispenserStatus,
-  TLinkDecrypted,
-  TDispenserWhitelistType,
-  TDispenserWhitelistItemAddress,
-  TTokenType,
-  TClaimPattern,
   TCampaign
 } from 'types'
 import {
@@ -22,7 +15,7 @@ import {
   WidgetSubtitle,
   UploadLinksPopup
 } from 'components/pages/common'
-import { TextLink } from 'components/common'
+import { TextLink, Loader } from 'components/common'
 import Icons from 'icons'
 import { TProps } from './types'
 import { useHistory } from 'react-router-dom'
@@ -73,8 +66,14 @@ const defineButton = (
 
 const defineContent = (
   dispenserStatus: TDispenserStatus,
-  campaignData: null | TCampaign
+  campaignData: null | TCampaign,
+  loading: boolean
 ) => {
+
+  if (loading) {
+    return <Loader size='large' />
+  }
+
   if (dispenserStatus === 'NOT_UPLOADED') {
     return <WidgetSubtitle>
       Upload a CSV file with claim links in the required format. If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>.
@@ -154,7 +153,8 @@ const ClaimLinks: FC<TProps> = ({
 
   const content = defineContent(
     dispenserStatus,
-    campaignData
+    campaignData,
+    loading
   )
 
   return <AsideStyled
