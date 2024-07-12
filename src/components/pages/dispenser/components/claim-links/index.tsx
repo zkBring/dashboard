@@ -161,7 +161,7 @@ const ClaimLinks: FC<TProps> = ({
     title="Claim links"
     options={dispenserOptions}
   >
-    <AsideContent>
+    <AsideContent loading={loading}>
       {updateLinksPopup && <UploadLinksPopup
         loader={mappingLoader}
         loading={loading}
