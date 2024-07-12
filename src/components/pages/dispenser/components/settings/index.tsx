@@ -183,9 +183,7 @@ const Settings: FC<TProps> = ({
   ] = useState<null | TSettingItem>(null)
 
   if (!campaignData) {
-    return <WidgetLoaderStyled title='Settings'>
-      <Loader size='large' />
-    </WidgetLoaderStyled>
+    return null
   }
 
   const popup = currentSetting ? definePopup(
