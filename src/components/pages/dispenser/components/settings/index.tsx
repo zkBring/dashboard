@@ -133,8 +133,7 @@ const defineEnabled = (
   settingId: string,
   redirectToggleValue: boolean,
   whitelistValue: boolean,
-  wallet: string,
-  claimFinished: boolean
+  timeframeValue: boolean
 ) => {
   if (settingId === 'redirect') {
     return redirectToggleValue
@@ -145,23 +144,11 @@ const defineEnabled = (
   }
 
   if (settingId === 'timeframe') {
-    return claimFinished
+    return timeframeValue
   }
 
   return false
 }
-
-const defineEnabledLabel = (
-  settingId: string,
-  wallet: string
-) => {
-  if (settingId === 'wallets') {
-    return wallet
-  }
-
-  return 'Enabled'
-}
-
 
 const Settings: FC<TProps> = ({
   redirectUrl,
@@ -235,19 +222,14 @@ const Settings: FC<TProps> = ({
           setting.id,
           Boolean(redirectToggleValue),
           Boolean(whitelistToggleValue),
-          campaignData.wallet,
-          Boolean(currentDispenser?.claim_finish)
-        )
-        const enabledLabel = defineEnabledLabel(
-          setting.id,
-          campaignData.wallet
+          Boolean(timeframeToggleValue),
         )
 
         return renderSettingItem(
           setting,
           enabled,
           () => setCurrentSetting(setting),
-          enabledLabel
+          'Enabled'
         )})
       }
     </WidgetStyled>
