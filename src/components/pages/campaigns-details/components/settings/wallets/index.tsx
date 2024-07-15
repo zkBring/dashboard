@@ -11,7 +11,8 @@ import {
 import {
   RadioStyled,
   CheckboxStyled,
-  CheckboxContainer
+  CheckboxContainer,
+  SelectStyled
 } from './styled-components'
 import { isURL } from 'helpers'
 import wallets from 'configs/wallets'
@@ -99,18 +100,20 @@ const Wallets: FC<TProps> = ({
       />)}
     </CheckboxContainer>
 
-    <RadioStyled
+    <SelectStyled
+      options={walletsOptions}
+      title='Preferred wallet'
       disabled={loading}
-      radios={walletsOptions.map(item => ({...item, disabled: !availableWallets.includes(item.value)}))}
-      value={currentWallet}
-      onChange={value => {
+      onChange={({ value }) => {
         if (!availableWallets.includes(value)) {
           const updatedAvailableWallets = availableWallets.concat(value)
           setAvailableWallets(updatedAvailableWallets)
         }
         setCurrentWallet(value)
       }}
+      value={walletsOptions.find(wallet => wallet.value === currentWallet)}
     />
+
   </AsidePopup>
 }
 
