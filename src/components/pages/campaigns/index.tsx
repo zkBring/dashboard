@@ -20,7 +20,6 @@ import {
   BatchListLabel,
   BatchListValue,
 } from 'components/pages/common'
-import { InitialGuide } from 'components/pages/common'
 import {
   TProps
 } from './types'
@@ -85,7 +84,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
   })
 
   return <>
-    <InitialGuide />
     <WidgetComponentStyled>
       <Header>
         <WidgetTitleStyled>Claim links</WidgetTitleStyled>

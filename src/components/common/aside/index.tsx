@@ -72,18 +72,11 @@ const AsideComponent: FC<TProps & ReduxType> = ({
         <Icons.ClaimLinksIcon />
         <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Claim Links</AsideMenuItemTitle>
       </AsideMenuItem>
-      <AsideMenuItem to='/qrs' active={location.pathname.includes('/qrs')}>
-        <Icons.ClaimQRsIcon />
-        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Claim QRs</AsideMenuItemTitle>
-      </AsideMenuItem>
-      <AsideMenuItem to='/dynamic-qrs' active={location.pathname.includes('/dispenser')}>
+      <AsideMenuItem to='/qr-manager' active={location.pathname.includes('/qr-manager')}>
         <Icons.DynamicQRIcon />
-        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Dynamic QR</AsideMenuItemTitle>
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>QR Manager</AsideMenuItemTitle>
       </AsideMenuItem>
-      <AsideMenuItem to='/dispensers' active={location.pathname.includes('/dispenser')}>
-        <Icons.DispenserQRIcon />
-        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Dispenser QR</AsideMenuItemTitle>
-      </AsideMenuItem>
+
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
         <Icons.NFTsIcon />
         <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>NFTs</AsideMenuItemTitle>

@@ -22,10 +22,12 @@ import Collection from './collection'
 import CollectionAddToken from './collection-add-token'
 import DynamicQRCreate from './dynamic-qr-create'
 import DynamicQRs from './dynamic-qrs'
+import QRManager from './qr-manager'
 
 export {
   Page,
   DynamicQRs,
+  QRManager,
   DynamicQRCreate,
   Collection,
   CollectionAddToken,
