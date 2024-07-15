@@ -26,7 +26,8 @@ import {
   CollectionAddToken,
   CollectionsCreateInitial,
   Collection,
-  DynamicQRs
+  DynamicQRs,
+  QRManager
 } from 'components/pages'
 import { connect } from 'react-redux'
 import { RootState } from 'data/store'
@@ -43,6 +44,13 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateNew}
+        />
+
+        <ProtectedRoute
+          path='/qr-manager'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={QRManager}
         />
 
         <ProtectedRoute
