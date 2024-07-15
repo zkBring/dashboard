@@ -13,10 +13,7 @@ import {
 import {
   BatchListLabel,
   BatchListValue,
-  WidgetComponent,
-  InitialGuide,
-  ErrorSpan,
-  UploadedSpan,
+  WidgetComponent
 } from 'components/pages/common'
 import { Tag } from 'components/common'
 import Icons from 'icons'
@@ -63,12 +60,11 @@ const QRs: FC<ReduxType> = ({
   qrs,
 }) => {
   return <Container>
-    <InitialGuide />
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>QR Set</WidgetTitleStyled>
         <ContainerButton
-          title='+ Create QR codes'
+          title='+ New'
           size='extra-small'
           appearance='action'
           to='/qrs/new'
