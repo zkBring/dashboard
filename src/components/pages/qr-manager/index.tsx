@@ -7,11 +7,9 @@ import {
   ButtonStyled,
   Image
 } from './styled-components'
-
 import DynamicQRPreview from 'images/dynamic-qr-preview.png'
 import DispenserQRPreview from 'images/dispenser-qr-preview.png'
 import QRSetPreview from 'images/qr-set-preview.png'
-import { InitialGuide } from 'components/pages/common'
 
 const cardTypes = [
   {
