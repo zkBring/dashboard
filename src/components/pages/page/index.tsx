@@ -28,7 +28,7 @@ const defineTitle: TDefineTitle = (location) => {
       return 'Invite Links'
 
     case locationUpdated.includes('/collections'):
-      return 'Minter'
+      return 'NFTs'
 
     case locationUpdated.includes('/campaigns/new'):
     case locationUpdated.includes('/campaigns/new/initial'):
@@ -49,7 +49,8 @@ const defineTitle: TDefineTitle = (location) => {
       return 'New Batch'
     
     case locationUpdated.includes('/qrs/'):
-      return "QR set set"
+    case locationUpdated.includes('/qrs'):
+      return "QR Set"
 
     case locationUpdated.includes('/dispensers/new'):
       return "New Dispenser"
@@ -58,13 +59,10 @@ const defineTitle: TDefineTitle = (location) => {
       return "Dispenser QR"
 
     case locationUpdated.includes('/qr-manager'):
-      return "QR manager"
-
-    case locationUpdated.includes('/qrs'):
-      return "QR set"
+      return "QR Manager"
     
     case locationUpdated.includes('/campaigns'):
-      return 'Campaigns'
+      return 'Claim Links'
     
     case locationUpdated.includes('/dynamic-qrs'):
       return 'Dynamic QR'
