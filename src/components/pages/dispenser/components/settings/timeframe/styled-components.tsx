@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import {
   DatePicker,
   Select,
-  Input
+  Input,
+  Checkbox
 } from 'linkdrop-ui'
 
 
 export const InputComponent = styled(Input)`
 `
 export const DatePickerStyled = styled(DatePicker)`
-  margin-bottom: 32px;
 `
 
 export const SelectStyled = styled(Select)`
@@ -24,8 +24,11 @@ export const DateTimeContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-
-  &> div {
+  margin-bottom: 12px;
+  &:first-child {
+    margin-bottom: 32px;
+  }
+  & > div {
     width: fit-content;
     margin-left: 12px;
 
@@ -34,4 +37,8 @@ export const DateTimeContainer = styled.div`
       margin-left: 0px;
     }
   }
+`
+
+export const CheckboxStyled = styled(Checkbox)`
+
 `

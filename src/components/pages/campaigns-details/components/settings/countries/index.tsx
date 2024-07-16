@@ -43,7 +43,6 @@ const defineSelectOptions = (countries: TCountry[]) => {
   }))
 }
 
-
 const Countries: FC<TProps> = ({
   title,
   subtitle,
@@ -95,7 +94,7 @@ const Countries: FC<TProps> = ({
           return <CountryContent
             {...item}
             onRemove={(id) => {
-              const updatedAvailableCountries = availableCountries.filter(item => item.id === id)
+              const updatedAvailableCountries = availableCountries.filter(item => item.id !== id)
               setAvailableCountries(updatedAvailableCountries)
             }}
           />

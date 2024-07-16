@@ -30,6 +30,18 @@ const FinalScreenButton: FC<TProps> = ({
     toggleAction={toggleAction}
     toggleState={toggleValue}
     action={() => {
+      if (!buttonHref) {
+        return alert('Button link not provided')
+      }
+
+      if (!buttonTitle) {
+        return alert('Button title not provided')
+      }
+
+      if (!isURL(buttonHref)) {
+        return alert('Incorrect format for button link')
+      }
+
       action(
         buttonTitle,
         buttonHref,

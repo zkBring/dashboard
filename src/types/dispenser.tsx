@@ -49,7 +49,7 @@ export type TDispenser = {
 }
 
 export type TDispenserUpdateData = {
-  claim_finish?: number
+  claim_finish?: number | null
   claim_start?: number
   title?: string
   dispenser_id: string
