@@ -27,9 +27,12 @@ const updateDispenserDate = ({
     const { user: { address }, dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
+
+      const newFinishDate = finishDate ? +(new Date(finishDate)) : undefined
+      const newStartDate = +(new Date(startDate))
       const updatedDispenser: TDispenserUpdateData = {
-        claim_finish: +(new Date(finishDate)),
-        claim_start: +(new Date(startDate)),
+        claim_finish: newFinishDate,
+        claim_start: newStartDate,
         dispenser_id: dispenserId
       }
 

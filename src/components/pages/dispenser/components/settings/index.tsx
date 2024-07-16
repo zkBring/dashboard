@@ -110,6 +110,7 @@ const definePopup = (
       return <Timeframe
         {...setting}
         onClose={onClose}
+        loading={loading}
         currentDispenser={currentDispenser}
         action={timeframeSubmit}
         toggleAction={timeframeToggleAction}

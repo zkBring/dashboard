@@ -13,20 +13,28 @@ import {
   momentNoOffsetWithTimeUpdate,
   getNextDayData
 } from 'helpers'
-import moment from 'moment'
 
 import {
   DateTimeContainer,
   DatePickerStyled,
   SelectStyled,
-  Note
+  Note,
+  CheckboxStyled
 } from './styled-components'
 
 const defaultValue = { label: '00', value: '0'}
 const selectOptionsHours = createSelectOptions(23, defaultValue)
 const selectOptionsMinutes = createSelectOptions(59, defaultValue)
 
-
+const defineIfCorrect = (
+  dateStartString: string,
+  dateFinishString?: string 
+) => {
+  if (!dateFinishString) {
+    return true
+  }
+  return (+ new Date(dateFinishString)) > (+ new Date(dateStartString))
+}
 
 const Timeframe: FC<TProps> = ({
   title,
@@ -34,10 +42,10 @@ const Timeframe: FC<TProps> = ({
   action,
   onClose,
   toggleAction,
+  loading,
   toggleValue,
   currentDispenser
 }) => {
-
   const dispenserStartDate = currentDispenser && currentDispenser.claim_start ? new Date(currentDispenser.claim_start) : new Date()
   const dispenserStartTime = momentNoOffsetGetTime(currentDispenser && currentDispenser.claim_start ? currentDispenser.claim_start : undefined)
   const dispenserFinishTime = momentNoOffsetGetTime(currentDispenser && currentDispenser.claim_finish ? currentDispenser.claim_finish : undefined)
@@ -51,6 +59,7 @@ const Timeframe: FC<TProps> = ({
   const [ hoursFinish, setHoursFinish ] = useState(dispenserFinishTime.hours)
   const [ minutesFinish, setMinutesFinish ] = useState(dispenserFinishTime.minutes)
 
+  const [ dateFinishDisable, setDateFinishDisable ] = useState<boolean>(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   return <AsidePopup
@@ -65,11 +74,21 @@ const Timeframe: FC<TProps> = ({
         Number(minutesStart.value)
       )
     
-      const dateFinishString = momentNoOffsetWithTimeUpdate(
+      const dateFinishString = dateFinishDisable ? undefined : momentNoOffsetWithTimeUpdate(
         dateFinish,
         Number(hoursFinish.value),
         Number(minutesFinish.value)
       )
+
+      const correct = defineIfCorrect(
+        dateStartString,
+        dateFinishString
+      )
+
+      if (!correct) {
+        return alert('The end date of the QR campaign must be later than the start date')
+      }
+
       action(
         dateStartString,
         dateFinishString,
@@ -82,6 +101,8 @@ const Timeframe: FC<TProps> = ({
     <DateTimeContainer>
       <DatePickerStyled
         title='Start date'
+        disabled={loading}
+
         // note='Enter start date in the “dd MMM yyyy” format, e.g. “19 Apr 2022”'
         dateFormat='dd MMM yyyy'
         onChange={(value: any) => setDateStart(value)}
@@ -91,6 +112,7 @@ const Timeframe: FC<TProps> = ({
 
       <SelectStyled
         title='Hours'
+        disabled={loading}
         value={hoursStart}
         options={selectOptionsHours}
         onChange={(option) => {
@@ -104,6 +126,7 @@ const Timeframe: FC<TProps> = ({
       <SelectStyled
         title='Minutes'
         value={minutesStart}
+        disabled={loading}
         options={selectOptionsMinutes}
         onChange={(option) => {
           setMinutesStart(option)
@@ -123,6 +146,7 @@ const Timeframe: FC<TProps> = ({
         dateFormat='dd MMM yyyy'
         onChange={(value: any) => setDateFinish(value)}
         value={dateFinish}
+        disabled={dateFinishDisable || loading}
         minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
       />
 
@@ -130,6 +154,7 @@ const Timeframe: FC<TProps> = ({
         title='Hours'
         value={hoursFinish}
         options={selectOptionsHours}
+        disabled={dateFinishDisable || loading}
         onChange={(option) => {
           setHoursFinish(option)
           const input: HTMLInputElement | null = inputRef.current
@@ -142,6 +167,7 @@ const Timeframe: FC<TProps> = ({
         title='Minutes'
         value={minutesFinish}
         options={selectOptionsMinutes}
+        disabled={dateFinishDisable || loading}
         onChange={(option) => {
           setMinutesFinish(option)
           const input: HTMLInputElement | null = inputRef.current
@@ -151,8 +177,16 @@ const Timeframe: FC<TProps> = ({
       />
 
       <Note>UTC+0</Note>
-
     </DateTimeContainer>
+    <CheckboxStyled
+        value={dateFinishDisable}
+        label='No end date'
+        onChange={
+          (value) => {
+            setDateFinishDisable(value)
+          }
+        }
+      />
     
   </AsidePopup>
 }
