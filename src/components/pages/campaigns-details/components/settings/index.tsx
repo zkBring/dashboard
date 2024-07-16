@@ -23,6 +23,8 @@ import Countries from './countries'
 import FinalScreenButton from './final-screen-button'
 import wallets from 'configs/wallets'
 
+const { REACT_APP_CLIENT } = process.env
+
 const settings = [
   {
     title: 'Country restrictions',
@@ -253,6 +255,12 @@ const Settings: FC<TProps> = ({
         setting.id,
         preferredWalletValue
       )
+
+      if (REACT_APP_CLIENT === 'coinbase') {
+        if (setting.id === 'wallets') {
+          return null
+        }
+      }
 
       return renderSettingItem(
         setting,

@@ -48,7 +48,7 @@ const requests = {
     dispenser_id: string,
     title?: string,
     claim_start?: number,
-    claim_finish?: number
+    claim_finish?: number | null
   }) => {
     return dispensersApi.patch(`/dispensers/${dispenser_id}`, {
       title,

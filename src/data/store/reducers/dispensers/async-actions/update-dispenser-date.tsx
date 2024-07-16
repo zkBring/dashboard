@@ -28,7 +28,7 @@ const updateDispenserDate = ({
     dispatch(actionsDispensers.setLoading(true))
     try {
 
-      const newFinishDate = finishDate ? +(new Date(finishDate)) : undefined
+      const newFinishDate = finishDate ? +(new Date(finishDate)) : null
       const newStartDate = +(new Date(startDate))
       const updatedDispenser: TDispenserUpdateData = {
         claim_finish: newFinishDate,

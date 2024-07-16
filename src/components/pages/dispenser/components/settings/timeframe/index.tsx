@@ -28,7 +28,7 @@ const selectOptionsMinutes = createSelectOptions(59, defaultValue)
 
 const defineIfCorrect = (
   dateStartString: string,
-  dateFinishString?: string 
+  dateFinishString?: string | null
 ) => {
   if (!dateFinishString) {
     return true
@@ -59,7 +59,7 @@ const Timeframe: FC<TProps> = ({
   const [ hoursFinish, setHoursFinish ] = useState(dispenserFinishTime.hours)
   const [ minutesFinish, setMinutesFinish ] = useState(dispenserFinishTime.minutes)
 
-  const [ dateFinishDisable, setDateFinishDisable ] = useState<boolean>(false)
+  const [ dateFinishDisable, setDateFinishDisable ] = useState<boolean>(currentDispenser && currentDispenser.claim_finish === null ? true : false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   return <AsidePopup
@@ -74,7 +74,7 @@ const Timeframe: FC<TProps> = ({
         Number(minutesStart.value)
       )
     
-      const dateFinishString = dateFinishDisable ? undefined : momentNoOffsetWithTimeUpdate(
+      const dateFinishString = dateFinishDisable ? null : momentNoOffsetWithTimeUpdate(
         dateFinish,
         Number(hoursFinish.value),
         Number(minutesFinish.value)
