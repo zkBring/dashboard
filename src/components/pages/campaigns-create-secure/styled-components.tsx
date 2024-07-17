@@ -9,10 +9,6 @@ export const Header = styled.div`
   margin-bottom: 16px;
 `
 
-export const StyledRadio = styled(Radio)`
-  margin-bottom: 32px
-`
-
 export const CheckboxStyled = styled(Checkbox)`
   margin-bottom: 12px;
 `
@@ -27,7 +23,9 @@ export const StyledInput = styled(Input)`
   margin-bottom: 24px;
 `
 
-export const StyledSelect = styled(Select)``
+export const StyledSelect = styled(Select)`
+  margin-bottom: 32px
+`
 
 
 export const CheckboxContainer = styled.div``

@@ -51,15 +51,6 @@ const Wallets: FC<TProps> = ({
     return options
   }, [])
 
-  const walletsOptions = useMemo(() => {
-    const options = allWallets
-      .map(wallet => ({
-        label: wallet.name,
-        value: wallet.id
-      }))
-    return options
-  }, [])
-
   const walletsCheckboxes = useMemo(() => {
     const options = allWallets
       .map(wallet => ({
@@ -70,6 +61,16 @@ const Wallets: FC<TProps> = ({
       }))
     return options
   }, [ availableWallets, currentWallet ])
+
+  const walletsOptions = useMemo(() => {
+    const options = walletsCheckboxes
+      .filter(wallet => wallet.value)
+      .map(wallet => ({
+        label: wallet.label,
+        value: wallet.id
+      }))
+    return options
+  }, [ availableWallets ])
 
 
   

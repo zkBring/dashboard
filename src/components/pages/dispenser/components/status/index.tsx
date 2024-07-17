@@ -1,19 +1,25 @@
 import { FC } from 'react'
 import { TDispenserStatus, TStatus } from 'types'
-import { StatusBar } from 'components/common'
 import { TProps } from './types'
 import { StatusBarStyled } from './styled-components'
+import {
+  momentNoOffsetGetTime,
+  formatDate,
+  formatTime
+} from 'helpers'
 
-const defineStatus: (status: TDispenserStatus) => TStatus = (status: TDispenserStatus) => {
+const defineStatus: (
+  status: TDispenserStatus
+) => TStatus = (status: TDispenserStatus) => {
   switch (status) {
     case 'ACTIVE':
-      return 'default'
+      return 'success'
     case 'FINISHED':
-      return 'error'
+      return 'default'
     case 'PAUSED':
       return 'info'
     case 'NOT_UPLOADED':
-      return 'error'
+      return 'info'
     case 'REDIRECT':
       return 'info'
     case 'READY':
@@ -32,10 +38,26 @@ const defineTitle: (status: TDispenserStatus) => string = (status: TDispenserSta
   }
 }
 
-const defineText: (status: TDispenserStatus) => string = (status: TDispenserStatus) => {
+const defineText: (
+  status: TDispenserStatus,
+  claim_start?: Date,
+  claim_start_time?: any,
+  claim_finish?: Date,
+  claim_finish_time?: any
+) => string = (
+  status,
+  claim_start,
+  claim_start_time,
+  claim_finish,
+  claim_finish_time
+  ) => {
   switch (status) {
-    case 'ACTIVE':
+    case 'ACTIVE': {
+      if (claim_finish) {
+        return `Active until ${formatDate(+claim_finish)}, ${formatTime(+claim_finish)}`
+      }
       return 'Active'
+    }
     case 'FINISHED':
       return 'Finished'
     case 'PAUSED':
@@ -45,18 +67,31 @@ const defineText: (status: TDispenserStatus) => string = (status: TDispenserStat
     case 'REDIRECT':
       return 'Redirect enabled'
     case 'READY':
-      return 'Ready'
+      return `Starts at ${formatDate(+(claim_start as Date))}, ${formatTime(+(claim_start as Date))}`
     default:
       return ''
   }
 }
 
 const Status: FC<TProps> = ({
-  status
+  status,
+  dateFinish,
+  dateStart
 }) => {
+  const dispenserStartDate = dateStart ? new Date(dateStart) : undefined
+  const dispenserFinishDate = dateFinish ? new Date(dateFinish) : undefined
+  const dispenserStartTime = dateStart ? momentNoOffsetGetTime(dateStart) : undefined
+  const dispenserFinishTime = dateFinish ? momentNoOffsetGetTime(dateFinish) : undefined
+
   const statusType = defineStatus(status)
   const title = defineTitle(status)
-  const text = defineText(status)
+  const text = defineText(
+    status,
+    dispenserStartDate,
+    dispenserStartTime,
+    dispenserFinishDate,
+    dispenserFinishTime
+  )
 
   return <StatusBarStyled
     type={statusType}

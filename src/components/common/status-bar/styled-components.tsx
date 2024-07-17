@@ -17,23 +17,19 @@ export const Container = styled.div<{ type: TStatus }>`
   padding: 20px;
   border-radius: 16px;
   border: 1px solid;
-  background-color: ${props => props.theme.tagDefaultBackgroundColor};
-  border-color: ${props => props.theme.tagDefaultBorderColor};
+  background-color: ${props => props.theme.statusBarDefaultBackgroundColor};
+  border-color: ${props => props.theme.statusBarDefaultBorderColor};
   text-align: center;
 
   ${props => props.type === 'info' && css`
-    background-color: ${props => props.theme.tagInfoBackgroundColor};
-    border-color: ${props => props.theme.tagInfoBorderColor};
+    background-color: ${props => props.theme.statusBarInfoBackgroundColor};
+    border-color: ${props => props.theme.statusBarInfoBorderColor};
   `}
 
-  ${props => props.type === 'error' && css`
-    background-color: ${props => props.theme.tagErrorBackgroundColor};
-    border-color: ${props => props.theme.tagErrorBorderColor};
-  `}
 
   ${props => props.type === 'success' && css`
-    background-color: ${props => props.theme.tagSuccessBackgroundColor};
-    border-color: ${props => props.theme.tagSuccessBorderColor};
+    background-color: ${props => props.theme.statusBarSuccessBackgroundColor};
+    border-color: ${props => props.theme.statusBarSuccessBorderColor};
   `}
 `
 
