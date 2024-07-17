@@ -23,11 +23,6 @@ export const StyledInput = styled(Input)`
   margin-bottom: 24px;
 `
 
-export const StyledSelect = styled(Select)`
-  margin-bottom: 32px
-`
-
-
 export const CheckboxContainer = styled.div``
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
@@ -54,6 +49,7 @@ export const InputsContainer = styled.div`
 
 export const SelectStyled = styled(Select)`
   width: 100%;
+  margin-bottom: 32px
 `
 
 
