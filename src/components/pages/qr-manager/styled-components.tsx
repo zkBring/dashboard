@@ -32,9 +32,7 @@ export const ButtonStyled = styled(Button)`
   width: 100%;
 `
 
-export const Image = styled.img`
-  max-width: 308px;
-  display: block;
+export const Image = styled.div`
   margin-bottom: 32px;
 `
 

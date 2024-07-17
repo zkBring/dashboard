@@ -29,7 +29,12 @@ import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
 import { nonceApi, dashboardKeyApi } from 'data/api'
-const { REACT_APP_CHAINS, REACT_APP_TESTNETS_URL, REACT_APP_MAINNETS_URL } = process.env
+const {
+  REACT_APP_CHAINS,
+  REACT_APP_TESTNETS_URL,
+  REACT_APP_MAINNETS_URL,
+  REACT_APP_CLIENT
+} = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -126,7 +131,12 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
     case 'initial':
       return 'Loading'
     case 'connect':
-      return 'Connect'
+      {
+        if (REACT_APP_CLIENT === 'coinbase') {
+          return 'Connect with Smart Wallet'
+        }
+        return 'Connect'
+      }
     case 'login':
       return 'Sign in'
     case 'store-key':
@@ -328,7 +338,14 @@ const Main: FC<ReduxType> = ({
         if (loading || !injectedProvider) {
           return
         }
-        if (authorizationStep === 'connect') { 
+        if (authorizationStep === 'connect') {
+          if (REACT_APP_CLIENT === 'coinbase') {
+            const coinbaseConnector = connectors.find(connector => connector.id === "coinbaseWalletSDK")
+            if (!coinbaseConnector) {
+              return alert('coinbaseWalletSDK Connector not found')
+            }
+            return connect({ connector: coinbaseConnector })
+          }
           return open()
         }
 

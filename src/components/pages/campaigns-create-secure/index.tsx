@@ -24,11 +24,10 @@ import {
   StyledInput,
   CheckboxContainer,
   CheckboxStyled,
-  StyledRadio,
+  SelectStyled,
   Header,
   WidgetTitleStyled,
   ToggleStyled,
-  SelectStyled,
   DateTimeContainer,
   Note,
   DatePickerStyled,
@@ -186,16 +185,10 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [chainId])
 
-  const walletsOptions = useMemo(() => {
-    const options = allWallets
-      .map(wallet => ({
-        label: wallet.name,
-        value: wallet.id
-      }))
-    return options
-  }, [chainId])
-
-  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (REACT_APP_CLIENT === 'coinbase' ? 'coinbase_wallet' : walletsOptions[0].value)
+  const [
+    availableWallets,
+    setAvailableWallets
+  ] =  useState<string[]>(walletsAvailable)
 
   const currentCampaignAvailableCountries = useMemo(() => {
     if (!currentCampaign) {
@@ -213,15 +206,33 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return countries
   }, [chainId])
 
+  const walletsOptions = useMemo(() => {
+    const options = allWallets
+      .filter(wallet => availableWallets.includes(wallet.id))
+      .map(wallet => ({
+        label: wallet.name,
+        value: wallet.id
+      }))
+    return options
+  }, [ availableWallets ])
+
+  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (REACT_APP_CLIENT === 'coinbase' ? 'coinbase_wallet' : walletsOptions[0].value)
+
   const [
     currentWallet,
     setCurrentWallet
   ] = useState<string>(currentCampaignWallet)
 
-  const [
-    availableWallets,
-    setAvailableWallets
-  ] =  useState<string[]>(walletsAvailable)
+  const walletsCheckboxes = useMemo(() => {
+    const options = allWallets
+      .map(wallet => ({
+        label: wallet.name,
+        value: availableWallets.includes(wallet.id),
+        id: wallet.id,
+        disabled: currentWallet === wallet.id
+      }))
+    return options
+  }, [chainId, availableWallets, currentWallet])
 
   const [
     linksExpirationDate,
@@ -248,16 +259,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   useEffect(preventPageClose(), [])
 
-  const walletsCheckboxes = useMemo(() => {
-    const options = allWallets
-      .map(wallet => ({
-        label: wallet.name,
-        value: availableWallets.includes(wallet.id),
-        id: wallet.id,
-        disabled: currentWallet === wallet.id
-      }))
-    return options
-  }, [chainId, availableWallets, currentWallet])
 
   const history = useHistory()
   const [ nativeTokensAmount, setNativeTokensAmount ] = useState<string>('')
@@ -280,17 +281,18 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       {REACT_APP_CLIENT !== 'coinbase' && <WidgetComponent title='Wallet options'>
         <WidgetSectionTitle>Preferred wallet</WidgetSectionTitle>
         <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
-        <StyledRadio
-          disabled={Boolean(currentCampaign) || loading}
-          radios={walletsOptions.map(item => ({...item, disabled: !availableWallets.includes(item.value)}))}
-          value={currentWallet}
-          onChange={value => {
+        <SelectStyled
+          options={walletsOptions}
+          title='Preferred wallet'
+          disabled={loading}
+          onChange={({ value }) => {
             if (!availableWallets.includes(value)) {
               const updatedAvailableWallets = availableWallets.concat(value)
               setAvailableWallets(updatedAvailableWallets)
             }
             setCurrentWallet(value)
           }}
+          value={walletsOptions.find(wallet => wallet.value === currentWallet)}
         />
 
         <WidgetSectionTitle>Display wallets</WidgetSectionTitle>

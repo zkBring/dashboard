@@ -16,7 +16,12 @@ import {
   BatchListValue,
   WidgetComponent,
 } from 'components/pages/common'
-import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusTag } from 'helpers'
+import {
+  formatDate,
+  formatTime,
+  defineDispenserStatus,
+  defineDispenserStatusTag
+} from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'

@@ -1,0 +1,38 @@
+<svg width="308" height="140" viewBox="0 0 308 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M120 4L170 54H120V4Z" fill="#121212"/>
+<rect x="103" y="52" width="80" height="88" fill="#121212"/>
+<rect x="104" y="50" width="40" height="89" fill="#B7BFD1" stroke="#121212" stroke-width="2"/>
+<rect x="85" y="53" width="78" height="86" fill="#E4EDFF" stroke="#121212" stroke-width="2"/>
+<rect x="93" y="66" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="110" y="66" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="127" y="66" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="144" y="66" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="93" y="84" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="110" y="84" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="127" y="84" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="144" y="84" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="93" y="102" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="110" y="102" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="127" y="102" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="144" y="102" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="93" y="120" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="110" y="120" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="127" y="120" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="144" y="120" width="10" height="10" fill="#748AB6" stroke="#121212" stroke-width="2"/>
+<rect x="143" y="92" width="80" height="48" fill="#121212"/>
+<rect x="144" y="105" width="40" height="34" fill="#B7BFD1" stroke="#121212" stroke-width="2"/>
+<rect x="125" y="93" width="78" height="46" fill="#FBFFF6" stroke="#121212" stroke-width="2"/>
+<rect x="133" y="102" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="150" y="102" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="167" y="102" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="184" y="102" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="133" y="120" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="150" y="120" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="167" y="120" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="184" y="120" width="10" height="10" fill="#78796E" stroke="#121212" stroke-width="2"/>
+<rect x="34" y="138" width="240" height="2" rx="1" fill="#121212"/>
+<rect x="100" y="5" width="48" height="48" fill="white" stroke="#121212" stroke-width="2"/>
+<path d="M119.018 30.0964H122.272V46.3458H119.018V36.5961H115.763V39.846H106V30.0964H109.254V33.3463H112.509V30.0964H119.018ZM115.763 20.7497V17.4998H112.509V20.7497H115.763ZM106 46.3458H109.254V43.0959H106V46.3458ZM112.509 46.3458H115.763V43.0959H112.509V46.3458ZM135.29 20.7497V17.4998H132.036V20.7497H135.29ZM141.799 11V27.2495H125.527V11H141.799ZM138.545 14.2499H128.781V23.9996H138.545V14.2499ZM119.018 11H122.272V27.2495H106V11H119.018ZM119.018 14.2499H109.254V23.9996H119.018V14.2499ZM138.545 30.0964H141.799V46.3458H125.527V30.0964H138.545ZM138.545 33.3463H128.781V43.0959H138.545V33.3463ZM135.29 39.846V36.5961H132.036V39.846H135.29Z" fill="#4376D7"/>
+<path d="M241.5 108C242.957 111.938 246.062 115.043 250 116.5C246.062 117.957 242.957 121.062 241.5 125C240.043 121.062 236.938 117.957 233 116.5C236.938 115.043 240.043 111.938 241.5 108Z" fill="#F6B40A"/>
+<path d="M54 18L54.5224 19.4118C57.1052 26.3916 62.6084 31.8948 69.5882 34.4776L71 35L69.5882 35.5224C62.6084 38.1052 57.1052 43.6084 54.5224 50.5882L54 52L53.4776 50.5882C50.8948 43.6084 45.3916 38.1052 38.4118 35.5224L37 35L38.4118 34.4776C45.3916 31.8948 50.8948 26.3916 53.4776 19.4118L54 18Z" fill="#4376D7"/>
+</svg>

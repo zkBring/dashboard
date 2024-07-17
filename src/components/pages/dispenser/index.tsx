@@ -22,30 +22,23 @@ import {
   QRCode
 } from './components'
 import DynamicQRImageSrc from 'images/dynamic-qr.png'
-import { TextLink } from 'components/common'
 import {
   defineDispenserStatus,
-  defineIfQRIsDeeplink,
-  defineDispenserStatusTag,
   alertError,
   defineDispenserAppUrl
 } from 'helpers'
-import { Redirect, useHistory, useParams } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import {
   TDispenser,
   TDispenserStatus,
   TLinkDecrypted,
-  TDispenserWhitelistType,
-  TDispenserWhitelistItemAddress
+  TDispenserWhitelistType
 } from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { decrypt, encrypt } from 'lib/crypto'
-import Icons from 'icons'
-import moment from 'moment'
 import { ethers } from 'ethers'
 import { defineClaimAppURL, defineNetworkName } from 'helpers'
-import { plausibleApi } from 'data/api'
 
 
 const mapStateToProps = ({
@@ -263,7 +256,6 @@ const renderMainButton = (
   const title = !dynamic ? 'Download PNG' : 'Launch Dynamic QR App'
   return <WidgetButton
     title={title}
-    appearance='action'
     onClick={() => {
       if (!dynamic) {
         toggleDownloadPopup(true)
@@ -295,9 +287,9 @@ const defineQRItem = (
 }
 
 const defineQRCodeDescription = () => {
-    return <Text>
-      Tokens you are dispensing can be claimed by anyone who goes to Campaign Website or scans Campaigns QR code
-    </Text>
+  return <Text>
+    Tokens you are dispensing can be claimed by anyone who goes to Campaign Website or scans Campaigns QR code
+  </Text>
 }
 
 // @ts-ignore
@@ -422,7 +414,6 @@ const Dispenser: FC<ReduxType> = ({
     links_claimed,
     links_assigned,
     whitelist_on,
-    whitelist_type,
     dynamic,
     claim_finish,
     timeframe_on
@@ -488,7 +479,11 @@ const Dispenser: FC<ReduxType> = ({
 
 
     <div>
-      <Status status={currentStatus} />
+      <Status
+        status={currentStatus}
+        dateStart={claim_start}
+        dateFinish={claim_finish}
+      />
       <Statistics
         linksCount={links_count || 0}
         dispenserStatus={currentStatus}
@@ -508,8 +503,6 @@ const Dispenser: FC<ReduxType> = ({
         encryptedMultiscanQREncCode={encrypted_multiscan_qr_enc_code}
         linksCount={links_count || 0}
         addLinksToQR={addLinksToQR}
-
-
         // not available
         campaignData={currentDispenserData.campaign}
       />
