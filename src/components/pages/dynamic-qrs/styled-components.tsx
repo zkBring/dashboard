@@ -9,6 +9,7 @@ export const Container = styled.div`
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
@@ -18,7 +19,7 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   text-overflow: ellipsis;
   margin-bottom: 0;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1;
 `
 
 export const ContainerButton = styled(Button)`
