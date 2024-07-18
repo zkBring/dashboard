@@ -8,16 +8,17 @@ import {
   ButtonStyled,
   NoteStyled,
   TextLinkStyled,
-  WidgetLoaderStyled
+  WidgetLoaderStyled,
+  TableTextStyled
 } from './styled-components'
 import {
   TProps,
   TSettingItem
 } from './types'
-import { Loader } from 'components/common'
+import { Loader, Tooltip } from 'components/common'
 import {
   TableRow,
-  TableText
+  
 } from 'components/pages/common'
 import Icons from 'icons'
 import Timeframe from './timeframe'
@@ -29,15 +30,18 @@ const settings = [
   {
     title: 'Whitelist addresses',
     subtitle: 'You can set up who can claim tokens by whitelisting users by addresses',
-    id: 'whitelist'
+    id: 'whitelist',
+    tooltip: 'Limit who can claim tokens by whitelisting specific addresses'
   }, {
     title: 'Timeframe',
-    subtitle: 'You can set up the link expiration, so that users will not be able to claim after certain day and time',
-    id: 'timeframe'
+    subtitle: 'You can set up the link expiration, so that users will not be able to claim after a certain day and time, or select \'No End Date\' to allow ongoing claims',
+    id: 'timeframe',
+    tooltip: 'Set an expiration date and time for the link, so users cannot claim tokens after it expires'
   }, {
     title: 'Redirect to another URL',
     subtitle: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website',
-    id: 'redirect'
+    id: 'redirect',
+    tooltip: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website'
   }
 ]
 
@@ -49,9 +53,12 @@ const renderSettingItem = (
   disabledLabel?: string
 ) => {
   return <TableRow onClick={onClick}>
-    <TableText>
+    <TableTextStyled>
       {settingItem.title}
-    </TableText>
+      <Tooltip text={settingItem.tooltip}>
+        <Icons.InformationIcon />
+      </Tooltip>
+    </TableTextStyled>
     <TableValueStyled>
       <ButtonStyled
         appearance='additional'

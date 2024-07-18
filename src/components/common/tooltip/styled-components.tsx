@@ -18,10 +18,9 @@ export const TooltipContainer = styled.span<TProps>`
     background-color: ${props => props.theme.primaryBackgroundColor};
     z-index: 10;
     padding: 8px 16px;
-    width: min-content;
+    width: 300px;
     transform: translateY(-20px);
     transition: all 150ms cubic-bezier(.25, .8, .25, 1);
-    white-space: nowrap;
   }
 
   &:hover:after {

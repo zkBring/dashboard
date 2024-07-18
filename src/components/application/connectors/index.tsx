@@ -9,9 +9,7 @@ import {
   polygonMumbai
 } from 'wagmi/chains'
 import { http } from 'wagmi'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-// import { metamaskConfig } from './metamask-connect'
-// import { coinbaseConfig } from './coinbase-connector'
+import { QueryClient } from '@tanstack/react-query'
 
 import { injected, walletConnect, coinbaseWallet } from 'wagmi/connectors'
 
@@ -32,10 +30,10 @@ const metadata = {
 }
 
 const chains = [
-  mainnet,
-  polygon,
-  sepolia,
   base,
+  polygon,
+  mainnet,
+  sepolia,
   baseGoerli,
   polygonMumbai
 ] as const

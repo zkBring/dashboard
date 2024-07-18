@@ -2,19 +2,18 @@ import {
   FC,
   useState
 } from 'react'
-import { Redirect } from 'react-router-dom'
 import {
   WidgetStyled,
   TableValueStyled,
-  ButtonStyled
+  ButtonStyled,
+  TableTextStyled
 } from './styled-components'
 import {
   TProps,
   TSettingItem
 } from './types'
 import {
-  TableRow,
-  TableText,
+  TableRow
 } from 'components/pages/common'
 import Icons from 'icons'
 import { TCountry, TDispenser, TTokenType } from 'types'
@@ -22,6 +21,7 @@ import Wallets from './wallets'
 import Countries from './countries'
 import FinalScreenButton from './final-screen-button'
 import wallets from 'configs/wallets'
+import { Tooltip } from 'components/common'
 
 const { REACT_APP_CLIENT } = process.env
 
@@ -29,15 +29,18 @@ const settings = [
   {
     title: 'Country restrictions',
     subtitle: 'If you want to make the campaign available only in certain countries, please toggle on this feature and add countries from the list below',
-    id: 'available_countries'
+    id: 'available_countries',
+    tooltip: 'Select which countries can claim tokens'
   }, {
     title: 'Wallet options',
     subtitle: 'Setup the wallet that will be highlighted as “recommended” and select the wallets that will be displayed as alternative options to connect to Claim App to claim tokens',
-    id: 'wallets'
+    id: 'wallets',
+    tooltip: 'Display preferred wallet as primary option when claiming tokens'
   }, {
     title: 'Final Screen Button',
     subtitle: 'You can add a custom button to the final screen after a user claims your tokens. When clicked, it will redirect the user to the URL you specify below',
-    id: 'final_screen_button'
+    id: 'final_screen_button',
+    tooltip: 'Add a primary button to the final screen that leads to any URL'
   }
 ]
 
@@ -50,9 +53,12 @@ const renderSettingItem = (
   disabledLabel?: string
 ) => {
   return <TableRow onClick={onClick}>
-    <TableText>
+    <TableTextStyled>
       {settingItem.title}
-    </TableText>
+      <Tooltip text={settingItem.tooltip}>
+        <Icons.InformationIcon />
+      </Tooltip>
+    </TableTextStyled>
     <TableValueStyled>
       <ButtonStyled
         appearance='additional'

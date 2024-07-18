@@ -100,13 +100,13 @@ const AsideComponent: FC<TProps & ReduxType> = ({
         </AsideMenuItemExternal>
         <AsideMenuItemExternal onClick={() => {
           plausibleApi.invokeEvent({
-            eventName: 'legal_docs',
+            eventName: 'start_guide',
             data: {
               network: defineNetworkName(chainId),
               component: 'aside'
             }
           })
-          window.open('https://linkdrop.notion.site/Terms-and-Privacy-dfa7d9b85698491d9926cbfe3c9a0a58', '_blank')
+          window.open('https://docs.linkdrop.io', '_blank')
         }}>
           <Icons.BookIcon />
           <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Guide</AsideMenuItemTitle>
