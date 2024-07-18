@@ -1,9 +1,9 @@
 const defineUrlSchema = (
   decryptedClaimCode: string,
-  claimAppURL: string,
+  claimAppURL: string
 ) => {
-  const link = `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
-  return link
+  const url = `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
+  return url
 }
 
 export default defineUrlSchema
