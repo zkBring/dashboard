@@ -25,6 +25,7 @@ export const BatchListStyled = styled(BatchList)`
 
 export const Header = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `
 
@@ -44,7 +45,7 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
   text-overflow: ellipsis;
   margin-bottom: 0;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1;
 `
 
 export const BatchListLabelStyled = styled(BatchListLabel)`
