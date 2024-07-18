@@ -253,12 +253,9 @@ const Main: FC<ReduxType> = ({
     <Title>
       Please, use desktop browser
     </Title>
-    <Contents>
-
-      <Text>
-      Linkdrop dashboard is only available on desktop browsers
-      </Text>
-    </Contents>
+    <Text>
+    Linkdrop dashboard is only available on desktop browsers
+    </Text>
   </ContainerCentered>
   }
 

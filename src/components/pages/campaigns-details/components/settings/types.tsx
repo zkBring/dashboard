@@ -47,5 +47,7 @@ export type TSettingItem = {
   subtitle: string
   onClose?: () => void
   id: string
-  toggleAction?: () => void,
+  toggleAction?: () => void
+  tooltip: string
+
 }

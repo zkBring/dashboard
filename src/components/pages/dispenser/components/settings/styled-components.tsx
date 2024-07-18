@@ -1,5 +1,5 @@
 import { Widget, Button, TextLink } from "components/common"
-import { TableValue } from "components/pages/common"
+import { TableValue, TableText } from "components/pages/common"
 import styled from "styled-components"
 import { Note } from 'linkdrop-ui'
 
@@ -14,6 +14,15 @@ export const WidgetLoaderStyled = styled(Widget)`
   }
 `
 
+export const TableTextStyled = styled(TableText)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    display: block;
+  }
+`
 
 export const WidgetStyled = styled(Widget)`
   margin-bottom: 24px;

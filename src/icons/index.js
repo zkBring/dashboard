@@ -63,10 +63,12 @@ import { ReactComponent as NFTsIcon } from './nfts-icon.svg'
 import { ReactComponent as QRSetPreviewIcon } from './qr-set-preview-icon.svg'
 import { ReactComponent as DispenserQRPreviewIcon } from './dispenser-qr-preview-icon.svg'
 import { ReactComponent as DynamicQRPreviewIcon } from './dynamic-qr-preview-icon.svg'
+import { ReactComponent as InformationIcon } from './information-icon.svg'
 
 
 const Icons = {
   EthereumLogo,
+  InformationIcon,
   QRSetPreviewIcon,
   DispenserQRPreviewIcon,
   DynamicQRPreviewIcon,

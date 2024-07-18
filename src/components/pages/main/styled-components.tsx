@@ -39,10 +39,10 @@ export const WidgetDescription = styled.p`
 `
 
 export const WidgetButton = styled(Button)`
-  padding: 4px 50px;
+  padding: 4px 30px;
   width: 100%;
   margin-bottom: 15px;
-  max-width: 210px;
+  max-width: 250px;
 `
 
 export const AlignBottomButton = styled(WidgetButton)`
