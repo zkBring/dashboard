@@ -15,6 +15,7 @@ import {
   BatchListLabel,
   BatchListValue,
   WidgetComponent,
+  InitialNote
 } from 'components/pages/common'
 import {
   formatDate,
@@ -60,7 +61,14 @@ const DynamicQRs: FC<ReduxType> = ({
 
   // @ts-ignore
   const dynamicQrs = dispensers.filter(dispenser => dispenser.dynamic)
-
+  if (dynamicQrs.length === 0) {
+    return <InitialNote
+      title='Create Your First Dynamic QR'
+      text="Your Dynamic QRs will be displayed here once created. You don't have any Dynamic QRs yet"
+      href='/dynamic-qrs/new'
+      buttontText='New Dynamic QR'
+    />
+  }
   return <Container>
     <WidgetComponent>
       <Header>

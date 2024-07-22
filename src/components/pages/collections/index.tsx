@@ -16,8 +16,14 @@ import {
   BatchListLabel,
   BatchListValue,
   WidgetComponent,
+  InitialNote
 } from 'components/pages/common'
-import { formatDate, formatTime, shortenString, defineCollectionStatusTag } from 'helpers'
+import {
+  formatDate,
+  formatTime,
+  shortenString,
+  defineCollectionStatusTag
+} from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 
@@ -45,6 +51,16 @@ const Collections: FC<ReduxType> = ({
   collections,
   loading
 }) => {
+
+  if (collections.length === 0) {
+    return <InitialNote
+      title='Create Your First NFT collection'
+      text="Your NFT collections will be displayed here once created. You don't have any NFT collections yet"
+      href='/collections/new'
+      buttontText='New NFT collection'
+    />
+  }
+
   return <Container>
     <WidgetComponent>
       <Header>

@@ -13,7 +13,8 @@ import {
 import {
   BatchListLabel,
   BatchListValue,
-  WidgetComponent
+  WidgetComponent,
+  InitialNote
 } from 'components/pages/common'
 import { Tag } from 'components/common'
 import Icons from 'icons'
@@ -57,8 +58,18 @@ const defineStatus = (
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const QRs: FC<ReduxType> = ({
-  qrs,
+  qrs
 }) => {
+
+  if (qrs.length === 0) {
+    return <InitialNote
+      title='Create Your First QR set'
+      text="Your QR sets will be displayed here once created. You don't have any QR sets yet"
+      href='/qrs/new'
+      buttontText='New QR set'
+    />
+  }
+
   return <Container>
     <WidgetComponent>
       <Header>

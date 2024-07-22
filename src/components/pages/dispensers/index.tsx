@@ -5,7 +5,6 @@ import {
   WidgetTitleStyled,
   ContainerButton,
   DispensersListValueFixed,
-  DispensersListValueStyled,
   DispensersListStyled,
   SecondaryTextSpan,
   BatchListLabelTextAlignRight,
@@ -16,6 +15,7 @@ import {
   BatchListLabel,
   BatchListValue,
   WidgetComponent,
+  InitialNote
 } from 'components/pages/common'
 import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusTag } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
@@ -56,6 +56,14 @@ const Dispensers: FC<ReduxType> = ({
 
   const notDynamicQrs = dispensers.filter(dispenser => !dispenser.dynamic)
 
+  if (notDynamicQrs.length === 0) {
+    return <InitialNote
+      title='Create Your First Dispenser QR'
+      text="Your Dispenser QRs will be displayed here once created. You don't have any Dispenser QRs yet"
+      href='/dispensers/new'
+      buttontText='New Dispenser QR'
+    />
+  }
 
   return <Container>
     <WidgetComponent>

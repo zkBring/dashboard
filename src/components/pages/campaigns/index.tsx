@@ -19,6 +19,7 @@ import {
 import {
   BatchListLabel,
   BatchListValue,
+  InitialNote
 } from 'components/pages/common'
 import {
   TProps
@@ -82,6 +83,15 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
   const currentAddressDrafts = drafts.filter(draft => {
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
   })
+
+  if (currentAddressCampaigns.length === 0 && currentAddressCampaigns.length === 0) {
+    return <InitialNote
+      title='Create Your First Campaign'
+      text="Your campaigns will be displayed here once created. You don't have any campaigns yet"
+      href='/campaigns/new'
+      buttontText='New Campaign'
+    />
+  }
 
   return <>
     <WidgetComponentStyled>

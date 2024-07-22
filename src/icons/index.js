@@ -64,10 +64,11 @@ import { ReactComponent as QRSetPreviewIcon } from './qr-set-preview-icon.svg'
 import { ReactComponent as DispenserQRPreviewIcon } from './dispenser-qr-preview-icon.svg'
 import { ReactComponent as DynamicQRPreviewIcon } from './dynamic-qr-preview-icon.svg'
 import { ReactComponent as InformationIcon } from './information-icon.svg'
-
+import { ReactComponent as SunnyCloudIcon } from 'icons/sunny-cloud-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  SunnyCloudIcon,
   InformationIcon,
   QRSetPreviewIcon,
   DispenserQRPreviewIcon,
