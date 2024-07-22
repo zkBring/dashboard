@@ -99,7 +99,8 @@ const DynamicQRs: FC<ReduxType> = ({
             claim_finish,
             active,
             redirect_on,
-            redirect_url
+            redirect_url,
+            timeframe_on
           } = dispenser
 
           const currentStatus = defineDispenserStatus(
@@ -108,7 +109,8 @@ const DynamicQRs: FC<ReduxType> = ({
             links_count || 0,
             active,
             redirect_on,
-            redirect_url
+            redirect_url,
+            timeframe_on
           )
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')

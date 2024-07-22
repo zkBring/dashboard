@@ -40,12 +40,14 @@ const defineTitle: (status: TDispenserStatus) => string = (status: TDispenserSta
 
 const defineText: (
   status: TDispenserStatus,
+  timeframeOn?: boolean,
   claim_start?: Date,
   claim_start_time?: any,
   claim_finish?: Date,
   claim_finish_time?: any
 ) => string = (
   status,
+  timeframeOn,
   claim_start,
   claim_start_time,
   claim_finish,
@@ -53,6 +55,9 @@ const defineText: (
   ) => {
   switch (status) {
     case 'ACTIVE': {
+      if (!timeframeOn) {
+        return 'Active'
+      }
       if (claim_finish) {
         return `Active until ${formatDate(+claim_finish)}, ${formatTime(+claim_finish)}`
       }
@@ -67,6 +72,9 @@ const defineText: (
     case 'REDIRECT':
       return 'Redirect enabled'
     case 'READY':
+      if (!timeframeOn) {
+        return 'Ready'
+      }
       return `Starts at ${formatDate(+(claim_start as Date))}, ${formatTime(+(claim_start as Date))}`
     default:
       return ''
@@ -76,7 +84,8 @@ const defineText: (
 const Status: FC<TProps> = ({
   status,
   dateFinish,
-  dateStart
+  dateStart,
+  timeframeOn
 }) => {
   const dispenserStartDate = dateStart ? new Date(dateStart) : undefined
   const dispenserFinishDate = dateFinish ? new Date(dateFinish) : undefined
@@ -87,6 +96,7 @@ const Status: FC<TProps> = ({
   const title = defineTitle(status)
   const text = defineText(
     status,
+    timeframeOn,
     dispenserStartDate,
     dispenserStartTime,
     dispenserFinishDate,

@@ -10,7 +10,7 @@ export const TooltipContainer = styled.span<TProps>`
     opacity: 0;
     pointer-events: none;
     content: "${props => props.text}";
-    left: 0;
+    right: 0;
     top: calc(100% + 10px);
     border-radius: 8px;
     color: ${props => props.theme.primaryTextColor};
