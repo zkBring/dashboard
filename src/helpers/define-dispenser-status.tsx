@@ -6,7 +6,8 @@ type TDefineDispenserStatus = (
   links_count: number,
   active?: boolean,
   redirect_on?: boolean,
-  redirect_url?: string | null
+  redirect_url?: string | null,
+  timeframe_on?: boolean,
 ) => TDispenserStatus
 
 const defineDispenserStatus: TDefineDispenserStatus = (
@@ -15,7 +16,8 @@ const defineDispenserStatus: TDefineDispenserStatus = (
   links_count,
   active = true,
   redirect_on = false,
-  redirect_url
+  redirect_url,
+  timeframe_on = false
 ) => {
 
   if (links_count === 0) {
@@ -33,7 +35,12 @@ const defineDispenserStatus: TDefineDispenserStatus = (
   if (!active) {
     return 'PAUSED'
   }
+
   if (claim_start && (currentDate > claim_start)) {
+    return 'ACTIVE'
+  }
+
+  if (!timeframe_on) {
     return 'ACTIVE'
   }
 
