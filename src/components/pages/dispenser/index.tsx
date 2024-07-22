@@ -425,7 +425,8 @@ const Dispenser: FC<ReduxType> = ({
     links_count || 0,
     active,
     redirect_on,
-    redirect_url
+    redirect_url,
+    timeframe_on
   )
 
   const mainButton = renderMainButton(
@@ -483,6 +484,7 @@ const Dispenser: FC<ReduxType> = ({
         status={currentStatus}
         dateStart={claim_start}
         dateFinish={claim_finish}
+        timeframeOn={timeframe_on}
       />
       <Statistics
         linksCount={links_count || 0}
