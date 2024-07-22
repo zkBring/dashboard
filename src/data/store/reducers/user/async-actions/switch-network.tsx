@@ -15,6 +15,7 @@ function switchNetwork (
   chainId: number,
   callback: () => void
 ) {
+  // @ts-ignore
   return async (
     dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState

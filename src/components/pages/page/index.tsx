@@ -3,7 +3,12 @@ import { Header, Aside, Breadcrumbs } from 'components/common'
 import { Page, MainContent, Content } from './styled-components'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
-import { TDefineTitle, TDefineBreadcrumbs, ILocationType } from './types'
+import {
+  TDefineTitle,
+  TDefineBreadcrumbs,
+  ILocationType,
+  TProps
+} from './types'
 import { useLocation } from 'react-router-dom'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -23,7 +28,7 @@ const defineTitle: TDefineTitle = (location) => {
       return 'Invite Links'
 
     case locationUpdated.includes('/collections'):
-      return 'Minter'
+      return 'NFTs Minter'
 
     case locationUpdated.includes('/campaigns/new'):
     case locationUpdated.includes('/campaigns/new/initial'):
@@ -44,17 +49,24 @@ const defineTitle: TDefineTitle = (location) => {
       return 'New Batch'
     
     case locationUpdated.includes('/qrs/'):
-      return "QR set manager"
+    case locationUpdated.includes('/qrs'):
+      return "QR Set"
 
     case locationUpdated.includes('/dispensers/new'):
       return "New Dispenser"
+
     case locationUpdated.includes('/dispensers'):
-      return "Dispensers"
-    case locationUpdated.includes('/qrs'):
-      return "QR manager"
+      return "Dispenser QR"
+
+    case locationUpdated.includes('/qr-manager'):
+      return "QR Manager"
     
     case locationUpdated.includes('/campaigns'):
-      return 'Campaigns'
+      return 'Claim Links'
+    
+    case locationUpdated.includes('/dynamic-qrs'):
+      return 'Dynamic QR'
+
     default:
       return ''
   }
@@ -162,22 +174,20 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   }
 }
 
-const PageComponent: FC<ReduxType> = ({ children, authorizationStep }) => {  
+const PageComponent: FC<ReduxType & TProps> = ({ children, authorizationStep }) => {  
   const location = useLocation<ILocationType>()
   const title = defineTitle(location.pathname)
   const breadcrumbs = defineBreadcrumbs(location.pathname)
-  const withHeader = authorizationStep === 'authorized'
-
 
   return (
     <ThemeProvider theme={themes.light}>
       <Page>
         <Aside />
         <MainContent>
-          {withHeader && <Header
+          <Header
             title={title}
             breadcrumbs={breadcrumbs}
-          />}
+          />
           <Content withBreadcrumbs={breadcrumbs}>
             {children}
           </Content>

@@ -1,70 +1,73 @@
-// import {
-//   EthereumClient,
-//   w3mConnectors,
-//   w3mProvider
-// } from "@web3modal/ethereum"
-// import { configureChains, createClient } from "wagmi"
-// import { mainnet, polygon, goerli, polygonMumbai } from "wagmi/chains"
-// const { REACT_APP_WC_PROJECT_ID } = process.env
-
-// const chains = [goerli, polygonMumbai]
-
-// // Wagmi client
-// const { provider } = configureChains(chains, [w3mProvider({ projectId: REACT_APP_WC_PROJECT_ID as string })]);
-// console.log({ provider })
-// const wagmiClient = createClient({
-//   connectors: w3mConnectors({
-//     projectId: REACT_APP_WC_PROJECT_ID as string,
-//     version: 2,
-//     chains
-//   }),
-//   provider
-// })
-
-// const ethereumClient = new EthereumClient(wagmiClient, chains)
-
-// export {
-//   wagmiClient,
-//   ethereumClient
-// }
-
-
+import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import {
-  EthereumClient,
-  w3mConnectors,
-  w3mProvider
-} from "@web3modal/ethereum"
-import { configureChains, createConfig } from "wagmi"
-import { mainnet, polygon, goerli, polygonMumbai, base, baseGoerli } from "wagmi/chains"
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+  mainnet,
+  polygon,
+  sepolia,
+  base,
+  baseGoerli,
+  polygonMumbai
+} from 'wagmi/chains'
+import { http } from 'wagmi'
+import { QueryClient } from '@tanstack/react-query'
+
+import { injected, walletConnect, coinbaseWallet } from 'wagmi/connectors'
 
 const { REACT_APP_WC_PROJECT_ID } = process.env
-const chains = [mainnet, polygon, goerli, polygonMumbai, base, baseGoerli]
 
-// Wagmi client
-const { publicClient } = configureChains(chains, [
-  w3mProvider({ projectId: REACT_APP_WC_PROJECT_ID as string })
-])
+// 0. Setup queryClient
+const queryClient = new QueryClient()
 
-const wagmiConfig = createConfig({
-  autoConnect: true,
+// 1. Get projectId at https://cloud.walletconnect.com
+const projectId = REACT_APP_WC_PROJECT_ID as string
+
+// 2. Create wagmiConfig
+const metadata = {
+  name: 'Linkdrop Dashboard App',
+  description: 'Linkdrop Dashboard App',
+  url: 'https://linkdrop.io', // origin must match your domain & subdomain
+  icons: ['https://avatars.githubusercontent.com/u/37784886']
+}
+
+const chains = [
+  base,
+  polygon,
+  mainnet,
+  sepolia,
+  baseGoerli,
+  polygonMumbai
+] as const
+
+const config = defaultWagmiConfig({
+  chains,
+  projectId,
+  metadata,
   connectors: [
-    new WalletConnectConnector({
-      chains, options: {
-        projectId: REACT_APP_WC_PROJECT_ID as string
-      }
+    walletConnect({
+      projectId,
+      metadata,
+      showQrModal: false
     }),
-    new InjectedConnector({
-      chains
-    })
+    injected(),
+    coinbaseWallet()
   ],
-  publicClient
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
+    [base.id]: http(),
+    [baseGoerli.id]: http(),
+    [polygonMumbai.id]: http(),
+  },
 })
 
-const ethereumClient = new EthereumClient(wagmiConfig, chains)
+// 3. Create modal
+createWeb3Modal({
+  wagmiConfig: config,
+  projectId
+})
 
 export {
-  wagmiConfig,
-  ethereumClient
+  config,
+  queryClient
 }

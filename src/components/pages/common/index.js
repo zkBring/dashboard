@@ -8,6 +8,7 @@ import UploadLinksPopup from './upload-links-popup'
 import TokenImage from './token-image'
 import ThumbnailUpload from './thumbnail-upload'
 import AttentionContainer from './attention-container'
+import InitialNote from './initial-note'
 
 import {
   Container,
@@ -51,6 +52,7 @@ export {
   BatchListLabel,
   BatchListValue,
   ButtonsContainer,
+  InitialNote,
   Aside,
   WidgetContainer,
   WidgetSubtitle,

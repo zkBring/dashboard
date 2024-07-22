@@ -8,19 +8,25 @@ import {
 } from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
 import { authorizationApi, plausibleApi } from 'data/api'
-import { defineNetworkName, alertError } from 'helpers'
 import {
-  initialization,
-  getDashboardKey
+  defineNetworkName,
+  alertError,
+} from 'helpers'
+import {
+  initialization
 } from '../index'
 import {
   ERROR_DASHBOARD_AUTH_REJECTED,
   defineError
 } from './error-handling'
 
-const authorize = () => {
+const authorize = (
+  message: string,
+  timestamp: number
+) => {
+  // @ts-nocheck
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
+    dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     const {
@@ -31,20 +37,17 @@ const authorize = () => {
       }
     } = getState()
     dispatch(userActions.setLoading(true))
-
-    const timestamp = Date.now()
-    const humanReadable = new Date(timestamp).toUTCString()
     
     try {
-      const message = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
-      
+
       try {
-        const sig = await signer.signMessage(message)
+        const sig = await signer.signMessage(String(message))
         await authorizationApi.authorize(
           message,
           timestamp,
           sig,
-          address.toLocaleUpperCase()
+          address.toLowerCase(),
+          chainId as number
         )
       } catch (err) {
         plausibleApi.invokeEvent({
@@ -67,7 +70,9 @@ const authorize = () => {
         }
       })
 
-      dispatch(getDashboardKey())
+      // dispatch(getDashboardKey())
+      dispatch(userActions.setLoading(false))
+
 
     } catch (err) {
       dispatch(userActions.setAuthorizationStep('login'))

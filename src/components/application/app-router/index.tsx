@@ -18,16 +18,16 @@ import {
   QRDownload,
   QRCreate,
   Dispensers,
-  DispenserWhitelists,
-  DispenserWhitelistsAddresses,
   DispenserCreate,
   Dispenser,
-  InviteLinks,
+  DynamicQRCreate,
   Collections,
   CollectionsCreateNew,
   CollectionAddToken,
   CollectionsCreateInitial,
-  Collection
+  Collection,
+  DynamicQRs,
+  QRManager
 } from 'components/pages'
 import { connect } from 'react-redux'
 import { RootState } from 'data/store'
@@ -44,6 +44,13 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateNew}
+        />
+
+        <ProtectedRoute
+          path='/qr-manager'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={QRManager}
         />
 
         <ProtectedRoute
@@ -124,20 +131,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
-          path='/dispensers/:dispenserId/whitelists'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DispenserWhitelists}
-        />
-
-        <ProtectedRoute
-          path='/dispensers/:dispenserId/whitelists/addresses'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DispenserWhitelistsAddresses}
-        />
-
-        <ProtectedRoute
           path='/dispensers/:id'
           exact={true}
           loggedIn={Boolean(address)}
@@ -163,13 +156,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateApprove}
-        />
-
-        <ProtectedRoute
-          path='/invite-links'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={InviteLinks}
         />
 
         <ProtectedRoute
@@ -215,6 +201,27 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
+          path='/dynamic-qrs/new'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DynamicQRCreate}
+        />
+
+        <ProtectedRoute
+          path='/dynamic-qrs'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={DynamicQRs}
+        />
+
+        <ProtectedRoute
+          path='/dynamic-qrs/:id'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Dispenser}
+        />
+
+        <ProtectedRoute
           path='/qrs/new'
           exact={true}
           loggedIn={Boolean(address)}
@@ -239,9 +246,9 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           <Main />
         </Route>
 
-        <Route path='*' render={props => <NotFound
-          {...props}
-        />} />
+        <Route path='*'>
+          <NotFound />
+        </Route>
       </Switch>
     </Page>
   </HashRouter>

@@ -22,9 +22,18 @@ export type TDispenser = {
   multiscan_qr_id: string
   dispenser_id?: string  
   links_count?: number
-  claim_duration: number
+  
+  claim_duration?: number
+  // not used 
+
+  claim_finish?: number | null
+  
+  claim_start?: number | null
+
+  timeframe_on?: boolean
+
   created_at?: string
-  claim_start: number
+  updated_at?: string
   title: string
   dynamic?: boolean
   encrypted_multiscan_qr_enc_code: string
@@ -33,7 +42,6 @@ export type TDispenser = {
   redirect_url?: string | null
   links_claimed?: number
   links_assigned?: number
-  whitelisted?: boolean
   whitelist_type?: TDispenserWhitelistType
   whitelist?: TDispenserWhitelistItemAddress[]
   whitelist_count?: number
@@ -41,8 +49,8 @@ export type TDispenser = {
 }
 
 export type TDispenserUpdateData = {
-  claim_duration: number
-  claim_start: number
-  title: string
+  claim_finish?: number | null
+  claim_start?: number
+  title?: string
   dispenser_id: string
 }

@@ -15,27 +15,17 @@ export const WidgetValue = styled.div`
 `
 
 export const Buttons = styled.div`
-  display: flex;
-  justify-content: end;
-
-  & > button {
-    margin-left: 16px;
-  }
+  display: grid;
+  grid-template-columns: 1fr;
 `
 
 export const WidgetButton = styled(Button)`
-`
-
-export const AsideWidgetButton = styled(Button)`
   width: 100%;
-
-  svg {
-    margin-right: 4px;
-  }
 `
+
 
 export const WidgetComponentStyled = styled(WidgetComponent)`
-  max-width: 740px;
+  max-width: 546px;
 `
 
 export const CopyContainerStyled = styled(CopyContainer)`
@@ -55,12 +45,6 @@ export const PopupFormContent = styled.div`
 export const PopupForm = styled.form`
 `
 
-export const AsideSubtitle = styled.h3`
-  margin: 0 0 12px;
-  font-size: 14px;
-  font-weight: 600;
-`
-
 export const Counter = styled.div`
   font-size: 22px;
   font-weight: 600;
@@ -71,18 +55,20 @@ export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
 `
 
-export const AsideStyled = styled(Aside)`
-  max-width: 358px;
-  min-width: 358px;
-  margin: 0;
-`
-
-export const AsideContent = styled.div`
-  margin-bottom: 32px;
-`
-
 export const MainContent = styled.div`
   margin-right: 24px;
   flex: 1 0 50%;
-  
+`
+
+export const DynamicQRImage = styled.img`
+  max-width: 240px;
+  margin: 0 auto 32px;
+  display: block;
+`
+
+export const Text = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+  color: ${props => props.theme.primaryTextColor};
+  margin: 0 0 12px;
 `

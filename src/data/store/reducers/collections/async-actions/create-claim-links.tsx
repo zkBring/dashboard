@@ -18,6 +18,7 @@ function createClaimLinks (
   tokenType: TTokenType,
   callback?: (location: string) => void
 ) {
+  // @ts-ignore
   return async (
     dispatch: Dispatch<CollectionsActions> & Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState

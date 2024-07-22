@@ -1,5 +1,9 @@
 import axios from 'axios'
-import { TDispenser, TDispenserLinks, TDispenserWhitelistType } from 'types'
+import {
+  TDispenser,
+  TDispenserLinks,
+  TDispenserWhitelistType
+} from 'types'
 
 const {
   REACT_APP_SERVER_URL,
@@ -39,18 +43,23 @@ const requests = {
     dispenser_id,
     title,
     claim_start,
-    claim_duration
+    claim_finish
   }: {
     dispenser_id: string,
-    title: string,
-    claim_start: number,
-    claim_duration: number
+    title?: string,
+    claim_start?: number,
+    claim_finish?: number | null
   }) => {
     return dispensersApi.patch(`/dispensers/${dispenser_id}`, {
       title,
       claim_start,
-      claim_duration
+      claim_finish
     }, { withCredentials: true })
+  },
+  getCampaignData: (
+    multiscanQRId: string
+  ) => {
+    return dispensersApi.get(`/dispensers/multiscan-qrs/${multiscanQRId}/campaign`)
   },
   updateStatus: ({
     dispenser_id,
@@ -72,6 +81,18 @@ const requests = {
   }) => {
     return dispensersApi.patch(`/dispensers/${dispenser_id}/redirect-on`, {
       redirect_on
+    }, { withCredentials: true })
+  },
+
+  updateTimeframeOn: ({
+    dispenser_id,
+    timeframe_on
+  }: {
+    dispenser_id: string,
+    timeframe_on: boolean
+  }) => {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}/timeframe-on`, {
+      timeframe_on
     }, { withCredentials: true })
   },
   updateRedirectUrl: ({

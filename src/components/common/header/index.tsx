@@ -9,7 +9,8 @@ import {
   MiniPopupCustomItem,
   NetworkIndicator,
   NetworkIndicatorClass,
-  PolygonIcon
+  PolygonIcon,
+  Logout
 } from './styled-components'
 import { shortenString, defineNetworkName, capitalize, defineNativeTokenSymbol } from 'helpers'
 import { RootState } from 'data/store'
@@ -20,6 +21,8 @@ import chains from 'configs/chains'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { utils } from 'ethers'
+import Icons from 'icons'
+import { useAccount } from 'wagmi'
 
 const mapStateToProps = ({
   user: {
@@ -54,6 +57,7 @@ const defineNetworkLogo = (chainId: number | null) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const HeaderComponent: FC<IProps & ReduxType> = ({
@@ -68,7 +72,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   chainsAvailable
 }) => {
   const [ showToggleChain, setShowToggleChain ] = useState(false)
-  const [ showUserOptions, setShowUserOptions ] = useState(false)
+  const { connector } = useAccount()
   const nativeTokenAmountFormatted = nativeTokenAmount ? utils.formatEther(nativeTokenAmount) : 0
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
     {Object.keys(chains).map((chain: string) => {
@@ -85,13 +89,9 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
     })}
   </MiniPopup>
 
-  const userOptionsPopup = showUserOptions && <MiniPopup onClose={() => { setShowUserOptions(false) }}>
-    <MiniPopupCustomItem onClick={() => {
-      logout()
-    }}>
-      Logout
-    </MiniPopupCustomItem>
-  </MiniPopup>
+  // onClick={() => {
+  //   logout()
+  // }}
 
   return <Header breadcrumbs={breadcrumbs}>
     <HeaderTitle>
@@ -106,16 +106,22 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
         {capitalize(defineNetworkName(chainId))}
         {chainsPopup}
       </HeaderUserInfo>}
-      {address && <HeaderUserInfoPadded onClick={() => {
-        setShowUserOptions(!showUserOptions)
-      }}>
+      {address && <HeaderUserInfoPadded>
         {nativeTokenAmount !== null ? parseFloat(Number((nativeTokenAmountFormatted)).toFixed(3)) : 0} {defineNativeTokenSymbol({ chainId })}
         <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>
-        {userOptionsPopup}
       </HeaderUserInfoPadded>}
+
+      {chainId && address && <Logout
+        onClick={() => {
+          connector?.disconnect()
+          logout()
+        }}
+      >
+        <Icons.LogoutIcon />
+      </Logout>}
     </HeaderInfo>
   </Header>
 }
 
-
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(HeaderComponent)

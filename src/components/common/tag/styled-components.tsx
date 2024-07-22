@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { TStatus } from './types'
+import { TStatus } from 'types'
 
 export const TagContainer = styled.div<{ status: TStatus }>`
   padding: 4px 8px;

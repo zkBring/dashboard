@@ -5,19 +5,25 @@ import {
   WidgetTitleStyled,
   ContainerButton,
   CollectionsListLabelStyled,
-  CollectionsListValueStyled,
   CollectionsListStyled,
   SecondaryTextSpan,
-  CollectionsListLabelAligned,
-  TokenImageStyled
+  TokenImageStyled,
+  BatchListLabelTextAlignRight,
+  BatchListValueJustifySelfEnd
 } from './styled-components'
 import { Button } from 'components/common'
 import {
   BatchListLabel,
   BatchListValue,
   WidgetComponent,
+  InitialNote
 } from 'components/pages/common'
-import { formatDate, formatTime, shortenString, defineCollectionStatusTag } from 'helpers'
+import {
+  formatDate,
+  formatTime,
+  shortenString,
+  defineCollectionStatusTag
+} from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 
@@ -45,6 +51,16 @@ const Collections: FC<ReduxType> = ({
   collections,
   loading
 }) => {
+
+  if (collections.length === 0) {
+    return <InitialNote
+      title='Create Your First NFT collection'
+      text="Your NFT collections will be displayed here once created. You don't have any NFT collections yet"
+      href='/collections/new'
+      buttontText='New NFT collection'
+    />
+  }
+
   return <Container>
     <WidgetComponent>
       <Header>
@@ -62,7 +78,7 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>Address</BatchListLabel>
         <BatchListLabel>All token copies</BatchListLabel>
-        <CollectionsListLabelAligned>Actions</CollectionsListLabelAligned>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {collections.map(collection => {
           const { title, collection_id, created_at, tokens_amount, token_address, thumbnail } = collection
           const dateCreatedFormatted = formatDate(created_at || '')
@@ -81,14 +97,14 @@ const Collections: FC<ReduxType> = ({
             <BatchListValue>
               {defineCollectionStatusTag(tokens_amount || '0')}
             </BatchListValue>
-            <CollectionsListValueStyled>
+            <BatchListValueJustifySelfEnd>
               <Button
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
                 to={`/collections/${collection_id}`}
               />
-            </CollectionsListValueStyled>
+            </BatchListValueJustifySelfEnd>
           </>
         })}
       </CollectionsListStyled>}

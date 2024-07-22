@@ -1,4 +1,10 @@
-# Ledger Dashboard
+# Linkdrop Dashboard
+
+## 2.1.34
+- React, Wagmi, web3Modal update
+- dispensers and campaigns edit sidebar
+- passKey authorization for Coinbase Smart Wallet
+- UI/UX improvements (new menu logic, etc.)
 
 ## 2.1.33
 - sdk option returned

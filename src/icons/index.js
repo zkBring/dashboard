@@ -1,13 +1,13 @@
-import { ReactComponent as EthereumLogo } from './ethereum-logo.svg';
-import { ReactComponent as LinkdropLogo } from './linkdrop-logo.svg';
-import { ReactComponent as LinkdropWhiteLogo } from './linkdrop-white-logo.svg';
-import { ReactComponent as LinkdropTextLogo } from './linkdrop-text-logo.svg';
-import { ReactComponent as DashboardMenuIcon } from './dashboard-menu-icon.svg';
-import { ReactComponent as SupportMenuIcon } from './support-menu-icon.svg';
-import { ReactComponent as FaqMenuIcon } from './faq-menu-icon.svg';
-import { ReactComponent as DocsMenuIcon } from './docs-menu-icon.svg';
-import { ReactComponent as StarMenuIcon } from './star-menu-icon.svg';
-import { ReactComponent as GoBackIcon } from './go-back-icon.svg';
+import { ReactComponent as EthereumLogo } from './ethereum-logo.svg'
+import { ReactComponent as LinkdropLogo } from './linkdrop-logo.svg'
+import { ReactComponent as LinkdropWhiteLogo } from './linkdrop-white-logo.svg'
+import { ReactComponent as LinkdropTextLogo } from './linkdrop-text-logo.svg'
+import { ReactComponent as DashboardMenuIcon } from './dashboard-menu-icon.svg'
+import { ReactComponent as SupportMenuIcon } from './support-menu-icon.svg'
+import { ReactComponent as FaqMenuIcon } from './faq-menu-icon.svg'
+import { ReactComponent as DocsMenuIcon } from './docs-menu-icon.svg'
+import { ReactComponent as StarMenuIcon } from './star-menu-icon.svg'
+import { ReactComponent as GoBackIcon } from './go-back-icon.svg'
 import { ReactComponent as DownloadIcon } from './download-icon.svg'
 import { ReactComponent as ExternalLinkIcon } from './external-link-icon.svg'
 import { ReactComponent as ArrowIcon } from './arrow-icon.svg'
@@ -47,9 +47,40 @@ import { ReactComponent as StopDispenserIcon } from './stop-icon.svg'
 import { ReactComponent as DownloadReportIcon } from './download-report-icon.svg'
 import { ReactComponent as PopupWarningIcon } from './popup-warning-icon.svg'
 import { ReactComponent as InviteLinksIcon } from './invite-links-icon.svg'
+import { ReactComponent as LogoutIcon } from './logout-icon.svg'
+import { ReactComponent as MessagesIcon } from './messages-icon.svg'
+import { ReactComponent as CodeIcon } from './code-icon.svg'
+import { ReactComponent as DynamicQRIcon } from './dynamic-qr-icon.svg'
+import { ReactComponent as ExpandRightIcon } from './expand-right-icon.svg'
+
+import { ReactComponent as DispenserQRIcon } from './dispenser-qr-icon.svg'
+import { ReactComponent as ClaimLinksIcon } from './claim-links-icon.svg'
+import { ReactComponent as ClaimQRsIcon } from './claim-qrs-icon.svg'
+import { ReactComponent as NFTsIcon } from './nfts-icon.svg'
+
+
+
+import { ReactComponent as QRSetPreviewIcon } from './qr-set-preview-icon.svg'
+import { ReactComponent as DispenserQRPreviewIcon } from './dispenser-qr-preview-icon.svg'
+import { ReactComponent as DynamicQRPreviewIcon } from './dynamic-qr-preview-icon.svg'
+import { ReactComponent as InformationIcon } from './information-icon.svg'
+import { ReactComponent as SunnyCloudIcon } from 'icons/sunny-cloud-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  SunnyCloudIcon,
+  InformationIcon,
+  QRSetPreviewIcon,
+  DispenserQRPreviewIcon,
+  DynamicQRPreviewIcon,
+  DispenserQRIcon,
+  ClaimLinksIcon,
+  ClaimQRsIcon,
+  NFTsIcon,
+  DynamicQRIcon,
+  MessagesIcon,
+  CodeIcon,
+  LogoutIcon,
   ClipboardCopiedIcon,
   StopDispenserIcon,
   InviteLinksIcon,
@@ -59,6 +90,7 @@ const Icons = {
   DispenserIcon,
   GoToOldVersionIcon,
   CloseCircleIcon,
+  ExpandRightIcon,
   MiniClipboardCopyIcon,
   BookIcon,
   ContactUsIcon,

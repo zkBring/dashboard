@@ -18,7 +18,6 @@ import {
   AsideStyled,
   AsideContainer,
   AsideButton,
-  TableValueStyled,
   AsideButtonsContainer
 } from './styled-components'
 import {
@@ -39,17 +38,27 @@ import {
   BatchesList,
   CampaignParameters,
   HowToUseSDK,
-  LinksStats
+  LinksStats,
+  Settings
 } from './components'
 import { TextLink } from 'components/common'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
-import { getCampaignBatches, downloadLinks, downloadReport } from 'data/store/reducers/campaigns/async-actions'
+import {
+  getCampaignBatches,
+  downloadLinks,
+  downloadReport,
+  updateAvailableCountriesOn,
+  updateClaimingFinishedButtonOn,
+  updateClaimingFinishedButton,
+  updateAvailableCountries,
+  updateWallets
+} from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { decrypt } from 'lib/crypto'
 import { plausibleApi } from 'data/api'
-import { TClaimPattern, TTokenType } from 'types'
+import { TClaimPattern, TCountry, TTokenType } from 'types'
 import wallets from 'configs/wallets'
 
 const mapStateToProps = ({
@@ -94,6 +103,77 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         )
       )
     },
+
+    updateAvailableCountriesOn: (
+      campaign_id: string,
+      available_countries_on: boolean
+    ) => {
+      dispatch(
+        updateAvailableCountriesOn(
+          campaign_id,
+          available_countries_on
+        )
+      )
+    },
+
+    updateAvailableCountries: (
+      campaign_id: string,
+      available_countries: string[],
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateAvailableCountries(
+          campaign_id,
+          available_countries,
+          callback
+        )
+      )
+    },
+
+    updateWallets: (
+      campaign_id: string,
+      available_wallets: string[],
+      wallet: string,
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateWallets(
+          campaign_id,
+          available_wallets,
+          wallet,
+          callback
+        )
+      )
+    },
+
+    updateClaimingFinishedButtonOn: (
+      campaign_id: string,
+      claiming_finished_button_on: boolean
+    ) => {
+      dispatch(
+        updateClaimingFinishedButtonOn(
+          campaign_id,
+          claiming_finished_button_on
+        )
+      )
+    },
+
+    updateClaimingFinishedButton: (
+      campaign_id: string,
+      claiming_finished_button_title: string,
+      claiming_finished_button_href: string,
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateClaimingFinishedButton(
+          campaign_id,
+          claiming_finished_button_title,
+          claiming_finished_button_href,
+          callback
+        )
+      )
+    },
+
     downloadLinks: (
       batch_id: string | number,
       campaign_id: string,
@@ -128,6 +208,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
@@ -143,7 +224,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   address,
   provider,
   chainId,
-  countries
+  countries,
+  loading,
+  updateClaimingFinishedButtonOn,
+  updateAvailableCountriesOn,
+  updateClaimingFinishedButton,
+  updateAvailableCountries,
+  updateWallets
 }) => {
 
   const history = useHistory()
@@ -176,7 +263,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     }
     onInit()
   }, [])
-
+  
+  // @ts-ignore
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
 
   if (!currentCampaign || !dashboardKey) {
@@ -201,9 +289,13 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     wallet,
     sponsored,
     links_claimed,
+    available_countries_on,
     available_wallets,
     available_countries,
-    expiration_date
+    expiration_date,
+    claiming_finished_button_title,
+    claiming_finished_button_url,
+    claiming_finished_button_on
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -211,7 +303,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     signer_address,
     campaign_number
   )
-
 
   const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
@@ -526,30 +617,75 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           Read Docs
         </AsideButton>
       </AsideStyled>}
-      <AsideStyled
-        title="Wallets"
-        subtitle='The following wallets are available to claim your funds'
-      >
-        {available_wallets.map(currentWallet => {
-          return <TableRow>
-            <TableValue>{wallets.find(wallet => currentWallet === wallet.id)?.name || currentWallet}</TableValue>
-            {currentWallet === wallet && <TableValueStyled>
-              Preferred wallet
-            </TableValueStyled>}  
-          </TableRow>
-        })}
-      </AsideStyled>
 
-      <AsideStyled
-        title="Country Whitelist"
-        subtitle={available_countries.length === 0 ? 'This campaign is available in all countries' : 'This campaign is available in the following countries'}
-      >
-        {available_countries.map(currentCounty => {
-          return <TableRow>
-            <TableValue>{countries.find(country => country.id === currentCounty)?.name || currentCounty}</TableValue>
-          </TableRow>
-        })}
-      </AsideStyled>
+
+      <Settings
+        loading={loading}
+        countries={countries}
+        campaignData={currentCampaign}
+        availableWalletsValue={available_wallets}
+        availableCountriesValue={available_countries.map((currentCountry) => {
+          const country = countries.find(country => country.id === currentCountry)
+          return country
+        }).filter(item => item) as TCountry[]}
+        preferredWalletValue={wallet}
+        availableCountriesSubmit={(
+          value,
+          onSuccess,
+          onError
+        ) => {
+          updateAvailableCountries(
+            campaign_id,
+            value,
+            onSuccess
+          )
+        }}
+          
+      
+        walletsSubmit={(
+          availableWalletsValue,
+          wallets,
+          onSuccess,
+          onError,
+        ) => {
+          updateWallets(
+            campaign_id,
+            availableWalletsValue,
+            wallets,
+            onSuccess,
+          )
+        }}
+
+        finalScreenButtonSubmit={(
+          buttonTitle,
+          buttonHref,
+          onSuccess,
+          onError,
+        ) => {
+          updateClaimingFinishedButton(
+            campaign_id,
+            buttonTitle,
+            buttonHref,
+            onSuccess
+          )
+        }}
+      
+        buttonTitleValue={claiming_finished_button_title || ''}
+        buttonHrefValue={claiming_finished_button_url || ''}
+
+        finalScreenButtonToggleAction={(value) => {
+          updateClaimingFinishedButtonOn(campaign_id, value)
+        }}
+
+        availableCountriesToggleAction={(value) => {
+          updateAvailableCountriesOn(campaign_id, value)
+        }}
+
+        finalScreenButtonToggleValue={claiming_finished_button_on}
+
+        availableCountriesToggleValue={available_countries_on}
+      
+      />
     </AsideContainer>
   </Container>
 }

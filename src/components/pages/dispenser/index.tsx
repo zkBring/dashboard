@@ -3,55 +3,52 @@ import { RootState, IAppDispatch } from 'data/store'
 import {
   Container,
   WidgetSubtitle,
-  TableRow,
-  TableText,
-  TableValue,
-  DownloadQRPopup,
-  UploadLinksPopup,
-  AttentionContainer
+  DownloadQRPopup
 } from 'components/pages/common'
 import {
   Buttons,
   WidgetButton,
   WidgetComponentStyled,
   CopyContainerStyled,
-  AsideContent,
-  AsideSubtitle,
-  Counter,
-  SecondaryTextSpan,
-  AsideStyled,
-  AsideWidgetButton,
+  Text,
+  DynamicQRImage,
   MainContent
 } from './styled-components'
-import { Statistics, RedirectWidget, WhitelistWidget } from './components'
-import { TextLink } from 'components/common'
+import {
+  Statistics,
+  Status,
+  Settings,
+  ClaimLinks,
+  QRCode
+} from './components'
+import DynamicQRImageSrc from 'images/dynamic-qr.png'
 import {
   defineDispenserStatus,
-  defineIfQRIsDeeplink,
-  defineDispenserStatusTag,
   alertError,
   defineDispenserAppUrl
 } from 'helpers'
-import { Redirect, useHistory, useParams } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import {
   TDispenser,
   TDispenserStatus,
   TLinkDecrypted,
-  TDispenserWhitelistType,
-  TDispenserWhitelistItemAddress
+  TDispenserWhitelistType
 } from 'types'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { decrypt, encrypt } from 'lib/crypto'
-import Icons from 'icons'
-import moment from 'moment'
 import { ethers } from 'ethers'
 import { defineClaimAppURL, defineNetworkName } from 'helpers'
-import { plausibleApi } from 'data/api'
+
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  dispensers: { dispensers, loading, mappingLoader },
+  dispensers: {
+    dispensers,
+    loading,
+    mappingLoader,
+    currentDispenserData
+  },
   user: { address, chainId, dashboardKey },
 }: RootState) => ({
   campaigns,
@@ -60,31 +57,13 @@ const mapStateToProps = ({
   dispensers,
   loading,
   dashboardKey,
-  mappingLoader
+  mappingLoader,
+  currentDispenserData
 })
-
-const defineOptions = (
-  status: TDispenserStatus,
-  editCallback: () => void,
-  pauseCallback: () => void,
-  unpauseCallback: () => void
-) => {
-  return [
-    {
-      title: 'Edit',
-      icon: <Icons.EditDispenserIcon />,
-      disabled: status === 'ACTIVE' || status === 'FINISHED',
-      action: editCallback
-    }, {
-      title: status === 'PAUSED' ? 'Unpause' : 'Pause',
-      icon: status === 'PAUSED' ? <Icons.UnpauseIcon /> : <Icons.PauseIcon />,
-      action: status === 'PAUSED' ? unpauseCallback : pauseCallback
-    },
-  ]
-}
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
+    
     addLinksToQR: (
       dispenserId: string,
       links: TLinkDecrypted[],
@@ -120,6 +99,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dynamic,
       callback
     })),
+    
+    getDispenserStats: (
+      dispenser_id: string,
+      multiscan_qr_id: string,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.getDispenserStats({
+      dispenser_id,
+      multiscan_qr_id,
+      callback
+    })),
+  
     pauseDispenser: (
       dispenser_id: string,
       callback?: () => void
@@ -128,13 +118,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: false,
       callback
     })),
-    getDispenserStats: (
-      dispenser_id: string,
-      callback?: () => void
-    ) => dispatch(asyncDispensersActions.getDispenserStats({
-      dispenser_id,
-      callback
-    })),
+  
     unpauseDispenser: (
       dispenser_id: string,
       callback?: () => void
@@ -143,6 +127,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       active: true,
       callback
     })),
+  
     toggleRedirectURL: (
       dispenser_id: string,
       redirect_on: boolean,
@@ -154,12 +139,24 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
+    toggleTimeframe: (
+      dispenser_id: string,
+      timeframe_on: boolean,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.toggleTimeframeOn({
+      dispenser_id,
+      timeframe_on,
+      successCallback,
+      errorCallback
+    })),
     updateRedirectURL: (
       dispenser_id: string,
       redirect_url: string,
       encrypted_multiscan_qr_enc_code: string,
-      successCallback: () => void,
-      errorCallback: () => void
+      successCallback?: () => void,
+      errorCallback?: () => void
     ) => dispatch(asyncDispensersActions.updateRedirectURL({
       dispenser_id,
       redirect_url,
@@ -182,9 +179,74 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispenser_id: string,
     ) => dispatch(asyncDispensersActions.downloadReport(
       dispenser_id
-    ))
+    )),
+
+
+    createAddressWhitelist: (
+      dispenserId: string,
+      whitelist: string[],
+      whitelistType: TDispenserWhitelistType,
+      successCallback?: () => void,
+      errorCallback?: () => void
+    ) => dispatch(asyncDispensersActions.createWhitelist({
+      dispenser_id: dispenserId,
+      whitelist,
+      whitelist_type: whitelistType,
+      successCallback,
+      errorCallback
+    })),
+    updateAddressWhitelist: (
+      dispenserId: string,
+      whitelist: string[],
+      whitelistType: TDispenserWhitelistType,
+      successCallback?: () => void,
+      errorCallback?: () => void
+      // @ts-ignore
+    ) => dispatch(asyncDispensersActions.updateWhitelist({
+      dispenser_id: dispenserId,
+      whitelist,
+      whitelist_type: whitelistType,
+      successCallback,
+      errorCallback
+    })),
+    getDispenserWhitelist: (
+      dispenser_id: string,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.getDispenserWhitelist({
+      dispenser_id,
+      callback
+    })),
+
+    updateDispenser: (
+      dispenser_id: string,
+      startDate: string,
+      finishDate: string,
+      // duration: number,
+      callback?: () => void
+    ) => dispatch(asyncDispensersActions.updateDispenserDate({
+      dispenserId: dispenser_id,
+      startDate,
+      finishDate,
+      // duration,
+      callback
+    })),
   }
 }
+
+const defineTitle = (
+  dynamic: boolean
+) => {
+  return dynamic ? 'Dynamic QR code web page' : 'Dispenser web page'
+}
+
+const defineSubtitle = (
+  dynamic: boolean
+) => {
+  return dynamic ? 
+    'Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe' :
+    'Linkdrop Dispenser is represented by a single link that you can share for multiple users to scan-to-claim an unique token'
+}
+
 
 const renderMainButton = (
   dynamic: boolean,
@@ -194,7 +256,6 @@ const renderMainButton = (
   const title = !dynamic ? 'Download PNG' : 'Launch Dynamic QR App'
   return <WidgetButton
     title={title}
-    appearance='action'
     onClick={() => {
       if (!dynamic) {
         toggleDownloadPopup(true)
@@ -203,12 +264,32 @@ const renderMainButton = (
 
       if (redirectUrl) {
         window.open(redirectUrl, '_blank')
+        return 
       }
 
       alert('Redirect URL not defined')
 
     }}
   /> 
+}
+
+const defineQRItem = (
+  dynamic: boolean,
+  link: string,
+  address: string
+) => {
+
+  if (dynamic) {
+    return <DynamicQRImage src={DynamicQRImageSrc} />
+  }
+
+  return <QRCode link={link} address={address} />
+}
+
+const defineQRCodeDescription = () => {
+  return <Text>
+    Tokens you are dispensing can be claimed by anyone who goes to Campaign Website or scans Campaigns QR code
+  </Text>
 }
 
 // @ts-ignore
@@ -224,21 +305,23 @@ const Dispenser: FC<ReduxType> = ({
   downloadQR,
   pauseDispenser,
   unpauseDispenser,
+  createAddressWhitelist,
   updateRedirectURL,
   toggleRedirectURL,
+  toggleTimeframe,
   getDispenserStats,
   downloadReport,
   toggleWhitelist,
-  chainId
+  chainId,
+  updateAddressWhitelist,
+  currentDispenserData,
+  updateDispenser,
+  getDispenserWhitelist
+
 }) => {
   const { id } = useParams<{id: string}>()
   // @ts-ignore
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === id)
-  const history = useHistory()
-  const [
-    updateLinksPopup,
-    toggleUpdateLinksPopup
-  ] = useState<boolean>(false)
 
   const [
     statsLoading,
@@ -252,13 +335,20 @@ const Dispenser: FC<ReduxType> = ({
 
 
   useEffect(() => {
-    if (!dispenser) { return }
+
+    if (!dispenser || !dispenser?.updated_at) { return }
     getDispenserStats(
       dispenser.dispenser_id as string,
+      dispenser.multiscan_qr_id as string,
       () => setStatsLoading(false)
     )
-  }, [])
-  const claimAppURL = defineClaimAppURL(address)
+  }, [dispenser?.updated_at])
+
+  const claimAppURL = defineClaimAppURL(
+    address
+  )
+
+  const qrCodeDescription = defineQRCodeDescription()
 
   const {
     claimURLDecrypted,
@@ -324,27 +414,19 @@ const Dispenser: FC<ReduxType> = ({
     links_claimed,
     links_assigned,
     whitelist_on,
-    whitelist_type,
-    dynamic
+    dynamic,
+    claim_finish,
+    timeframe_on
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
-    claim_start,
-    claim_duration,
+    claim_start as number,
+    claim_finish || claim_start as number + (claim_duration || 1000000000000),
     links_count || 0,
     active,
     redirect_on,
     redirect_url
   )
-  const dispenserOptions = defineOptions(
-    currentStatus,
-    () => history.push(`/dispensers/edit/${dispenser.dispenser_id}`),
-    () => pauseDispenser(id, () => {}),
-    () => unpauseDispenser(id, () => {})
-  )
-  const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
-  const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
-  const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
 
   const mainButton = renderMainButton(
     dynamic as boolean,
@@ -352,21 +434,13 @@ const Dispenser: FC<ReduxType> = ({
     claimURLDecrypted
   )
 
+  const qrCodeContainer = defineQRItem(
+    Boolean(dynamic),
+    claimURLDecrypted,
+    address
+  )
+
   return <Container>
-    {updateLinksPopup && <UploadLinksPopup
-      loader={mappingLoader}
-      loading={loading}
-      onClose={() => toggleUpdateLinksPopup(false)}
-      onSubmit={links => {
-        if (!dispenser_id) { return alert('Dispenser ID not found') }
-        if (!encrypted_multiscan_qr_enc_code) { return alert('encrypted_multiscan_qr_enc_code not found') }
-        if (links_count === undefined) { return alert('links_count not found') }
-        if (!links) { return alert('Links not found') }
-        addLinksToQR(dispenser_id, links, encrypted_multiscan_qr_enc_code, links_count, currentStatus, () => {
-          toggleUpdateLinksPopup(false)
-        })
-      }}
-    />}
     {id && downloadPopup && <DownloadQRPopup
       onSubmit={(size: number) => {
         downloadQR(
@@ -384,108 +458,32 @@ const Dispenser: FC<ReduxType> = ({
     />}
 
     <MainContent>
-      <WidgetComponentStyled title={dispenser?.title || 'Untitled dispenser'}>
-        <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
+      <WidgetComponentStyled title={defineTitle(Boolean(dynamic))}>
+        <WidgetSubtitle>
+          {defineSubtitle(Boolean(dynamic))}
+        </WidgetSubtitle>
+        
+        {qrCodeContainer}
+
+        {qrCodeDescription}
+
         <CopyContainerStyled
           text={claimURLDecrypted}
         />
+        
         <Buttons>
-          <WidgetButton
-            title='Back'
-            appearance='default'
-            to='/dispensers'
-          /> 
           {mainButton}
         </Buttons>
       </WidgetComponentStyled>
-
-      {!dynamic && <RedirectWidget
-        hasRedirect={redirect_on}
-        redirectUrl={redirectURLDecrypted}
-        claimUrl={claimURLDecrypted}
-        updateNewRedirectUrl={(
-          newRedirectUrl,
-          successCallback,
-          errorCallback
-        ) => {
-          updateRedirectURL(
-            dispenser_id as string,
-            newRedirectUrl,
-            encrypted_multiscan_qr_enc_code,
-            successCallback,
-            errorCallback
-          )
-        }}
-        toggleRedirectOn={(
-          redirectOn,
-          successCallback,
-          errorCallback
-        ) => {
-          toggleRedirectURL(
-            dispenser.dispenser_id as string,
-            redirectOn,
-            successCallback,
-            errorCallback
-          )
-        }}
-      />}
-      {!dynamic && <WhitelistWidget
-        loading={loading}
-        isWhitelisted={whitelist_on}
-        whitelistType={whitelist_type}
-        dispenserId={dispenser_id as string}
-        toggleWhitelistOn={(
-          whitelistOn,
-          successCallback,
-          errorCallback
-        ) => {
-          toggleWhitelist(
-            dispenser_id as string,
-            whitelistOn,
-            successCallback,
-            errorCallback
-          )
-        }}
-      />}
     </MainContent>
-    
-    <div>
-      <AsideStyled
-        title="Connect to claim links"
-        options={dispenserOptions}
-      >
-        <WidgetSubtitle>
-            Upload a CSV file with links. Number of rows in the file should be equal to the number of QR codes. 
-        </WidgetSubtitle>
-        <WidgetSubtitle>
-          If you haven’t created claim links yet, then do it in <TextLink to='/campaigns'>Claim links</TextLink>
-        </WidgetSubtitle>
-        <AsideContent>
-          <AsideSubtitle>Amount of links</AsideSubtitle>
-          <Counter>{links_count || 0}</Counter>
-          <TableRow>
-            <TableText>Status</TableText>
-            <TableValue>{defineDispenserStatusTag(currentStatus)}</TableValue>
-          </TableRow>
-          <TableRow>
-            <TableText>Start date</TableText>
-            <TableValue>{claimStartDate}, <SecondaryTextSpan>{claimStartTime} (UTC+0)</SecondaryTextSpan></TableValue>
-          </TableRow>
-          <TableRow>
-            <TableText>Duration</TableText>
-            <TableValue>{claim_duration} mins</TableValue>
-          </TableRow>
-        </AsideContent>
 
-        <AsideWidgetButton
-          title='Upload file'
-          disabled={currentStatus === 'FINISHED'}
-          appearance='action'
-          onClick={() => {
-            toggleUpdateLinksPopup(true)
-          }}
-        /> 
-      </AsideStyled>
+
+    <div>
+      <Status
+        status={currentStatus}
+        dateStart={claim_start}
+        dateFinish={claim_finish}
+      />
       <Statistics
         linksCount={links_count || 0}
         dispenserStatus={currentStatus}
@@ -493,37 +491,120 @@ const Dispenser: FC<ReduxType> = ({
         linksClaimed={links_claimed || 0}
         downloadReport={() => downloadReport(dispenser_id as string)}
       />
-      <AttentionContainer
-        title='Got questions?'
-        text='If you are facing troubles with dispenser app, read documentation or contacts us and we help resolve your issue'
-        actions={[
-          {
-            title: 'Contact us',
-            onClick: () => {
-              plausibleApi.invokeEvent({
-                eventName: 'contact',
-                data: {
-                  network: defineNetworkName(chainId),
-                  component: 'dispenser'
-                }
-              })
-              window.open('https://linkdrop.io/contact-us', '_blank')
-            }
-          },
-          {
-            title: 'Read FAQ',
-            onClick: () => {
-              plausibleApi.invokeEvent({
-                eventName: 'view_docs',
-                data: {
-                  network: defineNetworkName(chainId),
-                  component: 'dispenser'
-                }
-              })
-              window.open('https://docs.linkdrop.io/how-tos/multi-scannable-qr-code', '_blank')
-            }
+
+      <ClaimLinks
+        pauseDispenser={pauseDispenser}
+        unpauseDispenser={unpauseDispenser}
+        downloadReport={downloadReport}
+        dispenserId={dispenser_id as string}
+        dispenserStatus={currentStatus}
+        loading={loading}
+        mappingLoader={mappingLoader}
+        encryptedMultiscanQREncCode={encrypted_multiscan_qr_enc_code}
+        linksCount={links_count || 0}
+        addLinksToQR={addLinksToQR}
+        // not available
+        campaignData={currentDispenserData.campaign}
+      />
+
+
+      <Settings
+        redirectUrl={redirectURLDecrypted}
+        claimUrl={claimURLDecrypted}
+        loading={loading}
+        campaignData={currentDispenserData.campaign}
+        getDispenserWhitelist={getDispenserWhitelist}
+        currentDispenser={dispenser}
+        whitelistToggleValue={whitelist_on}
+
+        whitelistToggleAction={(
+          whitelistOn
+        ) => {
+          toggleWhitelist (
+            dispenser_id as string,
+            whitelistOn,
+            () => {
+              
+            },
+            () => alert('error')
+          )
+        }}
+
+
+
+        whitelistSubmit={(
+          whitelistAdresses,
+          onSuccess
+        ) => {
+          if (whitelist_on) {
+            return updateAddressWhitelist(
+              dispenser_id as string,
+              whitelistAdresses,
+              'address',
+              onSuccess,
+              () => alert('error')
+            )
           }
-        ]}
+          
+
+          createAddressWhitelist(
+            dispenser_id as string,
+            whitelistAdresses,
+            'address',
+            onSuccess,
+            () => alert('error')
+          )
+          
+        }}
+
+        redirectToggleAction={(
+          redirectOn
+        ) => {
+          toggleRedirectURL(
+            dispenser_id as string,
+            redirectOn,
+            () => {
+              
+            },
+            () => alert('error'),
+          )
+        }}
+        redirectToggleValue={redirect_on}
+        redirectSubmit={(
+          newRedirectUrl,
+          onSuccess
+        ) => {
+          updateRedirectURL(
+            dispenser_id as string,
+            newRedirectUrl,
+            encrypted_multiscan_qr_enc_code,
+            onSuccess,
+            () => alert('error')
+          )
+        }}
+
+        timeframeToggleValue={timeframe_on}
+
+        timeframeToggleAction={(timeframeOn) => toggleTimeframe(
+          dispenser_id as string,
+          timeframeOn,
+          () => {},
+          () => alert('error'),
+        )}
+
+        timeframeSubmit={(
+          startTime,
+          finishTime,
+          onSuccess,
+          OnError
+        ) => {
+          updateDispenser(
+            dispenser_id as string,
+            startTime,
+            finishTime,
+            onSuccess,
+          )
+        }}
       />
     </div>
   </Container>

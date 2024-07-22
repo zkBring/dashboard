@@ -3,12 +3,12 @@ import * as userActions from '../../actions'
 import {
   UserActions,
 } from '../../types'
-import {
-  CampaignActions
-} from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
 import { dashboardKeyApi, plausibleApi } from 'data/api'
 import { sleep, defineNetworkName, alertError } from 'helpers'
+import retrieveDashboardKeyWithPass from './retrieve-dashboard-key-with-pass'
+import createDashboardKeyWithPass from './create-dashboard-key-with-pass'
+
 import retrieveDashboardKey from './retrieve-dashboard-key'
 import createDashboardKey from './create-dashboard-key'
 import {
@@ -17,28 +17,49 @@ import {
   defineError
 } from './error-handling'
 
-const getDashboardKey = () => {
+const getDashboardKey = (
+  message: string,
+  key_id: string,
+  is_coinbase: boolean,
+  encrypted_key?: string
+) => {
+  // @ts-ignore
   return async (
-    dispatch: Dispatch<UserActions> & Dispatch<CampaignActions>  & IAppDispatch,
+    dispatch: Dispatch<UserActions> & IAppDispatch,
     getState: () => RootState
   ) => {
     const {
       user: {
         chainId,
-        signer
+        signer,
+        address,
+        provider
       }
     } = getState()
     dispatch(userActions.setLoading(true))
     try {
       // dashboard key 
-      const dashboardKeyData = await dashboardKeyApi.get()
-      const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
+
       if (!encrypted_key) {
         // register
-        const result = await createDashboardKey(
-          signer,
-          sig_message
-        )
+        
+        let result
+        if (is_coinbase) {
+          result = await createDashboardKeyWithPass(
+            message,
+            address,
+            chainId as number
+          )
+        } else {
+          result = await createDashboardKey(
+            provider,
+            message,
+            address,
+            chainId as number
+          )
+        }
+        
+        
 
         if (result) {
           const {
@@ -58,11 +79,25 @@ const getDashboardKey = () => {
           throw new Error(ERROR_DASHBOARD_KEY_REJECTED_CREATE)
         }
       } else {
-        const decrypted_dashboard_key = await retrieveDashboardKey(
-          signer,
-          encrypted_key,
-          sig_message
-        )
+        let decrypted_dashboard_key
+        if (is_coinbase) {
+          decrypted_dashboard_key = await retrieveDashboardKeyWithPass(
+            encrypted_key,
+            message,
+            address,
+            chainId as number
+          )
+        } else {
+          decrypted_dashboard_key = await retrieveDashboardKey(
+            provider,
+            encrypted_key,
+            message,
+            address,
+            chainId as number
+          )
+        }
+
+
         if (decrypted_dashboard_key) {
           dispatch(userActions.setDashboardKey(decrypted_dashboard_key))
         } else {

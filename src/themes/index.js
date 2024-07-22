@@ -15,7 +15,8 @@ const themes = {
 		extraBorderColor: '#979797',
 		additionalBorderColor: '#9D9D9D',
 		disabledBorderColor: '#C5C7CD',
-
+		primaryBackgroundColor: '#FFF', // main color of bg
+    secondaryBackgroundColor: '#1D1F2B',
 		disabledColor: '#DFE0EB',
 		primaryColor: '#F7F8FC', // main color of bg
 		secondaryColor: '#363740', // secondary coplor of bg
@@ -49,16 +50,36 @@ const themes = {
 
 		buttonGradient: 'linear-gradient(to right, #00B2FF 0%, #FA00FF 50%, #00B2FF 100%)',
 
-		tagDefaultBackgroundColor: '#E1E9FE',
-		tagDefaultBorderColor: '#6793FA',
+		tagDefaultBackgroundColor: '#E4E4E4',
+		tagDefaultBorderColor: '#9D9D9D',
+
 		tagErrorBackgroundColor: '#FFB4B4',
 		tagErrorBorderColor: '#D71E1E',
+
 		tagInfoBackgroundColor: '#FDF0CE',
 		tagInfoBorderColor: '#F6B40A',
+	
 		tagSuccessBackgroundColor: '#D1FAE1',
 		tagSuccessBorderColor: '#19E46A',
+
 		tagAdditionalBackgroundColor: '#DEF1FE',
 		tagAdditionalBorderColor: '#5CB9FC',
+
+
+		// grey
+		statusBarDefaultBackgroundColor: '#E4E4E4',
+		statusBarDefaultBorderColor: '#9D9D9D',
+
+		// yellow
+		statusBarInfoBackgroundColor: '#FDF0CE',
+		statusBarInfoBorderColor: '#F6B40A',
+	
+		// green
+		statusBarSuccessBackgroundColor: '#D1FAE1',
+		statusBarSuccessBorderColor: '#19E46A',
+
+
+
 
 		noteDefaultBackgroundColor: '#E4EDFF',
 		noteWarningBackgroundColor: '#FFB4B4',

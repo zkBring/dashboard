@@ -31,7 +31,9 @@ const generateERC20Link = ({
   callback,
   id: currentCampaignId
 }: { callback?: (id: string) => void, id?: string  }) => {
+  // @ts-ignore
   return async (
+    // @ts-ignore
     dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions> & IAppDispatch,
     getState: () => RootState
   ) => {
@@ -172,13 +174,14 @@ const generateERC20Link = ({
           symbol,
           title: title || '',
           token_standard: tokenStandard,
-          chain_id: chainId,
+          chain_id: String(chainId),
           proxy_contract_address: proxyContractAddress,
           claim_pattern: claimPattern,
           proxy_contract_version: version,
           sponsored,
           available_wallets: availableWallets,
           available_countries: countriesWhitelist,
+          available_countries_on: countriesWhitelist.length > 0,
           ...batch
         }
 

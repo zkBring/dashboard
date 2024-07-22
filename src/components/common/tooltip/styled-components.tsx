@@ -15,13 +15,12 @@ export const TooltipContainer = styled.span<TProps>`
     border-radius: 8px;
     color: ${props => props.theme.primaryTextColor};
     box-shadow: 0px 8px 16px rgba(96,97,112,0.16);
-    background-color: ${props => props.theme.backgroundColor};
+    background-color: ${props => props.theme.primaryBackgroundColor};
     z-index: 10;
     padding: 8px 16px;
-    width: min-content;
+    width: 300px;
     transform: translateY(-20px);
     transition: all 150ms cubic-bezier(.25, .8, .25, 1);
-    white-space: nowrap;
   }
 
   &:hover:after {

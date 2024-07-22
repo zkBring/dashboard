@@ -3,7 +3,7 @@ import { TLink, TClaimPattern } from 'types'
 
 type TCampaignNew = {
   title: string
-  chain_id: number
+  chain_id: string
   campaign_number: string
   token_address: string
   token_standard: TTokenType
@@ -21,7 +21,10 @@ type TCampaignNew = {
   sdk: boolean
   proxy_contract_version: string | number
   available_countries: string[]
-  available_wallets: string[] 
+  available_wallets: string[]
+  available_countries_on: boolean 
+  claiming_finished_button_title?: string
+  claiming_finished_button_url?: string
 }
 
 export default TCampaignNew

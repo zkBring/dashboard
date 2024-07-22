@@ -1,4 +1,4 @@
-export type TStatus = 'error' | 'info' | 'default' | 'success'
+import { TStatus } from 'types'
 
 export type TProps = {
   title: string,

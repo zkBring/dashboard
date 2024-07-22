@@ -11,4 +11,5 @@ export type TProps = {
   getDefaultValues: (tokenType: TTokenType) => TLinkContent
   setAssetsData: (newAssets: TLinksContent) => void
   claimPattern: TClaimPattern
+  children?: React.ReactNode
 }

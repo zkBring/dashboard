@@ -1,5 +1,5 @@
 export type TProps = {
-  title: string
+  title?: string
   id: string | number
   checked: boolean
 }

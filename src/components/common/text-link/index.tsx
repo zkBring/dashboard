@@ -1,14 +1,6 @@
 import { TextLink, TextRouterLink, TextButton } from './styled-components'
 import { FC } from 'react'
-
-type TProps = {
-  href?: string,
-  to?: string,
-  target?: string,
-  children?: any,
-  className?: string,
-  onClick?: () => void
-}
+import { TProps } from './types'
 
 const TextLinkComponent: FC<TProps> = ({
   href,

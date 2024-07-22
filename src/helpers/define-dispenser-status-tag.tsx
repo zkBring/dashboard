@@ -5,12 +5,11 @@ import { Tag } from 'components/common'
 const defineDispenserStatusTag = (status: TDispenserStatus) => {
   const statusName = defineDispenserStatusName(status)
   switch (status) {
-    case 'NOT_UPLOADED':
-      return <Tag status='error' title={statusName} />
     case 'ACTIVE':
       return <Tag status='success' title={statusName} />
     case 'PAUSED':
     case 'READY':
+    case 'NOT_UPLOADED':
       return <Tag status='info' title={statusName} />
     case 'FINISHED':
     case 'REDIRECT':
