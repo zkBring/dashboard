@@ -12,7 +12,6 @@ const ButtonComponent: FC<TProps> = (props) => {
       </Anchor>
     )
   }
-  console.log({ to })
   if (to) {
     return (
       <ButtonLink to={to}>
