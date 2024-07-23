@@ -7,12 +7,17 @@ import {
   HeaderUserInfoPadded,
   HeaderUserInfoAddress,
   MiniPopupCustomItem,
-  NetworkIndicator,
-  NetworkIndicatorClass,
   PolygonIcon,
-  Logout
+  Logout,
+  HeaderNetwork
 } from './styled-components'
-import { shortenString, defineNetworkName, capitalize, defineNativeTokenSymbol } from 'helpers'
+import {
+  shortenString,
+  defineNetworkName,
+  capitalize,
+  defineNativeTokenSymbol,
+  defineNetworkIcon
+} from 'helpers'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
@@ -47,16 +52,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch ) => {
   }
 }
 
-const defineNetworkLogo = (chainId: number | null) => {
-  if (!chainId) { return null }
-  switch (chainId) {
-    case 137:
-      return <PolygonIcon />
-    default:
-      return null
-  }
-}
-
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
@@ -80,11 +75,14 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
         return null
       }
       const currentChain = chains[Number(chain)]
-      return <MiniPopupCustomItem onClick={() => {
-        switchNetwork(Number(chain), () => { window.location.reload() })
-      }}>
+      return <MiniPopupCustomItem
+        onClick={() => {
+          switchNetwork(Number(chain), () => { window.location.reload() })
+        }}
+        active={Number(chainId) === Number(chain)}
+      > 
+        <HeaderNetwork src={defineNetworkIcon(Number(chain))}/>
         {currentChain.displayName}
-        <NetworkIndicator className={NetworkIndicatorClass} selected={Number(chainId) === Number(chain)} />
       </MiniPopupCustomItem>
     })}
   </MiniPopup>
@@ -102,7 +100,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
       {chainId && <HeaderUserInfo onClick={() => {
         setShowToggleChain(!showToggleChain)
       }}>
-        {defineNetworkLogo(chainId)}
+        <HeaderNetwork src={defineNetworkIcon(chainId)}/>
         {capitalize(defineNetworkName(chainId))}
         {chainsPopup}
       </HeaderUserInfo>}

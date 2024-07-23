@@ -22,7 +22,6 @@ import {
   Dispenser,
   DynamicQRCreate,
   Collections,
-  CollectionsCreateNew,
   CollectionAddToken,
   CollectionsCreateInitial,
   Collection,
@@ -86,13 +85,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={Collections}
-        />
-
-        <ProtectedRoute
-          path='/collections/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CollectionsCreateNew}
         />
 
         <ProtectedRoute

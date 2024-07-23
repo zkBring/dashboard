@@ -15,7 +15,10 @@ import {
   WidgetSubtitle,
   UploadLinksPopup
 } from 'components/pages/common'
-import { TextLink, Loader } from 'components/common'
+import {
+  TextLink,
+  Loader
+} from 'components/common'
 import Icons from 'icons'
 import { TProps } from './types'
 import { useHistory } from 'react-router-dom'
