@@ -34,6 +34,11 @@ export const HeaderMode = styled.div`
   font-size: 14px;
 `
 
+export const HeaderNetwork = styled.img`
+  display: block;
+  max-width: 16px;
+`
+
 export const HeaderLogoLink = styled(NavLink)`
   text-decoration: none;
   display: flex;
@@ -51,6 +56,7 @@ export const HeaderUserInfo = styled.div<{ onClick?: () => void }>`
   align-items: center;
   font-size: 14px;
   min-width: 152px;
+  gap: 8px;
   border-radius: 36px;
   font-weight: 500;
   padding: 0;
@@ -99,40 +105,6 @@ export const HeaderNetworkIconImg = styled.img`
 
 `
 
-export const NetworkIndicatorClass = 'NetworkIndicatorClass'
-
-export const MiniPopupCustomItem = styled.div`
-  font-size: 12px;
-  margin-bottom: 8px;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  &:last-child {
-    margin-bottom: 0px;
-  }
-
-  :hover {
-    .${NetworkIndicatorClass} {
-      background-color: ${props => props.theme.tagDefaultColor};
-    }
-  }
-`
-
-type TNetworkIndicatorProps = {
-  selected: boolean
-}
-
-export const NetworkIndicator = styled.div<TNetworkIndicatorProps>`
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
-  background-color: transparent;
-  ${props => props.selected && css`
-    background-color: ${props => props.theme.primaryHighlightColor}!important;
-  `}
-`
 
 export const PolygonIcon = styled(Icons.PolygonIcon)`
   margin-right: 8px;
@@ -162,4 +134,29 @@ export const Logout = styled.div`
       `
     }};
   }
+`
+
+
+export const MiniPopupCustomItem = styled.div<{
+  active?: boolean
+}>`
+  font-size: 14px;
+  min-height: 40px;
+  margin-bottom: 0px;
+  text-align: left;
+  cursor: pointer;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  color: ${props => props.theme.primaryTextColor};
+  &:hover {
+    background-color: ${props => props.theme.noteDefaultBackgroundColor};
+  }
+
+  ${props => props.active && css`
+    background-color: ${props => props.theme.noteDefaultBackgroundColor};
+  `}
 `

@@ -2,7 +2,10 @@ import { FC } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { TextLink } from 'components/common'
-import { TCampaignCreateStep, TClaimPattern, TTokenType } from 'types'
+import {
+  TCampaignCreateStep,
+  TTokenType
+} from 'types'
 import {
   DraftsListStyled,
   CampaignsListStyled,
@@ -109,7 +112,8 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
       <BatchListLabel>Created</BatchListLabel>
       <BatchListLabel>Name</BatchListLabel>
       <BatchListLabel>Token</BatchListLabel>
-      <BatchListLabel>Claims</BatchListLabel>
+      <BatchListLabel>Links</BatchListLabel>
+      <BatchListLabel>Claimed</BatchListLabel>
       <BatchListLabel>Status</BatchListLabel>
       <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
       {currentAddressCampaigns.map(campaign => {
@@ -118,9 +122,10 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
           created_at,
           campaign_id,
           chain_id,
+          sponsored,
           links_count,
           token_address,
-          
+          links_claimed
         } = campaign
         const scanUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address}`)
 
@@ -136,7 +141,10 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
             </TextLink>
           </BatchListValue>
           <BatchListValue>
-            {links_count || 0}
+            {sponsored ? (links_count || 0) : '-'}
+          </BatchListValue>
+          <BatchListValue>
+            {links_claimed || 0}
           </BatchListValue>
           <BatchListValue>
             {defineCampaignStatus(false)}
@@ -147,7 +155,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
               size='extra-small'
               to={`/campaigns/${campaign_id}`}
             >
-              Edit
+              Manage
             </ButtonStyled>
           </BatchListValueJustifySelfEnd>
         </>})}

@@ -51,7 +51,7 @@ export const ContainerButton = styled(Button)`
 export const ButtonStyled = styled(Button)``
 
 export const CampaignsListStyled = styled(BatchList)`
-  grid-template-columns: 224px 224px auto auto auto auto;
+  grid-template-columns: 224px 224px auto auto auto auto auto;
   margin-top: 24px;
 `
 
