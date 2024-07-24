@@ -56,7 +56,7 @@ const Collections: FC<ReduxType> = ({
     return <InitialNote
       title='Create Your First NFT collection'
       text="Your NFT collections will be displayed here once created. You don't have any NFT collections yet"
-      href='/collections/new'
+      href='/collections/ERC1155/initial'
       buttontText='New NFT collection'
     />
   }
@@ -70,7 +70,7 @@ const Collections: FC<ReduxType> = ({
           disabled={loading}
           size='extra-small'
           appearance='action'
-          to='/collections/new'
+          to='/collections/new/ERC1155/initial'
         />
       </Header>
       {collections.length > 0 && <CollectionsListStyled>

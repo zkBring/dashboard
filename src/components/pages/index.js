@@ -17,7 +17,6 @@ import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
 import Collections from './collections'
 import CollectionsCreateInitial from './collections-create-initial'
-import CollectionsCreateNew from './collections-create-new'
 import Collection from './collection'
 import CollectionAddToken from './collection-add-token'
 import DynamicQRCreate from './dynamic-qr-create'
@@ -31,7 +30,6 @@ export {
   DynamicQRCreate,
   Collection,
   CollectionAddToken,
-  CollectionsCreateNew,
   CollectionsCreateInitial,
   Dispenser,
   NotFound,

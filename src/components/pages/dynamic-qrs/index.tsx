@@ -145,4 +145,5 @@ const DynamicQRs: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(DynamicQRs)

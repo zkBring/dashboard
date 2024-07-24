@@ -23,6 +23,7 @@ import getBignumberInterval from './get-bignumber-interval'
 import loadImage from './load-image'
 import downloadAssetsAsCSV from './download-assets-as-csv'
 import checkAssetsFile from './check-assets-file'
+import defineNetworkIcon from './define-network-icon'
 import {
   createDataGroups,
   createWorkers,
@@ -110,6 +111,7 @@ export {
   addDaysToDate,
   defineLinkTokenType,
   getMinterRole,
+  defineNetworkIcon,
   getCampaignsFromLS,
   defineIfLinksHasEqualContents,
   defineIfFeatureIsAvailable,
