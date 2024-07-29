@@ -8,7 +8,8 @@ import {
   Text,
   List,
   ListItem,
-  TextBold
+  TextBold,
+  AdditionalButton
 } from './styled-components'
 import Image from 'images/connect-image.png'
 import {
@@ -22,13 +23,14 @@ import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import { UserActions } from 'data/store/reducers/user/types'
 import { Redirect } from 'react-router-dom'
 import Icons from 'icons'
-import { TAuthorizationStep } from 'types'
+import { TAuthorizationStep, TSystem } from 'types'
 import { IAppDispatch } from 'data/store'
 import { useAccount, useChainId, useConnect } from 'wagmi'
 import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
 import { nonceApi, dashboardKeyApi } from 'data/api'
+import { defineSystem } from 'helpers'
 const {
   REACT_APP_CHAINS,
   REACT_APP_TESTNETS_URL,
@@ -121,8 +123,41 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
   }
 }
 
+const defineAdditionalButton = (
+  step: TAuthorizationStep,
+  loading: boolean,
+  system: TSystem,
+  onClick: () => void
+) => {
 
-const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
+  if (system !== 'desktop') {
+    return null
+  }
+
+  if (loading) {
+    return null
+  }
+
+  if (REACT_APP_CLIENT === 'coinbase') {
+    return null
+  }
+
+  if (step !== 'connect') {
+    return null
+  }
+
+  return <AdditionalButton
+    onClick={onClick}
+  >
+    Connect with Smart Wallet
+  </AdditionalButton>
+
+}
+
+const defineButtonTitle = (
+  step: TAuthorizationStep,
+  loading: boolean
+) => {
   if (loading && step !== 'initial') {
     return 'Loading'
   }
@@ -220,7 +255,7 @@ const Main: FC<ReduxType> = ({
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
   const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
-
+  const system = defineSystem()
   const title = defineTitle(authorizationStep)
   const text = defineText(authorizationStep, isCoinbase)
   useEffect(() => {
@@ -382,6 +417,20 @@ const Main: FC<ReduxType> = ({
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />
+    {
+      defineAdditionalButton(
+        authorizationStep,
+        loading,
+        system,
+        () => {
+          const coinbaseConnector = connectors.find(connector => connector.id === "coinbaseWalletSDK")
+          if (!coinbaseConnector) {
+            return alert('coinbaseWalletSDK Connector not found')
+          }
+          return connect({ connector: coinbaseConnector })
+        }
+      )
+    }
   </ContainerCentered>
 }
 
