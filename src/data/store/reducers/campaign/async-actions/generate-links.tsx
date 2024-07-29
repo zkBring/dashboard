@@ -69,7 +69,8 @@ const generateERC20Link = ({
         nativeTokensPerLink,
         availableWallets,
         countriesWhitelist,
-        expirationDate
+        expirationDate,
+        availableWalletsOn
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -182,6 +183,7 @@ const generateERC20Link = ({
           available_wallets: availableWallets,
           available_countries: countriesWhitelist,
           available_countries_on: countriesWhitelist.length > 0,
+          available_wallets_on: availableWalletsOn,
           ...batch
         }
 

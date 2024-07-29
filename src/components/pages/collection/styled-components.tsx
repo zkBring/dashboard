@@ -4,13 +4,17 @@ import {
   TableValue,
   WidgetComponent,
   WidgetTitle,
-  AttentionContainer
+  Container
 } from 'components/pages/common'
 import { Button } from 'components/common'
 
+export const ContainerStyled = styled(Container)`
+  display: grid;
+  grid-template-columns: 1fr 371px;
+  gap: 24px;
+`
 
 export const WidgetComponentStyled = styled(WidgetComponent)`
-  max-width: 740px;
 `
 
 export const WidgetAsideStyled = styled(WidgetComponent)`
@@ -21,43 +25,18 @@ export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
 `
 
-export const AsideStyled = styled(Aside)`
-  max-width: 358px;
-  min-width: 358px;
-  margin: 0;
-`
-
-export const AsideContent = styled.div`
-  margin-bottom: 32px;
-`
-
 export const MainContent = styled.div`
-  margin-right: 24px;
-  flex: 1 0; 
-`
-
-export const TableValueFlex = styled(TableValue)`
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin-right: 4px;
-  }
 `
 
 export const ButtonStyled = styled(Button)`
-  
-`
-
-export const ButtonFullWidth = styled(Button)`
-  width: 100%;
-  margin-top: 32px;
 `
 
 export const TokensList = styled.ul`
   padding: 0;
   margin: 0;
   list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `
 
 export const TokenItem = styled.li`
@@ -68,14 +47,10 @@ export const TokenItem = styled.li`
   }
 `
 
-export const CopyIcon = styled.span`
-  cursor: pointer;
-`
-
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
 `
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
@@ -89,8 +64,4 @@ export const WidgetTitleStyled = styled(WidgetTitle)`
 export const ContainerButton = styled(Button)`
   align-self: end;
   margin-bottom: 0px;
-`
-
-export const AttentionContainerStyled = styled(AttentionContainer)`
-  margin-bottom: 24px;
 `

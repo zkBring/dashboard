@@ -52,7 +52,8 @@ import {
   updateClaimingFinishedButtonOn,
   updateClaimingFinishedButton,
   updateAvailableCountries,
-  updateWallets
+  updateWallets,
+  updateAvailableWalletsOn
 } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
@@ -112,6 +113,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         updateAvailableCountriesOn(
           campaign_id,
           available_countries_on
+        )
+      )
+    },
+
+    updateAvailableWalletsOn: (
+      campaign_id: string,
+      available_wallets_on: boolean
+    ) => {
+      dispatch(
+        updateAvailableWalletsOn(
+          campaign_id,
+          available_wallets_on
         )
       )
     },
@@ -230,7 +243,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateAvailableCountriesOn,
   updateClaimingFinishedButton,
   updateAvailableCountries,
-  updateWallets
+  updateWallets,
+  updateAvailableWalletsOn
 }) => {
 
   const history = useHistory()
@@ -620,6 +634,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
 
       <Settings
+
         loading={loading}
         countries={countries}
         campaignData={currentCampaign}
@@ -629,6 +644,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
           return country
         }).filter(item => item) as TCountry[]}
         preferredWalletValue={wallet}
+
         availableCountriesSubmit={(
           value,
           onSuccess,
@@ -640,7 +656,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
             onSuccess
           )
         }}
-          
       
         walletsSubmit={(
           availableWalletsValue,
@@ -679,6 +694,10 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         availableCountriesToggleAction={(value) => {
           updateAvailableCountriesOn(campaign_id, value)
+        }}
+
+        availableWalletsToggleAction={(value) => {
+          updateAvailableWalletsOn(campaign_id, value)
         }}
 
         finalScreenButtonToggleValue={claiming_finished_button_on}

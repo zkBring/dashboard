@@ -4,19 +4,23 @@ import {
   TokenImage,
   Container,
   TokenData,
-  TokenDataItem,
-  TokenDataItemProperties,
-  TokenDataLabel,
-  TokenDataValue,
-  TokenDataProperties,
-  TokenDataProperty,
   TokenVideo,
-  Content,
-  TokenControls
+  TokenContent,
+  TokenControls,
+  TokenHeader,
+  TokenAmount,
+  TokenTitle,
+  TokenHeaderContent,
+  TokenProperties,
+  TokenProperty,
+  TokenPropertyTitle,
+  TokenPropertyValue,
+  ButtonStyled,
+  TokenDescriptionTitle,
+  TokenDescriptionText
 } from './styled-components'
 import { useHistory } from 'react-router-dom'
 import { IAppDispatch } from 'data/store'
-import { Button } from 'components/common'
 import CollectionPlaceholder from 'images/collection-placeholder.png'
 import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
 import { connect } from 'react-redux'
@@ -42,6 +46,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & TCollectionToken & TProps
 
 export const Token: FC<ReduxType> = ({
@@ -61,6 +66,8 @@ export const Token: FC<ReduxType> = ({
     if (!thumbnail) {
       return <TokenImage
         src={CollectionPlaceholder}
+
+        // @ts-ignore
         alt={name}
       />
     }
@@ -90,49 +97,39 @@ export const Token: FC<ReduxType> = ({
       initialValue={copies === '0' ? '1' : copies}
       limit={copies === '0' ? undefined : copies}
     />}
-    <Content>
-    {renderThumbnail()}
-    <TokenData>
-      <TokenDataItem>
-        <TokenDataLabel>Copies: </TokenDataLabel>
-        <TokenDataValue>{copies}</TokenDataValue>
-      </TokenDataItem>
-      <TokenDataItem>
-        <TokenDataLabel>ID: </TokenDataLabel>
-        <TokenDataValue>{token_id}</TokenDataValue>
-      </TokenDataItem>
-      <TokenDataItem>
-        <TokenDataLabel>Name: </TokenDataLabel>
-        <TokenDataValue>{name}</TokenDataValue>
-      </TokenDataItem>
-      <TokenDataItem>
-        <TokenDataLabel>Description: </TokenDataLabel>
-        <TokenDataValue>{description}</TokenDataValue>
-      </TokenDataItem>
-      {properties && Object.entries(properties).length > 0 && <TokenDataItemProperties>
-        <TokenDataLabel>Properties: </TokenDataLabel>
-        <TokenDataValue>
-          <TokenDataProperties>
-            {Object.entries(properties).map(([title, value]) => {
-              return <TokenDataProperty>
-                {title}: {value}
-              </TokenDataProperty>
-            })}
-          </TokenDataProperties>
-          
-        </TokenDataValue>
-      </TokenDataItemProperties>}
-    </TokenData>
-    </Content>
+    <TokenHeader>
+      {renderThumbnail()}
+      <TokenHeaderContent>
+        <TokenTitle>{name}</TokenTitle>
+        <TokenAmount>{copies} NFT</TokenAmount>
+      </TokenHeaderContent>
+    </TokenHeader>
+    <TokenContent>
+      <TokenData>
+        {description && <>
+          <TokenDescriptionTitle>Description</TokenDescriptionTitle>
+          <TokenDescriptionText>{description}</TokenDescriptionText>
+        </>}
+
+        {properties && Object.entries(properties).length > 0 && <TokenProperties>
+          {Object.entries(properties).map(([title, value]) => {
+            return <TokenProperty>
+              <TokenPropertyTitle>{title}</TokenPropertyTitle>
+              <TokenPropertyValue>{value}</TokenPropertyValue>
+            </TokenProperty>
+          })}
+        </TokenProperties>}
+      </TokenData>
+    </TokenContent>
     <TokenControls>
-      <Button
+      <ButtonStyled
         appearance='action'
         onClick={() => {
           setShowPopup(true)
         }}
       >
-        Create Claim Links
-      </Button>
+        Create claim Links
+      </ButtonStyled>
     </TokenControls>
   </Container>  
 }

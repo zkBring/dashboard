@@ -23,5 +23,11 @@ export type TCollection = {
   tokens?: TCollectionToken[]
   tokens_amount?: string
   chain_id: String
+  campaign_id?: null | string
 }
 
+export type TCollectionStatus = 
+  'ADD_TOKENS' |
+  'CREATE_LINKS' |
+  'ACTIVE' |
+  'LOADING'

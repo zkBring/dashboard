@@ -19,6 +19,7 @@ const secure = (
   nativeTokensPerLink: string,
   walletApp: string,
   availableWallets: string[],
+  availableWalletsOn: boolean,
   availableСountries: TCountry[],
   expirationDate: number,
   callback?: () => void
@@ -133,6 +134,7 @@ const secure = (
       }
       const finished = await checkTransaction()
       if (finished) {
+        dispatch(campaignActions.setAvailableWalletsOn(availableWalletsOn))
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setAvailableWallets(availableWallets))
         dispatch(campaignActions.setCountriesWhitelist(availableСountries.map(country => country.id)))

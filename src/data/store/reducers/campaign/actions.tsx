@@ -16,6 +16,12 @@ export function setTitle (title: string) {
   })
 }
 
+export function setAvailableWalletsOn (available_wallets_on: boolean) {
+  return action(Constants.CAMPAIGN_SET_AVAILABLE_WALLETS_ON, {
+    availableWalletsOn: available_wallets_on
+  })
+}
+
 export function setCountriesWhitelist (countriesWhitelist: string[]) {
   return action(Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST, {
     countriesWhitelist

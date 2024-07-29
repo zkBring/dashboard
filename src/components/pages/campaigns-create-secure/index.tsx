@@ -105,6 +105,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       nativeTokensPerLink: string,
       walletApp: string,
       availableWallets: string[],
+      availableWalletsOn: boolean,
       availableCountries: TCountry[],
       expirationDate: number,
       callback: () => void
@@ -115,6 +116,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           nativeTokensPerLink,
           walletApp,
           availableWallets,
+          availableWalletsOn,
           availableCountries,
           expirationDate,
           callback
@@ -154,6 +156,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 }) => {
   const { id } = useParams<TLinkParams>()
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
+
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
   const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
@@ -161,6 +164,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
   const currentCampaignTokenSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
+
+  const currentCampaignAvailableWalletsOn = currentCampaign ? Boolean(currentCampaign.available_wallets_on) : false
   const expirationTime = momentNoOffsetGetTime()
 
   const allWallets = useMemo(() => {
@@ -250,6 +255,11 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   ] =  useState<boolean>(false)
 
   const [
+    enableAvailableWallets,
+    setEnableAvailableWallets
+  ] =  useState<boolean>(currentCampaignAvailableWalletsOn)
+
+  const [
     addNativeTokens,
     setAddNativeTokens
   ] =  useState<boolean>(false)
@@ -278,38 +288,56 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   return <Container>
     <WidgetContainer>
-      {REACT_APP_CLIENT !== 'coinbase' && <WidgetComponent title='Wallet options'>
-        <WidgetSectionTitle>Preferred wallet</WidgetSectionTitle>
-        <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
-        <SelectStyled
-          options={walletsOptions}
-          title='Preferred wallet'
-          disabled={loading}
-          onChange={({ value }) => {
-            if (!availableWallets.includes(value)) {
-              const updatedAvailableWallets = availableWallets.concat(value)
-              setAvailableWallets(updatedAvailableWallets)
-            }
-            setCurrentWallet(value)
-          }}
-          value={walletsOptions.find(wallet => wallet.value === currentWallet)}
-        />
+      {REACT_APP_CLIENT !== 'coinbase' && <WidgetComponent>
+        <Header>
+          <WidgetTitleStyled>
+            Wallet options
+          </WidgetTitleStyled>
+          <ToggleStyled
+            value={enableAvailableWallets}
+            disabled={loading}
+            onChange={((value) => {
+              setEnableAvailableWallets(value)
+            })}
+          />
+        </Header>
+        {enableAvailableWallets && <>
+          <WidgetTitleStyled>
+            Preferred wallet
+          </WidgetTitleStyled>
 
-        <WidgetSectionTitle>Display wallets</WidgetSectionTitle>
-        <WidgetSubtitle>Select the wallets user will see as other connection options</WidgetSubtitle>
-        <CheckboxContainer>
-          {walletsCheckboxes.map(checkbox => <CheckboxStyled
-            value={checkbox.value}
-            label={checkbox.label}
-            disabled={checkbox.disabled || Boolean(currentCampaign) || loading}
-            onChange={
-              (value) => {
-                const updatedAvailableWallets = !value ? availableWallets.filter(item => item !== checkbox.id) : availableWallets.concat(checkbox.id)
+          <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
+          <SelectStyled
+            options={walletsOptions}
+            title='Preferred wallet'
+            disabled={loading}
+            onChange={({ value }) => {
+              if (!availableWallets.includes(value)) {
+                const updatedAvailableWallets = availableWallets.concat(value)
                 setAvailableWallets(updatedAvailableWallets)
               }
-            }
-          />)}
-        </CheckboxContainer>
+              setCurrentWallet(value)
+            }}
+            value={walletsOptions.find(wallet => wallet.value === currentWallet)}
+          />
+
+          <WidgetSectionTitle>Display wallets</WidgetSectionTitle>
+          <WidgetSubtitle>Select the wallets user will see as other connection options</WidgetSubtitle>
+          <CheckboxContainer>
+            {walletsCheckboxes.map(checkbox => <CheckboxStyled
+              value={checkbox.value}
+              label={checkbox.label}
+              disabled={checkbox.disabled || Boolean(currentCampaign) || loading}
+              onChange={
+                (value) => {
+                  const updatedAvailableWallets = !value ? availableWallets.filter(item => item !== checkbox.id) : availableWallets.concat(checkbox.id)
+                  setAvailableWallets(updatedAvailableWallets)
+                }
+              }
+            />)}
+          </CheckboxContainer>
+        </>}
+        
       </WidgetComponent>}
 
       <WidgetComponent>
@@ -444,6 +472,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             nativeTokensAmount,
             String(currentWallet),
             availableWallets,
+            enableAvailableWallets,
             countries,
             finalExpirationDate,
             () => history.push(redirectURL)

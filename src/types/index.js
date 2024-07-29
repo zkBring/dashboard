@@ -55,7 +55,8 @@ import { TDispenserStats } from './dispenser-stats'
 import TMnemonicContract from './mnemonic-contract'
 import {
   TCollection,
-  TCollectionToken
+  TCollectionToken,
+  TCollectionStatus
 } from './collection'
 import  {
   TZerionERC20Item,
@@ -80,6 +81,7 @@ export {
   TFeatureName,
   TDispenserWhitelistType,
   TButtonAppearance,
+  TCollectionStatus,
   TCampaignDraft,
   TERC20TokenItem,
   TERC20TokenList,

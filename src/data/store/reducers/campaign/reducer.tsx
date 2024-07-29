@@ -27,7 +27,8 @@ const initialState: CampaignState = {
   availableWallets: [],
   linksGenerateLoader: 0,
   expirationDate: initialExpirationDate,
-  countriesWhitelist: []
+  countriesWhitelist: [],
+  availableWalletsOn: false
 }
 
 export function newRetroDropReducer(
@@ -47,6 +48,8 @@ export function newRetroDropReducer(
           return {...state, tokenStandard: action.payload.tokenStandard }
         case Constants.CAMPAIGN_SET_DECIMALS:
           return {...state, decimals: action.payload.decimals }
+        case Constants.CAMPAIGN_SET_AVAILABLE_WALLETS_ON:
+          return {...state, availableWalletsOn: action.payload.availableWalletsOn }
         case Constants.CAMPAIGN_SET_ASSETS:
           return {...state, assets: action.payload.assets }
         case Constants.CAMPAIGN_SET_ASSETS_ORIGINAL:

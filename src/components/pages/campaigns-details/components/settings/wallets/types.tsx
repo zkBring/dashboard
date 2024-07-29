@@ -22,4 +22,7 @@ export type TProps = {
     successAction?: () => void,
     errorAction?: () => void
   ) => void
+
+  toggleAction?: (value: boolean) => void
+  toggleValue?: boolean
 }
