@@ -22,7 +22,8 @@ type TCampaignNew = {
   proxy_contract_version: string | number
   available_countries: string[]
   available_wallets: string[]
-  available_countries_on: boolean 
+  available_countries_on: boolean
+  available_wallets_on: boolean 
   claiming_finished_button_title?: string
   claiming_finished_button_url?: string
 }

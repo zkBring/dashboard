@@ -34,6 +34,17 @@ const requests = {
     })
   },
 
+  updateAvailableWalletsOn: (
+    campaign_id: string | number,
+    available_wallets_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      available_wallets_on
+    }, {
+      withCredentials: true
+    })
+  },
+
   updateAvailableCountries: (
     campaign_id: string | number,
     available_countries: string[]

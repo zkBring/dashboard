@@ -9,12 +9,14 @@ import updateClaimingFinishedButtonOn from './update-claiming-finished-button-on
 import updateClaimingFinishedButton from './update-claiming-finished-button'
 import updateAvailableCountries from './update-available-countries'
 import updateWallets from './update-wallets'
+import updateAvailableWalletsOn from './update-available-wallets-on'
 
 export {
   getCampaignBatches,
   updateWallets,
   downloadLinks,
   updateAvailableCountries,
+  updateAvailableWalletsOn,
   updateClaimingFinishedButton,
   downloadReport,
   updateClaimingFinishedButtonOn,

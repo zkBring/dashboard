@@ -32,6 +32,7 @@ type TCampaign = {
 
   claiming_finished_button_on?: boolean
   available_countries_on?: boolean 
+  available_wallets_on?: boolean 
 }
 
 export default TCampaign

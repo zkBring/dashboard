@@ -1,5 +1,9 @@
 # Linkdrop Dashboard
 
+## 2.1.35
+- new UI for Collections page
+- updates for wallet options
+
 ## 2.1.34
 - React, Wagmi, web3Modal update
 - dispensers and campaigns edit sidebar

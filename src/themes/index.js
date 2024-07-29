@@ -13,7 +13,7 @@ const themes = {
 		primaryBorderColor: '#E4E4E4',
 		secondaryBorderColor: '#FFF',
 		extraBorderColor: '#979797',
-		additionalBorderColor: '#9D9D9D',
+		additionalBorderColor: '#D9D9D9',
 		disabledBorderColor: '#C5C7CD',
 		primaryBackgroundColor: '#FFF', // main color of bg
     secondaryBackgroundColor: '#1D1F2B',

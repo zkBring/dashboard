@@ -40,6 +40,9 @@ export type TProps = {
   availableCountriesToggleAction?: (value: boolean) => void
   availableCountriesToggleValue?: boolean
 
+  availableWalletsToggleAction?: (value: boolean) => void
+  availableWalletsToggleValue?: boolean
+
 }
 
 export type TSettingItem = {

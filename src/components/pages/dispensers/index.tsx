@@ -17,7 +17,12 @@ import {
   WidgetComponent,
   InitialNote
 } from 'components/pages/common'
-import { formatDate, formatTime, defineDispenserStatus, defineDispenserStatusTag } from 'helpers'
+import {
+  formatDate,
+  formatTime,
+  defineDispenserStatus, 
+  defineDispenserStatusTag
+} from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
@@ -71,6 +76,7 @@ const Dispensers: FC<ReduxType> = ({
         <WidgetTitleStyled>Dispenser QR code</WidgetTitleStyled>
         <ContainerButton
           title='+ New'
+
           disabled={loading}
           size='extra-small'
           appearance='action'

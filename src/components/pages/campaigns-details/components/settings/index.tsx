@@ -111,6 +111,9 @@ const definePopup = (
   availableCountriesToggleAction?: (value: boolean) => void,
   availableCountriesToggleValue?: boolean,
 
+  availableWalletsToggleAction?: (value: boolean) => void,
+  availableWalletsToggleValue?: boolean,
+
   campaignId?: string,
 ) => {
   switch (setting.id) {
@@ -125,6 +128,8 @@ const definePopup = (
         action={walletsSubmit}
         sponsored={sposored}
         chainId={chainId}
+        toggleAction={availableWalletsToggleAction}
+        toggleValue={availableWalletsToggleValue}
       />
     case 'available_countries':
       return <Countries
@@ -156,6 +161,7 @@ const defineEnabled = (
   settingId: string,
   availableCountriesToggleValue: boolean,
   finalScreenButtonToggleValue: boolean,
+  availableWalletsToggleValue: boolean,
   wallet: string
 ) => {
 
@@ -168,7 +174,7 @@ const defineEnabled = (
   }
 
   if (settingId === 'wallets') {
-    return Boolean(wallet)
+    return availableWalletsToggleValue
   }
   
   return false
@@ -210,7 +216,10 @@ const Settings: FC<TProps> = ({
   
 
   availableCountriesToggleAction,
-  availableCountriesToggleValue
+  availableCountriesToggleValue,
+
+  availableWalletsToggleAction,
+  availableWalletsToggleValue
 }) => {
 
   if (!campaignData) {
@@ -230,7 +239,7 @@ const Settings: FC<TProps> = ({
     walletsSubmit,
     availableWalletsValue,
     preferredWalletValue,
-
+    
     finalScreenButtonSubmit,
     buttonTitleValue,
     buttonHrefValue,
@@ -242,6 +251,9 @@ const Settings: FC<TProps> = ({
     finalScreenButtonToggleValue,
     availableCountriesToggleAction,
     availableCountriesToggleValue,
+    availableWalletsToggleAction,
+    availableWalletsToggleValue,
+
     campaignData.campaign_id,
     
   ) : null
@@ -255,8 +267,10 @@ const Settings: FC<TProps> = ({
         setting.id,
         Boolean(availableCountriesToggleValue),
         Boolean(finalScreenButtonToggleValue),
+        Boolean(availableWalletsToggleValue),
         preferredWalletValue
       )
+
       const enabledLabel = defineEnabledLabel(
         setting.id,
         preferredWalletValue

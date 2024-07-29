@@ -28,7 +28,9 @@ const Wallets: FC<TProps> = ({
   sponsored,
   chainId,
   loading,
-  tokenType
+  tokenType,
+  toggleAction,
+  toggleValue
 }) => {
 
   const [
@@ -72,12 +74,12 @@ const Wallets: FC<TProps> = ({
     return options
   }, [ availableWallets ])
 
-
-  
   return <AsidePopup
     title={title}
     subtitle={subtitle}
     onClose={onClose}
+    toggleAction={toggleAction}
+    toggleState={toggleValue}
     action={() => {
       action(
         availableWallets,
@@ -85,35 +87,37 @@ const Wallets: FC<TProps> = ({
         () => onClose()
       )
     }}
-
   >
-    <CheckboxContainer>
-      {walletsCheckboxes.map(checkbox => <CheckboxStyled
-        value={checkbox.value}
-        label={checkbox.label}
-        disabled={checkbox.disabled || loading}
-        onChange={
-          (value) => {
-            const updatedAvailableWallets = !value ? availableWallets.filter(item => item !== checkbox.id) : availableWallets.concat(checkbox.id)
+    {toggleValue && <>
+      <CheckboxContainer>
+        {walletsCheckboxes.map(checkbox => <CheckboxStyled
+          value={checkbox.value}
+          label={checkbox.label}
+          disabled={checkbox.disabled || loading}
+          onChange={
+            (value) => {
+              const updatedAvailableWallets = !value ? availableWallets.filter(item => item !== checkbox.id) : availableWallets.concat(checkbox.id)
+              setAvailableWallets(updatedAvailableWallets)
+            }
+          }
+        />)}
+      </CheckboxContainer>
+
+      <SelectStyled
+        options={walletsOptions}
+        title='Preferred wallet'
+        disabled={loading}
+        onChange={({ value }) => {
+          if (!availableWallets.includes(value)) {
+            const updatedAvailableWallets = availableWallets.concat(value)
             setAvailableWallets(updatedAvailableWallets)
           }
-        }
-      />)}
-    </CheckboxContainer>
-
-    <SelectStyled
-      options={walletsOptions}
-      title='Preferred wallet'
-      disabled={loading}
-      onChange={({ value }) => {
-        if (!availableWallets.includes(value)) {
-          const updatedAvailableWallets = availableWallets.concat(value)
-          setAvailableWallets(updatedAvailableWallets)
-        }
-        setCurrentWallet(value)
-      }}
-      value={walletsOptions.find(wallet => wallet.value === currentWallet)}
-    />
+          setCurrentWallet(value)
+        }}
+        value={walletsOptions.find(wallet => wallet.value === currentWallet)}
+      />
+    </>}
+    
 
   </AsidePopup>
 }

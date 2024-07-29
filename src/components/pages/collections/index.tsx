@@ -21,11 +21,33 @@ import {
 import {
   formatDate,
   formatTime,
-  shortenString,
-  defineCollectionStatusTag
+  defineCollectionQuantityTag,
+  defineCollectionStatusTag,
+  defineCollectionStatus
 } from 'helpers'
+import {
+  TCollectionStatus,
+  TStatus
+} from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
+
+const defineStatus: (
+  status: TCollectionStatus
+) => TStatus = (status: TCollectionStatus) => {
+  switch (status) {
+    case 'ACTIVE':
+      return 'success'
+    case 'ADD_TOKENS':
+      return 'default'
+    case 'CREATE_LINKS':
+      return 'info'
+    case 'LOADING':
+      return 'info'
+    default:
+      return 'info'
+  }
+}
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -51,7 +73,6 @@ const Collections: FC<ReduxType> = ({
   collections,
   loading
 }) => {
-
   if (collections.length === 0) {
     return <InitialNote
       title='Create Your First NFT collection'
@@ -66,7 +87,7 @@ const Collections: FC<ReduxType> = ({
       <Header>
         <WidgetTitleStyled>My NFT Contracts</WidgetTitleStyled>
         <ContainerButton
-          title='+ Deploy new contract'
+          title='+ Add'
           disabled={loading}
           size='extra-small'
           appearance='action'
@@ -74,28 +95,48 @@ const Collections: FC<ReduxType> = ({
         />
       </Header>
       {collections.length > 0 && <CollectionsListStyled>
-        <BatchListLabel>Title</BatchListLabel>
-        <BatchListLabel>Date created</BatchListLabel>
-        <BatchListLabel>Address</BatchListLabel>
-        <BatchListLabel>All token copies</BatchListLabel>
+        <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
+        <BatchListLabel>Symbol</BatchListLabel>
+        <BatchListLabel>Quantity</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         {collections.map(collection => {
-          const { title, collection_id, created_at, tokens_amount, token_address, thumbnail } = collection
+          const {
+            title,
+            collection_id,
+            created_at,
+            tokens_amount,
+            token_address,
+            thumbnail,
+            symbol,
+            campaign_id
+          } = collection
+          const status = defineCollectionStatus(
+            false,
+            Number(tokens_amount),
+            campaign_id
+          )
+          const statusTag = defineCollectionStatusTag(status)
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           return <>
+            <BatchListValue>
+              {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
+            </BatchListValue>
             <CollectionsListLabelStyled>
               <TokenImageStyled src={thumbnail} address={token_address} />
               {title}
             </CollectionsListLabelStyled>
+
             <BatchListValue>
-              {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
+              {symbol}
             </BatchListValue>
             <BatchListValue>
-              {shortenString(token_address)}
+              {defineCollectionQuantityTag(tokens_amount || '0')}
             </BatchListValue>
             <BatchListValue>
-              {defineCollectionStatusTag(tokens_amount || '0')}
+              {statusTag}
             </BatchListValue>
             <BatchListValueJustifySelfEnd>
               <Button
