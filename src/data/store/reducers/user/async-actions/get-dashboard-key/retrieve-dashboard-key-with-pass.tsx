@@ -18,12 +18,16 @@ const retrieveDashboardKeyWithPass: (
   try {
 
     const challenge = Uint8Array.from(sig_message, c => c.charCodeAt(0))
+
+    console.log({ account })
     const user = {
       id: Uint8Array.from(
         account, c => c.charCodeAt(0)),
       name: `LINKDROP_ENCRYPTION_KEY_${account.slice(-6)}`,
       displayName: `LINKDROP_ENCRYPTION_KEY_${account.slice(-6)}`
     }
+    console.log({ user })
+
     const publicKeyCredentialCreationOptions = {
       challenge: challenge,
       rp: {
