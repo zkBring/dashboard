@@ -128,13 +128,13 @@ const Collection: FC<ReduxType> = ({
       <WidgetComponentStyled>
         <Header>
           <WidgetTitleStyled>My NFTs</WidgetTitleStyled>
-          {tokens && tokens.length > 0 && <ContainerButton
+          <ContainerButton
             title='+ Add'
             disabled={loading}
             size='extra-small'
             to={`/collections/${collection_id}/token/new`}
             appearance='action'
-          />}
+          />
         </Header>
         You can add more NFTs to this collection
       </WidgetComponentStyled>
