@@ -215,6 +215,10 @@ const CollectionAddToken: FC<ReduxType> = ({
 
         <PropertiesList properties={properties} onRemove={key => {
           setProperties(properties => {
+            console.log({
+              key,
+              properties
+            })
             delete { ...properties }[key]
             return properties
           })
