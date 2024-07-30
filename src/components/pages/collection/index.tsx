@@ -59,7 +59,7 @@ const renderTokens = (
   }
 
   if (!tokens || tokens.length === 0) {
-    return  <WidgetSubtitle>No tokens in this collection yet :(</WidgetSubtitle>
+    return  null
   }
 
   return <TokensList>
@@ -127,7 +127,7 @@ const Collection: FC<ReduxType> = ({
     <MainContent>
       <WidgetComponentStyled>
         <Header>
-          <WidgetTitleStyled>My NFTs</WidgetTitleStyled>
+          <WidgetTitleStyled>Tokens</WidgetTitleStyled>
           <ContainerButton
             title='+ Add'
             disabled={loading}
@@ -136,7 +136,9 @@ const Collection: FC<ReduxType> = ({
             appearance='action'
           />
         </Header>
-        You can add more NFTs to this collection
+        <WidgetSubtitle>  
+          {tokens && tokens.length > 0 ? 'You can add more NFTs to this collection' : 'No tokens in this collection yet' }
+        </WidgetSubtitle>
       </WidgetComponentStyled>
       {tokensList}
     </MainContent>

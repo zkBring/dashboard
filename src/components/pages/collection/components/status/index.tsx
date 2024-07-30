@@ -10,7 +10,7 @@ const defineStatus: (
     case 'ACTIVE':
       return 'success'
     case 'ADD_TOKENS':
-      return 'default'
+      return 'info'
     case 'CREATE_LINKS':
       return 'info'
     case 'LOADING':
