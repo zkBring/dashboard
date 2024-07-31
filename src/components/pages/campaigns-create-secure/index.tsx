@@ -301,12 +301,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             })}
           />
         </Header>
+        <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
         {enableAvailableWallets && <>
-          <WidgetTitleStyled>
-            Preferred wallet
-          </WidgetTitleStyled>
-
-          <WidgetSubtitle>Select the wallet that will be highlighted as “recommended”</WidgetSubtitle>
           <SelectStyled
             options={walletsOptions}
             title='Preferred wallet'
