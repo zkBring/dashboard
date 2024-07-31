@@ -40,9 +40,14 @@ const mapStateToProps = ({
 const defineIfButtonDisabled = (
   tokenName: string,
   thumbnail: string,
-  loading: boolean
+  loading: boolean,
+  copiesAmount: string,
+  lazyMint: boolean
 ) => {
-  return !tokenName  || loading || !thumbnail
+  if (lazyMint) {
+    return !tokenName  || loading || !thumbnail
+  }
+  return !tokenName  || loading || !thumbnail || !copiesAmount || copiesAmount === '0'
 }
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -215,11 +220,8 @@ const CollectionAddToken: FC<ReduxType> = ({
 
         <PropertiesList properties={properties} onRemove={key => {
           setProperties(properties => {
-            console.log({
-              key,
-              properties
-            })
-            delete { ...properties }[key]
+            const updatedProperties = { ...properties }
+            delete updatedProperties[key]
             return properties
           })
         }}/>
@@ -264,7 +266,9 @@ const CollectionAddToken: FC<ReduxType> = ({
           disabled={defineIfButtonDisabled(
             tokenName,
             thumbnail,
-            loading
+            loading,
+            copiesAmount,
+            lazyMint
           )}
           loading={loading}
           onClick={() => {

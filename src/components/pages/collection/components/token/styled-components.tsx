@@ -66,6 +66,7 @@ export const TokenProperties = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 32px;
+  gap: 16px;
 `
 
 export const TokenProperty = styled.div`

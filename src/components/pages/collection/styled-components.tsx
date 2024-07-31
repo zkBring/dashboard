@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import {
-  Aside,
-  TableValue,
   WidgetComponent,
   WidgetTitle,
   Container
@@ -37,6 +35,7 @@ export const TokensList = styled.ul`
   list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 24px;
 `
 
 export const TokenItem = styled.li`
