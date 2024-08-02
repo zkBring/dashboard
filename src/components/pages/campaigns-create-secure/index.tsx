@@ -2,7 +2,7 @@ import { FC, useState, useMemo, useEffect } from 'react'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TCountry, TLinkParams, TSelectOption } from 'types'
+import { TCountry, TLinkParams } from 'types'
 import { utils } from 'ethers'
 import {
   WidgetComponent,
@@ -150,6 +150,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   countriesList
 }) => {
   const { id } = useParams<TLinkParams>()
+
+  // @ts-ignore
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
   // @ts-ignore
@@ -199,7 +201,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [])
 
-  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (REACT_APP_CLIENT === 'coinbase' ? 'coinbase_wallet' : walletsOptions[0].value)
+  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (REACT_APP_CLIENT === 'coinbase' ? 'coinbase_smart_wallet' : walletsOptions[0].value)
 
   const [
     currentWallet,

@@ -492,6 +492,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <BatchesList
           batches={batches}
+          loading={loading}
           sponsored={sponsored}
           title={title}
           campaignId={campaign_id}

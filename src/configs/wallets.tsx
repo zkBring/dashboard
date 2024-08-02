@@ -9,13 +9,6 @@ const wallets: TWallet[] = [
     available_for_not_sponsored: true
   },
   {
-    id: 'walletconnect',
-    name: 'WalletConnect',
-    chains: ['1', '5', '137', '80001', '8453', '84531'],
-    token_types: ['ERC1155', 'ERC20', 'ERC721'],
-    available_for_not_sponsored: true
-  },
-  {
     id: 'trust',
     name: 'Trust Wallet',
     chains: ['1', '5', '137', '80001', '8453', '84531'],
@@ -23,7 +16,7 @@ const wallets: TWallet[] = [
     available_for_not_sponsored: true
   },
   {
-    id: 'coinbase_wallet',
+    id: 'coinbase_smart_wallet',
     name: 'Coinbase Wallet',
     chains: ['1', '5', '137', '80001', '8453', '84531'],
     token_types: ['ERC1155', 'ERC20', 'ERC721'],
@@ -61,13 +54,6 @@ const wallets: TWallet[] = [
     name: 'ENS or address',
     chains: ['1', '5', '137', '80001', '8453', '84531'],
     token_types: ['ERC1155', 'ERC20', 'ERC721'],
-    available_for_not_sponsored: false
-  },
-  {
-    id: 'crossmint',
-    name: 'Crossmint (Sign in with email)',
-    chains: ['1', '5', '137', '80001', '8453', '84531'],
-    token_types: ['ERC1155', 'ERC721'],
     available_for_not_sponsored: false
   },
   {

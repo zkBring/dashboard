@@ -78,7 +78,13 @@ const mapStateToProps = ({
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
-const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, drafts, chainId }) => {
+const CampaignsPage: FC<ReduxType & TProps> = ({
+  campaigns,
+  address,
+  loading,
+  drafts,
+  chainId
+}) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
@@ -109,13 +115,13 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
         />
       </Header>
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <CampaignsListStyled>
-      <BatchListLabel>Created</BatchListLabel>
-      <BatchListLabel>Name</BatchListLabel>
-      <BatchListLabel>Token</BatchListLabel>
-      <BatchListLabel>Links</BatchListLabel>
-      <BatchListLabel>Claimed</BatchListLabel>
-      <BatchListLabel>Status</BatchListLabel>
-      <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
+        <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
+        <BatchListLabel>Token</BatchListLabel>
+        <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Claimed</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
       {currentAddressCampaigns.map(campaign => {
         const {
           title,
