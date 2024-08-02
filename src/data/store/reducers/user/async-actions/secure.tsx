@@ -18,8 +18,7 @@ const secure = (
   totalNativeTokensAmountToSecure: BigNumber,
   nativeTokensPerLink: string,
   walletApp: string,
-  availableWallets: string[],
-  availableWalletsOn: boolean,
+  preferredWalletOn: boolean,
   availableСountries: TCountry[],
   expirationDate: number,
   callback?: () => void
@@ -60,7 +59,7 @@ const secure = (
       dispatch(campaignActions.setLoading(true))
       const newWallet = ethers.Wallet.createRandom()
       const { address: wallet, privateKey } = newWallet
-      const factoryContract = await new ethers.Contract(contract.factory, LinkdropFactory.abi, signer)
+      const factoryContract = new ethers.Contract(contract.factory, LinkdropFactory.abi, signer)
       const isDeployed = await factoryContract.isDeployed(address, id)
       let data
       let to
@@ -80,7 +79,7 @@ const secure = (
       
       if (!isDeployed) {
         let iface = new utils.Interface(LinkdropFactory.abi)
-        data = await iface.encodeFunctionData('deployProxyWithSigner', [
+        data = iface.encodeFunctionData('deployProxyWithSigner', [
           id, wallet, claimPattern === 'mint' ? 1 : 0
         ])
         to = contract.factory
@@ -134,9 +133,8 @@ const secure = (
       }
       const finished = await checkTransaction()
       if (finished) {
-        dispatch(campaignActions.setAvailableWalletsOn(availableWalletsOn))
+        dispatch(campaignActions.setPreferredWalletOn(preferredWalletOn))
         dispatch(campaignActions.setSecured(true))
-        dispatch(campaignActions.setAvailableWallets(availableWallets))
         dispatch(campaignActions.setCountriesWhitelist(availableСountries.map(country => country.id)))
         dispatch(campaignActions.setExpirationDate(expirationDate))
         dispatch(campaignActions.setNativeTokensPerLink(

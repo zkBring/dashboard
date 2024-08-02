@@ -16,9 +16,9 @@ export function setTitle (title: string) {
   })
 }
 
-export function setAvailableWalletsOn (available_wallets_on: boolean) {
-  return action(Constants.CAMPAIGN_SET_AVAILABLE_WALLETS_ON, {
-    availableWalletsOn: available_wallets_on
+export function setPreferredWalletOn (preferredWalletOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_PREFERRED_WALLET_ON, {
+    preferredWalletOn
   })
 }
 
@@ -172,14 +172,21 @@ export function setLinksGenerateLoader (linksGenerateLoader: number) {
   })
 }
 
-export function setAvailableWallets (availableWallets: string[]) {
-  return action(Constants.CAMPAIGN_SET_AVAILABLE_WALLETS, {
-    availableWallets
-  })
-}
-
 export function setExpirationDate (expirationDate: number) {
   return action(Constants.CAMPAIGN_SET_EXPIRATION_DATE, {
     expirationDate
   })
 }
+
+export function setCollectionId (collectionId: null | string) {
+  return action(Constants.CAMPAIGN_SET_COLLECTION_ID, {
+    collectionId
+  })
+}
+
+export function setCollectionTokenId (collectionTokenId: null | string) {
+  return action(Constants.CAMPAIGN_SET_COLLECTION_TOKEN_ID, {
+    collectionTokenId
+  })
+}
+

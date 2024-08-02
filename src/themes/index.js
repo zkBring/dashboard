@@ -82,6 +82,7 @@ const themes = {
 
 
 		noteDefaultBackgroundColor: '#E4EDFF',
+
 		noteWarningBackgroundColor: '#FFB4B4',
 		noteWarningTextColor: '#D71E1E',
 		noteWarningBorderColor: '#D71E1E',

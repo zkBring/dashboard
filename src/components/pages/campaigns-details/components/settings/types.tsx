@@ -12,13 +12,11 @@ export type TProps = {
   availableCountriesValue: TCountry[]
 
   walletsSubmit: (
-    availableWalletsValue: any,
     wallets: any,
     onSuccess?: () => void,
     onError?: () => void,
   ) => void
 
-  availableWalletsValue: string[]
   preferredWalletValue: string
 
   countries: TCountry[]
@@ -35,13 +33,12 @@ export type TProps = {
 
   finalScreenButtonToggleAction?: (value: boolean) => void
   finalScreenButtonToggleValue?: boolean
-  
 
   availableCountriesToggleAction?: (value: boolean) => void
   availableCountriesToggleValue?: boolean
 
-  availableWalletsToggleAction?: (value: boolean) => void
-  availableWalletsToggleValue?: boolean
+  preferredWalletToggleAction?: (value: boolean) => void
+  preferredWalletToggleValue?: boolean
 
 }
 

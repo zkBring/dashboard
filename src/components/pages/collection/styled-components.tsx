@@ -33,17 +33,13 @@ export const TokensList = styled.ul`
   padding: 0;
   margin: 0;
   list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
 `
 
 export const TokenItem = styled.li`
-  margin-bottom: 32px;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
+
 `
 
 export const Header = styled.div`

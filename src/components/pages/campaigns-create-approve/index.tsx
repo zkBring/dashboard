@@ -35,7 +35,10 @@ import {
 } from 'helpers'
 import { TAsideContentsProps } from './components/aside-contents/types'
 import { plausibleApi } from 'data/api'
-const { REACT_APP_STARTER_PLAN_LINKS_LIMIT, REACT_APP_PRO_PLAN_LINKS_LIMIT } = process.env
+const {
+  REACT_APP_STARTER_PLAN_LINKS_LIMIT,
+  REACT_APP_PRO_PLAN_LINKS_LIMIT
+} = process.env
 
 const mapStateToProps = ({
   campaign: {
@@ -50,6 +53,7 @@ const mapStateToProps = ({
     assets,
     symbol,
     approved,
+    collectionId
   },
   campaigns: {
     campaigns
@@ -67,6 +71,7 @@ const mapStateToProps = ({
   loading,
   campaigns,
   collections,
+  collectionId,
   claimPattern,
   sdk,
   proxyContractAddress,
@@ -227,7 +232,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
   }
 }
 
-
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const defineComponent: TDefineComponent = (
@@ -242,6 +247,7 @@ const defineComponent: TDefineComponent = (
   setFormData,
   getDefaultValues,
   campaign,
+  collectionId
 ) => {
 
   if (!sponsored && sdk) {
@@ -258,9 +264,17 @@ const defineComponent: TDefineComponent = (
     />
   }
 
-  const UploadInstructionNote = type === 'ERC721' &&  claimPattern === 'mint' ? null : <InstructionNoteStyled
-    icon={<Icons.UploadFileIcon />}
-  >
+  const UploadInstructionNote =
+    (
+      type === 'ERC721' &&
+      claimPattern === 'mint'
+    ) ||
+    collectionId
+  ?
+    null :
+    <InstructionNoteStyled
+      icon={<Icons.UploadFileIcon />}
+    >
     If you have a big set of different tokens to distribute, you could also provide this information by <TextLink onClick={setUploadCSVPopup}>uploading a CSV file. </TextLink>
   </InstructionNoteStyled>
 
@@ -301,6 +315,10 @@ const defineComponent: TDefineComponent = (
         campaign={campaign}
         assetsData={assetsData}
         setAssetsData={setAssetsData}
+
+        // needed for own collection campaigns
+        collectionId={collectionId}
+        
       >
         {UploadInstructionNote}
       </Erc1155>
@@ -362,7 +380,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   comission: comissionPrice,
   whitelisted,
   getUserNFTs,
-  collections
+  collections,
+  collectionId
 }) => {
   const [
     assetsParsed,
@@ -407,7 +426,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
     formData,
     setFormData,
     getDefaultValues,
-    currentCampaign
+    currentCampaign,
+    collectionId
   )
 
   const defineIfNextDisabled = () => {
@@ -447,7 +467,6 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   }, [data])
 
   useEffect(() => {
-
     // it will work for ouwn collection (from minter)
     if (tokenStandard === 'ERC1155') {
       const tokenId = queryParams.get('token_id')

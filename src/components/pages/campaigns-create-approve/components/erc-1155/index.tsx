@@ -226,8 +226,12 @@ const createTextInputOrSelect = (
   tokenAddress: string | null,
   userAddress: string,
   signer: any,
-  claimPattern: TClaimPattern
+  claimPattern: TClaimPattern,
+  collectionId?: null | string 
 ) => {
+  if (collectionId) {
+    return null
+  }
   if (enabledInput) {
     return createInputsContainer(
       formData,
@@ -256,6 +260,8 @@ const createTextInputOrSelect = (
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
+
+  // @ts-ignore
   ReturnType<typeof mapDispatcherToProps> &
   TProps
 
@@ -275,11 +281,11 @@ const Erc1155: FC<ReduxType > = ({
   chainId,
   getDefaultValues,
   formData,
-  setFormData
+  setFormData,
+  collectionId
 }) => {
   const { type } = useParams<{ type: TTokenType }>()
   const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
-
 
   const [
     itemToEdit,
@@ -352,7 +358,7 @@ const Erc1155: FC<ReduxType > = ({
       </WidgetTitleStyled>
 
       <HeaderButtons>
-        {claimPattern !== 'mint' && <ButtonHeaderStyled
+        {claimPattern !== 'mint' && !collectionId && <ButtonHeaderStyled
           disabled={checkIfAllTokensDisabled()}
           appearance='additional'
           size='extra-small'
@@ -372,7 +378,7 @@ const Erc1155: FC<ReduxType > = ({
         >
           {rangeInput ? 'Pick token IDs' : 'Set manually'}
         </ButtonHeaderStyled>}
-        {claimPattern !== 'mint' && <ButtonHeaderStyled
+        {claimPattern !== 'mint' && !collectionId && <ButtonHeaderStyled
           disabled={checkIfAllTokensDisabled()}
           appearance='action'
           size='extra-small'
@@ -395,7 +401,8 @@ const Erc1155: FC<ReduxType > = ({
         tokenAddress,
         address,
         signer,
-        claimPattern
+        claimPattern,
+        collectionId
       )}
       <LinksContents
         type={type}
@@ -405,6 +412,7 @@ const Erc1155: FC<ReduxType > = ({
         onRemove={(id) => {
           setAssetsData(assetsData.filter(item => item.id !== id))
         }}
+        collectionId={collectionId}
         onEdit={(id) => {
           setItemToEdit(id)
         }}

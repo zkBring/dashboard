@@ -4,9 +4,9 @@ import { CampaignsActions } from '../types'
 import { RootState } from 'data/store'
 import { campaignsApi } from 'data/api'
 
-const updateAvailableWalletsOn = (
+const updatePreferredWalletOn = (
   campaign_id: string | number,
-  available_wallets_on: boolean
+  preferred_wallet_on: boolean
 ) => {
   return async (
     dispatch: Dispatch<CampaignsActions>,
@@ -20,9 +20,9 @@ const updateAvailableWalletsOn = (
     } = getState()
     
     try {
-      const result = await campaignsApi.updateAvailableWalletsOn(
+      const result = await campaignsApi.updatePreferredWalletOn(
         campaign_id,
-        available_wallets_on
+        preferred_wallet_on
       )
 
       if (result.data.success) {
@@ -31,7 +31,7 @@ const updateAvailableWalletsOn = (
           if (campaign.campaign_id === campaign_id) {
             return {
               ...campaign,
-              available_wallets_on
+              preferred_wallet_on
             }
           }
           return campaign
@@ -45,4 +45,4 @@ const updateAvailableWalletsOn = (
   }
 }
 
-export default updateAvailableWalletsOn
+export default updatePreferredWalletOn

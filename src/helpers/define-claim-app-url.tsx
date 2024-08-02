@@ -2,14 +2,14 @@ import { addressSpecificOptions } from 'configs/address-specific-options'
 
 const {
   REACT_APP_CLAIM_APP,
-  REACT_APP_CBW_CLAIM_APP
+  REACT_APP_CBW_CLAIM_APP,
+  REACT_APP_CLIENT
 } = process.env
 
 const defineClaimAppURL = (
-  address: string,
-  available_wallets?: string[]
+  address: string
 ) => {
-  if (available_wallets && available_wallets.length === 1 && available_wallets[0] === 'coinbase_wallet') {
+  if (REACT_APP_CLIENT === 'coinbase') {
     return REACT_APP_CBW_CLAIM_APP || ''
   }
   const addressFormatted = address.toLowerCase()

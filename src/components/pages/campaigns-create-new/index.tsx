@@ -16,6 +16,7 @@ import {
   AsideContent,
   TableValueShorten
 } from 'components/pages/common'
+import { InformationContainer, TextLink } from 'components/common'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
@@ -108,7 +109,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
 }
 
 const defineContractsOptions = (contracts: TNFTContract[], contractsERC20: TERC20Contract[], tokenType: string | null) => {
-
   if (tokenType === 'ERC20') {
     return contractsERC20.map(contract => {
       return {
@@ -117,17 +117,21 @@ const defineContractsOptions = (contracts: TNFTContract[], contractsERC20: TERC2
       }
     })
   }
-
-  return contracts.map(contract => {
+  const contractOptions = contracts.map(contract => {
     return {
       label: `${contract.name} ${shortenString(contract.address)} (${contract.totalBalance} owned)`,
       value: contract
     }
   })
+
+  return [{
+    label: `Create NFT`,
+    value: `create_nft`
+  }, ...contractOptions]
 }
 
-type ReduxType = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatcherToProps>
+// @ts-ignore
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsCreateNew: FC<ReduxType> = ({
   symbol: appliedTokenSymbol,
@@ -151,7 +155,6 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   const { id } = useParams<TLinkParams>()
 
   useEffect(preventPageClose(), [])
-
 
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentTokenAddress = campaign ? campaign.token_address : ''
@@ -197,7 +200,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     return !title || !tokenAddress || !appliedTokenSymbol || loading || !proxyContractAddress
   }
 
-  const selectTokenOptions: any[] = defineContractsOptions(contracts, contractsERC20, currentType)
+  const selectTokenOptions: any[] = defineContractsOptions(
+    contracts,
+    contractsERC20,
+    currentType
+  )
 
   const selectCurrentValue = () => {
     const currentOption = selectTokenOptions.find(option => option.value.address === tokenAddress)
@@ -233,7 +240,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             setTitle(value)
             return value
           }}
-          title='Title'
+          title='Title of the campaign'
         />
 
         <SwitcherStyled
@@ -267,6 +274,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           disabled={Boolean(campaign) || loading || userLoading}
           onChange={async ({ value }: { value: TNFTContract | string}) => {
             if (typeof value === 'string') {
+
+              if (value === 'create_nft') {
+                return history.push('/collections')
+              }
+
               if (currentType === 'ERC20' && chainId) {
                 const tokenOwnership = await defineIfUserOwnsContractERC20(address, value, signer)
                 if (!tokenOwnership) {
@@ -319,6 +331,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             return value.startsWith('0x') && value.length === 42
           }}
         />
+        <InformationContainer
+          id="create_nft_hint"
+        >
+          💡 Create NFT <TextLink to='/collections'>here</TextLink> first if you don’t have it yet
+        </InformationContainer>
       </WidgetComponent>
 
       <Aside

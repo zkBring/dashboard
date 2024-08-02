@@ -24,11 +24,12 @@ const initialState: CampaignState = {
   sdk: false,
   links: [],
   nativeTokensPerLink: null,
-  availableWallets: [],
   linksGenerateLoader: 0,
   expirationDate: initialExpirationDate,
   countriesWhitelist: [],
-  availableWalletsOn: false
+  preferredWalletOn: false,
+  collectionId: null,
+  collectionTokenId: null
 }
 
 export function newRetroDropReducer(
@@ -40,6 +41,13 @@ export function newRetroDropReducer(
           return {...state, tokenAddress: action.payload.tokenAddress }
         case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST:
           return {...state, countriesWhitelist: action.payload.countriesWhitelist }
+
+        case Constants.CAMPAIGN_SET_COLLECTION_ID:
+          return {...state, collectionId: action.payload.collectionId }
+
+        case Constants.CAMPAIGN_SET_COLLECTION_TOKEN_ID:
+          return {...state, collectionTokenId: action.payload.collectionTokenId }
+    
         case Constants.CAMPAIGN_SET_TITLE:
           return {...state, title: action.payload.title }
         case Constants.CAMPAIGN_SET_LOADING:
@@ -48,8 +56,6 @@ export function newRetroDropReducer(
           return {...state, tokenStandard: action.payload.tokenStandard }
         case Constants.CAMPAIGN_SET_DECIMALS:
           return {...state, decimals: action.payload.decimals }
-        case Constants.CAMPAIGN_SET_AVAILABLE_WALLETS_ON:
-          return {...state, availableWalletsOn: action.payload.availableWalletsOn }
         case Constants.CAMPAIGN_SET_ASSETS:
           return {...state, assets: action.payload.assets }
         case Constants.CAMPAIGN_SET_ASSETS_ORIGINAL:
@@ -80,8 +86,8 @@ export function newRetroDropReducer(
           return {...state, claimPattern: action.payload.claimPattern }
         case Constants.CAMPAIGN_SET_NATIVE_TOKENS_PER_LINK:
           return {...state, nativeTokensPerLink: action.payload.nativeTokensPerLink }
-        case Constants.CAMPAIGN_SET_AVAILABLE_WALLETS:
-          return {...state, availableWallets: action.payload.availableWallets }
+        case Constants.CAMPAIGN_SET_PREFERRED_WALLET_ON:
+          return {...state, preferredWalletOn: action.payload.preferredWalletOn }
         case Constants.CAMPAIGN_SET_LINKS:
           return {...state, links: [
             ...state.links,

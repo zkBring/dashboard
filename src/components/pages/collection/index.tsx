@@ -66,6 +66,7 @@ const renderTokens = (
     {tokens.map(token => <TokenItem>
       <Token
         collectionId={collection_id}
+        campaignId={token.campaign_id}
         {...token}
       />
     </TokenItem>)}
@@ -160,7 +161,6 @@ const Collection: FC<ReduxType> = ({
         name={title}
         chainId={chainId as number}
       />
-
     </div>
     
   </ContainerStyled>

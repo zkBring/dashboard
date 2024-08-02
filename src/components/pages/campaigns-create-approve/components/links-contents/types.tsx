@@ -10,6 +10,7 @@ export type TProps = {
   onEdit?: TOnEdit
   sdk: boolean
   claimPattern: TClaimPattern
+  collectionId?: null | string
 }
 
 export type TOnEdit = (id: number) => void

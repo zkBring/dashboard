@@ -4,10 +4,9 @@ import { CampaignsActions } from '../types'
 import { RootState } from 'data/store'
 import { campaignsApi } from 'data/api'
 
-const updateWallets = (
+const updatePreferredWallet = (
   campaign_id: string | number,
-  available_wallets: string[],
-  wallet: string,
+  preferredWallet: string,
   callback?: () => void
 ) => {
   return async (
@@ -22,10 +21,9 @@ const updateWallets = (
     } = getState()
     
     try {
-      const result = await campaignsApi.updateWallets(
+      const result = await campaignsApi.updatePreferredWallet(
         campaign_id,
-        available_wallets,
-        wallet
+        preferredWallet
       )
 
       if (result.data.success) {
@@ -34,8 +32,7 @@ const updateWallets = (
           if (campaign.campaign_id === campaign_id) {
             return {
               ...campaign,
-              available_wallets,
-              wallet
+              preferredWallet
             }
           }
           return campaign
@@ -50,4 +47,4 @@ const updateWallets = (
   }
 }
 
-export default updateWallets
+export default updatePreferredWallet

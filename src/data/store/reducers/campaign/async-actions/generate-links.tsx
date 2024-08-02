@@ -67,10 +67,11 @@ const generateERC20Link = ({
         claimPattern,
         sdk,
         nativeTokensPerLink,
-        availableWallets,
         countriesWhitelist,
         expirationDate,
-        availableWalletsOn
+        preferredWalletOn,
+        collectionId,
+        collectionTokenId
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -180,10 +181,11 @@ const generateERC20Link = ({
           claim_pattern: claimPattern,
           proxy_contract_version: version,
           sponsored,
-          available_wallets: availableWallets,
           available_countries: countriesWhitelist,
           available_countries_on: countriesWhitelist.length > 0,
-          available_wallets_on: availableWalletsOn,
+          preferred_wallet_on: preferredWalletOn,
+          collection_id: collectionId ? collectionId : undefined,
+          collection_token_id: collectionTokenId ? collectionTokenId : undefined,
           ...batch
         }
 

@@ -19,6 +19,7 @@ const requests = {
   ) => campaignsApi.post('/linkdrop/campaigns', {
     ...campaign
   }, { withCredentials: true }),
+
   get: (chain_id: number | string) => {
     return campaignsApi.get(`/linkdrop/campaigns?chain_id=${chain_id}`, { withCredentials: true })
   },
@@ -34,12 +35,12 @@ const requests = {
     })
   },
 
-  updateAvailableWalletsOn: (
+  updatePreferredWalletOn: (
     campaign_id: string | number,
-    available_wallets_on: boolean
+    preferred_wallet_on: boolean
   ) => {
     return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
-      available_wallets_on
+      preferred_wallet_on
     }, {
       withCredentials: true
     })
@@ -56,14 +57,12 @@ const requests = {
     })
   },
 
-  updateWallets: (
+  updatePreferredWallet: (
     campaign_id: string | number,
-    available_wallets: string[],
-    wallet: string
+    preferredWallet: string
   ) => {
     return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
-      available_wallets,
-      wallet
+      wallet: preferredWallet
     }, {
       withCredentials: true
     })

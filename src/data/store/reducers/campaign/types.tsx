@@ -25,14 +25,17 @@ export interface CampaignState {
   nativeTokensPerLink: BigNumber | null
   linksGenerateLoader: number
   sdk: boolean
-  availableWallets: string[]
   expirationDate: number
   links: {
     date: string,
     links: TLink[],
   }[]
-  countriesWhitelist: string[],
-  availableWalletsOn: boolean
+  countriesWhitelist: string[]
+  preferredWalletOn: boolean
+
+  // for own collections
+  collectionId?: null | string,
+  collectionTokenId?: null | string
 }
 
 export type CampaignActions = ActionType<typeof actions>;

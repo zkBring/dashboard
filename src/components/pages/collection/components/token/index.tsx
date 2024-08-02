@@ -17,7 +17,8 @@ import {
   TokenPropertyValue,
   ButtonStyled,
   TokenDescriptionTitle,
-  TokenDescriptionText
+  TokenDescriptionText,
+  ExpandButton
 } from './styled-components'
 import { useHistory } from 'react-router-dom'
 import { IAppDispatch } from 'data/store'
@@ -25,6 +26,7 @@ import CollectionPlaceholder from 'images/collection-placeholder.png'
 import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
 import { connect } from 'react-redux'
 import { TProps } from './types'
+import Icons from 'icons'
 import LinksAmountPopup from '../links-amount-popup'
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -46,6 +48,31 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+const renderButton = (
+  setShowPopup: (value: boolean) => void,
+  manageRedirect: () => void,
+  campaignId?: string | null
+) => {
+  if (campaignId) {
+    return <ButtonStyled
+      size='extra-small'
+      onClick={manageRedirect}
+    >
+      Manage links
+    </ButtonStyled>
+  }
+
+  return <ButtonStyled
+    appearance='action'
+    size='extra-small'
+    onClick={() => {
+      setShowPopup(true)
+    }}
+  >
+    Create links
+  </ButtonStyled>
+}
+
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & TCollectionToken & TProps
 
@@ -55,12 +82,14 @@ export const Token: FC<ReduxType> = ({
   copies,
   properties,
   token_id,
+  campaignId,
   thumbnail,
   collectionId,
   createClaimLinks
 }) => {
   const history = useHistory()
   const [ showPopup, setShowPopup ] = useState<boolean>(false)
+  const [ expanded, setExpanded ] = useState<boolean>(false)
 
   const renderThumbnail = () => {
     if (!thumbnail) {
@@ -83,6 +112,8 @@ export const Token: FC<ReduxType> = ({
     />
   }
 
+  const tokenExpandable = Boolean(Object.keys(properties || {}).length > 0 || description)
+
   return <Container>
     {showPopup && <LinksAmountPopup
       onClose={() => setShowPopup(false)}
@@ -97,14 +128,41 @@ export const Token: FC<ReduxType> = ({
       initialValue={copies === '0' ? '1' : copies}
       limit={copies === '0' ? undefined : copies}
     />}
+
     <TokenHeader>
+      <ExpandButton
+        expanded={expanded}
+        disabled={!tokenExpandable}
+        onClick={() => {
+          if (!tokenExpandable) { return }
+          setExpanded(!expanded)
+        }}
+      >
+        <Icons.ExpandArrowVerticalIcon />
+      </ExpandButton>
       {renderThumbnail()}
       <TokenHeaderContent>
-        <TokenTitle>{name}</TokenTitle>
+        <TokenTitle>{name} #{token_id}</TokenTitle>
         <TokenAmount>{copies} NFT</TokenAmount>
       </TokenHeaderContent>
+
+      <TokenControls>
+        {renderButton(
+          setShowPopup,
+          () => {
+            if (campaignId) {
+              history.push(`/campaigns/${campaignId}`)
+              return
+            }
+            alert('campaignId not available')
+            
+          },
+          campaignId
+        )}
+      </TokenControls>
     </TokenHeader>
-    <TokenContent>
+
+    {expanded && <TokenContent>
       <TokenData>
         {description && <>
           <TokenDescriptionTitle>Description</TokenDescriptionTitle>
@@ -120,17 +178,7 @@ export const Token: FC<ReduxType> = ({
           })}
         </TokenProperties>}
       </TokenData>
-    </TokenContent>
-    <TokenControls>
-      <ButtonStyled
-        appearance='action'
-        onClick={() => {
-          setShowPopup(true)
-        }}
-      >
-        Create claim Links
-      </ButtonStyled>
-    </TokenControls>
+    </TokenContent>}
   </Container>  
 }
 

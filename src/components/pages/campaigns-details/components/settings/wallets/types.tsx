@@ -5,7 +5,6 @@ export type TProps = {
   subtitle: string
   onClose: () => void
   id: string
-  availableWalletsValue: string[]
   preferredWalletValue: string
 
   tokenType: TTokenType
@@ -17,7 +16,6 @@ export type TProps = {
   loading: boolean
 
   action: (
-    availableWalletsValue: string[],
     walletPreferredValue: string,
     successAction?: () => void,
     errorAction?: () => void

@@ -123,14 +123,19 @@ const ERC721Content: FC<TLinkContent & { onRemove: TOnRemove }> = ({
   </LinkContentsItem>
 }
 
-const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove, onEdit?: TOnEdit }> = ({
+const ERC1155Content: FC<TLinkContent & {
+  onRemove: TOnRemove
+  onEdit?: TOnEdit
+  collectionId?:null | string
+}> = ({
   tokenId,
   linksAmount,
   id,
   tokenImage,
   tokenName,
   onRemove,
-  onEdit
+  onEdit,
+  collectionId
 }) => {
   return <LinkContentsItem>
     <LinksContentImage src={tokenImage || TokenPlaceholder} alt={tokenId} />
@@ -143,18 +148,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove, onEdit?: TOnEdit 
           <LinksContentDataValueSpan>ID</LinksContentDataValueSpan>{shortenString(tokenId)}
         </LinksContentDataValue>
       </LinksContentDataItem>
-
-      {/* <LinksContentDataItem>
-        <LinksContentDataLabel>
-          Amount
-        </LinksContentDataLabel>
-        <LinksContentDataValue>
-          {tokenAmount}
-        </LinksContentDataValue>
-      </LinksContentDataItem> */}
     </LinkContentsData>
-
-    
 
     <LinkContentsControls>
       <LinksContentDataItem>
@@ -178,6 +172,7 @@ const ERC1155Content: FC<TLinkContent & { onRemove: TOnRemove, onEdit?: TOnEdit 
       <ButtonStyled
         size='extra-small'
         appearance='additional'
+        disabled={Boolean(collectionId)}
         onClick={() => {
           if (id === undefined) { return }
           onRemove(id)
@@ -239,7 +234,8 @@ const LinksContents: FC<TProps> = ({
   onRemove,
   onEdit,
   sdk,
-  claimPattern
+  claimPattern,
+  collectionId
 }) => {
   return <>{data.map(item => {
     if (sdk) {
@@ -247,7 +243,12 @@ const LinksContents: FC<TProps> = ({
     }
 
     if (type === 'ERC1155') {
-      return <ERC1155Content {...item} onRemove={onRemove} onEdit={onEdit} />
+      return <ERC1155Content
+        {...item}
+        onRemove={onRemove}
+        onEdit={onEdit}
+        collectionId={collectionId}
+      />
     } else if (type === 'ERC721') {
       if (claimPattern === 'mint') {
         return <MintPatternContents {...item} onRemove={onRemove} />

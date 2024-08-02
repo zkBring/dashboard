@@ -8,6 +8,7 @@ export type TCollectionToken = {
   properties: Record<string, string>
   token_id: string
   thumbnail?: string
+  campaign_id?: null | string
 }
 
 export type TCollection = {

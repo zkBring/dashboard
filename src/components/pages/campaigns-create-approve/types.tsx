@@ -14,4 +14,5 @@ export type TDefineComponent = (
   setFormData: (formData: TLinkContent) => void,
   getDefaultValues: (tokenType: TTokenType) => TLinkContent,
   campaign?: TCampaign | null,
+  collectionId?: string | null
 ) => React.ReactNode
