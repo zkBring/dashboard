@@ -38,9 +38,7 @@ export const DatePickerStyled = styled(DatePicker)`
 export const InputsContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 `
-
 
 export const SelectStyled = styled(Select)`
   width: 100%;

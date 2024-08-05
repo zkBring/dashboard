@@ -28,7 +28,7 @@ type TCampaign = {
   claiming_finished_button_url?: string
 
   claiming_finished_button_on?: boolean
-  available_countries_on?: boolean 
+  available_countries_on?: boolean
   preferred_wallet_on?: boolean 
 }
 

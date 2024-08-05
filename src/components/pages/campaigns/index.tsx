@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { TextLink } from 'components/common'
 import {
@@ -32,6 +32,8 @@ import {
   shortenString,
   defineExplorerUrl
 } from 'helpers'
+import { useHistory } from 'react-router-dom'
+import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 
 const defineCampaignStatus = (
   draft: boolean,
@@ -76,18 +78,38 @@ const mapStateToProps = ({
   drafts
 })
 
-type ReduxType = ReturnType<typeof mapStateToProps>
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    openDraft: (
+      id: string,
+      callback: () => void
+    ) => {
+      dispatch(
+        campaignAsyncActions.openDraft(
+          id,
+          callback
+        )
+      )
+    }
+  }
+}
+
+// @ts-ignore
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const CampaignsPage: FC<ReduxType & TProps> = ({
   campaigns,
   address,
   loading,
   drafts,
-  chainId
+  chainId,
+  openDraft
 }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
+
+  const history = useHistory()
 
   const currentAddressDrafts = drafts.filter(draft => {
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
@@ -203,10 +225,18 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
             <ButtonStyled
               appearance='additional'
               size='extra-small'
-              to={defineDraftUrl(
-                step,
-                campaignData.tokenStandard as TTokenType
-              )}
+              onClick={() => {
+                const url = defineDraftUrl(
+                  step,
+                  campaignData.tokenStandard as TTokenType
+                )
+
+
+                openDraft(
+                  String(id),
+                  () => history.push(url)
+                )
+              }}
             >
               Continue
             </ButtonStyled>
@@ -220,4 +250,4 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   </>
 }
 
-export default connect(mapStateToProps)(CampaignsPage)
+export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)
