@@ -109,7 +109,6 @@ const CSVUploadPopup: FC<TProps> = ({
             name='file'
             refProp={inputRef}
             onChange={(value) => {
-              console.log({ value })
               setData(value)
               return ''
             }}
