@@ -4,15 +4,11 @@ import {
   LinkContentsData,
   LinkContentsControls,
   LinksContentDataItem,
-  LinksContentDataLabel,
   LinksContentDataValue,
   CheckIndicator,
-  LinksContentImage,
-  LinksContentDataValueSpan,
   ButtonStyled
 } from './styled-components'
 import { TOnRemove, TProps } from './types'
-import { shortenString } from 'helpers'
 import { TCountry } from 'types'
 import Icons from 'icons'
 

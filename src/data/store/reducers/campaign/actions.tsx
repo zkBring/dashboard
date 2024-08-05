@@ -28,6 +28,12 @@ export function setCountriesWhitelist (countriesWhitelist: string[]) {
   })
 }
 
+export function setCountriesWhitelistOn (countriesWhitelistOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST_ON, {
+    countriesWhitelistOn
+  })
+}
+
 export function setDescription (description: string) {
   return action(Constants.CAMPAIGN_SET_DESCRIPTION, {
     description
