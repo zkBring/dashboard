@@ -395,4 +395,5 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   </>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateNew)

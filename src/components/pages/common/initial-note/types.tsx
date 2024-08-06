@@ -1,6 +1,7 @@
 export type TProps = {
   title: string
   text: string
-  href: string
+  href?: string
   buttontText: string
+  onClick?: () => void 
 }

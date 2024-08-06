@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
   Container,
   Header,
@@ -6,11 +6,16 @@ import {
   ContainerButton,
   DispensersListValueFixed,
   DispensersListStyled,
-  SecondaryTextSpan,
   BatchListLabelTextAlignRight,
   BatchListValueJustifySelfEnd
 } from './styled-components'
-import { Button } from 'components/common'
+import {
+  Button,
+  Tag
+} from 'components/common'
+import {
+  NewDispenser
+} from './components'
 import {
   BatchListLabel,
   BatchListValue,
@@ -19,58 +24,86 @@ import {
 } from 'components/pages/common'
 import {
   formatDate,
-  formatTime,
   defineDispenserStatus, 
-  defineDispenserStatusTag
+  defineDispenserStatusTag,
+  defineQRStatusName,
+  shortenString
 } from 'helpers'
+import { TQRStatus } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 import moment from 'moment'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
   dispensers: { dispensers, loading },
   user: { address, chainId },
+  qrs: { qrs },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
   dispensers,
-  loading
+  loading,
+  qrs
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    addQRSet: (
-      title: string,
-      quantity: number,
-      callback: (id: string | number) => void
-    ) => dispatch(asyncQRsActions.addQRSet({ title, quantity, callback }))
+const defineQRType = (
+  dynamic?: boolean,
+) => {
+  if (dynamic) {
+    return 'Dynamic'
   }
+
+  return 'Dispenser'
 }
 
+const defineHref = (
+  dispenserId: string,
+  dynamic?: boolean,
+) => {
+  if (dynamic) {
+    return `/dispensers/${dispenserId}`
+  }
+
+  return `/dynamic-qrs/${dispenserId}`
+}
+
+const defineQrSetStatus = (
+  status: TQRStatus
+) => {
+  const statusName = defineQRStatusName(status)
+  return <Tag title={statusName} status='info' />
+}
+
+
 // @ts-ignore
-type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+type ReduxType = ReturnType<typeof mapStateToProps>
 
 const Dispensers: FC<ReduxType> = ({
-  addQRSet,
+  qrs,
   dispensers,
   loading
 }) => {
 
-  const notDynamicQrs = dispensers.filter(dispenser => !dispenser.dynamic)
+  const [
+    showPopup,
+    setShowPopup
+  ] = useState<boolean>(false)
 
-  if (notDynamicQrs.length === 0) {
+  if (dispensers.length === 0 && qrs.length === 0) {
     return <InitialNote
-      title='Create Your First Dispenser QR'
-      text="Your Dispenser QRs will be displayed here once created. You don't have any Dispenser QRs yet"
-      href='/dispensers/new'
-      buttontText='New Dispenser QR'
+      title='Create Your First QR campaign'
+      text="Start new QR campaign to distribute your tokens by choosing the method that best suits your needs:"
+      onClick={() => setShowPopup(true)}
+      buttontText='Proceed'
     />
   }
 
   return <Container>
+    {showPopup && <NewDispenser onClose={() => {
+      setShowPopup(false)
+    }}/>}
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>Dispenser QR code</WidgetTitleStyled>
@@ -80,17 +113,23 @@ const Dispensers: FC<ReduxType> = ({
           disabled={loading}
           size='extra-small'
           appearance='action'
-          to='/dispensers/new'
+          onClick={() => {
+            setShowPopup(true)
+          }}
         />
       </Header>
-      {notDynamicQrs.length > 0 && <DispensersListStyled>
+      {(dispensers.length > 0 || qrs.length > 0) && <DispensersListStyled>
         <BatchListLabel>Date created</BatchListLabel>
+        <BatchListLabel>QR Type</BatchListLabel>
         <BatchListLabel>Title</BatchListLabel>
-        <BatchListLabel>Start date (UTC+0)</BatchListLabel>
+        <BatchListLabel>Start date</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Scans</BatchListLabel>
+        <BatchListLabel>Claims</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
-        {notDynamicQrs.map(dispenser => {
+        
+        {dispensers.map(dispenser => {
           const {
             title,
             links_count,
@@ -102,7 +141,10 @@ const Dispensers: FC<ReduxType> = ({
             active,
             redirect_on,
             redirect_url,
-            timeframe_on
+            timeframe_on,
+            dynamic,
+            links_assigned,
+            links_claimed
           } = dispenser
 
           const currentStatus = defineDispenserStatus(
@@ -115,20 +157,33 @@ const Dispensers: FC<ReduxType> = ({
             timeframe_on
           )
           const dateCreatedFormatted = formatDate(created_at || '')
-          const timeCreatedFormatted = formatTime(created_at || '')
           const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
           const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
-          const claimStartTime = claimStartWithNoOffset.format('HH:mm:ss')
+          const redirectUrl = defineHref(
+            dispenser_id as string,
+            dynamic
+          )
           return <>
             <BatchListValue>
-              {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
-            </BatchListValue>
-            <DispensersListValueFixed>{title}</DispensersListValueFixed>
-            <BatchListValue>
-              {claimStartDate}, <SecondaryTextSpan>{claimStartTime}</SecondaryTextSpan>
+              {dateCreatedFormatted}
             </BatchListValue>
             <BatchListValue>
-              {links_count || 0}
+              {defineQRType(dynamic)}
+            </BatchListValue>
+            <DispensersListValueFixed>
+              {title}
+            </DispensersListValueFixed>
+            <BatchListValue>
+              {claimStartDate}
+            </BatchListValue>
+            <BatchListValue>
+              {links_count || '-'}
+            </BatchListValue>
+            <BatchListValue>
+              {links_assigned || '-'}
+            </BatchListValue>
+            <BatchListValue>
+              {links_claimed || '-'}
             </BatchListValue>
             <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
             <BatchListValueJustifySelfEnd>
@@ -136,15 +191,46 @@ const Dispensers: FC<ReduxType> = ({
                 appearance='additional'
                 size='extra-small'
                 title='Manage'
-                to={`/dispensers/${dispenser_id}`}
+                to={redirectUrl}
               />
             </BatchListValueJustifySelfEnd>
           </>
         })}
+        {qrs.map(qrSet => {
+          return <>
+            <BatchListValue>{qrSet.created_at && formatDate(qrSet.created_at)}</BatchListValue>
+            <BatchListValue>QR set</BatchListValue>
+            <DispensersListValueFixed>{qrSet.set_name}</DispensersListValueFixed>
+            <BatchListValue>-</BatchListValue>
+            <BatchListValue>
+              {qrSet.qr_quantity || '-'}
+            </BatchListValue>
+            <BatchListValue>
+              -
+            </BatchListValue>
+            <BatchListValue>
+              -
+            </BatchListValue>
+            <BatchListValue>
+              {defineQrSetStatus(qrSet.status)}
+              {/* {
+                (!qrSet.links_uploaded || !qrSet.campaign || !qrSet.campaign.campaign_id) ?
+                  '-' : shortenString((qrSet.campaign || {}).title)
+              } */}
+            </BatchListValue>
+            <BatchListValueJustifySelfEnd>
+              <Button
+                appearance='additional'
+                size='extra-small'
+                title='Manage'
+                to={`/qrs/${qrSet.set_id}`}
+              />
+            </BatchListValueJustifySelfEnd>
+          </>})
+        }
       </DispensersListStyled>}
-      
     </WidgetComponent>
   </Container>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(Dispensers)
+export default connect(mapStateToProps)(Dispensers)

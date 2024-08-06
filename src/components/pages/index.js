@@ -2,7 +2,6 @@ import Page from './page/index.tsx'
 import NotFound from './not-found/index.tsx'
 import Campaigns from './campaigns/index.tsx'
 import CampaignsDetails from './campaigns-details/index.tsx'
-import QRs from './qrs/index.tsx'
 import CampaignsCreateInitial from './campaigns-create-initial/index'
 import CampaignsCreateApprove from './campaigns-create-approve'
 import CampaignsCreateSecure from './campaigns-create-secure/index'
@@ -20,13 +19,9 @@ import CollectionsCreateInitial from './collections-create-initial'
 import Collection from './collection'
 import CollectionAddToken from './collection-add-token'
 import DynamicQRCreate from './dynamic-qr-create'
-import DynamicQRs from './dynamic-qrs'
-import QRManager from './qr-manager'
 
 export {
   Page,
-  DynamicQRs,
-  QRManager,
   DynamicQRCreate,
   Collection,
   CollectionAddToken,
@@ -39,7 +34,6 @@ export {
   CampaignsCreateApprove,
   CampaignsCreateSecure,
   CampaignsCreateGenerate,
-  QRs,
   CampaignsCreateNew,
   QR,
   QRDownload,

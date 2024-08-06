@@ -44,7 +44,7 @@ export const ContainerButton = styled(Button)`
 `
 
 export const DispensersListStyled = styled(BatchList)`
-  grid-template-columns: 224px 224px auto auto auto auto;
+  grid-template-columns: 120px 120px 200px auto auto auto auto auto auto;
   margin-top: 20px; 
 `
 
