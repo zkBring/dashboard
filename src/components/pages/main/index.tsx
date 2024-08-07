@@ -149,7 +149,7 @@ const defineAdditionalButton = (
   return <AdditionalButton
     onClick={onClick}
   >
-    Connect with Smart Wallet
+    Create Smart Wallet
   </AdditionalButton>
 
 }
