@@ -27,6 +27,7 @@ const initialState: CampaignState = {
   linksGenerateLoader: 0,
   expirationDate: initialExpirationDate,
   countriesWhitelist: [],
+  countriesWhitelistOn: false,
   preferredWalletOn: false,
   collectionId: null,
   collectionTokenId: null
@@ -41,6 +42,9 @@ export function newRetroDropReducer(
           return {...state, tokenAddress: action.payload.tokenAddress }
         case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST:
           return {...state, countriesWhitelist: action.payload.countriesWhitelist }
+
+        case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST_ON:
+          return {...state, countriesWhitelistOn: action.payload.countriesWhitelistOn }
 
         case Constants.CAMPAIGN_SET_COLLECTION_ID:
           return {...state, collectionId: action.payload.collectionId }

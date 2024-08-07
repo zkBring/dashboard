@@ -20,6 +20,7 @@ const secure = (
   walletApp: string,
   preferredWalletOn: boolean,
   availableСountries: TCountry[],
+  availableCountriesOn: boolean,
   expirationDate: number,
   callback?: () => void
 ) => {
@@ -136,6 +137,7 @@ const secure = (
         dispatch(campaignActions.setPreferredWalletOn(preferredWalletOn))
         dispatch(campaignActions.setSecured(true))
         dispatch(campaignActions.setCountriesWhitelist(availableСountries.map(country => country.id)))
+        dispatch(campaignActions.setCountriesWhitelistOn(availableCountriesOn))
         dispatch(campaignActions.setExpirationDate(expirationDate))
         dispatch(campaignActions.setNativeTokensPerLink(
           utils.parseEther(

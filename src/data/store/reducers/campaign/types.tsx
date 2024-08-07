@@ -31,6 +31,7 @@ export interface CampaignState {
     links: TLink[],
   }[]
   countriesWhitelist: string[]
+  countriesWhitelistOn: boolean
   preferredWalletOn: boolean
 
   // for own collections

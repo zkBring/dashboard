@@ -103,6 +103,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       walletApp: string,
       preferredWalletOn: boolean,
       availableCountries: TCountry[],
+      availableCountriesOn: boolean,
       expirationDate: number,
       callback: () => void
     ) => {
@@ -113,6 +114,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           walletApp,
           preferredWalletOn,
           availableCountries,
+          availableCountriesOn,
           expirationDate,
           callback
         )
@@ -150,7 +152,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   countriesList
 }) => {
   const { id } = useParams<TLinkParams>()
-
   // @ts-ignore
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
@@ -165,16 +166,20 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   const currentCampaignPreferredWalletOn = currentCampaign ? Boolean(currentCampaign.preferred_wallet_on) : false
   const expirationTime = momentNoOffsetGetTime()
+  const currentAvailableCountriesOn = currentCampaign ? Boolean(currentCampaign.available_countries_on) : false
 
   const allWallets = useMemo(() => {
     const options = wallets
       .filter(wallet => {
         if (!chainId) { return false }
         if (!sponsored && !wallet.available_for_not_sponsored) {return false }
-        return wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
+        const result = wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
+        return result
       })
     return options
   }, [chainId])
+
+
 
   const currentCampaignAvailableCountries = useMemo(() => {
     if (!currentCampaign) {
@@ -201,7 +206,12 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [])
 
-  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (REACT_APP_CLIENT === 'coinbase' ? 'coinbase_smart_wallet' : walletsOptions[0].value)
+
+  const currentCampaignWallet = currentCampaign ?
+    currentCampaign.wallet :
+    (REACT_APP_CLIENT === 'coinbase' ?
+      'coinbase_smart_wallet' :
+      walletsOptions[0].value)
 
   const [
     currentWallet,
@@ -224,6 +234,11 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   ] =  useState<boolean>(false)
 
   const [
+    enableAvailableCountries,
+    setEnableAvailableCountries
+  ] =  useState<boolean>(currentAvailableCountriesOn)
+
+  const [
     enablePreferredWalletOn,
     setEnablePreferredWalletOn
   ] =  useState<boolean>(currentCampaignPreferredWalletOn)
@@ -232,6 +247,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     addNativeTokens,
     setAddNativeTokens
   ] =  useState<boolean>(false)
+
 
   const [ hours, setHours ] = useState(expirationTime.hours)
   const [ minutes, setMinutes ] = useState(expirationTime.minutes)
@@ -264,7 +280,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           </WidgetTitleStyled>
           <ToggleStyled
             value={enablePreferredWalletOn}
-            disabled={loading}
+            disabled={loading || Boolean(currentCampaign)}
             onChange={((value) => {
               setEnablePreferredWalletOn(value)
             })}
@@ -273,15 +289,17 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         <WidgetSubtitle>
         Toggle this option to recommend a specific crypto wallet for users who don’t yet have one. If toggled off, the Coinbase Smart Wallet will be set as the default recommendation
         </WidgetSubtitle>
-        {enablePreferredWalletOn && <SelectStyled
-          options={walletsOptions}
-          title='Preferred wallet'
-          disabled={loading}
-          onChange={({ value }) => {
-            setCurrentWallet(value)
-          }}
-          value={walletsOptions.find(wallet => wallet.value === currentWallet)}
-        />}
+        {enablePreferredWalletOn && <InputsContainer>
+          <SelectStyled
+            options={walletsOptions}
+            title='Preferred wallet'
+            disabled={loading}
+            onChange={({ value }) => {
+              setCurrentWallet(value)
+            }}
+            value={walletsOptions.find(wallet => wallet.value === currentWallet)}
+          />
+        </InputsContainer>}
         
       </WidgetComponent>}
 
@@ -292,7 +310,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           </WidgetTitleStyled>
           <ToggleStyled
             value={enableExpirationDate}
-            disabled={loading}
+            disabled={loading || Boolean(currentCampaign)}
             onChange={((value) => {
               setEnableExpirationDate(value)
             })}
@@ -338,36 +356,45 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <WidgetTitleStyled>
             Countries whitelist
           </WidgetTitleStyled>
+          <ToggleStyled
+            value={enableAvailableCountries}
+            disabled={loading || Boolean(currentCampaign)}
+            onChange={((value) => {
+              setEnableAvailableCountries(value)
+            })}
+          />
         </Header>
         <WidgetSubtitle>
           If you want to make the campaign available only in certain countries, please add them to the list below
         </WidgetSubtitle>
-        <CountriesList
-          data={countries}
-          onRemove={(id) => {
-            setCountries(countries.filter(item => item.id !== id))
-          }}
-          disabled={Boolean(currentCampaign) || loading}
-        />
-        <InputsContainer>
-          <SelectStyled
-            onChange={async ({ value, label }) => {
-              const countryId = value
-              const countryAlreadyAdded = countries.find(country => country.id === countryId)
-              if (countryAlreadyAdded) {
-                return alertError(`Country ${countryId} was already added`)
-              }
-              setCountries([...countries, {
-                id: value,
-                name: label
-              }])
+        {enableAvailableCountries && <>
+          <CountriesList
+            data={countries}
+            onRemove={(id) => {
+              setCountries(countries.filter(item => item.id !== id))
             }}
-            value={null}
             disabled={Boolean(currentCampaign) || loading}
-            placeholder='Select Country'
-            options={defineSelectOptions(countriesList)}
           />
-        </InputsContainer>
+          <InputsContainer>
+            <SelectStyled
+              onChange={async ({ value, label }) => {
+                const countryId = value
+                const countryAlreadyAdded = countries.find(country => country.id === countryId)
+                if (countryAlreadyAdded) {
+                  return alertError(`Country ${countryId} was already added`)
+                }
+                setCountries([...countries, {
+                  id: value,
+                  name: label
+                }])
+              }}
+              value={null}
+              disabled={Boolean(currentCampaign) || loading}
+              placeholder='Select Country'
+              options={defineSelectOptions(countriesList)}
+            />
+          </InputsContainer>
+        </>}
       </WidgetComponent>
 
       {!sdk && <WidgetComponent>
@@ -418,6 +445,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             String(currentWallet),
             enablePreferredWalletOn,
             countries,
+            enableAvailableCountries,
             finalExpirationDate,
             () => history.push(redirectURL)
           )
