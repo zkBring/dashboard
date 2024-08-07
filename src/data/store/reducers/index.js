@@ -5,8 +5,10 @@ import campaigns from './campaigns/reducer'
 import qrs from './qrs/reducer'
 import dispensers from './dispensers/reducer'
 import collections from './collections/reducer'
+import qrManager from './collections/qr-manager'
 
 const reducers = {
+  qrManagerReducer: qrManager,
   userReducer: user,
   contractReducer: contract,
   campaignReducer: campaign,

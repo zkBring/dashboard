@@ -9,7 +9,7 @@ import {
 export type TProps = {
   pauseDispenser: (dispenser_id: string, callback?: () => void) => any
   unpauseDispenser: (dispenser_id: string, callback?: () => void) => any
-  addLinksToQR: (
+  addLinksToDispenser: (
     dispenserId: string,
     links: TLinkDecrypted[],
     encryptedMultiscanQREncCode: string,

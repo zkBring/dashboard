@@ -29,24 +29,138 @@ import {
   defineQRStatusName,
   shortenString
 } from 'helpers'
-import { TQRStatus } from 'types'
+import {
+  TQRStatus,
+  TQRManagerItem
+} from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
-  dispensers: { dispensers, loading },
   user: { address, chainId },
-  qrs: { qrs },
+  qrManager: {
+    loading, items
+  }
 }: RootState) => ({
   campaigns,
   address,
   chainId,
-  dispensers,
-  loading,
-  qrs
+  items,
+  loading
 })
+
+const createDispenserRow = (
+  qrManagerItem: TQRManagerItem
+) => {
+  const {
+    title,
+    links_count,
+    item_id,
+    claim_duration,
+    created_at,
+    claim_start,
+    claim_finish,
+    active,
+    redirect_on,
+    redirect_url,
+    timeframe_on,
+    dynamic,
+    links_assigned,
+    links_claimed
+  } = qrManagerItem
+
+  const currentStatus = defineDispenserStatus(
+    claim_start as number,
+    (claim_finish as number) || claim_start as number + (claim_duration || 1000000000000),
+    links_count || 0,
+    active,
+    redirect_on as boolean,
+    redirect_url,
+    timeframe_on
+  )
+  const dateCreatedFormatted = formatDate(created_at || '')
+  const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
+  const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
+  const redirectUrl = defineHref(
+    item_id as string,
+    dynamic
+  )
+  return <>
+    <BatchListValue>
+      {dateCreatedFormatted}
+    </BatchListValue>
+    <BatchListValue>
+      {defineQRType(dynamic)}
+    </BatchListValue>
+    <DispensersListValueFixed>
+      {title}
+    </DispensersListValueFixed>
+    <BatchListValue>
+      {claimStartDate}
+    </BatchListValue>
+    <BatchListValue>
+      {links_count || '0'}
+    </BatchListValue>
+    <BatchListValue>
+      {links_assigned || '0'}
+    </BatchListValue>
+    <BatchListValue>
+      {links_claimed || '0'}
+    </BatchListValue>
+    <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
+    <BatchListValueJustifySelfEnd>
+      <Button
+        appearance='additional'
+        size='extra-small'
+        title='Manage'
+        to={redirectUrl}
+      />
+    </BatchListValueJustifySelfEnd>
+  </>
+}
+
+const createQRSetRow = (
+  qrManagerItem: TQRManagerItem
+) => {
+  const {
+    title,
+    links_count,
+    item_id,
+    created_at,
+    status,
+    links_assigned,
+    links_claimed
+  } = qrManagerItem
+
+  return <>
+    <BatchListValue>{created_at && formatDate(created_at)}</BatchListValue>
+    <BatchListValue>QR set</BatchListValue>
+    <DispensersListValueFixed>{title}</DispensersListValueFixed>
+    <BatchListValue>-</BatchListValue>
+    <BatchListValue>
+      {links_count || '0'}
+    </BatchListValue>
+    <BatchListValue>
+      {links_assigned || '0'}
+    </BatchListValue>
+    <BatchListValue>
+      {links_claimed || '0'}
+    </BatchListValue>
+    <BatchListValue>
+      {defineQrSetStatus(status)}
+    </BatchListValue>
+    <BatchListValueJustifySelfEnd>
+      <Button
+        appearance='additional'
+        size='extra-small'
+        title='Manage'
+        to={`/qrs/${item_id}`}
+      />
+    </BatchListValueJustifySelfEnd>
+  </>
+}
 
 const defineQRType = (
   dynamic?: boolean,
@@ -81,8 +195,7 @@ const defineQrSetStatus = (
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 const Dispensers: FC<ReduxType> = ({
-  qrs,
-  dispensers,
+  items,
   loading
 }) => {
 
@@ -91,7 +204,7 @@ const Dispensers: FC<ReduxType> = ({
     setShowPopup
   ] = useState<boolean>(false)
 
-  if (dispensers.length === 0 && qrs.length === 0) {
+  if (items.length === 0) {
     return <InitialNote
       title='Create Your First QR campaign'
       text="Start new QR campaign to distribute your tokens by choosing the method that best suits your needs:"
@@ -106,7 +219,7 @@ const Dispensers: FC<ReduxType> = ({
     }}/>}
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>Dispenser QR code</WidgetTitleStyled>
+        <WidgetTitleStyled></WidgetTitleStyled>
         <ContainerButton
           title='+ New'
 
@@ -118,7 +231,7 @@ const Dispensers: FC<ReduxType> = ({
           }}
         />
       </Header>
-      {(dispensers.length > 0 || qrs.length > 0) && <DispensersListStyled>
+      {items.length > 0 && <DispensersListStyled>
         <BatchListLabel>Date created</BatchListLabel>
         <BatchListLabel>QR Type</BatchListLabel>
         <BatchListLabel>Title</BatchListLabel>
@@ -129,108 +242,25 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         
-        {dispensers.map(dispenser => {
+        {items.map(qrItem => {
           const {
-            title,
-            links_count,
-            dispenser_id,
-            claim_duration,
-            created_at,
-            claim_start,
-            claim_finish,
-            active,
-            redirect_on,
-            redirect_url,
-            timeframe_on,
-            dynamic,
-            links_assigned,
-            links_claimed
-          } = dispenser
+            type
+          } = qrItem
 
-          const currentStatus = defineDispenserStatus(
-            claim_start as number,
-            (claim_finish as number) || claim_start as number + (claim_duration || 1000000000000),
-            links_count || 0,
-            active,
-            redirect_on,
-            redirect_url,
-            timeframe_on
-          )
-          const dateCreatedFormatted = formatDate(created_at || '')
-          const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
-          const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
-          const redirectUrl = defineHref(
-            dispenser_id as string,
-            dynamic
-          )
-          return <>
-            <BatchListValue>
-              {dateCreatedFormatted}
-            </BatchListValue>
-            <BatchListValue>
-              {defineQRType(dynamic)}
-            </BatchListValue>
-            <DispensersListValueFixed>
-              {title}
-            </DispensersListValueFixed>
-            <BatchListValue>
-              {claimStartDate}
-            </BatchListValue>
-            <BatchListValue>
-              {links_count || '-'}
-            </BatchListValue>
-            <BatchListValue>
-              {links_assigned || '-'}
-            </BatchListValue>
-            <BatchListValue>
-              {links_claimed || '-'}
-            </BatchListValue>
-            <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
-            <BatchListValueJustifySelfEnd>
-              <Button
-                appearance='additional'
-                size='extra-small'
-                title='Manage'
-                to={redirectUrl}
-              />
-            </BatchListValueJustifySelfEnd>
-          </>
+          if (type === 'dispenser') {
+            return createDispenserRow(qrItem)
+          }
+
+          return createQRSetRow(qrItem)
         })}
-        {qrs.map(qrSet => {
-          return <>
-            <BatchListValue>{qrSet.created_at && formatDate(qrSet.created_at)}</BatchListValue>
-            <BatchListValue>QR set</BatchListValue>
-            <DispensersListValueFixed>{qrSet.set_name}</DispensersListValueFixed>
-            <BatchListValue>-</BatchListValue>
-            <BatchListValue>
-              {qrSet.qr_quantity || '-'}
-            </BatchListValue>
-            <BatchListValue>
-              -
-            </BatchListValue>
-            <BatchListValue>
-              -
-            </BatchListValue>
-            <BatchListValue>
-              {defineQrSetStatus(qrSet.status)}
-              {/* {
-                (!qrSet.links_uploaded || !qrSet.campaign || !qrSet.campaign.campaign_id) ?
-                  '-' : shortenString((qrSet.campaign || {}).title)
-              } */}
-            </BatchListValue>
-            <BatchListValueJustifySelfEnd>
-              <Button
-                appearance='additional'
-                size='extra-small'
-                title='Manage'
-                to={`/qrs/${qrSet.set_id}`}
-              />
-            </BatchListValueJustifySelfEnd>
-          </>})
-        }
       </DispensersListStyled>}
     </WidgetComponent>
   </Container>
 }
 
 export default connect(mapStateToProps)(Dispensers)
+
+
+// {qrs.map(qrSet => {
+  
+// }

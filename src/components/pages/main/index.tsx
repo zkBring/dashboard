@@ -133,7 +133,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
     case 'connect':
       {
         if (REACT_APP_CLIENT === 'coinbase') {
-          return 'Connect with Smart Wallet'
+          return 'Create Smart Wallet'
         }
         return 'Connect'
       }
@@ -261,34 +261,6 @@ const Main: FC<ReduxType> = ({
 
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
-  }
-
-  if (authorizationStep === 'no_injected_extension') {
-    return <ContainerCentered>
-      <ImageContainer src={Image} />
-      <Title>
-        Extension required
-      </Title>
-      <Contents>
-
-        <Text>
-          A browser web3 wallet is required to use the Dashboard
-        </Text>
-
-        <List>
-          <ListItem>Download <TextLink href='https://metamask.io/download/' target='_blank'>Metamask</TextLink></ListItem>
-          <ListItem>Return back to this page and click reload</ListItem>
-        </List>
-        
-      </Contents>
-      <WidgetButton
-        appearance='action'
-        onClick={() => {
-          window.location.reload()
-        }}
-        title='Reload page'
-      />
-    </ContainerCentered>
   }
 
   if (authorizationStep === 'wrong_network') {

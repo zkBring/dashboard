@@ -3,13 +3,14 @@ import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
 import { TQRItem, TLinkDecrypted, TQRSet } from 'types'
-import { qrsApi } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 import { sleep, alertError } from 'helpers'
-import { plausibleApi } from 'data/api'
+import { plausibleApi, qrManagerApi, qrsApi } from 'data/api'
+import * as qrManagerActions from '../../qr-manager/actions'
+import { QRManagerActions } from '../../qr-manager/types'
 
 const mapQRsWithLinksAction = ({
   setId,
@@ -23,7 +24,7 @@ const mapQRsWithLinksAction = ({
   callback?: () => void,
 }) => {
   return async (
-    dispatch: Dispatch<QRsActions>,
+    dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
     const { qrs: { qrs: qrSets }, user: { dashboardKey } } = getState()
@@ -58,6 +59,13 @@ const mapQRsWithLinksAction = ({
         })
         const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
         dispatch(actionsQR.updateQrs(qrs.data.qr_sets))
+
+        const qrManagerData = await qrManagerApi.get()
+        const { success, items } = qrManagerData.data
+        if (success) {
+          dispatch(qrManagerActions.setItems(items))
+        }
+
         callback && callback()
       }
       
