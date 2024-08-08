@@ -25,7 +25,11 @@ const AsidePopup: FC<TProps> = ({
   toggleAction,
   toggleState = false
 }) => {
-  return <Overlay>
+  return <Overlay onClick={(evt) => {
+    if (evt.target === evt.currentTarget) {
+      onClose()
+    }
+  }}>
     <Container className={className}>
       <Title>
         {title}
@@ -38,11 +42,11 @@ const AsidePopup: FC<TProps> = ({
       <Content>
         {children}
       </Content>
-      <Controls>
+      {action && <Controls>
         {note && <Note>{note}</Note>}
         <Button onClick={onClose}>Cancel</Button>
         <Button disabled={actionDisabled} appearance='action' onClick={action}>{actionTitle}</Button>
-      </Controls>
+      </Controls>}
     </Container>
   </Overlay>
   

@@ -3,24 +3,25 @@ import * as actionsDispenser from '../actions'
 import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
 import { TLinkDecrypted, TDispenser, TDispenserStatus } from 'types'
-import {  dispensersApi } from 'data/api'
+import {  dispensersApi, qrManagerApi, plausibleApi } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 import { sleep, alertError, defineIfLinksHasEqualContents } from 'helpers'
-import { plausibleApi } from 'data/api'
 import axios from 'axios'
+import * as qrManagerActions from '../../qr-manager/actions'
+import { QRManagerActions } from '../../qr-manager/types'
 
-const addLinksToQR = ({
-  dispenserId,
+const addLinksToDispenser = ({
+  itemId,
   encryptedMultiscanQREncCode,
   links,
   linksCount,
   currentStatus,
   callback
 }: {
-  dispenserId: string,
+  itemId: string,
   encryptedMultiscanQREncCode: string,
   links: TLinkDecrypted[],
   linksCount: number,
@@ -28,7 +29,7 @@ const addLinksToQR = ({
   callback?: () => void,
 }) => {
   return async (
-    dispatch: Dispatch<DispensersActions>,
+    dispatch: Dispatch<DispensersActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
     const { user: { dashboardKey, address } } = getState()
@@ -56,7 +57,7 @@ const addLinksToQR = ({
       )
       const apiMethod = linksCount > 0 && currentStatus === 'ACTIVE' ? dispensersApi.updateLinks : dispensersApi.mapLinks
       const linksHasEqualContents = defineIfLinksHasEqualContents(links)
-      const result = await apiMethod(dispenserId, qrArrayMapped, linksHasEqualContents)
+      const result = await apiMethod(itemId, qrArrayMapped, linksHasEqualContents)
       
       if (result.data.success) {
         plausibleApi.invokeEvent({
@@ -64,11 +65,18 @@ const addLinksToQR = ({
           data: {
             success: 'yes',
             address,
-            dispenserId
+            itemId
           }
         })
         const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
         dispatch(actionsDispenser.setDispensers(result.data.dispensers))
+
+        const qrManagerData = await qrManagerApi.get()
+        const { success, items } = qrManagerData.data
+        if (success) {
+          dispatch(qrManagerActions.setItems(items))
+        }
+      
         callback && callback()
       }
       
@@ -78,7 +86,7 @@ const addLinksToQR = ({
           data: {
             success: 'no',
             address,
-            dispenserId
+            itemId
           }
         })
         alertError('Couldn’t connect links to QRs, please try again')
@@ -90,7 +98,7 @@ const addLinksToQR = ({
         data: {
           success: 'no',
           address,
-          dispenserId
+          itemId
         }
       })
       if (axios.isAxiosError(err)) {
@@ -109,4 +117,4 @@ const addLinksToQR = ({
   }
 }
 
-export default addLinksToQR
+export default addLinksToDispenser

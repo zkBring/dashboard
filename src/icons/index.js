@@ -52,6 +52,7 @@ import { ReactComponent as MessagesIcon } from './messages-icon.svg'
 import { ReactComponent as CodeIcon } from './code-icon.svg'
 import { ReactComponent as DynamicQRIcon } from './dynamic-qr-icon.svg'
 import { ReactComponent as ExpandRightIcon } from './expand-right-icon.svg'
+import { ReactComponent as ArrowRightIcon } from './arrow-right-icon.svg'
 
 import { ReactComponent as DispenserQRIcon } from './dispenser-qr-icon.svg'
 import { ReactComponent as ClaimLinksIcon } from './claim-links-icon.svg'
@@ -107,6 +108,7 @@ const Icons = {
   PauseIcon,
   OptionsIcon,
   PolygonIcon,
+  ArrowRightIcon,
   AttentionIcon,
   ApprovedIcon,
   UploadFileIcon,

@@ -64,15 +64,17 @@ const mapStateToProps = ({
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     
-    addLinksToQR: (
-      dispenserId: string,
+    addLinksToDispenser: (
+      itemId: string,
       links: TLinkDecrypted[],
       encryptedMultiscanQREncCode: string,
       linksCount: number,
       currentStatus: TDispenserStatus,
       callback?: () => void,
-    ) => dispatch(asyncDispensersActions.addLinksToQR({
-      dispenserId,
+
+    // @ts-ignore
+    ) => dispatch(asyncDispensersActions.addLinksToDispenser({
+      itemId,
       links,
       encryptedMultiscanQREncCode,
       linksCount,
@@ -299,7 +301,7 @@ const Dispenser: FC<ReduxType> = ({
   dispensers,
   loading,
   mappingLoader,
-  addLinksToQR,
+  addLinksToDispenser,
   dashboardKey,
   address,
   downloadQR,
@@ -504,7 +506,7 @@ const Dispenser: FC<ReduxType> = ({
         mappingLoader={mappingLoader}
         encryptedMultiscanQREncCode={encrypted_multiscan_qr_enc_code}
         linksCount={links_count || 0}
-        addLinksToQR={addLinksToQR}
+        addLinksToDispenser={addLinksToDispenser}
         // not available
         campaignData={currentDispenserData.campaign}
       />

@@ -5,7 +5,7 @@ export type TProps = {
   children?: React.ReactNode
   note?: string
   onClose: () => void
-  action: () => void
+  action?: () => void
   actionTitle?: string
   toggleAction?: (value: boolean) => void
   toggleState?: boolean
