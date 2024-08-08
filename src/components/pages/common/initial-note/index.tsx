@@ -27,13 +27,17 @@ const InitialNote: FC<TProps> = ({
     <Text>
       {text}
     </Text>
-    <ButtonStyled
+    {href ? <ButtonStyled
       to={href}
+      appearance='action'
+    >
+      {buttontText}
+    </ButtonStyled> : <ButtonStyled
       onClick={onClick}
       appearance='action'
     >
       {buttontText}
-    </ButtonStyled>
+    </ButtonStyled>}
   </Container>
 }
 

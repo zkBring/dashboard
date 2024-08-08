@@ -151,7 +151,6 @@ const defineAdditionalButton = (
   >
     Create Smart Wallet
   </AdditionalButton>
-
 }
 
 const defineButtonTitle = (
