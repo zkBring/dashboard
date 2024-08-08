@@ -12,6 +12,8 @@ import {
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { Remote } from 'comlink';
 import { plausibleApi } from 'data/api'
+import * as qrManagerActions from '../../qr-manager/actions'
+import { QRManagerActions } from '../../qr-manager/types'
 
 const updateQRSetQuantity = ({
   setId,
@@ -23,10 +25,21 @@ const updateQRSetQuantity = ({
   callback?: () => void,
 }) => {
   return async (
-    dispatch: Dispatch<QRsActions>,
+    dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { qrs: { qrs }, user: { dashboardKey, workersCount } } = getState()
+    const {
+      qrs: {
+        qrs
+      },
+      user: {
+        dashboardKey,
+        workersCount
+      },
+      qrManager: {
+        items
+      }
+    } = getState()
     try {
       const start = +(new Date())
       let currentPercentage = 0
@@ -72,8 +85,19 @@ const updateQRSetQuantity = ({
           }
           return item
         })
+        const qrManagerItemsUpdated = items.map(item => {
+          if (item.item_id === setId) { 
+            return {
+              ...item,
+              links_count: quantity
+            }
+          }
+          return item
+        })
         dispatch(actionsQR.setUploadLoader(0))
         dispatch(actionsQR.updateQrs(qrsUpdated))
+        dispatch(qrManagerActions.setItems(qrManagerItemsUpdated))
+
         callback && callback()
       }
     } catch (err) {

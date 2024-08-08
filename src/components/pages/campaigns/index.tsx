@@ -17,7 +17,8 @@ import {
   WidgetComponentStyled,
   TagStyled,
   BatchListLabelTextAlignRight,
-  BatchListValueJustifySelfEnd
+  BatchListValueJustifySelfEnd,
+  Buttons
 } from './styled-components'
 import {
   BatchListLabel,
@@ -32,8 +33,10 @@ import {
   shortenString,
   defineExplorerUrl
 } from 'helpers'
+import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
+import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
 
 const defineCampaignStatus = (
   draft: boolean,
@@ -90,6 +93,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           callback
         )
       )
+    },
+    deleteDraft: (
+      id: string
+    ) => {
+      dispatch(
+        campaignsAsyncActions.removeCampaignFromDrafts(
+          id
+        )
+      )
     }
   }
 }
@@ -103,6 +115,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   loading,
   drafts,
   chainId,
+  deleteDraft,
   openDraft
 }) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
@@ -111,11 +124,12 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
 
   const history = useHistory()
 
+  // @ts-ignore
   const currentAddressDrafts = drafts.filter(draft => {
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
   })
 
-  if (currentAddressCampaigns.length === 0 && currentAddressCampaigns.length === 0) {
+  if (currentAddressCampaigns.length === 0 && currentAddressDrafts.length === 0) {
     return <InitialNote
       title='Create Your First Campaign'
       text="Your campaigns will be displayed here once created. You don't have any campaigns yet"
@@ -222,24 +236,38 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
             </TextLink>
           </BatchListValue>
           <BatchListValue>
-            <ButtonStyled
-              appearance='additional'
-              size='extra-small'
-              onClick={() => {
-                const url = defineDraftUrl(
-                  step,
-                  campaignData.tokenStandard as TTokenType
-                )
+            <Buttons>
+              <ButtonStyled
+                appearance='additional'
+                size='extra-small'
+                onClick={() => {
+                  const url = defineDraftUrl(
+                    step,
+                    campaignData.tokenStandard as TTokenType
+                  )
 
 
-                openDraft(
-                  String(id),
-                  () => history.push(url)
-                )
-              }}
-            >
-              Continue
-            </ButtonStyled>
+                  openDraft(
+                    String(id),
+                    () => history.push(url)
+                  )
+                }}
+              >
+                Continue
+              </ButtonStyled>
+
+              <ButtonStyled
+                appearance='additional'
+                size='extra-small'
+                onClick={() => {
+                  deleteDraft(id as string)
+                }}
+              >
+                <Icons.TrashIcon />
+              </ButtonStyled>
+            </Buttons>
+            
+
           </BatchListValue>
         </>})}
       </DraftsListStyled>
