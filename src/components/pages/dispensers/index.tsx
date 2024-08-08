@@ -204,19 +204,31 @@ const Dispensers: FC<ReduxType> = ({
     setShowPopup
   ] = useState<boolean>(false)
 
+
   if (items.length === 0) {
-    return <InitialNote
-      title='Create Your First QR campaign'
-      text="Start new QR campaign to distribute your tokens by choosing the method that best suits your needs:"
-      onClick={() => setShowPopup(true)}
-      buttontText='Proceed'
-    />
+    return <>
+      <InitialNote
+        title='Create Your First QR campaign'
+        text="Start new QR campaign to distribute your tokens by choosing the method that best suits your needs:"
+        onClick={() => {
+          setShowPopup(true)
+        }}
+        buttontText='New QR Campaign'
+      />
+      {showPopup && <NewDispenser
+        onClose={() => {
+          setShowPopup(false)
+        }}
+      />}
+    </>
   }
 
   return <Container>
-    {showPopup && <NewDispenser onClose={() => {
-      setShowPopup(false)
-    }}/>}
+    {showPopup && <NewDispenser
+      onClose={() => {
+        setShowPopup(false)
+      }}
+    />}
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled></WidgetTitleStyled>
