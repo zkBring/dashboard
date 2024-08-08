@@ -118,10 +118,11 @@ export const ExpandButton = styled.div<{
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transform: rotate(180deg);
   transition: transform .3s;
 
   ${props => props.expanded && css`
-    transform: rotate(180deg);
+    transform: rotate(0deg);
   `}
 
   ${props => props.disabled && css`

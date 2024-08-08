@@ -5,6 +5,8 @@ import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
 import { alertError } from 'helpers'
 import { plausibleApi } from 'data/api'
+import * as qrManagerActions from '../../qr-manager/actions'
+import { QRManagerActions } from '../../qr-manager/types'
 
 type TUpdateStatusArgs = {
   dispenser_id: string
@@ -18,10 +20,20 @@ const updateStatus = ({
   callback
 }: TUpdateStatusArgs) => {
   return async (
-    dispatch: Dispatch<DispensersActions>,
+    dispatch: Dispatch<DispensersActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { user: { address }, dispensers: { dispensers } } = getState()
+    const {
+      user: {
+        address
+      },
+      dispensers: {
+        dispensers
+      },
+      qrManager: {
+        items
+      }
+    } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
 
@@ -33,6 +45,14 @@ const updateStatus = ({
           }
           return item
         })
+
+        const qrManagerItemsUpdated = items.map(item => {
+          if (item.item_id === dispenser_id) { 
+            return { ...item, active }
+          }
+          return item
+        })
+
         plausibleApi.invokeEvent({
           eventName: 'multiqr_update_status',
           data: {
@@ -43,6 +63,8 @@ const updateStatus = ({
           }
         })
         dispatch(actionsDispensers.setDispensers(dispensersUpdated))
+        dispatch(qrManagerActions.setItems(items))
+
         if (callback) { callback() }
       } else {
         plausibleApi.invokeEvent({

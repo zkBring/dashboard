@@ -1,9 +1,9 @@
 import { FC, useEffect } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import {
-  WidgetSubtitle,
-  ButtonsContainer
+  WidgetSubtitle
 } from 'components/pages/common'
+
 import {
   MainContent,
   WidgetComponentStyled,
@@ -11,6 +11,7 @@ import {
   TokenItem,
   ContainerStyled,
   Header,
+  LoaderStyled,
   WidgetTitleStyled,
   ContainerButton
 } from './styled-components'
@@ -55,7 +56,9 @@ const renderTokens = (
   tokens?: TCollectionToken[]
 ) => {
   if (loading) {
-    return  <WidgetSubtitle>Loading</WidgetSubtitle>
+    return <WidgetSubtitle>
+      <LoaderStyled />
+    </WidgetSubtitle>
   }
 
   if (!tokens || tokens.length === 0) {

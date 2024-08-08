@@ -104,3 +104,9 @@ export const WidgetButton = styled(Button)`
   padding: 4px 50px;
   width: 100%;
 `
+
+export const Buttons = styled.div`
+
+  display: flex;
+  gap: 8px;
+`

@@ -4,7 +4,11 @@ import {
   WidgetTitle,
   Container
 } from 'components/pages/common'
-import { Button } from 'components/common'
+import { Button, Loader } from 'components/common'
+
+export const LoaderStyled = styled(Loader)`
+  margin: 0 auto;
+`
 
 export const ContainerStyled = styled(Container)`
   display: grid;
