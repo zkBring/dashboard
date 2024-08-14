@@ -31,6 +31,9 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
 import { nonceApi, dashboardKeyApi } from 'data/api'
 import { defineSystem } from 'helpers'
+
+type TCoinbaseInstance = 'coinbase_extension' | 'coinbase_smart_wallet' | false
+
 const {
   REACT_APP_CHAINS,
   REACT_APP_TESTNETS_URL,
@@ -66,7 +69,7 @@ const defineTitle = (
 
 const defineText = (
   authorizationStep: TAuthorizationStep,
-  isCoinbase: boolean
+  coinbaseInstance: TCoinbaseInstance
 ) => {
   switch (authorizationStep) {
     case 'connect':
@@ -75,7 +78,7 @@ const defineText = (
       return 'Sign a message in your wallet to log in securely to Linkdrop Dashboard'
     case 'store-key':
     default: {
-      if (isCoinbase) {
+      if (coinbaseInstance === 'coinbase_smart_wallet') {
         return 'Create a passkey for Linkdrop Dashboard to store your data securely and encrypted'
       }
       return 'Sign a message in your wallet to store your data securely and encrypted'
@@ -184,33 +187,33 @@ const defineButtonTitle = (
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const defineDashboardName = () => {
-  if (REACT_APP_CHAINS === '[5,80001,84531]') {
+  if (REACT_APP_CHAINS === '[]') {
     return 'Testnets Dashboard'
   }
-  if (REACT_APP_CHAINS === '[1,137,8453]') {
+  if (REACT_APP_CHAINS === '[1,137,8453,13371]') {
     return 'Mainnets Dashboard'
   }
   return 'Development Dashboard'
 }
 
 const defineSwitchNetworkText = () => {
-  if (REACT_APP_CHAINS === '[5,80001,84531]') {
-    return <Text>Please switch the network to <TextBold>Goerli</TextBold>, <TextBold>Mumbai</TextBold> or <TextBold>BaseGoerli</TextBold> to continue</Text>
+  if (REACT_APP_CHAINS === '[]') {
+    return <Text>Please switch the network to <TextBold>NOT AVAILABLE</TextBold> to continue</Text>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453]') {
-    return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold> or <TextBold>Base</TextBold> to continue</Text>
+  if (REACT_APP_CHAINS === '[1,137,8453,13371]') {
+    return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold> or <TextBold>Immutable zkEVM</TextBold>, to continue</Text>
   }
-  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>Goerli</TextBold>, <TextBold>Mumbai</TextBold> or <TextBold>BaseGoerli</TextBold>, to continue</Text>  
+  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold> or <TextBold>Immutable zkEVM</TextBold>, to continue</Text>
 }
 
 const defineRedirectButton = () => {
   if (!REACT_APP_CHAINS) { return null }
-  if (REACT_APP_CHAINS === '[5,80001,84531]') {
+  if (REACT_APP_CHAINS === '[]') {
     return <WidgetButton appearance='action' href={REACT_APP_MAINNETS_URL}>
       Switch to Main Dashboard
     </WidgetButton>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453]') {
+  if (REACT_APP_CHAINS === '[1,137,8453,13371]') {
     return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
       Switch to Testnet Dashboard
     </WidgetButton>
@@ -233,7 +236,16 @@ const createSigMessage = (
     statement,
     nonce
   })
-
+}
+const defineCoinbaseInstance = (
+  connector?: any
+) => {
+  if (window.ethereum.isCoinbaseWallet) {
+    return 'coinbase_extension'
+  } else if (connector && connector.id === 'coinbaseWalletSDK') {
+    return 'coinbase_smart_wallet'
+  }
+  return false
 }
 
 const Main: FC<ReduxType> = ({
@@ -253,10 +265,12 @@ const Main: FC<ReduxType> = ({
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
-  const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
+  const coinbaseInstance: TCoinbaseInstance = defineCoinbaseInstance(connector)
   const system = defineSystem()
+
+
   const title = defineTitle(authorizationStep)
-  const text = defineText(authorizationStep, isCoinbase)
+  const text = defineText(authorizationStep, coinbaseInstance)
   useEffect(() => {
     initialLoad()
   }, [])
@@ -277,8 +291,6 @@ const Main: FC<ReduxType> = ({
       chainsAvailable
     )
   }, [connectorAddress, signer, connectorChainID, connector, authorizationStep])
-
-
 
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
@@ -379,7 +391,7 @@ const Main: FC<ReduxType> = ({
           return getDashboardKey(
             sig_message,
             key_id,
-            isCoinbase,
+            coinbaseInstance === 'coinbase_smart_wallet',
             encrypted_key
           )
         }
@@ -405,4 +417,5 @@ const Main: FC<ReduxType> = ({
   </ContainerCentered>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Main)

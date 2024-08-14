@@ -1,5 +1,11 @@
 # Linkdrop Dashboard
 
+## 2.1.36
+- UI updates
+- immutable zkevm network support
+- new SDK version
+- bug fix for login with coinbase extension
+
 ## 2.1.35
 - new UI for Collections page
 - updates for wallet options

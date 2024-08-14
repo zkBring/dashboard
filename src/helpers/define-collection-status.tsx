@@ -1,26 +1,25 @@
 import {
-  TCollectionToken,
   TCollectionStatus
 } from 'types'
 
 const defineCollectionStatus: (
   loading: boolean,
-  tokens?: number,
-  campaign_id?: null | string 
+  links_count: number,
+  tokens_count?: number,
 ) => TCollectionStatus = (
   loading,
-  tokens,
-  campaign_id
+  links_count,
+  tokens_count
 ) => {
   if (loading) {
     return 'LOADING'
   }
 
-  if (tokens === 0) {
+  if (!tokens_count) {
     return 'ADD_TOKENS'
   }
 
-  if (!campaign_id) {
+  if (!links_count) {
     return 'CREATE_LINKS'
   }
 

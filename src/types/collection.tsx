@@ -1,4 +1,3 @@
-import TClaimPattern from "./claim-pattern"
 import TTokenType from "./token-type"
 
 export type TCollectionToken = {
@@ -23,6 +22,8 @@ export type TCollection = {
   token_address?: string
   tokens?: TCollectionToken[]
   tokens_amount?: string
+  links_count?: number
+  links_claimed?: number
   chain_id: String
   campaign_id?: null | string
 }

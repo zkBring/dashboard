@@ -30,6 +30,10 @@ const getContracts = () => {
       if (chainConfig && chainConfig.alchemySupport) {
         const network = defineAlchemyNetwork(chainId)
 
+        if (!network) {
+          return alert('NO SUPPORT FOR CHAIN')
+        }
+
         const alchemy = new Alchemy({
           apiKey: REACT_APP_ALCHEMY_API_KEY,
           network

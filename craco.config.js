@@ -9,7 +9,19 @@ module.exports = {
       new webpack.ProvidePlugin({
         process: 'process/browser',
       })
-    ]
+    ],
+    configure: {
+      module: {
+        rules: [
+          {
+            test: /\.m?js$/,
+            resolve: {
+                fullySpecified: false,
+            },
+          },
+        ],
+      },
+  } ,
   },
   configure: (webpackConfig) => {
     return {

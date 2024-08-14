@@ -98,6 +98,8 @@ const Collection: FC<ReduxType> = ({
   address
 }) => {
   const { collection_id } = useParams<{collection_id: string}>()
+
+  // @ts-ignore
   const collection: TCollection | undefined = collections.find(collection => String(collection.collection_id) === collection_id)
 
   useEffect(() => {
@@ -117,7 +119,10 @@ const Collection: FC<ReduxType> = ({
     tokens,
     thumbnail,
     title,
-    campaign_id
+    campaign_id,
+    links_claimed,
+    links_count,
+    tokens_amount
   } = collection
 
 
@@ -151,8 +156,8 @@ const Collection: FC<ReduxType> = ({
       <Status
         status={defineCollectionStatus(
           loading,
-          tokens ? tokens.length : 0,
-          campaign_id
+          links_count || 0,
+          tokens_amount ? Number(tokens_amount) : 0
         )}
       />
       <CollectionDetails
@@ -169,4 +174,5 @@ const Collection: FC<ReduxType> = ({
   </ContainerStyled>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Collection)
