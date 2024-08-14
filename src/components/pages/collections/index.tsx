@@ -21,7 +21,6 @@ import {
 import {
   formatDate,
   formatTime,
-  defineCollectionQuantityTag,
   defineCollectionStatusTag,
   defineCollectionStatus
 } from 'helpers'
@@ -31,23 +30,6 @@ import {
 } from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-
-const defineStatus: (
-  status: TCollectionStatus
-) => TStatus = (status: TCollectionStatus) => {
-  switch (status) {
-    case 'ACTIVE':
-      return 'success'
-    case 'ADD_TOKENS':
-      return 'default'
-    case 'CREATE_LINKS':
-      return 'info'
-    case 'LOADING':
-      return 'info'
-    default:
-      return 'info'
-  }
-}
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -98,9 +80,12 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabel>Created</BatchListLabel>
         <BatchListLabel>Name</BatchListLabel>
         <BatchListLabel>Symbol</BatchListLabel>
-        <BatchListLabel>Quantity</BatchListLabel>
+        <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Claims</BatchListLabel>
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
+
+        {/* @ts-ignore */}
         {collections.map(collection => {
           const {
             title,
@@ -110,12 +95,14 @@ const Collections: FC<ReduxType> = ({
             token_address,
             thumbnail,
             symbol,
-            campaign_id
+            campaign_id,
+            links_claimed,
+            links_count
           } = collection
           const status = defineCollectionStatus(
             false,
-            Number(tokens_amount),
-            campaign_id
+            Number(links_count),
+            Number(tokens_amount)
           )
           const statusTag = defineCollectionStatusTag(status)
           const dateCreatedFormatted = formatDate(created_at || '')
@@ -133,7 +120,10 @@ const Collections: FC<ReduxType> = ({
               {symbol}
             </BatchListValue>
             <BatchListValue>
-              {defineCollectionQuantityTag(tokens_amount || '0')}
+              {links_count}
+            </BatchListValue>
+            <BatchListValue>
+              {links_claimed}
             </BatchListValue>
             <BatchListValue>
               {statusTag}
@@ -154,4 +144,5 @@ const Collections: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Collections)
