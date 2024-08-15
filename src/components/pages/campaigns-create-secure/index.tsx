@@ -43,7 +43,8 @@ import {
   momentNoOffsetWithTimeUpdate,
   defineNativeTokenSymbol,
   countNativeTokensToSecure,
-  alertError
+  alertError,
+  defineIfWalletIsAvailableForClient
 } from 'helpers'
 import { BigNumber } from 'ethers'
 
@@ -171,12 +172,18 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
       .filter(wallet => {
         if (!chainId) { return false }
         if (!sponsored && !wallet.available_for_not_sponsored) {return false }
+        const isAvailableForClient = defineIfWalletIsAvailableForClient(
+          wallet
+        )
+        if (!isAvailableForClient) {
+          return false
+        }
+        // @ts-ignore
         const result = wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
         return result
       })
     return options
   }, [chainId])
-
 
 
   const currentCampaignAvailableCountries = useMemo(() => {
@@ -519,4 +526,5 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateSecure)
