@@ -27,14 +27,16 @@ const wallets: TWallet[] = [
     name: 'Coinbase Smart Wallet',
     chains: ['1', '137', '8453', '13371'],
     token_types: ['ERC1155', 'ERC20', 'ERC721'],
-    available_for_not_sponsored: true
+    available_for_not_sponsored: true,
+    available_for_client: ['coinbase']
   },
   {
     id: 'coinbase_wallet',
     name: 'Coinbase Mobile App (direct deeplink)',
     chains: ['1', '137', '8453', '13371'],
     token_types: ['ERC1155', 'ERC20', 'ERC721'],
-    available_for_not_sponsored: true
+    available_for_not_sponsored: true,
+    available_for_client: ['coinbase']
   },
   {
     id: 'imtoken',

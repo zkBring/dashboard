@@ -86,11 +86,13 @@ import truncate from './truncate'
 import defineWagmiNetwork from './define-wagmi-network'
 import getNextDayData from './get-next-day-data'
 import buf2hex from '../helpers/buffer-to-hex'
+import defineIfWalletIsAvailableForClient from './define-if-wallet-is-available-for-client'
 
 export {
   buf2hex,
   defineThirdwebNetworkName,
   defineCollectionQuantityTag,
+  defineIfWalletIsAvailableForClient,
   defineCollectionStatusName,
   getNextDayData,
   defineUrlSchema,
