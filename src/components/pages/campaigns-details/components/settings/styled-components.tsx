@@ -14,7 +14,11 @@ export const TableValueStyled = styled(TableValue)`
 `
 
 export const ButtonStyled = styled(Button)`
-  
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
 `
 
 export const TableTextStyled = styled(TableText)`
