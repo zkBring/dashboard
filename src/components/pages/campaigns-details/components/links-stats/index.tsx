@@ -20,7 +20,7 @@ const LinksStats: FC<TProps> = ({
       <Value>{linksAmount}</Value>
     </WidgetComponent>
      <WidgetComponent>
-      <Subtitle>Claimed</Subtitle>
+      <Subtitle>Claims</Subtitle>
       <Value>{sponsored ? linksClaimed : 'N/A'}</Value>
     </WidgetComponent>
   </Container>

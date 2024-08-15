@@ -245,8 +245,8 @@ const defineSubtitle = (
   dynamic: boolean
 ) => {
   return dynamic ? 
-    'Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe' :
-    'Linkdrop Dispenser is represented by a single link that you can share for multiple users to scan-to-claim an unique token'
+    'Linkdrop Dispenser QR is represented by a single QR code that dispenses tokens one-by-one to users after they scan it' :
+    'Linkdrop Dynamic QR is represented by a single QR code that updates in real time, preventing a single user from claiming all tokens'
 }
 
 
