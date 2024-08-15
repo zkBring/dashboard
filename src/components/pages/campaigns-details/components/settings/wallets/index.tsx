@@ -10,6 +10,9 @@ import {
 import {
   SelectStyled
 } from './styled-components'
+import {
+  defineIfWalletIsAvailableForClient
+} from 'helpers'
 import wallets from 'configs/wallets'
 
 const Wallets: FC<TProps> = ({
@@ -36,7 +39,13 @@ const Wallets: FC<TProps> = ({
     const options = wallets
       .filter(wallet => {
         if (!chainId) { return false }
-        if (!sponsored && !wallet.available_for_not_sponsored) {return false }
+        if (!sponsored && !wallet.available_for_not_sponsored) { return false }
+        const isAvailableForClient = defineIfWalletIsAvailableForClient(
+          wallet
+        )
+        if (!isAvailableForClient) {
+          return false
+        }
         return wallet.chains.includes(String(chainId)) && wallet.token_types.includes(tokenType)
       })
     return options
