@@ -8,7 +8,6 @@ import { dashboardKeyApi, plausibleApi } from 'data/api'
 import { sleep, defineNetworkName, alertError } from 'helpers'
 import retrieveDashboardKeyWithPass from './retrieve-dashboard-key-with-pass'
 import createDashboardKeyWithPass from './create-dashboard-key-with-pass'
-
 import retrieveDashboardKey from './retrieve-dashboard-key'
 import createDashboardKey from './create-dashboard-key'
 import {
@@ -20,7 +19,7 @@ import {
 const getDashboardKey = (
   message: string,
   key_id: string,
-  is_coinbase: boolean,
+  is_coinbase_smart_wallet: boolean,
   encrypted_key?: string
 ) => {
   // @ts-ignore
@@ -31,7 +30,6 @@ const getDashboardKey = (
     const {
       user: {
         chainId,
-        signer,
         address,
         provider
       }
@@ -44,7 +42,7 @@ const getDashboardKey = (
         // register
         
         let result
-        if (is_coinbase) {
+        if (is_coinbase_smart_wallet) {
           result = await createDashboardKeyWithPass(
             message,
             address,
@@ -80,7 +78,7 @@ const getDashboardKey = (
         }
       } else {
         let decrypted_dashboard_key
-        if (is_coinbase) {
+        if (is_coinbase_smart_wallet) {
           decrypted_dashboard_key = await retrieveDashboardKeyWithPass(
             encrypted_key,
             message,

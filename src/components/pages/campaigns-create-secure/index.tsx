@@ -47,8 +47,6 @@ import {
 } from 'helpers'
 import { BigNumber } from 'ethers'
 
-const { REACT_APP_CLIENT } = process.env
-
 const mapStateToProps = ({
   user: {
     chainId,
@@ -206,12 +204,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
     return options
   }, [])
 
-
-  const currentCampaignWallet = currentCampaign ?
-    currentCampaign.wallet :
-    (REACT_APP_CLIENT === 'coinbase' ?
-      'coinbase_smart_wallet' :
-      walletsOptions[0].value)
+  const currentCampaignWallet = currentCampaign ? currentCampaign.wallet : (walletsOptions[0] || {}).value
 
   const [
     currentWallet,
@@ -273,7 +266,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   return <Container>
     <WidgetContainer>
-      {REACT_APP_CLIENT !== 'coinbase' && <WidgetComponent>
+      <WidgetComponent>
         <Header>
           <WidgetTitleStyled>
             Recommended wallet for new users
@@ -301,7 +294,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           />
         </InputsContainer>}
         
-      </WidgetComponent>}
+      </WidgetComponent>
 
       <WidgetComponent>
         <Header>

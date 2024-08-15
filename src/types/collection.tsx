@@ -25,7 +25,6 @@ export type TCollection = {
   links_count?: number
   links_claimed?: number
   chain_id: String
-  campaign_id?: null | string
 }
 
 export type TCollectionStatus = 

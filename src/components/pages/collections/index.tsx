@@ -24,10 +24,6 @@ import {
   defineCollectionStatusTag,
   defineCollectionStatus
 } from 'helpers'
-import {
-  TCollectionStatus,
-  TStatus
-} from 'types'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 
@@ -95,7 +91,6 @@ const Collections: FC<ReduxType> = ({
             token_address,
             thumbnail,
             symbol,
-            campaign_id,
             links_claimed,
             links_count
           } = collection
