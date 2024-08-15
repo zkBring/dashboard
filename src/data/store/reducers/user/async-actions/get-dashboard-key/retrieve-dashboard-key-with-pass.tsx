@@ -12,8 +12,7 @@ const retrieveDashboardKeyWithPass: (
 ) => Promise<string | void> = async (
   encrypted_dashboard_key,
   sig_message,
-  account,
-  chain_id
+  account
 ) => {
   try {
 

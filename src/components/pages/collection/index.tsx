@@ -22,7 +22,6 @@ import {
 } from 'react-router-dom'
 import {
   TCollection,
-  TCollectionStatus,
   TCollectionToken
 } from 'types'
 import {
@@ -119,8 +118,6 @@ const Collection: FC<ReduxType> = ({
     tokens,
     thumbnail,
     title,
-    campaign_id,
-    links_claimed,
     links_count,
     tokens_amount
   } = collection

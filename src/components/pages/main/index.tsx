@@ -6,8 +6,6 @@ import {
   ImageContainer,
   Contents,
   Text,
-  List,
-  ListItem,
   TextBold,
   AdditionalButton
 } from './styled-components'
@@ -22,7 +20,6 @@ import { Dispatch } from 'redux'
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import { UserActions } from 'data/store/reducers/user/types'
 import { Redirect } from 'react-router-dom'
-import Icons from 'icons'
 import { TAuthorizationStep, TSystem } from 'types'
 import { IAppDispatch } from 'data/store'
 import { useAccount, useChainId, useConnect } from 'wagmi'
@@ -37,8 +34,7 @@ type TCoinbaseInstance = 'coinbase_extension' | 'coinbase_smart_wallet' | false
 const {
   REACT_APP_CHAINS,
   REACT_APP_TESTNETS_URL,
-  REACT_APP_MAINNETS_URL,
-  REACT_APP_CLIENT
+  REACT_APP_MAINNETS_URL
 } = process.env
 
 const mapStateToProps = ({
@@ -141,10 +137,6 @@ const defineAdditionalButton = (
     return null
   }
 
-  if (REACT_APP_CLIENT === 'coinbase') {
-    return null
-  }
-
   if (step !== 'connect') {
     return null
   }
@@ -168,12 +160,7 @@ const defineButtonTitle = (
     case 'initial':
       return 'Loading'
     case 'connect':
-      {
-        if (REACT_APP_CLIENT === 'coinbase') {
-          return 'Create Smart Wallet'
-        }
-        return 'Connect'
-      }
+      return 'Connect'
     case 'login':
       return 'Sign in'
     case 'store-key':
@@ -354,13 +341,6 @@ const Main: FC<ReduxType> = ({
           return
         }
         if (authorizationStep === 'connect') {
-          if (REACT_APP_CLIENT === 'coinbase') {
-            const coinbaseConnector = connectors.find(connector => connector.id === "coinbaseWalletSDK")
-            if (!coinbaseConnector) {
-              return alert('coinbaseWalletSDK Connector not found')
-            }
-            return connect({ connector: coinbaseConnector })
-          }
           return open()
         }
 
