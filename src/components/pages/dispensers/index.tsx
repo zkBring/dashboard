@@ -247,9 +247,9 @@ const Dispensers: FC<ReduxType> = ({
       </Header>
       {items.length > 0 && <DispensersListStyled>
         <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Start date</BatchListLabel>
         <BatchListLabel>QR Type</BatchListLabel>
         <BatchListLabel>Name</BatchListLabel>
-        <BatchListLabel>Start date</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Scans</BatchListLabel>
         <BatchListLabel>Claims</BatchListLabel>
