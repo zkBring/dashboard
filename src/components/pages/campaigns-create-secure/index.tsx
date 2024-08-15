@@ -175,10 +175,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
         const isAvailableForClient = defineIfWalletIsAvailableForClient(
           wallet
         )
-        console.log({
-          wallet,
-          isAvailableForClient
-        })
         if (!isAvailableForClient) {
           return false
         }
