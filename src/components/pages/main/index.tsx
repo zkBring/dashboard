@@ -240,7 +240,7 @@ const createSigMessage = (
 const defineCoinbaseInstance = (
   connector?: any
 ) => {
-  if (window.ethereum.isCoinbaseWallet) {
+  if (window.ethereum && window.ethereum.isCoinbaseWallet) {
     return 'coinbase_extension'
   } else if (connector && connector.id === 'coinbaseWalletSDK') {
     return 'coinbase_smart_wallet'
