@@ -92,14 +92,15 @@ const createDispenserRow = (
       {dateCreatedFormatted}
     </BatchListValue>
     <BatchListValue>
+      {claimStartDate}
+    </BatchListValue>
+    <BatchListValue>
       {defineQRType(dynamic)}
     </BatchListValue>
     <DispensersListValueFixed>
       {title}
     </DispensersListValueFixed>
-    <BatchListValue>
-      {claimStartDate}
-    </BatchListValue>
+
     <BatchListValue>
       {links_count || '0'}
     </BatchListValue>
@@ -136,9 +137,10 @@ const createQRSetRow = (
 
   return <>
     <BatchListValue>{created_at && formatDate(created_at)}</BatchListValue>
+    <BatchListValue>-</BatchListValue>
     <BatchListValue>QR set</BatchListValue>
     <DispensersListValueFixed>{title}</DispensersListValueFixed>
-    <BatchListValue>-</BatchListValue>
+
     <BatchListValue>
       {links_count || '0'}
     </BatchListValue>
@@ -244,10 +246,10 @@ const Dispensers: FC<ReduxType> = ({
         />
       </Header>
       {items.length > 0 && <DispensersListStyled>
-        <BatchListLabel>Date created</BatchListLabel>
-        <BatchListLabel>QR Type</BatchListLabel>
-        <BatchListLabel>Title</BatchListLabel>
+        <BatchListLabel>Created</BatchListLabel>
         <BatchListLabel>Start date</BatchListLabel>
+        <BatchListLabel>QR Type</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
         <BatchListLabel>Scans</BatchListLabel>
         <BatchListLabel>Claims</BatchListLabel>
