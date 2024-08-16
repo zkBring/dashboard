@@ -40,13 +40,13 @@ export const WidgetTitle = styled.h3` // main title in widget
 export const WidgetSubtitle = styled.p` 
   font-size: 16px;
   margin: 0 0 20px;
-  font-weight: 500;
-  color: ${props => props.theme.additionalTextColor};
+  font-weight: 400;
+  color: ${props => props.theme.primaryTextColor};
 `
 
 export const WidgetSectionTitle = styled.h4` // main title in widget
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0 0 12px;
   color: ${props => props.theme.primaryTextColor};
 `
@@ -108,14 +108,14 @@ export const BatchList = styled.div`
 
 export const BatchListLabel = styled.div`
   font-size: 14px;
-  padding: 12px 0;
+  padding: 8px 0;
   color: ${props => props.theme.additionalTextColor};
 `
 
 export const BatchListValue = styled.div`
   font-size: 14px;
   color: ${props => props.theme.primaryTextColor};
-  padding: 14px 0;
+  padding: 8px 0;
 `
 
 export const ErrorSpan = styled.span`

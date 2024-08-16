@@ -16,9 +16,21 @@ export function setTitle (title: string) {
   })
 }
 
+export function setPreferredWalletOn (preferredWalletOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_PREFERRED_WALLET_ON, {
+    preferredWalletOn
+  })
+}
+
 export function setCountriesWhitelist (countriesWhitelist: string[]) {
   return action(Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST, {
     countriesWhitelist
+  })
+}
+
+export function setCountriesWhitelistOn (countriesWhitelistOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST_ON, {
+    countriesWhitelistOn
   })
 }
 
@@ -166,14 +178,21 @@ export function setLinksGenerateLoader (linksGenerateLoader: number) {
   })
 }
 
-export function setAvailableWallets (availableWallets: string[]) {
-  return action(Constants.CAMPAIGN_SET_AVAILABLE_WALLETS, {
-    availableWallets
-  })
-}
-
 export function setExpirationDate (expirationDate: number) {
   return action(Constants.CAMPAIGN_SET_EXPIRATION_DATE, {
     expirationDate
   })
 }
+
+export function setCollectionId (collectionId: null | string) {
+  return action(Constants.CAMPAIGN_SET_COLLECTION_ID, {
+    collectionId
+  })
+}
+
+export function setCollectionTokenId (collectionTokenId: null | string) {
+  return action(Constants.CAMPAIGN_SET_COLLECTION_TOKEN_ID, {
+    collectionTokenId
+  })
+}
+

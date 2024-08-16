@@ -47,6 +47,9 @@ function createClaimLinks (
         return alert('chainId not provided')
       }
       dispatch(actionsCampaign.setTokenAddress(collection.token_address as string))
+      dispatch(actionsCampaign.setCollectionId(collectionId))
+      dispatch(actionsCampaign.setCollectionTokenId(tokenId))
+
       dispatch(actionsCampaign.setDecimals(0))
       dispatch(actionsCampaign.setSymbol(collection.symbol))
       dispatch(actionsCampaign.setTokenStandard(tokenType))

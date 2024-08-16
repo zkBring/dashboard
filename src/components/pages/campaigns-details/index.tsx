@@ -52,7 +52,8 @@ import {
   updateClaimingFinishedButtonOn,
   updateClaimingFinishedButton,
   updateAvailableCountries,
-  updateWallets
+  updateWallets,
+  updatePreferredWalletOn
 } from 'data/store/reducers/campaigns/async-actions'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
@@ -116,6 +117,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
+    updatePreferredWalletOn: (
+      campaign_id: string,
+      preferred_wallet_on: boolean
+    ) => {
+      dispatch(
+        updatePreferredWalletOn(
+          campaign_id,
+          preferred_wallet_on
+        )
+      )
+    },
+
     updateAvailableCountries: (
       campaign_id: string,
       available_countries: string[],
@@ -132,14 +145,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
     updateWallets: (
       campaign_id: string,
-      available_wallets: string[],
       wallet: string,
       callback?: () => void
     ) => {
       dispatch(
         updateWallets(
           campaign_id,
-          available_wallets,
           wallet,
           callback
         )
@@ -185,7 +196,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       sponsored: boolean,
       claimPattern: TClaimPattern,
       wallet: string,
-      availableWallets: string[],
       encryptionKey?: string
     ) => {
       dispatch(
@@ -200,7 +210,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           sponsored,
           claimPattern,
           wallet,
-          availableWallets,
           encryptionKey
         )
       )
@@ -230,7 +239,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateAvailableCountriesOn,
   updateClaimingFinishedButton,
   updateAvailableCountries,
-  updateWallets
+  updateWallets,
+  updatePreferredWalletOn
 }) => {
 
   const history = useHistory()
@@ -290,12 +300,12 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     sponsored,
     links_claimed,
     available_countries_on,
-    available_wallets,
     available_countries,
     expiration_date,
     claiming_finished_button_title,
     claiming_finished_button_url,
-    claiming_finished_button_on
+    claiming_finished_button_on,
+    preferred_wallet_on
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -482,6 +492,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <BatchesList
           batches={batches}
+          loading={loading}
           sponsored={sponsored}
           title={title}
           campaignId={campaign_id}
@@ -505,7 +516,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
               sponsored,
               claim_pattern,
               wallet,
-              available_wallets,
               encryptionKey
             )
           }}
@@ -620,15 +630,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
 
       <Settings
+
         loading={loading}
         countries={countries}
         campaignData={currentCampaign}
-        availableWalletsValue={available_wallets}
         availableCountriesValue={available_countries.map((currentCountry) => {
           const country = countries.find(country => country.id === currentCountry)
           return country
         }).filter(item => item) as TCountry[]}
         preferredWalletValue={wallet}
+        preferredWalletToggleValue={preferred_wallet_on}
         availableCountriesSubmit={(
           value,
           onSuccess,
@@ -640,18 +651,15 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
             onSuccess
           )
         }}
-          
       
         walletsSubmit={(
-          availableWalletsValue,
-          wallets,
+          wallet,
           onSuccess,
           onError,
         ) => {
           updateWallets(
             campaign_id,
-            availableWalletsValue,
-            wallets,
+            wallet,
             onSuccess,
           )
         }}
@@ -679,6 +687,10 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         availableCountriesToggleAction={(value) => {
           updateAvailableCountriesOn(campaign_id, value)
+        }}
+
+        preferredWalletToggleAction={(value) => {
+          updatePreferredWalletOn(campaign_id, value)
         }}
 
         finalScreenButtonToggleValue={claiming_finished_button_on}

@@ -5,8 +5,7 @@ const {
 } = process.env
 
 const defineClaimAppURL = (
-  address: string,
-  available_wallets?: string[]
+  address: string
 ) => {
   const addressFormatted = address.toLowerCase()
   const configForAddress = addressSpecificOptions[addressFormatted]

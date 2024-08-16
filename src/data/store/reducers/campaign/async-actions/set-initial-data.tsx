@@ -29,7 +29,7 @@ function setInitialData(
     dispatch(actionsCampaign.setTitle(title))
 
     try {
-      const { user: { chainId, address }, campaign: { tokenAddress } } = getState()
+      const { user: { chainId }, campaign: { tokenAddress } } = getState()
       if (!chainId) {
         return alertError('No chainId provided in state of user')
       }

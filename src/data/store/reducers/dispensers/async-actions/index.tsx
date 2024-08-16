@@ -1,6 +1,6 @@
 import createDispenser from './create-dispenser'
 import downloadDispenserQR from './download-dispenser-qr'
-import addLinksToQR from './add-links-to-qr'
+import addLinksToDispenser from './add-links-to-dispenser'
 import updateDispenserDate from './update-dispenser-date'
 import updateStatus from './update-status'
 import toggleRedirectOn from './toggle-redirect-on'
@@ -21,7 +21,7 @@ export {
   getDispenserWhitelist,
   downloadDispenserQR,
   downloadReport,
-  addLinksToQR,
+  addLinksToDispenser,
   createWhitelist,
   updateDispenserDate,
   updateStatus,

@@ -224,12 +224,12 @@ const Settings: FC<TProps> = ({
     currentDispenser,
   ) : null
 
-  if (loading) {
-    return <WidgetLoaderStyled title='Settings'>
-      {popup}
-      <Loader size='large' />
-    </WidgetLoaderStyled>
-  }
+  // if (loading) {
+  //   return <WidgetLoaderStyled title='Settings'>
+  //     {popup}
+  //     <Loader size='large' />
+  //   </WidgetLoaderStyled>
+  // }
 
   return <>
     <WidgetStyled title='Settings'>

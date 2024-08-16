@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { TextLink } from 'components/common'
 import {
@@ -17,7 +17,8 @@ import {
   WidgetComponentStyled,
   TagStyled,
   BatchListLabelTextAlignRight,
-  BatchListValueJustifySelfEnd
+  BatchListValueJustifySelfEnd,
+  Buttons
 } from './styled-components'
 import {
   BatchListLabel,
@@ -32,6 +33,10 @@ import {
   shortenString,
   defineExplorerUrl
 } from 'helpers'
+import Icons from 'icons'
+import { useHistory } from 'react-router-dom'
+import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
+import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
 
 const defineCampaignStatus = (
   draft: boolean,
@@ -76,18 +81,55 @@ const mapStateToProps = ({
   drafts
 })
 
-type ReduxType = ReturnType<typeof mapStateToProps>
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    openDraft: (
+      id: string,
+      callback: () => void
+    ) => {
+      dispatch(
+        campaignAsyncActions.openDraft(
+          id,
+          callback
+        )
+      )
+    },
+    deleteDraft: (
+      id: string
+    ) => {
+      dispatch(
+        campaignsAsyncActions.removeCampaignFromDrafts(
+          id
+        )
+      )
+    }
+  }
+}
 
-const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, drafts, chainId }) => {
+// @ts-ignore
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+
+const CampaignsPage: FC<ReduxType & TProps> = ({
+  campaigns,
+  address,
+  loading,
+  drafts,
+  chainId,
+  deleteDraft,
+  openDraft
+}) => {
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
 
+  const history = useHistory()
+
+  // @ts-ignore
   const currentAddressDrafts = drafts.filter(draft => {
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
   })
 
-  if (currentAddressCampaigns.length === 0 && currentAddressCampaigns.length === 0) {
+  if (currentAddressCampaigns.length === 0 && currentAddressDrafts.length === 0) {
     return <InitialNote
       title='Create Your First Campaign'
       text="Your campaigns will be displayed here once created. You don't have any campaigns yet"
@@ -109,13 +151,13 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
         />
       </Header>
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <CampaignsListStyled>
-      <BatchListLabel>Created</BatchListLabel>
-      <BatchListLabel>Name</BatchListLabel>
-      <BatchListLabel>Token</BatchListLabel>
-      <BatchListLabel>Links</BatchListLabel>
-      <BatchListLabel>Claimed</BatchListLabel>
-      <BatchListLabel>Status</BatchListLabel>
-      <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
+        <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
+        <BatchListLabel>Token</BatchListLabel>
+        <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Claims</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
+        <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
       {currentAddressCampaigns.map(campaign => {
         const {
           title,
@@ -141,10 +183,10 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
             </TextLink>
           </BatchListValue>
           <BatchListValue>
-            {sponsored ? (links_count || 0) : '-'}
+            {links_count || 0}
           </BatchListValue>
           <BatchListValue>
-            {links_claimed || 0}
+            {sponsored ? (links_claimed || 0) : 'N/A'}
           </BatchListValue>
           <BatchListValue>
             {defineCampaignStatus(false)}
@@ -194,16 +236,38 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
             </TextLink>
           </BatchListValue>
           <BatchListValue>
-            <ButtonStyled
-              appearance='additional'
-              size='extra-small'
-              to={defineDraftUrl(
-                step,
-                campaignData.tokenStandard as TTokenType
-              )}
-            >
-              Continue
-            </ButtonStyled>
+            <Buttons>
+              <ButtonStyled
+                appearance='additional'
+                size='extra-small'
+                onClick={() => {
+                  const url = defineDraftUrl(
+                    step,
+                    campaignData.tokenStandard as TTokenType
+                  )
+
+
+                  openDraft(
+                    String(id),
+                    () => history.push(url)
+                  )
+                }}
+              >
+                Continue
+              </ButtonStyled>
+
+              <ButtonStyled
+                appearance='additional'
+                size='extra-small'
+                onClick={() => {
+                  deleteDraft(id as string)
+                }}
+              >
+                <Icons.TrashIcon />
+              </ButtonStyled>
+            </Buttons>
+            
+
           </BatchListValue>
         </>})}
       </DraftsListStyled>
@@ -214,4 +278,5 @@ const CampaignsPage: FC<ReduxType & TProps> = ({ campaigns, address, loading, dr
   </>
 }
 
-export default connect(mapStateToProps)(CampaignsPage)
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)

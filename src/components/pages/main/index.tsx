@@ -6,9 +6,8 @@ import {
   ImageContainer,
   Contents,
   Text,
-  List,
-  ListItem,
-  TextBold
+  TextBold,
+  AdditionalButton
 } from './styled-components'
 import Image from 'images/connect-image.png'
 import {
@@ -21,19 +20,21 @@ import { Dispatch } from 'redux'
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
 import { UserActions } from 'data/store/reducers/user/types'
 import { Redirect } from 'react-router-dom'
-import Icons from 'icons'
-import { TAuthorizationStep } from 'types'
+import { TAuthorizationStep, TSystem } from 'types'
 import { IAppDispatch } from 'data/store'
 import { useAccount, useChainId, useConnect } from 'wagmi'
 import { useEthersSigner } from 'hooks'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { SiweMessage } from 'siwe'
 import { nonceApi, dashboardKeyApi } from 'data/api'
+import { defineSystem } from 'helpers'
+
+type TCoinbaseInstance = 'coinbase_extension' | 'coinbase_smart_wallet' | false
+
 const {
   REACT_APP_CHAINS,
   REACT_APP_TESTNETS_URL,
-  REACT_APP_MAINNETS_URL,
-  REACT_APP_CLIENT
+  REACT_APP_MAINNETS_URL
 } = process.env
 
 const mapStateToProps = ({
@@ -64,7 +65,7 @@ const defineTitle = (
 
 const defineText = (
   authorizationStep: TAuthorizationStep,
-  isCoinbase: boolean
+  coinbaseInstance: TCoinbaseInstance
 ) => {
   switch (authorizationStep) {
     case 'connect':
@@ -73,7 +74,7 @@ const defineText = (
       return 'Sign a message in your wallet to log in securely to Linkdrop Dashboard'
     case 'store-key':
     default: {
-      if (isCoinbase) {
+      if (coinbaseInstance === 'coinbase_smart_wallet') {
         return 'Create a passkey for Linkdrop Dashboard to store your data securely and encrypted'
       }
       return 'Sign a message in your wallet to store your data securely and encrypted'
@@ -121,8 +122,36 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
   }
 }
 
+const defineAdditionalButton = (
+  step: TAuthorizationStep,
+  loading: boolean,
+  system: TSystem,
+  onClick: () => void
+) => {
 
-const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
+  if (system !== 'desktop') {
+    return null
+  }
+
+  if (loading) {
+    return null
+  }
+
+  if (step !== 'connect') {
+    return null
+  }
+
+  return <AdditionalButton
+    onClick={onClick}
+  >
+    Create Smart Wallet
+  </AdditionalButton>
+}
+
+const defineButtonTitle = (
+  step: TAuthorizationStep,
+  loading: boolean
+) => {
   if (loading && step !== 'initial') {
     return 'Loading'
   }
@@ -131,12 +160,7 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
     case 'initial':
       return 'Loading'
     case 'connect':
-      {
-        if (REACT_APP_CLIENT === 'coinbase') {
-          return 'Connect with Smart Wallet'
-        }
-        return 'Connect'
-      }
+      return 'Connect'
     case 'login':
       return 'Sign in'
     case 'store-key':
@@ -150,33 +174,33 @@ const defineButtonTitle = (step: TAuthorizationStep, loading: boolean) => {
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const defineDashboardName = () => {
-  if (REACT_APP_CHAINS === '[5,80001,84531]') {
+  if (REACT_APP_CHAINS === '[]') {
     return 'Testnets Dashboard'
   }
-  if (REACT_APP_CHAINS === '[1,137,8453]') {
+  if (REACT_APP_CHAINS === '[1,137,8453,13371]') {
     return 'Mainnets Dashboard'
   }
   return 'Development Dashboard'
 }
 
 const defineSwitchNetworkText = () => {
-  if (REACT_APP_CHAINS === '[5,80001,84531]') {
-    return <Text>Please switch the network to <TextBold>Goerli</TextBold>, <TextBold>Mumbai</TextBold> or <TextBold>BaseGoerli</TextBold> to continue</Text>
+  if (REACT_APP_CHAINS === '[]') {
+    return <Text>Please switch the network to <TextBold>NOT AVAILABLE</TextBold> to continue</Text>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453]') {
-    return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold> or <TextBold>Base</TextBold> to continue</Text>
+  if (REACT_APP_CHAINS === '[1,137,8453,13371]') {
+    return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold> or <TextBold>Immutable zkEVM</TextBold>, to continue</Text>
   }
-  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>Goerli</TextBold>, <TextBold>Mumbai</TextBold> or <TextBold>BaseGoerli</TextBold>, to continue</Text>  
+  return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold> or <TextBold>Immutable zkEVM</TextBold>, to continue</Text>
 }
 
 const defineRedirectButton = () => {
   if (!REACT_APP_CHAINS) { return null }
-  if (REACT_APP_CHAINS === '[5,80001,84531]') {
+  if (REACT_APP_CHAINS === '[]') {
     return <WidgetButton appearance='action' href={REACT_APP_MAINNETS_URL}>
       Switch to Main Dashboard
     </WidgetButton>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453]') {
+  if (REACT_APP_CHAINS === '[1,137,8453,13371]') {
     return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
       Switch to Testnet Dashboard
     </WidgetButton>
@@ -199,7 +223,16 @@ const createSigMessage = (
     statement,
     nonce
   })
-
+}
+const defineCoinbaseInstance = (
+  connector?: any
+) => {
+  if (window.ethereum && window.ethereum.isCoinbaseWallet) {
+    return 'coinbase_extension'
+  } else if (connector && connector.id === 'coinbaseWalletSDK') {
+    return 'coinbase_smart_wallet'
+  }
+  return false
 }
 
 const Main: FC<ReduxType> = ({
@@ -219,10 +252,12 @@ const Main: FC<ReduxType> = ({
   const injectedProvider = connectors.find(connector => connector.id === "injected")
   const signer = useEthersSigner()
   const { open } = useWeb3Modal()
-  const isCoinbase = connector ? connector.id === "coinbaseWalletSDK" : false
+  const coinbaseInstance: TCoinbaseInstance = defineCoinbaseInstance(connector)
+  const system = defineSystem()
+
 
   const title = defineTitle(authorizationStep)
-  const text = defineText(authorizationStep, isCoinbase)
+  const text = defineText(authorizationStep, coinbaseInstance)
   useEffect(() => {
     initialLoad()
   }, [])
@@ -244,8 +279,6 @@ const Main: FC<ReduxType> = ({
     )
   }, [connectorAddress, signer, connectorChainID, connector, authorizationStep])
 
-
-
   if (authorizationStep === 'wrong_device') {
     return <ContainerCentered>
     <ImageContainer src={Image} />
@@ -261,34 +294,6 @@ const Main: FC<ReduxType> = ({
 
   if (address && chainId && authorizationStep === 'authorized') {
     return <Redirect to='/campaigns' />
-  }
-
-  if (authorizationStep === 'no_injected_extension') {
-    return <ContainerCentered>
-      <ImageContainer src={Image} />
-      <Title>
-        Extension required
-      </Title>
-      <Contents>
-
-        <Text>
-          A browser web3 wallet is required to use the Dashboard
-        </Text>
-
-        <List>
-          <ListItem>Download <TextLink href='https://metamask.io/download/' target='_blank'>Metamask</TextLink></ListItem>
-          <ListItem>Return back to this page and click reload</ListItem>
-        </List>
-        
-      </Contents>
-      <WidgetButton
-        appearance='action'
-        onClick={() => {
-          window.location.reload()
-        }}
-        title='Reload page'
-      />
-    </ContainerCentered>
   }
 
   if (authorizationStep === 'wrong_network') {
@@ -336,13 +341,6 @@ const Main: FC<ReduxType> = ({
           return
         }
         if (authorizationStep === 'connect') {
-          if (REACT_APP_CLIENT === 'coinbase') {
-            const coinbaseConnector = connectors.find(connector => connector.id === "coinbaseWalletSDK")
-            if (!coinbaseConnector) {
-              return alert('coinbaseWalletSDK Connector not found')
-            }
-            return connect({ connector: coinbaseConnector })
-          }
           return open()
         }
 
@@ -373,7 +371,7 @@ const Main: FC<ReduxType> = ({
           return getDashboardKey(
             sig_message,
             key_id,
-            isCoinbase,
+            coinbaseInstance === 'coinbase_smart_wallet',
             encrypted_key
           )
         }
@@ -382,7 +380,22 @@ const Main: FC<ReduxType> = ({
       }}
       title={defineButtonTitle(authorizationStep, loading)}
     />
+    {
+      defineAdditionalButton(
+        authorizationStep,
+        loading,
+        system,
+        () => {
+          const coinbaseConnector = connectors.find(connector => connector.id === "coinbaseWalletSDK")
+          if (!coinbaseConnector) {
+            return alert('coinbaseWalletSDK Connector not found')
+          }
+          return connect({ connector: coinbaseConnector })
+        }
+      )
+    }
   </ContainerCentered>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Main)

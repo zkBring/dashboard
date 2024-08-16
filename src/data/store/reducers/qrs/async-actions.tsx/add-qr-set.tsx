@@ -12,7 +12,9 @@ import {
 } from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { Remote } from 'comlink';
-import { plausibleApi } from 'data/api'
+import { plausibleApi, qrManagerApi } from 'data/api'
+import * as qrManagerActions from '../../qr-manager/actions'
+import { QRManagerActions } from '../../qr-manager/types'
 
 const addQRSet = ({
   title,
@@ -24,7 +26,7 @@ const addQRSet = ({
   callback?: (id: string | number) => void,
 }) => {
   return async (
-    dispatch: Dispatch<QRsActions>,
+    dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
     const { user: { address, dashboardKey, workersCount } } = getState()
@@ -75,7 +77,15 @@ const addQRSet = ({
         plausibleApi.invokeEvent({
           eventName: 'new_qr_set'
         })
+
         dispatch(actionsQR.addQr(result.data.qr_set))
+
+        const qrManagerData = await qrManagerApi.get()
+        const { success, items } = qrManagerData.data
+        if (success) {
+          dispatch(qrManagerActions.setItems(items))
+        }
+      
         dispatch(actionsQR.setUploadLoader(0))
         callback && callback((result.data.qr_set || {}).set_id || '')
       }

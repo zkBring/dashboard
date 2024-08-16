@@ -129,7 +129,7 @@ const ClaimLinks: FC<TProps> = ({
   mappingLoader,
   encryptedMultiscanQREncCode,
   linksCount,
-  addLinksToQR,
+  addLinksToDispenser,
   downloadReport,
   campaignData
 
@@ -174,7 +174,7 @@ const ClaimLinks: FC<TProps> = ({
           if (!encryptedMultiscanQREncCode) { return alert('encrypted_multiscan_qr_enc_code not found') }
           if (linksCount === undefined) { return alert('links_count not found') }
           if (!links) { return alert('Links not found') }
-          addLinksToQR(dispenserId, links, encryptedMultiscanQREncCode, linksCount, dispenserStatus, () => {
+          addLinksToDispenser(dispenserId, links, encryptedMultiscanQREncCode, linksCount, dispenserStatus, () => {
             toggleUpdateLinksPopup(false)
           })
         }}

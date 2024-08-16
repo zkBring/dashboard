@@ -1,5 +1,17 @@
 # Linkdrop Dashboard
 
+## 2.1.36
+- UI updates
+- immutable zkevm network support
+- new SDK version
+- bug fix for login with coinbase extension
+- coinbase wallet app added as wallet option
+
+## 2.1.35
+- new UI for Collections page
+- updates for wallet options
+- updates for connect wallet screen (smart wallet integration)
+
 ## 2.1.34
 - React, Wagmi, web3Modal update
 - dispensers and campaigns edit sidebar

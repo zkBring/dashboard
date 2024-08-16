@@ -6,8 +6,7 @@ import {
   TextAreaStyled,
   PropertiesInputStyled,
   InputsContainer,
-  ButtonStyled,
-  StyledRadio
+  ButtonStyled
 } from './styled-components'
 import {
   ThumbnailUpload,
@@ -15,17 +14,17 @@ import {
   InputContainer,
   InputTitle,
   InputTitleAdditional,
-  InputSubtitle,
   ButtonsContainer
 } from 'components/pages/common'
-import {
-  TextLink
-} from 'components/common'
 import {
   PropertiesList
 } from './components'
 import { TCollection } from 'types'
-import { Redirect, useHistory, useParams } from 'react-router-dom'
+import {
+  Redirect,
+  useHistory,
+  useParams
+} from 'react-router-dom'
 import { RootState, IAppDispatch} from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncCollectionsActions from 'data/store/reducers/collections/async-actions'
@@ -40,9 +39,14 @@ const mapStateToProps = ({
 const defineIfButtonDisabled = (
   tokenName: string,
   thumbnail: string,
-  loading: boolean
+  loading: boolean,
+  copiesAmount: string,
+  lazyMint: boolean
 ) => {
-  return !tokenName  || loading || !thumbnail
+  if (lazyMint) {
+    return !tokenName  || loading || !thumbnail
+  }
+  return !tokenName  || loading || !thumbnail || !copiesAmount || copiesAmount === '0'
 }
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -107,6 +111,8 @@ const CollectionAddToken: FC<ReduxType> = ({
   createTokenERC1155
 }) => {
   const { collection_id } = useParams<{collection_id: string}>()
+
+  // @ts-ignore
   const collection: TCollection | undefined = collections.find(collection => String(collection.collection_id) === collection_id)
   const history = useHistory()
   const [ thumbnail, setThumbnail ] = useState<string>('')
@@ -119,23 +125,14 @@ const CollectionAddToken: FC<ReduxType> = ({
   const [ propertyValue, setPropertyValue ] = useState<string>('')
   const [ lazyMint, setLazyMint ] = useState<boolean>(true)
 
-  const radios = [
-    {
-      value: true,
-      label: 'Mint at Claim',
-      note: 'metadata will be uploaded now and tokens will be minted later via Claim Links'
-    }, {
-      value: false,
-      label: 'Mint Now',
-      note: 'tokens will be pre-minted  to your account'
-    }
-  ]
-
   if (!collection) {
     return <Redirect to='/collections' />
   }
 
-  const { token_address: tokenAddress, collection_id: collectionId } = collection
+  const {
+    token_address: tokenAddress,
+    collection_id: collectionId
+  } = collection
 
   return <Container>
     <WidgetComponentStyled title='Add token'>
@@ -159,6 +156,7 @@ const CollectionAddToken: FC<ReduxType> = ({
         <InputStyled
           placeholder='e.g. The Raffle Participation Pass NFT'
           value={tokenName}
+          // @ts-ignore
           disabled={loading}
           onChange={(value) => {
             setTokenName(value)
@@ -183,24 +181,6 @@ const CollectionAddToken: FC<ReduxType> = ({
         />
       </InputContainer>
 
-      <InputContainer>
-        <InputTitle>
-          Minting
-        </InputTitle>
-        <InputSubtitle>
-          Your tokens can be minted now or later at claim. <TextLink href="https://docs.linkdrop.io/how-tos/main-guide/setting-up-a-campaign" target='_blank'>Learn more.</TextLink>
-        </InputSubtitle>
-        <StyledRadio
-          disabled={loading}
-          radios={radios}
-          value={lazyMint}
-          onChange={value => {
-            setCopiesAmount('')
-            setLazyMint(value)
-          }}
-        />
-      </InputContainer>
-
       {renderCopiesContainer(
         copiesAmount,
         setCopiesAmount,
@@ -215,7 +195,8 @@ const CollectionAddToken: FC<ReduxType> = ({
 
         <PropertiesList properties={properties} onRemove={key => {
           setProperties(properties => {
-            delete { ...properties }[key]
+            const updatedProperties = { ...properties }
+            delete updatedProperties[key]
             return properties
           })
         }}/>
@@ -260,7 +241,9 @@ const CollectionAddToken: FC<ReduxType> = ({
           disabled={defineIfButtonDisabled(
             tokenName,
             thumbnail,
-            loading
+            loading,
+            copiesAmount,
+            lazyMint
           )}
           loading={loading}
           onClick={() => {

@@ -23,8 +23,6 @@ import FinalScreenButton from './final-screen-button'
 import wallets from 'configs/wallets'
 import { Tooltip } from 'components/common'
 
-const { REACT_APP_CLIENT } = process.env
-
 const settings = [
   {
     title: 'Country restrictions',
@@ -33,7 +31,7 @@ const settings = [
     tooltip: 'Select which countries can claim tokens'
   }, {
     title: 'Wallet options',
-    subtitle: 'Setup the wallet that will be highlighted as “recommended” and select the wallets that will be displayed as alternative options to connect to Claim App to claim tokens',
+    subtitle: 'Toggle this option to recommend a specific crypto wallet for users who don’t yet have one. If toggled off, the Coinbase Smart Wallet will be set as the default recommendation',
     id: 'wallets',
     tooltip: 'Display preferred wallet as primary option when claiming tokens'
   }, {
@@ -84,12 +82,11 @@ const definePopup = (
   availableCountriesValue: TCountry[],
 
   walletsSubmit: (
-    availableWalletsValue: any,
     wallets: any,
     onSuccess?: () => void,
     onError?: () => void,
   ) => void,
-  availableWalletsValue: string[],
+
   preferredWalletValue: string,
 
   finalScreenButtonSubmit: (
@@ -111,7 +108,8 @@ const definePopup = (
   availableCountriesToggleAction?: (value: boolean) => void,
   availableCountriesToggleValue?: boolean,
 
-  campaignId?: string,
+  preferredWalletOnToggleAction?: (value: boolean) => void,
+  preferredWalletOnToggleValue?: boolean,
 ) => {
   switch (setting.id) {
     case 'wallets':
@@ -120,11 +118,12 @@ const definePopup = (
         loading={loading}
         tokenType={tokenType}
         onClose={onClose}
-        availableWalletsValue={availableWalletsValue}
         preferredWalletValue={preferredWalletValue}
         action={walletsSubmit}
         sponsored={sposored}
         chainId={chainId}
+        toggleAction={preferredWalletOnToggleAction}
+        toggleValue={preferredWalletOnToggleValue}
       />
     case 'available_countries':
       return <Countries
@@ -156,6 +155,7 @@ const defineEnabled = (
   settingId: string,
   availableCountriesToggleValue: boolean,
   finalScreenButtonToggleValue: boolean,
+  preferredWalletToggleValue: boolean,
   wallet: string
 ) => {
 
@@ -168,7 +168,7 @@ const defineEnabled = (
   }
 
   if (settingId === 'wallets') {
-    return Boolean(wallet)
+    return preferredWalletToggleValue
   }
   
   return false
@@ -194,7 +194,6 @@ const Settings: FC<TProps> = ({
   availableCountriesValue,
 
   walletsSubmit,
-  availableWalletsValue,
   preferredWalletValue,
 
   finalScreenButtonSubmit,
@@ -210,7 +209,10 @@ const Settings: FC<TProps> = ({
   
 
   availableCountriesToggleAction,
-  availableCountriesToggleValue
+  availableCountriesToggleValue,
+
+  preferredWalletToggleAction,
+  preferredWalletToggleValue
 }) => {
 
   if (!campaignData) {
@@ -228,9 +230,8 @@ const Settings: FC<TProps> = ({
     availableCountriesSubmit,
     availableCountriesValue,
     walletsSubmit,
-    availableWalletsValue,
     preferredWalletValue,
-
+    
     finalScreenButtonSubmit,
     buttonTitleValue,
     buttonHrefValue,
@@ -242,8 +243,8 @@ const Settings: FC<TProps> = ({
     finalScreenButtonToggleValue,
     availableCountriesToggleAction,
     availableCountriesToggleValue,
-    campaignData.campaign_id,
-    
+    preferredWalletToggleAction,
+    preferredWalletToggleValue,
   ) : null
 
   return <WidgetStyled title='Settings'>
@@ -255,18 +256,14 @@ const Settings: FC<TProps> = ({
         setting.id,
         Boolean(availableCountriesToggleValue),
         Boolean(finalScreenButtonToggleValue),
+        Boolean(preferredWalletToggleValue),
         preferredWalletValue
       )
+
       const enabledLabel = defineEnabledLabel(
         setting.id,
         preferredWalletValue
       )
-
-      if (REACT_APP_CLIENT === 'coinbase') {
-        if (setting.id === 'wallets') {
-          return null
-        }
-      }
 
       return renderSettingItem(
         setting,

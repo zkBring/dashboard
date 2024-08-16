@@ -8,16 +8,14 @@ type TDecryptLink = ({
   tokenAddress,
   userAddress,
   chainId,
-  wallet,
-  availableWallets
+  wallet
 } : {
   links: TLink[],
   dashboardKey: string,
   tokenAddress: string,
   userAddress: string,
   chainId: number,
-  wallet: string,
-  availableWallets: string[]
+  wallet: string
 }
 ) => TLinkDecrypted[]
 
@@ -27,14 +25,12 @@ const decryptLinks: TDecryptLink = ({
   tokenAddress,
   userAddress,
   chainId,
-  wallet,
-  availableWallets
+  wallet
 }) => {
   const decryptedLinks = []
   const start = +new Date()
   const claimAppURL = defineClaimAppURL(
-    userAddress,
-    availableWallets
+    userAddress
   )
   for (let i = 0; i < links.length; i++) {
     const encryptedLink = links[i].encrypted_claim_link
@@ -52,8 +48,7 @@ const decryptLinks: TDecryptLink = ({
           chainId,
           claimAppURL,
           3,
-          wallet,
-          availableWallets
+          wallet
         )
         decryptedLinks.push({
           link_id: links[i].link_id,

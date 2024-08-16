@@ -52,13 +52,14 @@ import { ReactComponent as MessagesIcon } from './messages-icon.svg'
 import { ReactComponent as CodeIcon } from './code-icon.svg'
 import { ReactComponent as DynamicQRIcon } from './dynamic-qr-icon.svg'
 import { ReactComponent as ExpandRightIcon } from './expand-right-icon.svg'
+import { ReactComponent as ArrowRightIcon } from './arrow-right-icon.svg'
 
 import { ReactComponent as DispenserQRIcon } from './dispenser-qr-icon.svg'
 import { ReactComponent as ClaimLinksIcon } from './claim-links-icon.svg'
 import { ReactComponent as ClaimQRsIcon } from './claim-qrs-icon.svg'
 import { ReactComponent as NFTsIcon } from './nfts-icon.svg'
 
-
+import { ReactComponent as ExpandArrowVerticalIcon } from './expand-arrow-vertical-icon.svg'
 
 import { ReactComponent as QRSetPreviewIcon } from './qr-set-preview-icon.svg'
 import { ReactComponent as DispenserQRPreviewIcon } from './dispenser-qr-preview-icon.svg'
@@ -71,6 +72,7 @@ const Icons = {
   SunnyCloudIcon,
   InformationIcon,
   QRSetPreviewIcon,
+  ExpandArrowVerticalIcon,
   DispenserQRPreviewIcon,
   DynamicQRPreviewIcon,
   DispenserQRIcon,
@@ -106,6 +108,7 @@ const Icons = {
   PauseIcon,
   OptionsIcon,
   PolygonIcon,
+  ArrowRightIcon,
   AttentionIcon,
   ApprovedIcon,
   UploadFileIcon,

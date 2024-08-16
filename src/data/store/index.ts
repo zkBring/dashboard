@@ -8,15 +8,16 @@ import { campaignsReducer } from './reducers/campaigns/reducer'
 import { qrsReducer } from './reducers/qrs/reducer'
 import { dispensersReducer } from './reducers/dispensers/reducer'
 import { collectionsReducer } from './reducers/collections/reducer'
+import { qrManagerReducer } from './reducers/qr-manager/reducer'
 
 import { UserState, UserActions } from './reducers/user/types'
 import { ContractState, ContractActions } from './reducers/contract/types'
-import { CampaignActions } from './reducers/campaign/types'
-import { CampaignState,  } from './reducers/campaign/types'
+import { CampaignActions, CampaignState } from './reducers/campaign/types'
 import { CampaignsState, CampaignsActions } from './reducers/campaigns/types'
 import { QRsState, QRsActions } from './reducers/qrs/types'
 import { DispensersState, DispensersActions } from './reducers/dispensers/types'
 import { CollectionsState, CollectionsActions } from './reducers/collections/types'
+import { QRManagerState, QRManagerActions } from './reducers/qr-manager/types'
 
 import thunkMiddleware, { ThunkDispatch, ThunkMiddleware } from "redux-thunk"
 
@@ -27,7 +28,8 @@ type TActions = CampaignActions &
                 ContractActions &
                 QRsActions &
                 DispensersActions &
-                CollectionsActions
+                CollectionsActions &
+                QRManagerActions
 
 export const history = createBrowserHistory()
 
@@ -38,7 +40,8 @@ const reducers = combineReducers({
   campaigns: campaignsReducer,
   qrs: qrsReducer,
   dispensers: dispensersReducer,
-  collections: collectionsReducer
+  collections: collectionsReducer,
+  qrManager: qrManagerReducer
 })
 type IAppState = ReturnType<typeof reducers>
 
@@ -56,7 +59,8 @@ export interface RootState {
   campaigns: CampaignsState,
   qrs: QRsState,
   dispensers: DispensersState,
-  collections: CollectionsState
+  collections: CollectionsState,
+  qrManager: QRManagerState
 }
 
 const store = createStore<RootState, any, any, any>(

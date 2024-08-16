@@ -4,10 +4,7 @@ import {
   Title,
   Container,
   Content,
-  CloseButton,
-  ContentItem,
-  ContentItemText,
-  ContentItemLink
+  CloseButton
 } from './styled-components'
 import Icons from 'icons'
 
@@ -15,23 +12,29 @@ const InformationContainer: FC<TProps> = ({
   title,
   id,
   className,
-  contents
+  children,
+  appendToLocalStorage
 }) => {
   const [ visible, setVisible ] = useState<boolean | null>(null)
   
   useEffect(() => {
-    if (id) {
-      if (window.localStorage) {
-        if (window.localStorage.getItem(`information-container-${id}`) === 'false') {
-          return setVisible(false)
+    if (appendToLocalStorage) {
+      if (id) {
+        if (window.localStorage) {
+          if (window.localStorage.getItem(`information-container-${id}`) === 'false') {
+            return setVisible(false)
+          }
         }
       }
     }
+  
     setVisible(true)
   }, [])
 
   const onClose = () => {
-    window.localStorage.setItem(`information-container-${id}`, 'false')
+    if (appendToLocalStorage) {
+      window.localStorage.setItem(`information-container-${id}`, 'false')
+    }
     setVisible(false)
   }
 
@@ -43,10 +46,7 @@ const InformationContainer: FC<TProps> = ({
     </CloseButton>
     {title && <Title>{title}</Title>}
     <Content>
-      {contents.map(content => <ContentItem key={content.title}>
-        <ContentItemText>{content.title}</ContentItemText>
-        {content.link && <ContentItemLink href={content.link.href} target='_blank'>{content.link.title}</ContentItemLink>}
-      </ContentItem>)}
+      {children}
     </Content>
   </Container>
 }

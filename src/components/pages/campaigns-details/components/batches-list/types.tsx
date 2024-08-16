@@ -6,6 +6,7 @@ export type TProps = {
   title: string
   sdk: boolean
   sponsored: boolean
+  loading: boolean
   downloadLinks: (
     batch_id: string | number,
     campaign_id: string,

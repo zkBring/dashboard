@@ -1,4 +1,3 @@
-import TClaimPattern from "./claim-pattern"
 import TTokenType from "./token-type"
 
 export type TCollectionToken = {
@@ -8,6 +7,7 @@ export type TCollectionToken = {
   properties: Record<string, string>
   token_id: string
   thumbnail?: string
+  campaign_id?: null | string
 }
 
 export type TCollection = {
@@ -22,6 +22,13 @@ export type TCollection = {
   token_address?: string
   tokens?: TCollectionToken[]
   tokens_amount?: string
+  links_count?: number
+  links_claimed?: number
   chain_id: String
 }
 
+export type TCollectionStatus = 
+  'ADD_TOKENS' |
+  'CREATE_LINKS' |
+  'ACTIVE' |
+  'LOADING'

@@ -69,7 +69,10 @@ import momentNoOffsetWithTimeUpdate from './moment-no-offset-with-time-update'
 import defineDispenserStatusTag from './define-dispenser-status-tag'
 import isURL from './is-url'
 import defineClaimAppURL from './define-claim-app-url'
+import defineCollectionStatusName from './define-collection-status-name'
 import defineCollectionStatusTag from './define-collection-status-tag'
+import defineCollectionStatus from './define-collection-status'
+import defineCollectionQuantityTag from './define-collection-quantity-tag'
 import defineThirdwebNetworkName from './define-thirdweb-network-name'
 import generateTokenSymbol from './generate-token-symbol'
 import convertMnemonicContracts from './convert-mnemonic-contracts'
@@ -83,10 +86,14 @@ import truncate from './truncate'
 import defineWagmiNetwork from './define-wagmi-network'
 import getNextDayData from './get-next-day-data'
 import buf2hex from '../helpers/buffer-to-hex'
+import defineIfWalletIsAvailableForClient from './define-if-wallet-is-available-for-client'
 
 export {
   buf2hex,
   defineThirdwebNetworkName,
+  defineCollectionQuantityTag,
+  defineIfWalletIsAvailableForClient,
+  defineCollectionStatusName,
   getNextDayData,
   defineUrlSchema,
   defineWagmiNetwork,
@@ -130,6 +137,7 @@ export {
   defineAlchemyNetwork,
   defineSystem,
   countNativeTokensToSecure,
+  defineCollectionStatus,
   getContractVersion,
   createEncryptionKey,
   defineContractFunds,

@@ -12,18 +12,19 @@ const retrieveDashboardKeyWithPass: (
 ) => Promise<string | void> = async (
   encrypted_dashboard_key,
   sig_message,
-  account,
-  chain_id
+  account
 ) => {
   try {
 
     const challenge = Uint8Array.from(sig_message, c => c.charCodeAt(0))
+
     const user = {
       id: Uint8Array.from(
         account, c => c.charCodeAt(0)),
       name: `LINKDROP_ENCRYPTION_KEY_${account.slice(-6)}`,
       displayName: `LINKDROP_ENCRYPTION_KEY_${account.slice(-6)}`
     }
+
     const publicKeyCredentialCreationOptions = {
       challenge: challenge,
       rp: {

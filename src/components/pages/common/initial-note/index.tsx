@@ -14,7 +14,8 @@ const InitialNote: FC<TProps> = ({
   title,
   text,
   href,
-  buttontText
+  buttontText,
+  onClick
 }) => {
   return <Container>
     <Image>
@@ -26,12 +27,17 @@ const InitialNote: FC<TProps> = ({
     <Text>
       {text}
     </Text>
-    <ButtonStyled
+    {href ? <ButtonStyled
       to={href}
       appearance='action'
     >
       {buttontText}
-    </ButtonStyled>
+    </ButtonStyled> : <ButtonStyled
+      onClick={onClick}
+      appearance='action'
+    >
+      {buttontText}
+    </ButtonStyled>}
   </Container>
 }
 

@@ -1,10 +1,18 @@
-import { TDispenserStatus } from 'types'
-import defineDispenserStatusName from './define-dispenser-status-name'
+import { TCollectionStatus } from 'types'
+import defineCollectionStatusName from './define-collection-status-name'
 import { Tag } from 'components/common'
 
-const defineCollectionStatusTag = (tokens_amount: string) => {
-  if (tokens_amount && tokens_amount !== '0') { return tokens_amount }
-  return <Tag status='info' title='No tokens yet' />
+const defineCollectionStatusTag = (status: TCollectionStatus) => {
+  const statusName = defineCollectionStatusName(status)
+  switch (status) {
+    case 'ACTIVE':
+      return <Tag status='success' title={statusName} />
+    case 'ADD_TOKENS':
+    case 'CREATE_LINKS':
+      return <Tag status='info' title={statusName} />
+    default:
+      return <Tag status='default' title={statusName} />
+  }
 }
 
 export default defineCollectionStatusTag

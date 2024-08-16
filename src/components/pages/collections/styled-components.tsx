@@ -41,8 +41,8 @@ export const ContainerButton = styled(Button)`
 `
 
 export const CollectionsListStyled = styled(BatchList)`
-  grid-template-columns: auto auto auto auto 180px;
-  margin-top: 20px; 
+grid-template-columns: 224px 224px auto auto auto auto auto;
+margin-top: 20px; 
 `
 
 export const CollectionsListValueStyled = styled(BatchListValue)`

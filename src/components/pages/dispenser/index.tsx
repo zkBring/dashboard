@@ -64,15 +64,17 @@ const mapStateToProps = ({
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
     
-    addLinksToQR: (
-      dispenserId: string,
+    addLinksToDispenser: (
+      itemId: string,
       links: TLinkDecrypted[],
       encryptedMultiscanQREncCode: string,
       linksCount: number,
       currentStatus: TDispenserStatus,
       callback?: () => void,
-    ) => dispatch(asyncDispensersActions.addLinksToQR({
-      dispenserId,
+
+    // @ts-ignore
+    ) => dispatch(asyncDispensersActions.addLinksToDispenser({
+      itemId,
       links,
       encryptedMultiscanQREncCode,
       linksCount,
@@ -243,8 +245,8 @@ const defineSubtitle = (
   dynamic: boolean
 ) => {
   return dynamic ? 
-    'Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe' :
-    'Linkdrop Dispenser is represented by a single link that you can share for multiple users to scan-to-claim an unique token'
+    'Linkdrop Dispenser QR is represented by a single QR code that dispenses tokens one-by-one to users after they scan it' :
+    'Linkdrop Dynamic QR is represented by a single QR code that updates in real time, preventing a single user from claiming all tokens'
 }
 
 
@@ -299,7 +301,7 @@ const Dispenser: FC<ReduxType> = ({
   dispensers,
   loading,
   mappingLoader,
-  addLinksToQR,
+  addLinksToDispenser,
   dashboardKey,
   address,
   downloadQR,
@@ -504,7 +506,7 @@ const Dispenser: FC<ReduxType> = ({
         mappingLoader={mappingLoader}
         encryptedMultiscanQREncCode={encrypted_multiscan_qr_enc_code}
         linksCount={links_count || 0}
-        addLinksToQR={addLinksToQR}
+        addLinksToDispenser={addLinksToDispenser}
         // not available
         campaignData={currentDispenserData.campaign}
       />

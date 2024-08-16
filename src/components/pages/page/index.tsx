@@ -28,7 +28,7 @@ const defineTitle: TDefineTitle = (location) => {
       return 'Invite Links'
 
     case locationUpdated.includes('/collections'):
-      return 'NFTs Minter'
+      return 'NFT Mintxwer'
 
     case locationUpdated.includes('/campaigns/new'):
     case locationUpdated.includes('/campaigns/new/initial'):

@@ -11,10 +11,12 @@ import getMnemonicCollections from './get-mnemonic-collections'
 import zerionApi from './zerion-api'
 import countriesApi from './countries-api'
 import nonceApi from './nonce-api'
+import qrManagerApi from './qr-manager-api'
 
 export {
   authorizationApi,
   campaignsApi,
+  qrManagerApi,
   nonceApi,
   qrsApi,
   getERC1155AssetData,

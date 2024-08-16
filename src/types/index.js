@@ -55,7 +55,8 @@ import { TDispenserStats } from './dispenser-stats'
 import TMnemonicContract from './mnemonic-contract'
 import {
   TCollection,
-  TCollectionToken
+  TCollectionToken,
+  TCollectionStatus
 } from './collection'
 import  {
   TZerionERC20Item,
@@ -65,9 +66,11 @@ import  {
 import { TZerionNetworkItem } from './zerion-network-item'
 import TCountry from './country'
 import { TStatus } from './status'
+import { TQRManagerItem } from './qr-manager-item'
 
 export {
   TCampaign,
+  TQRManagerItem,
   TStatus,
   TZerionNetworkItem,
   TDispenserStats,
@@ -80,6 +83,7 @@ export {
   TFeatureName,
   TDispenserWhitelistType,
   TButtonAppearance,
+  TCollectionStatus,
   TCampaignDraft,
   TERC20TokenItem,
   TERC20TokenList,

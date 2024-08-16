@@ -2,7 +2,6 @@ import TransactionAside from "./transaction-aside"
 import Aside from './aside'
 import AssetsList from './assets-list'
 import InstructionNote from './instruction-note'
-import InitialGuide from './initial-guide'
 import DownloadQRPopup from './download-qr-popup'
 import UploadLinksPopup from './upload-links-popup'
 import TokenImage from './token-image'
@@ -64,7 +63,6 @@ export {
   TableText,
   TableValue,
   AssetsList,
-  InitialGuide,
   DownloadQRPopup,
   InputTitle,
   InputTitleAdditional,

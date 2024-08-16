@@ -4,6 +4,7 @@ import {
   BatchList,
   BatchListLabel,
   BatchListValue,
+  Container
 } from 'components/pages/common'
 import {
   formatTime,
@@ -15,7 +16,11 @@ import {
   WidgetButton,
   SecondaryTextSpan
 } from '../../styled-components'
-import { ClipboardCopy, BatchId } from './styled-components'
+import {
+  ClipboardCopy,
+  BatchId,
+  LoaderStyled
+} from './styled-components'
 import Icons from 'icons'
 
 
@@ -40,6 +45,7 @@ const BatchesList: FC<TProps> = ({
   campaignId,
   title,
   sdk,
+  loading,
   downloadLinks,
   tokenAddress,
   encryptionKey,
@@ -50,52 +56,53 @@ const BatchesList: FC<TProps> = ({
   if (linksCreated === 0) {
     return <span>No links have been created yet.</span>
   }
-  if (!batches || batches.length === 0) {
-    return null
-  }
-  return <BatchList>
-    <BatchListLabel>#</BatchListLabel>
-    <BatchListLabel>Batch ID</BatchListLabel>
-    
-    <BatchListLabel>Created at</BatchListLabel>
-    <BatchListLabel>Links</BatchListLabel>
-    <BatchListLabel></BatchListLabel>
-    {batches && batches.map((batch, idx) => {
-      const dateFormatted = formatDate(batch.created_at || '')
-      const timeFormatted = formatTime(batch.created_at || '')
-      return <>
-        <BatchListValue>
-          {idx + 1}
-        </BatchListValue>
-        <BatchListValue>
-          <BatchIdContainer batchId={batch.batch_id} />
-        </BatchListValue>
 
-        <BatchListValue>
-          {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
-        </BatchListValue>
-        <BatchListValue>
-          {batch.claim_links_count}
-        </BatchListValue>
-        <WidgetButton
-          appearance='action'
-          disabled={batch.claim_links_count === 0}
-          size='extra-small'
-          title='Download'
-          onClick={() => {
-            downloadLinks(
-              batch.batch_id,
-              campaignId,
-              title,
-              tokenAddress,
-              Boolean(sponsored),
-              sdk ? encryptionKey : undefined
-            )
-          }}
-        />
-      </>
-    })}
-  </BatchList>
+  return <Container>
+    {loading ? <LoaderStyled /> : <BatchList>
+      <BatchListLabel>#</BatchListLabel>
+      <BatchListLabel>Batch ID</BatchListLabel>
+      
+      <BatchListLabel>Created at</BatchListLabel>
+      <BatchListLabel>Links</BatchListLabel>
+      <BatchListLabel></BatchListLabel>
+      {batches && batches.map((batch, idx) => {
+        const dateFormatted = formatDate(batch.created_at || '')
+        const timeFormatted = formatTime(batch.created_at || '')
+        return <>
+          <BatchListValue>
+            {idx + 1}
+          </BatchListValue>
+          <BatchListValue>
+            <BatchIdContainer batchId={batch.batch_id} />
+          </BatchListValue>
+
+          <BatchListValue>
+            {dateFormatted} <SecondaryTextSpan>{timeFormatted}</SecondaryTextSpan>
+          </BatchListValue>
+          <BatchListValue>
+            {batch.claim_links_count}
+          </BatchListValue>
+          <WidgetButton
+            appearance='action'
+            disabled={batch.claim_links_count === 0}
+            size='extra-small'
+            title='Download'
+            onClick={() => {
+              downloadLinks(
+                batch.batch_id,
+                campaignId,
+                title,
+                tokenAddress,
+                Boolean(sponsored),
+                sdk ? encryptionKey : undefined
+              )
+            }}
+          />
+        </>
+      })}
+    </BatchList>}
+    
+  </Container>
 }
 
 export default BatchesList

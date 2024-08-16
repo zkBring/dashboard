@@ -21,8 +21,8 @@ import {
 import {
   formatDate,
   formatTime,
-  shortenString,
-  defineCollectionStatusTag
+  defineCollectionStatusTag,
+  defineCollectionStatus
 } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
@@ -51,7 +51,6 @@ const Collections: FC<ReduxType> = ({
   collections,
   loading
 }) => {
-
   if (collections.length === 0) {
     return <InitialNote
       title='Create Your First NFT collection'
@@ -66,7 +65,7 @@ const Collections: FC<ReduxType> = ({
       <Header>
         <WidgetTitleStyled>My NFT Contracts</WidgetTitleStyled>
         <ContainerButton
-          title='+ Deploy new contract'
+          title='+ Add'
           disabled={loading}
           size='extra-small'
           appearance='action'
@@ -74,28 +73,55 @@ const Collections: FC<ReduxType> = ({
         />
       </Header>
       {collections.length > 0 && <CollectionsListStyled>
-        <BatchListLabel>Title</BatchListLabel>
-        <BatchListLabel>Date created</BatchListLabel>
-        <BatchListLabel>Address</BatchListLabel>
-        <BatchListLabel>All token copies</BatchListLabel>
+        <BatchListLabel>Created</BatchListLabel>
+        <BatchListLabel>Name</BatchListLabel>
+        <BatchListLabel>Symbol</BatchListLabel>
+        <BatchListLabel>Links</BatchListLabel>
+        <BatchListLabel>Claims</BatchListLabel>
+        <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
+
+        {/* @ts-ignore */}
         {collections.map(collection => {
-          const { title, collection_id, created_at, tokens_amount, token_address, thumbnail } = collection
+          const {
+            title,
+            collection_id,
+            created_at,
+            tokens_amount,
+            token_address,
+            thumbnail,
+            symbol,
+            links_claimed,
+            links_count
+          } = collection
+          const status = defineCollectionStatus(
+            false,
+            Number(links_count),
+            Number(tokens_amount)
+          )
+          const statusTag = defineCollectionStatusTag(status)
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           return <>
+            <BatchListValue>
+              {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
+            </BatchListValue>
             <CollectionsListLabelStyled>
               <TokenImageStyled src={thumbnail} address={token_address} />
               {title}
             </CollectionsListLabelStyled>
+
             <BatchListValue>
-              {dateCreatedFormatted}, <SecondaryTextSpan>{timeCreatedFormatted}</SecondaryTextSpan>
+              {symbol}
             </BatchListValue>
             <BatchListValue>
-              {shortenString(token_address)}
+              {links_count}
             </BatchListValue>
             <BatchListValue>
-              {defineCollectionStatusTag(tokens_amount || '0')}
+              {links_claimed}
+            </BatchListValue>
+            <BatchListValue>
+              {statusTag}
             </BatchListValue>
             <BatchListValueJustifySelfEnd>
               <Button
@@ -113,4 +139,5 @@ const Collections: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Collections)

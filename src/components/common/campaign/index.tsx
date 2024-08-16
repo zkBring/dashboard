@@ -117,7 +117,7 @@ const CampaignComponent: FC<TProps & ReduxType> = ({
       <CampaignValue>{capitalize(claimPattern)}</CampaignValue>
     </CampaignRow>
     <CampaignRow>
-      <CampaignText>Date created</CampaignText>
+      <CampaignText>Created</CampaignText>
       <CampaignValue>{dateFormatted}, {timeFormatted}</CampaignValue>
     </CampaignRow>
     <CampaignButtons>

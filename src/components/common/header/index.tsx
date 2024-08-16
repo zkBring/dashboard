@@ -71,7 +71,14 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   const nativeTokenAmountFormatted = nativeTokenAmount ? utils.formatEther(nativeTokenAmount) : 0
   const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
     {Object.keys(chains).map((chain: string) => {
-      if (chainsAvailable.length > 0 && !chainsAvailable.find(network => Number(chain) === Number(network))) {
+      if (
+        chainsAvailable.length > 0 &&
+        !chainsAvailable.find(network => Number(chain) === Number(network))
+      ) {
+        return null
+      }
+
+      if (chain === '13371') {
         return null
       }
       const currentChain = chains[Number(chain)]

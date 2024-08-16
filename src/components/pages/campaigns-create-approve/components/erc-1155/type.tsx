@@ -12,4 +12,5 @@ export type TProps = {
   setAssetsData: (newAssets: TLinksContent) => void
   claimPattern: TClaimPattern
   children?: React.ReactNode
+  collectionId?: null | string
 }
