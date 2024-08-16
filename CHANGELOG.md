@@ -5,6 +5,7 @@
 - immutable zkevm network support
 - new SDK version
 - bug fix for login with coinbase extension
+- coinbase wallet app added as wallet option
 
 ## 2.1.35
 - new UI for Collections page
