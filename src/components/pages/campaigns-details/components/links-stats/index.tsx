@@ -17,13 +17,12 @@ const LinksStats: FC<TProps> = ({
   return <Container>
     <WidgetComponent>
       <Subtitle>Links created</Subtitle>
-      <Value>{linksAmount}</Value>
+      <Value>{linksAmount || 0}</Value>
     </WidgetComponent>
      <WidgetComponent>
       <Subtitle>Claims</Subtitle>
-      <Value>{sponsored ? linksClaimed : 'N/A'}</Value>
+      <Value>{sponsored ? (linksClaimed|| 0) : 'N/A'}</Value>
     </WidgetComponent>
   </Container>
 }
-
 export default LinksStats

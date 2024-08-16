@@ -183,10 +183,10 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
             </TextLink>
           </BatchListValue>
           <BatchListValue>
-            {sponsored ? (links_count || 0) : '-'}
+            {links_count || 0}
           </BatchListValue>
           <BatchListValue>
-            {links_claimed || 0}
+            {sponsored ? (links_claimed || 0) : 'N/A'}
           </BatchListValue>
           <BatchListValue>
             {defineCampaignStatus(false)}
