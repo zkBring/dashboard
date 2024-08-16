@@ -278,4 +278,5 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   </>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)
