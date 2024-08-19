@@ -35,7 +35,6 @@ function applyClaimPattern(
       contractSpecificOption.pattern &&
       contractSpecificOption.pattern.chainId === chainId
     ) {
-      alert(`claim pattern "${contractSpecificOption.pattern.type}" is applied`)
       dispatch(actionsCampaign.setClaimPattern(contractSpecificOption.pattern.type))
     } else {
       dispatch(actionsCampaign.setClaimPattern(claimPattern))

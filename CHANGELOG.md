@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.37
+- additional config (related to claim pattern) for token address
+
 ## 2.1.36
 - UI updates
 - immutable zkevm network support
