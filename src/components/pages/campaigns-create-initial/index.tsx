@@ -62,11 +62,16 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       isNewCampaign: boolean,
       callback: () => void
     ) => dispatch(
-      campaignAsyncActions.applyClaimPattern(claimPattern, isNewCampaign, callback)
+      campaignAsyncActions.applyClaimPattern(
+        claimPattern,
+        isNewCampaign,
+        callback
+      )
     )
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
 const patterns = [
@@ -183,4 +188,5 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateInitial)
