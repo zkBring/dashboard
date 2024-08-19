@@ -1,6 +1,7 @@
 import { UserState, UserActions } from './types'
 import { Constants } from './constants'
 import chains from 'configs/chains'
+import { BigNumber } from 'ethers'
 
 const { REACT_APP_CHAINS } = process.env
 const chainsAvailable: number[] = REACT_APP_CHAINS ? JSON.parse(REACT_APP_CHAINS) : Object.keys(chains)
@@ -12,7 +13,7 @@ const initialState: UserState = {
   jsonRPCProvider: null,
   signer: null,
   chainId: null,
-  nativeTokenAmount: null,
+  nativeTokenAmount: BigNumber.from('0'),
   tokenAmount: null,
   sdk: null,
   dashboardKey: null,
