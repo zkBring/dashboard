@@ -12,9 +12,7 @@ const campaignPause = async (
   const oneGwei = ethers.utils.parseUnits('1', 'gwei')
   const data =  await iface.encodeFunctionData('pause', [])
   const payload = { to: contractAddress, from: account, gasPrice: gasPrice.add(oneGwei), data }
-
-  const transaction = await signer.sendTransaction(payload)
-
+  await signer.sendTransaction(payload)
   const checkTransaction = async function (): Promise<string> {
     return new Promise((resolve, reject) => {
       const checkInterval = setInterval(async () => {

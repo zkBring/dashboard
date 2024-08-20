@@ -51,13 +51,13 @@ export const ContainerButton = styled(Button)`
 export const ButtonStyled = styled(Button)``
 
 export const CampaignsListStyled = styled(BatchList)`
-  grid-template-columns: 224px 224px auto auto auto auto auto;
-  margin-top: 24px;
+  grid-template-columns: 158px 224px auto auto auto auto auto;
+  margin-top: 20px;
 `
 
 export const DraftsListStyled = styled(BatchList)`
-  grid-template-columns: 224px 224px 1fr max-content;
-  margin-top: 24px;
+  grid-template-columns: 158px 224px 1fr max-content;
+  margin-top: 20px;
 `
 
 export const Title = styled.h2`
