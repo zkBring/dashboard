@@ -9,7 +9,7 @@ import {
 } from 'components/pages/common'
 
 export const Container = styled.div`
-  max-width: 1120px;
+  max-width: 1100px;
 `
 
 export const Header = styled.div`
@@ -41,7 +41,7 @@ export const ContainerButton = styled(Button)`
 `
 
 export const CollectionsListStyled = styled(BatchList)`
-grid-template-columns: 224px 224px auto auto auto auto auto;
+grid-template-columns: 158px 224px auto auto auto auto auto;
 margin-top: 20px; 
 `
 

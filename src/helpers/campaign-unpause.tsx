@@ -13,7 +13,7 @@ const campaignUnpause = async (
   const data =  await iface.encodeFunctionData('unpause', [])
   const payload = { to: contractAddress, from: account, gasPrice: gasPrice.add(oneGwei), data }
 
-  const transaction = await signer.sendTransaction(payload)
+  await signer.sendTransaction(payload)
 
   const checkTransaction = async function (): Promise<string> {
     return new Promise((resolve, reject) => {

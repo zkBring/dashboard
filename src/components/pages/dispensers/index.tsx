@@ -178,7 +178,7 @@ const defineHref = (
   dispenserId: string,
   dynamic?: boolean,
 ) => {
-  if (dynamic) {
+  if (!dynamic) {
     return `/dispensers/${dispenserId}`
   }
 
@@ -233,7 +233,9 @@ const Dispensers: FC<ReduxType> = ({
     />}
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled></WidgetTitleStyled>
+        <WidgetTitleStyled>
+          QR campaigns
+        </WidgetTitleStyled>
         <ContainerButton
           title='+ New'
 

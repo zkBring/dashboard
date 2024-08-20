@@ -3,7 +3,7 @@ import { Button } from 'components/common'
 import { WidgetTitle, BatchListValue, BatchList, BatchListLabel } from 'components/pages/common'
 
 export const Container = styled.div`
-  max-width: 1120px;
+  max-width: 1100px;
 `
 
 export const Header = styled.div`
@@ -44,7 +44,7 @@ export const ContainerButton = styled(Button)`
 `
 
 export const DispensersListStyled = styled(BatchList)`
-  grid-template-columns: 120px 120px 200px auto auto auto auto auto auto;
+  grid-template-columns: 120px 120px 120px 200px auto auto auto auto auto;
   margin-top: 20px; 
 `
 
