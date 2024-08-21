@@ -325,6 +325,14 @@ const defineComponent: TDefineComponent = (
   }
 }
 
+const defineDefaultSponsoredValue = (chainId: number) => {
+  if (chainId === 1) {
+    return false
+  }
+
+  return true
+} 
+
 const renderAsideContents = ({
   approved,
   sdk,
@@ -398,13 +406,14 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
   const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
-  const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : true
+  const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : defineDefaultSponsoredValue(chainId as number)
 
   const defineRedirectUrl = () => {
     return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
   }
 
   const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
+
   const [ data, setData ] = useState<TLinksContent>([])
 
   const [
