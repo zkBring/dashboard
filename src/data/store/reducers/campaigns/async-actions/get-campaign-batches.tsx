@@ -6,9 +6,11 @@ import { campaignsApi } from 'data/api'
 import { decrypt } from 'lib/crypto'
 
 const getCampaignBatches = ({
-  campaign_id
+  campaign_id,
+  callback
 }: {
-  campaign_id: string | number
+  campaign_id: string | number,
+  callback: () => Promise<void>
 }) => {
   return async (
     dispatch: Dispatch<CampaignsActions>,
@@ -27,7 +29,6 @@ const getCampaignBatches = ({
             const { claim_links, batch } = batchData.data
             expirationDate = claim_links[0].expiration_time as number
           }
-        
         }
 
         
@@ -42,6 +43,8 @@ const getCampaignBatches = ({
           return campaign
         })
         dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
+
+        callback && callback()
       }
     } catch (err) {
       console.error(err)

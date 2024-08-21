@@ -90,9 +90,12 @@ const mapStateToProps = ({
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    getCampaignBatches: (campaign_id: string | number) => {
+    getCampaignBatches: (
+      campaign_id: string | number,
+      callback: () => Promise<void>
+    ) => {
       dispatch(
-        getCampaignBatches({ campaign_id })
+        getCampaignBatches({ campaign_id, callback })
       )
     },
     downloadReport: (
@@ -249,7 +252,16 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   const [ withdrawable, setWithdrawable ] = useState<boolean>(false)
 
   useEffect(() => {
-    getCampaignBatches(params.id)
+    getCampaignBatches(
+      params.id,
+      async () => {
+        await defineCampaignStatus(
+          proxy_contract_address,
+          signer
+        )
+        setStatus(status)
+      }
+    )
   }, [])
 
   useEffect(() => {
@@ -259,17 +271,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         provider
       )
       setWithdrawable(amount > 0)
-    }
-    onInit()
-  }, [])
-
-  useEffect(() => {
-    const onInit = async () => {
-      const status = await defineCampaignStatus(
-        proxy_contract_address,
-        signer
-      )
-      setStatus(status)
     }
     onInit()
   }, [])
@@ -702,4 +703,5 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   </Container>
 }
 
+// @ts-ignore
 export default withRouter(connect(mapStateToProps, mapDispatcherToProps)(CampaignDetails))

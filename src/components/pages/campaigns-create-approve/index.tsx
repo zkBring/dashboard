@@ -325,6 +325,14 @@ const defineComponent: TDefineComponent = (
   }
 }
 
+const defineDefaultSponsoredValue = (chainId: number) => {
+  if (chainId === 1) {
+    return false
+  }
+
+  return true
+} 
+
 const renderAsideContents = ({
   approved,
   sdk,
@@ -398,13 +406,14 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
   const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
   const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
-  const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : true
+  const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : defineDefaultSponsoredValue(chainId as number)
 
   const defineRedirectUrl = () => {
     return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/secure` : `/campaigns/new/${tokenStandard}/secure`
   }
 
   const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
+
   const [ data, setData ] = useState<TLinksContent>([])
 
   const [
@@ -524,7 +533,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
       claimPattern={claimPattern}
     />}
     <WidgetContainer>
-      <WidgetComponent title='Distribution'>
+      {false && <WidgetComponent title='Distribution'>
         <WidgetSubtitle>Select the way you’d prefer to create and distribute tokens</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
@@ -538,8 +547,8 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             setSdk(value)
           }}
         />
-      </WidgetComponent>
-      <WidgetComponent title='Gasless Claiming'>
+      </WidgetComponent>}
+      {false && <WidgetComponent title='Gasless Claiming'>
         <WidgetSubtitle>Selecting to sponsor transactions will allow users to claim tokens without having any {nativeTokenSymbol} in their wallets, otherwise users will pay gas to cover transactions themselves</WidgetSubtitle>
         <StyledRadio
           disabled={Boolean(currentCampaign) || loading}
@@ -550,7 +559,7 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
             setSponsored(value)
           }}
         />
-      </WidgetComponent>
+      </WidgetComponent>}
       
       {content}
     </WidgetContainer>
@@ -678,4 +687,5 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateApprove)
