@@ -1,5 +1,10 @@
 # Linkdrop Dashboard
 
+## 2.1.38
+- sponsored option updates
+- zerion removed from wallets list
+- UX/UI improvements
+
 ## 2.1.37
 - additional config (related to claim pattern) for token address
 
