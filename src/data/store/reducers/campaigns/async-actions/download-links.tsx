@@ -13,6 +13,7 @@ import {
 import { TClaimPattern, TTokenType } from 'types'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 const downloadLinks = (
   batchId: string | number,
@@ -33,19 +34,43 @@ const downloadLinks = (
   ) => {
 
     let {
-      user: { dashboardKey, address },
+      user: {
+        dashboardKey,
+        address,
+        provider
+      },
     } = getState()
 
-    
+    dispatch(actionsCampaigns.setLoading(true))
     if (!dashboardKey) {
       if ( !encryptionKey) {
-        return alertError ('dashboardKey and encryptionKey are not provided')
+        if (!dashboardKey) {
+          alert('create or retrieve dashboard key STARTED')
+          // @ts-ignore
+          const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+            dispatch,
+            chainId as number,
+            address,
+            provider,
+            false
+          )
+          if (dashboardKeyCreated !== undefined) {
+            // @ts-ignore
+            dashboardKey = dashboardKeyCreated
+          }
+          alert('create or retrieve dashboard key FINISHED')
+          if (!dashboardKey) {
+            dispatch(actionsCampaigns.setLoading(false))
+            return alertError('Dashboard Key is not available')
+          }
+        }
+
+      } else {
+        dashboardKey = encryptionKey
       }
+
     }
 
-    if (encryptionKey) {
-      dashboardKey = encryptionKey
-    }
 
     if (!tokenAddress) { return alertError ('tokenAddress is not provided') }
     try {

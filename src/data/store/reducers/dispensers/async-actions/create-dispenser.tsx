@@ -14,19 +14,16 @@ import { encrypt } from 'lib/crypto'
 import { plausibleApi, qrManagerApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 type TCreateDispenserArgs = {
   title: string,
-  // date: string,
-  // duration: number,
   dynamic: boolean,
   callback?: (id: string | number) => void,
 }
 
 const createDispenser = ({
   title,
-  // date,
-  // duration,
   dynamic,
   callback
 }: TCreateDispenserArgs) => {
@@ -34,19 +31,47 @@ const createDispenser = ({
     dispatch: Dispatch<DispensersActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { user: { sdk, dashboardKey, address } } = getState()
     dispatch(actionsDispensers.setLoading(true))
+
+    let {
+      user: {
+        sdk,
+        dashboardKey,
+        address,
+        chainId,
+        provider
+      }
+    } = getState()
+
     if (!dashboardKey) {
-      throw new Error('dashboardKey is not provided')
+      alert('create or retrieve dashboard key STARTED')
+      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+        dispatch,
+        chainId as number,
+        address,
+        provider,
+        false
+      )
+      if (dashboardKeyCreated !== undefined) {
+        // @ts-ignore
+        dashboardKey = dashboardKeyCreated
+      }
+      alert('create or retrieve dashboard key FINISHED')
+      if (!dashboardKey) {
+        alertError('Dashboard Key is not available')
+        return dispatch(actionsDispensers.setLoading(false))
+      }
     }
+
+
     try {
       const secretKeyPair = sdk?.utils.generateAccount(12, true)
       const encKeyPair = sdk?.utils.generateAccount(12, true)
       if (!secretKeyPair) { return alertError('secretKeyPair is not provided') }
       if (!encKeyPair) { return alertError('encKeyPair is not provided') }
         
-      const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey)
-      const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey)
+      const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey as string)
+      const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey as string)
       const date = getNextDayData()
       const dispenserTime = momentNoOffsetGetTime(+date) 
       const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))

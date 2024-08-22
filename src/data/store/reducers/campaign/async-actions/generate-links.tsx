@@ -1,7 +1,8 @@
 import { Dispatch } from 'redux'
 import * as actionsCampaign from '../actions'
-import * as actionsCampaigns from '../../campaigns/actions'
 import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
+import * as actionsAsyncUser from '../../user/async-actions'
+
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState, IAppDispatch } from 'data/store'
@@ -23,10 +24,6 @@ import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
 import * as campaignsActions from '../../campaigns/actions'
 
-const {
-  REACT_APP_INFURA_ID,
-} = process.env
-
 const generateERC20Link = ({
   callback,
   id: currentCampaignId
@@ -42,13 +39,30 @@ const generateERC20Link = ({
       user: {
         chainId,
         address,
-        dashboardKey,
         workersCount,
-        signer
+        signer,
+        provider,
+        dashboardKey
       },
       campaign,
       campaigns: { campaigns }
     } = getState()
+
+    if (!dashboardKey || dashboardKey === null) {
+      alert('create or retrieve dashboard key STARTED')
+      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+        dispatch,
+        chainId as number,
+        address,
+        provider,
+        false
+      )
+      if (dashboardKeyCreated !== undefined) {
+        // @ts-ignore
+        dashboardKey = dashboardKeyCreated
+      }
+      alert('create or retrieve dashboard key FINISHED')
+    }
   
     let currentPercentage = 0
     try {
@@ -83,11 +97,10 @@ const generateERC20Link = ({
       if (!id) { return alertError('campaign id is not provided') }
       if (!signerKey) { return alertError('signerKey is not provided') }
       if (!signerAddress) { return alertError('signerAddress is not provided') }
-      if (!dashboardKey || dashboardKey === null) { return alertError('dashboardKey is not provided') }
+
+
+
       if (!tokenStandard) { return alertError('tokenStandard is not provided') }
-      if (!REACT_APP_INFURA_ID) {
-        return alertError('REACT_APP_INFURA_ID is not provided in .env file')
-      }
 
       const start = +(new Date())
       const neededWorkersCount = assets.length <= 1000 ? 1 : workersCount
@@ -168,7 +181,7 @@ const generateERC20Link = ({
         
         const newCampaign: TCampaignNew = {
           campaign_number: id,
-          encrypted_signer_key: encrypt(signerKey, dashboardKey),
+          encrypted_signer_key: encrypt(signerKey, dashboardKey as string),
           signer_address: signerAddress,
           token_address: tokenAddress,
           creator_address: address,

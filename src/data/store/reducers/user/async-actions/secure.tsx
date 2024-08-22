@@ -86,7 +86,7 @@ const secure = (
         to = contract.factory
       } else {
         let iface = new utils.Interface(LinkdropMastercopy.abi)
-        data = await iface.encodeFunctionData('addSigner', [
+        data = iface.encodeFunctionData('addSigner', [
           wallet
         ])
         to = proxyContractAddress

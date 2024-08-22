@@ -11,6 +11,7 @@ import { sleep, alertError } from 'helpers'
 import { plausibleApi, qrManagerApi, qrsApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 const mapQRsWithLinksAction = ({
   setId,
@@ -27,13 +28,39 @@ const mapQRsWithLinksAction = ({
     dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { qrs: { qrs: qrSets }, user: { dashboardKey } } = getState()
+    dispatch(actionsQR.setLoading(true))
+    const {
+      user: {
+        dashboardKey,
+        chainId,
+        address,
+        provider
+      }
+    } = getState()
     try {
       let currentPercentage = 0
+
       if (!dashboardKey) {
-        throw new Error('dashboardKey is not provided')
+        alert('create or retrieve dashboard key STARTED')
+        // @ts-ignore
+        const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+          dispatch,
+          chainId as number,
+          address,
+          provider,
+          false
+        )
+        if (dashboardKeyCreated !== undefined) {
+          // @ts-ignore
+          dashboardKey = dashboardKeyCreated
+        }
+        alert('create or retrieve dashboard key FINISHED')
+        if (!dashboardKey) {
+          alertError('Dashboard Key is not available')
+          return dispatch(actionsQR.setLoading(false))
+        }
       }
-      dispatch(actionsQR.setLoading(true))
+
       const start = +(new Date())
 
       const updateProgressbar = async (value: number) => {

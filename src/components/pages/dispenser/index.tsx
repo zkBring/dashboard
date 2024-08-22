@@ -40,7 +40,6 @@ import { decrypt, encrypt } from 'lib/crypto'
 import { ethers } from 'ethers'
 import { defineClaimAppURL, defineNetworkName } from 'helpers'
 
-
 const mapStateToProps = ({
   campaigns: { campaigns },
   dispensers: {
@@ -153,6 +152,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
     updateRedirectURL: (
       dispenser_id: string,
       redirect_url: string,
@@ -166,6 +166,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
     toggleWhitelist: (
       dispenser_id: string,
       whitelist_on: boolean,
@@ -177,12 +178,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
     downloadReport: (
       dispenser_id: string,
     ) => dispatch(asyncDispensersActions.downloadReport(
       dispenser_id
     )),
-
 
     createAddressWhitelist: (
       dispenserId: string,
@@ -197,6 +198,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
     updateAddressWhitelist: (
       dispenserId: string,
       whitelist: string[],
@@ -211,6 +213,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback,
       errorCallback
     })),
+
     getDispenserWhitelist: (
       dispenser_id: string,
       callback?: () => void
@@ -232,6 +235,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       // duration,
       callback
     })),
+
+    decryptDispenserData: (
+      dispenser_id: string
+    ) => {
+      dispatch(asyncDispensersActions.decryptDispenserData(
+        { dispenser_id }
+      ))
+    }
   }
 }
 
@@ -277,15 +288,19 @@ const renderMainButton = (
 
 const defineQRItem = (
   dynamic: boolean,
-  link: string,
-  address: string
+  address: string,
+  dispenser_url?: string
 ) => {
 
   if (dynamic) {
     return <DynamicQRImage src={DynamicQRImageSrc} />
   }
 
-  return <QRCode link={link} address={address} />
+  if (!dispenser_url) {
+    return null
+  }
+
+  return <QRCode link={dispenser_url} address={address} />
 }
 
 const defineQRCodeDescription = () => {
@@ -318,7 +333,8 @@ const Dispenser: FC<ReduxType> = ({
   updateAddressWhitelist,
   currentDispenserData,
   updateDispenser,
-  getDispenserWhitelist
+  getDispenserWhitelist,
+  decryptDispenserData
 
 }) => {
   const { id } = useParams<{id: string}>()
@@ -336,8 +352,11 @@ const Dispenser: FC<ReduxType> = ({
   ] = useState<boolean>(false)
 
 
-  useEffect(() => {
+  if (!dispenser) {
+    return <Redirect to='/dispensers' />
+  }
 
+  useEffect(() => {
     if (!dispenser || !dispenser?.updated_at) { return }
     getDispenserStats(
       dispenser.dispenser_id as string,
@@ -346,60 +365,15 @@ const Dispenser: FC<ReduxType> = ({
     )
   }, [dispenser?.updated_at])
 
-  const claimAppURL = defineClaimAppURL(
-    address
-  )
-
   const qrCodeDescription = defineQRCodeDescription()
 
-  const {
-    claimURLDecrypted,
-    redirectURLDecrypted
-  } = useMemo<{claimURLDecrypted: string, redirectURLDecrypted: string}>(() => {
-    if (!dispenser || !dashboardKey) { return { claimURLDecrypted: '', redirectURLDecrypted: '' } }
-      const {
-        redirect_url,
-        encrypted_multiscan_qr_enc_code,
-        encrypted_multiscan_qr_secret,
-        whitelist_on,
-        dynamic
-      } = dispenser 
-      const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
-      const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
-      // 
-      const claimURLDecrypted = defineDispenserAppUrl(
-        claimAppURL,
-        decryptedMultiscanQRSecret,
-        multiscanQREncCode,
-        Boolean(whitelist_on),
-        Boolean(dynamic)
-      )
-
-      const linkKey = ethers.utils.id(multiscanQREncCode)
-      try {
-        const redirectURLDecrypted = redirect_url ? decrypt(redirect_url, linkKey.replace('0x', '')) : ''
-        return {
-          claimURLDecrypted,
-          redirectURLDecrypted
-        }
-      } catch (e) {
-        console.log({ e })
-        alertError('Some error occured. Please check console for more info')
-        return {
-          claimURLDecrypted,
-          redirectURLDecrypted: ''
-        }
-      }
-  }, dispenser ? [
-    dispenser.encrypted_multiscan_qr_enc_code,
-    dispenser.encrypted_multiscan_qr_secret,
+  useEffect(() => {
+    decryptDispenserData(id)
+  }, [
     dispenser.redirect_url,
     dispenser.whitelist_on
-  ] : []) 
+  ])
 
-  if (!dispenser || !dashboardKey) {
-    return <Redirect to='/dispensers' />
-  }
 
   const {
     dispenser_id,
@@ -418,7 +392,10 @@ const Dispenser: FC<ReduxType> = ({
     whitelist_on,
     dynamic,
     claim_finish,
-    timeframe_on
+    timeframe_on,
+    dispenser_url,
+    decrypted_redirect_url
+
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -434,13 +411,13 @@ const Dispenser: FC<ReduxType> = ({
   const mainButton = renderMainButton(
     dynamic as boolean,
     toggleDownloadPopup,
-    claimURLDecrypted
+    dispenser_url
   )
 
   const qrCodeContainer = defineQRItem(
     Boolean(dynamic),
-    claimURLDecrypted,
-    address
+    address,
+    dispenser_url,
   )
 
   return <Container>
@@ -470,9 +447,9 @@ const Dispenser: FC<ReduxType> = ({
 
         {qrCodeDescription}
 
-        <CopyContainerStyled
-          text={claimURLDecrypted}
-        />
+        {dispenser_url && <CopyContainerStyled
+          text={dispenser_url}
+        />}
         
         <Buttons>
           {mainButton}
@@ -513,8 +490,8 @@ const Dispenser: FC<ReduxType> = ({
 
 
       <Settings
-        redirectUrl={redirectURLDecrypted}
-        claimUrl={claimURLDecrypted}
+        redirectUrl={decrypted_redirect_url}
+        claimUrl={dispenser_url}
         loading={loading}
         campaignData={currentDispenserData.campaign}
         getDispenserWhitelist={getDispenserWhitelist}

@@ -18,14 +18,13 @@ import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
 const mapStateToProps = ({
   campaigns: { campaigns },
   qrs: { qrs, loading, downloadItems, downloadLoader },
-  user: { address, chainId, dashboardKey },
+  user: { address, chainId },
 }: RootState) => ({
   campaigns,
   address,
   chainId,
   qrs,
   loading,
-  dashboardKey,
   downloadItems,
   downloadLoader
 })

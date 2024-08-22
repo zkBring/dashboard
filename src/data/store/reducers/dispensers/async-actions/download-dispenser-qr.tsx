@@ -15,7 +15,8 @@ import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 import { plausibleApi } from 'data/api'
-import { decrypt, encrypt } from 'lib/crypto'
+import { decrypt } from 'lib/crypto'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 const downloadQR = ({
   multiscan_qr_id,
@@ -43,9 +44,36 @@ const downloadQR = ({
     getState: () => RootState
   ) => {
     dispatch(actionsQR.setLoading(true))
-    const { user: { dashboardKey, address } } = getState()
+    let {
+      user: {
+        dashboardKey,
+        address,
+        chainId,
+        provider
+      }
+    } = getState()
     try {
-      if (!dashboardKey) { return alertError('dashboardKey is not provided') }
+
+    if (!dashboardKey) {
+      alert('create or retrieve dashboard key STARTED')
+      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+        dispatch,
+        chainId as number,
+        address,
+        provider,
+        false
+      )
+      if (dashboardKeyCreated !== undefined) {
+        // @ts-ignore
+        dashboardKey = dashboardKeyCreated
+      }
+      alert('create or retrieve dashboard key FINISHED')
+      if (!dashboardKey) {
+        dispatch(actionsQR.setLoading(false))
+        return alertError('Dashboard Key is not available')
+      }
+    }
+      
       if (!encrypted_multiscan_qr_secret) { return alertError('encrypted_multiscan_qr_secret is not provided') }
       if (!multiscan_qr_id) { return alertError('multiscan_qr_id is not provided') }
       const claimAppURL = defineClaimAppURL(address)
@@ -61,8 +89,8 @@ const downloadQR = ({
       const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
       const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(() => console.log('QR created')))
 
-      const decryptedQrSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
-      const decryptedQrEncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
+      const decryptedQrSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey as string)
+      const decryptedQrEncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey as string)
       const claimURLDecrypted = defineDispenserAppUrl(
         claimAppURL,
         decryptedQrSecret,

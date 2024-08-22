@@ -12,12 +12,12 @@ import {
   terminateWorkers,
   alertError,
   defineQROptions,
-  defineIfQRIsDeeplink,
   defineClaimAppURL
 } from 'helpers'
 import { Remote } from 'comlink'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { plausibleApi } from 'data/api'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 const downloadQRs = ({
   qrsArray,
@@ -37,13 +37,43 @@ const downloadQRs = ({
     getState: () => RootState
   ) => {
     dispatch(actionsQR.setLoading(true))
-    const { user: { dashboardKey, workersCount, address } } = getState()
+
+    const {
+      user: {
+        dashboardKey,
+        workersCount,
+        address,
+        chainId,
+        provider
+      }
+    } = getState()
     const claimAppURL = defineClaimAppURL(address)
 
     let currentPercentage = 0
+
+    if (!dashboardKey) {
+      alert('create or retrieve dashboard key STARTED')
+      // @ts-ignore
+      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+        dispatch,
+        chainId as number,
+        address,
+        provider,
+        false
+      )
+      if (dashboardKeyCreated !== undefined) {
+        // @ts-ignore
+        dashboardKey = dashboardKeyCreated
+      }
+      alert('create or retrieve dashboard key FINISHED')
+      if (!dashboardKey) {
+        alertError('Dashboard Key is not available')
+        return dispatch(actionsQR.setLoading(false))
+      }
+    }
+
     try {
       const neededWorkersCount = qrsArray.length <= 1000 ? 1 : workersCount
-      if (!dashboardKey) { return alertError('dashboardKey is not provided') }
       if (!qrsArray) { return alertError('qrsArray is not provided') }
       const start = +(new Date())
       
@@ -69,7 +99,6 @@ const downloadQRs = ({
       console.log({ linkGroups })
       const workers = await createWorkers(linkGroups, 'qrs', updateProgressbar)
       console.log({ workers })
-      const isDeeplink = defineIfQRIsDeeplink(address)
       const result = await Promise.all(workers.map(({
         worker,
         data
@@ -82,7 +111,6 @@ const downloadQRs = ({
         logoImageLoaded.height,
         img, // image bitmap to render in canvas
         qrOption,
-        isDeeplink,
         claimAppURL
       )))
 

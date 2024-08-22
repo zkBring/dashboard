@@ -8,13 +8,15 @@ import {
   sleep,
   createQuantityGroups,
   createWorkers,
-  terminateWorkers
+  terminateWorkers,
+  alertError
 } from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { Remote } from 'comlink';
 import { plausibleApi, qrManagerApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 const addQRSet = ({
   title,
@@ -29,12 +31,41 @@ const addQRSet = ({
     dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { user: { address, dashboardKey, workersCount } } = getState()
+    let {
+      user: {
+        address,
+        dashboardKey,
+        workersCount,
+        chainId,
+        provider
+      }
+    } = getState()
+    dispatch(actionsQR.setLoading(true))
+
+    if (!dashboardKey) {
+      alert('create or retrieve dashboard key STARTED')
+      // @ts-ignore
+      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+        dispatch,
+        chainId as number,
+        address,
+        provider,
+        false
+      )
+      if (dashboardKeyCreated !== undefined) {
+        // @ts-ignore
+        dashboardKey = dashboardKeyCreated
+      }
+      alert('create or retrieve dashboard key FINISHED')
+      if (!dashboardKey) {
+        alertError('Dashboard Key is not available')
+        return dispatch(actionsQR.setLoading(false))
+      }
+    }
+
     try {
       let currentPercentage = 0
       const neededWorkersCount = quantity <= 1000 ? 1 : workersCount
-      if (!dashboardKey) { throw new Error('No dashboardKey found') }
-      dispatch(actionsQR.setLoading(true))
       const start = +(new Date())
 
       const updateProgressbar = async (value: number) => {
