@@ -96,6 +96,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         getCampaignBatches({ campaign_id, callback })
       )
     },
+
     downloadReport: (
       campaign_id: string
     ) => {
@@ -253,9 +254,9 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     getCampaignBatches(
       params.id,
       async () => {
-        await defineCampaignStatus(
+        const status = await defineCampaignStatus(
           proxy_contract_address,
-          signer
+          signer,
         )
         setStatus(status)
       }
@@ -306,6 +307,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     claiming_finished_button_on,
     preferred_wallet_on
   } = currentCampaign
+
+  console.log({ batches })
 
   const encryptionKey = createEncryptionKey(
     signer_address,

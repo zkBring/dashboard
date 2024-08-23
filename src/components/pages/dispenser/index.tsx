@@ -88,7 +88,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrDispenserName: string,
       whitelistOn: boolean,
       dynamic: boolean,
-      callback?: () => void
+      successCallback?: () => void
     ) => dispatch(asyncDispensersActions.downloadDispenserQR({
       multiscan_qr_id,
       encrypted_multiscan_qr_secret,
@@ -98,7 +98,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       height: size,
       whitelist_on: whitelistOn,
       dynamic,
-      callback
+      successCallback
     })),
     
     getDispenserStats: (
@@ -368,6 +368,7 @@ const Dispenser: FC<ReduxType> = ({
   const qrCodeDescription = defineQRCodeDescription()
 
   useEffect(() => {
+    // FIX
     decryptDispenserData(id)
   }, [
     dispenser.redirect_url,
@@ -591,4 +592,5 @@ const Dispenser: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Dispenser)

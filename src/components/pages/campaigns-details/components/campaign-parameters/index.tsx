@@ -22,7 +22,8 @@ const CampaignParameters: FC<TProps> = ({
   if (!sdk) { return null }
   const contract = contracts[chainId]
 
-  const [ signingKey, setSigningKey ] = useState('FIX')
+  const [ signingKey, setSigningKey ] = useState('FIX NEEDED')
+
   useEffect(() => {
     // const init = async () => {
 

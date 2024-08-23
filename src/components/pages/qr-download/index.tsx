@@ -36,8 +36,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrSetName: string,
       width: number,
       height: number,
-      callback: () => void
-    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray, qrSetName, width, height, callback }))
+      successCallback: () => void
+    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray, qrSetName, width, height, successCallback }))
   }
 }
 
@@ -89,4 +89,5 @@ const QR: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(QR)

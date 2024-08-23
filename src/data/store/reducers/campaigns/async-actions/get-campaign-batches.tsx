@@ -46,6 +46,8 @@ const getCampaignBatches = ({
           }
           return campaign
         })
+
+        console.log({ updatedCampaigns })
         dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
 
         callback && callback()

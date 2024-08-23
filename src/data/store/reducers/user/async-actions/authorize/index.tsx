@@ -72,7 +72,6 @@ const authorize = (
         }
       })
 
-      // dispatch(getDashboardKey())
       dispatch(userActions.setLoading(false))
 
 

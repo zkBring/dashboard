@@ -64,14 +64,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       setId: string | number,
       quantity: number,
       callback: () => void
-    ) => dispatch(asyncQRsActions.updateQRSetQuantity({ setId, quantity, callback })),
+    ) => dispatch(asyncQRsActions.updateQRSetQuantity({ setId, quantity, successCallback: callback })),
 
     mapQRsToLinks: (
       setId: string,
       links: TLinkDecrypted[],
       qrs: TQRItem[],
       callback?: () => void,
-    ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, callback })),
+    ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, successCallback: callback })),
 
     downloadQRsAsCSV: (
       id: string
@@ -101,6 +101,8 @@ const QR: FC<ReduxType> = ({
   whitelisted
 }) => {
   const { id } = useParams<TLinkParams>()
+
+  // @ts-ignore
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
   const history = useHistory()
@@ -295,4 +297,5 @@ const QR: FC<ReduxType> = ({
   </Container>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(QR)

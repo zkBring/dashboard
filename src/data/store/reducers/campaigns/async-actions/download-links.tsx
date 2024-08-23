@@ -5,6 +5,8 @@ import { RootState } from 'data/store'
 import { CampaignsActions } from '../types'
 import { campaignsApi } from 'data/api'
 import * as actionsCampaigns from '../actions'
+import * as actionsUser from '../../user/actions'
+import * as actionsAsyncUser from '../../user/async-actions'
 import {
   downloadLinksAsCSV,
   decryptLinks,
@@ -13,7 +15,7 @@ import {
 import { TClaimPattern, TTokenType } from 'types'
 import { plausibleApi } from 'data/api'
 import { defineNetworkName } from 'helpers'
-import * as actionsAsyncUser from '../../user/async-actions'
+
 
 const downloadLinks = (
   batchId: string | number,
@@ -35,83 +37,75 @@ const downloadLinks = (
 
     let {
       user: {
-        dashboardKey,
-        address,
-        provider
+        address
       },
     } = getState()
 
-    dispatch(actionsCampaigns.setLoading(true))
-    if (!dashboardKey) {
-      if ( !encryptionKey) {
-        if (!dashboardKey) {
-          alert('create or retrieve dashboard key STARTED')
-          // @ts-ignore
-          const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
-            dispatch,
-            chainId as number,
-            address,
-            provider,
-            false
-          )
-          if (dashboardKeyCreated !== undefined) {
-            // @ts-ignore
-            dashboardKey = dashboardKeyCreated
-          }
-          alert('create or retrieve dashboard key FINISHED')
-          if (!dashboardKey) {
-            dispatch(actionsCampaigns.setLoading(false))
-            return alertError('Dashboard Key is not available')
-          }
-        }
+    if (!tokenAddress) { return alertError ('tokenAddress is not provided') }
 
+    dispatch(actionsCampaigns.setLoading(true))
+
+    const callback = async (
+      dashboardKey: string
+    ) => {
+      dispatch(actionsCampaigns.setLoading(true))
+
+      try {
+        
+        const result = await campaignsApi.getBatch(campaignId, batchId)
+  
+        if (result.data.success) {
+          const { claim_links, batch } = result.data
+          const decryptedLinks = decryptLinks({
+            links: claim_links,
+            dashboardKey: String(dashboardKey),
+            tokenAddress,
+            userAddress: address,
+            chainId,
+            wallet
+          })
+  
+          downloadLinksAsCSV(
+            decryptedLinks,
+            title,
+            batch.created_at || ''
+          )
+          plausibleApi.invokeEvent({
+            eventName: 'download_links',
+            data: {
+              network: defineNetworkName(chainId),
+              token_type: tokenType as string,
+              claim_pattern: claimPattern,
+              distribution: sdk ? 'sdk' : 'manual',
+              sponsorship: sponsored ? 'sponsored' : 'non sponsored',
+              preferred_wallet: wallet
+            }
+          })
+        }
+      } catch (err) {
+        alertError('Check console for more info')
+        console.error('Some error occured', err)
+      }
+      dispatch(actionsCampaigns.setLoading(false))
+    }
+
+    let dashboardKey = actionsAsyncUser.useDashboardKey(
+      getState
+    )
+
+    if (!dashboardKey) {
+      if (!encryptionKey) {
+        dispatch(actionsCampaigns.setLoading(false))
+        dispatch(actionsUser.setDashboardKeyPopup(true))
+        dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
+        return 
       } else {
         dashboardKey = encryptionKey
-      }
-
+      }      
     }
-
-
-    if (!tokenAddress) { return alertError ('tokenAddress is not provided') }
-    try {
-      dispatch(actionsCampaigns.setLoading(true))
-      
-      const result = await campaignsApi.getBatch(campaignId, batchId)
-
-      if (result.data.success) {
-        const { claim_links, batch } = result.data
-        const decryptedLinks = decryptLinks({
-          links: claim_links,
-          dashboardKey: String(dashboardKey),
-          tokenAddress,
-          userAddress: address,
-          chainId,
-          wallet
-        })
-
-        downloadLinksAsCSV(
-          decryptedLinks,
-          title,
-          batch.created_at || ''
-        )
-        plausibleApi.invokeEvent({
-          eventName: 'download_links',
-          data: {
-            network: defineNetworkName(chainId),
-            token_type: tokenType as string,
-            claim_pattern: claimPattern,
-            distribution: sdk ? 'sdk' : 'manual',
-            sponsorship: sponsored ? 'sponsored' : 'non sponsored',
-            preferred_wallet: wallet
-          }
-        })
-      }
-
-      dispatch(actionsCampaigns.setLoading(false))
-    } catch (err) {
-      alertError('Check console for more info')
-      console.error('Some error occured', err)
-    }
+    
+    callback(dashboardKey)
+    dispatch(actionsCampaigns.setLoading(false))
   }
 }
 

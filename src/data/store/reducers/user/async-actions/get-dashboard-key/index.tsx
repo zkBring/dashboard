@@ -5,7 +5,10 @@ import {
 } from '../../types'
 import { IAppDispatch } from 'data/store'
 import { dashboardKeyApi } from 'data/api'
-import { sleep, alertError } from 'helpers'
+import {
+  alertError,
+  defineCoinbaseInstance
+} from 'helpers'
 import retrieveDashboardKeyWithPass from './retrieve-dashboard-key-with-pass'
 import createDashboardKeyWithPass from './create-dashboard-key-with-pass'
 import retrieveDashboardKey from './retrieve-dashboard-key'
@@ -16,23 +19,27 @@ import {
   defineError
 } from './error-handling'
 
+
+
 const getDashboardKey = async (
   dispatch: Dispatch<UserActions> & IAppDispatch,
   chain_id: number,
   address: string,
   provider: any,
-  is_coinbase_smart_wallet: boolean
-) => {
+  connectorId: string | null
+) => {  
   dispatch(userActions.setLoading(true))
+
   try {
     const dashboardKeyData = await dashboardKeyApi.get()
     const { encrypted_key, sig_message, key_id } = dashboardKeyData.data
+    const coinbaseInstance = defineCoinbaseInstance(connectorId)
 
     if (!encrypted_key) {
       // register
       
       let result
-      if (is_coinbase_smart_wallet) {
+      if (coinbaseInstance === 'coinbase_smart_wallet') {
         result = await createDashboardKeyWithPass(
           sig_message,
           address
@@ -68,7 +75,7 @@ const getDashboardKey = async (
       }
     } else {
       let decrypted_dashboard_key
-      if (is_coinbase_smart_wallet) {
+      if (coinbaseInstance === 'coinbase_smart_wallet') {
         decrypted_dashboard_key = await retrieveDashboardKeyWithPass(
           encrypted_key,
           sig_message,

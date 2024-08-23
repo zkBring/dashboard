@@ -40,7 +40,8 @@ const addLinksToDispenser = ({
         dashboardKey,
         address,
         chainId,
-        provider
+        provider,
+        connectorId
       }
     } = getState()
 
@@ -52,7 +53,7 @@ const addLinksToDispenser = ({
         chainId as number,
         address,
         provider,
-        false
+        connectorId
       )
       if (dashboardKeyCreated !== undefined) {
         // @ts-ignore

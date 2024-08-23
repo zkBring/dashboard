@@ -86,10 +86,12 @@ import defineWagmiNetwork from './define-wagmi-network'
 import getNextDayData from './get-next-day-data'
 import buf2hex from '../helpers/buffer-to-hex'
 import defineIfWalletIsAvailableForClient from './define-if-wallet-is-available-for-client'
+import defineCoinbaseInstance from './define-coinbase-instance'
 
 export {
   buf2hex,
   defineThirdwebNetworkName,
+  defineCoinbaseInstance,
   defineCollectionQuantityTag,
   defineIfWalletIsAvailableForClient,
   defineCollectionStatusName,

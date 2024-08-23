@@ -19,9 +19,13 @@ import getERC20Contracts from './get-erc20-contracts'
 import getComission from './get-comission'
 import getERC20TokenList from './get-erc20-token-list'
 import getDashboardKey from './get-dashboard-key'
+import signDashboardKey from './sign-dashboard-key'
+import useDashboardKey from './use-dashboard-key'
 
 export {
   approveERC20,
+  signDashboardKey,
+  useDashboardKey,
   getDashboardKey,
   getERC20TokenList,
   approveAllERC20,

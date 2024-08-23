@@ -1,8 +1,6 @@
 import { Dispatch } from 'redux'
 import * as actionsCampaign from '../actions'
 import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
-import * as actionsAsyncUser from '../../user/async-actions'
-
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { RootState, IAppDispatch } from 'data/store'
@@ -41,28 +39,11 @@ const generateERC20Link = ({
         address,
         workersCount,
         signer,
-        provider,
         dashboardKey
       },
       campaign,
       campaigns: { campaigns }
     } = getState()
-
-    if (!dashboardKey || dashboardKey === null) {
-      alert('create or retrieve dashboard key STARTED')
-      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
-        dispatch,
-        chainId as number,
-        address,
-        provider,
-        false
-      )
-      if (dashboardKeyCreated !== undefined) {
-        // @ts-ignore
-        dashboardKey = dashboardKeyCreated
-      }
-      alert('create or retrieve dashboard key FINISHED')
-    }
   
     let currentPercentage = 0
     try {
@@ -97,9 +78,6 @@ const generateERC20Link = ({
       if (!id) { return alertError('campaign id is not provided') }
       if (!signerKey) { return alertError('signerKey is not provided') }
       if (!signerAddress) { return alertError('signerAddress is not provided') }
-
-
-
       if (!tokenStandard) { return alertError('tokenStandard is not provided') }
 
       const start = +(new Date())
