@@ -3,6 +3,7 @@ import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
+
 import { UserActions } from 'data/store/reducers/user/types'
 import {
   ButtonStyled,
@@ -31,7 +32,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
       
     ) => dispatch(
       asyncUserActions.signDashboardKey()
-    )
+    ),
+    closePopup: () => {
+      asyncUserActions.resetDashboardKeyPopup()
+    }
   }
 }
 
@@ -40,14 +44,15 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 
 const DashboardKeyPopup: FC<ReduxType> = ({
   dashboardKeyPopup,
-  signDashboardKey
+  signDashboardKey,
+  closePopup
 }) => {
   if (!dashboardKeyPopup) {
     return null
   }
   return <PopupStyled
     onClose={() => {
-      alert('close')
+      closePopup()
     }}
   >
     <PopupContent>
@@ -61,7 +66,7 @@ const DashboardKeyPopup: FC<ReduxType> = ({
       <Buttons>
         <ButtonStyled
           onClick={() => {
-            alert('close')
+            closePopup()
           }}
         >
           Cancel

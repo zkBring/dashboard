@@ -21,10 +21,12 @@ import getERC20TokenList from './get-erc20-token-list'
 import getDashboardKey from './get-dashboard-key'
 import signDashboardKey from './sign-dashboard-key'
 import useDashboardKey from './use-dashboard-key'
+import resetDashboardKeyPopup from './reset-dashboard-key-popup'
 
 export {
   approveERC20,
   signDashboardKey,
+  resetDashboardKeyPopup,
   useDashboardKey,
   getDashboardKey,
   getERC20TokenList,
