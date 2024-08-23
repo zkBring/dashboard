@@ -12,6 +12,7 @@ import { sleep, alertError, defineIfLinksHasEqualContents } from 'helpers'
 import axios from 'axios'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
+import * as actionsAsyncUser from '../../user/async-actions'
 
 const addLinksToDispenser = ({
   itemId,
@@ -32,12 +33,43 @@ const addLinksToDispenser = ({
     dispatch: Dispatch<DispensersActions> & Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { user: { dashboardKey, address } } = getState()
+    dispatch(actionsDispenser.setLoading(true))
+
+    let {
+      user: {
+        dashboardKey,
+        address,
+        chainId,
+        provider,
+        connectorId
+      }
+    } = getState()
+
+    if (!dashboardKey) {
+      alert('create or retrieve dashboard key STARTED')
+      // @ts-ignore
+      const dashboardKeyCreated = await actionsAsyncUser.getDashboardKey(
+        dispatch,
+        chainId as number,
+        address,
+        provider,
+        connectorId
+      )
+      if (dashboardKeyCreated !== undefined) {
+        // @ts-ignore
+        dashboardKey = dashboardKeyCreated
+      }
+      alert('create or retrieve dashboard key FINISHED')
+      if (!dashboardKey) {
+        alertError('Dashboard Key is not available')
+        return dispatch(actionsDispenser.setLoading(false))
+      }
+    }
+
     try {
       let currentPercentage = 0
-      if (!dashboardKey) {
-        throw new Error('dashboardKey is not provided')
-      }
+
+      
       dispatch(actionsDispenser.setLoading(true))
 
       const updateProgressbar = async (value: number) => {
@@ -53,7 +85,7 @@ const addLinksToDispenser = ({
       const qrArrayMapped = await qrsWorker.prepareLinksForDispenser(
         encryptedMultiscanQREncCode,
         links,
-        dashboardKey
+        dashboardKey as string
       )
       const apiMethod = linksCount > 0 && currentStatus === 'ACTIVE' ? dispensersApi.updateLinks : dispensersApi.mapLinks
       const linksHasEqualContents = defineIfLinksHasEqualContents(links)

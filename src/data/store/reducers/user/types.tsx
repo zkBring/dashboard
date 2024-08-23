@@ -24,8 +24,11 @@ export interface UserState {
   tokenListERC20: TERC20TokenList
   nfts: TNFTToken[]
   whitelisted: boolean | null
-  comission: string,
+  comission: string
   countries: TCountry[]
+  connectorId: null | string
+  dashboardKeyPopup: boolean
+  dashboardKeyPopupCallback: ((dashboardKey: string) => void) | null
 }
 
 export type UserActions = ActionType<typeof actions>;

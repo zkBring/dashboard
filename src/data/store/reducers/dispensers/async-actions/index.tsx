@@ -12,12 +12,14 @@ import createWhitelist from './create-whitelist'
 import updateWhitelist from './update-whitelist'
 import getDispenserWhitelist from './get-dispenser-whitelist'
 import toggleTimeframeOn from './toggle-timeframe-on'
+import decryptDispenserData from './decrypt-dispenser-data'
 
 export {
   createDispenser,
   updateWhitelist,
   toggleTimeframeOn,
   toggleWhitelistOn,
+  decryptDispenserData,
   getDispenserWhitelist,
   downloadDispenserQR,
   downloadReport,

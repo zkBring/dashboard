@@ -51,6 +51,33 @@ export function setContracts(contracts: TNFTContract[]) {
   )
 }
 
+export function setDashboardKeyPopup(dashboardKeyPopup: boolean) {
+  return action(
+    Constants.USER_SET_DASHBOARD_KEY_POPUP,
+    {
+      dashboardKeyPopup
+    }
+  )
+}
+
+export function setDashboardKeyPopupCallback(dashboardKeyPopupCallback: ((dashboardKey: string) => void) | null) {
+  return action(
+    Constants.USER_SET_DASHBOARD_KEY_POPUP_CALLBACK,
+    {
+      dashboardKeyPopupCallback
+    }
+  )
+}
+
+export function setConnectorId(connectorId: string | null) {
+  return action(
+    Constants.USER_SET_CONNECTOR_ID,
+    {
+      connectorId
+    }
+  )
+}
+
 export function setContractsERC20(contractsERC20: TERC20Contract[]) {
   return action(
     Constants.USER_SET_CONTRACTS_ERC20,
