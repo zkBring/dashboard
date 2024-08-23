@@ -11,7 +11,7 @@ import {
   WidgetComponentStyled,
   CopyContainerStyled,
   Text,
-  DynamicQRImage,
+  QRImage,
   MainContent
 } from './styled-components'
 import {
@@ -21,6 +21,7 @@ import {
   ClaimLinks,
   QRCode
 } from './components'
+import QRCodePreview from 'images/QR-code-preview.png'
 import DynamicQRImageSrc from 'images/dynamic-qr.png'
 import {
   defineDispenserStatus,
@@ -264,8 +265,18 @@ const defineSubtitle = (
 const renderMainButton = (
   dynamic: boolean,
   toggleDownloadPopup: (downloadPopup: boolean) => void,
-  redirectUrl?: string
+  decryptDispenserData: () => void,
+  redirectUrl?: string,
+  dashboardKey?: string | null
 ) => {
+
+  if (!dashboardKey) {
+    return <WidgetButton
+      title='Show QR code'
+      appearance='action'
+      onClick={decryptDispenserData}
+    /> 
+  }
   const title = !dynamic ? 'Download PNG' : 'Launch Dynamic QR App'
   return <WidgetButton
     title={title}
@@ -289,11 +300,16 @@ const renderMainButton = (
 const defineQRItem = (
   dynamic: boolean,
   address: string,
-  dispenser_url?: string
+  dispenser_url?: string,
+  dashboard_key?: string | null
 ) => {
 
+  if (!dashboard_key) {
+    return <QRImage src={QRCodePreview} />
+  }
+
   if (dynamic) {
-    return <DynamicQRImage src={DynamicQRImageSrc} />
+    return <QRImage src={DynamicQRImageSrc} />
   }
 
   if (!dispenser_url) {
@@ -365,16 +381,16 @@ const Dispenser: FC<ReduxType> = ({
     )
   }, [dispenser?.updated_at])
 
-  const qrCodeDescription = defineQRCodeDescription()
-
   useEffect(() => {
-    // FIX
+    if (!dashboardKey) { return }
     decryptDispenserData(id)
+
   }, [
-    dispenser.redirect_url,
-    dispenser.whitelist_on
+    dispenser?.whitelist_on,
+    dispenser?.redirect_on,
   ])
 
+  const qrCodeDescription = defineQRCodeDescription()
 
   const {
     dispenser_id,
@@ -396,7 +412,6 @@ const Dispenser: FC<ReduxType> = ({
     timeframe_on,
     dispenser_url,
     decrypted_redirect_url
-
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -412,13 +427,16 @@ const Dispenser: FC<ReduxType> = ({
   const mainButton = renderMainButton(
     dynamic as boolean,
     toggleDownloadPopup,
-    dispenser_url
+    () => decryptDispenserData(id),
+    dispenser_url,
+    dashboardKey
   )
 
   const qrCodeContainer = defineQRItem(
     Boolean(dynamic),
     address,
     dispenser_url,
+    dashboardKey
   )
 
   return <Container>

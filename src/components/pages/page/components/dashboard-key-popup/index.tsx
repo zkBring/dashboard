@@ -34,7 +34,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) =>
       asyncUserActions.signDashboardKey()
     ),
     closePopup: () => {
-      asyncUserActions.resetDashboardKeyPopup()
+      dispatch(asyncUserActions.resetDashboardKeyPopup())
     }
   }
 }

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { TextLink } from 'components/common'
@@ -37,6 +37,7 @@ import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
+import { NewCampaign } from './components'
 
 const defineCampaignStatus = (
   draft: boolean,
@@ -124,6 +125,8 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
 
   const history = useHistory()
 
+  const [ newCampaignPopup, setNewCampaignPopup ] = useState(false)
+
   // @ts-ignore
   const currentAddressDrafts = drafts.filter(draft => {
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
@@ -140,6 +143,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
 
   return <>
     <WidgetComponentStyled>
+      {newCampaignPopup && <NewCampaign onClose={() => setNewCampaignPopup(false)} />}
       <Header>
         <WidgetTitleStyled>Claim links</WidgetTitleStyled>
         <ContainerButton
@@ -147,7 +151,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
           disabled={loading}
           size='extra-small'
           appearance='action'
-          to='/campaigns/new'
+          onClick={() => setNewCampaignPopup(true)}
         />
       </Header>
       {currentAddressCampaigns && currentAddressCampaigns.length > 0 && <CampaignsListStyled>

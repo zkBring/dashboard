@@ -60,7 +60,7 @@ export const MainContent = styled.div`
   flex: 1 0 50%;
 `
 
-export const DynamicQRImage = styled.img`
+export const QRImage = styled.img`
   max-width: 240px;
   margin: 0 auto 32px;
   display: block;
@@ -70,5 +70,5 @@ export const Text = styled.p`
   font-size: 14px;
   line-height: 20px;
   color: ${props => props.theme.primaryTextColor};
-  margin: 0 0 12px;
+  margin: 0 0 32px;
 `
