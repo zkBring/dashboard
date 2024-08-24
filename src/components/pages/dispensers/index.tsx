@@ -42,7 +42,8 @@ const mapStateToProps = ({
   campaigns: { campaigns },
   user: { address, chainId },
   qrManager: {
-    loading, items
+    loading,
+    items
   }
 }: RootState) => ({
   campaigns,
@@ -214,7 +215,6 @@ const Dispensers: FC<ReduxType> = ({
   ) {
     return <Loader size='large' />
   }
-
 
   if (items.length === 0) {
     return <>

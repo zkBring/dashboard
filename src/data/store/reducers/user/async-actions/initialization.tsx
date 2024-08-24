@@ -55,28 +55,48 @@ const initialization = () => {
       return alertError('REACT_APP_INFURA_ID is not provided in .env file')
     }
     try {
-      const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
-      dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
-
-      const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
-      dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
-
-      const dispensers: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
-      dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
-
-      const collections: { data: { collections: TCollection[] } } = await collectionsApi.get()
-      dispatch(colllectionsActions.setCollections(collections.data.collections.filter(collection => collection.chain_id === String(chainId))))
+      dispatch(campaignsActions.setLoading(true))
+      dispatch(qrsActions.setLoading(true))
+      dispatch(dispensersActions.setLoading(true))
+      dispatch(colllectionsActions.setLoading(true))
+      dispatch(qrManagerActions.setLoading(true))
 
       const countries = await countriesApi.get()
       if (countries) {
         dispatch(userActions.setCountries(countries.data))
       }
 
-      const qrManagerData = await qrManagerApi.get()
-      const { success, items } = qrManagerData.data
-      if (success) {
+      await Promise.all([
+        campaignsApi.get(chainId),
+        dispensersApi.get(),
+        qrsApi.get(),
+        qrManagerApi.get(),
+        collectionsApi.get()
+      ]).then(([
+        campaignsData,
+        dispensersData,
+        qrsData,
+        qrManagerData,
+        collectionsData
+      ]) => {
+        const campaigns: { data: { campaigns_array: TCampaign[] } } = campaignsData 
+        const qrs: { data: { qr_sets: TQRSet[] } } = qrsData 
+        const collections: { data: { collections: TCollection[] } } = collectionsData 
+        const dispensers: { data: { dispensers: TDispenser[] } } = dispensersData
+        const { items } = qrManagerData.data
         dispatch(qrManagerActions.setItems(items))
-      }
+        dispatch(colllectionsActions.setCollections(collections.data.collections.filter(collection => collection.chain_id === String(chainId))))
+        dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
+        dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
+        dispatch(qrsActions.updateQrs(qrs.data.qr_sets))
+
+        dispatch(campaignsActions.setLoading(false))
+        dispatch(qrsActions.setLoading(false))
+        dispatch(dispensersActions.setLoading(false))
+        dispatch(colllectionsActions.setLoading(false))
+        dispatch(qrManagerActions.setLoading(false))
+
+      })
 
     } catch (err) {
       console.log(err)
