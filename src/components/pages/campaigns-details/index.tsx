@@ -308,8 +308,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
     preferred_wallet_on
   } = currentCampaign
 
-  console.log({ batches })
-
   const encryptionKey = createEncryptionKey(
     signer_address,
     campaign_number,

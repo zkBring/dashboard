@@ -11,7 +11,10 @@ import {
   BatchListLabelTextAlignRight,
   BatchListValueJustifySelfEnd
 } from './styled-components'
-import { Button } from 'components/common'
+import {
+  Button,
+  Loader
+} from 'components/common'
 import {
   BatchListLabel,
   BatchListValue,
@@ -51,6 +54,11 @@ const Collections: FC<ReduxType> = ({
   collections,
   loading
 }) => {
+
+  if (loading && collections.length === 0) {
+    return <Loader size='large' />
+  }
+
   if (collections.length === 0) {
     return <InitialNote
       title='Create Your First NFT collection'

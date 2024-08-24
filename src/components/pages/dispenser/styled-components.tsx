@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import { Button } from 'components/common'
 import {
-  WidgetComponent,
-  Aside
+  WidgetComponent
 } from 'components/pages/common'
 import {
   CopyContainer,
@@ -58,6 +57,7 @@ export const SecondaryTextSpan = styled.span`
 export const MainContent = styled.div`
   margin-right: 24px;
   flex: 1 0 50%;
+  position: relative;
 `
 
 export const QRImage = styled.img`
@@ -71,4 +71,13 @@ export const Text = styled.p`
   line-height: 20px;
   color: ${props => props.theme.primaryTextColor};
   margin: 0 0 32px;
+`
+
+export const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

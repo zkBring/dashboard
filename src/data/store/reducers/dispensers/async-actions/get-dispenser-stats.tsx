@@ -29,7 +29,6 @@ const getDispenserStats = ({
     dispatch(actionsDispensers.setLoading(true))
     dispatch(actionsDispensers.setCurrentDispenserData({ campaign: null }))
 
-   
     const { dispensers: { dispensers } } = getState()
     try {
       const {

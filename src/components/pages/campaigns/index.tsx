@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import { TextLink } from 'components/common'
+import { Loader, TextLink } from 'components/common'
 import {
   TCampaignCreateStep,
   TTokenType
@@ -119,6 +119,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   deleteDraft,
   openDraft
 }) => {
+
   const currentAddressCampaigns = campaigns.filter(campaign => {
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
@@ -132,7 +133,18 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
     return draft.creatorAddress.toLocaleLowerCase() === address.toLocaleLowerCase() && draft.chainId === chainId
   })
 
-  if (currentAddressCampaigns.length === 0 && currentAddressDrafts.length === 0) {
+  if (
+    loading &&
+    currentAddressCampaigns.length === 0 &&
+    currentAddressDrafts.length === 0
+  ) {
+    return <Loader size='large' />
+  }
+
+  if (
+    currentAddressCampaigns.length === 0 &&
+    currentAddressDrafts.length === 0
+  ) {
     return <InitialNote
       title='Create Your First Campaign'
       text="Your campaigns will be displayed here once created. You don't have any campaigns yet"

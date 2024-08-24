@@ -11,7 +11,8 @@ import {
 } from './styled-components'
 import {
   Button,
-  Tag
+  Tag,
+  Loader
 } from 'components/common'
 import {
   NewDispenser
@@ -205,6 +206,14 @@ const Dispensers: FC<ReduxType> = ({
     showPopup,
     setShowPopup
   ] = useState<boolean>(false)
+
+
+  if (
+    loading &&
+    items.length === 0
+  ) {
+    return <Loader size='large' />
+  }
 
 
   if (items.length === 0) {
