@@ -22,13 +22,13 @@ import * as actionsUser from '../../user/actions'
 type TCreateDispenserArgs = {
   title: string,
   dynamic: boolean,
-  callback?: (id: string | number) => void,
+  successCallback?: (id: string | number) => void,
 }
 
 const createDispenser = ({
   title,
   dynamic,
-  callback
+  successCallback
 }: TCreateDispenserArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
@@ -83,7 +83,7 @@ const createDispenser = ({
               address
             }
           })
-          if (callback) { callback(data.dispenser.dispenser_id) }
+          if (successCallback) { successCallback(data.dispenser.dispenser_id) }
         } else {
           plausibleApi.invokeEvent({
             eventName: 'multiqr_add',
@@ -120,7 +120,7 @@ const createDispenser = ({
     
     callback(dashboardKey)
     
-    dispatch(actionsDispensers.setLoading(false))
+    dispatch(actionsCampaigns.setLoading(false))
   }
 }
 

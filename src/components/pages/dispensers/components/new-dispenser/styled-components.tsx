@@ -17,8 +17,14 @@ export const DispenserType = styled(Link)`
   grid-template-columns: 154px 1fr;
   gap: 32px;
   align-items: center;
+  border-radius: 16px;
   text-decoration: none;
   color: ${props => props.theme.primaryTextColor};
+  transition: background-color .3s;
+
+  &:hover {
+    background-color: ${props => props.theme.menuItemActive};
+  }
 `
 
 export const DispenserTitle = styled.h4`
