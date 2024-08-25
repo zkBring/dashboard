@@ -5,7 +5,7 @@ import updateDispenserDate from './update-dispenser-date'
 import updateStatus from './update-status'
 import toggleRedirectOn from './toggle-redirect-on'
 import updateRedirectURL from './update-redirect-url'
-import getDispenserStats from './get-dispenser-stats'
+import getDispenserData from './get-dispenser-data'
 import downloadReport from './download-report'
 import toggleWhitelistOn from './toggle-whitelist-on'
 import createWhitelist from './create-whitelist'
@@ -29,5 +29,5 @@ export {
   updateStatus,
   toggleRedirectOn,
   updateRedirectURL,
-  getDispenserStats
+  getDispenserData
 }
