@@ -358,7 +358,12 @@ const Dispenser: FC<ReduxType> = ({
   }
 
   useEffect(() => {
-    if (!dispenser || !dispenser?.updated_at) { return }
+    if (
+      !dispenser ||
+      !dispenser?.updated_at ||
+      dispenser?.links_count === 0
+    ) { return }
+
     getDispenserData(
       dispenser.multiscan_qr_id as string
     )
