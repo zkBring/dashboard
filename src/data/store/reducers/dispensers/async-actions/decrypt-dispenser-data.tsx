@@ -52,9 +52,12 @@ const decryptDispenserData = ({
       currentDispenser.decrypted_multiscan_qr_secret &&
       currentDispenser.dispenser_url
     ) {
+      console.log('here')
       dispatch(actionsDispensers.setLoading(false))
       return
     }
+
+    console.log('here1')
 
     const callback = async (dashboardKey: string) => {
       try {
