@@ -37,6 +37,7 @@ import {
 import { Loader } from 'components/common'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
+import * as dispensersActions from 'data/store/reducers/dispensers/actions'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -103,6 +104,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       multiscan_qr_id: string
     ) => dispatch(asyncDispensersActions.getDispenserData({
       multiscan_qr_id
+    })),
+
+    removeCurrentDispenserData: () => dispatch(dispensersActions.setCurrentDispenserData({
+      campaign: null
     })),
   
     pauseDispenser: (
@@ -342,6 +347,7 @@ const Dispenser: FC<ReduxType> = ({
   toggleWhitelist,
   updateAddressWhitelist,
   currentDispenserData,
+  removeCurrentDispenserData,
   updateDispenser,
   getDispenserWhitelist,
   decryptDispenserData
@@ -371,6 +377,10 @@ const Dispenser: FC<ReduxType> = ({
     getDispenserData(
       dispenser.multiscan_qr_id as string
     )
+
+    return () => {
+      removeCurrentDispenserData()
+    }
   }, [dispenser?.updated_at])
 
   useEffect(() => {
