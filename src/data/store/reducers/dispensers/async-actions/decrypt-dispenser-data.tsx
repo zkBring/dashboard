@@ -52,6 +52,7 @@ const decryptDispenserData = ({
       currentDispenser.decrypted_multiscan_qr_secret &&
       currentDispenser.dispenser_url
     ) {
+      dispatch(actionsDispensers.setLoading(false))
       return
     }
 
@@ -98,6 +99,7 @@ const decryptDispenserData = ({
   
       } catch (err) {
         console.log({ err })
+        dispatch(actionsDispensers.setLoading(false))
         alertError('Some error occured. Please check console for more info')
       }
     }
