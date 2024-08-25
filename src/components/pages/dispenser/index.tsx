@@ -396,6 +396,8 @@ const Dispenser: FC<ReduxType> = ({
 
   const qrCodeDescription = defineQRCodeDescription()
 
+  console.log({ dispenser })
+
   const {
     dispenser_id,
     redirect_url,
