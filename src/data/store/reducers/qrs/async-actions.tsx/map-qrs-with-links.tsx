@@ -39,8 +39,6 @@ const mapQRsWithLinksAction = ({
       try {
         let currentPercentage = 0
   
-        
-  
         const start = +(new Date())
   
         const updateProgressbar = async (value: number) => {
@@ -98,7 +96,7 @@ const mapQRsWithLinksAction = ({
     )
 
     if (!dashboardKey) {
-      dispatch(actionsCampaigns.setLoading(false))
+      dispatch(actionsQR.setLoading(false))
       dispatch(actionsUser.setDashboardKeyPopup(true))
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return

@@ -40,8 +40,6 @@ const addLinksToDispenser = ({
   ) => {
     dispatch(actionsDispenser.setLoading(true))
 
-
-
     const callback = async (
       dashboardKey: string
     ) => {
@@ -136,7 +134,7 @@ const addLinksToDispenser = ({
     )
 
     if (!dashboardKey) {
-      dispatch(actionsCampaigns.setLoading(false))
+      dispatch(actionsDispenser.setLoading(false))
       dispatch(actionsUser.setDashboardKeyPopup(true))
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return

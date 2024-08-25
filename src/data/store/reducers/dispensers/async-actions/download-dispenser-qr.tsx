@@ -123,7 +123,7 @@ const downloadQR = ({
     )
 
     if (!dashboardKey) {
-      dispatch(actionsCampaigns.setLoading(false))
+      dispatch(actionsQR.setLoading(false))
       dispatch(actionsUser.setDashboardKeyPopup(true))
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return
