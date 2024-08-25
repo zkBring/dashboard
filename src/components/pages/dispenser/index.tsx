@@ -373,6 +373,7 @@ const Dispenser: FC<ReduxType> = ({
     if (!dashboardKey) { return }
     decryptDispenserData(id)
   }, [
+    dashboardKey,
     dispenser?.whitelist_on,
     dispenser?.redirect_on,
   ])

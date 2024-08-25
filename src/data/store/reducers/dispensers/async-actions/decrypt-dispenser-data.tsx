@@ -77,6 +77,8 @@ const decryptDispenserData = ({
           Boolean(whitelist_on),
           Boolean(dynamic)
         )
+
+        console.log({ claimURLDecrypted })
   
         const linkKey = ethers.utils.id(multiscanQREncCode)
         const redirectURLDecrypted = redirect_url ? decrypt(redirect_url, linkKey.replace('0x', '')) : ''
