@@ -278,7 +278,7 @@ const renderMainButton = (
         toggleDownloadPopup(true)
         return
       }
-
+    console.log({ dispenser_url })
       if (dispenser_url) {
         window.open(dispenser_url, '_blank')
         return 
@@ -296,7 +296,11 @@ const defineQRItem = (
   dispenser_url?: string,
   dashboard_key?: string | null
 ) => {
-
+  console.log({ 
+    dashboard_key,
+    dynamic,
+    dispenser_url
+  })
   if (!dashboard_key) {
     return <QRImage src={QRCodePreview} />
   }
