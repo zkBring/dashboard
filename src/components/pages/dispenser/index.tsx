@@ -99,14 +99,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       successCallback
     })),
     
-    getDispenserStats: (
-      dispenser_id: string,
-      multiscan_qr_id: string,
-      callback?: () => void
-    ) => dispatch(asyncDispensersActions.getDispenserStats({
-      dispenser_id,
-      multiscan_qr_id,
-      callback
+    getDispenserData: (
+      multiscan_qr_id: string
+    ) => dispatch(asyncDispensersActions.getDispenserData({
+      multiscan_qr_id
     })),
   
     pauseDispenser: (
@@ -337,7 +333,7 @@ const Dispenser: FC<ReduxType> = ({
   updateRedirectURL,
   toggleRedirectURL,
   toggleTimeframe,
-  getDispenserStats,
+  getDispenserData,
   downloadReport,
   toggleWhitelist,
   updateAddressWhitelist,
@@ -362,11 +358,14 @@ const Dispenser: FC<ReduxType> = ({
   }
 
   useEffect(() => {
-    if (!dispenser || !dispenser?.updated_at) { return }
-    getDispenserStats(
-      dispenser.dispenser_id as string,
-      dispenser.multiscan_qr_id as string,
-      () => {}
+    if (
+      !dispenser ||
+      !dispenser?.updated_at ||
+      dispenser?.links_count === 0
+    ) { return }
+
+    getDispenserData(
+      dispenser.multiscan_qr_id as string
     )
   }, [dispenser?.updated_at])
 
