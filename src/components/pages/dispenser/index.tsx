@@ -391,7 +391,7 @@ const Dispenser: FC<ReduxType> = ({
   }, [
     dashboardKey,
     dispenser?.whitelist_on,
-    dispenser?.redirect_on,
+    dispenser?.redirect_on
   ])
 
   const qrCodeDescription = defineQRCodeDescription()
