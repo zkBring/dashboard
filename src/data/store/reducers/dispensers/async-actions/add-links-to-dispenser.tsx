@@ -46,6 +46,9 @@ const addLinksToDispenser = ({
       let {
         user: {
           address
+        },
+        dispensers: {
+          dispensers
         }
       } = getState()
       try {
@@ -83,7 +86,15 @@ const addLinksToDispenser = ({
             }
           })
           const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
-          dispatch(actionsDispenser.setDispensers(result.data.dispensers))
+
+          const dispensersUpdated = result.data.dispensers.map(dispenser => {
+            if (dispenser.dispenser_id === itemId) {
+              const currentDispenser = dispensers.find(dispenser => dispenser.dispenser_id === itemId)
+              return { ...currentDispenser, ...dispenser }
+            }
+            return dispenser
+          })
+          dispatch(actionsDispenser.setDispensers(dispensersUpdated))
   
           const qrManagerData = await qrManagerApi.get()
           const { success, items } = qrManagerData.data
