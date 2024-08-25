@@ -40,11 +40,7 @@ const updateQRSetQuantity = ({
         qrs
       },
       user: {
-        workersCount,
-        chainId,
-        address,
-        provider,
-        connectorId
+        workersCount
       },
       qrManager: {
         items
@@ -125,7 +121,7 @@ const updateQRSetQuantity = ({
     )
 
     if (!dashboardKey) {
-      dispatch(actionsCampaigns.setLoading(false))
+      dispatch(actionsQR.setLoading(false))
       dispatch(actionsUser.setDashboardKeyPopup(true))
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return

@@ -96,7 +96,7 @@ const updateRedirectURL = ({
     )
 
     if (!dashboardKey) {
-      dispatch(actionsCampaigns.setLoading(false))
+      dispatch(actionsDispensers.setLoading(false))
       dispatch(actionsUser.setDashboardKeyPopup(true))
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return

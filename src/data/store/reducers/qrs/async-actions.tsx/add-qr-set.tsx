@@ -36,10 +36,7 @@ const addQRSet = ({
     let {
       user: {
         address,
-        workersCount,
-        chainId,
-        provider,
-        connectorId
+        workersCount
       }
     } = getState()
     dispatch(actionsQR.setLoading(true))
@@ -113,7 +110,7 @@ const addQRSet = ({
     )
 
     if (!dashboardKey) {
-      dispatch(actionsCampaigns.setLoading(false))
+      dispatch(actionsQR.setLoading(false))
       dispatch(actionsUser.setDashboardKeyPopup(true))
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return
