@@ -373,6 +373,7 @@ const Dispenser: FC<ReduxType> = ({
       !dispenser?.updated_at ||
       dispenser?.links_count === 0
     ) { return }
+    console.log('getDispenserData')
 
     getDispenserData(
       dispenser.multiscan_qr_id as string
@@ -385,6 +386,7 @@ const Dispenser: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!dashboardKey) { return }
+    console.log('decrypting')
     decryptDispenserData(id)
   }, [
     dashboardKey,
