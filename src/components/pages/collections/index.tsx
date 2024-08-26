@@ -61,8 +61,8 @@ const Collections: FC<ReduxType> = ({
 
   if (collections.length === 0) {
     return <InitialNote
-      title='Create Your First NFT collection'
-      text="Your NFT collections will be displayed here once created. You don't have any NFT collections yet"
+      title='Create your first Soulbound'
+      text="Your Soulbound collection will be displayed here once created"
       href='/collections/new/ERC1155/initial'
       buttontText='New NFT collection'
     />
@@ -71,7 +71,7 @@ const Collections: FC<ReduxType> = ({
   return <Container>
     <WidgetComponent>
       <Header>
-        <WidgetTitleStyled>My NFT Contracts</WidgetTitleStyled>
+        <WidgetTitleStyled>My Soulbounds</WidgetTitleStyled>
         <ContainerButton
           title='+ Add'
           disabled={loading}

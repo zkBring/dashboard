@@ -1,8 +1,6 @@
 import styled from "styled-components"
 import { AsidePopup } from 'components/common'
-import {
-  Link
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export const AsidePopupStyled = styled(AsidePopup)`
   display: grid;
@@ -11,7 +9,7 @@ export const AsidePopupStyled = styled(AsidePopup)`
   min-width: 614px;
 `
 
-export const DispenserType = styled(Link)`
+export const Option = styled(Link)`
   display: grid;
   padding: 24px;
   grid-template-columns: 154px 1fr;
@@ -27,7 +25,7 @@ export const DispenserType = styled(Link)`
   }
 `
 
-export const DispenserTitle = styled.h4`
+export const OptionTitle = styled.h4`
   margin: 0 0 12px;
   font-size: 16px;
   line-height: 24px;
@@ -37,14 +35,14 @@ export const DispenserTitle = styled.h4`
   justify-content: space-between;
 `
 
-export const DispenserText = styled.p`
+export const OptionText = styled.p`
   margin: 0;
   font-size: 14px;
   color: ${props => props.theme.primaryTextColor};
   line-height: 20px;
 `
 
-export const DispenserImage = styled.div`
+export const OptionImage = styled.div`
   width: 100%;
 
   svg {
@@ -53,6 +51,6 @@ export const DispenserImage = styled.div`
   }
 `
 
-export const DispenserContent = styled.div`
+export const OptionContent = styled.div`
 
 `

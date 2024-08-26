@@ -19,11 +19,13 @@ import KeyImage from 'images/key-square.png'
 const mapStateToProps = ({
   user: {
     authorizationStep,
-    dashboardKeyPopup
+    dashboardKeyPopup,
+    loading
   }
 }: RootState) => ({
   authorizationStep,
-  dashboardKeyPopup
+  dashboardKeyPopup,
+  loading
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<UserActions>) => {
@@ -45,7 +47,8 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 const DashboardKeyPopup: FC<ReduxType> = ({
   dashboardKeyPopup,
   signDashboardKey,
-  closePopup
+  closePopup,
+  loading
 }) => {
   if (!dashboardKeyPopup) {
     return null
@@ -72,7 +75,9 @@ const DashboardKeyPopup: FC<ReduxType> = ({
           Cancel
         </ButtonStyled>
         <ButtonStyled
+          disabled={loading}
           appearance='action'
+          loading={loading}
           onClick={() => {
             signDashboardKey()
           }}

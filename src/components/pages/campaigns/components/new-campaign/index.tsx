@@ -27,7 +27,7 @@ const options = [
     title: 'Create Soulbound',
     subtitle: 'Mint SBTs with your own image and metadata in a few seconds',
     image: SBTToken,
-    href: '/collections'
+    href: '/collections/new/ERC1155/initial'
   }
 ]
 
