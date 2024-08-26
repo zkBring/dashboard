@@ -1,7 +1,7 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
 import { Dispatch } from 'redux'
-import LinkdropSDK from 'linkdrop-sdk'
+import LinkdropBatchSDK from 'linkdrop-batch-sdk'
 import { TAuthorizationStep, TNFTContract, TNFTToken, TERC20Contract, TERC20TokenList, TCountry } from 'types'
 import { BigNumber } from 'ethers'
 
@@ -14,7 +14,7 @@ export interface UserState {
   chainId: number | null
   nativeTokenAmount: BigNumber | null
   tokenAmount: BigNumber | null
-  sdk: LinkdropSDK | null
+  sdk: LinkdropBatchSDK | null
   dashboardKey: null | string
   workersCount: number
   authorizationStep: TAuthorizationStep

@@ -1,4 +1,4 @@
-import LinkdropSDK from 'linkdrop-sdk'
+import LinkdropBatchSDK from 'linkdrop-batch-sdk'
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
 import { TAuthorizationStep, TNFTContract, TNFTToken, TERC20Contract, TERC20TokenList, TCountry } from 'types'
@@ -169,7 +169,7 @@ export function setNativeTokenAmount(nativeTokenAmount: BigNumber) {
 }
 
 export function setSDK (
-  sdk: LinkdropSDK
+  sdk: LinkdropBatchSDK
 ) {
   return action(
     Constants.USER_SET_SDK,
