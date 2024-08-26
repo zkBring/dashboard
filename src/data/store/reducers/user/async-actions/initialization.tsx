@@ -13,7 +13,7 @@ import { DispensersActions } from '../../dispensers/types'
 import { CollectionsActions } from '../../collections/types'
 import { QRManagerActions } from '../../qr-manager/types'
 
-import LinkdropSDK from 'linkdrop-sdk'
+import LinkdropBatchSDK from 'linkdrop-batch-sdk'
 import { RootState } from 'data/store'
 import {
   campaignsApi,
@@ -103,7 +103,7 @@ const initialization = () => {
       alertError('Error occured with data fetch, check console for information')
     }
 
-    const sdk = new LinkdropSDK({
+    const sdk = new LinkdropBatchSDK({
       claimHostUrl: claimAppURL,
       apiHost: REACT_APP_SERVER_URL,
       apiKey: REACT_APP_ZUPLO_API_KEY as string
