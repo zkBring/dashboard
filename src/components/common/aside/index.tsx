@@ -79,7 +79,7 @@ const AsideComponent: FC<TProps & ReduxType> = ({
 
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
         <Icons.NFTsIcon />
-        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>NFT Minter</AsideMenuItemTitle>
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Soulbounds</AsideMenuItemTitle>
       </AsideMenuItem>
     </AsideMenu>
 

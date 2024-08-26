@@ -20,7 +20,6 @@ import {
 } from './error-handling'
 
 
-
 const getDashboardKey = async (
   dispatch: Dispatch<UserActions> & IAppDispatch,
   chain_id: number,
