@@ -103,23 +103,24 @@ const createDispenserAndAddLinks = ({
               wallet
             })
 
-          const updateProgressbar = async (value: number) => {
-            console.log({ value })
-          }
+            const updateProgressbar = async (value: number) => {
+              console.log({ value })
+            }
 
-          const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
-          const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
+            const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
+            const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
       
-          const qrArrayMapped = await qrsWorker.prepareLinksForDispenser(
-            encryptedMultiscanQREncCode,
-            links,
-            dashboardKey as string
-          )
-          const linksHasEqualContents = defineIfLinksHasEqualContents(links)
-          const result = await dispensersApi.mapLinks(data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
-          console.log({ result })
-          if (successCallback) {
-            successCallback(data.dispenser.dispenser_id)
+            const qrArrayMapped = await qrsWorker.prepareLinksForDispenser(
+              encryptedMultiscanQREncCode,
+              decryptedLinks,
+              dashboardKey as string
+            )
+            const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
+            const result = await dispensersApi.mapLinks(data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
+            console.log({ result })
+            if (successCallback) {
+              successCallback(data.dispenser.dispenser_id)
+            }
           }
         } else {
           throw new Error('Dispenser was not created. Check console for more information')
