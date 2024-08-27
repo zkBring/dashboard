@@ -299,7 +299,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
               </ButtonStyled>
             </Buttons>
             
-
           </BatchListValue>
         </>})}
       </DraftsListStyled>

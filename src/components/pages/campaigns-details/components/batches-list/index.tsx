@@ -1,5 +1,8 @@
 import { FC, useState } from 'react'
-import { TProps } from './types'
+import {
+  TProps,
+  TCreateDispenserAndAddLinks
+} from './types'
 import {
   BatchList,
   BatchListLabel,
@@ -25,20 +28,45 @@ import {
 } from './styled-components'
 import Icons from 'icons'
 
-const defineDispenserTypes = () => {
+const defineDispenserTypes = (
+  closePopup: () => void,
+  createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
+  campaignId: string,
+  batchId: string,
+  tokenAddress: string,
+  wallet: string,
+  successCallback: () => void
+) => {
   return [
     {
       title: 'Dynamic QR for electronic displays',
       text: 'A web page with an auto-refresh QR code that updates in real time. This ensures secure distribution, preventing a single user from claiming all tokens',
       onClick: () => {
-        alert('DYNAMIC')
+        closePopup()
+        createDispenserAndAddLinks(
+          'Campaign',
+          true,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          successCallback
+        )
       },
       image: <Icons.DynamicQRPreviewIcon />
     }, {
       title: 'Printable Dispenser QR code',
       text: 'A single QR code that dispenses tokens one-by-one to users after they scan it. Ideal for controlled and sequential token distribution',
       onClick: () => {
-        alert('PRINTABLE')
+        createDispenserAndAddLinks(
+          'Campaign',
+          false,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          successCallback
+        )
       },
       image: <Icons.DispenserQRPreviewIcon />
     }, {
@@ -78,7 +106,9 @@ const BatchesList: FC<TProps> = ({
   tokenAddress,
   encryptionKey,
   sponsored,
-  linksCreated
+  linksCreated,
+  wallet,
+  createDispenserAndAddLinks
 }) => {
 
   if (linksCreated === 0) {
@@ -88,9 +118,17 @@ const BatchesList: FC<TProps> = ({
   const [
     showPopup,
     setShowPopup
-  ] = useState<boolean>(false)
+  ] = useState<boolean | string>(false)
 
-  const dispenserOptions = defineDispenserTypes()
+  const dispenserOptions = defineDispenserTypes(
+    () => setShowPopup(false),
+    createDispenserAndAddLinks,
+    campaignId,
+    String(showPopup),
+    tokenAddress as string,
+    wallet,
+    () => alert('sss')
+  )
 
   return <>
     {showPopup && <NewDispenserPopup
@@ -151,7 +189,7 @@ const BatchesList: FC<TProps> = ({
                 size='extra-small'
                 title='Distribute'
                 onClick={() => {
-                  setShowPopup(true)
+                  setShowPopup(batch.batch_id)
                 }}
               />
             </Buttons>

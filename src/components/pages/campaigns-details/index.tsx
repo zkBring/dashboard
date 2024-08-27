@@ -55,6 +55,11 @@ import {
   updateWallets,
   updatePreferredWalletOn
 } from 'data/store/reducers/campaigns/async-actions'
+
+import {
+  createDispenserAndAddLinks
+} from 'data/store/reducers/dispensers/async-actions'
+
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { plausibleApi } from 'data/api'
@@ -159,6 +164,28 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
+    createDispenserAndAddLinks: (
+      title: string,
+      dynamic: boolean,
+      campaignId: string,
+      batchId: string,
+      tokenAddress: string,
+      wallet: string,
+      successCallback?: (id: string | number) => void
+    ) => {
+      dispatch(
+        createDispenserAndAddLinks({
+          title,
+          dynamic,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          successCallback
+        })
+      )
+    },
+
     updateClaimingFinishedButtonOn: (
       campaign_id: string,
       claiming_finished_button_on: boolean
@@ -242,7 +269,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateClaimingFinishedButton,
   updateAvailableCountries,
   updateWallets,
-  updatePreferredWalletOn
+  updatePreferredWalletOn,
+  createDispenserAndAddLinks
 }) => {
 
   const history = useHistory()
@@ -491,6 +519,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
         </Header>
 
         <BatchesList
+          createDispenserAndAddLinks={createDispenserAndAddLinks}
+          wallet={wallet}
           batches={batches}
           loading={loading}
           sponsored={sponsored}

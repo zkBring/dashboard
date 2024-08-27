@@ -87,7 +87,6 @@ const createDispenserAndAddLinks = ({
         const { data } = await dispensersApi.create(newDispenser)
         if (data.success) {
 
-
           // get links
 
           const getLinksResult = await campaignsApi.getBatch(campaignId, batchId)

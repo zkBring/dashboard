@@ -263,6 +263,8 @@ const Dispensers: FC<ReduxType> = ({
       />
       {showPopup && <NewDispenserPopup
         dispenserOptions={dispenserTypes}
+        title='Create QR campaign'
+        subtitle='Start new QR campaign to distribute your tokens by choosing the method that best suits your needs:'
         onClose={() => {
           setShowPopup(false)
         }}
