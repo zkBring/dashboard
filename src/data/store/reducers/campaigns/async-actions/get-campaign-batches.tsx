@@ -3,7 +3,6 @@ import * as actionsCampaigns from '../actions'
 import { CampaignsActions } from '../types'
 import { RootState } from 'data/store'
 import { campaignsApi } from 'data/api'
-import { decrypt } from 'lib/crypto'
 
 const getCampaignBatches = ({
   campaign_id,
@@ -47,7 +46,6 @@ const getCampaignBatches = ({
           return campaign
         })
 
-        console.log({ updatedCampaigns })
         dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
 
         callback && callback()
