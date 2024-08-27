@@ -52,12 +52,9 @@ const decryptDispenserData = ({
       currentDispenser.decrypted_multiscan_qr_secret &&
       currentDispenser.dispenser_url
     ) {
-      console.log('here')
       dispatch(actionsDispensers.setLoading(false))
       return
     }
-
-    console.log('here1')
 
     const callback = async (dashboardKey: string) => {
       try {
@@ -80,8 +77,6 @@ const decryptDispenserData = ({
           Boolean(whitelist_on),
           Boolean(dynamic)
         )
-
-        console.log({ claimURLDecrypted })
   
         const linkKey = ethers.utils.id(multiscanQREncCode)
         const redirectURLDecrypted = redirect_url ? decrypt(redirect_url, linkKey.replace('0x', '')) : ''

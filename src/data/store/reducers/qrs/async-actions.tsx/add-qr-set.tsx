@@ -66,7 +66,6 @@ const addQRSet = ({
           worker,
           data
         }) => (worker as Remote<QRsWorker>).prepareQRs(data as number, dashboardKey)))
-        console.log({ qrArray })
 
         const newQr: TQRSet = {
           set_name: title,
