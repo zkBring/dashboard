@@ -112,9 +112,7 @@ const secure = (
           value: totalNativeTokensAmountToSecure,
           data: data
         })
-        console.log({ transaction }) // hash
     
-        // 0xc8378e0281d8efd061e3b3bdfc1d5b37746e84a967e4f4f5e88616024d30ef30
     
         const checkTransaction = async function (): Promise<boolean> {
           return new Promise((resolve, reject) => {
@@ -125,13 +123,6 @@ const secure = (
                   resolve(true)
                   clearInterval(checkInterval)
                 }
-                // const receipt = await provider.getTransactionReceipt(transaction.hash)
-                // if (receipt && receipt.status === 0) {
-                //   console.log('waiting')
-                // } else if (receipt && receipt.status === 1 && receipt.confirmations != null && receipt.confirmations > 0) {
-                //   resolve(true)
-                //   clearInterval(checkInterval)
-                // }
               } catch (err) {
                 console.log({ err })
               }
