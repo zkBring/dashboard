@@ -62,10 +62,10 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
   loading,
   createCollectionERC1155
 }) => {
-  const [ thumbnail, setThumbnail ] = useState<string>('')
-  const [ title, setTitle ] = useState<string>('')
-  const [ symbol, setSymbol ] = useState<string>('')
-  const [ file, setFile ] = useState<File | undefined>(undefined)
+  const [thumbnail, setThumbnail] = useState<string>('')
+  const [title, setTitle] = useState<string>('')
+  const [symbol, setSymbol] = useState<string>('')
+  const [file, setFile] = useState<File | undefined>(undefined)
   const history = useHistory()
 
   return <WidgetStyled title='Collection setup'>
@@ -101,15 +101,15 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
       />
     </InputContainer>
 
-    <ThumbnailUpload
-      thumbnail={thumbnail}
-      setThumbnail={setThumbnail}
-      sizeAllowed={5000000}
-      formatAllowed={[ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4' ]}
-      title='Collection Thumbnail'
-      setFile={setFile}
-      note='(.PNG, .JPG, .GIF, .MP4. Max 5mb)'
-    />
+    {/* <ThumbnailUpload
+        thumbnail={thumbnail}
+        setThumbnail={setThumbnail}
+        sizeAllowed={5000000}
+        formatAllowed={[ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4' ]}
+        title='Collection Thumbnail'
+        setFile={setFile}
+        note='(.PNG, .JPG, .GIF, .MP4. Max 5mb)'
+        /> */}
 
     <ButtonsContainer>
       <ButtonStyled
@@ -138,7 +138,7 @@ const CollectionsCreateInitial: FC<ReduxType> = ({
         Deploy Collection
       </ButtonStyled>
     </ButtonsContainer>
-    
+
   </WidgetStyled>
 }
 
