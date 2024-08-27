@@ -9,7 +9,7 @@ export const AsidePopupStyled = styled(AsidePopup)`
   min-width: 614px;
 `
 
-export const Option = styled(Link)`
+export const Option = styled.div`
   display: grid;
   padding: 24px;
   grid-template-columns: 154px 1fr;
