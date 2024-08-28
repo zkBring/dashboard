@@ -128,11 +128,11 @@ const createDispenserAndAddLinks = ({
                 dispatch(qrManagerActions.setItems(items))
               }
 
-              dispatch(actionsDispensers.addDispenser(addLinksResult.data.dispenser))
+              dispatch(actionsDispensers.addDispenser(createDispenserResult.data.dispenser))
 
               if (successCallback) {
                 successCallback(
-                  addLinksResult.data.dispenser.dispenser_id,
+                  createDispenserResult.data.dispenser.dispenser_id,
                   dynamic
                 )
               }
