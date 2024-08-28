@@ -10,15 +10,13 @@ import { ethers5Adapter } from "thirdweb/adapters/ethers5";
 import { deployPublishedContract } from "thirdweb/deploys";
 import { collectionsApi } from 'data/api'
 import { TCollection } from 'types'
-import CollectionPlaceholder from 'images/collection-placeholder.png'
+import { THIRDWEB_CONTRACT_ID, THIRDWEB_PUBLISHER } from 'configs/collections'
 
 const { REACT_APP_THIRDWEB_CLIENT_ID } = process.env
 
 function createCollectionERC1155(
   title: string,
   symbol: string,
-  file?: File,
-  base64File?: string,
   callback?: (collection_id: string) => void
 ) {
   // @ts-ignore
@@ -47,15 +45,14 @@ function createCollectionERC1155(
         client,
         chain,
         account,
-        contractId: "Soulbound",
+        contractId: THIRDWEB_CONTRACT_ID,
         contractParams: [account.address, title, symbol],
-        publisher: "0x3C2F0873bE11B0d3840fd8279A2994e66b76E498",
-      });
+        publisher: THIRDWEB_PUBLISHER
+      })
 
       const result: { data: { success: boolean, collection: TCollection } } = await collectionsApi.create({
         title,
         symbol,
-        thumbnail: base64File || CollectionPlaceholder,
         sbt: true,
         token_standard: 'ERC1155',
         token_address: address,
