@@ -9,7 +9,7 @@ import { createThirdwebClient, getContract, defineChain, prepareContractCall, se
 import { nextTokenIdToMint, mintTo } from "thirdweb/extensions/erc1155";
 import { ethers5Adapter } from "thirdweb/adapters/ethers5";
 import { collectionsApi } from 'data/api'
-import { TClaimPattern, TCollectionToken, TCollection } from 'types'
+import { TCollectionToken, TCollection } from 'types'
 const { REACT_APP_THIRDWEB_CLIENT_ID } = process.env
 
 

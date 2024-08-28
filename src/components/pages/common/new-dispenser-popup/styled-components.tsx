@@ -15,6 +15,7 @@ export const Option = styled.div`
   grid-template-columns: 154px 1fr;
   gap: 32px;
   align-items: center;
+  cursor: pointer;
   border-radius: 16px;
   text-decoration: none;
   color: ${props => props.theme.primaryTextColor};

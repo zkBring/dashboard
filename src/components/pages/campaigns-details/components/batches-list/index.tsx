@@ -1,7 +1,8 @@
 import { FC, useState } from 'react'
 import {
   TProps,
-  TCreateDispenserAndAddLinks
+  TCreateDispenserAndAddLinks,
+  TCreateQRSetAndAddLinks
 } from './types'
 import {
   BatchList,
@@ -27,30 +28,43 @@ import {
   Buttons
 } from './styled-components'
 import Icons from 'icons'
+import { useHistory } from 'react-router-dom'
+import { TQRManagerItemType } from 'types'
 
 const defineDispenserTypes = (
-  closePopup: () => void,
   createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
+  createQRSetAndAddLinks: TCreateQRSetAndAddLinks,
   campaignId: string,
   batchId: string,
   tokenAddress: string,
   wallet: string,
-  successCallback: () => void
+  campaignTitle: string,
+
+  successCallbackForDispenser?: (
+    dispenser_id: string | number,
+    dynamic: boolean
+  ) => void,
+
+  successCallbackForQRSet?: (
+    dispenser_id: string | number
+  ) => void,
+
+  errorCallback?: () => void,
 ) => {
   return [
     {
       title: 'Dynamic QR for electronic displays',
       text: 'A web page with an auto-refresh QR code that updates in real time. This ensures secure distribution, preventing a single user from claiming all tokens',
       onClick: () => {
-        closePopup()
         createDispenserAndAddLinks(
-          'Campaign',
+          `Dispenser for ${campaignTitle}`,
           true,
           campaignId,
           batchId,
           tokenAddress,
           wallet,
-          successCallback
+          successCallbackForDispenser,
+          errorCallback
         )
       },
       image: <Icons.DynamicQRPreviewIcon />
@@ -59,13 +73,14 @@ const defineDispenserTypes = (
       text: 'A single QR code that dispenses tokens one-by-one to users after they scan it. Ideal for controlled and sequential token distribution',
       onClick: () => {
         createDispenserAndAddLinks(
-          'Campaign',
+          `Dispenser for ${campaignTitle}`,
           false,
           campaignId,
           batchId,
           tokenAddress,
           wallet,
-          successCallback
+          successCallbackForDispenser,
+          errorCallback
         )
       },
       image: <Icons.DispenserQRPreviewIcon />
@@ -73,7 +88,14 @@ const defineDispenserTypes = (
       title: 'Printable Set of QR codes',
       text: 'A set of single-claim QR codes. Each QR code is valid for one claim only, and becomes invalid after being scanned and claimed by a user',
       onClick: () => {
-        alert('QR SET')
+        createQRSetAndAddLinks(
+          `QR set for ${campaignTitle}`,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          successCallbackForQRSet
+        )
       },
       image: <Icons.QRSetPreviewIcon />
     }
@@ -108,8 +130,12 @@ const BatchesList: FC<TProps> = ({
   sponsored,
   linksCreated,
   wallet,
-  createDispenserAndAddLinks
+  createDispenserAndAddLinks,
+  createQRSetAndAddLinks
 }) => {
+
+
+  const history = useHistory()
 
   if (linksCreated === 0) {
     return <span>No links have been created yet.</span>
@@ -121,13 +147,35 @@ const BatchesList: FC<TProps> = ({
   ] = useState<boolean | string>(false)
 
   const dispenserOptions = defineDispenserTypes(
-    () => setShowPopup(false),
     createDispenserAndAddLinks,
+    createQRSetAndAddLinks,
     campaignId,
     String(showPopup),
     tokenAddress as string,
     wallet,
-    () => alert('sss')
+    title,
+
+    // for dispenser
+    (
+      dispenser_id: string | number,
+      dynamic: boolean
+    ) => {
+        setShowPopup(false)
+        if (dynamic) {
+          return history.push(`/dynamic-qrs/${dispenser_id}`)
+        }
+        return history.push(`/dispensers/${dispenser_id}`)
+      },
+    // for qr-set
+    (
+      dispenser_id: string | number
+    ) => {
+        setShowPopup(false)
+        return history.push(`/qrs/${dispenser_id}`)
+      },
+    () => {
+        setShowPopup(false)
+      },
   )
 
   return <>
@@ -183,7 +231,7 @@ const BatchesList: FC<TProps> = ({
                 }}
               />
 
-              {false && <WidgetButton
+              <WidgetButton
                 appearance='additional'
                 disabled={batch.claim_links_count === 0}
                 size='extra-small'
@@ -191,7 +239,7 @@ const BatchesList: FC<TProps> = ({
                 onClick={() => {
                   setShowPopup(batch.batch_id)
                 }}
-              />}
+              />
             </Buttons>
             
           </>

@@ -11,6 +11,7 @@ import {
   Container,
   WidgetContainer
 } from 'components/pages/common'
+import { TQRManagerItemType } from 'types'
 import {
   Header,
   WidgetButton,
@@ -57,8 +58,12 @@ import {
 } from 'data/store/reducers/campaigns/async-actions'
 
 import {
-  createDispenserAndAddLinks
+  createDispenserAndAddLinks,
 } from 'data/store/reducers/dispensers/async-actions'
+
+import {
+  createQRSetAndAddLinks
+} from 'data/store/reducers/qrs/async-actions.tsx'
 
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
@@ -171,7 +176,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       batchId: string,
       tokenAddress: string,
       wallet: string,
-      successCallback?: (id: string | number) => void
+      successCallback?: (
+        dispenser_id: string | number,
+        dynamic: boolean
+      ) => void,
+      errorCallback?: () => void,
     ) => {
       dispatch(
         createDispenserAndAddLinks({
@@ -181,7 +190,32 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           batchId,
           tokenAddress,
           wallet,
-          successCallback
+          successCallback,
+          errorCallback
+        })
+      )
+    },
+  
+    createQRSetAndAddLinks: (
+      title: string,
+      campaignId: string,
+      batchId: string,
+      tokenAddress: string,
+      wallet: string,
+      successCallback?: (
+        dispenser_id: string | number
+      ) => void,
+      errorCallback?: () => void,
+    ) => {
+      dispatch(
+        createQRSetAndAddLinks({
+          title,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          successCallback,
+          errorCallback
         })
       )
     },
@@ -270,7 +304,8 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateAvailableCountries,
   updateWallets,
   updatePreferredWalletOn,
-  createDispenserAndAddLinks
+  createDispenserAndAddLinks,
+  createQRSetAndAddLinks
 }) => {
 
   const history = useHistory()
@@ -520,6 +555,7 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <BatchesList
           createDispenserAndAddLinks={createDispenserAndAddLinks}
+          createQRSetAndAddLinks={createQRSetAndAddLinks}
           wallet={wallet}
           batches={batches}
           loading={loading}
@@ -660,7 +696,6 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 
 
       <Settings
-
         loading={loading}
         countries={countries}
         campaignData={currentCampaign}

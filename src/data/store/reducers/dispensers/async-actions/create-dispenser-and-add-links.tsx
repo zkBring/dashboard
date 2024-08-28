@@ -12,13 +12,12 @@ import {
   defineIfLinksHasEqualContents,
   decryptLinks
 } from 'helpers'
-import { TDispenser, TLinkDecrypted } from 'types'
+import { TDispenser, TQRManagerItemType } from 'types'
 import { encrypt } from 'lib/crypto'
-import { plausibleApi, qrManagerApi } from 'data/api'
+import { qrManagerApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
 import * as actionsAsyncUser from '../../user/async-actions'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -33,7 +32,11 @@ type TCreateDispenserArgs = {
   batchId: string
   tokenAddress: string
   wallet: string
-  successCallback?: (id: string | number) => void,
+  successCallback?: (
+    dispenser_id: string | number,
+    dynamic: boolean
+  ) => void,
+  errorCallback?: () => void,
 }
 
 const createDispenserAndAddLinks = ({
@@ -43,7 +46,8 @@ const createDispenserAndAddLinks = ({
   batchId,
   tokenAddress,
   wallet,
-  successCallback
+  successCallback,
+  errorCallback
 }: TCreateDispenserArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
@@ -84,8 +88,8 @@ const createDispenserAndAddLinks = ({
         }
         
         // create dispenser
-        const { data } = await dispensersApi.create(newDispenser)
-        if (data.success) {
+        const createDispenserResult = await dispensersApi.create(newDispenser)
+        if (createDispenserResult.data.success) {
 
           // get links
 
@@ -115,10 +119,23 @@ const createDispenserAndAddLinks = ({
               dashboardKey as string
             )
             const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
-            const result = await dispensersApi.mapLinks(data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
-            console.log({ result })
-            if (successCallback) {
-              successCallback(data.dispenser.dispenser_id)
+            const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
+            if (addLinksResult.data.success) {
+
+              const qrManagerData = await qrManagerApi.get()
+              const { success, items } = qrManagerData.data
+              if (success) {
+                dispatch(qrManagerActions.setItems(items))
+              }
+
+              dispatch(actionsDispensers.addDispenser(addLinksResult.data.dispenser))
+
+              if (successCallback) {
+                successCallback(
+                  addLinksResult.data.dispenser.dispenser_id,
+                  dynamic
+                )
+              }
             }
           }
         } else {
@@ -126,6 +143,7 @@ const createDispenserAndAddLinks = ({
         }
       } catch (err) {
         alertError('Couldn’t create Dispanser, please check console')
+        errorCallback && errorCallback()
         console.error(err)
       }
     }
