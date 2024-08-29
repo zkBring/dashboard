@@ -102,7 +102,6 @@ const getDashboardKey = async (
       }
     }
   } catch (err) {
-    dispatch(userActions.setAuthorizationStep('login'))
     const errorText = defineError(err as Error)
     alertError(errorText)
     console.error({ err })

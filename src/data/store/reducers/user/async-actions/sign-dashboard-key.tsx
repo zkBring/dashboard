@@ -35,6 +35,8 @@ const signDashboardKey = () => {
       )
   
       if (!dashboardKeyCreated) {
+        dispatch(actionsUser.setDashboardKeyPopup(false))
+        dispatch(actionsUser.setLoading(false))
         return alertError('Error with dashboard key sign')
       }
   
