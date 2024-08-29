@@ -29,7 +29,6 @@ import {
 } from './styled-components'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
-import { TQRManagerItemType } from 'types'
 
 const defineDispenserTypes = (
   createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
@@ -231,7 +230,7 @@ const BatchesList: FC<TProps> = ({
                 }}
               />
 
-              <WidgetButton
+              {false && <WidgetButton
                 appearance='additional'
                 disabled={batch.claim_links_count === 0}
                 size='extra-small'
@@ -239,7 +238,7 @@ const BatchesList: FC<TProps> = ({
                 onClick={() => {
                   setShowPopup(batch.batch_id)
                 }}
-              />
+              />}
             </Buttons>
             
           </>
