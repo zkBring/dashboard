@@ -3,9 +3,6 @@ import * as userActions from '../../actions'
 import {
   UserActions,
 } from '../../types'
-import {
-  CampaignActions
-} from 'data/store/reducers/campaign/types'
 import { RootState, IAppDispatch } from 'data/store'
 import { authorizationApi, plausibleApi } from 'data/api'
 import {
