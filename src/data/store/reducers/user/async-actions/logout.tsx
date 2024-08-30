@@ -21,18 +21,18 @@ const logout = () => {
     const { user: { chainId } } = getState()
     try {
       const logout = await authorizationApi.logout()
-      // if (logout.status === 200) {
-      //   plausibleApi.invokeEvent({
-      //     eventName: 'logout',
-      //     data: {
-      //       network: defineNetworkName(chainId)
-      //     }
-      //   })
-      //   localStorage.removeItem('wagmi.store')
-      //   localStorage.removeItem('wagmi.recentConnectorId')
-      //   sessionStorage.clear()
-      //   window.location.reload()
-      // }
+      if (logout.status === 200) {
+        plausibleApi.invokeEvent({
+          eventName: 'logout',
+          data: {
+            network: defineNetworkName(chainId)
+          }
+        })
+        localStorage.removeItem('wagmi.store')
+        localStorage.removeItem('wagmi.recentConnectorId')
+        sessionStorage.clear()
+        window.location.reload()
+      }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 403) {

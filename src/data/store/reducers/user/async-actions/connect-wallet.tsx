@@ -69,7 +69,6 @@ function connectWallet (
           dispatch(initialization())
         } catch (err) {
           dispatch(actions.setAuthorizationStep('login'))
-          console.log('TOKEN IS NOT AVAILABLE')
         }
 
         plausibleApi.invokeEvent({

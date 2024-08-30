@@ -283,7 +283,6 @@ const renderMainButton = (
         toggleDownloadPopup(true)
         return
       }
-    console.log({ dispenser_url })
       if (dispenser_url) {
         window.open(dispenser_url, '_blank')
         return 
@@ -301,11 +300,6 @@ const defineQRItem = (
   dispenser_url?: string,
   dashboard_key?: string | null
 ) => {
-  console.log({ 
-    dashboard_key,
-    dynamic,
-    dispenser_url
-  })
   if (!dashboard_key) {
     return <QRImage src={QRCodePreview} />
   }
@@ -373,7 +367,6 @@ const Dispenser: FC<ReduxType> = ({
       !dispenser?.updated_at ||
       dispenser?.links_count === 0
     ) { return }
-    console.log('getDispenserData')
 
     getDispenserData(
       dispenser.multiscan_qr_id as string
@@ -386,7 +379,6 @@ const Dispenser: FC<ReduxType> = ({
 
   useEffect(() => {
     if (!dashboardKey) { return }
-    console.log('decrypting')
     decryptDispenserData(id)
   }, [
     dashboardKey,
@@ -395,8 +387,6 @@ const Dispenser: FC<ReduxType> = ({
   ])
 
   const qrCodeDescription = defineQRCodeDescription()
-
-  console.log({ dispenser })
 
   const {
     dispenser_id,
