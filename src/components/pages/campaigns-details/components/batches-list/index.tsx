@@ -230,7 +230,7 @@ const BatchesList: FC<TProps> = ({
                 }}
               />
 
-              {false && <WidgetButton
+              <WidgetButton
                 appearance='additional'
                 disabled={batch.claim_links_count === 0}
                 size='extra-small'
@@ -238,7 +238,7 @@ const BatchesList: FC<TProps> = ({
                 onClick={() => {
                   setShowPopup(batch.batch_id)
                 }}
-              />}
+              />
             </Buttons>
             
           </>
