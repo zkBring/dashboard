@@ -146,8 +146,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
 
   if (
     loading &&
-    currentAddressCampaigns.length === 0 &&
-    currentAddressDrafts.length === 0
+    currentAddressCampaigns.length === 0
   ) {
     return <LoaderContainer>
       <Loader size='large' />
