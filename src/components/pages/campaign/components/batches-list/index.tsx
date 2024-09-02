@@ -39,6 +39,9 @@ const defineDispenserTypes = (
   wallet: string,
   campaignTitle: string,
 
+  dispenserMappingPageRedirect: () => void,
+  qrSetMappingPageRedirect: () => void,
+
   successCallbackForDispenser?: (
     dispenser_id: string | number,
     dynamic: boolean
@@ -56,6 +59,7 @@ const defineDispenserTypes = (
       text: 'A web page with an auto-refresh QR code that updates in real time. This ensures secure distribution, preventing a single user from claiming all tokens',
       onClick: () => {
         createDispenserAndAddLinks(
+          dispenserMappingPageRedirect,
           `Dispenser for ${campaignTitle}`,
           true,
           campaignId,
@@ -72,6 +76,7 @@ const defineDispenserTypes = (
       text: 'A single QR code that dispenses tokens one-by-one to users after they scan it. Ideal for controlled and sequential token distribution',
       onClick: () => {
         createDispenserAndAddLinks(
+          dispenserMappingPageRedirect,
           `Dispenser for ${campaignTitle}`,
           false,
           campaignId,
@@ -88,6 +93,7 @@ const defineDispenserTypes = (
       text: 'A set of single-claim QR codes. Each QR code is valid for one claim only, and becomes invalid after being scanned and claimed by a user',
       onClick: () => {
         createQRSetAndAddLinks(
+          qrSetMappingPageRedirect,
           `QR set for ${campaignTitle}`,
           campaignId,
           batchId,
@@ -154,27 +160,36 @@ const BatchesList: FC<TProps> = ({
     wallet,
     title,
 
+    () => {
+      history.push(`/campaigns/${campaignId}/dispenser/generate`)
+    },
+
+    () => {
+      history.push(`/campaigns/${campaignId}/qrs/generate`)
+    },
+
     // for dispenser
     (
       dispenser_id: string | number,
       dynamic: boolean
     ) => {
-        setShowPopup(false)
-        if (dynamic) {
-          return history.push(`/dynamic-qrs/${dispenser_id}`)
-        }
-        return history.push(`/dispensers/${dispenser_id}`)
-      },
+      setShowPopup(false)
+      if (dynamic) {
+        return history.push(`/dynamic-qrs/${dispenser_id}`)
+      }
+      return history.push(`/dispensers/${dispenser_id}`)
+    },
     // for qr-set
     (
       dispenser_id: string | number
     ) => {
-        setShowPopup(false)
-        return history.push(`/qrs/${dispenser_id}`)
-      },
+      setShowPopup(false)
+      return history.push(`/qrs/${dispenser_id}`)
+    },
     () => {
-        setShowPopup(false)
-      },
+      setShowPopup(false)
+      return history.push(`/campaigns/${campaignId}`)
+    },
   )
 
   return <>

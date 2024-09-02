@@ -1,6 +1,7 @@
 import { TLinksBatch, TQRManagerItemType } from "types"
 
 export type TCreateDispenserAndAddLinks = (
+  mappingPageRedirect: () => void,
   title: string,
   dynamic: boolean,
   campaignId: string,
@@ -15,6 +16,7 @@ export type TCreateDispenserAndAddLinks = (
 ) => void
 
 export type TCreateQRSetAndAddLinks = (
+  mappingPageRedirect: () => void,
   title: string,
   campaignId: string,
   batchId: string,

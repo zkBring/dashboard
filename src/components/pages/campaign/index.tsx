@@ -11,7 +11,6 @@ import {
   Container,
   WidgetContainer
 } from 'components/pages/common'
-import { TQRManagerItemType } from 'types'
 import {
   Header,
   WidgetButton,
@@ -170,6 +169,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     },
 
     createDispenserAndAddLinks: (
+      mappingPageRedirect: () => void,
       title: string,
       dynamic: boolean,
       campaignId: string,
@@ -184,6 +184,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => {
       dispatch(
         createDispenserAndAddLinks({
+          mappingPageRedirect,
           title,
           dynamic,
           campaignId,
@@ -197,6 +198,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     },
   
     createQRSetAndAddLinks: (
+      mappingPageRedirect: () => void,
       title: string,
       campaignId: string,
       batchId: string,
@@ -209,6 +211,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => {
       dispatch(
         createQRSetAndAddLinks({
+          mappingPageRedirect,
           title,
           campaignId,
           batchId,
@@ -285,7 +288,7 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 
 type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'
 
-const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
+const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   campaigns,
   dashboardKey,
   match: { params },
@@ -768,4 +771,4 @@ const CampaignDetails: FC<ReduxType & IProps & RouteComponentProps> = ({
 }
 
 // @ts-ignore
-export default withRouter(connect(mapStateToProps, mapDispatcherToProps)(CampaignDetails))
+export default withRouter(connect(mapStateToProps, mapDispatcherToProps)(Campaign))

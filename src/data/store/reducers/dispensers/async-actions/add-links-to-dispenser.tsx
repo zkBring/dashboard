@@ -2,13 +2,31 @@ import { Dispatch } from 'redux'
 import * as actionsDispenser from '../actions'
 import { DispensersActions } from '../types'
 import { RootState } from 'data/store'
-import { TLinkDecrypted, TDispenser, TDispenserStatus } from 'types'
-import {  dispensersApi, qrManagerApi, plausibleApi } from 'data/api'
+import {
+  TLinkDecrypted,
+  TDispenser,
+  TDispenserStatus
+} from 'types'
+import {
+  dispensersApi,
+  qrManagerApi,
+  plausibleApi
+} from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
-import { QRsWorker } from 'web-workers/qrs-worker'
-import { wrap, Remote, proxy } from 'comlink'
-import { sleep, alertError, defineIfLinksHasEqualContents } from 'helpers'
+import {
+  QRsWorker
+} from 'web-workers/qrs-worker'
+import {
+  wrap,
+  Remote,
+  proxy
+} from 'comlink'
+import {
+  sleep,
+  alertError,
+  defineIfLinksHasEqualContents
+} from 'helpers'
 import axios from 'axios'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'

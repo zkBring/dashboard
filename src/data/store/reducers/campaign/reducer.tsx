@@ -17,6 +17,7 @@ const initialState: CampaignState = {
   approved: null,
   id: null,
   secured: false,
+  additionalWalletsOn: false,
   signerKey: null,
   signerAddress: null,
   sponsored: true,
@@ -62,6 +63,9 @@ export function newRetroDropReducer(
           return {...state, decimals: action.payload.decimals }
         case Constants.CAMPAIGN_SET_ASSETS:
           return {...state, assets: action.payload.assets }
+        case Constants.CAMPAIGN_SET_ADDITIONAL_WALLETS_ON: {
+          return {...state, additionalWalletsOn: action.payload.additionalWalletsOn }
+        }
         case Constants.CAMPAIGN_SET_ASSETS_ORIGINAL:
           return {...state, assetsOriginal: action.payload.assetsOriginal }
         case Constants.CAMPAIGN_SET_SYMBOL:

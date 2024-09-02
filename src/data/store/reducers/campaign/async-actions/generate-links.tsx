@@ -67,7 +67,8 @@ const generateERC20Link = ({
         preferredWalletOn,
         collectionId,
         collectionTokenId,
-        countriesWhitelistOn
+        countriesWhitelistOn,
+        additionalWalletsOn
       } = campaign
 
       if (!assets) { return alertError('assets are not provided') }
@@ -176,6 +177,7 @@ const generateERC20Link = ({
           available_countries: countriesWhitelist,
           available_countries_on: countriesWhitelistOn,
           preferred_wallet_on: preferredWalletOn,
+          additional_wallets_on: additionalWalletsOn,
           collection_id: collectionId ? collectionId : undefined,
           collection_token_id: collectionTokenId ? collectionTokenId : undefined,
           ...batch

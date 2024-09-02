@@ -37,6 +37,7 @@ export interface CampaignState {
   // for own collections
   collectionId?: null | string,
   collectionTokenId?: null | string
+  additionalWalletsOn: boolean
 }
 
 export type CampaignActions = ActionType<typeof actions>;

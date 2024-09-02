@@ -16,6 +16,14 @@ export function setTitle (title: string) {
   })
 }
 
+export function setAdditionalWalletsOn (additionalWalletsOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_ADDITIONAL_WALLETS_ON, {
+    additionalWalletsOn
+  })
+}
+
+
+
 export function setPreferredWalletOn (preferredWalletOn: boolean) {
   return action(Constants.CAMPAIGN_SET_PREFERRED_WALLET_ON, {
     preferredWalletOn

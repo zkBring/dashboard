@@ -6,7 +6,7 @@ import {
   NotFound,
   Page,
   Campaigns,
-  CampaignsDetails,
+  Campaign,
   CampaignsCreateInitial,
   CampaignsCreateApprove,
   CampaignsCreateSecure,
@@ -23,7 +23,9 @@ import {
   Collections,
   CollectionAddToken,
   CollectionsCreateInitial,
-  Collection
+  Collection,
+  CampaignDispenserGenerate,
+  CampaignQRsGenerate
 } from 'components/pages'
 import { connect } from 'react-redux'
 import { RootState } from 'data/store'
@@ -60,7 +62,21 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           path='/campaigns/:id'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CampaignsDetails}
+          component={Campaign}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/:id/dispenser/generate'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignDispenserGenerate}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/:id/qrs/generate'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignQRsGenerate}
         />
 
         <ProtectedRoute
