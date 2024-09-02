@@ -153,6 +153,7 @@ const createDispenserAndAddLinks = ({
         dispatch(actionsDispensers.setMappingLoader(0))
       } catch (err) {
         alertError('Couldn’t create Dispanser, please check console')
+        dispatch(actionsDispensers.setMappingLoader(0))
         errorCallback && errorCallback()
         console.error(err)
       }

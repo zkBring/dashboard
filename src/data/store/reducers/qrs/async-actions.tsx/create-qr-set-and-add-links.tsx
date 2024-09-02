@@ -14,7 +14,8 @@ import {
   createQuantityGroups,
   createWorkers,
   terminateWorkers,
-  decryptLinks
+  decryptLinks,
+  alertError
 } from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { plausibleApi, qrManagerApi } from 'data/api'
@@ -158,14 +159,17 @@ const createQRSetAndAddLinks = ({
                 )
               }
             }
+          } else {
+            throw new Error('QR set was not created. Check console for more information')
           }
-
           dispatch(actionsQR.setMappingLoader(0))
-          dispatch(actionsQR.setUploadLoader(0))
-          
+          dispatch(actionsQR.setUploadLoader(0)) 
         }
       } catch (err) {
         errorCallback && errorCallback()
+        alertError('Couldn’t create QR set, please check console')
+        dispatch(actionsQR.setMappingLoader(0))
+        dispatch(actionsQR.setUploadLoader(0))
         console.error(err)
       }
     }
