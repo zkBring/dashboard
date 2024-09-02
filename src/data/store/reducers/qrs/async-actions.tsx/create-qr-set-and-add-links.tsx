@@ -3,8 +3,7 @@ import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
 import {
-  TQRSet,
-  TQRManagerItemType
+  TQRSet
 } from 'types'
 import {
   qrsApi,
@@ -15,7 +14,8 @@ import {
   createQuantityGroups,
   createWorkers,
   terminateWorkers,
-  decryptLinks
+  decryptLinks,
+  alertError
 } from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { plausibleApi, qrManagerApi } from 'data/api'
@@ -29,6 +29,7 @@ import Worker from 'worker-loader!web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 
 const createQRSetAndAddLinks = ({
+  mappingPageRedirect,
   title,
   campaignId,
   batchId,
@@ -37,6 +38,7 @@ const createQRSetAndAddLinks = ({
   successCallback,
   errorCallback
 }: {
+  mappingPageRedirect: () => void,
   title: string,
   campaignId: string
   batchId: string,
@@ -64,19 +66,21 @@ const createQRSetAndAddLinks = ({
       dashboardKey: string
     ) => {
       try {
-
+        mappingPageRedirect && mappingPageRedirect()
         const getLinksResult = await campaignsApi.getBatch(campaignId, batchId)
         if (getLinksResult.data.success) {
 
           const { claim_links } = getLinksResult.data
-          let currentPercentage = 0
+          let currentPercentageUpload = 0
+          let currentPercentageMapping = 0
+
           const neededWorkersCount = claim_links.length <= 1000 ? 1 : workersCount
           const start = +(new Date())
 
-          const updateProgressbar = async (value: number) => {
-            if (value === currentPercentage || value < currentPercentage) { return }
-            currentPercentage = value
-            dispatch(actionsQR.setUploadLoader(currentPercentage))
+          const uploadProgressbar = async (value: number) => {
+            if (value === currentPercentageUpload || value < currentPercentageUpload) { return }
+            currentPercentageUpload = value
+            dispatch(actionsQR.setUploadLoader(currentPercentageUpload))
             await sleep(1)
           }
 
@@ -84,7 +88,7 @@ const createQRSetAndAddLinks = ({
           const workers = await createWorkers(
             quantityGroups,
             'qrs',
-            updateProgressbar
+            uploadProgressbar
           )
 
           const qrArray = await Promise.all(workers.map(({
@@ -92,12 +96,8 @@ const createQRSetAndAddLinks = ({
             data
           }) => (worker as Remote<QRsWorker>).prepareQRs(data as number, dashboardKey)))
 
-
-
           console.log((+ new Date()) - start)
           terminateWorkers(workers)
-
-
 
           const newQr: TQRSet = {
             set_name: title,
@@ -129,15 +129,15 @@ const createQRSetAndAddLinks = ({
                 wallet
               })
 
-              const updateProgressbar = async (value: number) => {
-                if (value === currentPercentage || value < currentPercentage) { return }
-                currentPercentage = value
-                dispatch(actionsQR.setMappingLoader(currentPercentage))
+              const mappingProgressbar = async (value: number) => {
+                if (value === currentPercentageMapping || value < currentPercentageMapping) { return }
+                currentPercentageMapping = value
+                dispatch(actionsQR.setMappingLoader(currentPercentageMapping))
                 await sleep(1)
               }
         
               const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
-              const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
+              const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(mappingProgressbar));
           
               const qrArrayMapped = await qrsWorker.mapQrsWithLinks(
                 qrSetItemsResult.data.qr_array,
@@ -159,13 +159,17 @@ const createQRSetAndAddLinks = ({
                 )
               }
             }
+          } else {
+            throw new Error('QR set was not created. Check console for more information')
           }
-
-          dispatch(actionsQR.setUploadLoader(0))
-          
+          dispatch(actionsQR.setMappingLoader(0))
+          dispatch(actionsQR.setUploadLoader(0)) 
         }
       } catch (err) {
         errorCallback && errorCallback()
+        alertError('Couldn’t create QR set, please check console')
+        dispatch(actionsQR.setMappingLoader(0))
+        dispatch(actionsQR.setUploadLoader(0))
         console.error(err)
       }
     }

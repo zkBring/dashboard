@@ -1,13 +1,13 @@
-import Page from './page/index.tsx'
-import NotFound from './not-found/index.tsx'
-import Campaigns from './campaigns/index.tsx'
-import CampaignsDetails from './campaigns-details/index.tsx'
-import CampaignsCreateInitial from './campaigns-create-initial/index'
+import Page from './page'
+import NotFound from './not-found'
+import Campaigns from './campaigns'
+import Campaign from './campaign'
+import CampaignsCreateInitial from './campaigns-create-initial'
 import CampaignsCreateApprove from './campaigns-create-approve'
-import CampaignsCreateSecure from './campaigns-create-secure/index'
-import CampaignsCreateGenerate from './campaigns-create-generate/index'
-import QR from './qr/index'
-import QRDownload from './qr-download/index'
+import CampaignsCreateSecure from './campaigns-create-secure'
+import CampaignsCreateGenerate from './campaigns-create-generate'
+import QR from './qr'
+import QRDownload from './qr-download'
 import CampaignsCreateNew from './campaigns-create-new'
 import Main from './main'
 import QRCreate from './qr-create'
@@ -19,17 +19,21 @@ import CollectionsCreateInitial from './collections-create-initial'
 import Collection from './collection'
 import CollectionAddToken from './collection-add-token'
 import DynamicQRCreate from './dynamic-qr-create'
+import CampaignDispenserGenerate from './campaign-dispenser-generate'
+import CampaignQRsGenerate from './campaign-qrs-generate'
 
 export {
   Page,
   DynamicQRCreate,
   Collection,
+  CampaignQRsGenerate,
+  CampaignDispenserGenerate,
   CollectionAddToken,
   CollectionsCreateInitial,
   Dispenser,
   NotFound,
   Campaigns,
-  CampaignsDetails,
+  Campaign,
   CampaignsCreateInitial,
   CampaignsCreateApprove,
   CampaignsCreateSecure,

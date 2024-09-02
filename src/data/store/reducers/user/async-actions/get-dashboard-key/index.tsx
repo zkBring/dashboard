@@ -19,7 +19,7 @@ import {
   defineError
 } from './error-handling'
 
-
+// @ts-ignore
 const getDashboardKey = async (
   dispatch: Dispatch<UserActions> & IAppDispatch,
   chain_id: number,
