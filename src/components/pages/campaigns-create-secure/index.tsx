@@ -263,10 +263,8 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
 
   useEffect(preventPageClose(), [])
 
-
   const history = useHistory()
   const [ nativeTokensAmount, setNativeTokensAmount ] = useState<string>('')
-
 
   if (!assets || !symbol || !chainId) { return null }
 
@@ -303,7 +301,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <SelectStyled
             options={walletsOptions}
             title='Preferred wallet'
-            disabled={loading}
+            disabled={loading || Boolean(currentCampaign)}
             onChange={({ value }) => {
               setCurrentWallet(value)
             }}
@@ -313,6 +311,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <CheckboxStyled
             label='Show "Already has a wallet" option for reciever'
             value={additionalWalletsOn}
+            disabled={loading || Boolean(currentCampaign)}
             onChange={value => {
               setAdditionalWalletsOn(value)
             }}
