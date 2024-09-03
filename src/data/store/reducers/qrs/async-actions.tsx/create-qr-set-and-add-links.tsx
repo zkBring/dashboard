@@ -152,8 +152,10 @@ const createQRSetAndAddLinks = ({
                 if (success) {
                   dispatch(qrManagerActions.setItems(items))
                 }
-                dispatch(actionsQR.addQr(qrSetCreateResult.data.qr_set))
-              
+
+                const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
+                dispatch(actionsQR.updateQrs(qrs.data.qr_sets))              
+                
                 successCallback && successCallback((
                   qrSetCreateResult.data.qr_set || {}).set_id || ''
                 )
