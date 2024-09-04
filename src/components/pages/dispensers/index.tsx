@@ -71,14 +71,12 @@ const defineDispenserTypes = (
 }
 
 const mapStateToProps = ({
-  campaigns: { campaigns },
   user: { address, chainId },
   qrManager: {
     loading,
     items
   }
 }: RootState) => ({
-  campaigns,
   address,
   chainId,
   items,
@@ -171,7 +169,7 @@ const createQRSetRow = (
 
   return <>
     <BatchListValue>{created_at && formatDate(created_at)}</BatchListValue>
-    <BatchListValue>-</BatchListValue>
+    <BatchListValue>{created_at && formatDate(created_at)}</BatchListValue>
     <BatchListValue>QR set</BatchListValue>
     <DispensersListValueFixed>{title}</DispensersListValueFixed>
 
