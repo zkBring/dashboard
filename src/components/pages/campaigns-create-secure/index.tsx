@@ -167,7 +167,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentCampaignClaimPattern = currentCampaign ? currentCampaign.claim_pattern : claimPattern
 
   const currentCampaignPreferredWalletOn = currentCampaign ? Boolean(currentCampaign.preferred_wallet_on) : false
-  const currentCampaignAdditionalWalletsOn = currentCampaign ? Boolean(currentCampaign.additional_wallets_on) : false
+  const currentCampaignAdditionalWalletsOn = currentCampaign ? Boolean(currentCampaign.additional_wallets_on) : true
   const expirationTime = momentNoOffsetGetTime()
   const currentAvailableCountriesOn = currentCampaign ? Boolean(currentCampaign.available_countries_on) : false
 
@@ -465,7 +465,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             countries,
             enableAvailableCountries,
             finalExpirationDate,
-            enablePreferredWalletOn ? additionalWalletsOn : true,
+            enablePreferredWalletOn ? additionalWalletsOn : false,
             () => history.push(redirectURL)
           )
         },
