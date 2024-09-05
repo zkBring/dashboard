@@ -92,6 +92,39 @@ const requests = {
     })
   },
 
+  updateClaimHost: (
+    campaign_id: string | number,
+    claim_host: string
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      claim_host,
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateClaimHostOn: (
+    campaign_id: string | number,
+    claim_host_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      claim_host_on,
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateMultipleClaimsOn: (
+    campaign_id: string | number,
+    multiple_claims_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      multiple_claims_on,
+    }, {
+      withCredentials: true
+    })
+  },
+
   getOne: (
     campaign_id: string | number
   ) => {

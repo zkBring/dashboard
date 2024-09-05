@@ -31,7 +31,6 @@ import {
   InputsContainer,
   CheckboxStyled
 } from './styled-components'
-import { CountriesList } from './components'
 import { IAppDispatch } from 'data/store'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { useHistory } from 'react-router-dom'
@@ -44,7 +43,6 @@ import {
   momentNoOffsetWithTimeUpdate,
   defineNativeTokenSymbol,
   countNativeTokensToSecure,
-  alertError,
   defineIfWalletIsAvailableForClient
 } from 'helpers'
 import { BigNumber } from 'ethers'
@@ -127,13 +125,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
-
-const defineSelectOptions = (countries: TCountry[]) => {
-  return countries.map(country => ({
-    value: country.id,
-    label: country.name
-  }))
-}
 
 const CampaignsCreateSecure: FC<ReduxType> = ({
   assets,
@@ -367,52 +358,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           <Note>UTC+0</Note>
 
         </DateTimeContainer>}
-      </WidgetComponent>
-
-      <WidgetComponent>
-        <Header>
-          <WidgetTitleStyled>
-            Countries whitelist
-          </WidgetTitleStyled>
-          <ToggleStyled
-            value={enableAvailableCountries}
-            disabled={loading || Boolean(currentCampaign)}
-            onChange={((value) => {
-              setEnableAvailableCountries(value)
-            })}
-          />
-        </Header>
-        <WidgetSubtitle>
-          If you want to make the campaign available only in certain countries, please add them to the list below
-        </WidgetSubtitle>
-        {enableAvailableCountries && <>
-          <CountriesList
-            data={countries}
-            onRemove={(id) => {
-              setCountries(countries.filter(item => item.id !== id))
-            }}
-            disabled={Boolean(currentCampaign) || loading}
-          />
-          <InputsContainer>
-            <SelectStyled
-              onChange={async ({ value, label }) => {
-                const countryId = value
-                const countryAlreadyAdded = countries.find(country => country.id === countryId)
-                if (countryAlreadyAdded) {
-                  return alertError(`Country ${countryId} was already added`)
-                }
-                setCountries([...countries, {
-                  id: value,
-                  name: label
-                }])
-              }}
-              value={null}
-              disabled={Boolean(currentCampaign) || loading}
-              placeholder='Select Country'
-              options={defineSelectOptions(countriesList)}
-            />
-          </InputsContainer>
-        </>}
       </WidgetComponent>
 
       {!sdk && <WidgetComponent>

@@ -180,6 +180,9 @@ const generateERC20Link = ({
           additional_wallets_on: additionalWalletsOn,
           collection_id: collectionId ? collectionId : undefined,
           collection_token_id: collectionTokenId ? collectionTokenId : undefined,
+          claim_host: '',
+          claim_host_on: false,
+          multiple_claims_on: false,
           ...batch
         }
 

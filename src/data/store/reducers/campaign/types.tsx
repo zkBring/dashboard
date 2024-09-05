@@ -38,6 +38,10 @@ export interface CampaignState {
   collectionId?: null | string,
   collectionTokenId?: null | string
   additionalWalletsOn: boolean
+
+  claimHost: string | null
+  claimHostOn: boolean
+  multipleClaimsOn: boolean
 }
 
 export type CampaignActions = ActionType<typeof actions>;

@@ -40,6 +40,20 @@ export type TProps = {
   preferredWalletToggleAction?: (value: boolean) => void
   preferredWalletToggleValue?: boolean
 
+
+  customClaimHostOnToggleAction: (value: boolean) => void
+  customClaimHostOnToggleValue: boolean
+
+  multipleClaimsOnToggleAction: (value: boolean) => void
+  multipleClaimsOnToggleValue: boolean
+
+  customClaimHostSubmit: (
+    customClaimHost: string,
+    successAction?: () => void,
+    errorAction?: () => void
+  ) => void
+  customClaimHostValue: string
+
 }
 
 export type TSettingItem = {

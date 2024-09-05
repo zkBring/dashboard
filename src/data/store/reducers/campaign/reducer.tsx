@@ -31,7 +31,11 @@ const initialState: CampaignState = {
   countriesWhitelistOn: false,
   preferredWalletOn: false,
   collectionId: null,
-  collectionTokenId: null
+  collectionTokenId: null,
+
+  claimHost: null,
+  claimHostOn: false,
+  multipleClaimsOn: false
 }
 
 export function newRetroDropReducer(
@@ -43,6 +47,15 @@ export function newRetroDropReducer(
           return {...state, tokenAddress: action.payload.tokenAddress }
         case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST:
           return {...state, countriesWhitelist: action.payload.countriesWhitelist }
+
+        case Constants.CAMPAIGN_SET_CLAIM_HOST:
+          return {...state, claimHost: action.payload.claimHost }
+        
+        case Constants.CAMPAIGN_SET_CLAIM_HOST_ON:
+          return {...state, claimHostOn: action.payload.claimHostOn }
+
+        case Constants.CAMPAIGN_SET_MULTIPLE_CLAIMS_ON:
+          return {...state, multipleClaimsOn: action.payload.multipleClaimsOn }
 
         case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST_ON:
           return {...state, countriesWhitelistOn: action.payload.countriesWhitelistOn }

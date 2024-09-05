@@ -25,6 +25,7 @@ const secure = (
   availableCountriesOn: boolean,
   expirationDate: number,
   additionalWalletsOn: boolean,
+
   successCallback?: () => void
 ) => {
 
@@ -139,6 +140,10 @@ const secure = (
           dispatch(campaignActions.setCountriesWhitelistOn(availableCountriesOn))
           dispatch(campaignActions.setAdditionalWalletsOn(additionalWalletsOn))
           dispatch(campaignActions.setExpirationDate(expirationDate))
+
+          dispatch(campaignActions.setAdditionalWalletsOn(additionalWalletsOn))
+          dispatch(campaignActions.setExpirationDate(expirationDate))
+
           dispatch(campaignActions.setNativeTokensPerLink(
             utils.parseEther(
               String(

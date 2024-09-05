@@ -11,8 +11,15 @@ import updateAvailableCountries from './update-available-countries'
 import updateWallets from './update-wallets'
 import updatePreferredWalletOn from './update-preferred-wallet-on'
 
+import updateClaimHostOn from './update-claim-host-on'
+import updateClaimHost from './update-claim-host'
+import updateMultipleClaimsOn from './update-multiple-claims-on'
+
 export {
   getCampaignBatches,
+  updateClaimHostOn,
+  updateMultipleClaimsOn,
+  updateClaimHost,
   updateWallets,
   downloadLinks,
   updateAvailableCountries,
