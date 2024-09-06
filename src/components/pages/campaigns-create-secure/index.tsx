@@ -300,7 +300,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           />
 
           <CheckboxStyled
-            label='Show "Already has a wallet" option for reciever'
+            label='Allow claiming to other web3 wallets (via Wallet Connect)'
             value={additionalWalletsOn}
             disabled={loading || Boolean(currentCampaign)}
             onChange={value => {
@@ -410,7 +410,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
             countries,
             enableAvailableCountries,
             finalExpirationDate,
-            enablePreferredWalletOn ? additionalWalletsOn : false,
+            additionalWalletsOn,
             () => history.push(redirectURL)
           )
         },

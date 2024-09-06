@@ -92,7 +92,7 @@ const Wallets: FC<TProps> = ({
       />
 
       <CheckboxStyled
-        label='Show "Already has a wallet" option for reciever'
+        label='Allow claiming to other web3 wallets (via Wallet Connect)'
         value={additionalWalletsOn}
         disabled={loading}
         onChange={value => {
