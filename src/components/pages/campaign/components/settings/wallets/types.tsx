@@ -7,6 +7,8 @@ export type TProps = {
   id: string
   preferredWalletValue: string
 
+  additionalWalletsOnValue: boolean
+
   tokenType: TTokenType
 
   sponsored: boolean
@@ -17,6 +19,7 @@ export type TProps = {
 
   action: (
     walletPreferredValue: string,
+    additionalWalletsOnValue: boolean,
     successAction?: () => void,
     errorAction?: () => void
   ) => void

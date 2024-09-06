@@ -5,8 +5,12 @@ const {
 } = process.env
 
 const defineClaimAppURL = (
-  address: string
+  address: string,
+  customClaimHost?: string
 ) => {
+  if (customClaimHost) {
+    return customClaimHost
+  }
   const addressFormatted = address.toLowerCase()
   const configForAddress = addressSpecificOptions[addressFormatted]
   if (!configForAddress || !configForAddress.claimAppUrl) {

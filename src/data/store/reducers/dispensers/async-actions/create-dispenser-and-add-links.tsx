@@ -34,6 +34,7 @@ type TCreateDispenserArgs = {
   batchId: string
   tokenAddress: string
   wallet: string
+  customClaimHost: string
   successCallback?: (
     dispenser_id: string | number,
     dynamic: boolean
@@ -49,6 +50,7 @@ const createDispenserAndAddLinks = ({
   batchId,
   tokenAddress,
   wallet,
+  customClaimHost,
   successCallback,
   errorCallback
 }: TCreateDispenserArgs) => {
@@ -108,7 +110,8 @@ const createDispenserAndAddLinks = ({
               tokenAddress,
               userAddress: address,
               chainId: chainId as number,
-              wallet
+              wallet,
+              customClaimHost
             })
             let currentPercentage = 0
 

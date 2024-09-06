@@ -28,6 +28,7 @@ const downloadLinks = (
   sponsored: boolean,
   claimPattern: TClaimPattern,
   wallet: string,
+  customClaimHost: string,
   encryptionKey?: string,
 ) => {
   return async (
@@ -62,7 +63,8 @@ const downloadLinks = (
             tokenAddress,
             userAddress: address,
             chainId,
-            wallet
+            wallet,
+            customClaimHost
           })
   
           downloadLinksAsCSV(

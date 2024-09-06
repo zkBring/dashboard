@@ -53,7 +53,10 @@ import {
   updateClaimingFinishedButton,
   updateAvailableCountries,
   updateWallets,
-  updatePreferredWalletOn
+  updatePreferredWalletOn,
+  updateClaimHost,
+  updateClaimHostOn,
+  updateMultipleClaimsOn
 } from 'data/store/reducers/campaigns/async-actions'
 
 import {
@@ -154,15 +157,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
-    updateWallets: (
+    updateWallet: (
       campaign_id: string,
       wallet: string,
+      additional_wallets_on: boolean,
       callback?: () => void
     ) => {
       dispatch(
         updateWallets(
           campaign_id,
           wallet,
+          additional_wallets_on,
           callback
         )
       )
@@ -176,6 +181,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       batchId: string,
       tokenAddress: string,
       wallet: string,
+      customClaimHost: string,
       successCallback?: (
         dispenser_id: string | number,
         dynamic: boolean
@@ -191,6 +197,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           batchId,
           tokenAddress,
           wallet,
+          customClaimHost,
           successCallback,
           errorCallback
         })
@@ -204,6 +211,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       batchId: string,
       tokenAddress: string,
       wallet: string,
+      customClaimHost: string,
       successCallback?: (
         dispenser_id: string | number
       ) => void,
@@ -217,6 +225,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           batchId,
           tokenAddress,
           wallet,
+          customClaimHost,
           successCallback,
           errorCallback
         })
@@ -251,6 +260,45 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
+
+    updateClaimHost: (
+      campaign_id: string,
+      claim_host: string,
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateClaimHost(
+          campaign_id,
+          claim_host,
+          callback
+        )
+      )
+    },
+
+    updateClaimHostOn: (
+      campaign_id: string,
+      claim_host_on: boolean,
+    ) => {
+      dispatch(
+        updateClaimHostOn(
+          campaign_id,
+          claim_host_on
+        )
+      )
+    },
+
+    updateMultipleClaimsOn: (
+      campaign_id: string,
+      multiple_claims_on: boolean,
+    ) => {
+      dispatch(
+        updateMultipleClaimsOn(
+          campaign_id,
+          multiple_claims_on
+        )
+      )
+    },
+
     downloadLinks: (
       batch_id: string | number,
       campaign_id: string,
@@ -262,6 +310,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       sponsored: boolean,
       claimPattern: TClaimPattern,
       wallet: string,
+      customClaimHost: string,
       encryptionKey?: string
     ) => {
       dispatch(
@@ -276,6 +325,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           sponsored,
           claimPattern,
           wallet,
+          customClaimHost,
           encryptionKey
         )
       )
@@ -305,10 +355,13 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateAvailableCountriesOn,
   updateClaimingFinishedButton,
   updateAvailableCountries,
-  updateWallets,
+  updateWallet,
   updatePreferredWalletOn,
   createDispenserAndAddLinks,
-  createQRSetAndAddLinks
+  createQRSetAndAddLinks,
+  updateClaimHost,
+  updateClaimHostOn,
+  updateMultipleClaimsOn
 }) => {
 
   const history = useHistory()
@@ -361,6 +414,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     sdk,
     signer_address,
     campaign_number,
+    additional_wallets_on,
     encrypted_signer_key,
     wallet,
     sponsored,
@@ -371,7 +425,10 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     claiming_finished_button_title,
     claiming_finished_button_url,
     claiming_finished_button_on,
-    preferred_wallet_on
+    preferred_wallet_on,
+    claim_host,
+    claim_host_on,
+    multiple_claims_on
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -563,6 +620,8 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
           batches={batches}
           loading={loading}
           sponsored={sponsored}
+          customClaimHost={claim_host}
+          customClaimHostOn={claim_host_on}
           title={title}
           campaignId={campaign_id}
           sdk={sdk}
@@ -585,6 +644,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
               sponsored,
               claim_pattern,
               wallet,
+              claim_host,
               encryptionKey
             )
           }}
@@ -702,12 +762,36 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         loading={loading}
         countries={countries}
         campaignData={currentCampaign}
+        additionalWalletsOnValue={Boolean(additional_wallets_on)}
         availableCountriesValue={available_countries.map((currentCountry) => {
           const country = countries.find(country => country.id === currentCountry)
           return country
         }).filter(item => item) as TCountry[]}
         preferredWalletValue={wallet}
         preferredWalletToggleValue={preferred_wallet_on}
+
+        customClaimHostValue={claim_host}
+
+        customClaimHostSubmit={(
+          claimHost,
+          onSuccess,
+          onError,
+        ) => {
+          updateClaimHost(
+            campaign_id,
+            claimHost,
+            onSuccess,
+          )
+        }}
+        customClaimHostOnToggleValue={claim_host_on}
+        customClaimHostOnToggleAction={(value) => {
+          updateClaimHostOn(campaign_id, value)
+        }}
+        multipleClaimsOnToggleAction={(value) => {
+          updateMultipleClaimsOn(campaign_id, value)
+        }}
+        multipleClaimsOnToggleValue={multiple_claims_on}
+
         availableCountriesSubmit={(
           value,
           onSuccess,
@@ -722,12 +806,14 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       
         walletsSubmit={(
           wallet,
+          additionalWalletsOn: boolean,
           onSuccess,
           onError,
         ) => {
-          updateWallets(
+          updateWallet(
             campaign_id,
             wallet,
+            additionalWalletsOn,
             onSuccess,
           )
         }}

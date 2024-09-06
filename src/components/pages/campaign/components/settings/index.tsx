@@ -20,6 +20,8 @@ import { TCountry, TDispenser, TTokenType } from 'types'
 import Wallets from './wallets'
 import Countries from './countries'
 import FinalScreenButton from './final-screen-button'
+import CustomClaimHost from './custom-claim-host'
+import MultipleClaims from './multiple-claims'
 import wallets from 'configs/wallets'
 import { Tooltip } from 'components/common'
 
@@ -35,10 +37,20 @@ const settings = [
     id: 'wallets',
     tooltip: 'Display preferred wallet as primary option when claiming tokens'
   }, {
-    title: 'Final Screen Button',
+    title: 'Final screen button',
     subtitle: 'You can add a custom button to the final screen after a user claims your tokens. When clicked, it will redirect the user to the URL you specify below',
     id: 'final_screen_button',
     tooltip: 'Add a primary button to the final screen that leads to any URL'
+  }, {
+    title: 'Multiple claim per wallet',
+    subtitle: '',
+    id: 'multiple_claims',
+    tooltip: 'Allow multiple claims for a single address'
+  }, {
+    title: 'Custom claim host',
+    subtitle: 'You can specify your own domain name, and claim links will be mapped to your domain name. By the default links are hosted at https://claim.linkdrop.io',
+    id: 'custom_claim_host',
+    tooltip: 'You can specify your own domain name to have claim links mapped to it'
   }
 ]
 
@@ -79,15 +91,20 @@ const definePopup = (
     onSuccess?: () => void,
     onError?: () => void,
   ) => void,
-  availableCountriesValue: TCountry[],
+
+  customClaimHostSubmit: (
+    claimHost: string,
+    successAction?: () => void,
+    errorAction?: () => void
+  ) => void,
 
   walletsSubmit: (
-    wallets: any,
+    wallet: string,
+    additionalWalletsOnValue: boolean,
     onSuccess?: () => void,
     onError?: () => void,
   ) => void,
 
-  preferredWalletValue: string,
 
   finalScreenButtonSubmit: (
     buttonTitleValue: string,
@@ -95,9 +112,14 @@ const definePopup = (
     successAction?: () => void,
     errorAction?: () => void
   ) => void,
+
+  availableCountriesValue: TCountry[],
+  preferredWalletValue: string,
+  additionalWalletsOnValue: boolean,
   buttonTitleValue: string,
   buttonHrefValue: string,
   countries: TCountry[],
+  customClaimHost: string,
 
   sposored: boolean,
   chainId: number,
@@ -110,6 +132,12 @@ const definePopup = (
 
   preferredWalletOnToggleAction?: (value: boolean) => void,
   preferredWalletOnToggleValue?: boolean,
+
+  customClaimHostOnToggleAction?: (value: boolean) => void,
+  customClaimHostOnToggleValue?: boolean,
+
+  multipleClaimsOnToggleAction?: (value: boolean) => void,
+  multipleClaimsOnToggleValue?: boolean,
 ) => {
   switch (setting.id) {
     case 'wallets':
@@ -120,6 +148,7 @@ const definePopup = (
         onClose={onClose}
         preferredWalletValue={preferredWalletValue}
         action={walletsSubmit}
+        additionalWalletsOnValue={additionalWalletsOnValue}
         sponsored={sposored}
         chainId={chainId}
         toggleAction={preferredWalletOnToggleAction}
@@ -147,6 +176,23 @@ const definePopup = (
         toggleValue={finalScreenButtonToggleValue}
       />
 
+    case 'multiple_claims':
+      return <MultipleClaims
+        {...setting}
+        onClose={onClose}
+        toggleAction={multipleClaimsOnToggleAction}
+        toggleValue={multipleClaimsOnToggleValue}
+      />
+    case 'custom_claim_host':
+      return <CustomClaimHost
+        {...setting}
+        onClose={onClose}
+        customClaimHost={customClaimHost}
+        action={customClaimHostSubmit}
+        toggleAction={customClaimHostOnToggleAction}
+        toggleValue={customClaimHostOnToggleValue}
+      />
+
     default: null
   }
 }
@@ -156,7 +202,8 @@ const defineEnabled = (
   availableCountriesToggleValue: boolean,
   finalScreenButtonToggleValue: boolean,
   preferredWalletToggleValue: boolean,
-  wallet: string
+  customClaimHostToggleValue: boolean,
+  multipleClaimsToggleValue: boolean
 ) => {
 
   if (settingId === 'available_countries') {
@@ -169,6 +216,14 @@ const defineEnabled = (
 
   if (settingId === 'wallets') {
     return preferredWalletToggleValue
+  }
+
+  if (settingId === 'custom_claim_host') {
+    return customClaimHostToggleValue
+  }
+
+  if (settingId === 'multiple_claims') {
+    return multipleClaimsToggleValue
   }
   
   return false
@@ -211,8 +266,17 @@ const Settings: FC<TProps> = ({
   availableCountriesToggleAction,
   availableCountriesToggleValue,
 
+  customClaimHostSubmit,
+  customClaimHostValue,
+
   preferredWalletToggleAction,
-  preferredWalletToggleValue
+  preferredWalletToggleValue,
+  customClaimHostOnToggleAction,
+  customClaimHostOnToggleValue,
+  additionalWalletsOnValue,
+  multipleClaimsOnToggleAction,
+  multipleClaimsOnToggleValue,
+  
 }) => {
 
   if (!campaignData) {
@@ -228,14 +292,16 @@ const Settings: FC<TProps> = ({
     loading,
     () => setCurrentSetting(null),
     availableCountriesSubmit,
-    availableCountriesValue,
+    customClaimHostSubmit,
     walletsSubmit,
-    preferredWalletValue,
-    
     finalScreenButtonSubmit,
+    availableCountriesValue,
+    preferredWalletValue,
+    additionalWalletsOnValue,
     buttonTitleValue,
     buttonHrefValue,
     countries,
+    customClaimHostValue,
     campaignData.sponsored,
     campaignData.chain_id,
     campaignData.token_standard,
@@ -245,6 +311,12 @@ const Settings: FC<TProps> = ({
     availableCountriesToggleValue,
     preferredWalletToggleAction,
     preferredWalletToggleValue,
+
+    customClaimHostOnToggleAction,
+    customClaimHostOnToggleValue,
+  
+    multipleClaimsOnToggleAction,
+    multipleClaimsOnToggleValue,
   ) : null
 
   return <WidgetStyled title='Settings'>
@@ -257,7 +329,8 @@ const Settings: FC<TProps> = ({
         Boolean(availableCountriesToggleValue),
         Boolean(finalScreenButtonToggleValue),
         Boolean(preferredWalletToggleValue),
-        preferredWalletValue
+        Boolean(customClaimHostOnToggleValue),
+        Boolean(multipleClaimsOnToggleValue)
       )
 
       const enabledLabel = defineEnabledLabel(

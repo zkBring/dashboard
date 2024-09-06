@@ -27,8 +27,11 @@ type TCampaignNew = {
   collection_token_id?: null | string
   claiming_finished_button_title?: string
   claiming_finished_button_url?: string
-
   additional_wallets_on: boolean
+
+  claim_host: string
+  claim_host_on: boolean
+  multiple_claims_on: boolean
 }
 
 export default TCampaignNew

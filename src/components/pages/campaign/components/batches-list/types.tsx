@@ -8,6 +8,7 @@ export type TCreateDispenserAndAddLinks = (
   batchId: string,
   tokenAddress: string,
   wallet: string,
+  customClaimHost: string,
   successCallback?: (
     dispenser_id: string | number,
     dynamic: boolean
@@ -22,6 +23,7 @@ export type TCreateQRSetAndAddLinks = (
   batchId: string,
   tokenAddress: string,
   wallet: string,
+  customClaimHost: string,
   successCallback?: (
     dispenser_id: string | number
   ) => void,
@@ -36,6 +38,8 @@ export type TProps = {
   sponsored: boolean
   wallet: string
   loading: boolean
+  customClaimHost: string
+  customClaimHostOn: boolean
   createDispenserAndAddLinks: TCreateDispenserAndAddLinks
   createQRSetAndAddLinks: TCreateQRSetAndAddLinks
   downloadLinks: (
