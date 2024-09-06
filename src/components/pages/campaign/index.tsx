@@ -157,15 +157,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
-    updateWallets: (
+    updateWallet: (
       campaign_id: string,
       wallet: string,
+      additional_wallets_on: boolean,
       callback?: () => void
     ) => {
       dispatch(
         updateWallets(
           campaign_id,
           wallet,
+          additional_wallets_on,
           callback
         )
       )
@@ -353,7 +355,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateAvailableCountriesOn,
   updateClaimingFinishedButton,
   updateAvailableCountries,
-  updateWallets,
+  updateWallet,
   updatePreferredWalletOn,
   createDispenserAndAddLinks,
   createQRSetAndAddLinks,
@@ -412,6 +414,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     sdk,
     signer_address,
     campaign_number,
+    additional_wallets_on,
     encrypted_signer_key,
     wallet,
     sponsored,
@@ -759,6 +762,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         loading={loading}
         countries={countries}
         campaignData={currentCampaign}
+        additionalWalletsOnValue={Boolean(additional_wallets_on)}
         availableCountriesValue={available_countries.map((currentCountry) => {
           const country = countries.find(country => country.id === currentCountry)
           return country
@@ -802,12 +806,14 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       
         walletsSubmit={(
           wallet,
+          additionalWalletsOn: boolean,
           onSuccess,
           onError,
         ) => {
-          updateWallets(
+          updateWallet(
             campaign_id,
             wallet,
+            additionalWalletsOn,
             onSuccess,
           )
         }}

@@ -12,12 +12,14 @@ export type TProps = {
   availableCountriesValue: TCountry[]
 
   walletsSubmit: (
-    wallets: any,
+    wallet: any,
+    additionalWalletsOnValue: boolean,
     onSuccess?: () => void,
     onError?: () => void,
   ) => void
 
   preferredWalletValue: string
+  additionalWalletsOnValue: boolean
 
   countries: TCountry[]
 

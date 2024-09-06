@@ -99,7 +99,8 @@ const definePopup = (
   ) => void,
 
   walletsSubmit: (
-    wallets: any,
+    wallet: string,
+    additionalWalletsOnValue: boolean,
     onSuccess?: () => void,
     onError?: () => void,
   ) => void,
@@ -114,6 +115,7 @@ const definePopup = (
 
   availableCountriesValue: TCountry[],
   preferredWalletValue: string,
+  additionalWalletsOnValue: boolean,
   buttonTitleValue: string,
   buttonHrefValue: string,
   countries: TCountry[],
@@ -146,6 +148,7 @@ const definePopup = (
         onClose={onClose}
         preferredWalletValue={preferredWalletValue}
         action={walletsSubmit}
+        additionalWalletsOnValue={additionalWalletsOnValue}
         sponsored={sposored}
         chainId={chainId}
         toggleAction={preferredWalletOnToggleAction}
@@ -270,7 +273,7 @@ const Settings: FC<TProps> = ({
   preferredWalletToggleValue,
   customClaimHostOnToggleAction,
   customClaimHostOnToggleValue,
-
+  additionalWalletsOnValue,
   multipleClaimsOnToggleAction,
   multipleClaimsOnToggleValue,
   
@@ -294,6 +297,7 @@ const Settings: FC<TProps> = ({
     finalScreenButtonSubmit,
     availableCountriesValue,
     preferredWalletValue,
+    additionalWalletsOnValue,
     buttonTitleValue,
     buttonHrefValue,
     countries,

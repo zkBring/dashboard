@@ -10,7 +10,7 @@ import updateClaimingFinishedButton from './update-claiming-finished-button'
 import updateAvailableCountries from './update-available-countries'
 import updateWallets from './update-wallets'
 import updatePreferredWalletOn from './update-preferred-wallet-on'
-
+import updateAdditionalWalletsOn from './update-additional-wallets-on'
 import updateClaimHostOn from './update-claim-host-on'
 import updateClaimHost from './update-claim-host'
 import updateMultipleClaimsOn from './update-multiple-claims-on'
@@ -18,6 +18,7 @@ import updateMultipleClaimsOn from './update-multiple-claims-on'
 export {
   getCampaignBatches,
   updateClaimHostOn,
+  updateAdditionalWalletsOn,
   updateMultipleClaimsOn,
   updateClaimHost,
   updateWallets,
