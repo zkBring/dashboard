@@ -338,6 +338,10 @@ const Settings: FC<TProps> = ({
         preferredWalletValue
       )
 
+      if (preferredWalletValue === 'coinbase_wallet') {
+        if (setting.id === 'custom_claim_host') return null
+      }
+
       return renderSettingItem(
         setting,
         enabled,
