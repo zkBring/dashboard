@@ -155,6 +155,7 @@ export class LinksWorker {
             proxyContractAddress,
             proxyContractVersion
           )
+
         } else {
           result = await this.createERC1155Link(
             String(nativeTokensPerLink),
@@ -196,6 +197,5 @@ export class LinksWorker {
     }
   }
 }
-
 
 expose(LinksWorker)

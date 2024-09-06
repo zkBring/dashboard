@@ -140,7 +140,8 @@ const createDispenserAndAddLinks = ({
                 dispatch(qrManagerActions.setItems(items))
               }
 
-              dispatch(actionsDispensers.addDispenser(createDispenserResult.data.dispenser))
+              const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
+              dispatch(actionsDispensers.setDispensers(result.data.dispensers))
 
               if (successCallback) {
                 successCallback(
