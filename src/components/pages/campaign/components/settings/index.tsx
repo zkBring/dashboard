@@ -43,7 +43,7 @@ const settings = [
     tooltip: 'Add a primary button to the final screen that leads to any URL'
   }, {
     title: 'Multiple claim per wallet',
-    subtitle: '',
+    subtitle: 'Toggle this setting on to allow multiple claims to a single wallet address',
     id: 'multiple_claims',
     tooltip: 'Allow multiple claims for a single address'
   }, {
