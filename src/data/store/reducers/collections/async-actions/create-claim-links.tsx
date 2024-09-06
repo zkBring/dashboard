@@ -54,7 +54,7 @@ function createClaimLinks (
       dispatch(actionsCampaign.setSymbol(collection.symbol))
       dispatch(actionsCampaign.setTokenStandard(tokenType))
       dispatch(actionsCampaign.setTitle(`Links for "${collection.title}"`))
-      dispatch(actionsCampaign.setClaimPattern(collectionToken.copies === '0' ? 'mint' : 'transfer'))
+      dispatch(actionsCampaign.setClaimPattern('mint'))
       await createProxyAddress(
         dispatch,
         chainId,
