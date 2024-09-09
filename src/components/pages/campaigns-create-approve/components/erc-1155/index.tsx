@@ -295,8 +295,6 @@ const Erc1155: FC<ReduxType > = ({
     return true
   })
 
-  console.log({ nftsToShow, assetsData, nfts })
-
   const [
     itemToEdit,
     setItemToEdit
