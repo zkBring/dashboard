@@ -287,6 +287,14 @@ const Erc1155: FC<ReduxType > = ({
   const { type } = useParams<{ type: TTokenType }>()
   const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
 
+  const nftsToShow = nfts.filter(nft => {
+    const tokenIsChosen = assetsData.find(asset => asset.tokenId === nft.tokenId)
+    if (tokenIsChosen) {
+      return false
+    }
+    return true
+  })
+
   const [
     itemToEdit,
     setItemToEdit
@@ -397,7 +405,7 @@ const Erc1155: FC<ReduxType > = ({
         setAssetsData,
         checkIfDisabled,
         getDefaultValues,
-        nfts,
+        nftsToShow,
         tokenAddress,
         address,
         signer,
@@ -431,4 +439,5 @@ const Erc1155: FC<ReduxType > = ({
   </WidgetComponent>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Erc1155)

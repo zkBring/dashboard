@@ -72,6 +72,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> &
+  // @ts-ignore
   ReturnType<typeof mapDispatcherToProps> &
   TProps
 
@@ -255,6 +256,14 @@ const Erc721: FC<ReduxType > = ({
   const { type } = useParams<{ type: TTokenType }>()
   const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
 
+  const nftsToShow = nfts.filter(nft => {
+    const tokenIsChosen = assetsData.find(asset => asset.tokenId === nft.tokenId)
+    if (tokenIsChosen) {
+      return false
+    }
+    return true
+  })
+
   const checkIfDisabled = () => {
     if (loading || userLoading) { return true }
     if (claimPattern === 'mint') {
@@ -275,7 +284,7 @@ const Erc721: FC<ReduxType > = ({
 
   const addAllTokens = async () => {
     if (!tokenAddress) { return true }
-    const assets: TLinkContent[] = nfts.map((token, idx) => {
+    const assets: TLinkContent[] = nftsToShow.map((token, idx) => {
       return {
         tokenId: token.tokenId,
         linksAmount: '1',
@@ -364,4 +373,5 @@ const Erc721: FC<ReduxType > = ({
   </WidgetComponent>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)
