@@ -59,10 +59,12 @@ const requests = {
 
   updatePreferredWallet: (
     campaign_id: string | number,
+    additional_wallets_on: boolean,
     preferredWallet: string
   ) => {
     return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
-      wallet: preferredWallet
+      wallet: preferredWallet,
+      additional_wallets_on
     }, {
       withCredentials: true
     })
@@ -87,6 +89,50 @@ const requests = {
     return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
       claiming_finished_button_title,
       claiming_finished_button_url
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateClaimHost: (
+    campaign_id: string | number,
+    claim_host: string
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      claim_host,
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateClaimHostOn: (
+    campaign_id: string | number,
+    claim_host_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      claim_host_on,
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateAdditionalWalletsOn: (
+    campaign_id: string | number,
+    additional_wallets_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      additional_wallets_on,
+    }, {
+      withCredentials: true
+    })
+  },
+
+  updateMultipleClaimsOn: (
+    campaign_id: string | number,
+    multiple_claims_on: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      multiple_claims_on,
     }, {
       withCredentials: true
     })

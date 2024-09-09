@@ -8,7 +8,8 @@ import {
   AsidePopup
 } from 'components/common'
 import {
-  SelectStyled
+  SelectStyled,
+  CheckboxStyled
 } from './styled-components'
 import {
   defineIfWalletIsAvailableForClient
@@ -26,14 +27,19 @@ const Wallets: FC<TProps> = ({
   loading,
   tokenType,
   toggleAction,
-  toggleValue
+  toggleValue,
+  additionalWalletsOnValue
 }) => {
   
-
   const [
     currentWallet,
     setCurrentWallet
   ] = useState<string>(preferredWalletValue)
+
+  const [
+    additionalWalletsOn,
+    setAdditionalWalletsOn
+  ] =  useState<boolean>(additionalWalletsOnValue)
 
   const allWallets = useMemo(() => {
     const options = wallets
@@ -69,6 +75,7 @@ const Wallets: FC<TProps> = ({
     action={() => {
       action(
         currentWallet,
+        additionalWalletsOn,
         () => onClose()
       )
     }}
@@ -82,6 +89,15 @@ const Wallets: FC<TProps> = ({
           setCurrentWallet(value)
         }}
         value={walletsOptions.find(wallet => wallet.value === currentWallet)}
+      />
+
+      <CheckboxStyled
+        label='Allow claiming to other web3 wallets (via Wallet Connect)'
+        value={additionalWalletsOn}
+        disabled={loading}
+        onChange={value => {
+          setAdditionalWalletsOn(value)
+        }}
       />
     </>}
     

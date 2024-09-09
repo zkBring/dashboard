@@ -29,7 +29,12 @@ type TCampaign = {
 
   claiming_finished_button_on?: boolean
   available_countries_on?: boolean
-  preferred_wallet_on?: boolean 
+  preferred_wallet_on?: boolean
+  additional_wallets_on?: boolean
+
+  claim_host: string
+  claim_host_on: boolean
+  multiple_claims_on: boolean
 }
 
 export default TCampaign

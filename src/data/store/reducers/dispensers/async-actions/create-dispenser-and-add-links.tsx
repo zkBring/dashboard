@@ -10,7 +10,8 @@ import {
   momentNoOffsetGetTime,
   getNextDayData,
   defineIfLinksHasEqualContents,
-  decryptLinks
+  decryptLinks,
+  sleep
 } from 'helpers'
 import { TDispenser, TQRManagerItemType } from 'types'
 import { encrypt } from 'lib/crypto'
@@ -26,12 +27,14 @@ import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
 
 type TCreateDispenserArgs = {
+  mappingPageRedirect: () => void,
   title: string
   dynamic: boolean
   campaignId: string
   batchId: string
   tokenAddress: string
   wallet: string
+  customClaimHost: string
   successCallback?: (
     dispenser_id: string | number,
     dynamic: boolean
@@ -40,12 +43,14 @@ type TCreateDispenserArgs = {
 }
 
 const createDispenserAndAddLinks = ({
+  mappingPageRedirect,
   title,
   dynamic,
   campaignId,
   batchId,
   tokenAddress,
   wallet,
+  customClaimHost,
   successCallback,
   errorCallback
 }: TCreateDispenserArgs) => {
@@ -66,6 +71,8 @@ const createDispenserAndAddLinks = ({
     } = getState()
 
     const callback = async (dashboardKey: string) => {
+
+      mappingPageRedirect && mappingPageRedirect()
       try {
         const secretKeyPair = sdk?.utils.generateAccount(12, true)
         const encKeyPair = sdk?.utils.generateAccount(12, true)
@@ -103,11 +110,16 @@ const createDispenserAndAddLinks = ({
               tokenAddress,
               userAddress: address,
               chainId: chainId as number,
-              wallet
+              wallet,
+              customClaimHost
             })
+            let currentPercentage = 0
 
             const updateProgressbar = async (value: number) => {
-              console.log({ value })
+              if (value === currentPercentage || value < currentPercentage) { return }
+              currentPercentage = value
+              dispatch(actionsDispensers.setMappingLoader(currentPercentage))
+              await sleep(1)
             }
 
             const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
@@ -128,7 +140,8 @@ const createDispenserAndAddLinks = ({
                 dispatch(qrManagerActions.setItems(items))
               }
 
-              dispatch(actionsDispensers.addDispenser(createDispenserResult.data.dispenser))
+              const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
+              dispatch(actionsDispensers.setDispensers(result.data.dispensers))
 
               if (successCallback) {
                 successCallback(
@@ -141,8 +154,10 @@ const createDispenserAndAddLinks = ({
         } else {
           throw new Error('Dispenser was not created. Check console for more information')
         }
+        dispatch(actionsDispensers.setMappingLoader(0))
       } catch (err) {
         alertError('Couldn’t create Dispanser, please check console')
+        dispatch(actionsDispensers.setMappingLoader(0))
         errorCallback && errorCallback()
         console.error(err)
       }

@@ -132,7 +132,6 @@ export class LinksWorker {
       for (let i = 0; i < assets.length; i++) {
         let result
         if (type === 'ERC20') {
-          console.log({ nativeTokensPerLink })
           result = await this.createERC20Link(
             String(nativeTokensPerLink),
             tokenAddress,
@@ -156,6 +155,7 @@ export class LinksWorker {
             proxyContractAddress,
             proxyContractVersion
           )
+
         } else {
           result = await this.createERC1155Link(
             String(nativeTokensPerLink),
@@ -170,7 +170,6 @@ export class LinksWorker {
             proxyContractVersion
           )
         }
-        console.log({ result })
         if (result) {
           const linkData = {
             encrypted_claim_code: result.encrypted_claim_code,

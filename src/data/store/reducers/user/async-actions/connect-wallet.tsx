@@ -11,9 +11,12 @@ import {
   getERC20TokenList
  } from './index'
 import { ethers } from 'ethers'
-import { plausibleApi } from 'data/api'
+import { plausibleApi, campaignsApi } from 'data/api'
 import { defineNetworkName, defineJSONRpcUrl, alertError } from 'helpers'
 import * as userActions from '../actions'
+import {
+  initialization
+} from './index'
 const { REACT_APP_INFURA_ID } = process.env
 
 function connectWallet (
@@ -27,6 +30,8 @@ function connectWallet (
   return async (
     dispatch: Dispatch<UserActions> & IAppDispatch,
   ) => {
+    dispatch(actions.setLoading(true))
+
     try {
       if (!chainsAvailable.find(network => Number(connectorChainID) === Number(network))) {
         dispatch(actions.setChainId(connectorChainID))
@@ -54,7 +59,17 @@ function connectWallet (
         dispatch(actions.setChainId(connectorChainID))
         dispatch(actions.setConnectorId(connectorId))
 
-        dispatch(actions.setAuthorizationStep('login'))
+        // try to fetch data
+
+        try {
+          const testIfAuthorized = await campaignsApi.get(connectorChainID)
+          if (testIfAuthorized) {
+            dispatch(actions.setAuthorizationStep('authorized'))
+          }
+          dispatch(initialization())
+        } catch (err) {
+          dispatch(actions.setAuthorizationStep('login'))
+        }
 
         plausibleApi.invokeEvent({
           eventName: 'sign_in_step1',
@@ -79,7 +94,6 @@ function connectWallet (
             dispatch(userActions.setTokenListERC20(tokenList))
           }
         }
-        
 
         const jsonRpcUrl = defineJSONRpcUrl({ chainId: Number(connectorChainID), infuraPk: REACT_APP_INFURA_ID as string })
         const jsonRpcProvider = new ethers.providers.JsonRpcProvider(jsonRpcUrl)
@@ -97,6 +111,7 @@ function connectWallet (
       alertError('Check console for more information')
       console.log({ err })
     }
+    dispatch(actions.setLoading(false))
   }
 }
 

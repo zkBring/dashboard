@@ -17,6 +17,7 @@ const initialState: CampaignState = {
   approved: null,
   id: null,
   secured: false,
+  additionalWalletsOn: false,
   signerKey: null,
   signerAddress: null,
   sponsored: true,
@@ -30,7 +31,11 @@ const initialState: CampaignState = {
   countriesWhitelistOn: false,
   preferredWalletOn: false,
   collectionId: null,
-  collectionTokenId: null
+  collectionTokenId: null,
+
+  claimHost: null,
+  claimHostOn: false,
+  multipleClaimsOn: false
 }
 
 export function newRetroDropReducer(
@@ -42,6 +47,15 @@ export function newRetroDropReducer(
           return {...state, tokenAddress: action.payload.tokenAddress }
         case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST:
           return {...state, countriesWhitelist: action.payload.countriesWhitelist }
+
+        case Constants.CAMPAIGN_SET_CLAIM_HOST:
+          return {...state, claimHost: action.payload.claimHost }
+        
+        case Constants.CAMPAIGN_SET_CLAIM_HOST_ON:
+          return {...state, claimHostOn: action.payload.claimHostOn }
+
+        case Constants.CAMPAIGN_SET_MULTIPLE_CLAIMS_ON:
+          return {...state, multipleClaimsOn: action.payload.multipleClaimsOn }
 
         case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST_ON:
           return {...state, countriesWhitelistOn: action.payload.countriesWhitelistOn }
@@ -62,6 +76,9 @@ export function newRetroDropReducer(
           return {...state, decimals: action.payload.decimals }
         case Constants.CAMPAIGN_SET_ASSETS:
           return {...state, assets: action.payload.assets }
+        case Constants.CAMPAIGN_SET_ADDITIONAL_WALLETS_ON: {
+          return {...state, additionalWalletsOn: action.payload.additionalWalletsOn }
+        }
         case Constants.CAMPAIGN_SET_ASSETS_ORIGINAL:
           return {...state, assetsOriginal: action.payload.assetsOriginal }
         case Constants.CAMPAIGN_SET_SYMBOL:

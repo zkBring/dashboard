@@ -16,6 +16,32 @@ export function setTitle (title: string) {
   })
 }
 
+export function setClaimHost (claimHost: string) {
+  return action(Constants.CAMPAIGN_SET_CLAIM_HOST, {
+    claimHost
+  })
+}
+
+export function setClaimHostOn (claimHostOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_CLAIM_HOST_ON, {
+    claimHostOn
+  })
+}
+
+export function setMultipleClaimsOn (multipleClaimsOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_MULTIPLE_CLAIMS_ON, {
+    multipleClaimsOn
+  })
+}
+
+export function setAdditionalWalletsOn (additionalWalletsOn: boolean) {
+  return action(Constants.CAMPAIGN_SET_ADDITIONAL_WALLETS_ON, {
+    additionalWalletsOn
+  })
+}
+
+
+
 export function setPreferredWalletOn (preferredWalletOn: boolean) {
   return action(Constants.CAMPAIGN_SET_PREFERRED_WALLET_ON, {
     preferredWalletOn

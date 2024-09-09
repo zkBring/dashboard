@@ -42,7 +42,7 @@ const initialization = () => {
               Dispatch<QRManagerActions>,
     getState: () => RootState
   ) => {
-    const { user: { address, chainId, provider }} = getState()
+    const { user: { address, chainId }} = getState()
     const claimAppURL = defineClaimAppURL(address)
 
     if (!REACT_APP_SERVER_URL) {
@@ -54,6 +54,7 @@ const initialization = () => {
     if (!REACT_APP_INFURA_ID) {
       return alertError('REACT_APP_INFURA_ID is not provided in .env file')
     }
+
     try {
       dispatch(campaignsActions.setLoading(true))
       dispatch(qrsActions.setLoading(true))
