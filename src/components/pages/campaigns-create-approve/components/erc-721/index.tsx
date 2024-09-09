@@ -364,4 +364,5 @@ const Erc721: FC<ReduxType > = ({
   </WidgetComponent>
 }
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)
