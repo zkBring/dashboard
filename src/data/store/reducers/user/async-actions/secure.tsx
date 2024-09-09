@@ -52,9 +52,10 @@ const secure = (
       }
     } = getState()
 
-    dispatch(campaignActions.setLoading(true))
 
     const callback = async (dashboardKey: string) => {
+      dispatch(campaignActions.setLoading(true))
+
       try {
         if (!proxyContractAddress) {
           return alertError('No proxy address provided')
@@ -174,7 +175,7 @@ const secure = (
       return 
     }
     
-    callback(dashboardKey)
+    await callback(dashboardKey)
     dispatch(campaignActions.setLoading(false))
     
   }
