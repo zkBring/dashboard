@@ -16,7 +16,7 @@ import { TProps } from './type'
 
 import { alertError } from 'helpers'
 import LinksContents from '../links-contents'
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent, TClaimPattern, TNFTToken } from 'types'
@@ -67,13 +67,7 @@ const defineNFTTokensOptions = (nftTokens: TNFTToken[], tokenAddress: string | n
   return options
 }
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {}
-}
-
 type ReduxType = ReturnType<typeof mapStateToProps> &
-  // @ts-ignore
-  ReturnType<typeof mapDispatcherToProps> &
   TProps
 
 const createInputsContainer = (
@@ -88,12 +82,15 @@ const createInputsContainer = (
   return <InputsContainer>
     <InputStyled
       value={formData.tokenId}
-      placeholder={claimPattern === 'mint' ? 'Amount' : 'Token ID'}
+      placeholder='Number of tokens'
       disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
       onChange={value => {
-        const pattern = claimPattern === 'mint' ? /^[0-9]+$/ : /^[0-9-]+$/
+        const pattern = /^[0-9]+$/
         if (pattern.test(value) || value === '') {
-          setFormData({ ...formData, tokenId: value })
+          setFormData({
+            ...formData,
+            tokenId: value
+          })
         }
         return value
       }}
@@ -104,10 +101,14 @@ const createInputsContainer = (
       appearance='additional'
       disabled={checkIfDisabled()}
       onClick={() => {
-        setAssetsData([ ...assetsData, {
-          ...formData,
-          id: assetsData.length
-        }])
+        const { tokenId } = formData
+        const newAssets =  
+          Array.from({length: Number((tokenId as string).replace('range_', ''))}, (_, i) => ({
+            ...formData,
+            tokenId: String(i),
+            id: i
+          }))
+        setAssetsData([ ...assetsData, ...newAssets ])
         setFormData(getDefaultValues('ERC721'))
       }}
     >
@@ -208,7 +209,7 @@ const createTextInputOrSelect = (
   signer: any
 ) => {
 
-  if (claimPattern === 'mint' || enabledInput) {
+  if (enabledInput) {
     return createInputsContainer(
       formData,
       claimPattern,
@@ -231,7 +232,12 @@ const createTextInputOrSelect = (
     signer,
     checkIfDisabled
   )
+}
 
+const defaultRangeInput = (
+  claimPattern: TClaimPattern
+) => {
+  return claimPattern === 'mint'
 }
 
 const Erc721: FC<ReduxType > = ({
@@ -254,7 +260,12 @@ const Erc721: FC<ReduxType > = ({
 }) => {
 
   const { type } = useParams<{ type: TTokenType }>()
-  const [ rangeInput, toggleRangeInput ] = useState<boolean>(false)
+  const [
+    rangeInput,
+    toggleRangeInput
+  ] = useState<boolean>(defaultRangeInput(
+    claimPattern
+  ))
 
   const nftsToShow = nfts.filter(nft => {
     const tokenIsChosen = assetsData.find(asset => asset.tokenId === nft.tokenId)
@@ -309,7 +320,7 @@ const Erc721: FC<ReduxType > = ({
   return <WidgetComponent>
     <Header>
       <WidgetTitleStyled>
-        {claimPattern === 'mint' ? 'Specify number of NFTs' : 'Add token IDs to distribute'}
+        Add token IDs to distribute
       </WidgetTitleStyled>
       <HeaderButtons>
         {claimPattern !== 'mint' && <ButtonHeaderStyled
@@ -330,16 +341,16 @@ const Erc721: FC<ReduxType > = ({
             toggleRangeInput(newValue)
           }}
         >
-          {rangeInput ? 'Pick token IDs' : 'Set range'}
+          {rangeInput ? 'Manually' : 'Set range'}
         </ButtonHeaderStyled>}
-        {claimPattern !== 'mint' && <ButtonHeaderStyled
+        <ButtonHeaderStyled
           disabled={checkIfAllTokensDisabled()}
           appearance='action'
           size='extra-small'
           onClick={addAllTokens}
         >
           Select All
-        </ButtonHeaderStyled>}
+        </ButtonHeaderStyled>
       </HeaderButtons>
     </Header>
     <Container>
@@ -374,4 +385,4 @@ const Erc721: FC<ReduxType > = ({
 }
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatcherToProps)(Erc721)
+export default connect(mapStateToProps)(Erc721)

@@ -6,21 +6,12 @@ import {
 import { RootState } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TLinkParams, TClaimPattern } from 'types'
+import { TLinkParams, TClaimPattern, TCollection, TCampaign } from 'types'
 import { useHistory } from 'react-router-dom'
 import { IAppDispatch } from 'data/store'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import {
-  WidgetComponent,
   Container,
-  Aside,
-  TableRow,
-  TableText,
-  TableValue,
-  AsideContent,
-  TableValueShorten,
-  WidgetSubtitle,
-  WidgetContainer
 } from 'components/pages/common'
 import { Note } from 'linkdrop-ui'
 import { shortenString, defineNetworkName, preventPageClose } from 'helpers'
@@ -31,28 +22,16 @@ const mapStateToProps = ({
   },
   campaign: {
     tokenStandard,
-    loading,
-    title,
-    tokenAddress,
-    assetsOriginal,
-    assets,
-    symbol
+    tokenAddress
   },
-  user: {
-    chainId, 
-    whitelisted
+  collections: {
+    collections
   }
 }: RootState) => ({
   campaigns,
   tokenStandard,
-  loading,
-  title,
   tokenAddress,
-  chainId,
-  assetsOriginal,
-  assets,
-  symbol,
-  whitelisted
+  collections
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -71,40 +50,42 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+const defineClaimPattern = (
+  collections: TCollection[],
+  tokenAddress: string
+) => {
+  const isLinkdropCollection = collections.find(collection => {
+    return collection.token_address?.toLowerCase() === tokenAddress.toLowerCase()
+  })
+
+  if (isLinkdropCollection) {
+    return 'mint'
+  }
+
+  return 'transfer'
+}
+
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
-
-const patterns = [
-  { value: 'transfer', label: 'Transfer (tokens should be preminted and will be transferred to user at claim)' },
-  { value: 'mint', label: 'Mint (tokens will be minted to user address at claim)' }
-]
 
 const CampaignsCreateInitial: FC<ReduxType> = ({
   campaigns,
   tokenStandard,
-  loading,
-  title,
-  tokenAddress,
-  chainId,
   applyClaimPattern,
-  symbol,
-  whitelisted
+  tokenAddress,
+  collections
 }) => {
   const { type, id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-  const currentCampaignTitle = campaign ? campaign.title : title
-  const currentTokenAddress = campaign ? campaign.token_address : tokenAddress
-  const currentCampaignChainId = campaign ? campaign.chain_id : chainId
-  const currentCampaignSymbol = campaign ? campaign.symbol : symbol
-  const currentCampaignTokenStandard = campaign ? campaign.token_standard : tokenStandard
 
   const history = useHistory()
   useEffect(preventPageClose(), [])
 
-  const [ claimPattern, setClaimPattern ] = useState<TClaimPattern>(campaign?.claim_pattern || 'transfer')
-
   const nextStepAction = () => applyClaimPattern(
-    claimPattern,
+    defineClaimPattern(
+      collections,
+      tokenAddress as string
+    ),
     !Boolean(id),
     () => {
       // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
@@ -121,70 +102,11 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   )
 
   useEffect(() => {
-    if (!whitelisted || campaign || tokenStandard === 'ERC20') {
-      nextStepAction()
-    }
+    nextStepAction()
   }, [])
 
   return <Container>
-    <WidgetContainer>
-      <WidgetComponent title='Claim pattern'>
-        <WidgetSubtitle>Choose the desired claim pattern and proceed with the appropriate transaction to enable it</WidgetSubtitle>
-        <StyledRadio
-          disabled={Boolean(campaign) || loading || !whitelisted}
-          value={claimPattern}
-          radios={patterns}
-          onChange={(value) => {
-            setClaimPattern(value)
-          }}
-        />
-      </WidgetComponent>
-      <Note>
-        Mint pattern is supported in Pro plan. <TextLinkStyled target='_blank' href='https://linkdrop-2.gitbook.io/linkdrop-knoe/how-tos/main-guide/mint-pattern-requirements'>Learn more {`->`}</TextLinkStyled>
-      </Note>
-    </WidgetContainer>
     
-    <Aside
-      back={{
-        action: () => {
-          history.goBack()
-        }
-      }}
-      next={{
-        action: nextStepAction
-      }}
-      title="Summary"
-      subtitle="Check and confirm details "
-    >
-      <AsideContent>
-        <TableRow>
-          <TableText>Title of campaign</TableText>
-          <TableValueShorten>{currentCampaignTitle}</TableValueShorten>
-        </TableRow>
-
-        {currentTokenAddress && <TableRow>
-          <TableText>Token address</TableText>
-          <TableValue>{shortenString(currentTokenAddress)}</TableValue>
-        </TableRow>}
-
-        {currentCampaignSymbol && <TableRow>
-          <TableText>Token name</TableText>
-          <TableValue>{currentCampaignSymbol}</TableValue>
-        </TableRow>}
-
-        {currentCampaignTokenStandard && <TableRow>
-          <TableText>Token standard</TableText>
-          <TableValue>{currentCampaignTokenStandard}</TableValue>
-        </TableRow>}
-
-        {currentCampaignChainId && <TableRow>
-          <TableText>Network</TableText>
-          <TableValue>{defineNetworkName(Number(currentCampaignChainId))}</TableValue>
-        </TableRow>}
-
-
-      </AsideContent>
-    </Aside>
   </Container>
 }
 
