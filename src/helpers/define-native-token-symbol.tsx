@@ -5,6 +5,8 @@ const defineNativeTokenSymbol: TDefineNativeTokenSymbol = ({ chainId }) => {
       return 'xDAI'
     case 137:
       return 'MATIC'
+    case 196:
+      return 'OKB'
     default:
       return 'ETH'
   }
