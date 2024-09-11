@@ -122,50 +122,25 @@ const createInputsContainer = (
         disabled={checkIfDisabled()}
         appearance='additional'
         onClick={() => {
+
           const { tokenId: numberToAdd } = formData
-          const firstTokenId = defineFirstTokenIdForUser(nfts)
-          const lastTokenId = defineLastTokenIdForUser(nfts)
-          const diff = BigNumber.from(lastTokenId).sub(firstTokenId)
+
+
           const result: TLinkContent[] = []
           
-          console.log({
-            firstTokenId,
-            lastTokenId,
-            diff,
-            numberToAdd: Number(numberToAdd)
-          })
-          let attempts = 0
           if (numberToAdd) {
-            for (
-              let currentTokenId = BigNumber.from(firstTokenId);
-              result.length < Number(numberToAdd);
-              currentTokenId = BigNumber.from(currentTokenId).add('1')
-            ) {
-
-              console.log(`check for #${currentTokenId}`)
-              const userOwnsToken = defineIfUserOwnsTokenInArray(
-                nfts,
-                currentTokenId.toString()
-              )
-              if (userOwnsToken) {
-                console.log('found')
-                result.push(
-                  {
-                    ...formData,
-                    tokenId: currentTokenId.toString(),
-                    id: currentTokenId.toString(),
-                    tokenAmount: "1",
-                    linksAmount: userOwnsToken.balance
-                  }
-                ) 
-              } else {
-                console.log('not found')
-              }
-              attempts = attempts + 1
-              if (attempts > Number(diff)) {
-                break
-              }
-            }
+            const nftsClone = [...nfts].slice(0, Number(numberToAdd))
+            nftsClone.forEach(nft => {
+              result.push(
+                {
+                  ...formData,
+                  tokenId: nft.tokenId,
+                  id: nft.tokenId,
+                  tokenAmount: "1",
+                  linksAmount: nft.balance
+                }
+              ) 
+            })
           }
           
           setAssetsData([ ...assetsData, ...result ])

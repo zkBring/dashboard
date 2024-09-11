@@ -119,44 +119,19 @@ const createInputsContainer = (
         disabled={checkIfDisabled()}
         onClick={() => {
           const { tokenId: numberToAdd } = formData
-          const firstTokenId = defineFirstTokenIdForUser(nfts)
-          const lastTokenId = defineLastTokenIdForUser(nfts)
-          const diff = BigNumber.from(lastTokenId).sub(firstTokenId)
           const result: TLinkContent[] = []
-          const maxAttempts = Number(diff)
-
-          console.log({
-            firstTokenId,
-            lastTokenId,
-            diff,
-            maxAttempts
-          })
-          let attempts = 0
+          
           if (numberToAdd) {
-            for (
-              let currentTokenId = BigNumber.from(firstTokenId);
-              result.length <= Number(numberToAdd);
-              currentTokenId = BigNumber.from(currentTokenId).add('1')
-            ) {
-              const userOwnsToken = defineIfUserOwnsTokenInArray(
-                nfts,
-                currentTokenId.toString()
-              )
-              if (userOwnsToken) {
-                
-                result.push(
-                  {
-                    ...formData,
-                    tokenId: currentTokenId.toString(),
-                    id: currentTokenId.toString(),
-                  }
-                ) 
-              }
-              attempts = attempts + 1
-              if (attempts >= maxAttempts) {
-                break
-              }
-            }
+            const nftsClone = [...nfts].slice(0, Number(numberToAdd))
+            nftsClone.forEach(nft => {
+              result.push(
+                {
+                  ...formData,
+                  tokenId: nft.tokenId,
+                  id: nft.tokenId
+                }
+              ) 
+            })
           }
           
           setAssetsData([ ...assetsData, ...result ])
