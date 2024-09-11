@@ -11,7 +11,6 @@ import {
   WidgetTitle
 } from 'components/pages/common'
 
-
 export const StyledRadio = styled(Radio)`
   margin-bottom: 20px;
 `
@@ -76,4 +75,10 @@ export const Header = styled.div`
 export const HeaderButtons = styled.div`
   display: flex;
   align-items: center;
+`
+
+export const Text = styled.p`
+  font-size: 18px;
+  line-height: 24px;
+  margin: 0 0 32px;
 `

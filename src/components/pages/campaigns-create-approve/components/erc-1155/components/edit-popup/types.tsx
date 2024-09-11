@@ -1,7 +1,8 @@
 import { TLinkContent } from 'types'
+
 export type TProps = {
   onClose: () => void
-  id: number
+  id: number | string
   assets: TLinkContent[]
-  onUpdate: (assetId: number, linksAmount: string) => void
+  onUpdate: (assetId: number | string, linksAmount: string) => void
 }

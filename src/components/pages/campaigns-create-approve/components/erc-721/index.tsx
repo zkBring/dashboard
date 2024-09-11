@@ -9,21 +9,34 @@ import {
   Header,
   WidgetTitleStyled,
   HeaderButtons,
-  ButtonHeaderStyled
+  ButtonHeaderStyled,
+  Text
 } from '../../styled-components'
-import { defineIfUserOwnsToken, shortenString, defineNetworkName } from 'helpers'
+import {
+  defineIfUserOwnsToken,
+  shortenString,
+  defineNetworkName,
+  defineFirstTokenById,
+  defineIfUserOwnsTokenInArray
+} from 'helpers'
 import { TProps } from './type'
-
+import chains from 'configs/chains'
 import { alertError } from 'helpers'
 import LinksContents from '../links-contents'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TTokenType, TLinkContent, TClaimPattern, TNFTToken } from 'types'
+import {
+  TTokenType,
+  TLinkContent,
+  TClaimPattern,
+  TNFTToken,
+} from 'types'
 import {
   WidgetComponent
 } from 'components/pages/common'
 import { plausibleApi } from 'data/api'
+import { BigNumber } from 'ethers'
 
 const mapStateToProps = ({
   user: {
@@ -72,6 +85,8 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 
 const createInputsContainer = (
   formData: TLinkContent,
+  nfts: TNFTToken[],
+  firstTokenById: string,
   claimPattern: TClaimPattern,
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
@@ -79,42 +94,71 @@ const createInputsContainer = (
   checkIfDisabled: () => boolean,
   getDefaultValues: (tokenType: TTokenType) => TLinkContent
 ) => {
-  return <InputsContainer>
-    <InputStyled
-      value={formData.tokenId}
-      placeholder='Number of tokens'
-      disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
-      onChange={value => {
-        const pattern = /^[0-9]+$/
-        if (pattern.test(value) || value === '') {
-          setFormData({
-            ...formData,
-            tokenId: value
-          })
-        }
-        return value
-      }}
-    />
+  return <>
+    <Text>Enter amount of tokens to distribute and add to selection. By default selection starts from the first ID from your collection</Text>
+    <InputsContainer>
+      <InputStyled
+        value={formData.tokenId}
+        placeholder='Number of tokens'
+        disabled={claimPattern === 'mint' && Boolean(assetsData.length)}
+        onChange={value => {
+          const pattern = /^[0-9]+$/
+          if (pattern.test(value) || value === '') {
+            setFormData({
+              ...formData,
+              tokenId: value
+            })
+          }
+          return value
+        }}
+      />
 
-    <ButtonStyled
-      size='extra-small'
-      appearance='additional'
-      disabled={checkIfDisabled()}
-      onClick={() => {
-        const { tokenId } = formData
-        const newAssets =  
-          Array.from({length: Number((tokenId as string).replace('range_', ''))}, (_, i) => ({
-            ...formData,
-            tokenId: String(i),
-            id: i
-          }))
-        setAssetsData([ ...assetsData, ...newAssets ])
-        setFormData(getDefaultValues('ERC721'))
-      }}
-    >
-      + Add
-    </ButtonStyled>
-  </InputsContainer>
+      <ButtonStyled
+        size='extra-small'
+        appearance='additional'
+        disabled={checkIfDisabled()}
+        onClick={() => {
+          const { tokenId } = formData
+          const numberToAdd = tokenId
+          const result: TLinkContent[] = []
+          const maxAttempts = 1000
+          let attempts = 0
+          if (numberToAdd) {
+            for (
+              let currentTokenId = BigNumber.from(firstTokenById);
+              result.length <= Number(numberToAdd);
+              currentTokenId = BigNumber.from(currentTokenId).add('1')
+            ) {
+              console.log({attempts})
+              const userOwnsToken = defineIfUserOwnsTokenInArray(
+                nfts,
+                currentTokenId.toString()
+              )
+              if (userOwnsToken) {
+                
+                result.push(
+                  {
+                    ...formData,
+                    tokenId: currentTokenId.toString(),
+                    id: tokenId
+                  }
+                ) 
+              }
+              attempts = attempts + 1
+              if (attempts >= maxAttempts) {
+                break
+              }
+            }
+          }
+          
+          setAssetsData([ ...assetsData, ...result ])
+          setFormData(getDefaultValues('ERC721'))
+        }}
+      >
+        + Add
+      </ButtonStyled>
+    </InputsContainer>
+  </>
 }
 
 const createSelectContainer = (
@@ -128,75 +172,79 @@ const createSelectContainer = (
   signer: any,
   checkIfDisabled: () => boolean,
 ) => {
-  return <InputsContainer>
-    <SelectStyled
-      disabled={checkIfDisabled()}
-      onChange={async ({ value }) => {
-        const tokenId = typeof value === 'string' ? value : value.tokenId
-        const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
-        if (tokenAlreadyAdded) {
-          return alertError(`Token #${tokenId} was already added`)
-        }
-
-        if (typeof value === 'string') {
-          // if "not found" was clicked
-          const userOwnership = await defineIfUserOwnsToken(
-            userAddress,
-            'ERC721',
-            tokenAddress as string,
-            signer,
-            tokenId
-          )
-
-          if (!userOwnership.owns) {
-            return alertError(`Token #${tokenId} is not owned by current user`)
-          }
-
-          setAssetsData([
-            ...assetsData, {
-              tokenId: tokenId,
-              tokenAmount: "1",
-              linksAmount: "1",
-              type: 'ERC721',
-              id: assetsData.length,
-              tokenName: 'Token ERC721'
-            }
-          ])
-
-          
-        } else {
-          const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === value.id)
+  return <>
+    <Text>Choose tokens to distribute manually by selecting IDs one-by-one</Text>
+    <InputsContainer>
+      <SelectStyled
+        disabled={checkIfDisabled()}
+        onChange={async ({ value }) => {
+          const tokenId = typeof value === 'string' ? value : value.tokenId
+          const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === tokenId)
           if (tokenAlreadyAdded) {
             return alertError(`Token #${tokenId} was already added`)
           }
-          
-          setAssetsData([
-            ...assetsData, {
-              tokenId: tokenId,
-              tokenAmount: "1",
-              linksAmount: "1",
-              type: 'ERC721',
-              id: assetsData.length,
-              tokenImage: (value.media[0] || {}).gateway,
-              tokenName: value.name
+
+          if (typeof value === 'string') {
+            // if "not found" was clicked
+            const userOwnership = await defineIfUserOwnsToken(
+              userAddress,
+              'ERC721',
+              tokenAddress as string,
+              signer,
+              tokenId
+            )
+
+            if (!userOwnership.owns) {
+              return alertError(`Token #${tokenId} is not owned by current user`)
             }
-          ])
-          setFormData(getDefaultValues('ERC721'))
-        }
-      }}
-      value={null}
-      placeholder='Token ID'
-      options={defineNFTTokensOptions(nfts, tokenAddress)}
-      notFoundActiveCondition={(value) => {
-        return value.length > 0 && (/^[0-9]+$/).test(value)
-      }}
-    />
-  </InputsContainer>
+
+            setAssetsData([
+              ...assetsData, {
+                tokenId: tokenId,
+                tokenAmount: "1",
+                linksAmount: "1",
+                type: 'ERC721',
+                id: assetsData.length,
+                tokenName: 'Token ERC721'
+              }
+            ])
+
+            
+          } else {
+            const tokenAlreadyAdded = assetsData.find(asset => asset.tokenId === value.id)
+            if (tokenAlreadyAdded) {
+              return alertError(`Token #${tokenId} was already added`)
+            }
+            
+            setAssetsData([
+              ...assetsData, {
+                tokenId: tokenId,
+                tokenAmount: "1",
+                linksAmount: "1",
+                type: 'ERC721',
+                id: assetsData.length,
+                tokenImage: (value.media[0] || {}).gateway,
+                tokenName: value.name
+              }
+            ])
+            setFormData(getDefaultValues('ERC721'))
+          }
+        }}
+        value={null}
+        placeholder='Token ID'
+        options={defineNFTTokensOptions(nfts, tokenAddress)}
+        notFoundActiveCondition={(value) => {
+          return value.length > 0 && (/^[0-9]+$/).test(value)
+        }}
+      />
+    </InputsContainer>
+  </>
 }
 
 const createTextInputOrSelect = (
   enabledInput: boolean,
   formData: TLinkContent,
+  firstTokenById: string,
   claimPattern: TClaimPattern,
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
@@ -212,6 +260,8 @@ const createTextInputOrSelect = (
   if (enabledInput) {
     return createInputsContainer(
       formData,
+      nfts,
+      firstTokenById,
       claimPattern,
       assetsData,
       setFormData,
@@ -234,9 +284,14 @@ const createTextInputOrSelect = (
   )
 }
 
-const defaultRangeInput = (
-  claimPattern: TClaimPattern
+const defaultNumberInput = (
+  claimPattern: TClaimPattern,
+  chainId: number
 ) => {
+  const chainConfig = chains[chainId]
+  if (chainConfig && !chainConfig.alchemySupport) {
+    return false
+  }
   return claimPattern === 'mint'
 }
 
@@ -258,13 +313,14 @@ const Erc721: FC<ReduxType > = ({
   setFormData,
   getDefaultValues
 }) => {
-
   const { type } = useParams<{ type: TTokenType }>()
+  const firstTokenById = defineFirstTokenById(nfts)
   const [
-    rangeInput,
-    toggleRangeInput
-  ] = useState<boolean>(defaultRangeInput(
-    claimPattern
+    numberInput,
+    toggleNumberInput
+  ] = useState<boolean>(defaultNumberInput(
+    claimPattern,
+    chainId as number
   ))
 
   const nftsToShow = nfts.filter(nft => {
@@ -280,7 +336,7 @@ const Erc721: FC<ReduxType > = ({
     if (claimPattern === 'mint') {
       return Boolean(assetsData.length)
     }
-    if (rangeInput) {
+    if (numberInput) {
       return !formData.tokenId || formData.tokenId.length === 0
     }
     return false
@@ -323,26 +379,26 @@ const Erc721: FC<ReduxType > = ({
         Add token IDs to distribute
       </WidgetTitleStyled>
       <HeaderButtons>
-        {claimPattern !== 'mint' && <ButtonHeaderStyled
+        <ButtonHeaderStyled
           disabled={checkIfAllTokensDisabled()}
           appearance='additional'
           size='extra-small'
           onClick={() => {
-            const newValue = !rangeInput
+            const newValue = !numberInput
             if (newValue) {
               plausibleApi.invokeEvent({
-                eventName: 'camp_step3_range',
+                eventName: 'camp_step3_by_number',
                 data: {
                   network: defineNetworkName(chainId),
                   token_type: tokenStandard as string
                 }
               })
             }
-            toggleRangeInput(newValue)
+            toggleNumberInput(newValue)
           }}
         >
-          {rangeInput ? 'Manually' : 'Set range'}
-        </ButtonHeaderStyled>}
+          {numberInput ? 'Manually' : 'By number'}
+        </ButtonHeaderStyled>
         <ButtonHeaderStyled
           disabled={checkIfAllTokensDisabled()}
           appearance='action'
@@ -355,8 +411,9 @@ const Erc721: FC<ReduxType > = ({
     </Header>
     <Container>
       {createTextInputOrSelect(
-        rangeInput,
+        numberInput,
         formData,
+        firstTokenById,
         claimPattern,
         assetsData,
         setFormData,

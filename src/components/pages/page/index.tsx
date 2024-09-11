@@ -80,27 +80,6 @@ type ReduxType = ReturnType<typeof mapStateToProps>
 const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   const locationUpdated = location.toLowerCase()
   switch(true) {
-    case locationUpdated.includes('/campaigns/new/erc20/initial'):
-    case locationUpdated.includes('/campaigns/new/erc1155/initial'):
-    case locationUpdated.includes('/campaigns/new/erc721/initial'):
-    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/initial'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/initial'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/initial'):
-      return <Breadcrumbs
-        items={
-          [{
-            title: 'Campaign setup',
-            status: 'done'
-          }, {
-            title: 'Claim pattern',
-            status: 'current'
-          }, {
-            title: 'Distribution'
-          }, {
-            title: 'Launch'
-          }]
-        }
-      />
 
     case locationUpdated.includes('/campaigns/new/erc20/approve'):
     case locationUpdated.includes('/campaigns/new/erc721/approve'):
@@ -112,9 +91,6 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
         items={
           [{
             title: 'Campaign setup',
-            status: 'done'
-          }, {
-            title: 'Claim pattern',
             status: 'done'
           }, {
             title: 'Distribution',
@@ -135,9 +111,6 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
         items={
           [{
             title: 'Campaign setup',
-            status: 'done'
-          }, {
-            title: 'Claim pattern',
             status: 'done'
           }, {
             title: 'Distribution',
@@ -163,8 +136,6 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
           [{
             title: 'Campaign setup',
             status: 'current'
-          }, {
-            title: 'Claim pattern'
           }, {
             title: 'Distribution'
           }, {

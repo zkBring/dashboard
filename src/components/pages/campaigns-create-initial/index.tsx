@@ -1,8 +1,4 @@
-import { FC, useEffect, useState } from 'react'
-import {
-  StyledRadio,
-  TextLinkStyled
-} from './styled-components'
+import { FC, useEffect } from 'react'
 import { RootState } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -13,8 +9,7 @@ import * as campaignAsyncActions from 'data/store/reducers/campaign/async-action
 import {
   Container,
 } from 'components/pages/common'
-import { Note } from 'linkdrop-ui'
-import { shortenString, defineNetworkName, preventPageClose } from 'helpers'
+import { preventPageClose } from 'helpers'
 
 const mapStateToProps = ({
   campaigns: {
@@ -81,25 +76,30 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   const history = useHistory()
   useEffect(preventPageClose(), [])
 
-  const nextStepAction = () => applyClaimPattern(
-    defineClaimPattern(
+  const nextStepAction = () => {
+    const claimPattern = defineClaimPattern(
       collections,
       tokenAddress as string
-    ),
-    !Boolean(id),
-    () => {
-      // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
-      //   if (currentCampaign) {
-      //     return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/secure`)
-      //   }
-      //   return history.push(`/campaigns/new/${type}/secure`)
-      // }
-      if (campaign) {
-        return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
+    )
+
+    alert(claimPattern)
+    applyClaimPattern(
+      claimPattern,
+      !Boolean(id),
+      () => {
+        // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
+        //   if (currentCampaign) {
+        //     return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/secure`)
+        //   }
+        //   return history.push(`/campaigns/new/${type}/secure`)
+        // }
+        if (campaign) {
+          return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
+        }
+        history.push(`/campaigns/new/${type}/approve`)
       }
-      history.push(`/campaigns/new/${type}/approve`)
-    }
-  )
+    )
+  }
 
   useEffect(() => {
     nextStepAction()
