@@ -3,10 +3,10 @@ import {  LinkdropMastercopy } from 'abi'
 import defineCampaignStatus from './define-campaign-status'
 import { TNFTToken } from 'types'
 
-const defineFirstTokenById = (
+const defineLastTokenIdForUser = (
   nfts: TNFTToken[]
 ) => {
-  if (nfts[0]) return nfts[0].tokenId
-  return '0'
+  if (nfts[nfts.length - 1]) return nfts[nfts.length - 1].tokenId
+  return '10000'
 }
-export default defineFirstTokenById
+export default defineLastTokenIdForUser

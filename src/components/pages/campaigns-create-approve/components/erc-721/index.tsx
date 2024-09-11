@@ -16,8 +16,9 @@ import {
   defineIfUserOwnsToken,
   shortenString,
   defineNetworkName,
-  defineFirstTokenById,
-  defineIfUserOwnsTokenInArray
+  defineFirstTokenIdForUser,
+  defineIfUserOwnsTokenInArray,
+  defineLastTokenIdForUser
 } from 'helpers'
 import { TProps } from './type'
 import chains from 'configs/chains'
@@ -86,7 +87,6 @@ type ReduxType = ReturnType<typeof mapStateToProps> &
 const createInputsContainer = (
   formData: TLinkContent,
   nfts: TNFTToken[],
-  firstTokenById: string,
   claimPattern: TClaimPattern,
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
@@ -118,18 +118,26 @@ const createInputsContainer = (
         appearance='additional'
         disabled={checkIfDisabled()}
         onClick={() => {
-          const { tokenId } = formData
-          const numberToAdd = tokenId
+          const { tokenId: numberToAdd } = formData
+          const firstTokenId = defineFirstTokenIdForUser(nfts)
+          const lastTokenId = defineLastTokenIdForUser(nfts)
+          const diff = BigNumber.from(lastTokenId).sub(firstTokenId)
           const result: TLinkContent[] = []
-          const maxAttempts = 1000
+          const maxAttempts = Number(diff)
+
+          console.log({
+            firstTokenId,
+            lastTokenId,
+            diff,
+            maxAttempts
+          })
           let attempts = 0
           if (numberToAdd) {
             for (
-              let currentTokenId = BigNumber.from(firstTokenById);
+              let currentTokenId = BigNumber.from(firstTokenId);
               result.length <= Number(numberToAdd);
               currentTokenId = BigNumber.from(currentTokenId).add('1')
             ) {
-              console.log({attempts})
               const userOwnsToken = defineIfUserOwnsTokenInArray(
                 nfts,
                 currentTokenId.toString()
@@ -140,7 +148,7 @@ const createInputsContainer = (
                   {
                     ...formData,
                     tokenId: currentTokenId.toString(),
-                    id: tokenId
+                    id: currentTokenId.toString(),
                   }
                 ) 
               }
@@ -172,6 +180,13 @@ const createSelectContainer = (
   signer: any,
   checkIfDisabled: () => boolean,
 ) => {
+  const nftsToShow = nfts.filter(nft => {
+    const tokenIsChosen = assetsData.find(asset => asset.tokenId === nft.tokenId)
+    if (tokenIsChosen) {
+      return false
+    }
+    return true
+  })
   return <>
     <Text>Choose tokens to distribute manually by selecting IDs one-by-one</Text>
     <InputsContainer>
@@ -232,7 +247,7 @@ const createSelectContainer = (
         }}
         value={null}
         placeholder='Token ID'
-        options={defineNFTTokensOptions(nfts, tokenAddress)}
+        options={defineNFTTokensOptions(nftsToShow, tokenAddress)}
         notFoundActiveCondition={(value) => {
           return value.length > 0 && (/^[0-9]+$/).test(value)
         }}
@@ -244,7 +259,6 @@ const createSelectContainer = (
 const createTextInputOrSelect = (
   enabledInput: boolean,
   formData: TLinkContent,
-  firstTokenById: string,
   claimPattern: TClaimPattern,
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
@@ -261,7 +275,6 @@ const createTextInputOrSelect = (
     return createInputsContainer(
       formData,
       nfts,
-      firstTokenById,
       claimPattern,
       assetsData,
       setFormData,
@@ -314,7 +327,7 @@ const Erc721: FC<ReduxType > = ({
   getDefaultValues
 }) => {
   const { type } = useParams<{ type: TTokenType }>()
-  const firstTokenById = defineFirstTokenById(nfts)
+
   const [
     numberInput,
     toggleNumberInput
@@ -413,7 +426,6 @@ const Erc721: FC<ReduxType > = ({
       {createTextInputOrSelect(
         numberInput,
         formData,
-        firstTokenById,
         claimPattern,
         assetsData,
         setFormData,

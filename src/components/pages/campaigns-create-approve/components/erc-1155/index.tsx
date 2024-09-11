@@ -31,8 +31,9 @@ import {
   defineIfUserOwnsToken,
   shortenString,
   defineNetworkName,
-  defineFirstTokenById,
-  defineIfUserOwnsTokenInArray
+  defineFirstTokenIdForUser,
+  defineIfUserOwnsTokenInArray,
+  defineLastTokenIdForUser
 } from 'helpers'
 import { EditPopup } from './components'
 import { plausibleApi } from 'data/api'
@@ -94,7 +95,6 @@ const defineNFTTokensOptions = (nftTokens: TNFTToken[], tokenAddress: string | n
 const createInputsContainer = (
   formData: TLinkContent,
   nfts: TNFTToken[],
-  firstTokenById: string,
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
@@ -122,35 +122,47 @@ const createInputsContainer = (
         disabled={checkIfDisabled()}
         appearance='additional'
         onClick={() => {
-          const { tokenId } = formData
-          const numberToAdd = tokenId
+          const { tokenId: numberToAdd } = formData
+          const firstTokenId = defineFirstTokenIdForUser(nfts)
+          const lastTokenId = defineLastTokenIdForUser(nfts)
+          const diff = BigNumber.from(lastTokenId).sub(firstTokenId)
           const result: TLinkContent[] = []
-          const maxAttempts = 1000
+          
+          console.log({
+            firstTokenId,
+            lastTokenId,
+            diff,
+            numberToAdd: Number(numberToAdd)
+          })
           let attempts = 0
           if (numberToAdd) {
             for (
-              let currentTokenId = BigNumber.from(firstTokenById);
-              result.length <= Number(numberToAdd);
+              let currentTokenId = BigNumber.from(firstTokenId);
+              result.length < Number(numberToAdd);
               currentTokenId = BigNumber.from(currentTokenId).add('1')
             ) {
+
+              console.log(`check for #${currentTokenId}`)
               const userOwnsToken = defineIfUserOwnsTokenInArray(
                 nfts,
                 currentTokenId.toString()
               )
               if (userOwnsToken) {
-                
+                console.log('found')
                 result.push(
                   {
                     ...formData,
                     tokenId: currentTokenId.toString(),
-                    id: tokenId,
+                    id: currentTokenId.toString(),
                     tokenAmount: "1",
-                    linksAmount: "1",
+                    linksAmount: userOwnsToken.balance
                   }
                 ) 
+              } else {
+                console.log('not found')
               }
               attempts = attempts + 1
-              if (attempts >= maxAttempts) {
+              if (attempts > Number(diff)) {
                 break
               }
             }
@@ -178,6 +190,13 @@ const createSelectContainer = (
   checkIfDisabled: () => boolean,
   claimPattern: TClaimPattern
 ) => {
+  const nftsToShow = nfts.filter(nft => {
+    const tokenIsChosen = assetsData.find(asset => asset.tokenId === nft.tokenId)
+    if (tokenIsChosen) {
+      return false
+    }
+    return true
+  })
   return <>
     <Text>Choose tokens to distribute manually by selecting IDs one-by-one</Text>
     <InputsContainer>
@@ -243,7 +262,7 @@ const createSelectContainer = (
         }}
         value={null}
         placeholder='Token ID'
-        options={defineNFTTokensOptions(nfts, tokenAddress)}
+        options={defineNFTTokensOptions(nftsToShow, tokenAddress)}
         notFoundActiveCondition={(value) => {
           return value.length > 0 && (/^[0-9]+$/).test(value)
         }}
@@ -255,7 +274,6 @@ const createSelectContainer = (
 const createTextInputOrSelect = (
   enabledInput: boolean,
   formData: TLinkContent,
-  firstTokenById: string,
   assetsData: TLinkContent[],
   setFormData: (link: TLinkContent) => void,
   setAssetsData: (newAssets: TLinkContent[]) => void,
@@ -275,7 +293,6 @@ const createTextInputOrSelect = (
     return createInputsContainer(
       formData,
       nfts,
-      firstTokenById,
       assetsData,
       setFormData,
       setAssetsData,
@@ -323,7 +340,6 @@ const Erc1155: FC<ReduxType > = ({
   collectionId
 }) => {
   const { type } = useParams<{ type: TTokenType }>()
-  const firstTokenById = defineFirstTokenById(nfts)
 
   const [ numberInput, toggleNumberInput ] = useState<boolean>(
     defaultNumberInput(
@@ -331,14 +347,6 @@ const Erc1155: FC<ReduxType > = ({
       chainId as number
     )
   )
-
-  const nftsToShow = nfts.filter(nft => {
-    const tokenIsChosen = assetsData.find(asset => asset.tokenId === nft.tokenId)
-    if (tokenIsChosen) {
-      return false
-    }
-    return true
-  })
 
   const [
     itemToEdit,
@@ -445,13 +453,12 @@ const Erc1155: FC<ReduxType > = ({
       {createTextInputOrSelect(
         numberInput,
         formData,
-        firstTokenById,
         assetsData,
         setFormData,
         setAssetsData,
         checkIfDisabled,
         getDefaultValues,
-        nftsToShow,
+        nfts,
         tokenAddress,
         address,
         signer,

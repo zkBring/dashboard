@@ -78,7 +78,7 @@ export const HeaderButtons = styled.div`
 `
 
 export const Text = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
   margin: 0 0 32px;
 `
