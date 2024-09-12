@@ -5,9 +5,9 @@ import { UserActions } from '../../user/types'
 import { IAppDispatch } from 'data/store'
 import { alertError } from 'helpers'
 import { RootState } from 'data/store'
-import { createThirdwebClient, defineChain } from "thirdweb";
-import { ethers5Adapter } from "thirdweb/adapters/ethers5";
-import { deployPublishedContract } from "thirdweb/deploys";
+import { createThirdwebClient, defineChain } from "thirdweb"
+import { ethers5Adapter } from "thirdweb/adapters/ethers5"
+import { deployPublishedContract } from "thirdweb/deploys"
 import { collectionsApi } from 'data/api'
 import { TCollection } from 'types'
 import { THIRDWEB_CONTRACT_ID, THIRDWEB_PUBLISHER } from 'configs/collections'
@@ -46,11 +46,20 @@ function createCollectionERC1155(
         chain,
         account,
         contractId: THIRDWEB_CONTRACT_ID,
-        contractParams: [account.address, title, symbol],
+        contractParams: [
+          account.address,
+          title,
+          symbol
+        ],
         publisher: THIRDWEB_PUBLISHER
       })
 
-      const result: { data: { success: boolean, collection: TCollection } } = await collectionsApi.create({
+      const result: {
+        data: {
+          success: boolean,
+          collection: TCollection
+        }
+      } = await collectionsApi.create({
         title,
         symbol,
         sbt: true,
