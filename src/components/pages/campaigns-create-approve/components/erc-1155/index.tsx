@@ -124,8 +124,6 @@ const createInputsContainer = (
         onClick={() => {
 
           const { tokenId: numberToAdd } = formData
-
-
           const result: TLinkContent[] = []
           
           if (numberToAdd) {
