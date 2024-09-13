@@ -133,9 +133,12 @@ const createInputsContainer = (
                 {
                   ...formData,
                   tokenId: nft.tokenId,
-                  id: nft.tokenId,
+                  id: Number(nft.tokenId),
                   tokenAmount: "1",
-                  linksAmount: nft.balance
+                  linksAmount: nft.balance,
+                  type: 'ERC1155',
+                  tokenImage: (nft.media[0] || {}).gateway,
+                  tokenName: nft.title,
                 }
               ) 
             })
