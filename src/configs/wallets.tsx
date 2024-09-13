@@ -25,6 +25,14 @@ const wallets: TWallet[] = [
     available_for_not_sponsored: true,
     available_for_client: []
   },
+  {
+    id: 'ledger',
+    name: 'LedgerLive',
+    chains: ['1', '137'],
+    token_types: ['ERC1155', 'ERC721', 'ERC20'],
+    available_for_not_sponsored: true,
+    available_for_client: []
+  }
 ]
 
 export default wallets
