@@ -1,46 +1,49 @@
-const WorkerLoaderPlugin = require("craco-worker-loader")
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
   webpack: {
-    plugins: [
-      new NodePolyfillPlugin(),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      })
-    ],
-    configure: {
-      module: {
-        rules: [
-          {
-            test: /\.m?js$/,
-            resolve: {
-                fullySpecified: false,
-            },
-          },
+    configure: (webpackConfig) => {
+      return {
+        ...webpackConfig,
+        ignoreWarnings: [
+          { module: /node_modules\// }
         ],
-      },
-  } ,
+        output: {
+          ...webpackConfig.output,
+          filename: 'static/js/bundle.[hash].js',
+          chunkFilename: 'static/js/[name].[hash].chunk.js',
+          // filename: 'static/js/[name].[hash].[ext]'
+        },
+        resolve: {
+          ...webpackConfig.resolve,
+          fallback: {
+            ...webpackConfig.resolve.fallback
+          }
+        },
+        module: {
+          ...webpackConfig.module,
+          rules: [
+            ...webpackConfig.module.rules,
+            {
+              test: /\.m?js$/,
+              resolve: {
+                fullySpecified: false,
+              },
+            },
+          ],
+        },
+        plugins: [
+          ...webpackConfig.plugins,
+          new NodePolyfillPlugin(),
+          new webpack.ProvidePlugin({
+            process: 'process/browser',
+          })
+        ],
+      }
+    },
   },
-  configure: (webpackConfig) => {
-    return {
-      ...webpackConfig,
-      output: {
-        ...webpackConfig.output,
-        filename: '[name].[hash].[ext]'
-      },
-      resolve: {
-        ...webpackConfig.resolve,
-        fallback: {
-          ...webpackConfig.resolve.fallback
-        }
-      },
-      plugins: [
-        WorkerLoaderPlugin
-      ]
-    }
-  },
+
   babel: {
     plugins: [
       "@babel/plugin-proposal-logical-assignment-operators",

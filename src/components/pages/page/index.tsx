@@ -14,6 +14,8 @@ import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { DashboardKeyPopup } from './components'
 
+console.log('sss')
+
 const mapStateToProps = ({
   user: {
     authorizationStep,
