@@ -1,5 +1,10 @@
 # Linkdrop Dashboard
 
+## 2.1.43
+- fix for dev mode (web workers compilation)
+- removed increaseAllowance method
+- removed range
+
 ## 2.1.42
 - added X Layer network support
 - added OKX Wallet
