@@ -81,8 +81,6 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
       collections,
       tokenAddress as string
     )
-
-    alert(claimPattern)
     applyClaimPattern(
       claimPattern,
       !Boolean(id),
