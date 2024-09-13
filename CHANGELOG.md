@@ -1,5 +1,9 @@
 # Linkdrop Dashboard
 
+## 2.1.42
+- added X Layer network support
+- added OKX Wallet
+
 ## 2.1.41
 - added "additional_wallets_on" option
 - "distribute" button added on campaign details page
