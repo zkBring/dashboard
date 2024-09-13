@@ -76,7 +76,6 @@ const Erc20: FC<ReduxType > = ({
 
   const { type } = useParams<{ type: TTokenType }>()
 
-
   const checkIfDisabled = () => {
     return !formData.tokenAmount ||
            !formData.linksAmount ||

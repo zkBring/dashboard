@@ -9,7 +9,7 @@ import {
   Container
 } from './styled-components'
 import LinksContents from '../links-contents'
-import { RootState, IAppDispatch } from 'data/store';
+import { RootState } from 'data/store';
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { TTokenType, TLinkContent } from 'types'
@@ -43,12 +43,8 @@ const mapStateToProps = ({
   claimPattern
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {}
-}
-
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatcherToProps> &
   TProps
 
 const SDKLinks: FC<ReduxType > = ({
@@ -122,4 +118,5 @@ const SDKLinks: FC<ReduxType > = ({
   </WidgetComponent>
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(SDKLinks)
+// @ts-ignore
+export default connect(mapStateToProps)(SDKLinks)

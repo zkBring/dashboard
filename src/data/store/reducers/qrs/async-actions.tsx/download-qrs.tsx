@@ -18,7 +18,6 @@ import { Remote } from 'comlink'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { plausibleApi } from 'data/api'
 import * as actionsAsyncUser from '../../user/async-actions'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 import { UserActions } from '../../user/types'
 

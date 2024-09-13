@@ -49,6 +49,7 @@ const approve = (
         tokenStandard,
         claimPattern
       }
+
     } = getState()
 
     try {
@@ -88,25 +89,20 @@ const approve = (
         return alertError(`No tokens to approve`)
       }
 
-      if (amountToApprove.gt(tokenAmount)) {
+      const alreadyAllowed = await contractInstance.allowance(address, proxyContractAddress)
+      const totalToImprove = (alreadyAllowed as ethers.BigNumber).add(amountToApprove)
+
+      if (totalToImprove.gt(tokenAmount)) {
         dispatch(campaignActions.setLoading(false))
         return alertError(
           `Not enough tokens to approve. Current balance: ${utils.formatUnits(tokenAmount, decimals)}, tokens to approve: ${amountToApproveFormatted}`
         )
       }
 
-      let data
-      if (isNewCampaign) {
-        data = iface.encodeFunctionData('approve', [
-          proxyContractAddress, String(amountToApprove)
-        ])
-      } else {
-        data = iface.encodeFunctionData('increaseAllowance', [
-          proxyContractAddress, String(amountToApprove)
-        ])
-      }
+      let data = iface.encodeFunctionData('approve', [
+        proxyContractAddress, String(totalToImprove)
+      ])
 
-      
       plausibleApi.invokeEvent({
         eventName: 'camp_step3_filled',
         data: {
@@ -129,7 +125,7 @@ const approve = (
         return new Promise((resolve) => {
           const checkInterval = setInterval(async () => {
             const allowed = await contractInstance.allowance(address, proxyContractAddress)
-            if (allowed.gte(amountToApprove)) {
+            if (allowed.gte(totalToImprove)) {
               resolve(true)
               clearInterval(checkInterval)
             }

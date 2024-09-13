@@ -86,10 +86,17 @@ import getNextDayData from './get-next-day-data'
 import buf2hex from '../helpers/buffer-to-hex'
 import defineIfWalletIsAvailableForClient from './define-if-wallet-is-available-for-client'
 import defineCoinbaseInstance from './define-coinbase-instance'
+import defineFirstTokenIdForUser from './define-first-token-id-for-user'
+import defineLastTokenIdForUser from './define-last-token-id-for-user'
+
+import defineIfUserOwnsTokenInArray from './define-if-user-owns-token-in-array'
 
 export {
   buf2hex,
+  defineIfUserOwnsTokenInArray,
   defineCoinbaseInstance,
+  defineFirstTokenIdForUser,
+  defineLastTokenIdForUser,
   defineCollectionQuantityTag,
   defineIfWalletIsAvailableForClient,
   defineCollectionStatusName,

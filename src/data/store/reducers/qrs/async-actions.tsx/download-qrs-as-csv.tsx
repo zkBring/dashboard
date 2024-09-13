@@ -2,13 +2,10 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { downloadBase64FilesAsZip } from 'helpers'
-import { TQRItem } from "types"
 import {
   alertError,
   downloadQRsAsCSV as downloadQRsAsCSVHelper
 } from 'helpers'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 import * as actionsAsyncUser from '../../user/async-actions'
 import { UserActions } from '../../user/types'

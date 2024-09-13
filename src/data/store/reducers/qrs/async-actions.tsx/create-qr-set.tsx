@@ -16,7 +16,6 @@ import { plausibleApi, qrManagerApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
 import * as actionsAsyncUser from '../../user/async-actions'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 import { UserActions } from '../../user/types'
 

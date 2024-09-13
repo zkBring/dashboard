@@ -26,7 +26,7 @@ const defineError = (
 const LinksAmountPopup: FC<TProps> = ({
   onClose,
   onSubmit,
-  initialValue = '1',
+  initialValue = '100',
   limit
 }) => {
   const [ amount, setAmount ] = useState(initialValue)
