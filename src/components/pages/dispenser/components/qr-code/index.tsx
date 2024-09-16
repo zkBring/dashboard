@@ -37,7 +37,7 @@ const QRCode: FC<TProps> = ({
         cornersSquareOptions: qrOption.cornersSquareOptions,
         cornersDotOptions: qrOption.cornersDotOptions,
         dotsOptions: {
-          color: "#9D9D9D",
+          color: qrOption.dotsOptions.color,
           type: "dots"
         },
         backgroundOptions: qrOption.backgroundOptions,

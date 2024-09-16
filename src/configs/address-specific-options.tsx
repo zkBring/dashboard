@@ -18,6 +18,10 @@ const LEDGER_CONFIG = {
   claimAppUrl: 'https://ldgr.linkdrop.io'
 }
 
+const OKX_CONFIG = {
+  qrConfig: 'okx'
+}
+
 const ALPHEMY_CONFIG = {
   claimAppUrl: 'https://alphemy.linkdrop.io'
 }
@@ -36,5 +40,6 @@ export const addressSpecificOptions: TAddressConfig = {
   '0xadf49b9f133fb137e82b24f06d23e49c51f586c7': LEDGER_CONFIG,
   '0x0020eedeb84da1491081c1409b684f459b8f0697': COINBASE_CONFIG,
   'coinbase': COINBASE_CONFIG,
+  '0x74689242a2933db9b0075c244c5f18058e38b3f0': OKX_CONFIG,
   '0xed19658cb0cef4fbf25685a54ec3e1ee2c981508': LEDGER_CONFIG
 }

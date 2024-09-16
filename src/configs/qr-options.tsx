@@ -1,6 +1,7 @@
 import LedgerIcon from 'images/ledger-logo.png'
 import LinkdropIcon from 'images/linkdrop-qr.png'
 import CoinbaseIcon from 'images/coinbase-qr.png'
+import XLayerIcon from 'images/x-layer-qr.png'
 import { TQROption } from 'types'
 
 type TQROptions = Record<string, TQROption>
@@ -73,7 +74,30 @@ const qrOptions: TQROptions = {
       imageSize: 0.5,
       crossOrigin: 'anonymous',
     }
-  }
+  },
+  'okx': {
+    icon: XLayerIcon,
+    cornersSquareOptions: {
+      color: "#BCFF2F",
+      type: 'extra-rounded'
+    },
+    cornersDotOptions: {
+      color: "#BCFF2F",
+      type: 'square',
+    },
+    dotsOptions: {
+      color: "#000",
+      type: "dots"
+    },
+    backgroundOptions: {
+      color: "#FFF",
+    },
+    imageOptions: {
+      margin: 5,
+      imageSize: 0.5,
+      crossOrigin: 'anonymous',
+    }
+  },
 }
 
 export default qrOptions 
