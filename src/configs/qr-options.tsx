@@ -83,7 +83,7 @@ const qrOptions: TQROptions = {
     },
     cornersDotOptions: {
       color: "#BCFF2F",
-      type: 'square',
+      type: 'dot',
     },
     dotsOptions: {
       color: "#000",
