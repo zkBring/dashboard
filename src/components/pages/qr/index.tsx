@@ -36,7 +36,7 @@ import {
   DownloadQRPopup,
   UploadLinksPopup
 } from 'components/pages/common'
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions'
 import { useHistory } from 'react-router-dom'
 
 const mapStateToProps = ({

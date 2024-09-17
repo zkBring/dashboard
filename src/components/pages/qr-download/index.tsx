@@ -13,7 +13,7 @@ import {
   GenerateProgress
 } from './styled-components'
 
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
