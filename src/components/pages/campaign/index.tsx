@@ -65,7 +65,7 @@ import {
 
 import {
   createQRSetAndAddLinks
-} from 'data/store/reducers/qrs/async-actions.tsx'
+} from 'data/store/reducers/qrs/async-actions'
 
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'

@@ -4,6 +4,9 @@
 - fix for dev mode (web workers compilation)
 - removed increaseAllowance method
 - removed range
+- fix for claim-app-host
+- linkdrop-ui version updated
+- fix for dashboard key popup z-index
 
 ## 2.1.42
 - added X Layer network support
