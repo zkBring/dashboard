@@ -2,6 +2,7 @@ import { TCampaign, TDispenser } from "types"
 
 export type TProps = {
   claimUrl?: string
+  appTitle?: string
   redirectUrl?: string | null
   loading: boolean
   campaignData: TCampaign | null
@@ -9,6 +10,14 @@ export type TProps = {
   redirectToggleValue?: boolean
   redirectSubmit: (
     value: any,
+    onSuccess?: () => void,
+    onError?: () => void,
+  ) => void
+
+  appTitleToggleAction?: (value: boolean) => void
+  appTitleToggleValue?: boolean
+  appTitleSubmit: (
+    value: string,
     onSuccess?: () => void,
     onError?: () => void,
   ) => void

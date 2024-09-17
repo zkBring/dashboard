@@ -15,10 +15,15 @@ import toggleTimeframeOn from './toggle-timeframe-on'
 import decryptDispenserData from './decrypt-dispenser-data'
 import createDispenserAndAddLinks from './create-dispenser-and-add-links'
 
+import updateAppTitle from './update-app-title'
+import toggleAppTitleOn from './toggle-app-title-on'
+
 export {
   createDispenser,
   updateWhitelist,
   createDispenserAndAddLinks,
+  updateAppTitle,
+  toggleAppTitleOn,
   toggleTimeframeOn,
   toggleWhitelistOn,
   decryptDispenserData,

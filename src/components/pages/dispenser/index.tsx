@@ -140,6 +140,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       errorCallback
     })),
 
+    toggleAppTitle: (
+      dispenser_id: string,
+      app_title_on: boolean,
+      successCallback: () => void,
+      errorCallback: () => void
+    ) => dispatch(asyncDispensersActions.toggleAppTitleOn({
+      dispenser_id,
+      app_title_on,
+      successCallback,
+      errorCallback
+    })),
+
     toggleTimeframe: (
       dispenser_id: string,
       timeframe_on: boolean,
@@ -162,6 +174,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispenser_id,
       redirect_url,
       encrypted_multiscan_qr_enc_code,
+      successCallback,
+      errorCallback
+    })),
+
+    updateAppTitle: (
+      dispenser_id: string,
+      app_title: string,
+      successCallback?: () => void,
+      errorCallback?: () => void
+    ) => dispatch(asyncDispensersActions.updateAppTitle({
+      dispenser_id,
+      app_title,
       successCallback,
       errorCallback
     })),
@@ -225,13 +249,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispenser_id: string,
       startDate: string,
       finishDate: string,
-      // duration: number,
       callback?: () => void
     ) => dispatch(asyncDispensersActions.updateDispenserDate({
       dispenserId: dispenser_id,
       startDate,
       finishDate,
-      // duration,
       callback
     })),
 
@@ -344,7 +366,9 @@ const Dispenser: FC<ReduxType> = ({
   removeCurrentDispenserData,
   updateDispenser,
   getDispenserWhitelist,
-  decryptDispenserData
+  decryptDispenserData,
+  updateAppTitle,
+  toggleAppTitle
 }) => {
   const { id } = useParams<{id: string}>()
   // @ts-ignore
@@ -407,7 +431,9 @@ const Dispenser: FC<ReduxType> = ({
     claim_finish,
     timeframe_on,
     dispenser_url,
-    decrypted_redirect_url
+    decrypted_redirect_url,
+    app_title,
+    app_title_on
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -515,6 +541,31 @@ const Dispenser: FC<ReduxType> = ({
         getDispenserWhitelist={getDispenserWhitelist}
         currentDispenser={dispenser}
         whitelistToggleValue={whitelist_on}
+        appTitle={app_title}
+        appTitleToggleValue={app_title_on}
+        appTitleSubmit={
+          (
+            appTitle,
+            onSuccess
+          ) => {
+            updateAppTitle(
+              dispenser_id as string,
+              appTitle,
+              onSuccess,
+              () => alert('error')
+            )
+          }}
+        appTitleToggleAction={(
+          appTitle
+        ) => {
+          toggleAppTitle(
+            dispenser_id as string,
+            appTitle,
+            () => {
+              
+            },
+            () => alert('error'),
+          )}}
 
         whitelistToggleAction={(
           whitelistOn
@@ -552,9 +603,8 @@ const Dispenser: FC<ReduxType> = ({
             'address',
             onSuccess,
             () => alert('error')
-          )
-          
-        }}
+          )}
+        }
 
         redirectToggleAction={(
           redirectOn

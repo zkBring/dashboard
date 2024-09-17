@@ -95,6 +95,30 @@ const requests = {
       timeframe_on
     }, { withCredentials: true })
   },
+
+  updateAppTitleOn: ({
+    dispenser_id,
+    app_title_on
+  }: {
+    dispenser_id: string,
+    app_title_on: boolean
+  }) => {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}/app-title-on`, {
+      app_title_on
+    }, { withCredentials: true })
+  },
+
+  updateAppTitle: ({
+    dispenser_id,
+    app_title
+  }: {
+    dispenser_id: string,
+    app_title: string
+  }) => {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}/app-title`, {
+      app_title
+    }, { withCredentials: true })
+  },
   updateRedirectUrl: ({
     dispenser_id,
     redirect_url
