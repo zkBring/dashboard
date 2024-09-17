@@ -26,12 +26,16 @@ const downloadQRs = ({
   qrSetName,
   width,
   height,
+  customClaimHost,
+  customClaimHostOn,
   successCallback
 }: {
   qrsArray: TQRItem[],
   qrSetName: string,
   width: number,
   height: number,
+  customClaimHost?: string,
+  customClaimHostOn?: boolean,
   successCallback?: () => void
 }) => {
   return async (
@@ -48,7 +52,11 @@ const downloadQRs = ({
     } = getState()
 
     const callback = async (dashboardKey: string) => {
-      const claimAppURL = defineClaimAppURL(address)
+      const claimAppURL = defineClaimAppURL(
+        address,
+        customClaimHost,
+        customClaimHostOn
+      )
 
       let currentPercentage = 0
 
@@ -91,7 +99,9 @@ const downloadQRs = ({
           logoImageLoaded.height,
           img, // image bitmap to render in canvas
           qrOption,
-          claimAppURL
+          claimAppURL,
+          customClaimHost,
+          customClaimHostOn,
         )))
 
         console.log((+ new Date()) - start)

@@ -12,7 +12,8 @@ import {
   PopupText,
   PopupTitle,
   PopupImage,
-  PopupStyled
+  PopupStyled,
+  wrapperClassName
 } from './styled-components'
 import KeyImage from 'images/key-square.png'
 
@@ -54,6 +55,7 @@ const DashboardKeyPopup: FC<ReduxType> = ({
     return null
   }
   return <PopupStyled
+    wrapperClassName={wrapperClassName}
     onClose={() => {
       closePopup()
     }}

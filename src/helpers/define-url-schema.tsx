@@ -7,7 +7,9 @@ const defineUrlSchema = (
   chainId: number,
   claimAppURL: string,
   version: number,
-  wallet: string
+  wallet: string,
+  customClaimHost?: string,
+  customClaimHostOn?: boolean
 ) => {
 
   if (wallet === 'coinbase_wallet') {
@@ -18,9 +20,11 @@ const defineUrlSchema = (
     return coinbaseLink
   }
 
-  const defaultLink = `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
+  if (customClaimHostOn && customClaimHost) {
+    return `${claimAppURL}/${decryptedClaimCode}`
+  }
 
-  return defaultLink
+  return `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
 }
 
 export default defineUrlSchema

@@ -6,9 +6,10 @@ const {
 
 const defineClaimAppURL = (
   address: string,
-  customClaimHost?: string
+  customClaimHost?: string,
+  customClaimHostOn?: boolean
 ) => {
-  if (customClaimHost) {
+  if (customClaimHost && customClaimHostOn) {
     return customClaimHost
   }
   const addressFormatted = address.toLowerCase()
