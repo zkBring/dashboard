@@ -53,7 +53,6 @@ const mapQRsWithLinksAction = ({
     
         const qrArrayMapped = await qrsWorker.mapQrsWithLinks(qrs, links, dashboardKey)
 
-        console.log({ qrArrayMapped })
         console.log((+ new Date()) - start)
         const result = await qrsApi.mapLinks(setId, qrArrayMapped)
         
