@@ -52,6 +52,8 @@ const mapQRsWithLinksAction = ({
         const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
     
         const qrArrayMapped = await qrsWorker.mapQrsWithLinks(qrs, links, dashboardKey)
+
+        console.log({ qrArrayMapped })
         console.log((+ new Date()) - start)
         const result = await qrsApi.mapLinks(setId, qrArrayMapped)
         

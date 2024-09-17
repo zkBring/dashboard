@@ -36,6 +36,7 @@ const createQRSetAndAddLinks = ({
   tokenAddress,
   wallet,
   customClaimHost,
+  customClaimHostOn,
   successCallback,
   errorCallback
 }: {
@@ -45,7 +46,8 @@ const createQRSetAndAddLinks = ({
   batchId: string,
   tokenAddress: string,
   wallet: string,
-  customClaimHost: string,
+  customClaimHost?: string,
+  customClaimHostOn?: boolean,
   successCallback?: (
     qr_id: string | number
   ) => void,
@@ -129,7 +131,8 @@ const createQRSetAndAddLinks = ({
                 userAddress: address,
                 chainId: chainId as number,
                 wallet,
-                customClaimHost
+                customClaimHost,
+                customClaimHostOn
               })
 
               const mappingProgressbar = async (value: number) => {

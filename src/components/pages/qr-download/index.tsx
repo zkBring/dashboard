@@ -36,8 +36,18 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrSetName: string,
       width: number,
       height: number,
-      successCallback: () => void
-    ) => dispatch(asyncQRsActions.downloadQRs({ qrsArray, qrSetName, width, height, successCallback }))
+      customClaimHost?: string,
+      customClaimHostOn?: boolean,
+      successCallback?: () => void
+    ) => dispatch(asyncQRsActions.downloadQRs({
+      qrsArray,
+      qrSetName,
+      width,
+      height,
+      customClaimHost,
+      customClaimHostOn,
+      successCallback
+    }))
   }
 }
 
@@ -46,10 +56,14 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 const QR: FC<ReduxType> = ({
   qrs,
   downloadQRs,
-  downloadLoader
+  downloadLoader,
+  campaigns
 }) => {
   const { id } = useParams<TLinkParams>()
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
+
+  const campaignId = qr?.campaign?.campaign_id
+  const campaign = campaignId ? campaigns.find(campaign => campaign.campaign_id === campaignId) : undefined
   const history = useHistory()
   let { search } = useLocation();
 
@@ -59,9 +73,16 @@ const QR: FC<ReduxType> = ({
     const width = query.get('width')
     const height = query.get('height')
     if (!qr || !qr.qr_array) { return alertError('qr_array is not provided') }
-    downloadQRs(qr.qr_array, qr.set_name, Number(width), Number(height), () => {
-      history.push(`/qrs/${id}`)
-    })
+    downloadQRs(
+      qr.qr_array,
+      qr.set_name,
+      Number(width),
+      Number(height),
+      campaign?.claim_host,
+      campaign?.claim_host_on,
+      () => {
+        history.push(`/qrs/${id}`)
+      })
   }, [])
 
   useEffect(preventPageClose(), [])

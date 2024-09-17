@@ -47,13 +47,21 @@ export class QRsWorker {
     logoImageHeight: number,
     img: ImageBitmap,
     qrOption: TQROption,
-    claimAppUrl?: string
+    claimAppUrl?: string,
+    customClaimHost?: string,
+    customClaimHostOn?: boolean
   ) {
     const qrs: Blob[] = []
     const data: { link: string }[] = []
     for (let i = 0; i < qrsArray.length; i++) {
       const decrypted_qr_secret = decrypt(qrsArray[i].encrypted_qr_secret, dashboardKey)
-      const originalLink = `${claimAppUrl}/#/qr/${decrypted_qr_secret}`
+      let originalLink
+      if (customClaimHostOn && customClaimHost) {
+        originalLink = `${claimAppUrl}/qr/${decrypted_qr_secret}`
+      } else {
+        originalLink = `${claimAppUrl}/#/qr/${decrypted_qr_secret}`
+      }
+
       const qrCode = new QRCodeStyling({
         data: originalLink,
         width,

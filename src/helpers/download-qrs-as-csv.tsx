@@ -7,11 +7,22 @@ const downloadQRsAsCSV = (
   title: string,
   dashboardKey: string,
   userAddress: string,
+  customClaimHost?: string,
+  customClaimHostOn?: boolean,
   createdAt?: string
 ) => {
-  const claimAppURL = defineClaimAppURL(userAddress)
+  const claimAppURL = defineClaimAppURL(
+    userAddress,
+    customClaimHost,
+    customClaimHostOn
+  )
   const values = arr.map(item => {
-    const originalLink = `${claimAppURL}/#/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
+    let originalLink
+    if (customClaimHostOn && customClaimHost) {
+      originalLink = `${claimAppURL}/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
+    } else {
+      originalLink = `${claimAppURL}/#/qr/${decrypt(item.encrypted_qr_secret, dashboardKey)}`
+    }
     const updatedItem = {
       qr_link: originalLink
     }
