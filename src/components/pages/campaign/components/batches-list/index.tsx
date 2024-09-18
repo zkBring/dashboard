@@ -135,7 +135,6 @@ const BatchesList: FC<TProps> = ({
   loading,
   downloadLinks,
   customClaimHost,
-  customClaimHostOn,
   tokenAddress,
   encryptionKey,
   sponsored,

@@ -65,7 +65,7 @@ import {
 
 import {
   createQRSetAndAddLinks
-} from 'data/store/reducers/qrs/async-actions.tsx'
+} from 'data/store/reducers/qrs/async-actions'
 
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
@@ -311,6 +311,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       claimPattern: TClaimPattern,
       wallet: string,
       customClaimHost: string,
+      customClaimHostOn: boolean,
       encryptionKey?: string
     ) => {
       dispatch(
@@ -326,6 +327,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           claimPattern,
           wallet,
           customClaimHost,
+          customClaimHostOn,
           encryptionKey
         )
       )
@@ -645,6 +647,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
               claim_pattern,
               wallet,
               claim_host,
+              claim_host_on,
               encryptionKey
             )
           }}

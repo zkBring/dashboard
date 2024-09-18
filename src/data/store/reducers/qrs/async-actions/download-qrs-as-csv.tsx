@@ -2,25 +2,23 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { downloadBase64FilesAsZip } from 'helpers'
-import { TQRItem } from "types"
 import {
   alertError,
   downloadQRsAsCSV as downloadQRsAsCSVHelper
 } from 'helpers'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 import * as actionsAsyncUser from '../../user/async-actions'
 import { UserActions } from '../../user/types'
 
 const downloadQRsAsCSV = (
-  id: string
+  id: string,
+  custom_claim_host?: string,
+  custom_claim_host_on?: boolean
 ) => {
   return async (
     dispatch: Dispatch<QRsActions> & Dispatch<UserActions>,
     getState: () => RootState
   ) => {
-    dispatch(actionsQR.setLoading(true))
 
     const {
       user: {
@@ -36,6 +34,7 @@ const downloadQRsAsCSV = (
     ) => {
 
       const currentQRSet = qrs.find(qr => String(qr.set_id) === id)
+      dispatch(actionsQR.setLoading(true))
 
       if (!currentQRSet) {
         dispatch(actionsQR.setLoading(false))
@@ -59,10 +58,14 @@ const downloadQRsAsCSV = (
           set_name,
           dashboardKey,
           address,
+          custom_claim_host,
+          custom_claim_host_on,
           created_at
         )
-        
+        dispatch(actionsQR.setLoading(false))
+
       } catch (err) {
+        dispatch(actionsQR.setLoading(false))
         alertError('check console for more information')
         console.error(err)
       }

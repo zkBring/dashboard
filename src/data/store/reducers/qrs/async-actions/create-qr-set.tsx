@@ -2,95 +2,110 @@ import { Dispatch } from 'redux'
 import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
-import { TQRItem, TLinkDecrypted, TQRSet } from 'types'
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import Worker from 'worker-loader!web-workers/qrs-worker'
+import { TQRSet } from 'types'
+import { qrsApi } from 'data/api'
+import {
+  sleep,
+  createQuantityGroups,
+  createWorkers,
+  terminateWorkers
+} from 'helpers'
 import { QRsWorker } from 'web-workers/qrs-worker'
-import { wrap, Remote, proxy } from 'comlink'
-import { sleep, alertError } from 'helpers'
-import { plausibleApi, qrManagerApi, qrsApi } from 'data/api'
+import { Remote } from 'comlink';
+import { plausibleApi, qrManagerApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
 import { QRManagerActions } from '../../qr-manager/types'
 import * as actionsAsyncUser from '../../user/async-actions'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 import { UserActions } from '../../user/types'
 
-const mapQRsWithLinksAction = ({
-  setId,
-  links,
-  qrs,
+const addQRSet = ({
+  title,
+  quantity,
   successCallback
 }: {
-  setId: string,
-  links: TLinkDecrypted[],
-  qrs: TQRItem[],
-  successCallback?: () => void,
+  title: string,
+  quantity: number,
+  successCallback?: (id: string | number) => void,
 }) => {
   return async (
     dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions> & Dispatch<UserActions>,
     getState: () => RootState
   ) => {
-    dispatch(actionsQR.setLoading(true))
-
+    let {
+      user: {
+        address,
+        workersCount
+      }
+    } = getState()
     const callback = async (
       dashboardKey: string
     ) => {
+      dispatch(actionsQR.setLoading(true))
       try {
         let currentPercentage = 0
-  
+        const neededWorkersCount = quantity <= 1000 ? 1 : workersCount
         const start = +(new Date())
-  
+
         const updateProgressbar = async (value: number) => {
           if (value === currentPercentage || value < currentPercentage) { return }
           currentPercentage = value
-          dispatch(actionsQR.setMappingLoader(currentPercentage))
+          dispatch(actionsQR.setUploadLoader(currentPercentage))
           await sleep(1)
         }
-  
-        const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
-        const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
-    
-        const qrArrayMapped = await qrsWorker.mapQrsWithLinks(qrs, links, dashboardKey)
+
+        const quantityGroups = createQuantityGroups(quantity, neededWorkersCount)
+        const workers = await createWorkers(
+          quantityGroups,
+          'qrs',
+          updateProgressbar
+        )
+
+        const qrArray = await Promise.all(workers.map(({
+          worker,
+          data
+        }) => (worker as Remote<QRsWorker>).prepareQRs(data as number, dashboardKey)))
+
+        const newQr: TQRSet = {
+          set_name: title,
+          qr_quantity: quantity,
+          status: 'NOT_SENT_TO_PRINTER',
+          creator_address: address,
+          qr_array: qrArray.flat(),
+          campaign: {
+            title: '',
+            campaign_id: '1'
+          }
+        }
+
         console.log((+ new Date()) - start)
-        const result = await qrsApi.mapLinks(setId, qrArrayMapped)
-        
+        terminateWorkers(workers)
+    
+        const result = await qrsApi.create(newQr)
         if (result.data.success) {
           plausibleApi.invokeEvent({
-            eventName: 'qr_connect',
-            data: {
-              success: 'yes'
-            }
+            eventName: 'new_qr_set'
           })
-          const qrs: { data: { qr_sets: TQRSet[] } } = await qrsApi.get()
-          dispatch(actionsQR.updateQrs(qrs.data.qr_sets))
-  
+
+          dispatch(actionsQR.addQr(result.data.qr_set))
+
           const qrManagerData = await qrManagerApi.get()
           const { success, items } = qrManagerData.data
           if (success) {
             dispatch(qrManagerActions.setItems(items))
           }
-  
-          successCallback && successCallback()
-        }
         
-        if (!result.data.success) {
-          alertError('Couldn’t connect links to QRs, please try again')
+          dispatch(actionsQR.setUploadLoader(0))
+          dispatch(actionsQR.setLoading(false))
+
+          successCallback && successCallback((result.data.qr_set || {}).set_id || '')
         }
-        dispatch(actionsQR.setMappingLoader(0))
       } catch (err) {
-        plausibleApi.invokeEvent({
-          eventName: 'qr_connect',
-          data: {
-            success: 'no'
-          }
-        })
-        alertError('Couldn’t connect links to QRs, please try again')
-        dispatch(actionsQR.setMappingLoader(0))
+        dispatch(actionsQR.setLoading(false))
         console.error(err)
       }
     }
-  
+
     let dashboardKey = actionsAsyncUser.useDashboardKey(
       getState
     )
@@ -107,4 +122,4 @@ const mapQRsWithLinksAction = ({
   }
 }
 
-export default mapQRsWithLinksAction
+export default addQRSet

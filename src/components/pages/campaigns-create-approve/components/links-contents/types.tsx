@@ -1,7 +1,7 @@
 import { TLinksContent } from '../../types'
 import { TTokenType, TClaimPattern } from 'types'
 
-export type TOnRemove = (id: number) => void
+export type TOnRemove = (id: number | string) => void
 
 export type TProps = {
   data: TLinksContent
@@ -13,4 +13,4 @@ export type TProps = {
   collectionId?: null | string
 }
 
-export type TOnEdit = (id: number) => void
+export type TOnEdit = (id: number | string) => void

@@ -13,7 +13,7 @@ import {
 import { alertError } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions'
 const { REACT_APP_STARTER_PLAN_LINKS_LIMIT, REACT_APP_PRO_PLAN_LINKS_LIMIT } = process.env
 
 const mapStateToProps = ({

@@ -1,6 +1,9 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Button } from 'components/common'
 import { Popup } from 'linkdrop-ui'
+
+export const wrapperClassName = 'dashboardKeyPopupWrapperClassName'
+
 
 export const ButtonStyled = styled(Button)`
 

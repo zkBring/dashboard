@@ -12,7 +12,6 @@ import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
 import formatDate, { months } from './format-date'
 import formatTime from './format-time'
 import defineQRStatusName from './define-qr-status-name'
-import mapQRsWithLinks from './map-qrs-with-links'
 import downloadBase64FilesAsZip from './download-base64-files-as-zip'
 import replaceIPFS from './replace-ipfs'
 import decryptLinks from './decrypt-links'
@@ -86,10 +85,17 @@ import getNextDayData from './get-next-day-data'
 import buf2hex from '../helpers/buffer-to-hex'
 import defineIfWalletIsAvailableForClient from './define-if-wallet-is-available-for-client'
 import defineCoinbaseInstance from './define-coinbase-instance'
+import defineFirstTokenIdForUser from './define-first-token-id-for-user'
+import defineLastTokenIdForUser from './define-last-token-id-for-user'
+
+import defineIfUserOwnsTokenInArray from './define-if-user-owns-token-in-array'
 
 export {
   buf2hex,
+  defineIfUserOwnsTokenInArray,
   defineCoinbaseInstance,
+  defineFirstTokenIdForUser,
+  defineLastTokenIdForUser,
   defineCollectionQuantityTag,
   defineIfWalletIsAvailableForClient,
   defineCollectionStatusName,
@@ -167,7 +173,6 @@ export {
   formatDate,
   downloadQRsAsCSV,
   defineQRStatusName,
-  mapQRsWithLinks,
   downloadBase64FilesAsZip,
   replaceIPFS,
   decryptLinks,

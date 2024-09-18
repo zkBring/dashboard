@@ -419,7 +419,9 @@ const CampaignsCreateApprove: FC<ReduxType> = ({
   const [
     formData,
     setFormData
-  ] = useState<TLinkContent>(getDefaultValues(type))
+  ] = useState<TLinkContent>(
+    getDefaultValues(type)
+  )
 
   const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
   const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))

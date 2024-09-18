@@ -36,7 +36,7 @@ import {
   DownloadQRPopup,
   UploadLinksPopup
 } from 'components/pages/common'
-import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions.tsx'
+import * as asyncQRsActions from 'data/store/reducers/qrs/async-actions'
 import { useHistory } from 'react-router-dom'
 
 const mapStateToProps = ({
@@ -74,10 +74,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, successCallback: callback })),
 
     downloadQRsAsCSV: (
-      id: string
+      id: string,
+      custom_claim_host?: string,
+      custom_claim_host_on?: boolean
     ) => {
       dispatch(asyncQRsActions.downloadQRsAsCSV(
-        id
+        id,
+        custom_claim_host,
+        custom_claim_host_on
       ))
     },
 
@@ -96,6 +100,7 @@ const QR: FC<ReduxType> = ({
   updateQRSetQuantity,
   getQRsArray,
   mappingLoader,
+  campaigns,
   uploadLoader,
   downloadQRsAsCSV,
   whitelisted
@@ -107,10 +112,14 @@ const QR: FC<ReduxType> = ({
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
   const history = useHistory()
 
+  const campaignId = qr?.campaign?.campaign_id
+  const campaign = campaignId ? campaigns.find(campaign => campaign.campaign_id === campaignId) : undefined
+
   const [
     updateQuantityPopup,
     toggleUpdateQuantityPopup
   ] = useState<boolean>(false)
+
   const [
     updateLinksPopup,
     toggleUpdateLinksPopup
@@ -276,7 +285,9 @@ const QR: FC<ReduxType> = ({
           onClick={() => {
             if (!qr.qr_array) { return }
             downloadQRsAsCSV(
-              id as string
+              id as string,
+              campaign?.claim_host,
+              campaign?.claim_host_on,
             )
           }}
         />
