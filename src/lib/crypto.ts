@@ -9,10 +9,6 @@ export function generateKeyPair(): KeyPair {
     return wccrypto.generateKeyPair()
 }
 
-export function deriveSymmetricKey(sharedKey: string): string {
-    return wccrypto.deriveSymmetricKey(sharedKey)
-}
-
 export function encrypt(message: string, symKey: string) {
     return wccrypto.encrypt({ message, symKey })
 }

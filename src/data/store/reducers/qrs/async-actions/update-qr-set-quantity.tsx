@@ -33,7 +33,6 @@ const updateQRSetQuantity = ({
     dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions> & Dispatch<UserActions>,
     getState: () => RootState
   ) => {
-    dispatch(actionsQR.setLoading(true))
 
     const {
       qrs: {
@@ -50,6 +49,8 @@ const updateQRSetQuantity = ({
     const callback = async (
       dashboardKey: string
     ) => {
+      dispatch(actionsQR.setLoading(true))
+
       try {
         const start = +(new Date())
         let currentPercentage = 0
@@ -107,10 +108,13 @@ const updateQRSetQuantity = ({
           dispatch(actionsQR.setUploadLoader(0))
           dispatch(actionsQR.updateQrs(qrsUpdated))
           dispatch(qrManagerActions.setItems(qrManagerItemsUpdated))
-  
+          dispatch(actionsQR.setLoading(false))
+
           successCallback && successCallback()
         }
       } catch (err) {
+        dispatch(actionsQR.setLoading(false))
+        alertError('Some error occured. Please check console for more info')
         console.error(err)
       }
     }

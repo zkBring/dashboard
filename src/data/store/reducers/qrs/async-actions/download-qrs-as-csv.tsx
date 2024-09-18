@@ -19,7 +19,6 @@ const downloadQRsAsCSV = (
     dispatch: Dispatch<QRsActions> & Dispatch<UserActions>,
     getState: () => RootState
   ) => {
-    dispatch(actionsQR.setLoading(true))
 
     const {
       user: {
@@ -35,6 +34,7 @@ const downloadQRsAsCSV = (
     ) => {
 
       const currentQRSet = qrs.find(qr => String(qr.set_id) === id)
+      dispatch(actionsQR.setLoading(true))
 
       if (!currentQRSet) {
         dispatch(actionsQR.setLoading(false))
@@ -62,8 +62,10 @@ const downloadQRsAsCSV = (
           custom_claim_host_on,
           created_at
         )
-        
+        dispatch(actionsQR.setLoading(false))
+
       } catch (err) {
+        dispatch(actionsQR.setLoading(false))
         alertError('check console for more information')
         console.error(err)
       }
