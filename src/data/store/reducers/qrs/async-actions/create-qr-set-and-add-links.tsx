@@ -64,12 +64,12 @@ const createQRSetAndAddLinks = ({
         chainId
       }
     } = getState()
-    dispatch(actionsQR.setLoading(true))
 
     const callback = async (
       dashboardKey: string
     ) => {
       try {
+        dispatch(actionsQR.setLoading(true))
         mappingPageRedirect && mappingPageRedirect()
         const getLinksResult = await campaignsApi.getBatch(campaignId, batchId)
         if (getLinksResult.data.success) {
@@ -167,17 +167,21 @@ const createQRSetAndAddLinks = ({
                 )
               }
             }
+
           } else {
             throw new Error('QR set was not created. Check console for more information')
           }
           dispatch(actionsQR.setMappingLoader(0))
-          dispatch(actionsQR.setUploadLoader(0)) 
+          dispatch(actionsQR.setUploadLoader(0))
+          dispatch(actionsQR.setLoading(false))
+
         }
       } catch (err) {
         errorCallback && errorCallback()
         alertError('Couldn’t create QR set, please check console')
         dispatch(actionsQR.setMappingLoader(0))
         dispatch(actionsQR.setUploadLoader(0))
+        dispatch(actionsQR.setLoading(false))
         console.error(err)
       }
     }

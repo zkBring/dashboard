@@ -31,11 +31,12 @@ const mapQRsWithLinksAction = ({
     dispatch: Dispatch<QRsActions> & Dispatch<QRManagerActions> & Dispatch<UserActions>,
     getState: () => RootState
   ) => {
-    dispatch(actionsQR.setLoading(true))
 
     const callback = async (
       dashboardKey: string
     ) => {
+      dispatch(actionsQR.setLoading(true))
+
       try {
         let currentPercentage = 0
   
@@ -79,6 +80,8 @@ const mapQRsWithLinksAction = ({
           alertError('Couldn’t connect links to QRs, please try again')
         }
         dispatch(actionsQR.setMappingLoader(0))
+        dispatch(actionsQR.setLoading(false))
+
       } catch (err) {
         plausibleApi.invokeEvent({
           eventName: 'qr_connect',
@@ -88,6 +91,8 @@ const mapQRsWithLinksAction = ({
         })
         alertError('Couldn’t connect links to QRs, please try again')
         dispatch(actionsQR.setMappingLoader(0))
+        dispatch(actionsQR.setLoading(false))
+
         console.error(err)
       }
     }

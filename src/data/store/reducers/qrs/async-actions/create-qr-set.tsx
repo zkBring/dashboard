@@ -38,10 +38,10 @@ const addQRSet = ({
         workersCount
       }
     } = getState()
-    dispatch(actionsQR.setLoading(true))
     const callback = async (
       dashboardKey: string
     ) => {
+      dispatch(actionsQR.setLoading(true))
       try {
         let currentPercentage = 0
         const neededWorkersCount = quantity <= 1000 ? 1 : workersCount
@@ -96,9 +96,12 @@ const addQRSet = ({
           }
         
           dispatch(actionsQR.setUploadLoader(0))
+          dispatch(actionsQR.setLoading(false))
+
           successCallback && successCallback((result.data.qr_set || {}).set_id || '')
         }
       } catch (err) {
+        dispatch(actionsQR.setLoading(false))
         console.error(err)
       }
     }
