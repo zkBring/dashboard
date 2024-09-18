@@ -12,7 +12,6 @@ import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
 import formatDate, { months } from './format-date'
 import formatTime from './format-time'
 import defineQRStatusName from './define-qr-status-name'
-import mapQRsWithLinks from './map-qrs-with-links'
 import downloadBase64FilesAsZip from './download-base64-files-as-zip'
 import replaceIPFS from './replace-ipfs'
 import decryptLinks from './decrypt-links'
@@ -174,7 +173,6 @@ export {
   formatDate,
   downloadQRsAsCSV,
   defineQRStatusName,
-  mapQRsWithLinks,
   downloadBase64FilesAsZip,
   replaceIPFS,
   decryptLinks,
