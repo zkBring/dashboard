@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.44
+- dynamic dispenser application title configuration
+
 ## 2.1.43
 - fix for dev mode (web workers compilation)
 - removed increaseAllowance method

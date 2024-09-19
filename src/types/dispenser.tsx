@@ -56,6 +56,10 @@ export type TDispenser = {
   whitelist?: TDispenserWhitelistItemAddress[]
   whitelist_count?: number
   whitelist_on?: boolean
+
+  app_title?: string
+  app_title_on?: boolean
+
 }
 
 export type TDispenserUpdateData = {

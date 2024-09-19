@@ -23,6 +23,8 @@ import Icons from 'icons'
 import Timeframe from './timeframe'
 import RedirectScreen from './redirect'
 import Whitelist from './whitelist'
+import AppTitle from './app-title'
+
 import { TDispenser } from 'types'
 
 const settings = [
@@ -41,6 +43,11 @@ const settings = [
     subtitle: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website',
     id: 'redirect',
     tooltip: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website'
+  }, {
+    title: 'Dynamic QR App Title',
+    id: 'app_title',
+    subtitle: '',
+    tooltip: 'Dynamic QR App Title'
   }
 ]
 
@@ -80,6 +87,8 @@ const definePopup = (
   
   whitelistSubmit: (value: any, onSuccess?: () => void, onError?: () => void) => void,
 
+  appTitleSubmit: (value: string, onSuccess?: () => void, onError?: () => void) => void,
+
   getDispenserWhitelist: (dispenserId: string) => void,
   loading: boolean,
   // redirect
@@ -95,11 +104,12 @@ const definePopup = (
 
   timeframeToggleAction?: (value: boolean) => void,
   timeframeToggleValue?: boolean,
-
-
-  campaignId?: string,
   currentDispenser?: TDispenser,
-  claimUrl?: string
+  claimUrl?: string,
+
+  appTitle?: string,
+  appTitleToggleAction?: (value: boolean) => void,
+  appTitleToggleValue?: boolean,
 ) => {
   switch (setting.id) {
     case 'redirect':
@@ -134,6 +144,15 @@ const definePopup = (
         action={whitelistSubmit}
         whitelistValue={whitelistValue}
       />
+    case 'app_title':
+      return <AppTitle
+        {...setting}
+        appTitle={appTitle}
+        onClose={onClose}
+        toggleAction={appTitleToggleAction}
+        toggleValue={appTitleToggleValue}
+        action={appTitleSubmit}
+      />
     default: null
   }
 }
@@ -142,7 +161,8 @@ const defineEnabled = (
   settingId: string,
   redirectToggleValue: boolean,
   whitelistValue: boolean,
-  timeframeValue: boolean
+  timeframeValue: boolean,
+  appTitleValue: boolean
 ) => {
   if (settingId === 'redirect') {
     return redirectToggleValue
@@ -156,17 +176,26 @@ const defineEnabled = (
     return timeframeValue
   }
 
+  if (settingId === 'app_title') {
+    return appTitleValue
+  }
+
   return false
 }
 
 const Settings: FC<TProps> = ({
   redirectUrl,
   claimUrl,
+  appTitle,
   campaignData,
   redirectToggleAction,
   redirectToggleValue,
   redirectSubmit,
   loading,
+
+  appTitleSubmit,
+  appTitleToggleAction,
+  appTitleToggleValue,
 
   whitelistSubmit,
   whitelistToggleAction,
@@ -177,7 +206,7 @@ const Settings: FC<TProps> = ({
 
   timeframeToggleAction,
   timeframeToggleValue,
-
+  dynamic,
   getDispenserWhitelist,
 
   currentDispenser
@@ -199,6 +228,7 @@ const Settings: FC<TProps> = ({
     redirectSubmit,
     timeframeSubmit,
     whitelistSubmit,
+    appTitleSubmit,
     getDispenserWhitelist,
     loading,
     redirectUrl,
@@ -209,9 +239,11 @@ const Settings: FC<TProps> = ({
     whitelistToggleValue,
     timeframeToggleAction,
     timeframeToggleValue,
-    campaignData.campaign_id,
     currentDispenser,
-    claimUrl
+    claimUrl,
+    appTitle,
+    appTitleToggleAction,
+    appTitleToggleValue
   ) : null
 
   // if (loading) {
@@ -232,7 +264,12 @@ const Settings: FC<TProps> = ({
           Boolean(redirectToggleValue),
           Boolean(whitelistToggleValue),
           Boolean(timeframeToggleValue),
+          Boolean(appTitleToggleValue)
         )
+
+        if (!dynamic && setting.id === 'app_title') {
+          return
+        }
 
         return renderSettingItem(
           setting,

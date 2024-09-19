@@ -95,6 +95,22 @@ const requests = {
       timeframe_on
     }, { withCredentials: true })
   },
+
+  updateDispenserSettings: ({
+    dispenser_id,
+    app_title,
+    app_title_on
+  }: {
+    dispenser_id: string,
+    app_title?: string,
+    app_title_on?: boolean
+
+  }) => {
+    return dispensersApi.patch(`/dispensers/${dispenser_id}`, {
+      app_title,
+      app_title_on
+    }, { withCredentials: true })
+  },
   updateRedirectUrl: ({
     dispenser_id,
     redirect_url
