@@ -25,7 +25,7 @@ const toggleAppTitleOn = ({
     const { user: { address }, dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
-      const { data } : { data: { success: boolean } } = await dispensersApi.updateAppTitleOn({ dispenser_id, app_title_on })
+      const { data } : { data: { success: boolean } } = await dispensersApi.updateDispenserSettings({ dispenser_id, app_title_on })
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenser_id) { 

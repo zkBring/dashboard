@@ -44,10 +44,10 @@ const settings = [
     id: 'redirect',
     tooltip: 'When your campaign is finished, existing URL could be redirected to the campaign link or any website'
   }, {
-    title: 'App title',
-    subtitle: 'App title',
+    title: 'Dynamic QR App Title',
     id: 'app_title',
-    tooltip: 'App title'
+    subtitle: '',
+    tooltip: 'Dynamic QR App Title'
   }
 ]
 
@@ -206,7 +206,7 @@ const Settings: FC<TProps> = ({
 
   timeframeToggleAction,
   timeframeToggleValue,
-
+  dynamic,
   getDispenserWhitelist,
 
   currentDispenser
@@ -266,6 +266,10 @@ const Settings: FC<TProps> = ({
           Boolean(timeframeToggleValue),
           Boolean(appTitleToggleValue)
         )
+
+        if (!dynamic && setting.id === 'app_title') {
+          return
+        }
 
         return renderSettingItem(
           setting,

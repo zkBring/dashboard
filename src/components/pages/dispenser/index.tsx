@@ -537,6 +537,7 @@ const Dispenser: FC<ReduxType> = ({
         redirectUrl={decrypted_redirect_url}
         claimUrl={dispenser_url}
         loading={loading}
+        dynamic={dynamic}
         campaignData={currentDispenserData.campaign}
         getDispenserWhitelist={getDispenserWhitelist}
         currentDispenser={dispenser}

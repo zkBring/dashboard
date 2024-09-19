@@ -96,27 +96,19 @@ const requests = {
     }, { withCredentials: true })
   },
 
-  updateAppTitleOn: ({
+  updateDispenserSettings: ({
     dispenser_id,
+    app_title,
     app_title_on
   }: {
     dispenser_id: string,
-    app_title_on: boolean
-  }) => {
-    return dispensersApi.patch(`/dispensers/${dispenser_id}/app-title-on`, {
-      app_title_on
-    }, { withCredentials: true })
-  },
+    app_title?: string,
+    app_title_on?: boolean
 
-  updateAppTitle: ({
-    dispenser_id,
-    app_title
-  }: {
-    dispenser_id: string,
-    app_title: string
   }) => {
-    return dispensersApi.patch(`/dispensers/${dispenser_id}/app-title`, {
-      app_title
+    return dispensersApi.patch(`/dispensers/${dispenser_id}`, {
+      app_title,
+      app_title_on
     }, { withCredentials: true })
   },
   updateRedirectUrl: ({

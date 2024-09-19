@@ -36,7 +36,6 @@ const AppTitle: FC<TProps> = ({
   >
     {toggleValue && <InputStyled
       value={currentAppTitle}
-      placeholder='https://'
       onChange={value => {
         setCurrentAppTitle(value)
         return value

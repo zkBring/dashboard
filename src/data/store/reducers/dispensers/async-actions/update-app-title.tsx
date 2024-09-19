@@ -26,7 +26,7 @@ const updateAppTitle = ({
     const { dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
-      const { data } : { data: { success: boolean } } = await  dispensersApi.updateAppTitle({
+      const { data } : { data: { success: boolean } } = await  dispensersApi.updateDispenserSettings({
         dispenser_id,
         app_title
       })
