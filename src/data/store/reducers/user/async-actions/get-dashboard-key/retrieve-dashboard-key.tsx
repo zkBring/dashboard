@@ -32,14 +32,9 @@ const retrieveDashboardKey: (
     })
 
     const signature_key = ethers.utils.id(signature)
-
     const signature_key_32 = signature_key.slice(0, 32)
-
     const signature_key_uint_8_array = new TextEncoder().encode(signature_key_32)
-
     const signature_key_as_base_16 = toString(signature_key_uint_8_array, 'base16')
-
-
     return decrypt(encrypted_dashboard_key, signature_key_as_base_16) 
   } catch (err) {
     console.error({ err })
