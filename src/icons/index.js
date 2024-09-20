@@ -13,6 +13,7 @@ import { ReactComponent as ExternalLinkIcon } from './external-link-icon.svg'
 import { ReactComponent as ArrowIcon } from './arrow-icon.svg'
 import { ReactComponent as CloseIcon } from './close-icon.svg'
 import { ReactComponent as CheckboxIcon } from './checkbox-icon.svg'
+import { ReactComponent as DownloadFileIcon } from './csv-download-icon.svg'
 import { ReactComponent as SignInIcon } from './sign-in.svg'
 import { ReactComponent as BreadcrumbsIcon } from './breadcrumbs-icon.svg'
 import { ReactComponent as CampaignsIcon } from './campaigns.svg'
@@ -74,6 +75,7 @@ import { ReactComponent as NFTTokensIcon } from './nft-tokens-icon.svg'
 const Icons = {
   EthereumLogo,
   SBTTokensIcon,
+  DownloadFileIcon,
   NFTTokensIcon,
   SunnyCloudIcon,
   InformationIcon,

@@ -18,17 +18,19 @@ import {
   shortenString
 } from 'helpers'
 import {
-  WidgetButton,
   SecondaryTextSpan
 } from '../../styled-components'
 import {
   ClipboardCopy,
   BatchId,
   LoaderStyled,
-  Buttons
+  Buttons,
+  ButtonStyled,
+  ButtonIcon
 } from './styled-components'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
+import { TLinksBatch } from 'types'
 
 const defineDispenserTypes = (
   createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
@@ -127,6 +129,49 @@ const BatchIdContainer: FC<{batchId: string}> = ({ batchId }) => {
   </BatchId>
 }
 
+const defineDistributeButton = (
+  batch: TLinksBatch,
+  setShowPopup: (batchId: string) => void
+) => {
+  if (batch.qr_campaign) {
+    if (batch.qr_campaign_type === 'QR_SET') {
+      return <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        title='QR Set'
+        to={`/qrs/${batch.qr_campaign}`}
+      />
+    }
+
+    if (batch.qr_campaign_type === 'DISPENSER') {
+      return <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        title='Dispenser'
+        to={`/dispensers/${batch.qr_campaign}`}
+      />
+    }
+
+    if (batch.qr_campaign_type === 'DYNAMIC_DISPENSER') {
+      return <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        title='Dynamic'
+        to={`/dynamic-qrs/${batch.qr_campaign}`}
+      />
+    }
+  }
+  return <ButtonStyled
+    appearance='action'
+    disabled={batch.claim_links_count === 0}
+    size='extra-small'
+    title='Choose'
+    onClick={() => {
+      setShowPopup(batch.batch_id)
+    }}
+  />
+}
+
 const BatchesList: FC<TProps> = ({
   batches,
   campaignId,
@@ -217,7 +262,7 @@ const BatchesList: FC<TProps> = ({
         
         <BatchListLabel>Created at</BatchListLabel>
         <BatchListLabel>Links</BatchListLabel>
-        <BatchListLabel></BatchListLabel>
+        <BatchListLabel>Distribution</BatchListLabel>
         {batches && batches.map((batch, idx) => {
           const dateFormatted = formatDate(batch.created_at || '')
           const timeFormatted = formatTime(batch.created_at || '')
@@ -236,11 +281,10 @@ const BatchesList: FC<TProps> = ({
               {batch.claim_links_count}
             </BatchListValue>
             <Buttons>
-              <WidgetButton
-                appearance='action'
+              <ButtonStyled
+                appearance='additional'
                 disabled={batch.claim_links_count === 0}
                 size='extra-small'
-                title='Download'
                 onClick={() => {
                   downloadLinks(
                     batch.batch_id,
@@ -251,17 +295,17 @@ const BatchesList: FC<TProps> = ({
                     sdk ? encryptionKey : undefined
                   )
                 }}
-              />
+              >
+                <ButtonIcon>
+                  <Icons.DownloadFileIcon />
+                </ButtonIcon>
+                CSV
+              </ButtonStyled>
 
-              <WidgetButton
-                appearance='additional'
-                disabled={batch.claim_links_count === 0}
-                size='extra-small'
-                title='Distribute'
-                onClick={() => {
-                  setShowPopup(batch.batch_id)
-                }}
-              />
+              {defineDistributeButton(
+                batch,
+                setShowPopup
+              )}
             </Buttons>
             
           </>
