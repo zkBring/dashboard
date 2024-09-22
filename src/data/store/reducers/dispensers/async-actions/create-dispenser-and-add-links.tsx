@@ -35,6 +35,7 @@ type TCreateDispenserArgs = {
   tokenAddress: string
   wallet: string
   customClaimHost: string
+  customClaimHostOn: boolean
   successCallback?: (
     dispenser_id: string | number,
     dynamic: boolean
@@ -51,6 +52,7 @@ const createDispenserAndAddLinks = ({
   tokenAddress,
   wallet,
   customClaimHost,
+  customClaimHostOn,
   successCallback,
   errorCallback
 }: TCreateDispenserArgs) => {
@@ -104,6 +106,7 @@ const createDispenserAndAddLinks = ({
   
           if (getLinksResult.data.success) {
             const { claim_links, batch } = getLinksResult.data
+
             const decryptedLinks = decryptLinks({
               links: claim_links,
               dashboardKey: String(dashboardKey),
@@ -111,8 +114,10 @@ const createDispenserAndAddLinks = ({
               userAddress: address,
               chainId: chainId as number,
               wallet,
-              customClaimHost
+              customClaimHost,
+              customClaimHostOn
             })
+
             let currentPercentage = 0
 
             const updateProgressbar = async (value: number) => {

@@ -40,6 +40,7 @@ const defineDispenserTypes = (
   tokenAddress: string,
   wallet: string,
   customClaimHost: string,
+  customClaimHostOn: boolean,
   campaignTitle: string,
 
   dispenserMappingPageRedirect: () => void,
@@ -70,6 +71,7 @@ const defineDispenserTypes = (
           tokenAddress,
           wallet,
           customClaimHost,
+          customClaimHostOn,
           successCallbackForDispenser,
           errorCallback
         )
@@ -88,6 +90,7 @@ const defineDispenserTypes = (
           tokenAddress,
           wallet,
           customClaimHost,
+          customClaimHostOn,
           successCallbackForDispenser,
           errorCallback
         )
@@ -105,6 +108,7 @@ const defineDispenserTypes = (
           tokenAddress,
           wallet,
           customClaimHost,
+          customClaimHostOn,
           successCallbackForQRSet
         )
       },
@@ -180,6 +184,7 @@ const BatchesList: FC<TProps> = ({
   loading,
   downloadLinks,
   customClaimHost,
+  customClaimHostOn,
   tokenAddress,
   encryptionKey,
   sponsored,
@@ -210,7 +215,7 @@ const BatchesList: FC<TProps> = ({
     wallet,
   
     customClaimHost,
-
+    customClaimHostOn,
     title,
 
     () => {

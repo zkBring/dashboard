@@ -182,6 +182,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       tokenAddress: string,
       wallet: string,
       customClaimHost: string,
+      customClaimHostOn: boolean,
       successCallback?: (
         dispenser_id: string | number,
         dynamic: boolean
@@ -198,6 +199,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           tokenAddress,
           wallet,
           customClaimHost,
+          customClaimHostOn,
           successCallback,
           errorCallback
         })
@@ -212,6 +214,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       tokenAddress: string,
       wallet: string,
       customClaimHost: string,
+      customClaimHostOn: boolean,
       successCallback?: (
         dispenser_id: string | number
       ) => void,
@@ -226,6 +229,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           tokenAddress,
           wallet,
           customClaimHost,
+          customClaimHostOn,
           successCallback,
           errorCallback
         })
