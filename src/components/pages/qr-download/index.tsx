@@ -36,16 +36,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrSetName: string,
       width: number,
       height: number,
-      customClaimHost?: string,
-      customClaimHostOn?: boolean,
       successCallback?: () => void
     ) => dispatch(asyncQRsActions.downloadQRs({
       qrsArray,
       qrSetName,
       width,
       height,
-      customClaimHost,
-      customClaimHostOn,
       successCallback
     }))
   }
@@ -78,8 +74,6 @@ const QR: FC<ReduxType> = ({
       qr.set_name,
       Number(width),
       Number(height),
-      campaign?.claim_host,
-      campaign?.claim_host_on,
       () => {
         history.push(`/qrs/${id}`)
       })
