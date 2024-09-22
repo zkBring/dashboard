@@ -9,6 +9,7 @@ export type TCreateDispenserAndAddLinks = (
   tokenAddress: string,
   wallet: string,
   customClaimHost: string,
+  customClaimHostOn: boolean,
   successCallback?: (
     dispenser_id: string | number,
     dynamic: boolean
@@ -24,6 +25,7 @@ export type TCreateQRSetAndAddLinks = (
   tokenAddress: string,
   wallet: string,
   customClaimHost: string,
+  customClaimHostOn: boolean,
   successCallback?: (
     dispenser_id: string | number
   ) => void,
