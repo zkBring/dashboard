@@ -58,8 +58,6 @@ const downloadQRsAsCSV = (
           set_name,
           dashboardKey,
           address,
-          custom_claim_host,
-          custom_claim_host_on,
           created_at
         )
         dispatch(actionsQR.setLoading(false))
