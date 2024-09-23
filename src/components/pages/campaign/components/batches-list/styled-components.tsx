@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Loader } from 'components/common'
+import { Loader, Button } from 'components/common'
 
 export const ClipboardCopy = styled.div`
   margin-left: 8px;
@@ -23,4 +23,13 @@ export const Buttons = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+`
+
+export const ButtonIcon = styled.div`
+`
+
+export const ButtonStyled = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `

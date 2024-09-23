@@ -74,14 +74,10 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     ) => dispatch(asyncQRsActions.mapQRsWithLinks({ setId, links, qrs, successCallback: callback })),
 
     downloadQRsAsCSV: (
-      id: string,
-      custom_claim_host?: string,
-      custom_claim_host_on?: boolean
+      id: string
     ) => {
       dispatch(asyncQRsActions.downloadQRsAsCSV(
-        id,
-        custom_claim_host,
-        custom_claim_host_on
+        id
       ))
     },
 
@@ -111,9 +107,6 @@ const QR: FC<ReduxType> = ({
   const qr: TQRSet | undefined = qrs.find(qr => String(qr.set_id) === id)
   const [ status, setStatus ] = useState<TSelectOption | null>(null)
   const history = useHistory()
-
-  const campaignId = qr?.campaign?.campaign_id
-  const campaign = campaignId ? campaigns.find(campaign => campaign.campaign_id === campaignId) : undefined
 
   const [
     updateQuantityPopup,
@@ -285,9 +278,7 @@ const QR: FC<ReduxType> = ({
           onClick={() => {
             if (!qr.qr_array) { return }
             downloadQRsAsCSV(
-              id as string,
-              campaign?.claim_host,
-              campaign?.claim_host_on,
+              id as string
             )
           }}
         />

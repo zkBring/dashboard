@@ -7,6 +7,8 @@ type TLinksBatch = {
   batch_id: string
   claim_links_count: number
   links_claimed: number
+  qr_campaign?: string
+  qr_campaign_type?: 'QR_SET' | 'DISPENSER' | 'DYNAMIC_DISPENSER'
 }
 
 export default TLinksBatch
