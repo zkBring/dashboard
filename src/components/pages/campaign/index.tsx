@@ -181,6 +181,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       batchId: string,
       tokenAddress: string,
       wallet: string,
+      tokenType: TTokenType,
       customClaimHost: string,
       customClaimHostOn: boolean,
       successCallback?: (
@@ -198,6 +199,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           batchId,
           tokenAddress,
           wallet,
+          tokenType,
           customClaimHost,
           customClaimHostOn,
           successCallback,
@@ -213,6 +215,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       batchId: string,
       tokenAddress: string,
       wallet: string,
+      tokenType: TTokenType,
       customClaimHost: string,
       customClaimHostOn: boolean,
       successCallback?: (
@@ -228,6 +231,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           batchId,
           tokenAddress,
           wallet,
+          tokenType,
           customClaimHost,
           customClaimHostOn,
           successCallback,
@@ -625,6 +629,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
           wallet={wallet}
           batches={batches}
           loading={loading}
+          tokenType={token_standard}
           sponsored={sponsored}
           customClaimHost={claim_host}
           customClaimHostOn={claim_host_on}

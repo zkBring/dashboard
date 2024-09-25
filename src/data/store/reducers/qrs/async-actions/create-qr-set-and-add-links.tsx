@@ -3,7 +3,8 @@ import * as actionsQR from '../actions'
 import { QRsActions } from '../types'
 import { RootState } from 'data/store'
 import {
-  TQRSet
+  TQRSet,
+  TTokenType
 } from 'types'
 import {
   qrsApi,
@@ -35,6 +36,7 @@ const createQRSetAndAddLinks = ({
   batchId,
   tokenAddress,
   wallet,
+  tokenType,
   customClaimHost,
   customClaimHostOn,
   successCallback,
@@ -46,6 +48,7 @@ const createQRSetAndAddLinks = ({
   batchId: string,
   tokenAddress: string,
   wallet: string,
+  tokenType: TTokenType,
   customClaimHost?: string,
   customClaimHostOn?: boolean,
   successCallback?: (
@@ -131,6 +134,7 @@ const createQRSetAndAddLinks = ({
                 userAddress: address,
                 chainId: chainId as number,
                 wallet,
+                tokenType,
                 customClaimHost,
                 customClaimHostOn
               })
