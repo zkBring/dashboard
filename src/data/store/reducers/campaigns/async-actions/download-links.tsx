@@ -59,6 +59,7 @@ const downloadLinks = (
         if (result.data.success) {
           const { claim_links, batch } = result.data
           const decryptedLinks = decryptLinks({
+            tokenType,
             links: claim_links,
             dashboardKey: String(dashboardKey),
             tokenAddress,

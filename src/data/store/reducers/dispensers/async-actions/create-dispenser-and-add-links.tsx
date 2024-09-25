@@ -13,7 +13,7 @@ import {
   decryptLinks,
   sleep
 } from 'helpers'
-import { TDispenser, TQRManagerItemType } from 'types'
+import { TDispenser, TQRManagerItemType, TTokenType } from 'types'
 import { encrypt } from 'lib/crypto'
 import { qrManagerApi } from 'data/api'
 import * as qrManagerActions from '../../qr-manager/actions'
@@ -34,6 +34,7 @@ type TCreateDispenserArgs = {
   batchId: string
   tokenAddress: string
   wallet: string
+  tokenType: TTokenType
   customClaimHost: string
   customClaimHostOn: boolean
   successCallback?: (
@@ -51,6 +52,7 @@ const createDispenserAndAddLinks = ({
   batchId,
   tokenAddress,
   wallet,
+  tokenType,
   customClaimHost,
   customClaimHostOn,
   successCallback,
@@ -114,6 +116,7 @@ const createDispenserAndAddLinks = ({
               userAddress: address,
               chainId: chainId as number,
               wallet,
+              tokenType,
               customClaimHost,
               customClaimHostOn
             })

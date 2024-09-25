@@ -30,7 +30,7 @@ import {
 } from './styled-components'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
-import { TLinksBatch } from 'types'
+import { TLinksBatch, TTokenType } from 'types'
 
 const defineDispenserTypes = (
   createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
@@ -39,6 +39,7 @@ const defineDispenserTypes = (
   batchId: string,
   tokenAddress: string,
   wallet: string,
+  tokenType: TTokenType,
   customClaimHost: string,
   customClaimHostOn: boolean,
   campaignTitle: string,
@@ -70,6 +71,7 @@ const defineDispenserTypes = (
           batchId,
           tokenAddress,
           wallet,
+          tokenType,
           customClaimHost,
           customClaimHostOn,
           successCallbackForDispenser,
@@ -89,6 +91,7 @@ const defineDispenserTypes = (
           batchId,
           tokenAddress,
           wallet,
+          tokenType,
           customClaimHost,
           customClaimHostOn,
           successCallbackForDispenser,
@@ -107,6 +110,7 @@ const defineDispenserTypes = (
           batchId,
           tokenAddress,
           wallet,
+          tokenType,
           customClaimHost,
           customClaimHostOn,
           successCallbackForQRSet
@@ -190,6 +194,7 @@ const BatchesList: FC<TProps> = ({
   sponsored,
   linksCreated,
   wallet,
+  tokenType,
   createDispenserAndAddLinks,
   createQRSetAndAddLinks
 }) => {
@@ -213,7 +218,7 @@ const BatchesList: FC<TProps> = ({
     String(showPopup),
     tokenAddress as string,
     wallet,
-  
+    tokenType,
     customClaimHost,
     customClaimHostOn,
     title,
