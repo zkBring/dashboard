@@ -7,8 +7,11 @@ const prepareERC20Url = async (
   const { data } = await getTokenERC20List(chainId)
   if (data) {
     const { tokens } = data
-    const tokensConverted = tokens.reduce<TERC20TokenList>((res, item) => ({ ...res, [item.address.toLowerCase()]: { symbol: item.symbol, decimals: item.decimals, address: item.address } }), {})
-    return tokensConverted
+    if (tokens) {
+      const tokensConverted = tokens.reduce<TERC20TokenList>((res, item) => ({ ...res, [item.address.toLowerCase()]: { symbol: item.symbol, decimals: item.decimals, address: item.address } }), {})
+      return tokensConverted
+    }
+    return {}
   }
 }
 export default prepareERC20Url
