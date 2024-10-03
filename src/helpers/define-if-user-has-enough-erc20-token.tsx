@@ -13,7 +13,7 @@ const defineIfUserHasEnoughERC20Tokens: TDefineIfUserHasEnoughERC20Tokens = (
   expectedLinks,
   decimals
 ) => {
-  const tokensPerLink = utils.parseUnits(expectedAmount, decimals || 18)
+  const tokensPerLink = utils.parseUnits(expectedAmount, decimals === null ? 18 : decimals)
   const expectedTokens = BigNumber.from(tokensPerLink).mul(expectedLinks)
   return balance.gte(expectedTokens)
 }

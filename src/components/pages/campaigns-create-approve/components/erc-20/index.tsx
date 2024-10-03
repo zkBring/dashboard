@@ -83,7 +83,7 @@ const Erc20: FC<ReduxType > = ({
            formData.linksAmount === '0'
   }
 
-  const tokenAmountFormatted = tokenAmount && decimals ? utils.formatUnits(tokenAmount, decimals) : '0'
+  const tokenAmountFormatted = (tokenAmount && decimals !== null) ? utils.formatUnits(tokenAmount, decimals) : '0'
 
   return <WidgetComponent>
       <Header>

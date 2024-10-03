@@ -49,7 +49,7 @@ function setTokenContractData (
         if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
           return alert('Cannot create links for native tokens')
         } else {
-          const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
+          const contractInstance = new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
           const token = contractsERC20.find(token => token.address.toLowerCase() === tokenAddress.toLowerCase())
           if (token) {
             decimals = token.decimals
@@ -58,7 +58,7 @@ function setTokenContractData (
           } else {
             decimals = await contractInstance.decimals()
             symbol = await contractInstance.symbol()
-            await userAsyncActions.getTokenAmount(
+            userAsyncActions.getTokenAmount(
               dispatch,
               address,
               decimals,
