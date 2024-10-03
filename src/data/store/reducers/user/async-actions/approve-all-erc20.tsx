@@ -57,7 +57,7 @@ const approve = (
       if (!symbol) {
         return alertError('No symbol provided')
       }
-      if (!decimals) {
+      if (decimals === null) {
         return alertError('No decimals provided')
       }
       if (!proxyContractAddress) {
