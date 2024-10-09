@@ -23,6 +23,10 @@ import {
 } from 'helpers'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
+import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
+import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
+import { IAppDispatch } from 'data/store'
+import { connect } from 'react-redux'
 
 const defineDraftUrl = (
   createStep: TCampaignCreateStep,
@@ -40,8 +44,34 @@ const defineDraftUrl = (
   }
 }
 
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    openDraft: (
+      id: string,
+      callback: () => void
+    ) => {
+      dispatch(
+        campaignAsyncActions.openDraft(
+          id,
+          callback
+        )
+      )
+    },
+    deleteDraft: (
+      id: string
+    ) => {
+      dispatch(
+        campaignsAsyncActions.removeCampaignFromDrafts(
+          id
+        )
+      )
+    }
+  }
+}
 
-const Drafts: FC<TProps> = ({
+type ReduxType = ReturnType<typeof mapDispatcherToProps>
+
+const Drafts: FC<TProps & ReduxType> = ({
   drafts,
   openDraft,
   deleteDraft
@@ -110,4 +140,4 @@ const Drafts: FC<TProps> = ({
   </DraftsListStyled> : null
 }
 
-export default Drafts
+export default connect(null, mapDispatcherToProps)(Drafts)

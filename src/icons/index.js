@@ -67,13 +67,15 @@ import { ReactComponent as DispenserQRPreviewIcon } from './dispenser-qr-preview
 import { ReactComponent as DynamicQRPreviewIcon } from './dynamic-qr-preview-icon.svg'
 import { ReactComponent as InformationIcon } from './information-icon.svg'
 import { ReactComponent as SunnyCloudIcon } from 'icons/sunny-cloud-icon.svg'
-
+import { ReactComponent as ArchiveIcon } from 'icons/archive-icon.svg'
+ 
 
 import { ReactComponent as SBTTokensIcon } from './sbt-tokens-icon.svg'
 import { ReactComponent as NFTTokensIcon } from './nft-tokens-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  ArchiveIcon,
   SBTTokensIcon,
   DownloadFileIcon,
   NFTTokensIcon,

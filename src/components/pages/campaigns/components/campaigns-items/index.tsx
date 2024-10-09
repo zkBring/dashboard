@@ -18,6 +18,37 @@ import {
   shortenString,
   defineExplorerUrl
 } from 'helpers'
+import Icons from 'icons'
+import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
+import { IAppDispatch } from 'data/store'
+import { connect } from 'react-redux'
+
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    archiveItem: (
+      id: string
+    ) => {
+      dispatch(
+        campaignsAsyncActions.updateArchived(
+          id,
+          true
+        )
+      )
+    },
+    unarchiveItem: (
+      id: string
+    ) => {
+      dispatch(
+        campaignsAsyncActions.updateArchived(
+          id,
+          false
+        )
+      )
+    }
+  }
+}
+
+type ReduxType = ReturnType<typeof mapDispatcherToProps>
 
 const defineCampaignStatus = (
   draft: boolean,
@@ -35,8 +66,10 @@ const defineCampaignStatus = (
   />
 }
 
-const CampaignsItems: FC<TProps> = ({
-  campaigns
+const CampaignsItems: FC<TProps & ReduxType> = ({
+  campaigns,
+  archiveItem,
+  unarchiveItem
 }) => {
 
   return <>
@@ -61,9 +94,6 @@ const CampaignsItems: FC<TProps> = ({
         archived
       } = campaign
 
-      if (archived) {
-        return null
-      }
       const scanUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address}`)
 
       const dateCreatedFormatted = formatDate(created_at || '')
@@ -94,6 +124,19 @@ const CampaignsItems: FC<TProps> = ({
           >
             Manage
           </ButtonStyled>
+          {!archived ? <ButtonStyled
+            appearance='additional'
+            size='extra-small'
+            onClick={() => archiveItem(campaign_id)}
+          >
+            Archive
+          </ButtonStyled> : <ButtonStyled
+            appearance='additional'
+            size='extra-small'
+            onClick={() => unarchiveItem(campaign_id)}
+          >
+            Unarchive
+          </ButtonStyled>}
         </BatchListValueJustifySelfEnd>
       </>})}
     </CampaignsListStyled>}
@@ -101,4 +144,4 @@ const CampaignsItems: FC<TProps> = ({
   
 }
 
-export default CampaignsItems
+export default connect(null, mapDispatcherToProps)(CampaignsItems)

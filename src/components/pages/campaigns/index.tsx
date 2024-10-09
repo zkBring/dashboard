@@ -49,38 +49,15 @@ const mapStateToProps = ({
   userLoading
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {
-    openDraft: (
-      id: string,
-      callback: () => void
-    ) => {
-      dispatch(
-        campaignAsyncActions.openDraft(
-          id,
-          callback
-        )
-      )
-    },
-    deleteDraft: (
-      id: string
-    ) => {
-      dispatch(
-        campaignsAsyncActions.removeCampaignFromDrafts(
-          id
-        )
-      )
-    }
-  }
-}
-
 // @ts-ignore
-type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
+type ReduxType = ReturnType<typeof mapStateToProps>
 
 const getActiveCampaigns = (
   campaigns: TCampaign[]
 ) => {
-  return <CampaignsItems campaigns={campaigns} />
+  return <CampaignsItems
+    campaigns={campaigns}
+  />
 }
 
 const getArchivedCampaigns = (
@@ -90,18 +67,9 @@ const getArchivedCampaigns = (
 }
 
 const getDrafts = (
-  drafts: TCampaignDraft[],
-  openDraft: (
-    id: string,
-    callback: () => void
-  ) => void,
-  deleteDraft: (
-    id: string
-  ) => void
+  drafts: TCampaignDraft[]
 ) => {
   return <Drafts
-    deleteDraft={deleteDraft}
-    openDraft={openDraft}
     drafts={drafts}
   />
 }
@@ -112,8 +80,6 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   loading,
   drafts,
   chainId,
-  deleteDraft,
-  openDraft,
   userLoading
 }) => {
 
@@ -136,14 +102,12 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   const defineContent = () => {
     switch (campagnsType) {
       case 'ACTIVE':
-        return getActiveCampaigns(currentAddressCampaigns)
+        return getActiveCampaigns(currentAddressCampaigns.filter(campaign => !campaign.archived))
       case 'ARCHIVED':
         return getActiveCampaigns(currentAddressCampaigns.filter(campaign => campaign.archived))
       case 'DRAFTS':
         return getDrafts(
-          currentAddressDrafts,
-          openDraft,
-          deleteDraft
+          currentAddressDrafts
         )
     }
   }
@@ -197,4 +161,4 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
 }
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsPage)
+export default connect(mapStateToProps)(CampaignsPage)

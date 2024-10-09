@@ -47,6 +47,9 @@ export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
 
 export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
   justify-self: end;
+  display: flex;
+  justify-content: end;
+  gap: 12px;
 `
 
 export const ContainerButton = styled(Button)`

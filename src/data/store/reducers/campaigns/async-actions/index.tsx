@@ -14,9 +14,11 @@ import updateAdditionalWalletsOn from './update-additional-wallets-on'
 import updateClaimHostOn from './update-claim-host-on'
 import updateClaimHost from './update-claim-host'
 import updateMultipleClaimsOn from './update-multiple-claims-on'
+import updateArchived from './update-archived'
 
 export {
   getCampaignBatches,
+  updateArchived,
   updateClaimHostOn,
   updateAdditionalWalletsOn,
   updateMultipleClaimsOn,
