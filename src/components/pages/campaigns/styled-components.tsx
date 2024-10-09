@@ -74,6 +74,7 @@ export const Title = styled.h2`
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 24px;
 `
 
 export const WidgetTitleStyled = styled(WidgetTitle)`

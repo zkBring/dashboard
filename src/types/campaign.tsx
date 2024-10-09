@@ -32,6 +32,8 @@ type TCampaign = {
   preferred_wallet_on?: boolean
   additional_wallets_on?: boolean
 
+  archived?: boolean
+
   claim_host: string
   claim_host_on: boolean
   multiple_claims_on: boolean
