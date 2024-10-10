@@ -68,9 +68,6 @@ const secure = (
         }
         const contract = contracts[chainId]
 
-        console.log({
-          contract
-        })
         dispatch(campaignActions.setLoading(true))
         const newWallet = ethers.Wallet.createRandom()
         const { address: wallet, privateKey } = newWallet
