@@ -2,6 +2,7 @@
 
 ## 2.1.45
 - archivation of campaigns
+- batches for sbt
 
 ## 2.1.44
 - dynamic dispenser application title configuration
