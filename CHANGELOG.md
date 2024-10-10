@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.45
+- archivation of campaigns
+
 ## 2.1.44
 - dynamic dispenser application title configuration
 
