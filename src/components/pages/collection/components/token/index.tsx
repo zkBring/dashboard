@@ -42,6 +42,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         token_id,
         links_amount,
         'ERC1155',
+        null,
         callback
       ))
     }

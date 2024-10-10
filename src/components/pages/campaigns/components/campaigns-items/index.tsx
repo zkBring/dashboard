@@ -53,12 +53,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 type ReduxType = ReturnType<typeof mapDispatcherToProps>
 
 const defineCampaignStatus = (
-  draft: boolean,
+  archived: boolean
 ) => {
-  if (draft) {
+  if (archived) {
     return <TagStyled
       status='default'
-      title='Draft'
+      title='Archived'
     />
   }
 
@@ -155,7 +155,7 @@ const CampaignsItems: FC<TProps & ReduxType> = ({
           {sponsored ? (links_claimed || 0) : 'N/A'}
         </BatchListValue>
         <BatchListValue>
-          {defineCampaignStatus(false)}
+          {defineCampaignStatus(Boolean(archived))}
         </BatchListValue>
         <BatchListValueJustifySelfEnd>
           {

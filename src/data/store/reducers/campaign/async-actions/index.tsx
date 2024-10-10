@@ -7,9 +7,11 @@ import resetCampaign from './reset-campaign'
 import openDraft from './open-draft'
 import getUserNFTs from './get-user-nfts'
 import createProxyAddress from './create-proxy-address'
+import createNewBatch from './create-new-batch'
 
 export {
   createProxyAddress,
+  createNewBatch,
   setAssetsData,
   setTokenContractData,
   applyClaimPattern,
