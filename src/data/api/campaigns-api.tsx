@@ -116,6 +116,17 @@ const requests = {
     })
   },
 
+  updateArchived: (
+    campaign_id: string | number,
+    archived: boolean
+  ) => {
+    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+      archived
+    }, {
+      withCredentials: true
+    })
+  },
+
   updateAdditionalWalletsOn: (
     campaign_id: string | number,
     additional_wallets_on: boolean

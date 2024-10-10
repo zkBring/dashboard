@@ -9,11 +9,10 @@ import defineExplorerUrl from './define-explorer-url'
 import toHex from './to-hex'
 import defineNativeTokenSymbol from './define-native-token-symbol'
 import countAssetsTotalAmountERC20 from './count-assets-total-amount-erc20'
-import formatDate, { months } from './format-date'
+import formatDate from './format-date'
 import formatTime from './format-time'
 import defineQRStatusName from './define-qr-status-name'
 import downloadBase64FilesAsZip from './download-base64-files-as-zip'
-import replaceIPFS from './replace-ipfs'
 import decryptLinks from './decrypt-links'
 import sleep from './sleep'
 import defineContract from './define-contract'
@@ -30,7 +29,6 @@ import {
   createQuantityGroups
 } from './create-workers'
 import convertLinksContent from './convert-links-content'
-import downloadAssetsBlankCSV from './download-assets-blank-csv'
 import defineCampaignStatus from './define-campaign-status'
 import campaignPause from './campaign-pause'
 import campaignUnpause from './campaign-unpause'
@@ -87,7 +85,6 @@ import defineIfWalletIsAvailableForClient from './define-if-wallet-is-available-
 import defineCoinbaseInstance from './define-coinbase-instance'
 import defineFirstTokenIdForUser from './define-first-token-id-for-user'
 import defineLastTokenIdForUser from './define-last-token-id-for-user'
-
 import defineIfUserOwnsTokenInArray from './define-if-user-owns-token-in-array'
 
 export {
@@ -149,7 +146,6 @@ export {
   campaignPause,
   campaignUnpause,
   defineCampaignStatus,
-  downloadAssetsBlankCSV,
   convertLinksContent,
   loadImage,
   getBignumberInterval,
@@ -174,7 +170,6 @@ export {
   downloadQRsAsCSV,
   defineQRStatusName,
   downloadBase64FilesAsZip,
-  replaceIPFS,
   decryptLinks,
   sleep,
   metadataUrlResolve,
