@@ -120,3 +120,8 @@ export const Buttons = styled.div`
   display: flex;
   gap: 8px;
 `
+
+export const IconWrapper = styled.span`
+  display: inline-block;
+  margin-right: 8px;
+`

@@ -5,7 +5,8 @@ import {
   BatchListValueFixed,
   BatchListLabelTextAlignRight,
   BatchListValueJustifySelfEnd,
-  TagStyled
+  TagStyled,
+  IconWrapper
 } from '../../styled-components'
 import {
   BatchListLabel,
@@ -48,6 +49,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+// @ts-ignore
 type ReduxType = ReturnType<typeof mapDispatcherToProps>
 
 const defineCampaignStatus = (
@@ -66,6 +68,43 @@ const defineCampaignStatus = (
   />
 }
 
+const defineButtons = (
+  archived: boolean,
+  campaign_id: string,
+  archiveItem: (campaign_id: string) => void,
+  unarchiveItem: (campaign_id: string) => void
+) => {
+  if (!archived) {
+    return <>
+      <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        onClick={() => archiveItem(campaign_id)}
+      >
+        <Icons.ArchiveIcon />
+      </ButtonStyled>
+      <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        to={`/campaigns/${campaign_id}`}
+      >
+        Manage
+      </ButtonStyled>
+    </>
+  }
+
+  return <ButtonStyled
+    appearance='additional'
+    size='extra-small'
+    onClick={() => unarchiveItem(campaign_id)}
+  >
+    <IconWrapper>
+      <Icons.UndoIcon />
+    </IconWrapper>
+    Unarchive
+  </ButtonStyled>
+}
+
 const CampaignsItems: FC<TProps & ReduxType> = ({
   campaigns,
   archiveItem,
@@ -81,6 +120,8 @@ const CampaignsItems: FC<TProps & ReduxType> = ({
       <BatchListLabel>Claims</BatchListLabel>
       <BatchListLabel>Status</BatchListLabel>
       <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
+
+      {/* @ts-ignore */}
     {campaigns.map(campaign => {
       const {
         title,
@@ -117,26 +158,14 @@ const CampaignsItems: FC<TProps & ReduxType> = ({
           {defineCampaignStatus(false)}
         </BatchListValue>
         <BatchListValueJustifySelfEnd>
-          <ButtonStyled
-            appearance='additional'
-            size='extra-small'
-            to={`/campaigns/${campaign_id}`}
-          >
-            Manage
-          </ButtonStyled>
-          {!archived ? <ButtonStyled
-            appearance='additional'
-            size='extra-small'
-            onClick={() => archiveItem(campaign_id)}
-          >
-            Archive
-          </ButtonStyled> : <ButtonStyled
-            appearance='additional'
-            size='extra-small'
-            onClick={() => unarchiveItem(campaign_id)}
-          >
-            Unarchive
-          </ButtonStyled>}
+          {
+            defineButtons(
+              Boolean(archived),
+              campaign_id,
+              archiveItem,
+              unarchiveItem
+            )
+          }
         </BatchListValueJustifySelfEnd>
       </>})}
     </CampaignsListStyled>}
@@ -144,4 +173,5 @@ const CampaignsItems: FC<TProps & ReduxType> = ({
   
 }
 
+// @ts-ignore
 export default connect(null, mapDispatcherToProps)(CampaignsItems)
