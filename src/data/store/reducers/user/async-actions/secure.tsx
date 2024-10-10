@@ -67,6 +67,10 @@ const secure = (
           return alertError('No chainId provided')
         }
         const contract = contracts[chainId]
+
+        console.log({
+          contract
+        })
         dispatch(campaignActions.setLoading(true))
         const newWallet = ethers.Wallet.createRandom()
         const { address: wallet, privateKey } = newWallet
@@ -101,8 +105,7 @@ const secure = (
           ])
           to = proxyContractAddress
         }
-    
-    
+
         if (totalNativeTokensAmountToSecure.gte(nativeTokenAmount as BigNumberish)) {
           const nativeToken = defineNativeTokenSymbol({ chainId })
           dispatch(campaignActions.setLoading(false))
@@ -115,7 +118,6 @@ const secure = (
           value: totalNativeTokensAmountToSecure,
           data: data
         })
-    
     
         const checkTransaction = async function (): Promise<boolean> {
           return new Promise((resolve, reject) => {

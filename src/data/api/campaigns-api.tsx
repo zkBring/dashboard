@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { TLink, TCampaignNew } from 'types'
+import axios, { AxiosResponse } from 'axios'
+import { TLink, TCampaignNew, TCampaign } from 'types'
 
 const {
   REACT_APP_SERVER_URL,
@@ -13,7 +13,37 @@ const campaignsApi = axios.create({
   }
 })
 
-const requests = {
+type TGetLimitsTGetOneCampaign = (
+  campaign_id: string
+) => Promise<AxiosResponse<TGetOneCampaignResponse>>
+
+type TGetOneCampaignResponse = {
+  success: boolean,
+  campaign: TCampaign
+}
+
+const requests: {
+  getOne: TGetLimitsTGetOneCampaign,
+
+  // will update later
+  create: any,
+  get: any,
+  updateAvailableCountriesOn: any,
+  updatePreferredWalletOn: any,
+  updateAvailableCountries: any,
+  updatePreferredWallet: any,
+  updateClaimingFinishedButtonOn: any,
+  updateClaimingFinishedButton: any,
+  updateClaimHost: any,
+  updateClaimHostOn: any,
+  updateArchived: any,
+  updateAdditionalWalletsOn: any,
+  updateMultipleClaimsOn: any,
+  saveBatch: any,
+  getBatches: any,
+  getReport: any,
+  getBatch: any
+} = {
   create: (
     campaign: TCampaignNew
   ) => campaignsApi.post('/linkdrop/campaigns', {
