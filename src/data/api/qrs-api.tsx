@@ -22,6 +22,17 @@ const requests = {
       status: newStatus
     }, { withCredentials: true })
   },
+  update: ({
+    set_id,
+    archived
+  }: {
+    set_id: number | string,
+    archived: boolean
+  }) => {
+    return qrsSetApi.patch(`QR/sets/${set_id}`, {
+      archived
+    }, { withCredentials: true })
+  },
   updateQuantity: (
       set_id: number | string,
       qr_array: TQRItem[],

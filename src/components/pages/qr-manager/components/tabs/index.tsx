@@ -3,22 +3,18 @@ import { TProps } from './types'
 import { TabsWrapper, Tab } from './styled-components'
 
 const Tabs: FC<TProps> = ({
-  setCampagnsType,
+  setQRManagerItemType,
   activeTab
 }) => {
   return <TabsWrapper>
     <Tab
-      onClick={() => {setCampagnsType('ACTIVE')}}
+      onClick={() => {setQRManagerItemType('ACTIVE')}}
       active={activeTab === 'ACTIVE'}
     >Active</Tab>
     <Tab
-      onClick={() => {setCampagnsType('ARCHIVED')}}
+      onClick={() => {setQRManagerItemType('ARCHIVED')}}
       active={activeTab === 'ARCHIVED'}
     >Archived</Tab>
-    <Tab
-      onClick={() => {setCampagnsType('DRAFTS')}}
-      active={activeTab === 'DRAFTS'}
-    >Drafts</Tab>
   </TabsWrapper>
 }
 

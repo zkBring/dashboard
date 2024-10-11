@@ -7,13 +7,18 @@ import {
   DispensersListValueFixed,
   DispensersListStyled,
   BatchListLabelTextAlignRight,
-  BatchListValueJustifySelfEnd
+  BatchListValueJustifySelfEnd,
+  IconWrapper
 } from './styled-components'
 import {
   Button,
   Tag,
   Loader
 } from 'components/common'
+import { Tabs } from './components'
+import {
+  TQRManagerItemType
+} from './types'
 import {
   BatchListLabel,
   BatchListValue,
@@ -28,8 +33,7 @@ import {
   formatDate,
   defineDispenserStatus, 
   defineDispenserStatusTag,
-  defineQRStatusName,
-  shortenString
+  defineQRStatusName
 } from 'helpers'
 import {
   TQRStatus,
@@ -38,6 +42,9 @@ import {
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import * as dispensersAsyncActions from 'data/store/reducers/dispensers/async-actions'
+import * as qrsAsyncActions from 'data/store/reducers/qrs/async-actions'
+
 
 import Icons from 'icons'
 
@@ -83,8 +90,54 @@ const mapStateToProps = ({
   loading
 })
 
+const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+  return {
+    // @ts-ignore
+    archiveDispenser: (id: string) => {
+      dispatch(
+        dispensersAsyncActions.updateArchived(
+          id,
+          true
+        )
+      )
+    },
+    archiveQRSet: (
+      id: string
+    ) => {
+      dispatch(
+        qrsAsyncActions.updateArchived(
+          id,
+          true
+        )
+      )
+    },
+    unarchiveDispenser: (
+      id: string
+    ) => {
+      dispatch(
+        dispensersAsyncActions.updateArchived(
+          id,
+          false
+        )
+      )
+    },
+    unarchiveQRSet: (
+      id: string
+    ) => {
+      dispatch(
+        qrsAsyncActions.updateArchived(
+          id,
+          false
+        )
+      )
+    }
+  }
+}
+
 const createDispenserRow = (
-  qrManagerItem: TQRManagerItem
+  qrManagerItem: TQRManagerItem,
+  archiveItem: (dispenser_id: string) => void,
+  unarchiveItem: (dispenser_id: string) => void
 ) => {
   const {
     title,
@@ -100,7 +153,8 @@ const createDispenserRow = (
     timeframe_on,
     dynamic,
     links_assigned,
-    links_claimed
+    links_claimed,
+    archived
   } = qrManagerItem
 
   const currentStatus = defineDispenserStatus(
@@ -112,13 +166,44 @@ const createDispenserRow = (
     redirect_url,
     timeframe_on
   )
-  const dateCreatedFormatted = formatDate(created_at || '')
-  const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
-  const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
+
   const redirectUrl = defineHref(
     item_id as string,
     dynamic
   )
+
+  const buttons = archived ? <BatchListValueJustifySelfEnd>
+    <Button
+      appearance='additional'
+      size='extra-small'
+      onClick={() => unarchiveItem(item_id)}
+    >
+      <IconWrapper>
+        <Icons.UndoIcon />
+      </IconWrapper>
+      Unarchive
+    </Button>
+  </BatchListValueJustifySelfEnd> : <BatchListValueJustifySelfEnd>
+    <Button
+      appearance='additional'
+      size='extra-small'
+      onClick={() => archiveItem(item_id)}
+    >
+      <Icons.ArchiveIcon />
+    </Button>
+    <Button
+      appearance='additional'
+      size='extra-small'
+      to={redirectUrl}
+    >
+      Manage
+    </Button>
+  </BatchListValueJustifySelfEnd>
+
+  const dateCreatedFormatted = formatDate(created_at || '')
+  const claimStartWithNoOffset = moment(claim_start).utcOffset(0)
+  const claimStartDate = claimStartWithNoOffset.format('MMMM D, YYYY')
+
   return <>
     <BatchListValue>
       {dateCreatedFormatted}
@@ -143,19 +228,14 @@ const createDispenserRow = (
       {links_claimed || '0'}
     </BatchListValue>
     <BatchListValue>{defineDispenserStatusTag(currentStatus)}</BatchListValue>
-    <BatchListValueJustifySelfEnd>
-      <Button
-        appearance='additional'
-        size='extra-small'
-        title='Manage'
-        to={redirectUrl}
-      />
-    </BatchListValueJustifySelfEnd>
+    {buttons}
   </>
 }
 
 const createQRSetRow = (
-  qrManagerItem: TQRManagerItem
+  qrManagerItem: TQRManagerItem,
+  archiveItem: (qr_set_id: string) => void,
+  unarchiveItem: (qr_set_id: string) => void
 ) => {
   const {
     title,
@@ -164,8 +244,37 @@ const createQRSetRow = (
     created_at,
     status,
     links_assigned,
-    links_claimed
+    links_claimed,
+    archived
   } = qrManagerItem
+
+  const buttons = archived ? <BatchListValueJustifySelfEnd>
+    <Button
+      appearance='additional'
+      size='extra-small'
+      onClick={() => unarchiveItem(item_id)}
+    >
+      <IconWrapper>
+        <Icons.UndoIcon />
+      </IconWrapper>
+      Unarchive
+    </Button>
+  </BatchListValueJustifySelfEnd> : <BatchListValueJustifySelfEnd>
+    <Button
+      appearance='additional'
+      size='extra-small'
+      onClick={() => archiveItem(item_id)}
+    >
+      <Icons.ArchiveIcon />
+    </Button>
+    <Button
+      appearance='additional'
+      size='extra-small'
+      to={`/qrs/${item_id}`}
+    >
+      Manage
+    </Button>
+  </BatchListValueJustifySelfEnd>
 
   return <>
     <BatchListValue>{created_at && formatDate(created_at)}</BatchListValue>
@@ -185,14 +294,7 @@ const createQRSetRow = (
     <BatchListValue>
       {defineQrSetStatus(status)}
     </BatchListValue>
-    <BatchListValueJustifySelfEnd>
-      <Button
-        appearance='additional'
-        size='extra-small'
-        title='Manage'
-        to={`/qrs/${item_id}`}
-      />
-    </BatchListValueJustifySelfEnd>
+    {buttons}
   </>
 }
 
@@ -226,14 +328,23 @@ const defineQrSetStatus = (
 
 
 // @ts-ignore
-type ReduxType = ReturnType<typeof mapStateToProps>
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
-const Dispensers: FC<ReduxType> = ({
+const QRManager: FC<ReduxType> = ({
   items,
-  loading
+  loading,
+  archiveDispenser,
+  archiveQRSet,
+  unarchiveDispenser,
+  unarchiveQRSet
 }) => {
 
   const history = useHistory()
+
+  const [
+    qrManagerItemType,
+    setQRManagerItemType
+  ] = useState<TQRManagerItemType>('ACTIVE')
 
   const dispenserTypes = defineDispenserTypes(history)
 
@@ -270,6 +381,14 @@ const Dispensers: FC<ReduxType> = ({
     </>
   }
 
+  const itemsToShow = items.filter(item => {
+    if (qrManagerItemType === 'ACTIVE') {
+      return !item.archived
+    }
+
+    return item.archived
+  })
+
   return <Container>
     {showPopup && <NewDispenserPopup
       dispenserOptions={dispenserTypes}
@@ -295,7 +414,11 @@ const Dispensers: FC<ReduxType> = ({
           }}
         />
       </Header>
-      {items.length > 0 && <DispensersListStyled>
+      <Tabs
+        activeTab={qrManagerItemType}
+        setQRManagerItemType={setQRManagerItemType}
+      />
+      {itemsToShow.length > 0 && <DispensersListStyled>
         <BatchListLabel>Created</BatchListLabel>
         <BatchListLabel>Start date</BatchListLabel>
         <BatchListLabel>QR Type</BatchListLabel>
@@ -306,25 +429,29 @@ const Dispensers: FC<ReduxType> = ({
         <BatchListLabel>Status</BatchListLabel>
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
         
-        {items.map(qrItem => {
+        {itemsToShow.map(qrItem => {
           const {
             type
           } = qrItem
 
           if (type === 'dispenser') {
-            return createDispenserRow(qrItem)
+            return createDispenserRow(
+              qrItem,
+              archiveDispenser,
+              unarchiveDispenser
+            )
           }
 
-          return createQRSetRow(qrItem)
+          return createQRSetRow(
+            qrItem,
+            archiveQRSet,
+            unarchiveQRSet
+          )
         })}
       </DispensersListStyled>}
     </WidgetComponent>
   </Container>
 }
 
-export default connect(mapStateToProps)(Dispensers)
-
-
-// {qrs.map(qrSet => {
-  
-// }
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatcherToProps)(QRManager)

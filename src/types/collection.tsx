@@ -24,10 +24,12 @@ export type TCollection = {
   links_count?: number
   links_claimed?: number
   chain_id: String
+  archived?: boolean
 }
 
 export type TCollectionStatus = 
   'ADD_TOKENS' |
   'CREATE_LINKS' |
   'ACTIVE' |
-  'LOADING'
+  'LOADING' |
+  'ARCHIVED'

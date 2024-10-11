@@ -25,7 +25,18 @@ const requests = {
   },
   addToken: (collection_id: string | number, token: TCollectionToken) => {
     return collectionsApi.post(`/collections/${collection_id}/token`, token, { withCredentials: true })
-  }
+  },
+  update: ({
+    archived,
+    collection_id
+  }: {
+    collection_id: string | number,
+    archived?: boolean
+  }) => {
+    return collectionsApi.patch(`/collections/${collection_id}`, {
+      archived
+    }, { withCredentials: true })
+  },
 }
 
 export default requests

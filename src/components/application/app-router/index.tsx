@@ -16,7 +16,7 @@ import {
   CampaignsCreateNew,
   QRDownload,
   QRCreate,
-  Dispensers,
+  QRManager,
   DispenserCreate,
   Dispenser,
   DynamicQRCreate,
@@ -48,7 +48,7 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           path='/qr-manager'
           exact={true}
           loggedIn={Boolean(address)}
-          component={Dispensers}
+          component={QRManager}
         />
 
         <ProtectedRoute

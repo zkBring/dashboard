@@ -3,22 +3,18 @@ import { TProps } from './types'
 import { TabsWrapper, Tab } from './styled-components'
 
 const Tabs: FC<TProps> = ({
-  setCampagnsType,
+  setCollectionType,
   activeTab
 }) => {
   return <TabsWrapper>
     <Tab
-      onClick={() => {setCampagnsType('ACTIVE')}}
+      onClick={() => {setCollectionType('ACTIVE')}}
       active={activeTab === 'ACTIVE'}
     >Active</Tab>
     <Tab
-      onClick={() => {setCampagnsType('ARCHIVED')}}
+      onClick={() => {setCollectionType('ARCHIVED')}}
       active={activeTab === 'ARCHIVED'}
     >Archived</Tab>
-    <Tab
-      onClick={() => {setCampagnsType('DRAFTS')}}
-      active={activeTab === 'DRAFTS'}
-    >Drafts</Tab>
   </TabsWrapper>
 }
 

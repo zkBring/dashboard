@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
   Container,
   Header,
@@ -7,12 +7,18 @@ import {
   CollectionsListLabelStyled,
   CollectionsListStyled,
   SecondaryTextSpan,
-  TokenImageStyled,
+  IconWrapper,
+  ButtonStyled,
   BatchListLabelTextAlignRight,
   BatchListValueJustifySelfEnd
 } from './styled-components'
 import {
-  Button,
+  TCollectionType
+} from './types'
+import {
+  Tabs
+} from './components'
+import {
   Loader
 } from 'components/common'
 import {
@@ -29,6 +35,8 @@ import {
 } from 'helpers'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
+import Icons from 'icons'
+import * as collectionsAsyncActions from 'data/store/reducers/collections/async-actions'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -43,7 +51,65 @@ const mapStateToProps = ({
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
-  return {}
+  return {
+    archiveItem: (
+      id: string
+    ) => {
+      dispatch(
+        collectionsAsyncActions.updateArchived(
+          id,
+          true
+        )
+      )
+    },
+    unarchiveItem: (
+      id: string
+    ) => {
+      dispatch(
+        collectionsAsyncActions.updateArchived(
+          id,
+          false
+        )
+      )
+    }
+  }
+}
+
+const defineButtons = (
+  archived: boolean,
+  collection_id: string,
+  archiveItem: (campaign_id: string) => void,
+  unarchiveItem: (campaign_id: string) => void
+) => {
+  if (!archived) {
+    return <>
+      <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        onClick={() => archiveItem(collection_id)}
+      >
+        <Icons.ArchiveIcon />
+      </ButtonStyled>
+      <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        to={`/campaigns/${collection_id}`}
+      >
+        Manage
+      </ButtonStyled>
+    </>
+  }
+
+  return <ButtonStyled
+    appearance='additional'
+    size='extra-small'
+    onClick={() => unarchiveItem(collection_id)}
+  >
+    <IconWrapper>
+      <Icons.UndoIcon />
+    </IconWrapper>
+    Unarchive
+  </ButtonStyled>
 }
 
 // ignore to avoid IDE problem, should be solved soon
@@ -52,8 +118,15 @@ type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispa
 
 const Collections: FC<ReduxType> = ({
   collections,
-  loading
+  loading,
+  archiveItem,
+  unarchiveItem
 }) => {
+
+  const [
+    collectionType,
+    setCollectionType
+  ] = useState<TCollectionType>('ACTIVE')
 
   if (loading && collections.length === 0) {
     return <Loader size='large' />
@@ -68,6 +141,15 @@ const Collections: FC<ReduxType> = ({
     />
   }
 
+  // @ts-ignore
+  const collectionsToShow = collections.filter(collection => {
+    if (collectionType === 'ACTIVE') {
+      return !collection.archived
+    }
+
+    return collection.archived
+  })
+
   return <Container>
     <WidgetComponent>
       <Header>
@@ -76,11 +158,16 @@ const Collections: FC<ReduxType> = ({
           title='+ Add'
           disabled={loading}
           size='extra-small'
+          loading={loading}
           appearance='action'
           to='/collections/new/ERC1155/initial'
         />
       </Header>
-      {collections.length > 0 && <CollectionsListStyled>
+      <Tabs
+        activeTab={collectionType}
+        setCollectionType={setCollectionType}
+      />
+      {collectionsToShow.length > 0 && <CollectionsListStyled>
         <BatchListLabel>Created</BatchListLabel>
         <BatchListLabel>Name</BatchListLabel>
         <BatchListLabel>Symbol</BatchListLabel>
@@ -99,14 +186,18 @@ const Collections: FC<ReduxType> = ({
             token_address,
             symbol,
             links_claimed,
-            links_count
+            links_count,
+            archived
           } = collection
           const status = defineCollectionStatus(
             false,
             Number(links_count),
-            Number(tokens_amount)
+            Number(tokens_amount),
+            archived
           )
-          const statusTag = defineCollectionStatusTag(status)
+          const statusTag = defineCollectionStatusTag(
+            status
+          )
           const dateCreatedFormatted = formatDate(created_at || '')
           const timeCreatedFormatted = formatTime(created_at || '')
           return <>
@@ -130,12 +221,14 @@ const Collections: FC<ReduxType> = ({
               {statusTag}
             </BatchListValue>
             <BatchListValueJustifySelfEnd>
-              <Button
-                appearance='additional'
-                size='extra-small'
-                title='Manage'
-                to={`/collections/${collection_id}`}
-              />
+              {
+                defineButtons(
+                  Boolean(archived),
+                  collection_id as string,
+                  archiveItem,
+                  unarchiveItem
+                )
+              }
             </BatchListValueJustifySelfEnd>
           </>
         })}
