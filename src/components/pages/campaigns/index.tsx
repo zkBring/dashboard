@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { RootState, IAppDispatch } from 'data/store'
+import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import { Loader } from 'components/common'
 import {
@@ -20,8 +20,6 @@ import {
   TProps,
   TCampaignsType
 } from './types'
-import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import * as campaignsAsyncActions from 'data/store/reducers/campaigns/async-actions'
 import { NewCampaign } from './components'
 import {
   CampaignsItems,

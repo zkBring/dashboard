@@ -12,7 +12,7 @@ export type TQRManagerItem = {
   links_assigned: number
   links_claimed: number
   links_count: number
-
+  archived?: boolean
   claim_duration?: number
   claim_start?: number
   claim_finish?: number | null

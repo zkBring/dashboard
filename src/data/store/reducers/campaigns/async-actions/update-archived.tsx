@@ -4,7 +4,7 @@ import { CampaignsActions } from '../types'
 import { RootState } from 'data/store'
 import { campaignsApi } from 'data/api'
 
-const archiveCampaign = (
+const updateArchived = (
   campaign_id: string | number,
   archived: boolean
 ) => {
@@ -44,4 +44,4 @@ const archiveCampaign = (
   }
 }
 
-export default archiveCampaign
+export default updateArchived

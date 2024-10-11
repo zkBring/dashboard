@@ -15,6 +15,7 @@ export const Container = styled.div`
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 24px;
 `
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
@@ -33,12 +34,18 @@ export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
 
 export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
   justify-self: end;
+  display: flex;
+  justify-content: end;
+  gap: 12px;
 `
 
 export const ContainerButton = styled(Button)`
   align-self: end;
   margin-bottom: 0px;
 `
+
+export const ButtonStyled = styled(Button)``
+
 
 export const CollectionsListStyled = styled(BatchList)`
 grid-template-columns: 158px 224px auto auto auto auto auto;
@@ -75,7 +82,7 @@ export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
 `
 
-export const TokenImageStyled = styled(TokenImage)`
-  margin-right: 10px;
-  vertical-align: middle;
+export const IconWrapper = styled.span`
+  display: inline-block;
+  margin-right: 8px;
 `
