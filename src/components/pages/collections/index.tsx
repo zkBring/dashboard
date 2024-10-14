@@ -93,7 +93,7 @@ const defineButtons = (
       <ButtonStyled
         appearance='additional'
         size='extra-small'
-        to={`/campaigns/${collection_id}`}
+        to={`/collections/${collection_id}`}
       >
         Manage
       </ButtonStyled>
