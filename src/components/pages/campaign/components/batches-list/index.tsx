@@ -199,7 +199,6 @@ const BatchesList: FC<TProps> = ({
   createQRSetAndAddLinks
 }) => {
 
-
   const history = useHistory()
 
   if (linksCreated === 0) {

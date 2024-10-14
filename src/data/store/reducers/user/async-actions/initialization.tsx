@@ -86,6 +86,7 @@ const initialization = () => {
         const dispensers: { data: { dispensers: TDispenser[] } } = dispensersData
         const { items } = qrManagerData.data
         dispatch(qrManagerActions.setItems(items))
+
         dispatch(colllectionsActions.setCollections(collections.data.collections.filter(collection => collection.chain_id === String(chainId))))
         dispatch(dispensersActions.setDispensers(dispensers.data.dispensers))
         dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))

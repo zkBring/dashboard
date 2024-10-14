@@ -42,18 +42,21 @@ const requests = {
   updateDispenserData: ({
     dispenser_id,
     title,
+    archived,
     claim_start,
     claim_finish
   }: {
     dispenser_id: string,
     title?: string,
+    archived?: boolean,
     claim_start?: number,
     claim_finish?: number | null
   }) => {
     return dispensersApi.patch(`/dispensers/${dispenser_id}`, {
       title,
       claim_start,
-      claim_finish
+      claim_finish,
+      archived
     }, { withCredentials: true })
   },
   getCampaignData: (

@@ -14,12 +14,13 @@ import getDispenserWhitelist from './get-dispenser-whitelist'
 import toggleTimeframeOn from './toggle-timeframe-on'
 import decryptDispenserData from './decrypt-dispenser-data'
 import createDispenserAndAddLinks from './create-dispenser-and-add-links'
-
+import updateArchived from './update-archived'
 import updateAppTitle from './update-app-title'
 import toggleAppTitleOn from './toggle-app-title-on'
 
 export {
   createDispenser,
+  updateArchived,
   updateWhitelist,
   createDispenserAndAddLinks,
   updateAppTitle,

@@ -4,7 +4,8 @@ export type TDispenserStatus =
   'FINISHED' |
   'NOT_UPLOADED' |
   'PAUSED' |
-  'REDIRECT'
+  'REDIRECT' |
+  'ARCHIVED'
 
 export type TDispenserLinks = {
   encrypted_claim_link?: string

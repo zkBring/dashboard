@@ -10,6 +10,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 `
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
@@ -36,6 +37,9 @@ export const BatchListLabelTextAlignRight = styled(BatchListLabel)`
 
 export const BatchListValueJustifySelfEnd = styled(BatchListLabel)`
   justify-self: end;
+  display: flex;
+  justify-content: end;
+  gap: 12px;
 `
 
 export const ContainerButton = styled(Button)`
@@ -69,4 +73,9 @@ export const UploadedSpan = styled.span`
 
 export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
+`
+
+export const IconWrapper = styled.span`
+  display: inline-block;
+  margin-right: 8px;
 `

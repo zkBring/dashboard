@@ -13,6 +13,7 @@ const defineDispenserStatusTag = (status: TDispenserStatus) => {
       return <Tag status='info' title={statusName} />
     case 'FINISHED':
     case 'REDIRECT':
+    case 'ARCHIVED':
       return <Tag status='default' title={statusName} />
   }
 }

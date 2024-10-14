@@ -60,6 +60,10 @@ import {
 } from 'data/store/reducers/campaigns/async-actions'
 
 import {
+  createNewBatch
+} from 'data/store/reducers/campaign/async-actions'
+
+import {
   createDispenserAndAddLinks,
 } from 'data/store/reducers/dispensers/async-actions'
 
@@ -85,12 +89,16 @@ const mapStateToProps = ({
     chainId,
     countries
   },
-  campaign: { decimals },
+  campaign: {
+    decimals,
+    loading: campaignLoading
+  },
 }: RootState) => ({
   campaigns,
   address,
   countries,
   decimals,
+  campaignLoading,
   loading,
   dashboardKey,
   signer,
@@ -267,6 +275,21 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         )
       )
     },
+    
+
+    createNewBatch: (
+      campaign_id: string,
+      token_standard: TTokenType,
+      callback?: (location: string) => void
+    ) => {
+      dispatch(
+        createNewBatch(
+          campaign_id,
+          token_standard,
+          callback
+        )
+      )
+    },
 
 
     updateClaimHost: (
@@ -371,7 +394,9 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   createQRSetAndAddLinks,
   updateClaimHost,
   updateClaimHostOn,
-  updateMultipleClaimsOn
+  updateMultipleClaimsOn,
+  createNewBatch,
+  campaignLoading
 }) => {
 
   const history = useHistory()
@@ -616,14 +641,21 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
           {!sdk && <WidgetButton
             appearance='additional'
             size='extra-small'
+            disabled={campaignLoading}
             title='+ Add batch'
+            loading={campaignLoading}
             onClick={() => {
-              history.push(`/campaigns/edit/${token_standard}/${campaign_id}/new`)
+              createNewBatch(
+                campaign_id,
+                token_standard,
+                (location) => history.push(location)
+              )
             }}
           />}
         </Header>
 
         <BatchesList
+          // @ts-ignore
           createDispenserAndAddLinks={createDispenserAndAddLinks}
           createQRSetAndAddLinks={createQRSetAndAddLinks}
           wallet={wallet}

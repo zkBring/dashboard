@@ -9,10 +9,8 @@ import { RootState } from 'data/store'
 import { collectionsApi } from 'data/api'
 import { TCollectionToken } from 'types'
 
-
 function getCollectionData (
-  collectionId: string,
-  callback?: () => void
+  collectionId: string
 ) {
   // @ts-ignore
   return async (

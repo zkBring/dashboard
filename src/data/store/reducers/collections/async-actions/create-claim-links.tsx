@@ -10,12 +10,14 @@ import { TTokenType } from 'types'
 import * as actionsCampaign from '../../campaign/actions'
 import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
 import createProxyAddress from '../../campaign/async-actions/create-proxy-address'
+import getCollectionData from './get-collection-data'
 
 function createClaimLinks (
   collectionId: string,
   tokenId: string,
   linksAmount: string,
   tokenType: TTokenType,
+  campaignId: string | null,
   callback?: (location: string) => void
 ) {
   // @ts-ignore
@@ -24,23 +26,32 @@ function createClaimLinks (
     getState: () => RootState
   ) => {
     dispatch(actionsCollections.setLoading(true))
-    const { user: {
-      chainId,
-      sdk,
-      address
-    }, collections: {
-      collections
-    }} = getState()
+    const {
+      user: {
+        chainId,
+        sdk,
+        address
+      },
+      collections: {
+        collections
+      },
+      campaigns: {
+        campaigns
+      }
+      // @ts-ignore
+    } = getState()
     try {
       const collection = collections.find(collection => collection.collection_id === collectionId)
       if (!collection) {
         dispatch(actionsCollections.setLoading(false))
         return alert('Collection not found')
       }
-      const collectionToken = collection.tokens && collection.tokens.find(token => token.token_id === tokenId)
-      if (!collectionToken) {
-        dispatch(actionsCollections.setLoading(false))
-        return alert('Collection token not found')
+      const collectionTokens = collection.tokens
+
+      if (!collectionTokens || collectionTokens.length === 0) {
+        await dispatch(getCollectionData(
+          collectionId
+        ))
       }
       if (!chainId) {
         dispatch(actionsCollections.setLoading(false))
@@ -55,17 +66,33 @@ function createClaimLinks (
       dispatch(actionsCampaign.setTokenStandard(tokenType))
       dispatch(actionsCampaign.setTitle(`Links for "${collection.title}"`))
       dispatch(actionsCampaign.setClaimPattern('mint'))
-      await createProxyAddress(
-        dispatch,
-        chainId,
-        sdk,
-        address
-      )
-      dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
-        'approve'
-      ))
+      if (!campaignId) {
+        await createProxyAddress(
+          dispatch,
+          chainId,
+          sdk,
+          address
+        )
+        dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
+          'approve'
+        ))
 
-      callback && callback(`/campaigns/new/${tokenType}/approve?token_id=${tokenId}&links_amount=${linksAmount}&collection_id=${collectionId}`)
+        if (callback) {
+          callback(`/campaigns/new/${tokenType}/approve?token_id=${tokenId}&links_amount=${linksAmount}&collection_id=${collectionId}`)
+        }
+      } else {
+        const campaign = campaigns.find(campaign => campaign.campaign_id === campaignId)
+        if (campaign) {
+          const { proxy_contract_address } = campaign
+          dispatch(actionsCampaign.setProxyContractAddress(proxy_contract_address))
+          dispatch(actionsCampaign.setId(campaign.campaign_number))
+        }
+        if (callback) {
+          callback(`/campaigns/edit/${tokenType}/${campaignId}/approve?token_id=${tokenId}&links_amount=${linksAmount}&collection_id=${collectionId}`)
+        }
+      }
+
+
     } catch (err) {
       console.error({
         err

@@ -11,7 +11,7 @@ import QRDownload from './qr-download'
 import CampaignsCreateNew from './campaigns-create-new'
 import Main from './main'
 import QRCreate from './qr-create'
-import Dispensers from './dispensers'
+import QRManager from './qr-manager'
 import DispenserCreate from './dispenser-create'
 import Dispenser from './dispenser'
 import Collections from './collections'
@@ -43,7 +43,7 @@ export {
   QRDownload,
   Main,
   QRCreate,
-  Dispensers,
+  QRManager,
   DispenserCreate,
   Collections
 }

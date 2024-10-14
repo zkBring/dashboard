@@ -4,6 +4,8 @@ const defineDispenserStatusName = (status: TDispenserStatus) => {
   switch (status) {
     case 'ACTIVE' :
       return 'Active'
+    case 'ARCHIVED' :
+      return 'Archived'
     case 'FINISHED':
       return 'Finished'
     case 'READY':
