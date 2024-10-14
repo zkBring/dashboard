@@ -153,8 +153,6 @@ const Collections: FC<ReduxType> = ({
     return collection.archived
   })
 
-  console.log({ collectionsToShow, collections })
-
   return <Container>
     <WidgetComponent>
       <Header>
