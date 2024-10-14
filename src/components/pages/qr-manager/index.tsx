@@ -164,7 +164,8 @@ const createDispenserRow = (
     active,
     redirect_on as boolean,
     redirect_url,
-    timeframe_on
+    timeframe_on,
+    archived
   )
 
   const redirectUrl = defineHref(
@@ -292,7 +293,7 @@ const createQRSetRow = (
       {links_claimed || '0'}
     </BatchListValue>
     <BatchListValue>
-      {defineQrSetStatus(status)}
+      {defineQrSetStatus(status, archived)}
     </BatchListValue>
     {buttons}
   </>
@@ -320,9 +321,14 @@ const defineHref = (
 }
 
 const defineQrSetStatus = (
-  status: TQRStatus
+  status: TQRStatus,
+  archived?: boolean
 ) => {
-  const statusName = defineQRStatusName(status)
+  const statusName = defineQRStatusName(status, archived)
+
+  if (status === 'ARCHIVED' || archived) {
+    return <Tag title={statusName} status='default' />
+  }
   return <Tag title={statusName} status='info' />
 }
 

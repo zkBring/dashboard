@@ -8,6 +8,7 @@ type TDefineDispenserStatus = (
   redirect_on?: boolean,
   redirect_url?: string | null,
   timeframe_on?: boolean,
+  archived?: boolean
 ) => TDispenserStatus
 
 const defineDispenserStatus: TDefineDispenserStatus = (
@@ -17,8 +18,13 @@ const defineDispenserStatus: TDefineDispenserStatus = (
   active = true,
   redirect_on = false,
   redirect_url,
-  timeframe_on = false
+  timeframe_on = false,
+  archived
 ) => {
+
+  if (archived) {
+    return 'ARCHIVED'
+  }
 
   if (links_count === 0) {
     return 'NOT_UPLOADED'

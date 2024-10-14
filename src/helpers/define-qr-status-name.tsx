@@ -1,9 +1,19 @@
 import { TQRStatus } from 'types'
 
-const defineName = (status: TQRStatus) : string => {
+const defineName = (
+  status: TQRStatus,
+  archived?: boolean
+) : string => {
+
+  if (archived) {
+    return 'Archived'
+  }
+
   switch (status) {
     case 'BEING_INSERTED_TO_BOXES':
       return 'Being Inserted To Boxes'
+    case 'ARCHIVED':
+      return 'Archived'
     case 'READY_TO_SHIP':
       return 'Ready To Ship'
     case 'NOT_SENT_TO_PRINTER':

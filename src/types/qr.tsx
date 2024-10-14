@@ -5,7 +5,8 @@ export type TQRStatus =
   'BEING_INSERTED_TO_BOXES' |
   'READY_TO_SHIP' |
   'SHIPPING' |
-  'SHIPPED'
+  'SHIPPED' |
+  'ARCHIVED'
 
 export type TQRItem = {
   qr_id: string
