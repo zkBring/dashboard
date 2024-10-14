@@ -144,11 +144,16 @@ const Collections: FC<ReduxType> = ({
   // @ts-ignore
   const collectionsToShow = collections.filter(collection => {
     if (collectionType === 'ACTIVE') {
-      return !collection.archived
+      if (!collection.archived) {
+        return true
+      }
+      return false
     }
 
     return collection.archived
   })
+
+  console.log({ collectionsToShow, collections })
 
   return <Container>
     <WidgetComponent>
@@ -177,7 +182,7 @@ const Collections: FC<ReduxType> = ({
         <BatchListLabelTextAlignRight>Actions</BatchListLabelTextAlignRight>
 
         {/* @ts-ignore */}
-        {collections.map(collection => {
+        {collectionsToShow.map(collection => {
           const {
             title,
             collection_id,

@@ -38,6 +38,7 @@ import { Loader } from 'components/common'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import * as dispensersActions from 'data/store/reducers/dispensers/actions'
+const { REACT_APP_CLIENT } = process.env
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -492,7 +493,13 @@ const Dispenser: FC<ReduxType> = ({
         {qrCodeDescription}
 
         {dispenser_url && <CopyContainerStyled
+          title='Campaign’s URL'
           text={dispenser_url}
+        />}
+
+        {dynamic && dispenser_url && <CopyContainerStyled
+          title='Embed'
+          text={`<iframe src="${dispenser_url}${REACT_APP_CLIENT === 'coinbase' ? '&client=coinbase' : ''}" frameborder="0" width="300" height="600"></iframe>`}
         />}
         
         <Buttons>

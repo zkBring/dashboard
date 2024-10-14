@@ -30,6 +30,11 @@ export const WidgetComponentStyled = styled(WidgetComponent)`
 export const CopyContainerStyled = styled(CopyContainer)`
   margin-bottom: 32px;
   max-width: 100%;
+  h3 {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 8px;
+  }
 `
 
 export const InputComponent = styled(Input)`
