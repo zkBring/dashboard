@@ -114,11 +114,13 @@ const requests: {
   updateClaimingFinishedButton: (
     campaign_id: string | number,
     claiming_finished_button_title: string,
-    claiming_finished_button_url: string
+    claiming_finished_button_url: string,
+    claiming_finished_auto_redirect: boolean
   ) => {
     return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
       claiming_finished_button_title,
-      claiming_finished_button_url
+      claiming_finished_button_url,
+      claiming_finished_auto_redirect
     }, {
       withCredentials: true
     })

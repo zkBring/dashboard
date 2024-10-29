@@ -26,6 +26,7 @@ type TCampaign = {
   expiration_date?: number
   claiming_finished_button_title?: string
   claiming_finished_button_url?: string
+  claiming_finished_auto_redirect: boolean
 
   claiming_finished_button_on?: boolean
   available_countries_on?: boolean
