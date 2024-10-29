@@ -8,6 +8,7 @@ const updateClaimingFinishedButton = (
   campaign_id: string | number,
   claiming_finished_button_title: string,
   claiming_finished_button_url: string,
+  claiming_finished_auto_redirect: boolean,
   callback?: () => void
 ) => {
   return async (
@@ -25,7 +26,8 @@ const updateClaimingFinishedButton = (
       const result = await campaignsApi.updateClaimingFinishedButton(
         campaign_id,
         claiming_finished_button_title,
-        claiming_finished_button_url
+        claiming_finished_button_url,
+        claiming_finished_auto_redirect
       )
 
       if (result.data.success) {
@@ -35,7 +37,8 @@ const updateClaimingFinishedButton = (
             return {
               ...campaign,
               claiming_finished_button_title,
-              claiming_finished_button_url
+              claiming_finished_button_url,
+              claiming_finished_auto_redirect
             }
           }
           return campaign
