@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.46
+- support for claiming_finished_button_url property
+
 ## 2.1.45
 - archivation of campaigns, collections and qr campaigns
 - batches for sbt
