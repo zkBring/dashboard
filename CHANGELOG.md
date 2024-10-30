@@ -1,7 +1,7 @@
 # Linkdrop Dashboard
 
 ## 2.1.46
-- support for claiming_finished_button_url property
+- claiming_finished_auto_redirect property support
 
 ## 2.1.45
 - archivation of campaigns, collections and qr campaigns
