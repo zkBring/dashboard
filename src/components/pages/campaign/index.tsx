@@ -264,6 +264,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       campaign_id: string,
       claiming_finished_button_title: string,
       claiming_finished_button_href: string,
+      claiming_finished_auto_redirect: boolean,
       callback?: () => void
     ) => {
       dispatch(
@@ -271,6 +272,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           campaign_id,
           claiming_finished_button_title,
           claiming_finished_button_href,
+          claiming_finished_auto_redirect,
           callback
         )
       )
@@ -460,6 +462,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     claiming_finished_button_title,
     claiming_finished_button_url,
     claiming_finished_button_on,
+    claiming_finished_auto_redirect,
     preferred_wallet_on,
     claim_host,
     claim_host_on,
@@ -865,6 +868,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         finalScreenButtonSubmit={(
           buttonTitle,
           buttonHref,
+          autoRedirect,
           onSuccess,
           onError,
         ) => {
@@ -872,12 +876,14 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             campaign_id,
             buttonTitle,
             buttonHref,
+            autoRedirect,
             onSuccess
           )
         }}
       
         buttonTitleValue={claiming_finished_button_title || ''}
         buttonHrefValue={claiming_finished_button_url || ''}
+        autoRedirectValue={claiming_finished_auto_redirect || false}
 
         finalScreenButtonToggleAction={(value) => {
           updateClaimingFinishedButtonOn(campaign_id, value)

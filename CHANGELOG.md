@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.46
+- claiming_finished_auto_redirect property support
+
 ## 2.1.45
 - archivation of campaigns, collections and qr campaigns
 - batches for sbt

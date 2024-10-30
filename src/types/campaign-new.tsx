@@ -25,8 +25,11 @@ type TCampaignNew = {
   preferred_wallet_on: boolean 
   collection_id?: null | string
   collection_token_id?: null | string
+
   claiming_finished_button_title?: string
   claiming_finished_button_url?: string
+  claiming_finished_auto_redirect?: boolean
+
   additional_wallets_on: boolean
 
   claim_host: string
