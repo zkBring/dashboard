@@ -1,6 +1,6 @@
 {
   "name": "linkdrop-dashboard",
-  "version": "2.1.46-rc.0",
+  "version": "2.1.47-rc.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^7.1.0",
@@ -51,7 +51,7 @@
     "typescript": "^5.4.2",
     "uint8arrays": "^3.0.0",
     "viem": "2.x",
-    "wagmi": "^2.9.8",
+    "wagmi": "^2.12.25",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
