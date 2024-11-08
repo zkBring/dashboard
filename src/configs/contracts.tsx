@@ -33,7 +33,7 @@ const contracts: TContracts = {
     fee_manager: '0xaD2fF78Fb703C5c95dB9ebA3262546Dc31B09983'
   },
   543210: {
-    factory: '0xF1E1D41FC02D82c2C1D90DaBE8eAF30e07b46976',
+    factory: '0x5ef84f6c021d37E197CCc4C9d5DCBd0e90924c30',
     minter_role: '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6',
     fee_manager: '0xA624BbDc3d7368a51759AD8aDC7BdE237c0fE2A8'
   }
