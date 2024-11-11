@@ -163,9 +163,12 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
   const currentAvailableCountriesOn = currentCampaign ? Boolean(currentCampaign.available_countries_on) : false
 
   const allWallets = useMemo(() => {
+    console.log('here')
+
     const options = wallets
       .filter(wallet => {
         if (!chainId) { return false }
+        
         if (!sponsored && !wallet.available_for_not_sponsored) {return false }
         const isAvailableForClient = defineIfWalletIsAvailableForClient(
           wallet
@@ -174,6 +177,7 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           return false
         }
         // @ts-ignore
+        console.log('here')
         const result = wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
         return result
       })
