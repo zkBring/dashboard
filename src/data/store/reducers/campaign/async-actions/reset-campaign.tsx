@@ -18,7 +18,6 @@ const resetCampaign = (id?: string) => {
     }
 
     dispatch(actionsCampaign.clearCampaign())
-
     if (id) {
       const campaign = campaigns.find(campaign => campaign.campaign_number === id)
       if (campaign) {

@@ -28,6 +28,7 @@ import {
   terminateWorkers,
   createQuantityGroups
 } from './create-workers'
+import create2Address from './create2address'
 import convertLinksContent from './convert-links-content'
 import defineCampaignStatus from './define-campaign-status'
 import campaignPause from './campaign-pause'
@@ -114,6 +115,7 @@ export {
   convertStringToBytes32,
   momentNoOffsetWithTimeUpdate,
   defineDispenserStatusTag,
+  create2Address,
   createSelectOptions,
   preventPageClose,
   alertError,
