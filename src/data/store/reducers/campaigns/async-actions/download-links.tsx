@@ -43,7 +43,7 @@ const downloadLinks = (
       },
     } = getState()
 
-    if (!tokenAddress) { return alertError ('tokenAddress is not provided') }
+    if (!tokenAddress) { return alertError('tokenAddress is not provided') }
 
     dispatch(actionsCampaigns.setLoading(true))
 
@@ -53,15 +53,21 @@ const downloadLinks = (
       dispatch(actionsCampaigns.setLoading(true))
 
       try {
-        
+
         const result = await campaignsApi.getBatch(campaignId, batchId)
-  
+        console.log({ encryptionKey })
+        /* let encKey = String(dashboardKey)
+         * if (sdk) {
+         *   console.log("SDK is on. Using sdk key")
+         *   encKey = createEncryptionKey(signerAddress, 
+         * } */
+
         if (result.data.success) {
           const { claim_links, batch } = result.data
           const decryptedLinks = decryptLinks({
             tokenType,
             links: claim_links,
-            dashboardKey: String(dashboardKey),
+            dashboardKey: encryptionKey || dashboardKey,
             tokenAddress,
             userAddress: address,
             chainId,
@@ -69,7 +75,7 @@ const downloadLinks = (
             customClaimHost,
             customClaimHostOn
           })
-  
+
           downloadLinksAsCSV(
             decryptedLinks,
             title,
@@ -103,12 +109,12 @@ const downloadLinks = (
         dispatch(actionsCampaigns.setLoading(false))
         dispatch(actionsUser.setDashboardKeyPopup(true))
         dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
-        return 
+        return
       } else {
         dashboardKey = encryptionKey
-      }      
+      }
     }
-    
+
     callback(dashboardKey)
     dispatch(actionsCampaigns.setLoading(false))
   }
