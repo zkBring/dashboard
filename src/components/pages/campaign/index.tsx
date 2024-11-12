@@ -401,7 +401,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   campaignLoading
 }) => {
 
-  console.log({ dashboardKey })
   const history = useHistory()
 
   const [status, setStatus] = useState<TCampaignStatus>('initial')
@@ -475,6 +474,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     campaign_number,
     dashboardKey
   )
+  console.log({ dashboardKey })
 
   const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
