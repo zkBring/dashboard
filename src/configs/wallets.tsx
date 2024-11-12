@@ -32,6 +32,14 @@ const wallets: TWallet[] = [
     token_types: ['ERC1155', 'ERC721', 'ERC20'],
     available_for_not_sponsored: true,
     available_for_client: []
+  },
+  {
+    id: 'zerion',
+    name: 'Zerion',
+    chains: ['543210'],
+    token_types: ['ERC1155', 'ERC721', 'ERC20'],
+    available_for_not_sponsored: true,
+    available_for_client: []
   }
 ]
 

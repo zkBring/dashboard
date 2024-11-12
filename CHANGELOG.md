@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.47
+- support for zero network
+
 ## 2.1.46
 - claiming_finished_auto_redirect property support
 
