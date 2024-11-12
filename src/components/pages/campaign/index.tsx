@@ -215,7 +215,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         })
       )
     },
-  
+
     createQRSetAndAddLinks: (
       mappingPageRedirect: () => void,
       title: string,
@@ -277,7 +277,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         )
       )
     },
-    
+
 
     createNewBatch: (
       campaign_id: string,
@@ -403,8 +403,8 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
   const history = useHistory()
 
-  const [ status, setStatus ] = useState<TCampaignStatus>('initial')
-  const [ withdrawable, setWithdrawable ] = useState<boolean>(false)
+  const [status, setStatus] = useState<TCampaignStatus>('initial')
+  const [withdrawable, setWithdrawable] = useState<boolean>(false)
 
   useEffect(() => {
     getCampaignBatches(
@@ -429,7 +429,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     }
     onInit()
   }, [])
-  
+
   // @ts-ignore
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
 
@@ -497,7 +497,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       })
     }
   }
-  
+
 
   const defineOptions = () => {
     if (status === 'active') {
@@ -606,7 +606,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             } catch (e) {
               setStatus(currentStatus)
               console.error(e)
-            }  
+            }
           }
         },
         copyToClipboardButton
@@ -629,7 +629,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   }
 
   return <Container>
-    
+
     <WidgetContainer>
 
       <LinksStats
@@ -640,7 +640,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
       <WidgetComponent>
         <Header>
-          <WidgetTitleStyled>{title || `Campaign ${campaign_id}`}</WidgetTitleStyled>
+          <WidgetTitleStyled>{title || ` ${campaign_id}`}</WidgetTitleStyled>
           {!sdk && <WidgetButton
             appearance='additional'
             size='extra-small'
@@ -699,7 +699,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
           tokenAddress={token_address}
           linksCreated={links_count}
         />
-        
+
       </WidgetComponent>
 
       <CampaignParameters
@@ -709,10 +709,11 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         sdk={sdk}
         masterAddress={creator_address}
         encryptedSignerKey={encrypted_signer_key}
+        dashboardKey={dashboardKey}
       />
       <HowToUseSDK sdk={sdk} />
     </WidgetContainer>
-    
+
     <AsideContainer>
       <AsideStyled
         title="Campaign"
@@ -781,14 +782,14 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             Download full report
           </AsideButton>
         </AsideButtonsContainer>}
-        
+
       </AsideStyled>
 
       {sdk && <AsideStyled
         title="Resources"
         subtitle='Guides on how to install and run Linkdrop SDK'
       >
-       <AsideButton
+        <AsideButton
           onClick={() => {
             plausibleApi.invokeEvent({
               eventName: 'view_docs',
@@ -850,7 +851,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             onSuccess
           )
         }}
-      
+
         walletsSubmit={(
           wallet,
           additionalWalletsOn: boolean,
@@ -880,7 +881,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             onSuccess
           )
         }}
-      
+
         buttonTitleValue={claiming_finished_button_title || ''}
         buttonHrefValue={claiming_finished_button_url || ''}
         autoRedirectValue={claiming_finished_auto_redirect || false}
@@ -900,7 +901,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         finalScreenButtonToggleValue={claiming_finished_button_on}
 
         availableCountriesToggleValue={available_countries_on}
-      
+
       />
     </AsideContainer>
   </Container>
