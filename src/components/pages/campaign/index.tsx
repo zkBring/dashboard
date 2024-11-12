@@ -401,6 +401,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   campaignLoading
 }) => {
 
+  console.log({ dashboardKey })
   const history = useHistory()
 
   const [status, setStatus] = useState<TCampaignStatus>('initial')
@@ -709,7 +710,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         sdk={sdk}
         masterAddress={creator_address}
         encryptedSignerKey={encrypted_signer_key}
-        dashboardKey={dashboardKey}
+        dashboardKey={dashboardKey || ""}
       />
       <HowToUseSDK sdk={sdk} />
     </WidgetContainer>
