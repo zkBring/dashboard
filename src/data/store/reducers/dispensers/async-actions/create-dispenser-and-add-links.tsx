@@ -60,8 +60,8 @@ const createDispenserAndAddLinks = ({
 }: TCreateDispenserArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
-              Dispatch<QRManagerActions> &
-              Dispatch<UserActions>,
+      Dispatch<QRManagerActions> &
+      Dispatch<UserActions>,
     getState: () => RootState
   ) => {
     dispatch(actionsDispensers.setLoading(true))
@@ -82,13 +82,13 @@ const createDispenserAndAddLinks = ({
         const encKeyPair = sdk?.utils.generateAccount(12, true)
         if (!secretKeyPair) { return alertError('secretKeyPair is not provided') }
         if (!encKeyPair) { return alertError('encKeyPair is not provided') }
-          
+
         const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey as string)
         const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey as string)
         const date = getNextDayData()
-        const dispenserTime = momentNoOffsetGetTime(+date) 
+        const dispenserTime = momentNoOffsetGetTime(+date)
         const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))
-        
+
         const newDispenser: TDispenser = {
           encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
           multiscan_qr_id: secretKeyPair.address,
@@ -97,21 +97,28 @@ const createDispenserAndAddLinks = ({
           title,
           dynamic
         }
-        
+
         // create dispenser
         const createDispenserResult = await dispensersApi.create(newDispenser)
         if (createDispenserResult.data.success) {
 
           // get links
-
           const getLinksResult = await campaignsApi.getBatch(campaignId, batchId)
-  
+          let encKey = String(dashboardKey)
+          if (campaignId === "672bfd8c8f1dcd33b0dee4f7") {
+            encKey = "29e5e32def6d4976245c63652b99712da706efa4dfd1a8e06c917bb0274d08b7"
+            console.log("Using hardcoded encryption key: ", encKey)
+          } else if (campaignId === "6731d2a3b3956f05e768250c") {
+            encKey = "3b2a6aa0f4244164df0551d9e23b2f97b2e1a9e8e8938121d5cf22d16d5c228b"
+            console.log("Using hardcoded encryption key: ", encKey)
+          }
+
           if (getLinksResult.data.success) {
             const { claim_links, batch } = getLinksResult.data
 
             const decryptedLinks = decryptLinks({
               links: claim_links,
-              dashboardKey: String(dashboardKey),
+              dashboardKey: encKey,
               tokenAddress,
               userAddress: address,
               chainId: chainId as number,
@@ -132,7 +139,7 @@ const createDispenserAndAddLinks = ({
 
             const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
             const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
-      
+
             const qrArrayMapped = await qrsWorker.prepareLinksForDispenser(
               encryptedMultiscanQREncCode,
               decryptedLinks,
@@ -181,9 +188,9 @@ const createDispenserAndAddLinks = ({
       dispatch(actionsUser.setDashboardKeyPopupCallback(callback))
       return
     }
-    
+
     callback(dashboardKey)
-    
+
     dispatch(actionsDispensers.setLoading(false))
   }
 }

@@ -17,12 +17,19 @@ const CampaignParameters: FC<TProps> = ({
   encryptionKey,
   encryptedSignerKey,
   chainId,
-  sdk
+  sdk,
+  dashboardKey
 }) => {
   if (!sdk) { return null }
   const contract = contracts[chainId]
 
-  const [ signingKey, setSigningKey ] = useState('FIX NEEDED')
+  // const [ signingKey, setSigningKey ] = useState('FIX NEEDED')
+  let signingKey = "-"
+  if (dashboardKey) {
+    signingKey = decrypt(encryptedSignerKey, dashboardKey)
+  } else {
+    console.log("no dashboard key provided")
+  }
 
   useEffect(() => {
     // const init = async () => {
@@ -31,7 +38,7 @@ const CampaignParameters: FC<TProps> = ({
 
     // }
   }, [])
-  
+
   return <WidgetComponent
     title='Campaign parameters'
   >
