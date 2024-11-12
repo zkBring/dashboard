@@ -175,7 +175,6 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
           return false
         }
         // @ts-ignore
-        console.log('here')
         const result = wallet.chains.includes(String(chainId)) && wallet.token_types.includes(currentCampaignTokenStandard)
         return result
       })
