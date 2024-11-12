@@ -5,4 +5,5 @@ export type TProps = {
   campaignId: string
   chainId: number
   sdk: boolean
+  dashboardKey: string
 }
