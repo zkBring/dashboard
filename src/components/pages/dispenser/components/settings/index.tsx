@@ -28,12 +28,14 @@ import AppTitle from './app-title'
 import { TDispenser } from 'types'
 
 const settings = [
+  // {
+  //   title: 'Whitelist addresses',
+  //   subtitle: 'You can set up who can claim tokens by whitelisting users by addresses',
+  //   id: 'whitelist',
+  //   tooltip: 'Limit who can claim tokens by whitelisting specific addresses'
+  // },
+  
   {
-    title: 'Whitelist addresses',
-    subtitle: 'You can set up who can claim tokens by whitelisting users by addresses',
-    id: 'whitelist',
-    tooltip: 'Limit who can claim tokens by whitelisting specific addresses'
-  }, {
     title: 'Timeframe',
     subtitle: 'You can set up the link expiration, so that users will not be able to claim after a certain day and time, or select \'No End Date\' to allow ongoing claims',
     id: 'timeframe',
