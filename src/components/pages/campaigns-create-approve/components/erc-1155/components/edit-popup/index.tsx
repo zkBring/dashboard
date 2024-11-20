@@ -42,8 +42,8 @@ const EditPopup: FC<ReduxType> = ({
   onUpdate
 }) => {
   const currentAsset = assets.find(asset => asset.id === id)
-  const [ linksAmount, setLinksAmount ] = useState(currentAsset && currentAsset.linksAmount || '1')
-  const [ linksLimit, setLinksLimit ] = useState<string | null>(null)
+  const [linksAmount, setLinksAmount] = useState(currentAsset && currentAsset.linksAmount || '1')
+  const [linksLimit, setLinksLimit] = useState<string | null>(null)
 
   useEffect(() => {
     if (!currentAsset || !signer || !tokenStandard || !tokenAddress || !address) { return }
@@ -56,9 +56,12 @@ const EditPopup: FC<ReduxType> = ({
         currentAsset?.tokenId as string
       )
 
-      if (ownership.owns) {
-        setLinksLimit(ownership.balance)
-      }
+      // hotfix
+      setLinksLimit("100000")
+
+      /* if (ownership.owns) {
+       *   setLinksLimit(ownership.balance)
+       * } */
     }
     init()
   }, [])
