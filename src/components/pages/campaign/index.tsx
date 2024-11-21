@@ -368,6 +368,19 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
+const defineSoulboundTokenId = (
+  collection_id?: string | null,
+  token_id?: string | null
+) => {
+  if (!collection_id || !token_id) { return }
+  return <TableRow>
+    <TableText>Token ID</TableText>
+    <TableValue>
+      {token_id}
+    </TableValue>
+  </TableRow>
+}
+
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
@@ -458,6 +471,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     links_claimed,
     available_countries_on,
     available_countries,
+    collection_id,
     expiration_date,
     claiming_finished_button_title,
     claiming_finished_button_url,
@@ -466,7 +480,9 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     preferred_wallet_on,
     claim_host,
     claim_host_on,
-    multiple_claims_on
+    multiple_claims_on,
+    token_id
+    
   } = currentCampaign
 
   const encryptionKey = createEncryptionKey(
@@ -474,7 +490,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     campaign_number,
     dashboardKey
   )
-  console.log({ dashboardKey, encryptionKey })
 
   const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
@@ -746,6 +761,13 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             {tokenUrl ? <TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink> : shortenString(token_address)}
           </TableValue>
         </TableRow>
+        
+
+        {defineSoulboundTokenId(
+          collection_id,
+          token_id
+        )}
+
         <TableRow>
           <TableText>Campaign contract</TableText>
           <TableValue>

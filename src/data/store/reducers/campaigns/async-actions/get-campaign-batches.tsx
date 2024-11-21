@@ -36,20 +36,25 @@ const getCampaignBatches = ({
           }
         }
 
-        
-        const updatedCampaigns = campaigns.map(campaign => {
-          if (campaign.campaign_id === campaign_id) {
-            return {
-              ...campaign,
-              batches: result.data.batches,
-              expiration_date: expirationDate
+        const campaignData = await campaignsApi.getOne(String(campaign_id))
+        if (campaignData.data.success) {
+          const {
+            token_id
+          } = campaignData.data.campaign
+          const updatedCampaigns = campaigns.map(campaign => {
+            if (campaign.campaign_id === campaign_id) {
+              return {
+                ...campaign,
+                batches: result.data.batches,
+                expiration_date: expirationDate,
+                token_id: token_id
+              }
             }
-          }
-          return campaign
-        })
-
-        dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
-
+            return campaign
+          })
+          dispatch(actionsCampaigns.updateCampaigns(updatedCampaigns))
+        }
+        
         callback && callback()
       }
     } catch (err) {
