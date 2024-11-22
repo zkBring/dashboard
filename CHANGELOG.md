@@ -1,5 +1,8 @@
 # Linkdrop Dashboard
 
+## 2.1.48
+- minor updates
+
 ## 2.1.47
 - support for zero network
 
