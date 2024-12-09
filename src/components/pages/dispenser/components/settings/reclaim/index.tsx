@@ -53,6 +53,7 @@ const Redirect: FC<TProps> = ({
     {toggleValue && <>
       <InputStyled
         value={reclaimAppIdValue}
+        title='Reclaim App ID'
         placeholder='Reclaim App ID'
         onChange={value => {
           setReclaimAppIdValue(value)
@@ -61,7 +62,7 @@ const Redirect: FC<TProps> = ({
       />
 
       <InputStyled
-        value={reclaimAppIdValue}
+        value={reclaimAppSecretValue}
         placeholder='Reclaim App Secret'
         onChange={value => {
           setReclaimAppSecretValue(value)
@@ -70,7 +71,7 @@ const Redirect: FC<TProps> = ({
       />
 
       <InputStyled
-        value={reclaimAppIdValue}
+        value={reclaimProviderIdValue}
         placeholder='Reclaim Provider ID'
         onChange={value => {
           setReclaimProviderIdValue(value)
