@@ -199,7 +199,8 @@ const defineEnabled = (
   redirectToggleValue: boolean,
   whitelistValue: boolean,
   timeframeValue: boolean,
-  appTitleValue: boolean
+  appTitleValue: boolean,
+  reclaimToggleValue: boolean
 ) => {
   if (settingId === 'redirect') {
     return redirectToggleValue
@@ -215,6 +216,10 @@ const defineEnabled = (
 
   if (settingId === 'app_title') {
     return appTitleValue
+  }
+
+  if (settingId === 'reclaim') {
+    return reclaimToggleValue
   }
 
   return false
@@ -315,7 +320,8 @@ const Settings: FC<TProps> = ({
           Boolean(redirectToggleValue),
           Boolean(whitelistToggleValue),
           Boolean(timeframeToggleValue),
-          Boolean(appTitleToggleValue)
+          Boolean(appTitleToggleValue),
+          Boolean(reclaimToggleValue)
         )
 
         if (!dynamic && setting.id === 'app_title') {
