@@ -30,11 +30,12 @@ const updateReclaim = ({
     const { dispensers: { dispensers } } = getState()
     dispatch(actionsDispensers.setLoading(true))
     try {
+
       const { data } : { data: { success: boolean } } = await  dispensersApi.updateReclaim(
         dispenserId,
         reclaimAppId,
-        reclaimAppSecret,
         reclaimProviderId,
+        reclaimAppSecret
       )
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
