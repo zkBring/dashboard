@@ -88,6 +88,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrDispenserName: string,
       whitelistOn: boolean,
       dynamic: boolean,
+      reclaim: boolean,
       successCallback?: () => void
     ) => dispatch(asyncDispensersActions.downloadDispenserQR({
       multiscan_qr_id,
@@ -98,6 +99,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       height: size,
       whitelist_on: whitelistOn,
       dynamic,
+      reclaim_on: reclaim,
       successCallback
     })),
     
@@ -264,7 +266,43 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispatch(asyncDispensersActions.decryptDispenserData(
         { dispenser_id }
       ))
-    }
+    },
+
+    reclaimSubmit: (
+      dispenserId: string,
+      reclaimAppId: string,
+      reclaimAppSecret: string,
+      reclaimProviderId: string,
+      onSuccess?: () => void,
+      onError?: () => void
+    ) => {
+      dispatch(
+        asyncDispensersActions.updateReclaim({
+          dispenserId,
+          reclaimAppId,
+          reclaimAppSecret,
+          reclaimProviderId,
+          successCallback: onSuccess,
+          errorCallback: onError
+        }) 
+      )
+    },
+
+    toggleReclaim: (
+      dispenserId: string,
+      reclaimOn: boolean,
+      onSuccess: () => void,
+      onError: () => void
+    ) => {
+      dispatch(
+        asyncDispensersActions.toggleReclaimOn({
+          dispenser_id: dispenserId,
+          reclaim_on: reclaimOn,
+          successCallback: onSuccess,
+          errorCallback: onError
+        }) 
+      )
+    },
   }
 }
 
@@ -369,7 +407,9 @@ const Dispenser: FC<ReduxType> = ({
   getDispenserWhitelist,
   decryptDispenserData,
   updateAppTitle,
-  toggleAppTitle
+  toggleAppTitle,
+  toggleReclaim,
+  reclaimSubmit
 }) => {
   const { id } = useParams<{id: string}>()
   // @ts-ignore
@@ -400,7 +440,9 @@ const Dispenser: FC<ReduxType> = ({
     return () => {
       removeCurrentDispenserData()
     }
-  }, [dispenser?.updated_at])
+  }, [
+    dispenser?.updated_at
+  ])
 
   useEffect(() => {
     if (!dashboardKey) { return }
@@ -408,7 +450,8 @@ const Dispenser: FC<ReduxType> = ({
   }, [
     dashboardKey,
     dispenser?.whitelist_on,
-    dispenser?.redirect_on
+    dispenser?.redirect_on,
+    dispenser?.reclaim_on
   ])
 
   const qrCodeDescription = defineQRCodeDescription()
@@ -434,7 +477,12 @@ const Dispenser: FC<ReduxType> = ({
     dispenser_url,
     decrypted_redirect_url,
     app_title,
-    app_title_on
+    app_title_on,
+
+    reclaim_app_id,
+    reclaim_app_secret,
+    reclaim_on,
+    reclaim_provider_id
   } = dispenser
 
   const currentStatus = defineDispenserStatus(
@@ -473,6 +521,7 @@ const Dispenser: FC<ReduxType> = ({
           title,
           Boolean(whitelist_on),
           Boolean(dynamic),
+          Boolean(reclaim_on),
           () => { toggleDownloadPopup(false) }
         )
       }}
@@ -544,12 +593,49 @@ const Dispenser: FC<ReduxType> = ({
         redirectUrl={decrypted_redirect_url}
         claimUrl={dispenser_url}
         loading={loading}
+        reclaimAppId={reclaim_app_id}
+
+        reclaimAppSecret={reclaim_app_secret}
+        reclaimToggleValue={Boolean(reclaim_on)}
+        reclaimProviderId={reclaim_provider_id}
         dynamic={dynamic}
         campaignData={currentDispenserData.campaign}
         getDispenserWhitelist={getDispenserWhitelist}
         currentDispenser={dispenser}
         whitelistToggleValue={whitelist_on}
         appTitle={app_title}
+        reclaimToggleAction={
+          (
+            reclaimToggleValue
+          ) => {
+            toggleReclaim (
+              dispenser_id as string,
+              Boolean(reclaimToggleValue),
+              () => {
+                
+              },
+              () => alert('error')
+            )
+          }
+        }
+        reclaimSubmit={
+          (
+            reclaimAppId,
+            reclaimAppSecret,
+            reclaimProviderId,
+            onSuccess,
+            onError
+          ) => {
+            reclaimSubmit(
+              dispenser_id as string,
+              reclaimAppId,
+              reclaimAppSecret,
+              reclaimProviderId,
+              onSuccess,
+              onError
+            )
+          }
+        }
         appTitleToggleValue={app_title_on}
         appTitleSubmit={
           (

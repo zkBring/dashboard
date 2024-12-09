@@ -18,8 +18,13 @@ import updateArchived from './update-archived'
 import updateAppTitle from './update-app-title'
 import toggleAppTitleOn from './toggle-app-title-on'
 
+import toggleReclaimOn from './toggle-reclaim-on'
+import updateReclaim from './update-reclaim'
+
 export {
   createDispenser,
+  toggleReclaimOn,
+  updateReclaim,
   updateArchived,
   updateWhitelist,
   createDispenserAndAddLinks,
