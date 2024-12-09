@@ -50,10 +50,10 @@ const settings = [
     subtitle: '',
     tooltip: 'Dynamic QR App Title'
   }, {
-    title: 'Reclaim',
+    title: 'Reclaim (ALPHA)',
     id: 'reclaim',
-    subtitle: '',
-    tooltip: 'Reclaim configurations'
+    subtitle: 'Share tokens with any regular website users (Twitter/Github/Reddit/your website). Powered by Reclaim Protocol. Learn more at https://www.reclaimprotocol.org/',
+    tooltip: 'Share tokens with any regular website users (Twitter/Github/Reddit/your website). Powered by Reclaim Protocol.'
   }
 ]
 
