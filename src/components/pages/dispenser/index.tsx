@@ -88,6 +88,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       qrDispenserName: string,
       whitelistOn: boolean,
       dynamic: boolean,
+      reclaim: boolean,
       successCallback?: () => void
     ) => dispatch(asyncDispensersActions.downloadDispenserQR({
       multiscan_qr_id,
@@ -98,6 +99,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       height: size,
       whitelist_on: whitelistOn,
       dynamic,
+      reclaim_on: reclaim,
       successCallback
     })),
     
@@ -516,6 +518,7 @@ const Dispenser: FC<ReduxType> = ({
           title,
           Boolean(whitelist_on),
           Boolean(dynamic),
+          Boolean(reclaim_on),
           () => { toggleDownloadPopup(false) }
         )
       }}

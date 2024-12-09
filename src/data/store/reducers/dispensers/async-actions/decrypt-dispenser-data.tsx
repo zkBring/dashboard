@@ -63,7 +63,8 @@ const decryptDispenserData = ({
           encrypted_multiscan_qr_enc_code,
           encrypted_multiscan_qr_secret,
           whitelist_on,
-          dynamic
+          dynamic,
+          reclaim_on
         } = currentDispenser
         const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
         const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
@@ -75,7 +76,8 @@ const decryptDispenserData = ({
           decryptedMultiscanQRSecret,
           multiscanQREncCode,
           Boolean(whitelist_on),
-          Boolean(dynamic)
+          Boolean(dynamic),
+          Boolean(reclaim_on)
         )
   
         const linkKey = ethers.utils.id(multiscanQREncCode)
