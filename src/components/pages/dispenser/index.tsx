@@ -440,7 +440,9 @@ const Dispenser: FC<ReduxType> = ({
     return () => {
       removeCurrentDispenserData()
     }
-  }, [dispenser?.updated_at])
+  }, [
+    dispenser?.updated_at
+  ])
 
   useEffect(() => {
     if (!dashboardKey) { return }
@@ -448,7 +450,8 @@ const Dispenser: FC<ReduxType> = ({
   }, [
     dashboardKey,
     dispenser?.whitelist_on,
-    dispenser?.redirect_on
+    dispenser?.redirect_on,
+    dispenser?.reclaim_on
   ])
 
   const qrCodeDescription = defineQRCodeDescription()

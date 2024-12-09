@@ -41,20 +41,19 @@ const decryptDispenserData = ({
     } = getState()
 
     const currentDispenser = dispensers.find(dispenser => String(dispenser.dispenser_id) === dispenser_id)
-
     if (!currentDispenser) {
       dispatch(actionsDispensers.setLoading(false))
       return alertError('Dispenser not found')
     }
 
-    if (
-      currentDispenser.decrypted_multiscan_qr_enc_code &&
-      currentDispenser.decrypted_multiscan_qr_secret &&
-      currentDispenser.dispenser_url
-    ) {
-      dispatch(actionsDispensers.setLoading(false))
-      return
-    }
+    // if (
+    //   currentDispenser.decrypted_multiscan_qr_enc_code &&
+    //   currentDispenser.decrypted_multiscan_qr_secret &&
+    //   currentDispenser.dispenser_url
+    // ) {
+    //   dispatch(actionsDispensers.setLoading(false))
+    //   return
+    // }
 
     const callback = async (dashboardKey: string) => {
       try {
