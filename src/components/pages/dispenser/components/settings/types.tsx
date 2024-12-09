@@ -43,6 +43,19 @@ export type TProps = {
   ) => void
 
   getDispenserWhitelist: (dispenserId: string) => void
+
+  reclaimSubmit: (
+    reclaimAppId: any,
+    reclaimAppSecret: any,
+    reclaimProviderId: any,
+    onSuccess?: () => void,
+    onError?: () => void
+  ) => void,
+  reclaimAppId?: string | null,
+  reclaimAppSecret?: string | null,
+  reclaimProviderId?: string | null,
+  reclaimToggleAction: (value: boolean) => void,
+  reclaimToggleValue?: boolean,
 }
 
 export type TSettingItem = {
