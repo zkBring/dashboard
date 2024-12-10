@@ -322,7 +322,6 @@ const Settings: FC<TProps> = ({
         ) {
           return
         }
-        console.log({ reclaim, setting })
         if (!reclaim && setting.id === 'reclaim') {
           return 
         }
