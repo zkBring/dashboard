@@ -1,7 +1,6 @@
 import {
   FC,
-  useState,
-  useEffect
+  useState
 } from 'react'
 import { TProps } from './types'
 import {
@@ -13,11 +12,9 @@ const Redirect: FC<TProps> = ({
   title,
   subtitle,
   onClose,
-  toggleAction,
   reclaimAppId,
   reclaimAppSecret,
   reclaimProviderId,
-  toggleValue,
   action
 }) => {
   const [
@@ -45,42 +42,36 @@ const Redirect: FC<TProps> = ({
       !reclaimAppSecretValue ||
       !reclaimProviderIdValue
     }
-    toggleAction={(value) => {
-      toggleAction && toggleAction(value)
-    }}
-    toggleState={toggleValue}
   >
-    {toggleValue && <>
-      <InputStyled
-        value={reclaimAppIdValue}
-        title='Reclaim App ID'
-        placeholder='Reclaim App ID'
-        onChange={value => {
-          setReclaimAppIdValue(value)
-          return value
-        }}
-      />
+    <InputStyled
+      value={reclaimAppIdValue}
+      title='Reclaim App ID'
+      placeholder='Reclaim App ID'
+      onChange={value => {
+        setReclaimAppIdValue(value)
+        return value
+      }}
+    />
 
-      <InputStyled
-        value={reclaimAppSecretValue}
-        title='Reclaim App Secret'
-        placeholder='Reclaim App Secret'
-        onChange={value => {
-          setReclaimAppSecretValue(value)
-          return value
-        }}
-      />
+    <InputStyled
+      value={reclaimAppSecretValue}
+      title='Reclaim App Secret'
+      placeholder='Reclaim App Secret'
+      onChange={value => {
+        setReclaimAppSecretValue(value)
+        return value
+      }}
+    />
 
-      <InputStyled
-        title='Reclaim Provider ID'
-        value={reclaimProviderIdValue}
-        placeholder='Reclaim Provider ID'
-        onChange={value => {
-          setReclaimProviderIdValue(value)
-          return value
-        }}
-      />
-    </>}
+    <InputStyled
+      title='Reclaim Provider ID'
+      value={reclaimProviderIdValue}
+      placeholder='Reclaim Provider ID'
+      onChange={value => {
+        setReclaimProviderIdValue(value)
+        return value
+      }}
+    />
   </AsidePopup>
 }
 

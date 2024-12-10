@@ -129,9 +129,6 @@ const definePopup = (
   reclaimAppId?: string | null,
   reclaimAppSecret?: string | null,
   reclaimProviderId?: string | null,
-  reclaimToggleAction?: (value: boolean) => void,
-  reclaimToggleValue?: boolean,
-
 
 ) => {
   switch (setting.id) {
@@ -152,8 +149,6 @@ const definePopup = (
         loading={loading}
         currentDispenser={currentDispenser}
         action={reclaimSubmit}
-        toggleAction={reclaimToggleAction}
-        toggleValue={reclaimToggleValue}
 
         reclaimAppId={reclaimAppId}
         reclaimAppSecret={reclaimAppSecret}
@@ -200,7 +195,7 @@ const defineEnabled = (
   whitelistValue: boolean,
   timeframeValue: boolean,
   appTitleValue: boolean,
-  reclaimToggleValue: boolean
+  reclaim: boolean
 ) => {
   if (settingId === 'redirect') {
     return redirectToggleValue
@@ -219,7 +214,7 @@ const defineEnabled = (
   }
 
   if (settingId === 'reclaim') {
-    return reclaimToggleValue
+    return reclaim
   }
 
   return false
@@ -249,6 +244,7 @@ const Settings: FC<TProps> = ({
   timeframeToggleAction,
   timeframeToggleValue,
   dynamic,
+  reclaim,
   getDispenserWhitelist,
 
   currentDispenser,
@@ -257,9 +253,7 @@ const Settings: FC<TProps> = ({
   reclaimSubmit,
   reclaimAppId,
   reclaimAppSecret,
-  reclaimProviderId,
-  reclaimToggleAction,
-  reclaimToggleValue
+  reclaimProviderId
 }) => {
 
 
@@ -297,9 +291,7 @@ const Settings: FC<TProps> = ({
     appTitleToggleValue,
     reclaimAppId,
     reclaimAppSecret,
-    reclaimProviderId,
-    reclaimToggleAction,
-    reclaimToggleValue
+    reclaimProviderId
   ) : null
 
   // if (loading) {
@@ -321,11 +313,17 @@ const Settings: FC<TProps> = ({
           Boolean(whitelistToggleValue),
           Boolean(timeframeToggleValue),
           Boolean(appTitleToggleValue),
-          Boolean(reclaimToggleValue)
+          Boolean(reclaimAppId)
         )
 
-        if (!dynamic && setting.id === 'app_title') {
+        if (
+          (!dynamic || reclaim) && setting.id === 'app_title'
+          
+        ) {
           return
+        }
+        if (!reclaim && setting.id === 'reclaim') {
+          return 
         }
 
         return renderSettingItem(

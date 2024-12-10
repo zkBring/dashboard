@@ -182,17 +182,6 @@ const requests = {
     })
   },
 
-  updateReclaimOn: (
-    dispenser_id: string | number,
-    reclaim_on: boolean
-  ) => {
-    return dispensersApi.patch(`/dispensers/${dispenser_id}/reclaim-on`, {
-      reclaim_on
-    }, {
-      withCredentials: true
-    })
-  },
-
   updateReclaim: (
     dispenser_id: string | number,
     reclaim_app_id: string,

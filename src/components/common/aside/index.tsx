@@ -77,6 +77,11 @@ const AsideComponent: FC<TProps & ReduxType> = ({
         <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>QR Manager</AsideMenuItemTitle>
       </AsideMenuItem>
 
+      <AsideMenuItem to='/reclaims' active={location.pathname.includes('/qr-manager')}>
+        <Icons.DynamicQRIcon />
+        <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Reclaims</AsideMenuItemTitle>
+      </AsideMenuItem>
+
       <AsideMenuItem to='/collections' active={location.pathname.includes('/collections')}>
         <Icons.NFTsIcon />
         <AsideMenuItemTitle className={AsideMenuItemTitleClassName}>Soulbounds</AsideMenuItemTitle>
