@@ -557,6 +557,7 @@ const Dispenser: FC<ReduxType> = ({
       />
 
       <ClaimLinks
+  
         pauseDispenser={pauseDispenser}
         unpauseDispenser={unpauseDispenser}
         downloadReport={downloadReport}
@@ -577,7 +578,7 @@ const Dispenser: FC<ReduxType> = ({
         claimUrl={dispenser_url}
         loading={loading}
         reclaimAppId={reclaim_app_id}
-
+        reclaim={reclaim}
         reclaimAppSecret={reclaim_app_secret}
         reclaimProviderId={reclaim_provider_id}
         dynamic={dynamic}

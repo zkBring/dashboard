@@ -34,12 +34,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     createDispenser: (
       title: string,
       dynamic: boolean,
-      reclaim: boolean,
       successCallback: (id: string | number) => void
     ) => dispatch(asyncDispensersActions.createDispenser({
       title,
       dynamic,
-      reclaim,
+      reclaim: false,
+      reclaim_app_id: undefined,
+      reclaim_app_secret: undefined,
+      reclaim_provider_id: undefined,
       successCallback
     }))
   }
@@ -86,7 +88,6 @@ const DispenserCreate: FC<ReduxType> = ({
               createDispenser(
                 title,
                 false, // NOT dynamic
-                false, // IS reclaim
                 (id) => history.push(`/dispensers/${id}`)
               )
           }}

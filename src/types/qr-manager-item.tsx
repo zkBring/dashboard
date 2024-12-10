@@ -23,4 +23,5 @@ export type TQRManagerItem = {
   updated_at?: string
   dynamic?: boolean
   status: TQRStatus
+  reclaim?: boolean
 }

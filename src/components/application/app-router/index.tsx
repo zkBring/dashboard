@@ -138,6 +138,7 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           component={Dispenser}
         />
 
+
         <ProtectedRoute
           path='/campaigns/new/:type/initial'
           exact={true}
@@ -216,11 +217,20 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
+          path='/reclaims/:id'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={Dispenser}
+        />
+
+        <ProtectedRoute
           path='/reclaims'
           exact={true}
           loggedIn={Boolean(address)}
           component={Reclaims}
         />
+
+        
 
         <ProtectedRoute
           path='/qrs/new'

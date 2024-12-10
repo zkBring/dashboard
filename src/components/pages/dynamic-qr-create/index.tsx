@@ -34,12 +34,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     addDispenser: (
       title: string,
       dynamic: boolean,
-      reclaim: boolean,
       successCallback: (id: string | number) => void
+
     ) => dispatch(asyncDispensersActions.createDispenser({
       title,
       dynamic,
-      reclaim,
+      reclaim: false,
+      reclaim_app_id: undefined,
+      reclaim_app_secret: undefined,
+      reclaim_provider_id: undefined,
       successCallback
     }))
   }
@@ -87,7 +90,6 @@ const QRCreate: FC<ReduxType> = ({
             addDispenser(
               title,
               true,
-              false,
               (id) => history.push(`/dynamic-qrs/${id}`)
             )
           }}

@@ -13,9 +13,6 @@ import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { useHistory } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
-import { TLinkParams } from './types'
-import { TDispenser } from 'types'
 
 const mapStateToProps = ({
   campaigns: { campaigns },
@@ -34,12 +31,17 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
     createDispenser: (
       title: string,
       dynamic: boolean,
-      reclaim: boolean,
+      reclaimAppId: string,
+      reclaimSecret: string,
+      reclaimProviderId: string,
       successCallback: (id: string | number) => void
     ) => dispatch(asyncDispensersActions.createDispenser({
       title,
       dynamic,
-      reclaim,
+      reclaim: true,
+      reclaim_app_id: reclaimAppId,
+      reclaim_app_secret: reclaimSecret,
+      reclaim_provider_id: reclaimProviderId,
       successCallback
     }))
   }
@@ -58,6 +60,9 @@ const ReclaimQRCreate: FC<ReduxType> = ({
   // @ts-ignore
   
   const [ title, setTitle ] = useState<string>('')
+  const [ reclaimAppId, setReclaimAppId ] = useState<string>('')
+  const [ reclaimSecret, setReclaimSecret ] = useState<string>('')
+  const [ reclaimProviderId, setReclaimProviderId ] = useState<string>('')
 
   return <Container>
     <WidgetComponent title='New reclaim QR'>
@@ -68,6 +73,24 @@ const ReclaimQRCreate: FC<ReduxType> = ({
         value={title}
         onChange={(value: string) => { setTitle(value); return value }}
       />
+      <InputComponent
+        title='Reclaim App ID'
+        placeholder='App ID'
+        value={reclaimAppId}
+        onChange={(value: string) => { setReclaimAppId(value); return value }}
+      />
+      <InputComponent
+        title='Reclaim Secret'
+        placeholder='Reclaim Secret'
+        value={reclaimSecret}
+        onChange={(value: string) => { setReclaimSecret(value); return value }}
+      />
+      <InputComponent
+        title='Reclaim Provider ID'
+        placeholder='Reclaim Provider ID'
+        value={reclaimProviderId}
+        onChange={(value: string) => { setReclaimProviderId(value); return value }}
+      />
 
       <Buttons>
         <ContainerButton
@@ -76,15 +99,18 @@ const ReclaimQRCreate: FC<ReduxType> = ({
           Back
         </ContainerButton>
         <ContainerButton
-          disabled={!title}
+          disabled={!title || !reclaimAppId || !reclaimSecret || !reclaimProviderId}
           appearance='action'
+
           loading={loading}
           onClick={() => {
 
               createDispenser(
                 title,
                 false, // NOT dynamic
-                true, // IS reclaim
+                reclaimAppId,
+                reclaimSecret,
+                reclaimProviderId,
                 (id) => history.push(`/reclaims/${id}`)
               )
           }}

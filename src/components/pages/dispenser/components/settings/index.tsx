@@ -195,7 +195,7 @@ const defineEnabled = (
   whitelistValue: boolean,
   timeframeValue: boolean,
   appTitleValue: boolean,
-  reclaimToggleValue: boolean
+  reclaim: boolean
 ) => {
   if (settingId === 'redirect') {
     return redirectToggleValue
@@ -214,7 +214,7 @@ const defineEnabled = (
   }
 
   if (settingId === 'reclaim') {
-    return reclaimToggleValue
+    return reclaim
   }
 
   return false
@@ -244,6 +244,7 @@ const Settings: FC<TProps> = ({
   timeframeToggleAction,
   timeframeToggleValue,
   dynamic,
+  reclaim,
   getDispenserWhitelist,
 
   currentDispenser,
@@ -315,8 +316,15 @@ const Settings: FC<TProps> = ({
           Boolean(reclaimAppId)
         )
 
-        if (!dynamic && setting.id === 'app_title') {
+        if (
+          (!dynamic || reclaim) && setting.id === 'app_title'
+          
+        ) {
           return
+        }
+        console.log({ reclaim, setting })
+        if (!reclaim && setting.id === 'reclaim') {
+          return 
         }
 
         return renderSettingItem(

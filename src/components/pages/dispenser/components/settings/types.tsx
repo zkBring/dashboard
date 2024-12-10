@@ -5,6 +5,7 @@ export type TProps = {
   appTitle?: string
   redirectUrl?: string | null
   dynamic?: boolean
+  reclaim?: boolean
   loading: boolean
   campaignData: TCampaign | null
   redirectToggleAction?: (value: boolean) => void

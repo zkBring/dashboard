@@ -29,7 +29,7 @@ import {
   defineDispenserStatusTag
 } from 'helpers'
 import {
-  TDispenser
+  TQRManagerItem
 } from 'types'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -41,23 +41,25 @@ import Icons from 'icons'
 const mapStateToProps = ({
   user: { address, chainId },
   dispensers: {
-    dispensers,
     loading
+  },
+  qrManager: {
+    items
   }
 }: RootState) => ({
   address,
   chainId,
-  dispensers,
-  loading
+  loading,
+  items
 })
 
 const createReclaimRow = (
-  reclaimItem: TDispenser
+  reclaimItem: TQRManagerItem
 ) => {
   const {
     title,
     links_count,
-    dispenser_id,
+    item_id,
     claim_duration,
     created_at,
     claim_start,
@@ -81,7 +83,7 @@ const createReclaimRow = (
     timeframe_on
   )
 
-  const redirectUrl = defineHref(dispenser_id as string)
+  const redirectUrl = defineHref(item_id as string)
 
   const buttons = <BatchListValueJustifySelfEnd>
     <Button
@@ -123,16 +125,16 @@ const createReclaimRow = (
 }
 
 const defineHref = (
-  dispenserId: string
+  item_id: string
 ) => {
-  return `/reclaims/${dispenserId}`
+  return `/reclaims/${item_id}`
 }
 
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 const Reclaims: FC<ReduxType> = ({
-  dispensers,
+  items,
   loading
 }) => {
 
@@ -140,12 +142,12 @@ const Reclaims: FC<ReduxType> = ({
 
   if (
     loading &&
-    dispensers.length === 0
+    items.length === 0
   ) {
     return <Loader size='large' />
   }
 
-  if (dispensers.length === 0) {
+  if (items.length === 0) {
     return <>
       <InitialNote
         title='Create Your First Reclaim campaign'
@@ -158,7 +160,7 @@ const Reclaims: FC<ReduxType> = ({
     </>
   }
 
-  const itemsToShow = dispensers.filter(dispenser => dispenser.reclaim)
+  const itemsToShow = items.filter(item => item.reclaim)
 
   return <Container>
     <WidgetComponent>
