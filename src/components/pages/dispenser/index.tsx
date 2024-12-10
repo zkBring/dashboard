@@ -99,7 +99,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       height: size,
       whitelist_on: whitelistOn,
       dynamic,
-      reclaim_on: reclaim,
+      reclaim,
       successCallback
     })),
     
@@ -286,23 +286,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           errorCallback: onError
         }) 
       )
-    },
-
-    toggleReclaim: (
-      dispenserId: string,
-      reclaimOn: boolean,
-      onSuccess: () => void,
-      onError: () => void
-    ) => {
-      dispatch(
-        asyncDispensersActions.toggleReclaimOn({
-          dispenser_id: dispenserId,
-          reclaim_on: reclaimOn,
-          successCallback: onSuccess,
-          errorCallback: onError
-        }) 
-      )
-    },
+    }
   }
 }
 
@@ -408,7 +392,6 @@ const Dispenser: FC<ReduxType> = ({
   decryptDispenserData,
   updateAppTitle,
   toggleAppTitle,
-  toggleReclaim,
   reclaimSubmit
 }) => {
   const { id } = useParams<{id: string}>()
@@ -451,7 +434,7 @@ const Dispenser: FC<ReduxType> = ({
     dashboardKey,
     dispenser?.whitelist_on,
     dispenser?.redirect_on,
-    dispenser?.reclaim_on
+    dispenser?.reclaim
   ])
 
   const qrCodeDescription = defineQRCodeDescription()
@@ -481,7 +464,7 @@ const Dispenser: FC<ReduxType> = ({
 
     reclaim_app_id,
     reclaim_app_secret,
-    reclaim_on,
+    reclaim,
     reclaim_provider_id
   } = dispenser
 
@@ -521,7 +504,7 @@ const Dispenser: FC<ReduxType> = ({
           title,
           Boolean(whitelist_on),
           Boolean(dynamic),
-          Boolean(reclaim_on),
+          Boolean(reclaim),
           () => { toggleDownloadPopup(false) }
         )
       }}
@@ -596,7 +579,6 @@ const Dispenser: FC<ReduxType> = ({
         reclaimAppId={reclaim_app_id}
 
         reclaimAppSecret={reclaim_app_secret}
-        reclaimToggleValue={Boolean(reclaim_on)}
         reclaimProviderId={reclaim_provider_id}
         dynamic={dynamic}
         campaignData={currentDispenserData.campaign}
@@ -604,20 +586,6 @@ const Dispenser: FC<ReduxType> = ({
         currentDispenser={dispenser}
         whitelistToggleValue={whitelist_on}
         appTitle={app_title}
-        reclaimToggleAction={
-          (
-            reclaimToggleValue
-          ) => {
-            toggleReclaim (
-              dispenser_id as string,
-              Boolean(reclaimToggleValue),
-              () => {
-                
-              },
-              () => alert('error')
-            )
-          }
-        }
         reclaimSubmit={
           (
             reclaimAppId,

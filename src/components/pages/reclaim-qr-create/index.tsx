@@ -49,32 +49,29 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
-const DispenserCreate: FC<ReduxType> = ({
+const ReclaimQRCreate: FC<ReduxType> = ({
   createDispenser,
   loading,
   dispensers 
 }) => {
-  const { dispenserId } = useParams<TLinkParams>()
   const history = useHistory()
   // @ts-ignore
-  const currentDispenser: TDispenser | null | undefined = dispenserId ? dispensers.find(item => item.dispenser_id === dispenserId) : null
-  const dispenserTitle = currentDispenser ? currentDispenser.title : ''
   
-  const [ title, setTitle ] = useState<string>(dispenserTitle)
+  const [ title, setTitle ] = useState<string>('')
 
   return <Container>
-    <WidgetComponent title='New dispenser'>
-      <WidgetSubtitle>Dispenser app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
+    <WidgetComponent title='New reclaim QR'>
+      <WidgetSubtitle>Reclaim app is represented by a single link or QR code that you can share for multiple users to scan to claim a unique token. Scanning is limited within a certain timeframe</WidgetSubtitle>
       <InputComponent
         title='Title'
-        placeholder='My first dispenser app...'
+        placeholder='My first reclaim app...'
         value={title}
         onChange={(value: string) => { setTitle(value); return value }}
       />
 
       <Buttons>
         <ContainerButton
-          to={currentDispenser ? `/dispensers/${currentDispenser.dispenser_id}` : '/dispensers'}
+          to='/reclaims'
         >
           Back
         </ContainerButton>
@@ -83,11 +80,12 @@ const DispenserCreate: FC<ReduxType> = ({
           appearance='action'
           loading={loading}
           onClick={() => {
+
               createDispenser(
                 title,
                 false, // NOT dynamic
-                false, // IS reclaim
-                (id) => history.push(`/dispensers/${id}`)
+                true, // IS reclaim
+                (id) => history.push(`/reclaims/${id}`)
               )
           }}
         >
@@ -100,4 +98,4 @@ const DispenserCreate: FC<ReduxType> = ({
 }
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatcherToProps)(DispenserCreate)
+export default connect(mapStateToProps, mapDispatcherToProps)(ReclaimQRCreate)

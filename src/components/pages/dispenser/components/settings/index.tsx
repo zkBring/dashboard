@@ -129,9 +129,6 @@ const definePopup = (
   reclaimAppId?: string | null,
   reclaimAppSecret?: string | null,
   reclaimProviderId?: string | null,
-  reclaimToggleAction?: (value: boolean) => void,
-  reclaimToggleValue?: boolean,
-
 
 ) => {
   switch (setting.id) {
@@ -152,8 +149,6 @@ const definePopup = (
         loading={loading}
         currentDispenser={currentDispenser}
         action={reclaimSubmit}
-        toggleAction={reclaimToggleAction}
-        toggleValue={reclaimToggleValue}
 
         reclaimAppId={reclaimAppId}
         reclaimAppSecret={reclaimAppSecret}
@@ -257,9 +252,7 @@ const Settings: FC<TProps> = ({
   reclaimSubmit,
   reclaimAppId,
   reclaimAppSecret,
-  reclaimProviderId,
-  reclaimToggleAction,
-  reclaimToggleValue
+  reclaimProviderId
 }) => {
 
 
@@ -297,9 +290,7 @@ const Settings: FC<TProps> = ({
     appTitleToggleValue,
     reclaimAppId,
     reclaimAppSecret,
-    reclaimProviderId,
-    reclaimToggleAction,
-    reclaimToggleValue
+    reclaimProviderId
   ) : null
 
   // if (loading) {
@@ -321,7 +312,7 @@ const Settings: FC<TProps> = ({
           Boolean(whitelistToggleValue),
           Boolean(timeframeToggleValue),
           Boolean(appTitleToggleValue),
-          Boolean(reclaimToggleValue)
+          Boolean(reclaimAppId)
         )
 
         if (!dynamic && setting.id === 'app_title') {

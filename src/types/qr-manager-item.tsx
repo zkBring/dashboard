@@ -2,7 +2,7 @@ import {
   TQRStatus
 } from "./qr"
 
-export type TQRManagerItemType = 'dispenser' | 'qr_set'
+export type TQRManagerItemType = 'dispenser' | 'qr_set' | 'reclaim'
 
 export type TQRManagerItem = {
   title: string

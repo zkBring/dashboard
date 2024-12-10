@@ -22,12 +22,14 @@ import * as actionsUser from '../../user/actions'
 type TCreateDispenserArgs = {
   title: string,
   dynamic: boolean,
+  reclaim: boolean,
   successCallback?: (id: string | number) => void,
 }
 
 const createDispenser = ({
   title,
   dynamic,
+  reclaim,
   successCallback
 }: TCreateDispenserArgs) => {
   return async (
@@ -64,7 +66,8 @@ const createDispenser = ({
           claim_start: +(new Date(dateString)),
           encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
           title,
-          dynamic
+          dynamic,
+          reclaim
         }
   
         const { data } = await dispensersApi.create(newDispenser)

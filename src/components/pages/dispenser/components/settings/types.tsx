@@ -53,9 +53,7 @@ export type TProps = {
   ) => void,
   reclaimAppId?: string | null,
   reclaimAppSecret?: string | null,
-  reclaimProviderId?: string | null,
-  reclaimToggleAction: (value: boolean) => void,
-  reclaimToggleValue?: boolean,
+  reclaimProviderId?: string | null
 }
 
 export type TSettingItem = {
