@@ -2,7 +2,8 @@ import { FC, useState } from 'react'
 import {
   TProps,
   TCreateDispenserAndAddLinks,
-  TCreateQRSetAndAddLinks
+  TCreateQRSetAndAddLinks,
+  TCreateReclaimAndAddLinks
 } from './types'
 import {
   BatchList,
@@ -35,6 +36,7 @@ import { TLinksBatch, TTokenType } from 'types'
 const defineDispenserTypes = (
   createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
   createQRSetAndAddLinks: TCreateQRSetAndAddLinks,
+  createReclaimAndAddLinks: TCreateReclaimAndAddLinks,
   campaignId: string,
   batchId: string,
   tokenAddress: string,
@@ -46,6 +48,7 @@ const defineDispenserTypes = (
 
   dispenserMappingPageRedirect: () => void,
   qrSetMappingPageRedirect: () => void,
+  reclaimMappingPageRedirect: () => void,
 
   successCallbackForDispenser?: (
     dispenser_id: string | number,
@@ -53,6 +56,10 @@ const defineDispenserTypes = (
   ) => void,
 
   successCallbackForQRSet?: (
+    dispenser_id: string | number
+  ) => void,
+
+  successCallbackForReclaim?: (
     dispenser_id: string | number
   ) => void,
 
@@ -114,6 +121,24 @@ const defineDispenserTypes = (
           customClaimHost,
           customClaimHostOn,
           successCallbackForQRSet
+        )
+      },
+      image: <Icons.QRSetPreviewIcon />
+    }, {
+      title: 'Reclaim',
+      text: 'A single QR code that dispenses tokens one-by-one to users after they scan it. Ideal for controlled and sequential token distribution',
+      onClick: () => {
+        createReclaimAndAddLinks(
+          reclaimMappingPageRedirect,
+          `Reclaim set for ${campaignTitle}`,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          tokenType,
+          customClaimHost,
+          customClaimHostOn,
+          successCallbackForReclaim
         )
       },
       image: <Icons.QRSetPreviewIcon />
@@ -196,7 +221,8 @@ const BatchesList: FC<TProps> = ({
   wallet,
   tokenType,
   createDispenserAndAddLinks,
-  createQRSetAndAddLinks
+  createQRSetAndAddLinks,
+  createReclaimAndAddLinks
 }) => {
 
   const history = useHistory()
@@ -213,6 +239,7 @@ const BatchesList: FC<TProps> = ({
   const dispenserOptions = defineDispenserTypes(
     createDispenserAndAddLinks,
     createQRSetAndAddLinks,
+    createReclaimAndAddLinks,
     campaignId,
     String(showPopup),
     tokenAddress as string,
@@ -228,6 +255,10 @@ const BatchesList: FC<TProps> = ({
 
     () => {
       history.push(`/campaigns/${campaignId}/qrs/generate`)
+    },
+
+    () => {
+      history.push(`/campaigns/${campaignId}/dispenser/generate`)
     },
 
     // for dispenser
@@ -248,10 +279,17 @@ const BatchesList: FC<TProps> = ({
       setShowPopup(false)
       return history.push(`/qrs/${dispenser_id}`)
     },
+    (
+      reclaim_id: string | number
+    ) => {
+      setShowPopup(false)
+      return history.push(`/reclaims/${reclaim_id}?settings_open=reclaim`)
+    },
     () => {
       setShowPopup(false)
       return history.push(`/campaigns/${campaignId}`)
     },
+
   )
 
   return <>
