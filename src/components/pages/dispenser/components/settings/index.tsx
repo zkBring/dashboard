@@ -25,6 +25,7 @@ import RedirectScreen from './redirect'
 import Whitelist from './whitelist'
 import AppTitle from './app-title'
 import Reclaim from './reclaim'
+import { useQuery } from 'hooks'
 
 import { TDispenser } from 'types'
 
@@ -256,11 +257,14 @@ const Settings: FC<TProps> = ({
   reclaimProviderId
 }) => {
 
+  const currentPageQuery = useQuery()
+  const initialSettingFromQuery = currentPageQuery.get('settings_open')
+  const initialSetting = initialSettingFromQuery ? (settings.find(setting => setting.id === initialSettingFromQuery) || null): null
 
   const [
     currentSetting,
     setCurrentSetting
-  ] = useState<null | TSettingItem>(null)
+  ] = useState<null | TSettingItem>(initialSetting)
 
   if (!campaignData) {
     return null
