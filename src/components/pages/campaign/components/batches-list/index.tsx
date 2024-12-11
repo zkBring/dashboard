@@ -190,7 +190,7 @@ const defineDistributeButton = (
         appearance='additional'
         size='extra-small'
         title='Reclaim'
-        to={`/dispensers/${batch.qr_campaign}`}
+        to={`/reclaims/${batch.qr_campaign}`}
       />
     }
 
