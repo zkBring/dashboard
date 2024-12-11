@@ -125,8 +125,8 @@ const defineDispenserTypes = (
       },
       image: <Icons.QRSetPreviewIcon />
     }, {
-      title: 'Reclaim',
-      text: 'A single QR code that dispenses tokens one-by-one to users after they scan it. Ideal for controlled and sequential token distribution',
+      title: 'Reclaim (ALPHA)',
+      text: 'Share tokens with any regular website users (Twitter/Github/Reddit/your website). Powered by Reclaim Protocol. Learn more at https://www.reclaimprotocol.org/',
       onClick: () => {
         createReclaimAndAddLinks(
           reclaimMappingPageRedirect,
@@ -141,7 +141,7 @@ const defineDispenserTypes = (
           successCallbackForReclaim
         )
       },
-      image: <Icons.QRSetPreviewIcon />
+      image: <Icons.DispenserQRPreviewIcon />
     }
   ]
 }
@@ -181,6 +181,15 @@ const defineDistributeButton = (
         appearance='additional'
         size='extra-small'
         title='Dispenser'
+        to={`/dispensers/${batch.qr_campaign}`}
+      />
+    }
+
+    if (batch.qr_campaign_type === 'RECLAIM') {
+      return <ButtonStyled
+        appearance='additional'
+        size='extra-small'
+        title='Reclaim'
         to={`/dispensers/${batch.qr_campaign}`}
       />
     }
