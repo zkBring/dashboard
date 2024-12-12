@@ -1,5 +1,11 @@
 # Linkdrop Dashboard
 
+## 2.1.50
+- UI improvements
+
+## 2.1.49
+- reclaim support
+
 ## 2.1.48
 - minor updates
 
