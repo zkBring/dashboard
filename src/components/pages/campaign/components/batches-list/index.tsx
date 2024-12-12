@@ -67,6 +67,24 @@ const defineDispenserTypes = (
 ) => {
   return [
     {
+      title: 'Web2 Retrodrop',
+      text: 'Share tokens with any regular website users (Twitter/Github/Reddit/your website). Powered by Reclaim Protocol. Learn more at https://www.reclaimprotocol.org/',
+      onClick: () => {
+        createReclaimAndAddLinks(
+          reclaimMappingPageRedirect,
+          `Reclaim set for ${campaignTitle}`,
+          campaignId,
+          batchId,
+          tokenAddress,
+          wallet,
+          tokenType,
+          customClaimHost,
+          customClaimHostOn,
+          successCallbackForReclaim
+        )
+      },
+      image: <Icons.DispenserQRPreviewIcon />
+    }, {
       title: 'Dynamic QR for electronic displays',
       text: 'A web page with an auto-refresh QR code that updates in real time. This ensures secure distribution, preventing a single user from claiming all tokens',
       onClick: () => {
@@ -124,24 +142,6 @@ const defineDispenserTypes = (
         )
       },
       image: <Icons.QRSetPreviewIcon />
-    }, {
-      title: 'Reclaim (ALPHA)',
-      text: 'Share tokens with any regular website users (Twitter/Github/Reddit/your website). Powered by Reclaim Protocol. Learn more at https://www.reclaimprotocol.org/',
-      onClick: () => {
-        createReclaimAndAddLinks(
-          reclaimMappingPageRedirect,
-          `Reclaim set for ${campaignTitle}`,
-          campaignId,
-          batchId,
-          tokenAddress,
-          wallet,
-          tokenType,
-          customClaimHost,
-          customClaimHostOn,
-          successCallbackForReclaim
-        )
-      },
-      image: <Icons.DispenserQRPreviewIcon />
     }
   ]
 }
@@ -207,7 +207,7 @@ const defineDistributeButton = (
     appearance='action'
     disabled={batch.claim_links_count === 0}
     size='extra-small'
-    title='Choose'
+    title='Distribute'
     onClick={() => {
       setShowPopup(batch.batch_id)
     }}

@@ -14,13 +14,12 @@ export const Header = styled.div`
 `
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
-  max-width: 400px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin-bottom: 0;
   font-size: 16px;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `
 
 export const DispensersListValueFixed = styled(BatchListValue)`
