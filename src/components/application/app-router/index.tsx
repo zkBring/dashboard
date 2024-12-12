@@ -26,7 +26,7 @@ import {
   Collection,
   CampaignDispenserGenerate,
   CampaignQRsGenerate,
-
+  ReclaimQR,
   ReclaimQRCreate,
   Reclaims
 } from 'components/pages'
@@ -220,7 +220,7 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           path='/reclaims/:id'
           exact={true}
           loggedIn={Boolean(address)}
-          component={Dispenser}
+          component={ReclaimQR}
         />
 
         <ProtectedRoute

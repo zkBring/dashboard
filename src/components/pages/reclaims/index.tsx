@@ -34,9 +34,8 @@ import {
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import moment from 'moment'
-
-
 import Icons from 'icons'
+import { Tooltip } from 'components/common'
 
 const mapStateToProps = ({
   user: { address, chainId },
@@ -150,12 +149,12 @@ const Reclaims: FC<ReduxType> = ({
   if (items.length === 0) {
     return <>
       <InitialNote
-        title='Create Your First Reclaim campaign'
-        text="Start new Reclaim campaign to distribute your tokens by choosing the method that best suits your needs:"
+        title='Create Your First Web2 Retrodrop'
+        text="Start new Web2 Retrodrop campaign to distribute your tokens"
         onClick={() => {
           history.push('/reclaims/new')
         }}
-        buttontText='New Reclaim Campaign'
+        buttontText='New Web2 Retrodrop'
       />
     </>
   }
@@ -166,7 +165,10 @@ const Reclaims: FC<ReduxType> = ({
     <WidgetComponent>
       <Header>
         <WidgetTitleStyled>
-          Reclaims
+          Web2 Retrodrops
+          <Tooltip position='right' text='Share tokens with any regular website users (Twitter/Github/Reddit/your website). Powered by Reclaim Protocol. Learn more at https://www.reclaimprotocol.org/'>
+            <Icons.InformationIcon />
+          </Tooltip>
         </WidgetTitleStyled>
         <ContainerButton
           title='+ New'
