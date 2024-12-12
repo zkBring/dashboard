@@ -363,7 +363,7 @@ const ReclaimQR: FC<ReduxType> = ({
           {defineSubtitle()}
         </WidgetSubtitle>
         
-        {dispenser_url && <CopyContainerStyled
+        {dispenser_url && reclaim_app_id && reclaim_app_secret && reclaim_provider_id && <CopyContainerStyled
           title='Reclaim Drop URL'
           text={dispenser_url}
         />}
