@@ -393,14 +393,14 @@ const CampaignsCreateSecure: FC<ReduxType> = ({
               return value
             }}
           />
-          <CheckboxStyled
+          {currentCampaign && <CheckboxStyled
             label={`Use ${nativeTokenSymbol} previously escrowed on the contract`}
             value={useEscrowedNativeToken}
             disabled={loading}
             onChange={value => {
               setUseEscrowedNativeToken(value)
             }}
-          />
+          />}
         </>}
       </WidgetComponent>}
     </WidgetContainer>
