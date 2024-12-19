@@ -1,5 +1,9 @@
 # Linkdrop Dashboard
 
+
+## 2.1.51
+- minor updates
+
 ## 2.1.50
 - UI improvements
 
