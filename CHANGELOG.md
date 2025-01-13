@@ -1,6 +1,9 @@
 # Linkdrop Dashboard
 
 
+## 2.1.52
+- removed reclaims (web2 airdrops)
+
 ## 2.1.51
 - minor updates
 
