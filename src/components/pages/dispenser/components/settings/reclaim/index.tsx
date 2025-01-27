@@ -12,38 +12,45 @@ const Redirect: FC<TProps> = ({
   title,
   subtitle,
   onClose,
-  reclaimAppId,
-  reclaimAppSecret,
-  reclaimProviderId,
+  // reclaimAppId,
+  // reclaimAppSecret,
+  // reclaimProviderId,
+  instagramFollowId,
   action
 }) => {
+  // const [
+  //   reclaimAppIdValue, setReclaimAppIdValue
+  // ] = useState<string>(reclaimAppId || '')
+  // const [
+  //   reclaimAppSecretValue, setReclaimAppSecretValue
+  // ] = useState<string>(reclaimAppSecret || '')
+  // const [
+  //   reclaimProviderIdValue, setReclaimProviderIdValue
+  // ] = useState<string>(reclaimProviderId || '')
+
   const [
-    reclaimAppIdValue, setReclaimAppIdValue
-  ] = useState<string>(reclaimAppId || '')
-  const [
-    reclaimAppSecretValue, setReclaimAppSecretValue
-  ] = useState<string>(reclaimAppSecret || '')
-  const [
-    reclaimProviderIdValue, setReclaimProviderIdValue
-  ] = useState<string>(reclaimProviderId || '')
+    reclaimInstagramFollowId, setReclaimInstagramFollowId
+  ] = useState<string>(instagramFollowId || '')
 
   return <AsidePopup
     title={title}
     subtitle={subtitle}
     onClose={onClose}
     action={() => action(
-      reclaimAppIdValue,
-      reclaimAppSecretValue,
-      reclaimProviderIdValue,
+      // reclaimAppIdValue,
+      // reclaimAppSecretValue,
+      // reclaimProviderIdValue,
+      reclaimInstagramFollowId,
       () => onClose()
     )}
     actionDisabled={
-      !reclaimAppIdValue ||
-      !reclaimAppSecretValue ||
-      !reclaimProviderIdValue
+      // !reclaimAppIdValue ||
+      // !reclaimAppSecretValue ||
+      // !reclaimProviderIdValue
+      !reclaimInstagramFollowId
     }
   >
-    <InputStyled
+    {/* <InputStyled
       value={reclaimAppIdValue}
       title='Reclaim App ID'
       placeholder='Reclaim App ID'
@@ -69,6 +76,16 @@ const Redirect: FC<TProps> = ({
       placeholder='Reclaim Provider ID'
       onChange={value => {
         setReclaimProviderIdValue(value)
+        return value
+      }}
+    /> */}
+
+    <InputStyled
+      title='Instagram follow ID'
+      value={reclaimInstagramFollowId}
+      placeholder='Instagram follow ID'
+      onChange={value => {
+        setReclaimInstagramFollowId(value)
         return value
       }}
     />

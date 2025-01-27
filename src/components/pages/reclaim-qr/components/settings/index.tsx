@@ -62,9 +62,10 @@ const definePopup = (
   timeframeSubmit: (value: any, onSuccess?: () => void, onError?: () => void) => void,
   
   reclaimSubmit: (
-    reclaimAppId: any,
-    reclaimAppSecret: any,
-    reclaimProviderId: any,
+    // reclaimAppId: any,
+    // reclaimAppSecret: any,
+    // reclaimProviderId: any,
+    instagramFollowId: any,
     onSuccess?: () => void,
     onError?: () => void
   ) => void,
@@ -75,10 +76,10 @@ const definePopup = (
   timeframeToggleValue?: boolean,
   currentDispenser?: TDispenser,
 
-  reclaimAppId?: string | null,
-  reclaimAppSecret?: string | null,
-  reclaimProviderId?: string | null,
-
+  // reclaimAppId?: string | null,
+  // reclaimAppSecret?: string | null,
+  // reclaimProviderId?: string | null,
+  instagramFollowId?: string | null
 ) => {
   switch (setting.id) {
     case 'reclaim':
@@ -88,10 +89,10 @@ const definePopup = (
         loading={loading}
         currentDispenser={currentDispenser}
         action={reclaimSubmit}
-
-        reclaimAppId={reclaimAppId}
-        reclaimAppSecret={reclaimAppSecret}
-        reclaimProviderId={reclaimProviderId}
+        instagramFollowId={instagramFollowId}
+        // reclaimAppId={reclaimAppId}
+        // reclaimAppSecret={reclaimAppSecret}
+        // reclaimProviderId={reclaimProviderId}
       />
     case 'timeframe':
       return <Timeframe
@@ -132,9 +133,11 @@ const Settings: FC<TProps> = ({
   timeframeToggleValue,
   currentDispenser,
   reclaimSubmit,
-  reclaimAppId,
-  reclaimAppSecret,
-  reclaimProviderId,
+  // reclaimAppId,
+  // reclaimAppSecret,
+  // reclaimProviderId,
+  instagramFollowId,
+
   currentSetting,
   setCurrentSetting
 }) => {
@@ -152,9 +155,10 @@ const Settings: FC<TProps> = ({
     timeframeToggleAction,
     timeframeToggleValue,
     currentDispenser,
-    reclaimAppId,
-    reclaimAppSecret,
-    reclaimProviderId
+    instagramFollowId,
+    // reclaimAppId,
+    // reclaimAppSecret,
+    // reclaimProviderId
   ) : null
 
   // if (loading) {

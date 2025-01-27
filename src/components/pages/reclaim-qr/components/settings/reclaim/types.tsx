@@ -8,15 +8,17 @@ export type TProps = {
   toggleAction?: (value: boolean) => void
   toggleValue?: boolean
   loading: boolean
-  reclaimAppId?: string | null
-  reclaimProviderId?: string | null
-  reclaimAppSecret?: string | null
+  // reclaimAppId?: string | null
+  // reclaimProviderId?: string | null
+  // reclaimAppSecret?: string | null
+  instagramFollowId?: string | null,
   currentDispenser?: TDispenser
 
   action: (
-    reclaimAppIdValue: string,
-    reclaimAppSecretValue: string,
-    reclaimProviderIdValue: string,
+    // reclaimAppIdValue: string,
+    // reclaimAppSecretValue: string,
+    // reclaimProviderIdValue: string,
+    instagramFollowId: string,
     successAction?: () => void,
     errorAction?: () => void
   ) => void
