@@ -65,6 +65,8 @@ export type TDispenser = {
   reclaim_provider_id?: string | null
   reclaim_app_secret?: string | null
   reclaim?: boolean
+
+  instagram_follow_id?: string | null
 }
 
 export type TDispenserUpdateData = {

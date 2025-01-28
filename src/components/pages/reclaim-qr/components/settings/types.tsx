@@ -26,13 +26,15 @@ export type TProps = {
 
 
   reclaimSubmit: (
-    reclaimAppId: any,
-    reclaimAppSecret: any,
-    reclaimProviderId: any,
+    // reclaimAppId: any,
+    // reclaimAppSecret: any,
+    // reclaimProviderId: any,
+    instagramFollowId: any,
     onSuccess?: () => void,
     onError?: () => void
   ) => void,
-  reclaimAppId?: string | null,
-  reclaimAppSecret?: string | null,
-  reclaimProviderId?: string | null
+  // reclaimAppId?: string | null,
+  // reclaimAppSecret?: string | null,
+  // reclaimProviderId?: string | null,
+  instagramFollowId?: string | null,
 }

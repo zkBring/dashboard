@@ -127,9 +127,10 @@ const definePopup = (
   appTitleToggleValue?: boolean,
 
 
-  reclaimAppId?: string | null,
-  reclaimAppSecret?: string | null,
-  reclaimProviderId?: string | null,
+  // reclaimAppId?: string | null,
+  // reclaimAppSecret?: string | null,
+  // reclaimProviderId?: string | null,
+  instagramFollowId?: string | null
 
 ) => {
   switch (setting.id) {
@@ -150,10 +151,11 @@ const definePopup = (
         loading={loading}
         currentDispenser={currentDispenser}
         action={reclaimSubmit}
+        instagramFollowId={instagramFollowId}
 
-        reclaimAppId={reclaimAppId}
-        reclaimAppSecret={reclaimAppSecret}
-        reclaimProviderId={reclaimProviderId}
+        // reclaimAppId={reclaimAppId}
+        // reclaimAppSecret={reclaimAppSecret}
+        // reclaimProviderId={reclaimProviderId}
       />
     case 'timeframe':
       return <Timeframe
@@ -252,9 +254,10 @@ const Settings: FC<TProps> = ({
 
 
   reclaimSubmit,
-  reclaimAppId,
-  reclaimAppSecret,
-  reclaimProviderId
+  // reclaimAppId,
+  // reclaimAppSecret,
+  // reclaimProviderId
+  instagramFollowId
 }) => {
 
   const currentPageQuery = useQuery()
@@ -293,9 +296,9 @@ const Settings: FC<TProps> = ({
     appTitle,
     appTitleToggleAction,
     appTitleToggleValue,
-    reclaimAppId,
-    reclaimAppSecret,
-    reclaimProviderId
+    // reclaimAppId,
+    // reclaimAppSecret,
+    // reclaimProviderId
   ) : null
 
   // if (loading) {
@@ -317,7 +320,7 @@ const Settings: FC<TProps> = ({
           Boolean(whitelistToggleValue),
           Boolean(timeframeToggleValue),
           Boolean(appTitleToggleValue),
-          Boolean(reclaimAppId)
+          Boolean(instagramFollowId)
         )
 
         if (

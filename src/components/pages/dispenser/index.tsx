@@ -270,18 +270,20 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
     reclaimSubmit: (
       dispenserId: string,
-      reclaimAppId: string,
-      reclaimAppSecret: string,
-      reclaimProviderId: string,
+      // reclaimAppId: string,
+      // reclaimAppSecret: string,
+      // reclaimProviderId: string,
+      instagramFollowId: string,
       onSuccess?: () => void,
       onError?: () => void
     ) => {
       dispatch(
         asyncDispensersActions.updateReclaim({
           dispenserId,
-          reclaimAppId,
-          reclaimAppSecret,
-          reclaimProviderId,
+          // reclaimAppId,
+          // reclaimAppSecret,
+          // reclaimProviderId,
+          instagramFollowId,
           successCallback: onSuccess,
           errorCallback: onError
         }) 
@@ -461,7 +463,7 @@ const Dispenser: FC<ReduxType> = ({
     decrypted_redirect_url,
     app_title,
     app_title_on,
-
+    instagram_follow_id,
     reclaim_app_id,
     reclaim_app_secret,
     reclaim,
@@ -577,10 +579,12 @@ const Dispenser: FC<ReduxType> = ({
         redirectUrl={decrypted_redirect_url}
         claimUrl={dispenser_url}
         loading={loading}
-        reclaimAppId={reclaim_app_id}
+        // reclaimAppId={reclaim_app_id}
         reclaim={reclaim}
-        reclaimAppSecret={reclaim_app_secret}
-        reclaimProviderId={reclaim_provider_id}
+        // reclaimAppSecret={reclaim_app_secret}
+        // reclaimProviderId={reclaim_provider_id}
+        instagramFollowId={instagram_follow_id}
+
         dynamic={dynamic}
         campaignData={currentDispenserData.campaign}
         getDispenserWhitelist={getDispenserWhitelist}
@@ -589,17 +593,19 @@ const Dispenser: FC<ReduxType> = ({
         appTitle={app_title}
         reclaimSubmit={
           (
-            reclaimAppId,
-            reclaimAppSecret,
-            reclaimProviderId,
+            // reclaimAppId,
+            // reclaimAppSecret,
+            // reclaimProviderId,
+            instagramFollowId,
             onSuccess,
             onError
           ) => {
             reclaimSubmit(
               dispenser_id as string,
-              reclaimAppId,
-              reclaimAppSecret,
-              reclaimProviderId,
+              // reclaimAppId,
+              // reclaimAppSecret,
+              // reclaimProviderId,
+              instagramFollowId,
               onSuccess,
               onError
             )

@@ -7,19 +7,20 @@ import { alertError } from 'helpers'
 
 type TUpdateReclaimArgs = {
   dispenserId: string
-  reclaimAppId: string,
-  reclaimAppSecret: string,
-  reclaimProviderId: string,
-
+  // reclaimAppId: string,
+  // reclaimAppSecret: string,
+  // reclaimProviderId: string,
+  instagramFollowId: string,
   successCallback?: () => void
   errorCallback?: () => void
 }
 
 const updateReclaim = ({
   dispenserId,
-  reclaimAppId,
-  reclaimAppSecret,
-  reclaimProviderId,
+  // reclaimAppId,
+  // reclaimAppSecret,
+  // reclaimProviderId,
+  instagramFollowId,
   successCallback,
   errorCallback
 }: TUpdateReclaimArgs) => {
@@ -33,18 +34,17 @@ const updateReclaim = ({
 
       const { data } : { data: { success: boolean } } = await  dispensersApi.updateReclaim(
         dispenserId,
-        reclaimAppId,
-        reclaimProviderId,
-        reclaimAppSecret
+        instagramFollowId
       )
       if (data.success) {
         const dispensersUpdated = dispensers.map(item => {
           if (item.dispenser_id === dispenserId) { 
             return {
               ...item,
-              reclaim_app_id: reclaimAppId,
-              reclaim_app_secret: reclaimAppSecret,
-              reclaim_provider_id: reclaimProviderId
+              // reclaim_app_id: reclaimAppId,
+              // reclaim_app_secret: reclaimAppSecret,
+              // reclaim_provider_id: reclaimProviderId
+              instagram_follow_id: instagramFollowId
             }
           }
           return item
