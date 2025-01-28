@@ -345,6 +345,7 @@ const ReclaimQR: FC<ReduxType> = ({
     instagram_follow_id
   } = dispenser
 
+
   const currentStatus = defineDispenserStatus(
     claim_start as number,
     claim_finish || claim_start as number + (claim_duration || 1000000000000),
@@ -456,6 +457,7 @@ const ReclaimQR: FC<ReduxType> = ({
         }
 
         timeframeToggleValue={timeframe_on}
+        instagramFollowId={instagram_follow_id}
 
         timeframeToggleAction={(timeframeOn) => toggleTimeframe(
           dispenser_id as string,
