@@ -184,14 +184,16 @@ const requests = {
 
   updateReclaim: (
     dispenser_id: string | number,
-    reclaim_app_id: string,
-    reclaim_provider_id: string,
-    reclaim_app_secret: string
+    // reclaim_app_id: string,
+    // reclaim_provider_id: string,
+    // reclaim_app_secret: string,
+    instagram_follow_id: string | null
   ) => {
     return dispensersApi.put(`/dispensers/${dispenser_id}/reclaim`, {
-      reclaim_app_id,
-      reclaim_provider_id,
-      reclaim_app_secret
+      // reclaim_app_id,
+      // reclaim_provider_id,
+      // reclaim_app_secret,
+      instagram_follow_id
     }, {
       withCredentials: true
     })

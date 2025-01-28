@@ -184,18 +184,20 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
 
     reclaimSubmit: (
       dispenserId: string,
-      reclaimAppId: string,
-      reclaimAppSecret: string,
-      reclaimProviderId: string,
+      // reclaimAppId: string,
+      // reclaimAppSecret: string,
+      // reclaimProviderId: string,
+      instagramFollowId: string,
       onSuccess?: () => void,
       onError?: () => void
     ) => {
       dispatch(
         asyncDispensersActions.updateReclaim({
           dispenserId,
-          reclaimAppId,
-          reclaimAppSecret,
-          reclaimProviderId,
+          // reclaimAppId,
+          // reclaimAppSecret,
+          // reclaimProviderId,
+          instagramFollowId,
           successCallback: onSuccess,
           errorCallback: onError
         }) 
@@ -219,13 +221,14 @@ const defineSubtitle = (
 const renderMainButton = (
   decryptDispenserData: () => void,
   openReclaimSettings: () => void,
-  reclaimAppId?: string | null,
-  reclaimAppSecret?: string | null,
-  reclaimProviderId?: string | null,
+  // reclaimAppId?: string | null,
+  // reclaimAppSecret?: string | null,
+  // reclaimProviderId?: string | null,
+  instagramFollowId?: string | null,
   reclaimUrl?: string,
   dashboardKey?: string | null
 ) => {
-  if (!reclaimAppId || !reclaimAppSecret || !reclaimProviderId) {
+  if (!instagramFollowId) {
     return <WidgetButton
       title='Configure Reclaim Settings'
       appearance='action'
@@ -336,10 +339,12 @@ const ReclaimQR: FC<ReduxType> = ({
     claim_finish,
     timeframe_on,
     dispenser_url,
-    reclaim_app_id,
-    reclaim_app_secret,
-    reclaim_provider_id
+    // reclaim_app_id,
+    // reclaim_app_secret,
+    // reclaim_provider_id,
+    instagram_follow_id
   } = dispenser
+
 
   const currentStatus = defineDispenserStatus(
     claim_start as number,
@@ -363,7 +368,13 @@ const ReclaimQR: FC<ReduxType> = ({
           {defineSubtitle()}
         </WidgetSubtitle>
         
-        {dispenser_url && reclaim_app_id && reclaim_app_secret && reclaim_provider_id && <CopyContainerStyled
+        {
+        dispenser_url &&
+        instagram_follow_id &&
+        // reclaim_app_id &&
+        // reclaim_app_secret &&
+        // reclaim_provider_id &&
+        <CopyContainerStyled
           title='Reclaim Drop URL'
           text={dispenser_url}
         />}
@@ -371,9 +382,10 @@ const ReclaimQR: FC<ReduxType> = ({
         {renderMainButton(
           () => decryptDispenserData(id),
           () => setCurrentSetting(settings.find(setting => setting.id === 'reclaim') || null),
-          reclaim_app_id,
-          reclaim_app_secret,
-          reclaim_provider_id,
+          // reclaim_app_id,
+          // reclaim_app_secret,
+          // reclaim_provider_id,
+          instagram_follow_id,
           dispenser_url,
           dashboardKey
         )}
@@ -417,25 +429,27 @@ const ReclaimQR: FC<ReduxType> = ({
         loading={loading}
         currentSetting={currentSetting}
         setCurrentSetting={setCurrentSetting}
-        reclaimAppId={reclaim_app_id}
+        // reclaimAppId={reclaim_app_id}
         settings={settings}
-        reclaimAppSecret={reclaim_app_secret}
-        reclaimProviderId={reclaim_provider_id}
+        // reclaimAppSecret={reclaim_app_secret}
+        // reclaimProviderId={reclaim_provider_id}
         campaignData={currentDispenserData.campaign}
         currentDispenser={dispenser}
         reclaimSubmit={
           (
-            reclaimAppId,
-            reclaimAppSecret,
-            reclaimProviderId,
+            // reclaimAppId,
+            // reclaimAppSecret,
+            // reclaimProviderId,
+            instagramFollowId,
             onSuccess,
             onError
           ) => {
             reclaimSubmit(
               dispenser_id as string,
-              reclaimAppId,
-              reclaimAppSecret,
-              reclaimProviderId,
+              // reclaimAppId,
+              // reclaimAppSecret,
+              // reclaimProviderId,
+              instagramFollowId,
               onSuccess,
               onError
             )
@@ -443,6 +457,7 @@ const ReclaimQR: FC<ReduxType> = ({
         }
 
         timeframeToggleValue={timeframe_on}
+        instagramFollowId={instagram_follow_id}
 
         timeframeToggleAction={(timeframeOn) => toggleTimeframe(
           dispenser_id as string,
