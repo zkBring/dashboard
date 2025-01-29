@@ -19,20 +19,12 @@ const defineUrlSchema = (
     return `${claimAppURL}/${decryptedClaimCode}`
   }
 
-  if (wallet === 'coinbase_wallet') {
-    if (tokenType === 'ERC1155' || tokenType === 'ERC721') {
-      return COINBASE_WALLET_DEEPLINK
-        .replace('<ENCODED_CLAIM_URL>', encodeURIComponent(`${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`))
-    }
-    const coinbaseLink = COINBASE_CLAIM_URL
-      .replace('<CODE>', decryptedClaimCode)
-      .replace('<CHAIN_ID>', String(chainId))
-      .replace('<VERSION>', String(version))
-    return coinbaseLink
-  }
+  const coinbaseLink = COINBASE_CLAIM_URL
+    .replace('<CODE>', decryptedClaimCode)
+    .replace('<CHAIN_ID>', String(chainId))
+    .replace('<VERSION>', String(version))
+  return coinbaseLink
 
-
-  return `${claimAppURL}/#/redeem/${decryptedClaimCode}?src=d`
 }
 
 export default defineUrlSchema
