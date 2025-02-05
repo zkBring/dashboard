@@ -1,39 +1,5 @@
 import { TLinksBatch, TTokenType } from "types"
 
-export type TCreateDispenserAndAddLinks = (
-  mappingPageRedirect: () => void,
-  title: string,
-  dynamic: boolean,
-  campaignId: string,
-  batchId: string,
-  tokenAddress: string,
-  wallet: string,
-  tokenType: TTokenType,
-  customClaimHost: string,
-  customClaimHostOn: boolean,
-  successCallback?: (
-    dispenser_id: string | number,
-    dynamic: boolean
-  ) => void,
-  errorCallback?: () => void,
-) => void
-
-export type TCreateQRSetAndAddLinks = (
-  mappingPageRedirect: () => void,
-  title: string,
-  campaignId: string,
-  batchId: string,
-  tokenAddress: string,
-  wallet: string,
-  tokenType: TTokenType,
-  customClaimHost: string,
-  customClaimHostOn: boolean,
-  successCallback?: (
-    dispenser_id: string | number
-  ) => void,
-  errorCallback?: () => void,
-) => void
-
 export type TCreateReclaimAndAddLinks = (
   mappingPageRedirect: () => void,
   title: string,
@@ -61,8 +27,6 @@ export type TProps = {
   loading: boolean
   customClaimHost: string
   customClaimHostOn: boolean
-  createDispenserAndAddLinks: TCreateDispenserAndAddLinks
-  createQRSetAndAddLinks: TCreateQRSetAndAddLinks
   createReclaimAndAddLinks: TCreateReclaimAndAddLinks
   downloadLinks: (
     batch_id: string | number,

@@ -1,8 +1,6 @@
 import { FC, useState } from 'react'
 import {
   TProps,
-  TCreateDispenserAndAddLinks,
-  TCreateQRSetAndAddLinks,
   TCreateReclaimAndAddLinks
 } from './types'
 import {
@@ -34,8 +32,6 @@ import { useHistory } from 'react-router-dom'
 import { TLinksBatch, TTokenType } from 'types'
 
 const defineDispenserTypes = (
-  createDispenserAndAddLinks: TCreateDispenserAndAddLinks,
-  createQRSetAndAddLinks: TCreateQRSetAndAddLinks,
   createReclaimAndAddLinks: TCreateReclaimAndAddLinks,
   campaignId: string,
   batchId: string,
@@ -46,18 +42,7 @@ const defineDispenserTypes = (
   customClaimHostOn: boolean,
   campaignTitle: string,
 
-  dispenserMappingPageRedirect: () => void,
-  qrSetMappingPageRedirect: () => void,
   reclaimMappingPageRedirect: () => void,
-
-  successCallbackForDispenser?: (
-    dispenser_id: string | number,
-    dynamic: boolean
-  ) => void,
-
-  successCallbackForQRSet?: (
-    dispenser_id: string | number
-  ) => void,
 
   successCallbackForReclaim?: (
     dispenser_id: string | number
@@ -84,66 +69,7 @@ const defineDispenserTypes = (
         )
       },
       image: <Icons.DispenserQRPreviewIcon />
-    },
-    // {
-    //   title: 'Dynamic QR for electronic displays',
-    //   text: 'A web page with an auto-refresh QR code that updates in real time. This ensures secure distribution, preventing a single user from claiming all tokens',
-    //   onClick: () => {
-    //     createDispenserAndAddLinks(
-    //       dispenserMappingPageRedirect,
-    //       `Dispenser for ${campaignTitle}`,
-    //       true,
-    //       campaignId,
-    //       batchId,
-    //       tokenAddress,
-    //       wallet,
-    //       tokenType,
-    //       customClaimHost,
-    //       customClaimHostOn,
-    //       successCallbackForDispenser,
-    //       errorCallback
-    //     )
-    //   },
-    //   image: <Icons.DynamicQRPreviewIcon />
-    // }, {
-    //   title: 'Printable Dispenser QR code',
-    //   text: 'A single QR code that dispenses tokens one-by-one to users after they scan it. Ideal for controlled and sequential token distribution',
-    //   onClick: () => {
-    //     createDispenserAndAddLinks(
-    //       dispenserMappingPageRedirect,
-    //       `Dispenser for ${campaignTitle}`,
-    //       false,
-    //       campaignId,
-    //       batchId,
-    //       tokenAddress,
-    //       wallet,
-    //       tokenType,
-    //       customClaimHost,
-    //       customClaimHostOn,
-    //       successCallbackForDispenser,
-    //       errorCallback
-    //     )
-    //   },
-    //   image: <Icons.DispenserQRPreviewIcon />
-    // }, {
-    //   title: 'Printable Set of QR codes',
-    //   text: 'A set of single-claim QR codes. Each QR code is valid for one claim only, and becomes invalid after being scanned and claimed by a user',
-    //   onClick: () => {
-    //     createQRSetAndAddLinks(
-    //       qrSetMappingPageRedirect,
-    //       `QR set for ${campaignTitle}`,
-    //       campaignId,
-    //       batchId,
-    //       tokenAddress,
-    //       wallet,
-    //       tokenType,
-    //       customClaimHost,
-    //       customClaimHostOn,
-    //       successCallbackForQRSet
-    //     )
-    //   },
-    //   image: <Icons.QRSetPreviewIcon />
-    // }
+    }
   ]
 }
 
@@ -230,8 +156,6 @@ const BatchesList: FC<TProps> = ({
   linksCreated,
   wallet,
   tokenType,
-  createDispenserAndAddLinks,
-  createQRSetAndAddLinks,
   createReclaimAndAddLinks
 }) => {
 
@@ -247,8 +171,6 @@ const BatchesList: FC<TProps> = ({
   ] = useState<boolean | string>(false)
 
   const dispenserOptions = defineDispenserTypes(
-    createDispenserAndAddLinks,
-    createQRSetAndAddLinks,
     createReclaimAndAddLinks,
     campaignId,
     String(showPopup),
@@ -263,32 +185,6 @@ const BatchesList: FC<TProps> = ({
       history.push(`/campaigns/${campaignId}/dispenser/generate`)
     },
 
-    () => {
-      history.push(`/campaigns/${campaignId}/qrs/generate`)
-    },
-
-    () => {
-      history.push(`/campaigns/${campaignId}/dispenser/generate`)
-    },
-
-    // for dispenser
-    (
-      dispenser_id: string | number,
-      dynamic: boolean
-    ) => {
-      setShowPopup(false)
-      if (dynamic) {
-        return history.push(`/dynamic-qrs/${dispenser_id}`)
-      }
-      return history.push(`/dispensers/${dispenser_id}`)
-    },
-    // for qr-set
-    (
-      dispenser_id: string | number
-    ) => {
-      setShowPopup(false)
-      return history.push(`/qrs/${dispenser_id}`)
-    },
     (
       reclaim_id: string | number
     ) => {

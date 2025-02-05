@@ -1,5 +1,6 @@
+import Button from './button'
+
 import Header from "./header"
-import Aside from "./aside"
 import Tag from './tag'
 import Widget from './widget'
 import DataBlock from './data-block'
@@ -9,25 +10,30 @@ import Breadcrumbs from './breadcrumbs'
 import InfoBlock from './info-block'
 import TextLink from './text-link'
 import MiniPopup from './mini-popup'
-import { WidgetText, WidgetNote, WidgetTextBlock, WidgetData } from './widget/styled-components'
 import TransactionDetails from './transaction-details'
 import CheckListItem from './check-list-item'
 import InformationContainer from './information-container'
 import Tooltip from './tooltip'
-import Button from './button'
 import FileInput from './file-input'
 import AsidePopup from './aside-popup'
 import StatusBar from './status-bar'
 import Loader from './loader'
+import Navigation from './navigation'
+import Footer from './footer'
+import Input from './input'
+import Select from './select'
 
 export {
+  Button,
   Header,
+  Input,
+  Footer,
+  Select,
   Loader,
+  Navigation,
   StatusBar,
   AsidePopup,
-  Aside,
   FileInput,
-  Button,
   InformationContainer,
   CheckListItem,
   Tag,
@@ -39,10 +45,6 @@ export {
   InfoBlock,
   TextLink,
   MiniPopup,
-  WidgetText,
-  WidgetNote,
-  WidgetTextBlock,
   TransactionDetails,
-  WidgetData,
   Tooltip
 }

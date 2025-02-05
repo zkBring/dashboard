@@ -2,9 +2,11 @@ import styled from 'styled-components'
 import { Widget } from 'components/common'
 
 export const Container = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
   width: 100%;
-  max-width: 1122px;
+  max-width: 1040px;
   align-items: flex-start;
 `
 
@@ -15,7 +17,6 @@ export const WidgetContainer = styled.div`
 export const WidgetComponent = styled(Widget)`
   width: 100%;
   position: relative;
-  padding: 24px;
   margin-bottom: 24px;
 `
 
@@ -28,6 +29,7 @@ export const WidgetAside = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 `
 
 export const WidgetTitle = styled.h3` // main title in widget

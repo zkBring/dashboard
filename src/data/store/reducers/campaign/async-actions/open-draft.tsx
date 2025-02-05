@@ -25,12 +25,7 @@ const openDraft = (
     const draftCampaign = draft.campaign
     const campaign = {
       ...draftCampaign,
-      assets: draftCampaign.assetsOriginal && draftCampaign.decimals !== null ? convertLinksContent(
-        draftCampaign.assetsOriginal,
-        draftCampaign.decimals,
-        draftCampaign.claimPattern,
-        draftCampaign.sdk
-      ) : []
+      assets: []
     }
     dispatch(actionsCampaign.setCampaign(campaign))
     dispatch(actionsCampaign.setLoading(false))

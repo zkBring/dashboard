@@ -1,5 +1,9 @@
 import { FC } from 'react'
-import { Header, Aside, Breadcrumbs } from 'components/common'
+import {
+  Header,
+  Breadcrumbs,
+  Footer
+} from 'components/common'
 import { Page, MainContent, Content } from './styled-components'
 import { ThemeProvider } from 'styled-components'
 import themes from 'themes'
@@ -35,15 +39,15 @@ const defineTitle: TDefineTitle = (location) => {
 
     case locationUpdated.includes('/campaigns/new'):
     case locationUpdated.includes('/campaigns/new/initial'):
-    case locationUpdated.includes('/campaigns/new/erc20/secure'):
+    case locationUpdated.includes('/campaigns/new/erc20/launch'):
     case locationUpdated.includes('/campaigns/new/erc20/generate'):
-    case locationUpdated.includes('/campaigns/new/erc20/approve'):
-    case locationUpdated.includes('/campaigns/new/erc721/secure'):
+    case locationUpdated.includes('/campaigns/new/erc20/audience'):
+    case locationUpdated.includes('/campaigns/new/erc721/launch'):
     case locationUpdated.includes('/campaigns/new/erc721/generate'):
-    case locationUpdated.includes('/campaigns/new/erc721/approve'):
-    case locationUpdated.includes('/campaigns/new/erc1155/secure'):
+    case locationUpdated.includes('/campaigns/new/erc721/audience'):
+    case locationUpdated.includes('/campaigns/new/erc1155/launch'):
     case locationUpdated.includes('/campaigns/new/erc1155/generate'):
-    case locationUpdated.includes('/campaigns/new/erc1155/approve'):
+    case locationUpdated.includes('/campaigns/new/erc1155/audience'):
       return 'New Campaign'
     
     case locationUpdated.includes('/campaigns/edit/erc20'):
@@ -54,25 +58,12 @@ const defineTitle: TDefineTitle = (location) => {
     case locationUpdated.includes('/reclaims'):
       return 'Reclaim Give-away'
     
-    case locationUpdated.includes('/qrs/'):
-    case locationUpdated.includes('/qrs'):
-      return "QR Set"
-
     case locationUpdated.includes('/dispensers/new'):
       return "New Dispenser"
 
-    case locationUpdated.includes('/dispensers'):
-      return "Dispenser QR"
-
-    case locationUpdated.includes('/qr-manager'):
-      return "QR Manager"
-    
     case locationUpdated.includes('/campaigns'):
       return 'Claim Links'
     
-    case locationUpdated.includes('/dynamic-qrs'):
-      return 'Dynamic QR'
-
     default:
       return ''
   }
@@ -84,12 +75,12 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   const locationUpdated = location.toLowerCase()
   switch(true) {
 
-    case locationUpdated.includes('/campaigns/new/erc20/approve'):
-    case locationUpdated.includes('/campaigns/new/erc721/approve'):
-    case locationUpdated.includes('/campaigns/new/erc1155/approve'):
-    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/approve'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/approve'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/approve'):
+    case locationUpdated.includes('/campaigns/new/erc20/audience'):
+    case locationUpdated.includes('/campaigns/new/erc721/audience'):
+    case locationUpdated.includes('/campaigns/new/erc1155/audience'):
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/audience'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/audience'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/audience'):
       return <Breadcrumbs
         items={
           [{
@@ -104,12 +95,12 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
         }
       />
 
-    case locationUpdated.includes('/campaigns/new/erc20/secure'):
-    case locationUpdated.includes('/campaigns/new/erc721/secure'):
-    case locationUpdated.includes('/campaigns/new/erc1155/secure'):
-    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/secure'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/secure'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/secure'):
+    case locationUpdated.includes('/campaigns/new/erc20/launch'):
+    case locationUpdated.includes('/campaigns/new/erc721/launch'):
+    case locationUpdated.includes('/campaigns/new/erc1155/seclaunchure'):
+    case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/launch'):
+    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/launch'):
+    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/launch'):
       return <Breadcrumbs
         items={
           [{
@@ -126,13 +117,9 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
       />
 
     case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/generate'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/generate'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/generate'):
       return null
 
     case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/new'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/new'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/new'):
     case locationUpdated.includes('/campaigns/new'):
       return <Breadcrumbs
         items={
@@ -163,7 +150,6 @@ const PageComponent: FC<ReduxType & TProps> = ({
     <ThemeProvider theme={themes.light}>
       <Page>
         <DashboardKeyPopup />
-        <Aside />
         <MainContent>
           <Header
             title={title}
@@ -172,6 +158,7 @@ const PageComponent: FC<ReduxType & TProps> = ({
           <Content withBreadcrumbs={breadcrumbs}>
             {children}
           </Content>
+          <Footer />
         </MainContent>
       </Page>
     </ThemeProvider>

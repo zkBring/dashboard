@@ -39,6 +39,8 @@ import { connect } from 'react-redux'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import * as dispensersActions from 'data/store/reducers/dispensers/actions'
 import { useQuery } from 'hooks'
+import { DispensersActions } from 'data/store/reducers/dispensers/types'
+import { Dispatch } from 'redux'
 
 const settings = [
   {
@@ -74,7 +76,7 @@ const mapStateToProps = ({
   currentDispenserData
 })
 
-const mapDispatcherToProps = (dispatch: IAppDispatch) => {
+const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<DispensersActions>) => {
   return {
     addLinksToDispenser: (
       itemId: string,
@@ -144,35 +146,11 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       callback
     })),
 
-    toggleTimeframe: (
-      dispenser_id: string,
-      timeframe_on: boolean,
-      successCallback: () => void,
-      errorCallback: () => void
-    ) => dispatch(asyncDispensersActions.toggleTimeframeOn({
-      dispenser_id,
-      timeframe_on,
-      successCallback,
-      errorCallback
-    })),
-
     downloadReport: (
       dispenser_id: string,
     ) => dispatch(asyncDispensersActions.downloadReport(
       dispenser_id
     )),
-
-    updateDispenser: (
-      dispenser_id: string,
-      startDate: string,
-      finishDate: string,
-      callback?: () => void
-    ) => dispatch(asyncDispensersActions.updateDispenserDate({
-      dispenserId: dispenser_id,
-      startDate,
-      finishDate,
-      callback
-    })),
 
     decryptDispenserData: (
       dispenser_id: string
@@ -269,12 +247,10 @@ const ReclaimQR: FC<ReduxType> = ({
   dashboardKey,
   pauseDispenser,
   unpauseDispenser,
-  toggleTimeframe,
   getDispenserData,
   downloadReport,
   currentDispenserData,
   removeCurrentDispenserData,
-  updateDispenser,
   decryptDispenserData,
   reclaimSubmit
 }) => {
@@ -459,25 +435,13 @@ const ReclaimQR: FC<ReduxType> = ({
         timeframeToggleValue={timeframe_on}
         instagramFollowId={instagram_follow_id}
 
-        timeframeToggleAction={(timeframeOn) => toggleTimeframe(
-          dispenser_id as string,
-          timeframeOn,
-          () => {},
-          () => alert('error'),
-        )}
-
         timeframeSubmit={(
           startTime,
           finishTime,
           onSuccess,
           OnError
         ) => {
-          updateDispenser(
-            dispenser_id as string,
-            startTime,
-            finishTime,
-            onSuccess,
-          )
+         
         }}
       />
     </div>

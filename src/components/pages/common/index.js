@@ -9,6 +9,7 @@ import ThumbnailUpload from './thumbnail-upload'
 import AttentionContainer from './attention-container'
 import InitialNote from './initial-note'
 import NewDispenserPopup from './new-dispenser-popup'
+import Audience from './audience'
 
 import {
   Container,
@@ -55,6 +56,7 @@ export {
   InitialNote,
   Aside,
   WidgetContainer,
+  Audience,
   WidgetSubtitle,
   WidgetTitle,
   AsideDivider,

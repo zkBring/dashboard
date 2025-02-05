@@ -29,7 +29,7 @@ const approve = (
     dispatch(campaignActions.setAssets(assets))
     dispatch(campaignActions.setSdk(sdk))
     dispatch(campaignActions.setSponsored(sponsored))
-    dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
+    // dispatch(campaignActions.setAssetsOriginal(assetsOriginal))
 
     const {
       user: {

@@ -7,7 +7,7 @@ const downloadAssetsAsCSV = (
   const header = [ 'Token ID', 'Token amount', 'Links amount' ]
   const values = arr.map(item => {
     return [
-      item.tokenId, item.tokenAmount, item.linksAmount
+      item.tokenAmount, item.linksAmount
     ]
   })
   const data = [header, ...values].join("\n")

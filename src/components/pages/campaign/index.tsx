@@ -64,13 +64,8 @@ import {
 } from 'data/store/reducers/campaign/async-actions'
 
 import {
-  createDispenserAndAddLinks,
   createReclaimAndAddLinks
 } from 'data/store/reducers/dispensers/async-actions'
-
-import {
-  createQRSetAndAddLinks
-} from 'data/store/reducers/qrs/async-actions'
 
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
@@ -182,41 +177,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
-    createDispenserAndAddLinks: (
-      mappingPageRedirect: () => void,
-      title: string,
-      dynamic: boolean,
-      campaignId: string,
-      batchId: string,
-      tokenAddress: string,
-      wallet: string,
-      tokenType: TTokenType,
-      customClaimHost: string,
-      customClaimHostOn: boolean,
-      successCallback?: (
-        dispenser_id: string | number,
-        dynamic: boolean
-      ) => void,
-      errorCallback?: () => void,
-    ) => {
-      dispatch(
-        createDispenserAndAddLinks({
-          mappingPageRedirect,
-          title,
-          dynamic,
-          campaignId,
-          batchId,
-          tokenAddress,
-          wallet,
-          tokenType,
-          customClaimHost,
-          customClaimHostOn,
-          successCallback,
-          errorCallback
-        })
-      )
-    },
-
     createReclaimAndAddLinks: (
       mappingPageRedirect: () => void,
       title: string,
@@ -249,38 +209,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       )
     },
 
-    createQRSetAndAddLinks: (
-      mappingPageRedirect: () => void,
-      title: string,
-      campaignId: string,
-      batchId: string,
-      tokenAddress: string,
-      wallet: string,
-      tokenType: TTokenType,
-      customClaimHost: string,
-      customClaimHostOn: boolean,
-      successCallback?: (
-        dispenser_id: string | number
-      ) => void,
-      errorCallback?: () => void,
-    ) => {
-      dispatch(
-        createQRSetAndAddLinks({
-          mappingPageRedirect,
-          title,
-          campaignId,
-          batchId,
-          tokenAddress,
-          wallet,
-          tokenType,
-          customClaimHost,
-          customClaimHostOn,
-          successCallback,
-          errorCallback
-        })
-      )
-    },
-
+    
     updateClaimingFinishedButtonOn: (
       campaign_id: string,
       claiming_finished_button_on: boolean
@@ -438,8 +367,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   updateAvailableCountries,
   updateWallet,
   updatePreferredWalletOn,
-  createDispenserAndAddLinks,
-  createQRSetAndAddLinks,
   updateClaimHost,
   updateClaimHostOn,
   updateMultipleClaimsOn,
@@ -710,8 +637,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <BatchesList
           // @ts-ignore
-          createDispenserAndAddLinks={createDispenserAndAddLinks}
-          createQRSetAndAddLinks={createQRSetAndAddLinks}
           createReclaimAndAddLinks={createReclaimAndAddLinks}
           wallet={wallet}
           batches={batches}
@@ -768,9 +693,9 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
     <AsideContainer>
       <AsideStyled
-        title="Campaign"
-        options={defineOptions()}
-        loading={status === 'pending' || status === 'initial'}
+        // title="Campaign"
+        // options={defineOptions()}
+        // loading={status === 'pending' || status === 'initial'}
       >
         {expiration_date && <TableRow>
           <TableText>Expiration date</TableText>
@@ -845,8 +770,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       </AsideStyled>
 
       {sdk && <AsideStyled
-        title="Resources"
-        subtitle='Guides on how to install and run Linkdrop SDK'
+       
       >
         <AsideButton
           onClick={() => {

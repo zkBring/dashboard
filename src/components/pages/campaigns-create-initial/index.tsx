@@ -19,14 +19,10 @@ const mapStateToProps = ({
     tokenStandard,
     tokenAddress
   },
-  collections: {
-    collections
-  }
 }: RootState) => ({
   campaigns,
   tokenStandard,
-  tokenAddress,
-  collections
+  tokenAddress
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -67,8 +63,7 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   campaigns,
   tokenStandard,
   applyClaimPattern,
-  tokenAddress,
-  collections
+  tokenAddress
 }) => {
   const { type, id } = useParams<TLinkParams>()
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
@@ -77,24 +72,21 @@ const CampaignsCreateInitial: FC<ReduxType> = ({
   useEffect(preventPageClose(), [])
 
   const nextStepAction = () => {
-    const claimPattern = defineClaimPattern(
-      collections,
-      tokenAddress as string
-    )
+    const claimPattern: TClaimPattern = 'transfer'
     applyClaimPattern(
       claimPattern,
       !Boolean(id),
       () => {
         // if (tokenAddress === NATIVE_TOKEN_ADDRESS) {
         //   if (currentCampaign) {
-        //     return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/secure`)
+        //     return history.push(`/campaigns/edit/${type}/${currentCampaign.campaign_id}/launch`)
         //   }
-        //   return history.push(`/campaigns/new/${type}/secure`)
+        //   return history.push(`/campaigns/new/${type}/launch`)
         // }
         if (campaign) {
-          return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/approve`)
+          return history.push(`/campaigns/edit/${type}/${campaign.campaign_id}/audience`)
         }
-        history.push(`/campaigns/new/${type}/approve`)
+        history.push(`/campaigns/new/${type}/audience`)
       }
     )
   }

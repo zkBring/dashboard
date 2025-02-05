@@ -6,29 +6,21 @@
 }
 
 @font-face {
-  font-family: 'Inter';
-  font-weight: 500;
-  src: url('vendor/fonts/Inter-Medium.woff2') format('woff2'),
-       url('vendor/fonts/Inter-Medium.woff') format('woff');
+  font-family: 'FKRasterGrotesk';
+  font-weight: 400;
+  src: url('vendor/fonts/FKRasterGroteskCompact.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Inter';
-  font-weight: 600;
-  src: url('vendor/fonts/Inter-SemiBold.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-weight: 700;
-  src: url('vendor/fonts/Inter-Bold.woff2') format('woff2'),
-       url('vendor/fonts/Inter-Bold.woff') format('woff');
+  font-family: 'FKRasterRoman';
+  font-weight: 400;
+  src: url('vendor/fonts/FKRasterRomanCompact.woff2') format('woff2');
 }
 
 body {
   margin: 0;
   font-family: 'Inter', 'Helvetica Neue', sans-serif;
-  background-color: #F7F8FC;
+  background-color: #1E1E1E;
   font-weight: 400;
 }
 

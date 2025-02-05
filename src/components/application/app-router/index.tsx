@@ -8,24 +8,12 @@ import {
   Campaigns,
   Campaign,
   CampaignsCreateInitial,
-  CampaignsCreateApprove,
-  CampaignsCreateSecure,
+  CampaignsCreateAudience,
+  CampaignsCreateLaunch,
   CampaignsCreateGenerate,
-  QR,
   Main,
   CampaignsCreateNew,
-  QRDownload,
-  QRCreate,
-  QRManager,
-  DispenserCreate,
-  Dispenser,
-  DynamicQRCreate,
-  Collections,
-  CollectionAddToken,
-  CollectionsCreateInitial,
-  Collection,
   CampaignDispenserGenerate,
-  CampaignQRsGenerate,
   ReclaimQR,
   ReclaimQRCreate,
   Reclaims
@@ -45,13 +33,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateNew}
-        />
-
-        <ProtectedRoute
-          path='/qr-manager'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={QRManager}
         />
 
         <ProtectedRoute
@@ -76,68 +57,11 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
-          path='/campaigns/:id/qrs/generate'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignQRsGenerate}
-        />
-
-        <ProtectedRoute
           path='/campaigns'
           exact={true}
           loggedIn={Boolean(address)}
           component={Campaigns}
         />
-
-        <ProtectedRoute
-          path='/collections'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={Collections}
-        />
-
-        <ProtectedRoute
-          path='/collections/new/:type/initial'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CollectionsCreateInitial}
-        />
-
-        <ProtectedRoute
-          path='/collections/:collection_id'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={Collection}
-        />
-
-        <ProtectedRoute
-          path='/collections/:collection_id/token/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CollectionAddToken}
-        />
-
-        <ProtectedRoute
-          path='/dispensers/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DispenserCreate}
-        />
-
-        <ProtectedRoute
-          path='/dispensers/edit/:dispenserId'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DispenserCreate}
-        />
-
-        <ProtectedRoute
-          path='/dispensers/:id'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={Dispenser}
-        />
-
 
         <ProtectedRoute
           path='/campaigns/new/:type/initial'
@@ -154,31 +78,31 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
         
         <ProtectedRoute
-          path='/campaigns/new/:type/approve'
+          path='/campaigns/new/:type/audience'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CampaignsCreateApprove}
+          component={CampaignsCreateAudience}
         />
 
         <ProtectedRoute
-          path='/campaigns/edit/:type/:id/approve'
+          path='/campaigns/edit/:type/:id/audience'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CampaignsCreateApprove}
+          component={CampaignsCreateAudience}
         />
 
         <ProtectedRoute
-          path='/campaigns/new/:type/secure'
+          path='/campaigns/new/:type/launch'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CampaignsCreateSecure}
+          component={CampaignsCreateLaunch}
         />
 
         <ProtectedRoute
-          path='/campaigns/edit/:type/:id/secure'
+          path='/campaigns/edit/:type/:id/launch'
           exact={true}
           loggedIn={Boolean(address)}
-          component={CampaignsCreateSecure}
+          component={CampaignsCreateLaunch}
         />  
 
         <ProtectedRoute
@@ -193,20 +117,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateGenerate}
-        />
-
-        <ProtectedRoute
-          path='/dynamic-qrs/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={DynamicQRCreate}
-        />
-
-        <ProtectedRoute
-          path='/dynamic-qrs/:id'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={Dispenser}
         />
 
         <ProtectedRoute
@@ -230,29 +140,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           component={Reclaims}
         />
 
-        
-
-        <ProtectedRoute
-          path='/qrs/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={QRCreate}
-        />
-
-        <ProtectedRoute
-          path='/qrs/:id'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={QR}
-        />
-
-        <ProtectedRoute
-          path='/qrs/:id/download'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={QRDownload}
-        />
-
         <Route path='/' exact={true}>
           <Main />
         </Route>
@@ -266,15 +153,3 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
 }
 
 export default connect(mapStateToProps)(AppRouter)
-
-// /
-
-// /campaings/
-// /campaigns/new/:type/initial
-// /campaigns/new/:type/approve (only erc20/erc721/erc1155)
-// /campaigns/new/:type/secure
-
-// /campaigns/:id
-// /campaigns/:id/edit/initial
-// /campaigns/:id/edit/approve
-// /campaigns/:id/edit/secure

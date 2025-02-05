@@ -12,9 +12,7 @@ import {
 } from 'helpers'
 import { TDispenser } from 'types'
 import { encrypt } from 'lib/crypto'
-import { plausibleApi, qrManagerApi } from 'data/api'
-import * as qrManagerActions from '../../qr-manager/actions'
-import { QRManagerActions } from '../../qr-manager/types'
+import { plausibleApi } from 'data/api'
 import * as actionsAsyncUser from '../../user/async-actions'
 import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
@@ -40,7 +38,6 @@ const createDispenser = ({
 }: TCreateDispenserArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
-              Dispatch<QRManagerActions> &
               Dispatch<UserActions>,
     getState: () => RootState
   ) => {
@@ -85,12 +82,6 @@ const createDispenser = ({
   
         const { data } = await dispensersApi.create(newDispenser)
         if (data.success) {
-          const qrManagerData = await qrManagerApi.get()
-          const { success, items } = qrManagerData.data
-          if (success) {
-            dispatch(qrManagerActions.setItems(items))
-          }
-        
           dispatch(actionsDispensers.addDispenser(data.dispenser))
           plausibleApi.invokeEvent({
             eventName: 'multiqr_add',

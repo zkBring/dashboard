@@ -9,7 +9,6 @@ import {
 } from 'types'
 import {
   dispensersApi,
-  qrManagerApi,
   plausibleApi
 } from 'data/api'
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -28,8 +27,6 @@ import {
   defineIfLinksHasEqualContents
 } from 'helpers'
 import axios from 'axios'
-import * as qrManagerActions from '../../qr-manager/actions'
-import { QRManagerActions } from '../../qr-manager/types'
 import * as actionsAsyncUser from '../../user/async-actions'
 import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
@@ -52,7 +49,6 @@ const addLinksToDispenser = ({
 }) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
-              Dispatch<QRManagerActions> &
               Dispatch<UserActions>,
     getState: () => RootState
   ) => {
@@ -112,12 +108,6 @@ const addLinksToDispenser = ({
             return dispenser
           })
           dispatch(actionsDispenser.setDispensers(dispensersUpdated))
-  
-          const qrManagerData = await qrManagerApi.get()
-          const { success, items } = qrManagerData.data
-          if (success) {
-            dispatch(qrManagerActions.setItems(items))
-          }
         
           successCallback && successCallback()
         }

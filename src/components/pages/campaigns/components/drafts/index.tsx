@@ -34,9 +34,9 @@ const defineDraftUrl = (
 ) => {
   switch (createStep) {
     case 'approve':
-      return `/campaigns/new/${tokenStandard}/approve`
+      return `/campaigns/new/${tokenStandard}/audience`
     case 'secure':
-      return `/campaigns/new/${tokenStandard}/secure`
+      return `/campaigns/new/${tokenStandard}/launch`
     case 'initial':
       return `/campaigns/new/${tokenStandard}/initial`
     default:
