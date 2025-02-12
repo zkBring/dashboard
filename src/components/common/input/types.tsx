@@ -8,4 +8,5 @@ export type TProps<TLoadingType = boolean> = {
   value: string
   children?: React.ReactNode
   placeholder?: string
+  note?: string
 }

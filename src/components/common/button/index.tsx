@@ -1,25 +1,25 @@
 import { FC } from 'react'
 import { Anchor, ButtonLink } from './styled-components'
 import { TProps } from './types'
-import { Button } from 'linkdrop-ui'
+import { OriginalButton } from '..'
 
 const ButtonComponent: FC<TProps> = (props) => {
   const { href, to, target } = props
   if (href) {
     return (
       <Anchor href={href} target={target}>
-        <Button {...props} />
+        <OriginalButton {...props} />
       </Anchor>
     )
   }
   if (to) {
     return (
       <ButtonLink to={to}>
-        <Button {...props} />
+        <OriginalButton {...props} />
       </ButtonLink>
     )
   }
-  return <Button {...props} />
+  return <OriginalButton {...props} />
 }
 
 export default ButtonComponent

@@ -101,7 +101,7 @@ export const ListItem = styled.li`
 `
 
 export const TextBold = styled.span`
-  font-weight: 700;
+font-weight: 400;
 `
 
 export const AdditionalButton = styled.button`
@@ -111,7 +111,7 @@ export const AdditionalButton = styled.button`
   border: none;
   color: ${props => props.theme.primaryHighlightColor};
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   line-height: 20px;
 

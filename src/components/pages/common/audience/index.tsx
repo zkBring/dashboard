@@ -12,7 +12,7 @@ const AudienceComponent: FC<TProps> = ({
   className
 }) => {
   return <Audience className={className}>
-    {options.map(item => <AudienceItem>
+    {options.map(item => <AudienceItem disabled={item.disabled}>
       <AudienceImage src={item.image} alt={item.title} /> 
       <AudienceTitle>
         {item.title}

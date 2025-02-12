@@ -27,7 +27,7 @@ export const Title = styled.h3`
   font-size: 22px;
   line-height: 28px;
   margin: 0 0 12px;
-  font-weight: 500;
+  font-weight: 400;
   display: grid;
   align-self: center;
   grid-template-columns: max-content 1fr;

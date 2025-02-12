@@ -1,6 +1,7 @@
 type TAudienceOption = {
   title: string
   image: string
+  disabled?: boolean 
 }
 
 type TProps = {

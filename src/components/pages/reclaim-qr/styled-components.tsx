@@ -9,8 +9,8 @@ import {
 } from 'linkdrop-ui'
 
 export const WidgetValue = styled.div`
-  font-weight: 600;
-  font-size: 32px;
+font-weight: 400;
+font-size: 32px;
 `
 
 export const Buttons = styled.div`
@@ -51,7 +51,7 @@ export const PopupForm = styled.form`
 
 export const Counter = styled.div`
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 16px;
 `
 

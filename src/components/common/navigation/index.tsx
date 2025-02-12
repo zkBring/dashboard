@@ -3,26 +3,27 @@ import {
   Nav,
   Menu,
   MenuItem,
-  LinkStyled
+  LinkStyled,
+  activeClassName
 } from './styled-components'
 
 const Navigation: FC = () => {
   return <Nav>
     <Menu>
       <MenuItem>
-        <LinkStyled to='/'>
+        <LinkStyled to='/campaigns' activeClassName={activeClassName} exact>
           My drops
         </LinkStyled>
       </MenuItem>
 
       <MenuItem>
-        <LinkStyled to='/'>
+        <LinkStyled to='/about' activeClassName={activeClassName} exact>
           How it works
         </LinkStyled>
       </MenuItem>
 
       <MenuItem>
-        <LinkStyled to='/'>
+        <LinkStyled to='/support' activeClassName={activeClassName} exact>
           Support
         </LinkStyled>
       </MenuItem>

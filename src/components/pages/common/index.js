@@ -14,7 +14,6 @@ import Audience from './audience'
 import {
   Container,
   WidgetComponent,
-  WidgetAside,
   ButtonsContainer,
   WidgetSubtitle,
   WidgetTitle,
@@ -45,7 +44,6 @@ export {
   InputContainer,
   InstructionNote,
   InputSubtitle,
-  WidgetAside,
   ErrorSpan,
   UploadedSpan,
   AsideContent,

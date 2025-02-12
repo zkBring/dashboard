@@ -12,13 +12,6 @@ import {
   WidgetComponent
 } from '../common'
 
-export const Container = styled.div`
-  margin-bottom: 36px;
-  background: ${props => props.theme.blankColor};
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 260px);
-  grid-gap: 30px;
-`
 
 export const TagStyled = styled(Tag)`
 `
@@ -31,6 +24,7 @@ export const LoaderContainer = styled.div`
 
 export const WidgetComponentStyled = styled(WidgetComponent)`
   max-width: 1100px;
+  padding: 60px;
 `
 
 export const BatchListValueFixed = styled(BatchListValue)`

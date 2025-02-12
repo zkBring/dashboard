@@ -39,7 +39,7 @@ export const PopupImage = styled.img`
 
 export const PopupTitle = styled.h4`
   margin: 0 0 32px;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 22px;
   line-height: 28px;
   text-align: center;

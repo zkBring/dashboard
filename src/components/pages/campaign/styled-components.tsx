@@ -16,8 +16,8 @@ export const Header = styled.div`
 `
 
 export const WidgetComponent = styled(Widget)`
-  max-width: 1280px;
   width: 100%;
+  padding: 24px;
   position: relative;
 `
 
@@ -44,8 +44,9 @@ export const SecondaryTextSpan = styled.span`
 `
 
 export const AsideStyled = styled(Aside)`
-  min-width: 100%!important;
   margin: 0;
+  background: ${props => props.theme.widgetColor};
+  padding: 20px;
 `
 
 export const MainContent = styled.div`
@@ -54,11 +55,6 @@ export const MainContent = styled.div`
   margin: 0;
 `
 
-export const AsideContainer = styled.div`
-  min-width: 370px;
-  flex: 0 1 370px;
-  padding-left: 24px;
-`
 
 export const NoteStyled = styled(Note)`
   margin-bottom: 32px;
@@ -73,4 +69,13 @@ export const TableValueStyled = styled(TableValue)`
   border: 1px solid ${props => props.theme.tagAdditionalBorderColor};
   background: ${props => props.theme.tagAdditionalBackgroundColor};
   color: ${props => props.theme.primaryTextColor};
+`
+
+export const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 1fr 300px;
 `

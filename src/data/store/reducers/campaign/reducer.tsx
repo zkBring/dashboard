@@ -12,6 +12,7 @@ const initialState: CampaignState = {
   assets: null,
   symbol: null,
   wallet: null,
+  launchStage: 'initial',
   proxyContractAddress: null,
   approved: null,
   id: null,
@@ -71,6 +72,9 @@ export function newRetroDropReducer(
     case Constants.CAMPAIGN_SET_COLLECTION_TOKEN_ID:
       return {...state, collectionTokenId: action.payload.collectionTokenId }
 
+    case Constants.CAMPAIGN_SET_LAUNCH_STAGE:
+      return {...state, launchStage: action.payload.launchStage }
+  
     case Constants.CAMPAIGN_SET_TITLE:
       return {...state, title: action.payload.title }
     case Constants.CAMPAIGN_SET_LOADING:

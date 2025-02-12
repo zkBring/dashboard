@@ -1,7 +1,7 @@
-import { Input } from 'linkdrop-ui'
+import { OriginalInput } from '..'
 import styled from 'styled-components'
 
-export const InputStyled = styled(Input)`
+export const InputStyled = styled(OriginalInput)`
   input {
     background: transparent;
   }
@@ -9,6 +9,6 @@ export const InputStyled = styled(Input)`
   h3 {
     margin: 0 0 10px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
   }
 `

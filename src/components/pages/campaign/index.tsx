@@ -1,24 +1,22 @@
 import { FC, useEffect, useState } from 'react'
-import { RootState } from 'data/store';
-import { connect } from 'react-redux';
+import { RootState } from 'data/store'
+import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   AsideDivider,
   TableRow,
   TableText,
   TableValue,
-  WidgetComponent,
-  Container,
   WidgetContainer
 } from 'components/pages/common'
 import {
   Header,
-  WidgetButton,
   WidgetTitleStyled,
   AsideStyled,
-  AsideContainer,
+  WidgetComponent,
   AsideButton,
-  AsideButtonsContainer
+  AsideButtonsContainer,
+  Container
 } from './styled-components'
 import {
   shortenString,
@@ -36,12 +34,8 @@ import {
 } from 'helpers'
 import {
   BatchesList,
-  CampaignParameters,
-  HowToUseSDK,
-  LinksStats,
-  Settings
+  LinksStats
 } from './components'
-import { TextLink } from 'components/common'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
 import {
@@ -66,7 +60,7 @@ import {
 import {
   createReclaimAndAddLinks
 } from 'data/store/reducers/dispensers/async-actions'
-
+import { TextLink } from 'components/common'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
 import { plausibleApi } from 'data/api'
@@ -593,23 +587,8 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     return []
   }
 
-  const defineStatusTitle = () => {
-    switch (status) {
-      case 'active':
-        return 'Active'
-      case 'initial':
-        return '-'
-      case 'paused':
-        return 'Paused'
-      case 'pending':
-        return 'Pending'
-    }
-  }
-
   return <Container>
-
     <WidgetContainer>
-
       <LinksStats
         linksAmount={links_count}
         linksClaimed={links_claimed}
@@ -619,20 +598,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       <WidgetComponent>
         <Header>
           <WidgetTitleStyled>{title || ` ${campaign_id}`}</WidgetTitleStyled>
-          {!sdk && <WidgetButton
-            appearance='additional'
-            size='extra-small'
-            disabled={campaignLoading}
-            title='+ Add batch'
-            loading={campaignLoading}
-            onClick={() => {
-              createNewBatch(
-                campaign_id,
-                token_standard,
-                (location) => history.push(location)
-              )
-            }}
-          />}
+          
         </Header>
 
         <BatchesList
@@ -679,214 +645,79 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
       </WidgetComponent>
 
-      <CampaignParameters
-        campaignId={campaign_id}
-        chainId={chain_id}
-        encryptionKey={encryptionKey}
-        sdk={sdk}
-        masterAddress={creator_address}
-        encryptedSignerKey={encrypted_signer_key}
-        dashboardKey={dashboardKey || ""}
-      />
-      <HowToUseSDK sdk={sdk} />
     </WidgetContainer>
 
-    <AsideContainer>
-      <AsideStyled
-        // title="Campaign"
-        // options={defineOptions()}
-        // loading={status === 'pending' || status === 'initial'}
-      >
-        {expiration_date && <TableRow>
-          <TableText>Expiration date</TableText>
-          <TableValue>
-            {formatDate(expiration_date)}, {formatTime(expiration_date)}
-          </TableValue>
-        </TableRow>}
-        <TableRow>
-          <TableText>Created by</TableText>
-          <TableValue>
-            {ownerUrl ? <TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink> : shortenString(creator_address)}
-          </TableValue>
-        </TableRow>
-        {status !== null && <TableRow>
-          <TableText>Status</TableText>
-          <TableValue>{defineStatusTitle()}</TableValue>
-        </TableRow>}
+    <AsideStyled
+      title="Campaign"
+      options={defineOptions()}
+      loading={status === 'pending' || status === 'initial'}
+    >
+      {expiration_date && <TableRow>
+        <TableText>Expiration date</TableText>
+        <TableValue>
+          {formatDate(expiration_date)}, {formatTime(expiration_date)}
+        </TableValue>
+      </TableRow>}
+      <TableRow>
+        <TableText>Created by</TableText>
+        <TableValue>
+          {ownerUrl ? <TextLink href={ownerUrl} target='_blank'>{shortenString(creator_address)}</TextLink> : shortenString(creator_address)}
+        </TableValue>
+      </TableRow>
+      <AsideDivider />
 
-        <AsideDivider />
+      <TableRow>
+        <TableText>Token address</TableText>
+        <TableValue>
+          {tokenUrl ? <TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink> : shortenString(token_address)}
+        </TableValue>
+      </TableRow>
+      
 
-        <TableRow>
-          <TableText>Token address</TableText>
-          <TableValue>
-            {tokenUrl ? <TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink> : shortenString(token_address)}
-          </TableValue>
-        </TableRow>
-        
+      {defineSoulboundTokenId(
+        collection_id,
+        token_id
+      )}
 
-        {defineSoulboundTokenId(
-          collection_id,
-          token_id
-        )}
+      <TableRow>
+        <TableText>Campaign contract</TableText>
+        <TableValue>
+          {contractUrl ? <TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink> : shortenString(proxy_contract_address)}
+        </TableValue>
+      </TableRow>
 
-        <TableRow>
-          <TableText>Campaign contract</TableText>
-          <TableValue>
-            {contractUrl ? <TextLink href={contractUrl} target='_blank'>{shortenString(proxy_contract_address)}</TextLink> : shortenString(proxy_contract_address)}
-          </TableValue>
-        </TableRow>
+      <AsideDivider />
 
-        <AsideDivider />
+      <TableRow>
+        <TableText>Claim pattern</TableText>
+        <TableValue>{claim_pattern}</TableValue>
+      </TableRow>
 
-        <TableRow>
-          <TableText>Claim pattern</TableText>
-          <TableValue>{claim_pattern}</TableValue>
-        </TableRow>
+      <AsideDivider />
 
-        <AsideDivider />
+      <TableRow>
+        <TableText>Network</TableText>
+        <TableValue>{defineNetworkName(Number(chain_id))}</TableValue>
+      </TableRow>
+      <TableRow>
+        <TableText>Token standard</TableText>
+        <TableValue>{token_standard}</TableValue>
+      </TableRow>
+      <TableRow>
+        <TableText>Sponsorship</TableText>
+        <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
+      </TableRow>
 
-        <TableRow>
-          <TableText>Network</TableText>
-          <TableValue>{defineNetworkName(Number(chain_id))}</TableValue>
-        </TableRow>
-        <TableRow>
-          <TableText>Token standard</TableText>
-          <TableValue>{token_standard}</TableValue>
-        </TableRow>
-        <TableRow>
-          <TableText>Sponsorship</TableText>
-          <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
-        </TableRow>
-
-        {sponsored && <AsideButtonsContainer>
-          <AsideButton
-            onClick={() => downloadReport(campaign_id)}
-          >
-            <Icons.DownloadReportIcon />
-            Download full report
-          </AsideButton>
-        </AsideButtonsContainer>}
-
-      </AsideStyled>
-
-      {sdk && <AsideStyled
-       
-      >
+      {sponsored && <AsideButtonsContainer>
         <AsideButton
-          onClick={() => {
-            plausibleApi.invokeEvent({
-              eventName: 'view_docs',
-              data: {
-                network: defineNetworkName(chainId),
-                component: 'campaign_details'
-              }
-            })
-            window.open(`https://docs.linkdrop.io/sdk`, '_blank')
-          }}
+          onClick={() => downloadReport(campaign_id)}
         >
-          Read Docs
+          Download full report
         </AsideButton>
-      </AsideStyled>}
+      </AsideButtonsContainer>}
 
-
-      <Settings
-        loading={loading}
-        countries={countries}
-        campaignData={currentCampaign}
-        additionalWalletsOnValue={Boolean(additional_wallets_on)}
-        availableCountriesValue={available_countries.map((currentCountry) => {
-          const country = countries.find(country => country.id === currentCountry)
-          return country
-        }).filter(item => item) as TCountry[]}
-        preferredWalletValue={wallet}
-        preferredWalletToggleValue={preferred_wallet_on}
-
-        customClaimHostValue={claim_host}
-
-        customClaimHostSubmit={(
-          claimHost,
-          onSuccess,
-          onError,
-        ) => {
-          updateClaimHost(
-            campaign_id,
-            claimHost,
-            onSuccess,
-          )
-        }}
-        customClaimHostOnToggleValue={claim_host_on}
-        customClaimHostOnToggleAction={(value) => {
-          updateClaimHostOn(campaign_id, value)
-        }}
-        multipleClaimsOnToggleAction={(value) => {
-          updateMultipleClaimsOn(campaign_id, value)
-        }}
-        multipleClaimsOnToggleValue={multiple_claims_on}
-
-        availableCountriesSubmit={(
-          value,
-          onSuccess,
-          onError
-        ) => {
-          updateAvailableCountries(
-            campaign_id,
-            value,
-            onSuccess
-          )
-        }}
-
-        walletsSubmit={(
-          wallet,
-          additionalWalletsOn: boolean,
-          onSuccess,
-          onError,
-        ) => {
-          updateWallet(
-            campaign_id,
-            wallet,
-            additionalWalletsOn,
-            onSuccess,
-          )
-        }}
-
-        finalScreenButtonSubmit={(
-          buttonTitle,
-          buttonHref,
-          autoRedirect,
-          onSuccess,
-          onError,
-        ) => {
-          updateClaimingFinishedButton(
-            campaign_id,
-            buttonTitle,
-            buttonHref,
-            autoRedirect,
-            onSuccess
-          )
-        }}
-
-        buttonTitleValue={claiming_finished_button_title || ''}
-        buttonHrefValue={claiming_finished_button_url || ''}
-        autoRedirectValue={claiming_finished_auto_redirect || false}
-
-        finalScreenButtonToggleAction={(value) => {
-          updateClaimingFinishedButtonOn(campaign_id, value)
-        }}
-
-        availableCountriesToggleAction={(value) => {
-          updateAvailableCountriesOn(campaign_id, value)
-        }}
-
-        preferredWalletToggleAction={(value) => {
-          updatePreferredWalletOn(campaign_id, value)
-        }}
-
-        finalScreenButtonToggleValue={claiming_finished_button_on}
-
-        availableCountriesToggleValue={available_countries_on}
-
-      />
-    </AsideContainer>
+    </AsideStyled>
+      
   </Container>
 }
 

@@ -2,7 +2,7 @@ import { ActionType } from 'typesafe-actions';
 import * as actions from './actions'
 import {
   TTokenType,
-  TLinkContent,
+  TLaunchStage,
   TClaimPattern,
   TAssetsData,
   TLink
@@ -48,7 +48,7 @@ export interface CampaignState {
   claimHostOn: boolean
   multipleClaimsOn: boolean
 
-
+  launchStage: TLaunchStage
 
 
   reclaimInstagramId: string | null

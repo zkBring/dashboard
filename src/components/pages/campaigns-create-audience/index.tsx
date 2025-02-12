@@ -1,28 +1,26 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
-  StyledRadio,
-  InstructionNoteStyled,
   InputStyled,
   AudienceStyled,
-  ButtonStyled
+  ButtonStyled,
+  Text,
+  Subtitle
 } from './styled-components'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TAssetsData, TLinkContent, TLinkParams, TTokenType, TTotalAmount } from 'types'
-import { TDefineComponent, TLinksContent } from './types'
+import { TAssetsData, TLinkParams, TTokenType } from 'types'
+import { TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
-import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
-import Icons from 'icons'
-import { useQuery } from 'hooks'
-import { TextLink } from 'components/common'
 import AudienceInstagramLogo from 'images/audience-inst.png'
+import AudienceXLogo from 'images/audience-x.png'
+import {
+  TextLink
+} from 'components/common'
 import {
   WidgetComponent,
   Container,
   Aside,
-  WidgetSubtitle,
-  WidgetContainer,
   ButtonsContainer
 } from 'components/pages/common'
 import { useHistory } from 'react-router-dom'
@@ -33,15 +31,11 @@ import {
   convertLinksContent,
   defineNativeTokenSymbol,
   countNativeTokensToSecure,
-  alertError,
-  countAssetsTotalAmountERC20,
   preventPageClose
 } from 'helpers'
 import { plausibleApi } from 'data/api'
-const {
-  REACT_APP_STARTER_PLAN_LINKS_LIMIT,
-  REACT_APP_PRO_PLAN_LINKS_LIMIT
-} = process.env
+
+
 import {
   Breadcrumbs
 } from 'components/common'
@@ -233,33 +227,17 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   ] = useState<TAssetsData>([])
 
   const history = useHistory()
-  const { type, id } = useParams<TLinkParams>()
-  const queryParams = useQuery()
+  const { id } = useParams<TLinkParams>()
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
-  const currentTokenAddress = currentCampaign ? currentCampaign.token_address : tokenAddress
-  const currentCampaignChainId = currentCampaign ? currentCampaign.chain_id : chainId
-  const currentCampaignTokenStandard = currentCampaign ? currentCampaign.token_standard : tokenStandard
-  const currentCampaignTitle = currentCampaign ? currentCampaign.title : title
-  const currentCampaignSymbol = currentCampaign ? currentCampaign.symbol : symbol
-  const currentCampaignSdk = currentCampaign ? currentCampaign.sdk : initialSdk
   const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : defineDefaultSponsoredValue(chainId as number)
 
   const defineRedirectUrl = () => {
     return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/launch` : `/campaigns/new/${tokenStandard}/launch`
   }
 
-  const [ sdk, setSdk ] = useState<boolean>(currentCampaignSdk)
-
   const [ data, setData ] = useState<TLinksContent>([])
 
-  const [
-    formData,
-    setFormData
-  ] = useState<TLinkContent>(
-    getDefaultValues(type)
-  )
 
-  const [ uploadCSVPopup, setUploadCSVPopup ] = useState<boolean>(false)
   const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))
   const [ instagramID, setInstagramID ] = useState<string>('')
 
@@ -317,133 +295,47 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   )
   
   return <Container>
-    <Aside
-      // back={{
-      //   action: () => {
-      //     history.goBack()
-      //   }
-      // }}
-      // next={{
-      //   title: defineNextButtonTitle(),
-      //   action: () => {
-      //     let assetsCurrent = assetsParsed
-      //     let dataCurrent = data
-      //     if ((!data.length || !assetsParsed) && !sdk) {
-      //       if (tokenStandard === 'ERC20') {
-      //         if (!formData.linksAmount && !formData.tokenAmount) {
-      //           return alert('No assets added for distribution')
-      //         }
-      //       }
-      //       if (tokenStandard === 'ERC721') {
-      //         if (!formData.tokenId) {
-      //           return alert('No assets added for distribution')
-      //         }
-      //       }
-      //       if (tokenStandard === 'ERC1155') {
-      //         if (!formData.tokenId) {
-      //           return alert('No assets added for distribution')
-      //         }
-      //       }
-      //       const dataCurrent = [ ...data, {
-      //         ...formData,
-      //         id: data.length
-      //       }]
-      //       assetsCurrent = convertLinksContent(dataCurrent, decimals as number, claimPattern, sdk)
-      //       setData(dataCurrent)
-      //       setAssetsParsedValue(assetsCurrent)
-      //       setFormData(getDefaultValues(tokenStandard as TTokenType))
-      //       // return alert('Your assets data was submitted. Please continue')
-      //     }
-      //     const callback = () => {
-      //       history.push(defineRedirectUrl())
-      //     }
-      //     if (whitelisted && REACT_APP_PRO_PLAN_LINKS_LIMIT && assetsParsed.length > Number(REACT_APP_PRO_PLAN_LINKS_LIMIT as string)) {
-      //       return alertError(`Pro plan is limited to ${REACT_APP_PRO_PLAN_LINKS_LIMIT} links per batch. Contact us if you need to increase limits.`)
-      //     }
-      //     if (!whitelisted && REACT_APP_STARTER_PLAN_LINKS_LIMIT && assetsParsed.length > Number(REACT_APP_STARTER_PLAN_LINKS_LIMIT as string)) {
-      //       return alertError(`Starter plan is limited to ${REACT_APP_STARTER_PLAN_LINKS_LIMIT} links per batch. Upgrade your plan to increase limits.`)
-      //     }
-      //     if (claimPattern === 'mint') {
-      //       return grantRole(
-      //         assetsCurrent,
-      //         dataCurrent,
-      //         sdk,
-      //         sponsored,
-      //         !Boolean(id),
-      //         callback
-      //       )
-      //     }
-      //     if (tokenStandard === 'ERC20') {
-      //       if (sdk) {
-      //         return approveAllERC20(
-      //           assetsCurrent,
-      //           dataCurrent,
-      //           sdk,
-      //           sponsored,
-      //           !Boolean(id),
-      //           callback
-      //         )
-      //       }
-      //       const totalAmount = tokenStandard !== 'ERC20' ? undefined : countAssetsTotalAmountERC20(assetsCurrent, decimals)
-      //       approveERC20(
-      //         assetsCurrent,
-      //         totalAmount as TTotalAmount,
-      //         dataCurrent,
-      //         sdk,
-      //         sponsored,
-      //         !Boolean(id),
-      //         callback
-      //       )
-      //     } else if (tokenStandard === 'ERC721') {
-      //       approveERC721(
-      //         assetsCurrent,
-      //         dataCurrent,
-      //         sdk,
-      //         sponsored,
-      //         !Boolean(id),
-      //         callback
-      //       )
-      //     } else {
-      //       approveERC1155(
-      //         assetsCurrent,
-      //         dataCurrent,
-      //         sdk,
-      //         sponsored,
-      //         !Boolean(id),
-      //         callback
-      //       )
-      //     }
-      //   },
-      //   loading,
-      //   disabled: defineIfNextDisabled()
-      // }}
-      // title="Summary"
-      // subtitle="Check and confirm details"
-    >
+    <Aside>
       <Breadcrumbs
-          items={
-            [
-              {
-                title: 'Token',
-                status: 'done'
-              }, {
-                title: 'Audience',
-                status: 'current'
-              }, {
-                title: 'Launch'
-              }
-            ]
+        items={
+          [
+            {
+              title: 'Token',
+              status: 'done'
+            }, {
+              title: 'Audience',
+              status: 'current'
+            }, {
+              title: 'Launch'
+            }
+          ]
         }
       />
     </Aside>
 
     <WidgetComponent title='Choose your audience'>
+      <Text>
+        More data sources coming soon. <TextLink href="#">Suggest one</TextLink>
+      </Text>
       <AudienceStyled
-        options={[{
-          title: 'Instagram',
-          image: AudienceInstagramLogo
-        }]}
+        options={[
+          {
+            title: 'Instagram',
+            image: AudienceInstagramLogo
+          }, {
+            title: 'X (Twitter)',
+            image: AudienceXLogo,
+            disabled: true
+          }]}
       />
+
+      <Subtitle>
+        Set Instagram ID to follow
+      </Subtitle>
+      <Text>
+        Enter the numeric Instagram ID (not @username). <TextLink href="#">Find ID here</TextLink><br/>
+        Only users who follow this account will be eligible to claim
+      </Text>
       <InputStyled
         value={instagramID}
         placeholder='e.g. 123456'
@@ -451,7 +343,6 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
           setInstagramID(value)
           return value
         }}
-        title='Set Instagram ID to follow'
       />
 
       <ButtonsContainer>
@@ -460,7 +351,9 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
           onClick={() => {
             setReclaimInstagramId(
               instagramID,
-              () => {}
+              () => {
+                history.push(defineRedirectUrl())
+              }
             )
           }}
           disabled={!instagramID}

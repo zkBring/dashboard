@@ -15,6 +15,7 @@ import TLink from './link'
 import TFormatDate from './format-date'
 import TFormatTime from './format-time'
 import TLinkParams from './link-params'
+import TLaunchStage from './launch-stage'
 import TFileFormat from './file-format'
 import TCoinbaseInstance from './coinbase-instance'
 import { TSystem } from './system'
@@ -130,6 +131,7 @@ export {
   TQRItem,
   TLinksBatch,
   TBase64File,
+  TLaunchStage,
   TCampaignNew,
   TLinkDecrypted,
   TDistributionPattern,

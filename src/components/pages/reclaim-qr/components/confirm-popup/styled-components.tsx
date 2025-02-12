@@ -30,7 +30,7 @@ export const PopupContent = styled.div`
 export const PopupTitle = styled.h3`
   font-size: 24px;
   line-height: 32px;
-  font-weight: 600;
+  font-weight: 400;
   margin: 16px 0 0px;
 `
 

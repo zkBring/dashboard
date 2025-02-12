@@ -1,12 +1,10 @@
 import { FC } from 'react'
 import TProps from './types'
 import {
-  WidgetComponent
-} from 'components/pages/common'
-import {
   Container,
   Subtitle,
-  Value
+  Value,
+  WidgetComponent
 } from './styled-components'
 
 const LinksStats: FC<TProps> = ({

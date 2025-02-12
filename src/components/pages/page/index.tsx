@@ -76,11 +76,7 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
   switch(true) {
 
     case locationUpdated.includes('/campaigns/new/erc20/audience'):
-    case locationUpdated.includes('/campaigns/new/erc721/audience'):
-    case locationUpdated.includes('/campaigns/new/erc1155/audience'):
     case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/audience'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/audience'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/audience'):
       return <Breadcrumbs
         items={
           [{
@@ -96,11 +92,7 @@ const defineBreadcrumbs: TDefineBreadcrumbs = (location) => {
       />
 
     case locationUpdated.includes('/campaigns/new/erc20/launch'):
-    case locationUpdated.includes('/campaigns/new/erc721/launch'):
-    case locationUpdated.includes('/campaigns/new/erc1155/seclaunchure'):
     case locationUpdated.includes('/campaigns/edit/erc20') && locationUpdated.includes('/launch'):
-    case locationUpdated.includes('/campaigns/edit/erc721') && locationUpdated.includes('/launch'):
-    case locationUpdated.includes('/campaigns/edit/erc1155') && locationUpdated.includes('/launch'):
       return <Breadcrumbs
         items={
           [{

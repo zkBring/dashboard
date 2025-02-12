@@ -50,7 +50,7 @@ export const Divider = styled.div`
 export const CampaignTitle = styled.h3`
   font-size: 16px;
   margin: 0 0 16px;
-  font-weight: 600;
+  font-weight: 400;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

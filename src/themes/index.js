@@ -1,10 +1,13 @@
 const themes = {
 	light: {
-		primaryTextColor: '#BCBCBC', // main ccolor of text
-		secondaryTextColor: '#121212', // secondary color of text
-		additionalTextColor: 'rgba(255, 255, 255, .25)', // secondary color of text
-		linkTextColor: '#0C5EFF',
-		propertyTextColor: '#6294F5', //
+		primaryTextColor: '#BCBCBC', // main color of text
+		secondaryTextColor: '#686869', // secondary color of text
+		additionalTextColor: '#FFF', // secondary color of text
+		extraTextColor: '#8D8D8D', // secondary color of text
+		placeholderTextColor: 'rgba(255, 255, 255, .3)',
+
+		linkTextColor: '#8D8D8D',
+		propertyTextColor: '#6294F5',
 
 		disabledTextColor: '#979797', // disabled color of text
 		dangerTextColor: '#FF2C2C', // danger color of text
@@ -16,7 +19,7 @@ const themes = {
 		additionalBorderColor: '#D9D9D9',
 		disabledBorderColor: '#C5C7CD',
 		primaryBackgroundColor: '#111113', // main color of bg
-		widgetColor: 'rgb(22, 22, 24)',
+		widgetColor: '#161618',
     secondaryBackgroundColor: '#1D1F2B',
 		disabledColor: '#DFE0EB',
 		primaryColor: '#111113', // main color of bg
@@ -34,11 +37,12 @@ const themes = {
 		buttonActionBackgroundHoverColor: '#357AFF',
 		buttonActionBackgroundActiveColor: '#095AF5',
 
-		buttonDisabledBackgroundColor: '#E4E4E4',
+		buttonDisabledBackgroundColor: 'rgba(255, 255, 255, .4)',
 
 		buttonDefaultBackgroundColor: 'transparent',
-		buttonDefaultBackgroundHoverColor: 'transparent',
-		buttonDefaultBackgroundActiveColor: 'transparent',
+		buttonDefaultBackgroundHoverColor: '#363636',
+		buttonDefaultBackgroundActiveColor: '#363636',
+
 		buttonDefaultBorderHoverColor: '#121212',
 		buttonDefaultBorderActiveColor: '#121212',
 

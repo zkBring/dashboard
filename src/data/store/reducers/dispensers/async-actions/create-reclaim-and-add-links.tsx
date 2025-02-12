@@ -113,12 +113,7 @@ const createReclaimAndAddLinks = ({
               links: claim_links,
               dashboardKey: encKey,
               tokenAddress,
-              userAddress: address,
-              chainId: chainId as number,
-              wallet,
-              tokenType,
-              customClaimHost,
-              customClaimHostOn
+              chainId: chainId as number
             })
 
             let currentPercentage = 0

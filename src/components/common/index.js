@@ -1,5 +1,7 @@
+import OriginalSelect from './original-select'
+import OriginalInput from './original-input'
+import OriginalButton from './original-button'
 import Button from './button'
-
 import Header from "./header"
 import Tag from './tag'
 import Widget from './widget'
@@ -24,6 +26,9 @@ import Input from './input'
 import Select from './select'
 
 export {
+  OriginalSelect,
+  OriginalInput,
+  OriginalButton,
   Button,
   Header,
   Input,

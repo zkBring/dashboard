@@ -4,11 +4,11 @@ import {
   SelectStyled,
   SplitInputs,
   TokenBalance,
-  TokenBalanceValue
+  TokenBalanceValue,
+  WidgetComponentStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
 import {
-  WidgetComponent,
   Container,
   Aside
 } from 'components/pages/common'
@@ -122,7 +122,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
 const defineContractsOptions = (contractsERC20: TERC20Contract[], tokenType: string | null) => {
   return contractsERC20.map(contract => {
     return {
-      label: `${contract.symbol} ${shortenString(contract.address)} (${utils.formatUnits(contract.totalBalance as string, contract.decimals)} owned)`,
+      label: `${contract.symbol} ${shortenString(contract.address)}`,
       value: contract
     }
   })
@@ -202,7 +202,16 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   }, [tokenAddress, currentType])
 
   const defineIfNextDisabled = () => {
-    return !title || !tokenAddress || !appliedTokenSymbol || loading || !proxyContractAddress
+    return !title ||
+           !tokenAddress ||
+           !appliedTokenSymbol ||
+           loading ||
+           !proxyContractAddress ||
+           !totalClaims ||
+           !tokensPerClaim ||
+           totalClaims === '0' ||
+           tokensPerClaim === '0'
+           
   }
 
   const selectTokenOptions: any[] = defineContractsOptions(
@@ -224,7 +233,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   const selectCurrentPlaceholder = () => {
     if (!tokenAddress) {
-      return 'e.g. $BRING'
+      return 'Choose token address'
     }
     const selectValue = selectCurrentValue()
     if (!selectValue) { return tokenAddress }
@@ -250,7 +259,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         />
       </Aside>
   
-      <WidgetComponent title='What are you dropping?'>
+      <WidgetComponentStyled title='What are you dropping?'>
         <InputStyled
           value={title}
           disabled={Boolean(campaign) || loading}
@@ -301,9 +310,9 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             return value.startsWith('0x') && value.length === 42
           }}
         />
-        {tokenAmount && <TokenBalance>
-          Token balance: <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip>
-        </TokenBalance>}
+        <TokenBalance>
+          Token balance: {tokenAmount ? <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip> : '0'}
+        </TokenBalance>
 
         <SplitInputs>
           <InputStyled
@@ -315,6 +324,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               return value
             }}
             title='Total claims'
+            note='Set the amount of tokens each user will receive.'
           />
 
           <InputStyled
@@ -326,10 +336,12 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               return value
             }}
             title='Tokens per claim'
+            note='Define how many total claims are allowed for this drop.'
           />
         </SplitInputs>
         <Button
           appearance='action'
+          disabled={defineIfNextDisabled()}
           onClick={() => {
             setInitialData(
               currentType as TTokenType,
@@ -348,7 +360,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
         >
           Next
         </Button>
-      </WidgetComponent>
+      </WidgetComponentStyled>
     </Container>
   </>
 }

@@ -3,7 +3,7 @@ import {
   Input,
   Select
 } from 'components/common'
-import { Audience } from '../common'
+import { WidgetComponent } from 'components/pages/common'
 
 export const InputStyled = styled(Input)``
 
@@ -34,4 +34,8 @@ export const TokenBalanceValue = styled.span`
 
 export const AudienceStyled = styled.div`
   margin-bottom: 40px;
+`
+
+export const WidgetComponentStyled = styled(WidgetComponent)`
+  
 `

@@ -26,11 +26,13 @@ body {
 
 * {
   box-sizing: border-box;
+  font-weight: 400;
 }
 
 html, body, #root {
   height: 100%;
 }
+
 
 
 #webpack-dev-server-client-overlay {

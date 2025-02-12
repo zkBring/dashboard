@@ -13,7 +13,7 @@ export const Container = styled.div`
 export const Title = styled.h3`
   font-size: 22px;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 400;
   color: ${props => props.theme.primaryTextColor};
   margin: 0 0 16px;
 `
