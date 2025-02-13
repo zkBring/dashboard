@@ -33,8 +33,8 @@ import {
   formatTime
 } from 'helpers'
 import {
-  BatchesList,
-  LinksStats
+  LinksStats,
+  Reclaim
 } from './components'
 import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
@@ -63,7 +63,6 @@ import {
 import { TextLink } from 'components/common'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
-import { plausibleApi } from 'data/api'
 import { TClaimPattern, TCountry, TTokenType } from 'types'
 
 const mapStateToProps = ({
@@ -324,19 +323,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   }
 }
 
-const defineSoulboundTokenId = (
-  collection_id?: string | null,
-  token_id?: string | null
-) => {
-  if (!collection_id || !token_id) { return }
-  return <TableRow>
-    <TableText>Token ID</TableText>
-    <TableValue>
-      {token_id}
-    </TableValue>
-  </TableRow>
-}
-
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
@@ -486,16 +472,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
                 signer
               )
               if (result === 'paused') {
-                plausibleApi.invokeEvent({
-                  eventName: 'camp_pause',
-                  data: {
-                    network: defineNetworkName(chain_id),
-                    token_type: token_standard as string,
-                    claim_pattern: claim_pattern,
-                    distribution: sdk ? 'sdk' : 'manual',
-                    preferred_wallet: currentCampaign.wallet
-                  }
-                })
                 setStatus('paused')
               }
             } catch (e) {
@@ -528,16 +504,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
                 signer
               )
               if (result === 'active') {
-                plausibleApi.invokeEvent({
-                  eventName: 'camp_unpause',
-                  data: {
-                    network: defineNetworkName(chain_id),
-                    token_type: token_standard as string,
-                    claim_pattern: claim_pattern,
-                    distribution: sdk ? 'sdk' : 'manual',
-                    preferred_wallet: currentCampaign.wallet
-                  }
-                })
                 setStatus('active')
               }
             } catch (e) {
@@ -563,16 +529,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
               )
               if (result) {
                 setWithdrawable(false)
-                plausibleApi.invokeEvent({
-                  eventName: 'camp_refund',
-                  data: {
-                    network: defineNetworkName(chain_id),
-                    token_type: token_standard as string,
-                    claim_pattern: claim_pattern,
-                    distribution: sdk ? 'sdk' : 'manual',
-                    preferred_wallet: currentCampaign.wallet
-                  }
-                })
                 setStatus(currentStatus)
               }
             } catch (e) {
@@ -587,6 +543,8 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     return []
   }
 
+  const currentBatch = batches && batches[0]
+
   return <Container>
     <WidgetContainer>
       <LinksStats
@@ -598,49 +556,9 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       <WidgetComponent>
         <Header>
           <WidgetTitleStyled>{title || ` ${campaign_id}`}</WidgetTitleStyled>
-          
         </Header>
-
-        <BatchesList
-          // @ts-ignore
-          createReclaimAndAddLinks={createReclaimAndAddLinks}
-          wallet={wallet}
-          batches={batches}
-          loading={loading}
-          tokenType={token_standard}
-          sponsored={sponsored}
-          customClaimHost={claim_host}
-          customClaimHostOn={claim_host_on}
-          title={title}
-          campaignId={campaign_id}
-          sdk={sdk}
-          downloadLinks={(
-            batchId,
-            campaignId,
-            title,
-            tokenAddress,
-            sponsored,
-            encryptionKey
-          ) => {
-            downloadLinks(
-              batchId,
-              campaignId,
-              title,
-              tokenAddress,
-              chain_id,
-              token_standard,
-              sdk,
-              sponsored,
-              claim_pattern,
-              wallet,
-              claim_host,
-              claim_host_on,
-              encryptionKey
-            )
-          }}
-          encryptionKey={encryptionKey}
-          tokenAddress={token_address}
-          linksCreated={links_count}
+        <Reclaim
+          reclaimId={currentBatch && currentBatch.qr_campaign}
         />
 
       </WidgetComponent>
@@ -652,6 +570,12 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       options={defineOptions()}
       loading={status === 'pending' || status === 'initial'}
     >
+      {currentBatch &&currentBatch.created_at && <TableRow>
+        <TableText>Created at</TableText>
+        <TableValue>
+          {formatDate(currentBatch.created_at as string)}, {formatTime(currentBatch.created_at as string)}
+        </TableValue>
+      </TableRow>}
       {expiration_date && <TableRow>
         <TableText>Expiration date</TableText>
         <TableValue>
@@ -672,12 +596,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
           {tokenUrl ? <TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink> : shortenString(token_address)}
         </TableValue>
       </TableRow>
-      
-
-      {defineSoulboundTokenId(
-        collection_id,
-        token_id
-      )}
 
       <TableRow>
         <TableText>Campaign contract</TableText>
@@ -708,13 +626,13 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
       </TableRow>
 
-      {sponsored && <AsideButtonsContainer>
+      <AsideButtonsContainer>
         <AsideButton
           onClick={() => downloadReport(campaign_id)}
         >
           Download full report
         </AsideButton>
-      </AsideButtonsContainer>}
+      </AsideButtonsContainer>
 
     </AsideStyled>
       

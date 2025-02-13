@@ -1,9 +1,9 @@
-import BatchesList from './batches-list'
 import LinksStats from './links-stats'
 import Settings from './settings'
+import Reclaim from './reclaim'
 
 export {
-  BatchesList,
   LinksStats,
-  Settings
+  Settings,
+  Reclaim
 }

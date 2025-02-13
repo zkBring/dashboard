@@ -13,7 +13,8 @@ import generateLinks from './generate-links'
 import createReclaimAndAddLinks from './create-reclaim-and-add-links'
 
 function launch (
-  successCallback?: (id: string | number) => void
+  successCallback?: (id: string | number) => void,
+
 ) {
   return async (
     dispatch: Dispatch<UserActions> & Dispatch<CampaignActions> & IAppDispatch,
@@ -42,7 +43,10 @@ function launch (
 
         const campaignsData = await generateLinks(
           dispatch,
-          getState
+          getState,
+
+          // change
+          () => {}
         )
         if (campaignsData) {
           const { campaign, batch } = campaignsData

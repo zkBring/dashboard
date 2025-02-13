@@ -36,11 +36,12 @@ import {
 } from 'types'
 import { Loader, TextLink } from 'components/common'
 import { connect } from 'react-redux'
-import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
-import * as dispensersActions from 'data/store/reducers/dispensers/actions'
+
 import { useQuery } from 'hooks'
 import { DispensersActions } from 'data/store/reducers/dispensers/types'
 import { Dispatch } from 'redux'
+import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
+import * as dispensersActions from 'data/store/reducers/dispensers/actions'
 
 const settings = [
   {
@@ -334,7 +335,6 @@ const ReclaimQR: FC<ReduxType> = ({
 
 
   return <Container>
-
     <MainContent>
       {loading && <Overlay>
         <Loader />  
