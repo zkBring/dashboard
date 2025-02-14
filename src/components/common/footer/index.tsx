@@ -14,19 +14,19 @@ const FooterComponent = () => {
     </Version>
     <Menu>
       <MenuItem>
-        <LinkStyled>
+        <LinkStyled href='https://dexscreener.com/base/0xceb9ce741dc04e87366198c7dc96d76ed74dce6c' target='_blank'>
           $BRING
         </LinkStyled>
       </MenuItem>
 
       <MenuItem>
-        <LinkStyled>
+        <LinkStyled href='https://x.com/zkBring' target='_blank'>
           X (Twitter)
         </LinkStyled>
       </MenuItem>
 
       <MenuItem>
-        <LinkStyled>
+        <LinkStyled href='https://warpcast.com/~/channel/bring' target='_blank'>
           Warpcast
         </LinkStyled>
       </MenuItem>
