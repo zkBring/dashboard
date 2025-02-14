@@ -46,19 +46,19 @@ const requests: {
 } = {
   create: (
     campaign: TCampaignNew
-  ) => campaignsApi.post('/linkdrop/campaigns', {
+  ) => campaignsApi.post('/campaigns', {
     ...campaign
   }, { withCredentials: true }),
 
   get: (chain_id: number | string) => {
-    return campaignsApi.get(`/linkdrop/campaigns?chain_id=${chain_id}`, { withCredentials: true })
+    return campaignsApi.get(`/campaigns?chain_id=${chain_id}`, { withCredentials: true })
   },
 
   updateAvailableCountriesOn: (
     campaign_id: string | number,
     available_countries_on: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       available_countries_on
     }, {
       withCredentials: true
@@ -69,7 +69,7 @@ const requests: {
     campaign_id: string | number,
     preferred_wallet_on: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       preferred_wallet_on
     }, {
       withCredentials: true
@@ -80,7 +80,7 @@ const requests: {
     campaign_id: string | number,
     available_countries: string[]
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       available_countries
     }, {
       withCredentials: true
@@ -92,7 +92,7 @@ const requests: {
     additional_wallets_on: boolean,
     preferredWallet: string
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       wallet: preferredWallet,
       additional_wallets_on
     }, {
@@ -104,7 +104,7 @@ const requests: {
     campaign_id: string | number,
     claiming_finished_button_on: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       claiming_finished_button_on
     }, {
       withCredentials: true
@@ -117,7 +117,7 @@ const requests: {
     claiming_finished_button_url: string,
     claiming_finished_auto_redirect: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       claiming_finished_button_title,
       claiming_finished_button_url,
       claiming_finished_auto_redirect
@@ -130,7 +130,7 @@ const requests: {
     campaign_id: string | number,
     claim_host: string
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       claim_host,
     }, {
       withCredentials: true
@@ -141,7 +141,7 @@ const requests: {
     campaign_id: string | number,
     claim_host_on: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       claim_host_on,
     }, {
       withCredentials: true
@@ -152,7 +152,7 @@ const requests: {
     campaign_id: string | number,
     archived: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       archived
     }, {
       withCredentials: true
@@ -163,7 +163,7 @@ const requests: {
     campaign_id: string | number,
     additional_wallets_on: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       additional_wallets_on,
     }, {
       withCredentials: true
@@ -174,7 +174,7 @@ const requests: {
     campaign_id: string | number,
     multiple_claims_on: boolean
   ) => {
-    return campaignsApi.patch(`/linkdrop/campaigns/${campaign_id}`, {
+    return campaignsApi.patch(`/campaigns/${campaign_id}`, {
       multiple_claims_on,
     }, {
       withCredentials: true
@@ -184,7 +184,7 @@ const requests: {
   getOne: (
     campaign_id: string | number
   ) => {
-    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}`, { withCredentials: true })
+    return campaignsApi.get(`/campaigns/${campaign_id}`, { withCredentials: true })
   },
   saveBatch: (
     campaign_id: string | number,
@@ -192,7 +192,7 @@ const requests: {
     batch_description: string
   ) => {
     return campaignsApi.post(
-      `/linkdrop/campaigns/${campaign_id}/save-batch`,
+      `/campaigns/${campaign_id}/save-batch`,
       {
         claim_links,
         batch_description
@@ -203,18 +203,18 @@ const requests: {
   getBatches: (
     campaign_id: string | number
   ) => {
-    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}/batches`, { withCredentials: true })
+    return campaignsApi.get(`/campaigns/${campaign_id}/batches`, { withCredentials: true })
   },
   getReport: (
     campaign_id: string | number
   ) => {
-    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}/report`, { withCredentials: true })
+    return campaignsApi.get(`/campaigns/${campaign_id}/report`, { withCredentials: true })
   },
   getBatch: (
     campaign_id: string | number,
     batch_id: string | number
   ) => {
-    return campaignsApi.get(`/linkdrop/campaigns/${campaign_id}/batches/${batch_id}`, { withCredentials: true })
+    return campaignsApi.get(`/campaigns/${campaign_id}/batches/${batch_id}`, { withCredentials: true })
   }
 }
 

@@ -151,7 +151,7 @@ const Reclaim: FC<TProps & ReduxType> = ({
     />}
 
     {renderMainButton(
-      dispenser_url
+      claimURLDecrypted
     )}
   </ReclaimContainer>
 }

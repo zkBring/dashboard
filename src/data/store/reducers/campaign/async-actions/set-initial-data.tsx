@@ -74,9 +74,13 @@ function setInitialData(
       for (let i = 0; i < Number(totalClaims); i++) {
         const asset: TAsset = {
           original_amount: tokensPerClaim, // human readable amount
-          amount: utils.formatUnits(tokensPerClaim, decimals), // atomic amount
+          amount: String(utils.parseUnits(tokensPerClaim, decimals)), // atomic amount
           id: 1
         }
+
+        console.log({
+          asset
+        })
 
         assets.push(asset)
       }
