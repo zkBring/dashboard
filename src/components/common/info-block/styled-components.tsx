@@ -25,7 +25,7 @@ export const WrapperTitle = styled.h3`
 
 export const WrapperContent = styled.p`
   margin: 0;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 34px;
   line-height: 40px;
   text-align: center;

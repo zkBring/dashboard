@@ -161,8 +161,8 @@ const ClaimLinks: FC<TProps> = ({
   )
 
   return <AsideStyled
-    title="Claim links"
-    options={dispenserOptions}
+    // title="Claim links"
+    // options={dispenserOptions}
   >
     <AsideContent loading={loading}>
       {updateLinksPopup && <UploadLinksPopup

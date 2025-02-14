@@ -1,13 +1,9 @@
 import { FC, useState } from 'react'
 import {
   Header,
-  HeaderTitle,
+  ButtonStyled,
   HeaderInfo,
-  HeaderUserInfo,
-  HeaderUserInfoPadded,
   HeaderUserInfoAddress,
-  MiniPopupCustomItem,
-  PolygonIcon,
   Logout,
   HeaderNetwork
 } from './styled-components'
@@ -18,6 +14,7 @@ import {
   defineNativeTokenSymbol,
   defineNetworkIcon
 } from 'helpers'
+import { Navigation } from '..'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
 import * as asyncUserActions from 'data/store/reducers/user/async-actions'
@@ -69,53 +66,16 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   const [ showToggleChain, setShowToggleChain ] = useState(false)
   const { connector } = useAccount()
   const nativeTokenAmountFormatted = nativeTokenAmount ? utils.formatEther(nativeTokenAmount) : 0
-  const chainsPopup = showToggleChain && <MiniPopup onClose={() => { setShowToggleChain(false) }}>
-    {Object.keys(chains).map((chain: string) => {
-      if (
-        chainsAvailable.length > 0 &&
-        !chainsAvailable.find(network => Number(chain) === Number(network))
-      ) {
-        return null
-      }
-
-      if (chain === '13371') {
-        return null
-      }
-      const currentChain = chains[Number(chain)]
-      return <MiniPopupCustomItem
-        onClick={() => {
-          switchNetwork(Number(chain), () => { window.location.reload() })
-        }}
-        active={Number(chainId) === Number(chain)}
-      > 
-        <HeaderNetwork src={defineNetworkIcon(Number(chain))}/>
-        {currentChain.displayName}
-      </MiniPopupCustomItem>
-    })}
-  </MiniPopup>
-
-  // onClick={() => {
-  //   logout()
-  // }}
 
   return <Header breadcrumbs={breadcrumbs}>
-    <HeaderTitle>
-      {title}
-      {breadcrumbs}
-    </HeaderTitle>
+    <ButtonStyled to='/campaigns/new' size='small'>
+      Launch drop
+    </ButtonStyled>
+    <Navigation />
+    
     <HeaderInfo>
-      {chainId && <HeaderUserInfo onClick={() => {
-        setShowToggleChain(!showToggleChain)
-      }}>
-        <HeaderNetwork src={defineNetworkIcon(chainId)}/>
-        {capitalize(defineNetworkName(chainId))}
-        {chainsPopup}
-      </HeaderUserInfo>}
-      {address && <HeaderUserInfoPadded>
-        {nativeTokenAmount !== null ? parseFloat(Number((nativeTokenAmountFormatted)).toFixed(3)) : 0} {defineNativeTokenSymbol({ chainId })}
-        <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>
-      </HeaderUserInfoPadded>}
-
+      {chainId && <HeaderNetwork src={defineNetworkIcon(chainId)}/>}
+      {address && <HeaderUserInfoAddress>{shortenString(address)}</HeaderUserInfoAddress>}
       {chainId && address && <Logout
         onClick={() => {
           connector?.disconnect()

@@ -6,7 +6,6 @@ import {
 import Icons from 'icons'
 import { TProps, TBreadCrubItem } from './types'
 
-
 const Breadcrumbs: FC<TProps> = ({ items }) => {
   return <BreadcrumbsWrapper>
     {items.map((item: TBreadCrubItem, idx: number) => {

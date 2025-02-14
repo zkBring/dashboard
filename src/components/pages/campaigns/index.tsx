@@ -20,12 +20,12 @@ import {
   TProps,
   TCampaignsType
 } from './types'
-import { NewCampaign } from './components'
 import {
   CampaignsItems,
   Drafts,
   Tabs
 } from './components'
+import { useHistory } from 'react-router-dom'
 
 const mapStateToProps = ({
   campaigns: {
@@ -90,7 +90,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
     return campaign.creator_address.toLocaleLowerCase() === address.toLocaleLowerCase()
   })
 
-  const [ newCampaignPopup, setNewCampaignPopup ] = useState(false)
+  const history = useHistory()
 
   // @ts-ignore
   const currentAddressDrafts = drafts.filter(draft => {
@@ -127,35 +127,35 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
       <InitialNote
         title='Create Your First Campaign'
         text="Your campaigns will be displayed here once created. You don't have any campaigns yet"
-        onClick={() => {setNewCampaignPopup(true)}}
+        onClick={() => {
+          history.push('/campaigns/new')
+        }}
         buttontText='New Campaign'
       />
-      {newCampaignPopup && <NewCampaign onClose={() => setNewCampaignPopup(false)} />}
     </>
   }
 
-  return <>
-    <WidgetComponentStyled>
-      {newCampaignPopup && <NewCampaign onClose={() => setNewCampaignPopup(false)} />}
-      <Header>
-        <WidgetTitleStyled>Claim links</WidgetTitleStyled>
-        <ContainerButton
-          title='+ New'
-          disabled={userLoading}
-          size='extra-small'
-          appearance='action'
-          onClick={() => setNewCampaignPopup(true)}
-        />
-      </Header>
-
-      <Tabs
-        setCampagnsType={setCampagnsType}
-        activeTab={campagnsType}
+  return <WidgetComponentStyled>
+    <Header>
+      <WidgetTitleStyled>Claim links</WidgetTitleStyled>
+      <ContainerButton
+        title='+ New'
+        disabled={userLoading}
+        size='extra-small'
+        appearance='action'
+        onClick={() => {
+          history.push('/campaigns/new')
+        }}
       />
+    </Header>
 
-      {defineContent()}
-    </WidgetComponentStyled>
-  </>
+    <Tabs
+      setCampagnsType={setCampagnsType}
+      activeTab={campagnsType}
+    />
+
+    {defineContent()}
+  </WidgetComponentStyled>
 }
 
 // @ts-ignore

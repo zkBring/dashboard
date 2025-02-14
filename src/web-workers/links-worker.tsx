@@ -111,6 +111,7 @@ export class LinksWorker {
       expirationTime
     )
   }
+
   public async generateLink(
     type: TTokenType,
     linkdropMasterAddress: string,

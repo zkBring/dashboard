@@ -56,7 +56,7 @@ const defineTitle = (
 ) => {
   switch (authorizationStep) {
     case 'connect':
-      return 'Connect Wallet'
+      return 'Connect wallet'
     case 'login':
       return 'Login'
     default:
@@ -69,9 +69,9 @@ const defineText = (
 ) => {
   switch (authorizationStep) {
     case 'connect':
-      return 'Enable Linkdrop to view your address and suggest transactions for approval'
+      return 'Enable zkBring to view your address and suggest transactions for approval'
     case 'login':
-      return 'Sign a message in your wallet to log in securely to Linkdrop Dashboard'
+      return 'Sign a message in your wallet to log in securely to zkBring Dashboard'
 
     default:
       return ''
@@ -159,7 +159,7 @@ const defineDashboardName = () => {
   if (REACT_APP_CHAINS === '[]') {
     return 'Testnets Dashboard'
   }
-  if (REACT_APP_CHAINS === '[1,137,8453,13371,196,543210]') {
+  if (REACT_APP_CHAINS === '[8453]') {
     return 'Mainnets Dashboard'
   }
   return 'Development Dashboard'
@@ -169,7 +169,7 @@ const defineSwitchNetworkText = () => {
   if (REACT_APP_CHAINS === '[]') {
     return <Text>Please switch the network to <TextBold>NOT AVAILABLE</TextBold> to continue</Text>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453,13371,196,543210]') {
+  if (REACT_APP_CHAINS === '[8453]') {
     return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>X Layer</TextBold> or <TextBold>Immutable zkEVM</TextBold> to continue</Text>
   }
   return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>X Layer</TextBold> or <TextBold>Immutable zkEVM</TextBold> to continue</Text>
@@ -182,7 +182,7 @@ const defineRedirectButton = () => {
       Switch to Main Dashboard
     </WidgetButton>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453,13371,196,543210]') {
+  if (REACT_APP_CHAINS === '[8453]') {
     return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
       Switch to Testnet Dashboard
     </WidgetButton>
@@ -259,7 +259,7 @@ const Main: FC<ReduxType> = ({
       Please, use desktop browser
     </Title>
     <Text>
-    Linkdrop dashboard is only available on desktop browsers
+    zkBring dashboard is only available on desktop browsers
     </Text>
   </ContainerCentered>
   }
@@ -283,11 +283,6 @@ const Main: FC<ReduxType> = ({
 
       </Contents>
       {defineRedirectButton()}
-      <WidgetButton
-        target='_blank'
-        href='https://linkdrop-2.gitbook.io/linkdrop-knoe/'
-        title='Read documentation'
-      />
     </ContainerCentered>
   }
 
@@ -319,7 +314,7 @@ const Main: FC<ReduxType> = ({
         if (authorizationStep === 'login') {
           const timestamp = Date.now()
           const humanReadable = new Date(timestamp).toUTCString()
-          const statement = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
+          const statement = `I'm signing this message to login to zkBring Dashboard at ${humanReadable}`
           const { data: { nonce } } = await nonceApi.get(address)
           const message = createSigMessage(
             statement,

@@ -7,7 +7,6 @@ export type TAsset = {
 }
 
 export type TTotalAmount = {
-  ids?: (number | string)[];
   amount?: BigNumber;
   original_amount?: BigNumber;
 }

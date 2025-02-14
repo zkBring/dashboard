@@ -9,11 +9,11 @@ import ThumbnailUpload from './thumbnail-upload'
 import AttentionContainer from './attention-container'
 import InitialNote from './initial-note'
 import NewDispenserPopup from './new-dispenser-popup'
+import Audience from './audience'
 
 import {
   Container,
   WidgetComponent,
-  WidgetAside,
   ButtonsContainer,
   WidgetSubtitle,
   WidgetTitle,
@@ -44,7 +44,6 @@ export {
   InputContainer,
   InstructionNote,
   InputSubtitle,
-  WidgetAside,
   ErrorSpan,
   UploadedSpan,
   AsideContent,
@@ -55,6 +54,7 @@ export {
   InitialNote,
   Aside,
   WidgetContainer,
+  Audience,
   WidgetSubtitle,
   WidgetTitle,
   AsideDivider,

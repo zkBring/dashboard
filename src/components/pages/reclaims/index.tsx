@@ -29,7 +29,7 @@ import {
   defineDispenserStatusTag
 } from 'helpers'
 import {
-  TQRManagerItem
+  TDispenser
 } from 'types'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -40,25 +40,22 @@ import { Tooltip } from 'components/common'
 const mapStateToProps = ({
   user: { address, chainId },
   dispensers: {
-    loading
+    loading,
+    dispensers
   },
-  qrManager: {
-    items
-  }
 }: RootState) => ({
   address,
   chainId,
   loading,
-  items
+  dispensers
 })
 
 const createReclaimRow = (
-  reclaimItem: TQRManagerItem
+  reclaimItem: TDispenser
 ) => {
   const {
     title,
     links_count,
-    item_id,
     claim_duration,
     created_at,
     claim_start,
@@ -69,7 +66,7 @@ const createReclaimRow = (
     timeframe_on,
     links_assigned,
     links_claimed,
-    reclaim
+    dispenser_id
   } = reclaimItem
 
   const currentStatus = defineDispenserStatus(
@@ -82,7 +79,7 @@ const createReclaimRow = (
     timeframe_on
   )
 
-  const redirectUrl = defineHref(item_id as string)
+  const redirectUrl = defineHref(dispenser_id as string)
 
   const buttons = <BatchListValueJustifySelfEnd>
     <Button
@@ -133,7 +130,7 @@ const defineHref = (
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 const Reclaims: FC<ReduxType> = ({
-  items,
+  dispensers,
   loading
 }) => {
 
@@ -141,12 +138,12 @@ const Reclaims: FC<ReduxType> = ({
 
   if (
     loading &&
-    items.length === 0
+    dispensers.length === 0
   ) {
     return <Loader size='large' />
   }
 
-  if (items.length === 0) {
+  if (dispensers.length === 0) {
     return <>
       <InitialNote
         title='Create Your First Web2 Retrodrop'
@@ -159,7 +156,7 @@ const Reclaims: FC<ReduxType> = ({
     </>
   }
 
-  const itemsToShow = items.filter(item => item.reclaim)
+  const itemsToShow = dispensers.filter(item => item.reclaim)
 
   return <Container>
     <WidgetComponent>

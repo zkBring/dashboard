@@ -26,9 +26,9 @@ const projectId = REACT_APP_WC_PROJECT_ID as string
 
 // 2. Create wagmiConfig
 const metadata = {
-  name: 'Linkdrop Dashboard App',
-  description: 'Linkdrop Dashboard App',
-  url: 'https://linkdrop.io', // origin must match your domain & subdomain
+  name: 'zkBring Dashboard App',
+  description: 'zkBring Dashboard App',
+  url: 'https://zkbring.com', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 

@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern, TLaunchStage } from 'types'
 import { BigNumber } from 'ethers'
 import { CampaignState } from './types'
 
@@ -102,15 +102,21 @@ export function setAssets (assets: TAssetsData | null) {
   })
 }
 
-export function setAssetsOriginal (assetsOriginal: TLinkContent[] | null) {
-  return action(Constants.CAMPAIGN_SET_ASSETS_ORIGINAL, {
-    assetsOriginal
+export function setLaunchStage (launchStage: TLaunchStage) {
+  return action(Constants.CAMPAIGN_SET_LAUNCH_STAGE, {
+    launchStage
   })
 }
 
 export function setSymbol (symbol: string | null) {
   return action(Constants.CAMPAIGN_SET_SYMBOL, {
     symbol
+  })
+}
+
+export function setReclaimInstagramId (reclaimInstagramId: string | null) {
+  return action(Constants.CAMPAIGN_SET_RECLAIM_INSTAGRAM_ID, {
+    reclaimInstagramId
   })
 }
 

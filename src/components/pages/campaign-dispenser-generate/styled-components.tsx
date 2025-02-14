@@ -28,7 +28,7 @@ export const GenerateSubtitle = styled.h2`
   font-size: 14px;
   margin: 0 0 16px;
   line-height: 20px;
-  font-weight: 500;
+  font-weight: 400;
   color: ${props => props.theme.additionalTextColor};
 `
 
@@ -37,6 +37,6 @@ export const GenerateProgress = styled.p`
   font-size: 14px;
   margin: 0 0 16px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: 400;
   color: ${props => props.theme.primaryTextColor};
 `

@@ -30,24 +30,6 @@ const AssetsList: FC<TProps> = ({
             {item.tokenAmount} per link / {item.linksAmount} link(s)
           </TableValue>
         </>
-      case 'ERC721':
-        return <>
-          <TableText>
-            {claimPattern === 'mint' ? 'Tokens limit' : 'ID'}
-          </TableText>
-          <TableValue>
-            {shortenString(item.tokenId)}
-          </TableValue>
-        </>
-      case 'ERC1155':
-        return <>
-          <TableText>
-            ID/Copies
-          </TableText>
-          <TableValue>
-            {shortenString(item.tokenId)} / {item.tokenAmount} per link / {item.linksAmount} link(s)
-          </TableValue>
-        </>
     }
   }
   return <>

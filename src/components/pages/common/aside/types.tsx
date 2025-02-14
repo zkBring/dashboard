@@ -1,5 +1,3 @@
-import { TButtonAppearance } from 'types'
-
 export type TOptionItem = {
   title?: string,
   action?: () => void
@@ -9,24 +7,10 @@ export type TOptionItem = {
 }
 
 export type TProps = {
-  back?: {
-    action?: () => void
-    title?: string
-    disabled?: boolean
-    loading?: boolean
-    appearance?: TButtonAppearance
-  }
-  next?: {
-    action?: () => void
-    title?: string
-    disabled?: boolean
-    loading?: boolean
-    appearance?: TButtonAppearance
-  }
+  className?: string
+  children?: React.ReactNode
   options?: TOptionItem[]
   title?: string
   subtitle?: string
   loading?: boolean
-  className?: string
-  children?: React.ReactNode
 }

@@ -76,19 +76,8 @@ const secure = (
         const isDeployed = await factoryContract.isDeployed(address, id)
         let data
         let to
-        const proxyContract = await new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, signer)
-        plausibleApi.invokeEvent({
-          eventName: 'camp_step4_filled',
-          data: {
-            network: defineNetworkName(chainId),
-            token_type: tokenStandard as string,
-            claim_pattern: claimPattern,
-            distribution: sdk ? 'sdk' : 'manual',
-            sponsorship: sponsored ? 'sponsored' : 'non sponsored',
-            preferred_wallet: walletApp,
-            extra_token: nativeTokensPerLink === '0' ? 'no' : 'yes'
-          }
-        })
+        const proxyContract = new ethers.Contract(proxyContractAddress, LinkdropMastercopy.abi, signer)
+        
         
         if (!isDeployed) {
           let iface = new utils.Interface(LinkdropFactory.abi)

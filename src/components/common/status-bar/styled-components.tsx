@@ -46,5 +46,5 @@ export const Value = styled.p`
   line-height: 32px;
   margin: 0px;
   color: ${props => props.theme.primaryTextColor };
-  font-weight: 500;
+  font-weight: 400;
 `

@@ -2,22 +2,14 @@ import { createBrowserHistory } from 'history'
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
 
 import { userReducer } from './reducers/user/reducer'
-import { contractReducer } from './reducers/contract/reducer'
 import { newRetroDropReducer } from './reducers/campaign/reducer'
 import { campaignsReducer } from './reducers/campaigns/reducer'
-import { qrsReducer } from './reducers/qrs/reducer'
 import { dispensersReducer } from './reducers/dispensers/reducer'
-import { collectionsReducer } from './reducers/collections/reducer'
-import { qrManagerReducer } from './reducers/qr-manager/reducer'
 
 import { UserState, UserActions } from './reducers/user/types'
-import { ContractState, ContractActions } from './reducers/contract/types'
 import { CampaignActions, CampaignState } from './reducers/campaign/types'
 import { CampaignsState, CampaignsActions } from './reducers/campaigns/types'
-import { QRsState, QRsActions } from './reducers/qrs/types'
 import { DispensersState, DispensersActions } from './reducers/dispensers/types'
-import { CollectionsState, CollectionsActions } from './reducers/collections/types'
-import { QRManagerState, QRManagerActions } from './reducers/qr-manager/types'
 
 import thunkMiddleware, { ThunkDispatch, ThunkMiddleware } from "redux-thunk"
 
@@ -25,23 +17,15 @@ import thunkMiddleware, { ThunkDispatch, ThunkMiddleware } from "redux-thunk"
 type TActions = CampaignActions &
                 CampaignsActions &
                 UserActions &
-                ContractActions &
-                QRsActions &
-                DispensersActions &
-                CollectionsActions &
-                QRManagerActions
+                DispensersActions
 
 export const history = createBrowserHistory()
 
 const reducers = combineReducers({
   user: userReducer,
-  contract: contractReducer,
   campaign: newRetroDropReducer,
   campaigns: campaignsReducer,
-  qrs: qrsReducer,
-  dispensers: dispensersReducer,
-  collections: collectionsReducer,
-  qrManager: qrManagerReducer
+  dispensers: dispensersReducer
 })
 type IAppState = ReturnType<typeof reducers>
 
@@ -54,13 +38,9 @@ const composeEnhancers =
 
 export interface RootState {
   user: UserState,
-  contract: ContractState,
   campaign: CampaignState,
   campaigns: CampaignsState,
-  qrs: QRsState,
-  dispensers: DispensersState,
-  collections: CollectionsState,
-  qrManager: QRManagerState
+  dispensers: DispensersState
 }
 
 const store = createStore<RootState, any, any, any>(
