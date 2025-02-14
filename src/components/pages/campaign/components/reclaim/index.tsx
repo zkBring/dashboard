@@ -103,13 +103,10 @@ const Reclaim: FC<TProps & ReduxType> = ({
   address
 }) => {
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === reclaimId)
-  console.log({ dispensers, reclaimId })
   useEffect(() => {
     if (!dispenser) { return }
     getDispenserData(dispenser.multiscan_qr_id as string)
   }, [])
-
-  console.log({ dispenser })
 
   if (!dispenser) {
     return null

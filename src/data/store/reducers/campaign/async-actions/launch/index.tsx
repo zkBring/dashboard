@@ -31,14 +31,12 @@ function launch (
       } = getState()
 
       const callback = async () => {
-        console.log('here')
 
         dispatch(actionsCampaign.setLaunchStage('secure'))
         const secured = await secure(
           dispatch,
           getState
         )
-        console.log('started generate of links')
         dispatch(actionsCampaign.setLaunchStage('generate_links'))
 
         const campaignsData = await generateLinks(

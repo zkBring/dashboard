@@ -85,9 +85,7 @@ const generateERC20Link = async (
   }
 
   const assetsGroups = createDataGroups(sdk ? [] : assets, neededWorkersCount)
-  console.log({ assetsGroups })
   const workers = await createWorkers(assetsGroups, 'links', updateProgressbar)
-  console.log({ workers })
 
   if (!proxyContractAddress || !chainId) { return }
     const version = await getContractVersion(proxyContractAddress, signer)
@@ -109,9 +107,6 @@ const generateERC20Link = async (
       expirationDate
     )))
 
-
-    console.log({ newLinks })
-    console.log((+ new Date()) - start)
 
     if (!signerKey || !tokenStandard || !address) { return }
 
