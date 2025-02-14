@@ -279,12 +279,6 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
     setAssetsParsedValue(assets)
   }, [data])
 
-
-  const isSponsored = [
-    { value: true, label: `Sponsor claiming gas fees (+ ${comissionPrice} ${nativeTokenSymbol} per link)` },
-    { value: false, label: `No sponsoring` }
-  ]
-
   const {
     totalComission
   } = countNativeTokensToSecure(
@@ -320,16 +314,18 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
       <AudienceStyled
         options={[
           {
-            title: 'Instagram',
-            image: AudienceInstagramLogo
-          }, {
             title: 'X (Twitter)',
             image: AudienceXLogo,
-            disabled: true
-          }]}
+          }
+          // , {
+          //   title: 'Instagram',
+          //   image: AudienceInstagramLogo,
+          //   disabled: true
+          // }
+        ]}
       />
 
-      <Subtitle>
+      {/* <Subtitle>
         Set Instagram ID to follow
       </Subtitle>
       <Text>
@@ -343,7 +339,7 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
           setInstagramID(value)
           return value
         }}
-      />
+      /> */}
 
       <ButtonsContainer>
         <ButtonStyled
@@ -356,7 +352,8 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
               }
             )
           }}
-          disabled={!instagramID}
+          // disabled={!instagramID}
+          disabled={false}
         >
           Next
         </ButtonStyled>

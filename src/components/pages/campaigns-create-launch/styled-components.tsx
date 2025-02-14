@@ -11,13 +11,14 @@ export const WidgetStyled = styled(Widget)`
   margin: 0 auto;
   max-width: 800px;
   position: relative;
+  padding-top: 175px;
 
   > div {
     display: grid;
     justify-content: center;
     grid-template-rows: min-content 1fr min-content;
     height: 100%;
-    min-height: 400px;
+    min-height: 320px;
   }
 `
 

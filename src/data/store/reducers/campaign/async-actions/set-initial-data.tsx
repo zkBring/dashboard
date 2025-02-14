@@ -71,7 +71,7 @@ function setInitialData(
       dispatch(actionsCampaign.setTitle(title))
 
       const assets: TAsset[] = []
-      for (let i = 0; i <= Number(totalClaims); i++) {
+      for (let i = 0; i < Number(totalClaims); i++) {
         const asset: TAsset = {
           original_amount: tokensPerClaim, // human readable amount
           amount: utils.formatUnits(tokensPerClaim, decimals), // atomic amount

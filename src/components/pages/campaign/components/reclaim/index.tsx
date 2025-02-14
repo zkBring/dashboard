@@ -10,6 +10,10 @@ import { connect } from 'react-redux'
 import { TDispenser } from 'types'
 import { DispensersActions } from 'data/store/reducers/dispensers/types'
 import { Dispatch } from 'redux'
+import {
+  defineClaimAppURL,
+  defineDispenserAppUrl
+} from 'helpers'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import * as dispensersActions from 'data/store/reducers/dispensers/actions'
 import { IAppDispatch } from 'data/store'
@@ -21,7 +25,8 @@ const mapStateToProps = ({
   user: { address, chainId, dashboardKey },
 }: RootState) => ({
   dispensers,
-  dashboardKey
+  dashboardKey,
+  address
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<DispensersActions>) => {
@@ -68,18 +73,8 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<DispensersAction
 }
 
 const renderMainButton = (
-  decryptDispenserData: () => void,
   reclaimUrl?: string,
-  dashboardKey?: string | null
 ) => {
-
-  if (!dashboardKey) {
-    return <ButtonStyled
-      title='Show Drop URL'
-      appearance='action'
-      onClick={decryptDispenserData}
-    /> 
-  }
 
   return <ButtonStyled
     title='Launch Reclaim App'
@@ -104,7 +99,8 @@ const Reclaim: FC<TProps & ReduxType> = ({
   getDispenserData,
   reclaimSubmit,
   dashboardKey,
-  decryptDispenserData
+  decryptDispenserData,
+  address
 }) => {
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === reclaimId)
   console.log({ dispensers, reclaimId })
@@ -112,18 +108,6 @@ const Reclaim: FC<TProps & ReduxType> = ({
     if (!dispenser) { return }
     getDispenserData(dispenser.multiscan_qr_id as string)
   }, [])
-
-  useEffect(() => {
-    if (!dispenser) { return }
-    if (!dashboardKey) { return }
-    if (!reclaimId) { return }
-    decryptDispenserData(reclaimId)
-  }, [
-    dashboardKey,
-    dispenser?.whitelist_on,
-    dispenser?.redirect_on,
-    dispenser?.reclaim
-  ])
 
   console.log({ dispenser })
 
@@ -140,32 +124,37 @@ const Reclaim: FC<TProps & ReduxType> = ({
     claim_start,
     links_count,
     encrypted_multiscan_qr_enc_code,
+    encrypted_multiscan_qr_secret,
     links_claimed,
     links_assigned,
     claim_finish,
     timeframe_on,
     dispenser_url,
-    // reclaim_app_id,
-    // reclaim_app_secret,
-    // reclaim_provider_id,
+
     instagram_follow_id
   } = dispenser
 
+  const claimAppURL = defineClaimAppURL(
+    address
+  )
+  const claimURLDecrypted = defineDispenserAppUrl(
+    claimAppURL,
+    encrypted_multiscan_qr_secret,
+    encrypted_multiscan_qr_enc_code,
+    false,
+    false,
+    true
+  )
+
   return <ReclaimContainer>
-    {dispenser_url &&
-    instagram_follow_id &&
-    // reclaim_app_id &&
-    // reclaim_app_secret &&
-    // reclaim_provider_id &&
+    {claimURLDecrypted &&
     <CopyContainerStyled
       title='Reclaim Drop URL'
-      text={dispenser_url}
+      text={claimURLDecrypted as string}
     />}
 
     {renderMainButton(
-      () => decryptDispenserData(reclaimId as string),
-      dispenser_url,
-      dashboardKey
+      dispenser_url
     )}
   </ReclaimContainer>
 }

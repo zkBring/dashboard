@@ -5,6 +5,7 @@ import {
   SplitInputs,
   TokenBalance,
   TokenBalanceValue,
+  Subtitle,
   WidgetComponentStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
@@ -270,10 +271,14 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           }}
           title='Title of the campaign'
         />
-
+        <Subtitle>
+          Token name or address
+          <TokenBalance>
+            Token balance: {tokenAmount ? <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip> : '0'}
+          </TokenBalance>
+        </Subtitle>
         <SelectStyled
           disabled={Boolean(campaign) || loading || userLoading}
-          title="Token name or address"
           onChange={async ({ value }: { value: TNFTContract | string}) => {
             if (typeof value === 'string') {
               if (currentType === 'ERC20' && chainId) {
@@ -310,9 +315,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
             return value.startsWith('0x') && value.length === 42
           }}
         />
-        <TokenBalance>
-          Token balance: {tokenAmount ? <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip> : '0'}
-        </TokenBalance>
+        
 
         <SplitInputs>
           <InputStyled

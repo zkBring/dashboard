@@ -56,7 +56,9 @@ export class QRsWorker {
     dashboard_key: string,
   ) {
     const result = []
-    const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboard_key)
+    // const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboard_key)
+    const multiscanQREncCode = encrypted_multiscan_qr_enc_code
+
     for (let i = 0; i < links.length; i++) {
       const claim_link = links[i].claim_link
       const linkKey = ethers.utils.id(multiscanQREncCode)

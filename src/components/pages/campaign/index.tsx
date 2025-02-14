@@ -40,17 +40,7 @@ import Icons from 'icons'
 import { useHistory } from 'react-router-dom'
 import {
   getCampaignBatches,
-  downloadLinks,
-  downloadReport,
-  updateAvailableCountriesOn,
-  updateClaimingFinishedButtonOn,
-  updateClaimingFinishedButton,
-  updateAvailableCountries,
-  updateWallets,
-  updatePreferredWalletOn,
-  updateClaimHost,
-  updateClaimHostOn,
-  updateMultipleClaimsOn
+  downloadReport
 } from 'data/store/reducers/campaigns/async-actions'
 
 import {
@@ -115,211 +105,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
         )
       )
     },
-
-    updateAvailableCountriesOn: (
-      campaign_id: string,
-      available_countries_on: boolean
-    ) => {
-      dispatch(
-        updateAvailableCountriesOn(
-          campaign_id,
-          available_countries_on
-        )
-      )
-    },
-
-    updatePreferredWalletOn: (
-      campaign_id: string,
-      preferred_wallet_on: boolean
-    ) => {
-      dispatch(
-        updatePreferredWalletOn(
-          campaign_id,
-          preferred_wallet_on
-        )
-      )
-    },
-
-    updateAvailableCountries: (
-      campaign_id: string,
-      available_countries: string[],
-      callback?: () => void
-    ) => {
-      dispatch(
-        updateAvailableCountries(
-          campaign_id,
-          available_countries,
-          callback
-        )
-      )
-    },
-
-    updateWallet: (
-      campaign_id: string,
-      wallet: string,
-      additional_wallets_on: boolean,
-      callback?: () => void
-    ) => {
-      dispatch(
-        updateWallets(
-          campaign_id,
-          wallet,
-          additional_wallets_on,
-          callback
-        )
-      )
-    },
-
-    createReclaimAndAddLinks: (
-      mappingPageRedirect: () => void,
-      title: string,
-      campaignId: string,
-      batchId: string,
-      tokenAddress: string,
-      wallet: string,
-      tokenType: TTokenType,
-      customClaimHost: string,
-      customClaimHostOn: boolean,
-      successCallback?: (
-        reclaim_id: string | number
-      ) => void,
-      errorCallback?: () => void,
-    ) => {
-      dispatch(
-        createReclaimAndAddLinks({
-          mappingPageRedirect,
-          title,
-          campaignId,
-          batchId,
-          tokenAddress,
-          wallet,
-          tokenType,
-          customClaimHost,
-          customClaimHostOn,
-          successCallback,
-          errorCallback
-        })
-      )
-    },
-
-    
-    updateClaimingFinishedButtonOn: (
-      campaign_id: string,
-      claiming_finished_button_on: boolean
-    ) => {
-      dispatch(
-        updateClaimingFinishedButtonOn(
-          campaign_id,
-          claiming_finished_button_on
-        )
-      )
-    },
-
-    updateClaimingFinishedButton: (
-      campaign_id: string,
-      claiming_finished_button_title: string,
-      claiming_finished_button_href: string,
-      claiming_finished_auto_redirect: boolean,
-      callback?: () => void
-    ) => {
-      dispatch(
-        updateClaimingFinishedButton(
-          campaign_id,
-          claiming_finished_button_title,
-          claiming_finished_button_href,
-          claiming_finished_auto_redirect,
-          callback
-        )
-      )
-    },
-
-
-    createNewBatch: (
-      campaign_id: string,
-      token_standard: TTokenType,
-      callback?: (location: string) => void
-    ) => {
-      dispatch(
-        createNewBatch(
-          campaign_id,
-          token_standard,
-          callback
-        )
-      )
-    },
-
-
-    updateClaimHost: (
-      campaign_id: string,
-      claim_host: string,
-      callback?: () => void
-    ) => {
-      dispatch(
-        updateClaimHost(
-          campaign_id,
-          claim_host,
-          callback
-        )
-      )
-    },
-
-    updateClaimHostOn: (
-      campaign_id: string,
-      claim_host_on: boolean,
-    ) => {
-      dispatch(
-        updateClaimHostOn(
-          campaign_id,
-          claim_host_on
-        )
-      )
-    },
-
-    updateMultipleClaimsOn: (
-      campaign_id: string,
-      multiple_claims_on: boolean,
-    ) => {
-      dispatch(
-        updateMultipleClaimsOn(
-          campaign_id,
-          multiple_claims_on
-        )
-      )
-    },
-
-    downloadLinks: (
-      batch_id: string | number,
-      campaign_id: string,
-      title: string,
-      tokenAddress: string | null,
-      chainId: number,
-      tokenType: TTokenType,
-      sdk: boolean,
-      sponsored: boolean,
-      claimPattern: TClaimPattern,
-      wallet: string,
-      customClaimHost: string,
-      customClaimHostOn: boolean,
-      encryptionKey?: string
-    ) => {
-      dispatch(
-        downloadLinks(
-          batch_id,
-          campaign_id,
-          title,
-          tokenAddress,
-          chainId,
-          tokenType,
-          sdk,
-          sponsored,
-          claimPattern,
-          wallet,
-          customClaimHost,
-          customClaimHostOn,
-          encryptionKey
-        )
-      )
-    }
   }
 }
 
@@ -333,7 +118,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   dashboardKey,
   match: { params },
   getCampaignBatches,
-  downloadLinks,
   downloadReport,
   signer,
   address,
@@ -341,18 +125,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   chainId,
   countries,
   loading,
-  updateClaimingFinishedButtonOn,
-  updateAvailableCountriesOn,
-  updateClaimingFinishedButton,
-  updateAvailableCountries,
-  updateWallet,
-  updatePreferredWalletOn,
-  updateClaimHost,
-  updateClaimHostOn,
-  updateMultipleClaimsOn,
-  createNewBatch,
-  createReclaimAndAddLinks,
-  campaignLoading
+
 }) => {
 
   const history = useHistory()
@@ -360,34 +133,11 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   const [status, setStatus] = useState<TCampaignStatus>('initial')
   const [withdrawable, setWithdrawable] = useState<boolean>(false)
 
-
-  useEffect(() => {
-    getCampaignBatches(
-      params.id,
-      async () => {
-        const status = await defineCampaignStatus(
-          proxy_contract_address,
-          signer,
-        )
-        setStatus(status)
-      }
-    )
-  }, [])
-
-  useEffect(() => {
-    const onInit = async () => {
-      const amount = await defineContractFunds(
-        proxy_contract_address,
-        provider
-      )
-      setWithdrawable(amount > 0)
-    }
-    onInit()
-  }, [])
+  console.log({ campaigns, params })
 
   // @ts-ignore
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
-
+  console.log({ currentCampaign })
   if (!currentCampaign) {
     return null
   }
@@ -424,14 +174,37 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     claim_host_on,
     multiple_claims_on,
     token_id
-    
   } = currentCampaign
 
-  const encryptionKey = createEncryptionKey(
-    signer_address,
-    campaign_number,
-    dashboardKey
-  )
+  console.log({
+    params,
+    campaign_id,
+    campaign_number
+  })
+
+  useEffect(() => {
+    getCampaignBatches(
+      params.id,
+      async () => {
+        const status = await defineCampaignStatus(
+          proxy_contract_address,
+          signer,
+        )
+        setStatus(status)
+      }
+    )
+  }, [])
+
+  useEffect(() => {
+    const onInit = async () => {
+      const amount = await defineContractFunds(
+        proxy_contract_address,
+        provider
+      )
+      setWithdrawable(amount > 0)
+    }
+    onInit()
+  }, [])
 
   const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)

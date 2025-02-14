@@ -16,8 +16,6 @@ import {
   sleep
 } from 'helpers'
 import { TDispenser } from 'types'
-import { encrypt } from 'lib/crypto'
-
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
@@ -63,8 +61,11 @@ const createReclaimAndAddLinks = async ({
   if (!secretKeyPair) { return alertError('secretKeyPair is not provided') }
   if (!encKeyPair) { return alertError('encKeyPair is not provided') }
 
-  const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey as string)
-  const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey as string)
+  // const encryptedMultiscanQRSecret = encrypt(secretKeyPair.shortCode, dashboardKey as string)
+  // const encryptedMultiscanQREncCode = encrypt(encKeyPair.shortCode, dashboardKey as string)
+
+  const encryptedMultiscanQRSecret = secretKeyPair.shortCode
+  const encryptedMultiscanQREncCode = encKeyPair.shortCode
   const date = getNextDayData()
   const dispenserTime = momentNoOffsetGetTime(+date)
   const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))
@@ -76,14 +77,14 @@ const createReclaimAndAddLinks = async ({
     encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
     title: `Reclaim set for ${title || `Campaign ${campaignId}`}`,
     dynamic: false,
-    reclaim: true,
-    instagram_follow_id: reclaimInstagramId
+    reclaim: true
   }
 
   // create dispenser
   const createDispenserResult = await dispensersApi.create(newDispenser)
   if (createDispenserResult.data.success) {
     // get links
+
     const getLinksResult = await campaignsApi.getBatch(campaignId, batchId)
     let encKey = String(dashboardKey)
 
@@ -96,7 +97,6 @@ const createReclaimAndAddLinks = async ({
         tokenAddress: tokenAddress as string,
         chainId: chainId as number
       })
-
       let currentPercentage = 0
 
       const updateProgressbar = async (value: number) => {
@@ -108,12 +108,12 @@ const createReclaimAndAddLinks = async ({
 
       const RemoteChannel = wrap<typeof QRsWorker>(new Worker())
       const qrsWorker: Remote<QRsWorker> = await new RemoteChannel(proxy(updateProgressbar));
-
       const qrArrayMapped = await qrsWorker.prepareLinksForDispenser(
         encryptedMultiscanQREncCode,
         decryptedLinks,
         dashboardKey as string
       )
+
       const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
       const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
       if (addLinksResult.data.success) {
@@ -122,7 +122,7 @@ const createReclaimAndAddLinks = async ({
 
         if (successCallback) {
           successCallback(
-            createDispenserResult.data.dispenser.dispenser_id
+            campaignId
           )
         }
       }

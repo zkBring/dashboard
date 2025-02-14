@@ -8,9 +8,16 @@ import { WidgetComponent } from 'components/pages/common'
 export const InputStyled = styled(Input)``
 
 export const SelectStyled = styled(Select)`
-  margin-bottom: 4px;
+  margin-bottom: 30px;
 `
 
+export const Subtitle = styled.h4`
+  font-weight: 400;
+  margin: 0 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
 export const SplitInputs = styled.div`
   display: grid;
@@ -19,8 +26,8 @@ export const SplitInputs = styled.div`
 `
 
 export const TokenBalance = styled.div`
-  font-size: 14px;
-  margin-bottom: 30px;
+  font-size: 15px;
+  color: ${props => props.theme.secondaryTextColor};
 `
 
 export const TokenBalanceValue = styled.span`
