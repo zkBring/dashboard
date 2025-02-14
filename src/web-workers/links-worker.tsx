@@ -111,6 +111,7 @@ export class LinksWorker {
       expirationTime
     )
   }
+
   public async generateLink(
     type: TTokenType,
     linkdropMasterAddress: string,
@@ -135,7 +136,7 @@ export class LinksWorker {
           result = await this.createERC20Link(
             String(nativeTokensPerLink),
             tokenAddress,
-            assets[i].original_amount || '0',
+            assets[i].amount || '0',
             String(expirationDate),
             chainId,
             signerKey,
@@ -161,7 +162,7 @@ export class LinksWorker {
             String(nativeTokensPerLink),
             tokenAddress,
             String(assets[i].id || '0'),
-            assets[i].original_amount || '0',
+            assets[i].amount || '0',
             String(expirationDate),
             chainId,
             signerKey,
@@ -174,7 +175,7 @@ export class LinksWorker {
           const linkData = {
             encrypted_claim_code: result.encrypted_claim_code,
             token_id: String(assets[i].id || '0'),
-            token_amount: assets[i].original_amount || '0',
+            token_amount: assets[i].amount || '0',
             link_id: result.link_id,
             sender_signature: result.sender_signature,
             expiration_time: String(expirationDate),

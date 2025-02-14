@@ -69,9 +69,9 @@ const defineText = (
 ) => {
   switch (authorizationStep) {
     case 'connect':
-      return 'Enable Linkdrop to view your address and suggest transactions for approval'
+      return 'Enable zkBring to view your address and suggest transactions for approval'
     case 'login':
-      return 'Sign a message in your wallet to log in securely to Linkdrop Dashboard'
+      return 'Sign a message in your wallet to log in securely to zkBring Dashboard'
 
     default:
       return ''
@@ -259,7 +259,7 @@ const Main: FC<ReduxType> = ({
       Please, use desktop browser
     </Title>
     <Text>
-    Linkdrop dashboard is only available on desktop browsers
+    zkBring dashboard is only available on desktop browsers
     </Text>
   </ContainerCentered>
   }
@@ -283,11 +283,6 @@ const Main: FC<ReduxType> = ({
 
       </Contents>
       {defineRedirectButton()}
-      <WidgetButton
-        target='_blank'
-        href='https://linkdrop-2.gitbook.io/linkdrop-knoe/'
-        title='Read documentation'
-      />
     </ContainerCentered>
   }
 
@@ -319,7 +314,7 @@ const Main: FC<ReduxType> = ({
         if (authorizationStep === 'login') {
           const timestamp = Date.now()
           const humanReadable = new Date(timestamp).toUTCString()
-          const statement = `I'm signing this message to login to Linkdrop Dashboard at ${humanReadable}`
+          const statement = `I'm signing this message to login to zkBring Dashboard at ${humanReadable}`
           const { data: { nonce } } = await nonceApi.get(address)
           const message = createSigMessage(
             statement,
