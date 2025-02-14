@@ -33,5 +33,5 @@ export const AsideWidgetButton = styled(Button)`
 export const AsideSubtitle = styled.h3`
   margin: 0 0 12px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 `

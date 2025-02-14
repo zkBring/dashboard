@@ -2,14 +2,10 @@ import { TProps } from './types'
 import { FC, useState } from 'react'
 import {
   WidgetComponent,
-  WidgetAside,
-  ButtonsContainer,
   WidgetSubtitle
 } from '../index'
 import Icons from 'icons'
-
 import {
-  ButtonStyled, 
   WidgetOptions,
   WidgetTitle,
   WidgetTitleFlex,
@@ -17,26 +13,13 @@ import {
   OptionsList,
   OptionsListItem,
   OptionsListBorder,
-  TitleLoader
+  TitleLoader,
+  AsideWrapper
 } from './styled-components'
 
 const Aside: FC<TProps> = ({
   className,
   children,
-  back: {
-    action: backAction,
-    disabled: backDisabled,
-    title: backTitle = "Back",
-    loading: backLoading = false,
-    appearance: backAppearance
-  } = {},
-  next: {
-    action: nextAction,
-    disabled: nextDisabled,
-    title: nextTitle = "Next",
-    loading: nextLoading = false,
-    appearance: nextAppearance = 'action'
-  } = {},
   title,
   subtitle,
   options,
@@ -88,17 +71,11 @@ const Aside: FC<TProps> = ({
     </WidgetTitle>
   }
 
-  return <WidgetAside className={className}>
-    <WidgetComponent>
-      {defineHeaderContents()}
-      {subtitle && <WidgetSubtitle>{subtitle}</WidgetSubtitle>}
-      {children}
-      {(backAction || nextAction) && <ButtonsContainer>
-        {backAction && <ButtonStyled loading={backLoading} disabled={Boolean(backDisabled)} appearance={backAppearance} onClick={backAction}>{backTitle}</ButtonStyled>}
-        {nextAction && <ButtonStyled loading={nextLoading} disabled={Boolean(nextDisabled)} appearance={nextAppearance} onClick={nextAction}>{nextTitle}</ButtonStyled>}
-      </ButtonsContainer>}
-    </WidgetComponent>
-  </WidgetAside>
+  return <AsideWrapper className={className}>
+    {defineHeaderContents()}
+    {subtitle && <WidgetSubtitle>{subtitle}</WidgetSubtitle>}
+    {children}
+  </AsideWrapper>
 }
 
 

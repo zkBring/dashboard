@@ -3,7 +3,7 @@ import TProps from "./types"
 
 export const TooltipContainer = styled.span<TProps>`
   position: relative;
-  color: ${props => props.theme.primaryHighlightColor};
+  color: ${props => props.theme.primaryTextColor};
 
   &:after {
     position: absolute;

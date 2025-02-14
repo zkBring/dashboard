@@ -8,8 +8,8 @@ export const Container = styled.div`
 `
 
 export const ImageContainer = styled.img`
-  margin-bottom: 32px;
-  max-width: 280px;
+  margin-bottom: 20px;
+  max-width: 153px;
 `
 
 export const Contents = styled.div`
@@ -51,11 +51,13 @@ export const AlignBottomButton = styled(WidgetButton)`
 `
 
 export const Title = styled.h3`
-  font-size: 24px;
-  margin: 0 0 24px;
-  font-weight: 600;
+  font-size: 50px;
+  margin: 0 0 40px;
+  font-weight: 400;
   max-width: 350px;
-  line-height: 32px;  
+  line-height: 1;
+  color: ${props => props.theme.primaryTextColor};
+  font-family: FKRasterRoman, sans-serif;
 `
 
 export const ContainerCentered = styled.div`
@@ -81,7 +83,7 @@ export const ConnectWalletContainer = styled.div`
 
 export const Text = styled.p`
   font-size: 16px;
-  margin: 0 0 32px;
+  margin: 0 0 30px;
   line-height: 24px;
   max-width: 330px;
 `
@@ -99,7 +101,7 @@ export const ListItem = styled.li`
 `
 
 export const TextBold = styled.span`
-  font-weight: 700;
+font-weight: 400;
 `
 
 export const AdditionalButton = styled.button`
@@ -109,7 +111,7 @@ export const AdditionalButton = styled.button`
   border: none;
   color: ${props => props.theme.primaryHighlightColor};
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   line-height: 20px;
 

@@ -1,9 +1,7 @@
 import { Dispatch } from 'redux'
 import * as actionsDispensers from '../actions'
-import * as actionsQRManager from '../../qr-manager/actions'
 
 import { DispensersActions } from '../types'
-import { QRManagerActions } from '../../qr-manager/types'
 
 import { RootState } from 'data/store'
 import { dispensersApi } from 'data/api'
@@ -13,16 +11,13 @@ const archiveDispenser = (
   archived: boolean
 ) => {
   return async (
-    dispatch: Dispatch<DispensersActions> & Dispatch<QRManagerActions>,
+    dispatch: Dispatch<DispensersActions>,
     getState: () => RootState
   ) => {
     dispatch(actionsDispensers.setLoading(true))
     const {
       dispensers: {
         dispensers
-      },
-      qrManager: {
-        items
       }
     } = getState()
     
@@ -43,17 +38,6 @@ const archiveDispenser = (
           return dispenser
         })
         dispatch(actionsDispensers.setDispensers(updatedDispensers))
-
-        const updatedQRManagerItems = items.map(item => {
-          if (item.item_id === dispenser_id) {
-            return {
-              ...item,
-              archived
-            }
-          }
-          return item
-        })
-        dispatch(actionsQRManager.setItems(updatedQRManagerItems))
 
       }
     } catch (err) {

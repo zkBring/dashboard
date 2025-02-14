@@ -4,14 +4,10 @@ import { Loader } from 'linkdrop-ui'
 import { TOptionItem } from './types'
 
 export const ButtonStyled = styled(Button)`
-  min-width: 136px;
-  margin-left: 16px;
-  padding: 8px 20px;
 `
 
 export const WidgetTitle = styled.h3`
   font-size: 22px;
-  font-weight: 600;
   margin: 0 0 16px;
   color: ${props => props.theme.primaryTextColor};
 `
@@ -21,6 +17,7 @@ export const WidgetTitleFlex = styled(WidgetTitle)`
   justify-content: space-between;
   align-items: center;
 `
+
 export const WidgetOptions = styled.div`
   cursor: pointer;
   position: relative;
@@ -43,7 +40,6 @@ export const OptionsListItem = styled.li<TOptionItem>`
   padding: 0;
   height: 36px;
   font-size: 14px;
-  font-weight: 500;
   display: flex;
   align-items: center;
   padding: 0 20px;
@@ -88,4 +84,8 @@ export const TitleLoader = styled(Loader)`
   div {
     border-color: ${props => props.theme.primaryHighlightColor} transparent transparent transparent;
   }
+`
+
+export const AsideWrapper = styled.aside`
+  border-radius: 10px;
 `

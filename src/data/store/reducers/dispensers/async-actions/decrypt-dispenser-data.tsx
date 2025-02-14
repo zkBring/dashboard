@@ -7,11 +7,9 @@ import {
   defineClaimAppURL,
   defineDispenserAppUrl
 } from 'helpers'
-import { QRManagerActions } from '../../qr-manager/types'
 import { decrypt } from 'lib/crypto'
 import * as actionsAsyncUser from '../../user/async-actions'
 import { ethers } from 'ethers'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 import { UserActions } from '../../user/types'
 
@@ -24,7 +22,6 @@ const decryptDispenserData = ({
 }: TDecryptDispenserData) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
-              Dispatch<QRManagerActions> &
               Dispatch<UserActions>
     ,
     getState: () => RootState

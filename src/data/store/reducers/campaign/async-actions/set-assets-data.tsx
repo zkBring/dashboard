@@ -14,7 +14,7 @@ function setAssetsData(
     dispatch: Dispatch<CampaignActions> & IAppDispatch
   ) => {
     dispatch(actionsCampaign.setAssets(assets))
-    dispatch(actionsCampaign.setAssetsOriginal(assetsOriginal))
+    // dispatch(actionsCampaign.setAssetsOriginal(assetsOriginal))
     try {
       if (callback) {
         callback()

@@ -56,7 +56,7 @@ const defineTitle = (
 ) => {
   switch (authorizationStep) {
     case 'connect':
-      return 'Connect Wallet'
+      return 'Connect wallet'
     case 'login':
       return 'Login'
     default:
@@ -159,7 +159,7 @@ const defineDashboardName = () => {
   if (REACT_APP_CHAINS === '[]') {
     return 'Testnets Dashboard'
   }
-  if (REACT_APP_CHAINS === '[1,137,8453,13371,196,543210]') {
+  if (REACT_APP_CHAINS === '[8453]') {
     return 'Mainnets Dashboard'
   }
   return 'Development Dashboard'
@@ -169,7 +169,7 @@ const defineSwitchNetworkText = () => {
   if (REACT_APP_CHAINS === '[]') {
     return <Text>Please switch the network to <TextBold>NOT AVAILABLE</TextBold> to continue</Text>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453,13371,196,543210]') {
+  if (REACT_APP_CHAINS === '[8453]') {
     return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>X Layer</TextBold> or <TextBold>Immutable zkEVM</TextBold> to continue</Text>
   }
   return <Text>Please switch the network to <TextBold>Polygon</TextBold>, <TextBold>Mainnet</TextBold>, <TextBold>Base</TextBold>, <TextBold>X Layer</TextBold> or <TextBold>Immutable zkEVM</TextBold> to continue</Text>
@@ -182,7 +182,7 @@ const defineRedirectButton = () => {
       Switch to Main Dashboard
     </WidgetButton>
   }
-  if (REACT_APP_CHAINS === '[1,137,8453,13371,196,543210]') {
+  if (REACT_APP_CHAINS === '[8453]') {
     return <WidgetButton appearance='action' href={REACT_APP_TESTNETS_URL}>
       Switch to Testnet Dashboard
     </WidgetButton>

@@ -1,5 +1,9 @@
 import React, { FC } from 'react'
-import { WidgetComponent, WidgetContent, WidgetTitle } from './styled-components'
+import {
+  WidgetComponent,
+  WidgetContent,
+  WidgetTitle
+} from './styled-components'
 import { TProps } from './types'
 
 const Widget: FC<TProps> = ({ children, className, title }) => {

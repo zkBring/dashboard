@@ -15,9 +15,6 @@ import {
 } from 'helpers'
 import { TDispenser, TQRManagerItemType, TTokenType } from 'types'
 import { encrypt } from 'lib/crypto'
-import { qrManagerApi } from 'data/api'
-import * as qrManagerActions from '../../qr-manager/actions'
-import { QRManagerActions } from '../../qr-manager/types'
 import * as actionsAsyncUser from '../../user/async-actions'
 import * as actionsUser from '../../user/actions'
 
@@ -57,7 +54,6 @@ const createReclaimAndAddLinks = ({
 }: TCreateReclaimArgs) => {
   return async (
     dispatch: Dispatch<DispensersActions> &
-      Dispatch<QRManagerActions> &
       Dispatch<UserActions>,
     getState: () => RootState
   ) => {
@@ -117,12 +113,7 @@ const createReclaimAndAddLinks = ({
               links: claim_links,
               dashboardKey: encKey,
               tokenAddress,
-              userAddress: address,
-              chainId: chainId as number,
-              wallet,
-              tokenType,
-              customClaimHost,
-              customClaimHostOn
+              chainId: chainId as number
             })
 
             let currentPercentage = 0
@@ -145,13 +136,6 @@ const createReclaimAndAddLinks = ({
             const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
             const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
             if (addLinksResult.data.success) {
-
-              const qrManagerData = await qrManagerApi.get()
-              const { success, items } = qrManagerData.data
-              if (success) {
-                dispatch(qrManagerActions.setItems(items))
-              }
-
               const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
               dispatch(actionsDispensers.setDispensers(result.data.dispensers))
 

@@ -1,27 +1,31 @@
 const themes = {
 	light: {
-		primaryTextColor: '#121212', // main ccolor of text
-		secondaryTextColor: '#FFF', // secondary color of text
-		additionalTextColor: '#9D9D9D', // secondary color of text
-		linkTextColor: '#0C5EFF',
-		propertyTextColor: '#6294F5', //
+		primaryTextColor: '#BCBCBC', // main color of text
+		secondaryTextColor: '#686869', // secondary color of text
+		additionalTextColor: '#FFF', // secondary color of text
+		extraTextColor: '#8D8D8D', // secondary color of text
+		placeholderTextColor: 'rgba(255, 255, 255, .3)',
+
+		linkTextColor: '#8D8D8D',
+		propertyTextColor: '#6294F5',
 
 		disabledTextColor: '#979797', // disabled color of text
 		dangerTextColor: '#FF2C2C', // danger color of text
 		noteTextColor: '#C5C7CD', // note color of text
 
-		primaryBorderColor: '#E4E4E4',
+		primaryBorderColor: '#363636',
 		secondaryBorderColor: '#FFF',
 		extraBorderColor: '#979797',
 		additionalBorderColor: '#D9D9D9',
 		disabledBorderColor: '#C5C7CD',
-		primaryBackgroundColor: '#FFF', // main color of bg
+		primaryBackgroundColor: '#111113', // main color of bg
+		widgetColor: '#161618',
     secondaryBackgroundColor: '#1D1F2B',
 		disabledColor: '#DFE0EB',
-		primaryColor: '#F7F8FC', // main color of bg
+		primaryColor: '#111113', // main color of bg
 		secondaryColor: '#363740', // secondary coplor of bg
-		blankColor: '#F1F3F4', // secondary coplor of bg
-		backgroundColor: '#FFF',
+		blankColor: '#111113', // secondary coplor of bg
+		backgroundColor: '#111113',
 		additionalBackgroundColor: '#F7F8FA',
 		menuItemActive: '#E4EDFF',
 
@@ -33,11 +37,12 @@ const themes = {
 		buttonActionBackgroundHoverColor: '#357AFF',
 		buttonActionBackgroundActiveColor: '#095AF5',
 
-		buttonDisabledBackgroundColor: '#E4E4E4',
+		buttonDisabledBackgroundColor: 'rgba(255, 255, 255, .4)',
 
 		buttonDefaultBackgroundColor: 'transparent',
-		buttonDefaultBackgroundHoverColor: 'transparent',
-		buttonDefaultBackgroundActiveColor: 'transparent',
+		buttonDefaultBackgroundHoverColor: '#363636',
+		buttonDefaultBackgroundActiveColor: '#363636',
+
 		buttonDefaultBorderHoverColor: '#121212',
 		buttonDefaultBorderActiveColor: '#121212',
 
@@ -81,7 +86,7 @@ const themes = {
 
 
 
-		noteDefaultBackgroundColor: '#E4EDFF',
+		noteDefaultBackgroundColor: '#1E1E1F',
 
 		noteWarningBackgroundColor: '#FFB4B4',
 		noteWarningTextColor: '#D71E1E',
@@ -97,7 +102,7 @@ const themes = {
 		secondaryTextColor: '#363740',
 		primaryBorderColor: '#DFE0EB',
 		secondaryBorderColor: '#FFF',
-		primaryColor: '#F7F8FC',
+		primaryColor: '#1E1E1E',
 		secondaryColor: '#363740',
 		menuItemActive: '#3E4049'
 	}
