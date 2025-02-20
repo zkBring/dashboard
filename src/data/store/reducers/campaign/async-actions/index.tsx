@@ -9,6 +9,7 @@ import createProxyAddress from './create-proxy-address'
 import createNewBatch from './create-new-batch'
 import setReclaimAudience from './set-reclaim-audience'
 import launch from './launch'
+import approve from './approve'
 
 export {
   createProxyAddress,
@@ -17,6 +18,7 @@ export {
   setAssetsData,
   setTokenContractData,
   applyClaimPattern,
+  approve,
   generateLinks,
   setInitialData,
   resetCampaign,
