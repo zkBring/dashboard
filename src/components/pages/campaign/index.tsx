@@ -44,9 +44,9 @@ import {
 } from 'data/store/reducers/campaigns/async-actions'
 
 import {
-  createNewBatch
+  approve
 } from 'data/store/reducers/campaign/async-actions'
-
+import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import {
   createReclaimAndAddLinks
 } from 'data/store/reducers/dispensers/async-actions'
@@ -70,7 +70,8 @@ const mapStateToProps = ({
   },
   campaign: {
     decimals,
-    loading: campaignLoading
+    loading: campaignLoading,
+    approved
   },
 }: RootState) => ({
   campaigns,
@@ -82,7 +83,8 @@ const mapStateToProps = ({
   dashboardKey,
   signer,
   provider: jsonRPCProvider,
-  chainId
+  chainId,
+  approved
 })
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
@@ -102,6 +104,25 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
       dispatch(
         downloadReport(
           campaign_id
+        )
+      )
+    },
+
+
+    approve: (
+      tokenAddress: string,
+      proxyContractAddress: string,
+      batchId: string | number,
+      campaignId: string,
+      callback?: () => void
+    ) => {
+      dispatch(
+        approve(
+          tokenAddress,
+          proxyContractAddress,
+          batchId,
+          campaignId,
+          callback
         )
       )
     },
@@ -125,18 +146,22 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   chainId,
   countries,
   loading,
-
+  approve,
+  approved
 }) => {
 
   const history = useHistory()
 
   const [status, setStatus] = useState<TCampaignStatus>('initial')
+  const [approving, setApproving] = useState<boolean>(false)
+
   const [withdrawable, setWithdrawable] = useState<boolean>(false)
 
   console.log({ campaigns, params })
 
   // @ts-ignore
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
+
   console.log({ currentCampaign })
   if (!currentCampaign) {
     return null
@@ -175,12 +200,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     multiple_claims_on,
     token_id
   } = currentCampaign
-
-  console.log({
-    params,
-    campaign_id,
-    campaign_number
-  })
 
   useEffect(() => {
     getCampaignBatches(
@@ -377,6 +396,13 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         </TableValue>
       </TableRow>
 
+      <TableRow>
+        <TableText>Status</TableText>
+        <TableValue>
+          {approved ? 'Approved' : 'Not approved'}
+        </TableValue>
+      </TableRow>
+
       <AsideDivider />
 
       <TableRow>
@@ -394,16 +420,30 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         <TableText>Token standard</TableText>
         <TableValue>{token_standard}</TableValue>
       </TableRow>
-      <TableRow>
-        <TableText>Sponsorship</TableText>
-        <TableValue>{sponsored ? 'Enabled' : 'Disabled'}</TableValue>
-      </TableRow>
 
       <AsideButtonsContainer>
         <AsideButton
           onClick={() => downloadReport(campaign_id)}
         >
           Download full report
+        </AsideButton>
+
+        <AsideButton
+          loading={approving}
+          onClick={() => {
+            setApproving(true)
+            approve(
+              token_address,
+              proxy_contract_address,
+              batches[0].batch_id,
+              campaign_id,
+              () => {
+                setApproving(false)
+              }
+            )}
+          }
+        >
+          Approve
         </AsideButton>
       </AsideButtonsContainer>
 
