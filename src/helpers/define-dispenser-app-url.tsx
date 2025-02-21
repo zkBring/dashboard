@@ -8,6 +8,9 @@ const {
 
 
 const defineApiParam = () => {
+
+  return ''
+
   if (window.location.href.includes(REACT_APP_TESTNETS_URL as string)) {
     return 'testnets'
   } else if (window.location.href.includes(REACT_APP_MAINNETS_URL as string)) {
