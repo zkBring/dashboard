@@ -69,10 +69,15 @@ import { TZerionNetworkItem } from './zerion-network-item'
 import TCountry from './country'
 import { TStatus } from './status'
 import { TQRManagerItem, TQRManagerItemType } from './qr-manager-item'
+import TProofProvider from './proof_provider'
+import TZKTLSService from './zktls-service'
+
 
 export {
   TCampaign,
+  TProofProvider,
   TQRManagerItem,
+  TZKTLSService,
   TQRManagerItemType,
   TStatus,
   TZerionNetworkItem,

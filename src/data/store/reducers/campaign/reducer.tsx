@@ -38,7 +38,12 @@ const initialState: CampaignState = {
   multipleClaimsOn: false,
 
 
-  reclaimInstagramId: null
+  zkTLSService: 'reclaim',
+  proofProvider: 'x',
+  appId: '',
+  secret: '',
+  providerId: '',
+  handleKey: ''
 }
 
 export function newRetroDropReducer(
@@ -63,8 +68,26 @@ export function newRetroDropReducer(
     case Constants.CAMPAIGN_SET_COUNTRIES_WHITELIST_ON:
       return {...state, countriesWhitelistOn: action.payload.countriesWhitelistOn }
 
-    case Constants.CAMPAIGN_SET_RECLAIM_INSTAGRAM_ID:
-      return {...state, reclaimInstagramId: action.payload.reclaimInstagramId }
+    case Constants.CAMPAIGN_SET_HANDLE_KEY:
+      return {...state, handleKey: action.payload.handleKey }
+
+
+    case Constants.CAMPAIGN_SET_ZK_TLS_SERVICE:
+        return {...state, zkTLSService: action.payload.zkTLSService }
+
+    case Constants.CAMPAIGN_SET_PROOF_PROVIDER:
+      return {...state, proofProvider: action.payload.proofProvider }
+
+    case Constants.CAMPAIGN_SET_APP_ID:
+      return {...state, appId: action.payload.appId }
+    
+    case Constants.CAMPAIGN_SET_PROVIDER_ID:
+      return {...state, providerId: action.payload.providerId }
+
+    case Constants.CAMPAIGN_SET_SECRET:
+      return {...state, secret: action.payload.secret }
+    
+
 
     case Constants.CAMPAIGN_SET_COLLECTION_ID:
       return {...state, collectionId: action.payload.collectionId }

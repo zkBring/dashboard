@@ -240,6 +240,10 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     if (!selectValue) { return tokenAddress }
     return selectValue.label
   }
+
+  console.log({
+    loading
+  })
   
   return <>
     <Container>

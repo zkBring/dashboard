@@ -5,7 +5,9 @@ import {
   TLaunchStage,
   TClaimPattern,
   TAssetsData,
-  TLink
+  TLink,
+  TZKTLSService,
+  TProofProvider
 } from 'types'
 import { BigNumber } from 'ethers'
 
@@ -51,7 +53,12 @@ export interface CampaignState {
   launchStage: TLaunchStage
 
 
-  reclaimInstagramId: string | null
+  zkTLSService: TZKTLSService
+  proofProvider: TProofProvider,
+  appId: string
+  secret: string
+  providerId: string
+  handleKey: string
 }
 
 export type CampaignActions = ActionType<typeof actions>;

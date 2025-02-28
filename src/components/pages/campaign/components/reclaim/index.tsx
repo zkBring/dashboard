@@ -127,8 +127,6 @@ const Reclaim: FC<TProps & ReduxType> = ({
     claim_finish,
     timeframe_on,
     dispenser_url,
-
-    instagram_follow_id
   } = dispenser
 
   const claimAppURL = defineClaimAppURL(

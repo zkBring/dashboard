@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import {
-  Radio,
   Select
 } from 'linkdrop-ui'
 import {
@@ -9,8 +8,6 @@ import {
 } from 'components/common'
 
 import {
-  InstructionNote,
-  WidgetTitle,
   Audience
 } from 'components/pages/common'
 
@@ -36,4 +33,8 @@ export const Text = styled.p`
 
 export const AudienceStyled = styled(Audience)`
   margin-bottom: 40px;
+`
+
+export const SelectStyled = styled(Select)`
+  margin-bottom: 30px;
 `
