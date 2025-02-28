@@ -14,6 +14,7 @@ import { TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import AudienceInstagramLogo from 'images/audience-inst.png'
 import AudienceXLogo from 'images/audience-x.png'
+import AudienceCustom from 'images/audience-custom.png'
 import {
   TextLink
 } from 'components/common'
@@ -131,7 +132,8 @@ const proofProvidersOptions = [
   }, {
     title: 'Custom',
     value: 'custom',
-    image: AudienceInstagramLogo
+    disabled: true,
+    image: AudienceCustom
   }
 ]
 

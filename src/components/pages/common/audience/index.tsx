@@ -17,7 +17,12 @@ const AudienceComponent: FC<TProps> = ({
     {options.map(item => <AudienceItem 
       disabled={item.disabled}
       active={value === item.value}
-      onClick={() => onChange(item.value)}
+      onClick={() => {
+        if (item.disabled) {
+          return
+        }
+        onChange(item.value)
+      }}
     >
       <AudienceImage src={item.image} alt={item.title} /> 
       <AudienceTitle>

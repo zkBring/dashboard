@@ -28,7 +28,8 @@ export const AudienceItem = styled.div<{
   `}
 
   ${props => props.active && css`
-    background: pink;
+    background: ${props => props.theme.secondaryBackgroundColor};
+    border-color: #FFF;
   `}
 `
 
