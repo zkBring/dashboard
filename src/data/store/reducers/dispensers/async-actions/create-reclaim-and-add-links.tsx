@@ -87,7 +87,6 @@ const createReclaimAndAddLinks = ({
           claim_start: +(new Date(dateString)),
           encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
           title,
-          dynamic: false,
           reclaim: true
         }
 

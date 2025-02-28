@@ -4,12 +4,12 @@ import {
   AudienceStyled,
   ButtonStyled,
   Text,
-  Subtitle
+  SelectStyled
 } from './styled-components'
 import { RootState, IAppDispatch } from 'data/store'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { TAssetsData, TLinkParams, TTokenType } from 'types'
+import { TAssetsData, TLinkParams, TProofProvider, TTokenType, TZKTLSService } from 'types'
 import { TLinksContent } from './types'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import AudienceInstagramLogo from 'images/audience-inst.png'
@@ -82,104 +82,25 @@ const mapStateToProps = ({
   whitelisted
 })
 
-const getDefaultValues = (type: TTokenType) => {
-  return {
-    linksAmount: '',
-    tokenId: '',
-    tokenAmount: '',
-    type: type
-  }
-}
-
 const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>) => {
   return {
-    // checkIfApproved: () => {
-    //   dispatch(
-    //     userAsyncActions.checkIfApproved()
-    //   )
-    // },
-    // setApproved: (approved: boolean) => {
-    //   dispatch(
-    //     campaignActions.setApproved(approved)
-    //   )
-    // },
-    // checkIfGranted: () => {
-    //   dispatch(
-    //     userAsyncActions.checkIfGranted()
-    //   )
-    // },
-    // approveERC20: (
-    //   assets: TAssetsData,
-    //   totalAmount: TTotalAmount,
-    //   assetsOriginal: TLinkContent[],
-    //   sdk: boolean,
-    //   sponsored: boolean,
-    //   isNewCampaign: boolean,
-    //   callback: () => void
-    // ) => {
-    //   dispatch(
-    //     userAsyncActions.approveERC20(
-    //       assets,
-    //       totalAmount,
-    //       assetsOriginal,
-    //       sdk,
-    //       sponsored,
-    //       isNewCampaign,
-    //       callback
-    //     )
-    //     )
-    // },
-    // approveAllERC20: (
-    //   assets: TAssetsData,
-    //   assetsOriginal: TLinkContent[],
-    //   sdk: boolean,
-    //   sponsored: boolean,
-    //   isNewCampaign: boolean,
-    //   callback: () => void
-    // ) => {
-    //   dispatch(
-    //     userAsyncActions.approveAllERC20(
-    //       assets,
-    //       assetsOriginal,
-    //       sdk,
-    //       sponsored,
-    //       isNewCampaign,
-    //       callback
-    //     )
-    //   )
-    // },
-    // grantRole: (
-    //   assets: TAssetsData,
-    //   assetsOriginal: TLinkContent[],
-    //   sdk: boolean,
-    //   sponsored: boolean,
-    //   isNewCampaign: boolean,
-    //   callback: () => void
-    // ) => {
-    //   dispatch(
-    //     userAsyncActions.grantRole(
-    //       assets,
-    //       assetsOriginal,
-    //       sdk,
-    //       sponsored,
-    //       isNewCampaign,
-    //       callback
-    //     )
-    //   )
-    // },
-    // clearCampaign: () => {
-    //   dispatch(
-    //     campaignActions.clearCampaign()
-    //   )
-    // }
 
-    setReclaimInstagramId: (
-      reclaimInstagramId: string,
+    setAudienceData: (
+      zkTLSService: TZKTLSService,
+      proofProvider: TProofProvider,
+      appId: string,
+      secret: string,
+      providerId: string,
+      handleKey: string,
       callback: () => void
     ) => {
-      dispatch(campaignAsyncActions.setReclaimAudience(
-        'instagram',
-        reclaimInstagramId,
+      dispatch(campaignAsyncActions.setAudienceData(
+        zkTLSService,
+        proofProvider,
+        appId,
+        secret,
+        providerId,
+        handleKey,
         callback
       ))
     }
@@ -196,7 +117,43 @@ const defineDefaultSponsoredValue = (chainId: number) => {
   }
 
   return true
-} 
+}
+
+const proofProvidersOptions = [
+  {
+    title: 'X (Twitter)',
+    value: 'x',
+    image: AudienceXLogo,
+  },{
+    title: 'Instagram',
+    value: 'instagram',
+    image: AudienceInstagramLogo
+  }, {
+    title: 'Custom',
+    value: 'custom',
+    image: AudienceInstagramLogo
+  }
+]
+
+
+const zkTLSServiceOptions = [
+  {
+    label: `Reclaim`,
+    value: 'reclaim'
+  }
+]
+
+const selectCurrentValue = (
+  value: string
+) => {
+  const currentOption = zkTLSServiceOptions.find(option => option.value === value)
+  if (!currentOption) {
+    return null
+  }
+  if (currentOption) {
+    return currentOption
+  }
+}
 
 const CampaignsCreateAudience: FC<ReduxType> = ({
   campaigns,
@@ -219,7 +176,7 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   comission: comissionPrice,
   whitelisted,
   collectionId,
-  setReclaimInstagramId
+  setAudienceData
 }) => {
   const [
     assetsParsed,
@@ -239,7 +196,12 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
 
 
   const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))
-  const [ instagramID, setInstagramID ] = useState<string>('')
+  const [ handleKey, setHandleKey ] = useState<string>('')
+  const [ providerID, setProviderID ] = useState<string>('')
+  const [ secret, setSecret ] = useState<string>('')
+  const [ appID, setAppID ] = useState<string>('')
+  const [ proofProvider, setProofProvider ] = useState<TProofProvider>('x')
+  const [ zkTLSService, setZkTLSService ] = useState<TZKTLSService>('reclaim')
 
   const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
 
@@ -261,16 +223,6 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   // }, [])
 
   useEffect(preventPageClose(), [])
-
-  const defineNextButtonTitle = () => {
-    if (loading) {
-      return 'Loading'
-    }
-    if (approved || approved === null) {
-      return 'Continue'
-    }
-    return claimPattern === 'transfer' ? 'Approve' : 'Grant Role'
-  }
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }
@@ -308,45 +260,89 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
     </Aside>
 
     <WidgetComponent title='Choose your audience'>
+
+      <SelectStyled
+        onChange={async ({ value }: { value: TZKTLSService}) => {
+          setZkTLSService(value)
+        }}
+        title='ZKTLS Service'
+        placeholder='ZKTLS Service'
+        value={selectCurrentValue(zkTLSService)}
+        options={zkTLSServiceOptions}
+      />
+
       <Text>
         More data sources coming soon. <TextLink href="#">Suggest one</TextLink>
       </Text>
       <AudienceStyled
-        options={[
-          {
-            title: 'X (Twitter)',
-            image: AudienceXLogo,
+        onChange={(value) => {
+          if (value === 'custom') {
+            setHandleKey('')
+            setProviderID('')
+            setAppID('')
+            setSecret('')
           }
-          // , {
-          //   title: 'Instagram',
-          //   image: AudienceInstagramLogo,
-          //   disabled: true
-          // }
-        ]}
-      />
-
-      {/* <Subtitle>
-        Set Instagram ID to follow
-      </Subtitle>
-      <Text>
-        Enter the numeric Instagram ID (not @username). <TextLink href="#">Find ID here</TextLink><br/>
-        Only users who follow this account will be eligible to claim
-      </Text>
-      <InputStyled
-        value={instagramID}
-        placeholder='e.g. 123456'
-        onChange={(value: string) => {
-          setInstagramID(value)
-          return value
+          setProofProvider(value)
         }}
-      /> */}
+        value={proofProvider}
+        options={proofProvidersOptions}
+      />
+      {
+        proofProvider === 'custom' && <>
+          <InputStyled
+            title='Handle ID'
+            value={handleKey}
+            placeholder='e.g. 123456'
+            onChange={(value: string) => {
+              setHandleKey(value)
+              return value
+            }}
+          />
+
+          <InputStyled
+            title='Provider ID'
+            value={providerID}
+            placeholder='e.g. 123456'
+            onChange={(value: string) => {
+              setProviderID(value)
+              return value
+            }}
+          />
+
+          <InputStyled
+            title='App ID'
+            value={appID}
+            placeholder='e.g. 123456'
+            onChange={(value: string) => {
+              setAppID(value)
+              return value
+            }}
+          />
+
+          <InputStyled
+            title='Secret'
+            value={secret}
+            placeholder='e.g. 123456'
+            onChange={(value: string) => {
+              setSecret(value)
+              return value
+            }}
+          />
+        </>
+      }
+      
 
       <ButtonsContainer>
         <ButtonStyled
           appearance='action'
           onClick={() => {
-            setReclaimInstagramId(
-              instagramID,
+            setAudienceData(
+              zkTLSService,
+              proofProvider,
+              appID,
+              secret,
+              providerID,
+              handleKey,
               () => {
                 history.push(defineRedirectUrl())
               }

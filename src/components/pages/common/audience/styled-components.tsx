@@ -7,12 +7,14 @@ export const Audience = styled.div`
 
 export const AudienceItem = styled.div<{
   disabled?: boolean
+  active?: boolean
 }>`
   padding: 21px 19px 13px;
   display: flex;
   cursor: pointer;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   border-radius: 10px;
   background-color: ${props => props.theme.noteDefaultBackgroundColor};
   border: 1px solid ${props => props.theme.primaryBorderColor};
@@ -23,6 +25,10 @@ export const AudienceItem = styled.div<{
     background-color: ${props => props.theme.widgetColor};
     cursor: not-allowed;
 
+  `}
+
+  ${props => props.active && css`
+    background: pink;
   `}
 `
 

@@ -59,7 +59,6 @@ const decryptDispenserData = ({
           encrypted_multiscan_qr_enc_code,
           encrypted_multiscan_qr_secret,
           whitelist_on,
-          dynamic,
           reclaim
         } = currentDispenser
         const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
@@ -72,7 +71,7 @@ const decryptDispenserData = ({
           decryptedMultiscanQRSecret,
           multiscanQREncCode,
           Boolean(whitelist_on),
-          Boolean(dynamic),
+          false,
           Boolean(reclaim)
         )
   

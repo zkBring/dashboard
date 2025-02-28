@@ -52,7 +52,14 @@ const createReclaimAndAddLinks = async ({
     campaign: {
       tokenAddress,
       title,
-      reclaimInstagramId
+      
+
+      appId,
+      handleKey,
+      proofProvider,
+      zkTLSService,
+      secret,
+      providerId
     }
   } = getState()
 
@@ -76,8 +83,16 @@ const createReclaimAndAddLinks = async ({
     claim_start: +(new Date(dateString)),
     encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
     title: `Reclaim set for ${title || `Campaign ${campaignId}`}`,
-    dynamic: false,
-    reclaim: true
+    reclaim: true,
+    zktls_service: zkTLSService,
+    proof_provider: proofProvider
+  }
+
+  if (proofProvider === 'custom') {
+    newDispenser.app_id = appId
+    newDispenser.secret = secret
+    newDispenser.handle_key = handleKey
+    newDispenser.provider_id = providerId
   }
 
   // create dispenser

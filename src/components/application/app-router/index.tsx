@@ -13,8 +13,6 @@ import {
   Main,
   CampaignsCreateNew,
   CampaignDispenserGenerate,
-  ReclaimQR,
-  ReclaimQRCreate,
   Reclaims,
   Support,
   About
@@ -126,20 +124,6 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
           exact={true}
           loggedIn={Boolean(address)}
           component={CampaignsCreateLaunch}
-        />
-
-        <ProtectedRoute
-          path='/reclaims/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={ReclaimQRCreate}
-        />
-
-        <ProtectedRoute
-          path='/reclaims/:id'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={ReclaimQR}
         />
 
         <ProtectedRoute

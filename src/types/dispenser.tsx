@@ -1,3 +1,6 @@
+import TProofProvider from "./proof_provider"
+import TZKTLSService from "./zktls-service"
+
 export type TDispenserStatus = 
   'READY' |
   'ACTIVE' |
@@ -35,7 +38,6 @@ export type TDispenser = {
   created_at?: string
   updated_at?: string
   title: string
-  dynamic?: boolean
 
   encrypted_multiscan_qr_enc_code: string
   decrypted_multiscan_qr_enc_code?: string
@@ -66,7 +68,12 @@ export type TDispenser = {
   reclaim_app_secret?: string | null
   reclaim?: boolean
 
-  instagram_follow_id?: string | null
+  handle_key?: string
+  app_id?: string
+  provider_id?: string
+  secret?: string
+  zktls_service?: TZKTLSService,
+  proof_provider?: TProofProvider
 }
 
 export type TDispenserUpdateData = {

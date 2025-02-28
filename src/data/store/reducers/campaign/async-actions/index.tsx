@@ -7,7 +7,7 @@ import resetCampaign from './reset-campaign'
 import openDraft from './open-draft'
 import createProxyAddress from './create-proxy-address'
 import createNewBatch from './create-new-batch'
-import setReclaimAudience from './set-reclaim-audience'
+import setAudienceData from './set-audience-data'
 import launch from './launch'
 import approve from './approve'
 
@@ -23,5 +23,5 @@ export {
   setInitialData,
   resetCampaign,
   openDraft,
-  setReclaimAudience
+  setAudienceData
 }
