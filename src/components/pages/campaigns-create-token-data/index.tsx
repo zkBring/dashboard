@@ -6,7 +6,8 @@ import {
   TokenBalance,
   TokenBalanceValue,
   Subtitle,
-  WidgetComponentStyled
+  WidgetComponentStyled,
+  SwitcherStyled
 } from './styled-components'
 import { useParams } from 'react-router-dom'
 import {
@@ -40,6 +41,7 @@ import {
 } from 'helpers'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions'
 import { contractSpecificOptions } from 'configs/contract-specific-options'
+import Icons from 'icons'
 
 const mapStateToProps = ({
   campaign: {
@@ -88,18 +90,14 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
       tokenAddress,
       type,
     )),
-    setInitialData: (
+    setTokenData: (
       tokenStandard: TTokenType,
-      title: string,
-      isNewCampaign: boolean,
       totalClaims: string,
       tokensPerClaim: string,
       callback?: () => void
     ) => dispatch(
-      campaignAsyncActions.setInitialData(
+      campaignAsyncActions.setTokenData(
         tokenStandard,
-        title,
-        isNewCampaign,
         totalClaims,
         tokensPerClaim,
         callback
@@ -132,14 +130,14 @@ const defineContractsOptions = (contractsERC20: TERC20Contract[], tokenType: str
 // @ts-ignore
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatcherToProps>
 
-const CampaignsCreateNew: FC<ReduxType> = ({
+const CampaignsTokenData: FC<ReduxType> = ({
   symbol: appliedTokenSymbol,
   chainId,
   address,
   symbol,
   campaigns,
   setTokenContractData,
-  setInitialData,
+  setTokenData,
   resetCampaign,
   loading,
   getERC20Contracts,
@@ -158,21 +156,13 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 
   const campaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentTokenAddress = campaign ? campaign.token_address : ''
-  const currentTokenAddressToShow = currentTokenAddress || appliedTokenAddress
   const currentCampaignType = campaign ? campaign.token_standard : 'ERC20'
-  const currentCampaignTitle = campaign ? campaign.title : ''
-  const currentTokenSymbol = campaign ? campaign.symbol : ''
   
   const [
     tokenAddress,
     setTokenAddress
   ] = useState<string>(currentTokenAddress)
   
-  const [
-    title,
-    setTitle
-  ] = useState<string>(currentCampaignTitle)
-
   const [
     currentType,
     setCurrentType
@@ -203,8 +193,7 @@ const CampaignsCreateNew: FC<ReduxType> = ({
   }, [tokenAddress, currentType])
 
   const defineIfNextDisabled = () => {
-    return !title ||
-           !tokenAddress ||
+    return !tokenAddress ||
            !appliedTokenSymbol ||
            loading ||
            !proxyContractAddress ||
@@ -232,6 +221,11 @@ const CampaignsCreateNew: FC<ReduxType> = ({
     }
   }
 
+  const [
+    currentSwitcherValue,
+    setCurrentSwitcherValue
+  ] = useState<string>('tokens')
+
   const selectCurrentPlaceholder = () => {
     if (!tokenAddress) {
       return 'Choose token address'
@@ -252,31 +246,41 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           items={
             [
               {
+                title: 'Audience'
+              }, {
                 title: 'Token',
                 status: 'current'
               }, {
-                title: 'Audience'
+                title: 'Drop'
               }, {
                 title: 'Launch'
               }
             ]
-        }
+          }
         />
       </Aside>
   
       <WidgetComponentStyled title='What are you dropping?'>
-        <InputStyled
-          value={title}
-          disabled={Boolean(campaign) || loading}
-          placeholder='Enter title'
-          onChange={(value: string) => {
-            setTitle(value)
-            return value
+        <SwitcherStyled
+          active={currentSwitcherValue}
+          options={[
+            {
+              title: 'Tokens (ERC20)',
+              id: 'tokens'
+            },
+            {
+              title: 'Soulbound NFT',
+              id: 'nfts',
+              disabled: true
+            }
+          ]}
+          disabled={loading || userLoading}
+          onChange={(id) => {
+            
           }}
-          title='Title of the campaign'
         />
         <Subtitle>
-          Token name or address
+          Token contract address
           <TokenBalance>
             Token balance: {tokenAmount ? <Tooltip text={`${tokenAmountFormatted} ${symbol}`}><TokenBalanceValue>{tokenAmountFormatted}</TokenBalanceValue> {symbol}</Tooltip> : '0'}
           </TokenBalance>
@@ -330,6 +334,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               setTotalClaims(value)
               return value
             }}
+            icon={<Icons.InputProfileIcon />}
+
             title='Total claims'
             note='Set the amount of tokens each user will receive.'
           />
@@ -343,6 +349,8 @@ const CampaignsCreateNew: FC<ReduxType> = ({
               return value
             }}
             title='Tokens per claim'
+            icon={<Icons.InputCoinIcon />}
+
             note='Define how many total claims are allowed for this drop.'
           />
         </SplitInputs>
@@ -350,17 +358,12 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           appearance='action'
           disabled={defineIfNextDisabled()}
           onClick={() => {
-            setInitialData(
+            setTokenData(
               currentType as TTokenType,
-              title,
-              !Boolean(id),
               totalClaims,
               tokensPerClaim,
               () => {
-                if (campaign) {
-                  return history.push(`/campaigns/edit/${currentType}/${campaign.campaign_id}/initial`)
-                }
-                history.push(`/campaigns/new/${currentType}/initial`)
+                history.push(`/campaigns/new/ERC20/campaign-data`)
               }
             )
           }}
@@ -373,4 +376,4 @@ const CampaignsCreateNew: FC<ReduxType> = ({
 }
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsCreateNew)
+export default connect(mapStateToProps, mapDispatcherToProps)(CampaignsTokenData)

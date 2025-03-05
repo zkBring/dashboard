@@ -1,14 +1,11 @@
-
 import { Dispatch } from 'redux'
 import * as actionsCampaign from '../../actions'
 import { CampaignActions } from '../../types'
-import { TAssetsData, TLinkContent } from 'types'
 import { IAppDispatch } from 'data/store'
 import { RootState } from 'data/store'
 import * as actionsUser from '../../../user/actions'
 import * as actionsAsyncUser from '../../../user/async-actions'
 import { UserActions } from '../../../user/types'
-import secure from './secure'
 import generateLinks from './generate-links'
 import createReclaimAndAddLinks from './create-reclaim-and-add-links'
 
@@ -32,13 +29,7 @@ function launch (
 
       const callback = async () => {
 
-        dispatch(actionsCampaign.setLaunchStage('secure'))
-        const secured = await secure(
-          dispatch,
-          getState
-        )
         dispatch(actionsCampaign.setLaunchStage('generate_links'))
-
         const campaignsData = await generateLinks(
           dispatch,
           getState,
@@ -60,7 +51,7 @@ function launch (
   
             dispatch(actionsCampaign.setLaunchStage('reclaim_webproofs'))
   
-            const createReclaim = await createReclaimAndAddLinks({
+            await createReclaimAndAddLinks({
               dispatch,
               getState,
               campaignId: campaign_id,

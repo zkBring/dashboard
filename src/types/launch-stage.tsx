@@ -1,3 +1,5 @@
-type TLaunchStage = 'initial' | 'secure' | 'generate_links' | 'reclaim_webproofs'
+type TLaunchStage = 'initial' |
+                    'generate_links' |
+                    'reclaim_webproofs'
 
 export default TLaunchStage

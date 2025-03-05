@@ -1,5 +1,4 @@
 import OriginalSelect from './original-select'
-import OriginalInput from './original-input'
 import OriginalButton from './original-button'
 import Button from './button'
 import Header from "./header"
@@ -7,6 +6,7 @@ import Tag from './tag'
 import Widget from './widget'
 import DataBlock from './data-block'
 import Title from './title'
+import TextArea from './textarea'
 import Campaign from './campaign'
 import Breadcrumbs from './breadcrumbs'
 import InfoBlock from './info-block'
@@ -24,14 +24,16 @@ import Navigation from './navigation'
 import Footer from './footer'
 import Input from './input'
 import Select from './select'
+import Switcher from './switcher'
+import Stages from './stages'
 
 export {
   OriginalSelect,
-  OriginalInput,
   OriginalButton,
   Button,
   Header,
   Input,
+  TextArea,
   Footer,
   Select,
   Loader,
@@ -51,5 +53,7 @@ export {
   TextLink,
   MiniPopup,
   TransactionDetails,
-  Tooltip
+  Tooltip,
+  Switcher,
+  Stages
 }

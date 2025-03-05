@@ -71,10 +71,17 @@ import { TStatus } from './status'
 import { TQRManagerItem, TQRManagerItemType } from './qr-manager-item'
 import TProofProvider from './proof_provider'
 import TZKTLSService from './zktls-service'
-
+import TTransactionStage from './transaction-stage'
+import {
+  TStage,
+  TStageStatus
+} from './stage'
 
 export {
   TCampaign,
+  TTransactionStage,
+  TStage,
+  TStageStatus,
   TProofProvider,
   TQRManagerItem,
   TZKTLSService,

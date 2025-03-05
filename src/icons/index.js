@@ -73,11 +73,31 @@ import { ReactComponent as UndoIcon } from 'icons/undo-icon.svg'
 import { ReactComponent as SBTTokensIcon } from './sbt-tokens-icon.svg'
 import { ReactComponent as NFTTokensIcon } from './nft-tokens-icon.svg'
 
+import { ReactComponent as AmazonIcon } from './amazon-icon.svg'
+import { ReactComponent as SteamIcon } from './steam-icon.svg'
+import { ReactComponent as TikTokIcon } from './tiktok-icon.svg'
+import { ReactComponent as XIcon } from './x-icon.svg'
+import { ReactComponent as GithubIcon } from './github-icon.svg'
+import { ReactComponent as InputPenIcon } from './input-pen-icon.svg'
+import { ReactComponent as InputDocumentIcon } from './input-document-icon.svg'
+import { ReactComponent as InputDropIcon } from './input-drop-icon.svg'
+import { ReactComponent as InputProfileIcon } from './input-profile-icon.svg'
+import { ReactComponent as InputCoinIcon } from './input-coin-icon.svg'
+
 const Icons = {
   EthereumLogo,
+  InputCoinIcon,
+  InputProfileIcon,
+  InputDocumentIcon,
+  InputDropIcon,
   ArchiveIcon,
   SBTTokensIcon,
+  InputPenIcon,
   DownloadFileIcon,
+  SteamIcon,
+  TikTokIcon,
+  XIcon,
+  GithubIcon,
   UndoIcon,
   NFTTokensIcon,
   SunnyCloudIcon,
@@ -123,6 +143,8 @@ const Icons = {
   AttentionIcon,
   ApprovedIcon,
   UploadFileIcon,
+  AmazonIcon,
+
   FileIcon,
   LinkdropLogo,
   NotUploadedIcon,

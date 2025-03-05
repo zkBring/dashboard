@@ -1,23 +1,16 @@
 
 import { Dispatch } from 'redux';
 import * as actionsCampaign from '../actions'
-import * as actionsUser from '../../user/actions'
 import { CampaignActions } from '../types'
 import { UserActions } from '../../user/types'
 import { TAsset, TLinkContent, TTokenType } from 'types'
 import { IAppDispatch } from 'data/store'
-import { Alchemy } from 'alchemy-sdk'
 import { defineIfUserHasEnoughERC20Tokens, alertError } from 'helpers'
 import { RootState } from 'data/store'
 import { utils, BigNumber } from 'ethers'
-import { plausibleApi } from 'data/api'
-import * as actionsAsyncCampaigns from '../../campaigns/async-actions'
-const { REACT_APP_ALCHEMY_API_KEY } = process.env
 
-function setInitialData(
+function setTokenData(
   tokenStandard: TTokenType,
-  title: string,
-  isNewCampaign: boolean,
   totalClaims: string,
   tokensPerClaim: string,
   callback?: () => void
@@ -68,7 +61,7 @@ function setInitialData(
 
       dispatch(actionsCampaign.setLoading(true))
       dispatch(actionsCampaign.setTokenStandard(tokenStandard))
-      dispatch(actionsCampaign.setTitle(title))
+      dispatch(actionsCampaign.setClaimPattern('transfer'))
 
       const assets: TAsset[] = []
       for (let i = 0; i < Number(totalClaims); i++) {
@@ -87,10 +80,6 @@ function setInitialData(
 
       dispatch(actionsCampaign.setAssets(assets))
 
-      isNewCampaign && dispatch(actionsAsyncCampaigns.addCampaignToDrafts(
-        'initial'
-      ))
-
       if (callback) {
         callback()
       }
@@ -103,4 +92,4 @@ function setInitialData(
   }
 }
 
-export default setInitialData
+export default setTokenData

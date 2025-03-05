@@ -1,11 +1,16 @@
 import styled from 'styled-components'
 import {
   Input,
-  Select
+  Select,
+  Switcher
 } from 'components/common'
-import { WidgetComponent } from 'components/pages/common'
+import {
+  WidgetComponent
+} from 'components/pages/common'
 
-export const InputStyled = styled(Input)``
+export const InputStyled = styled(Input)`
+  margin-bottom: 30px;
+`
 
 export const SelectStyled = styled(Select)`
   margin-bottom: 30px;
@@ -45,4 +50,8 @@ export const AudienceStyled = styled.div`
 
 export const WidgetComponentStyled = styled(WidgetComponent)`
   
+`
+
+export const SwitcherStyled = styled(Switcher)`
+  margin-bottom: 30px;
 `

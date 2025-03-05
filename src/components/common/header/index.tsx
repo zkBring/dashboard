@@ -68,7 +68,7 @@ const HeaderComponent: FC<IProps & ReduxType> = ({
   const nativeTokenAmountFormatted = nativeTokenAmount ? utils.formatEther(nativeTokenAmount) : 0
 
   return <Header breadcrumbs={breadcrumbs}>
-    <ButtonStyled to='/campaigns/new' size='small'>
+    <ButtonStyled to='/campaigns/new/ERC20/audience' size='small'>
       Launch drop
     </ButtonStyled>
     <Navigation />

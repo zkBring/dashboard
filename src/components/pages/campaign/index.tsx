@@ -43,9 +43,6 @@ import {
   downloadReport
 } from 'data/store/reducers/campaigns/async-actions'
 
-import {
-  approve
-} from 'data/store/reducers/campaign/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import {
   createReclaimAndAddLinks
@@ -53,7 +50,6 @@ import {
 import { TextLink } from 'components/common'
 import { IProps } from './types'
 import { IAppDispatch } from 'data/store'
-import { TClaimPattern, TCountry, TTokenType } from 'types'
 
 const mapStateToProps = ({
   campaigns: {
@@ -106,26 +102,7 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           campaign_id
         )
       )
-    },
-
-
-    approve: (
-      tokenAddress: string,
-      proxyContractAddress: string,
-      batchId: string | number,
-      campaignId: string,
-      callback?: () => void
-    ) => {
-      dispatch(
-        approve(
-          tokenAddress,
-          proxyContractAddress,
-          batchId,
-          campaignId,
-          callback
-        )
-      )
-    },
+    }
   }
 }
 
@@ -146,7 +123,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   chainId,
   countries,
   loading,
-  approve,
   approved
 }) => {
 
@@ -426,24 +402,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
           onClick={() => downloadReport(campaign_id)}
         >
           Download full report
-        </AsideButton>
-
-        <AsideButton
-          loading={approving}
-          onClick={() => {
-            setApproving(true)
-            approve(
-              token_address,
-              proxy_contract_address,
-              batches[0].batch_id,
-              campaign_id,
-              () => {
-                setApproving(false)
-              }
-            )}
-          }
-        >
-          Approve
         </AsideButton>
       </AsideButtonsContainer>
 

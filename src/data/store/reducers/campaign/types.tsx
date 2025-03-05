@@ -7,12 +7,15 @@ import {
   TAssetsData,
   TLink,
   TZKTLSService,
-  TProofProvider
+  TProofProvider,
+  TTransactionStage
 } from 'types'
 import { BigNumber } from 'ethers'
 
 export interface CampaignState {
   title?: string | null
+  description?: string | null
+
   tokenAddress: string | null
   campaignAddress?: string | null 
   tokenStandard: TTokenType | null
@@ -51,6 +54,7 @@ export interface CampaignState {
   multipleClaimsOn: boolean
 
   launchStage: TLaunchStage
+  transactionStage: TTransactionStage
 
 
   zkTLSService: TZKTLSService

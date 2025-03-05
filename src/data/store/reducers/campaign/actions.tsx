@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern, TLaunchStage, TZKTLSService, TProofProvider } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern, TLaunchStage, TZKTLSService, TProofProvider, TTransactionStage } from 'types'
 import { BigNumber } from 'ethers'
 import { CampaignState } from './types'
 
@@ -107,6 +107,13 @@ export function setLaunchStage (launchStage: TLaunchStage) {
     launchStage
   })
 }
+
+export function setTransactionStage (transactionStage: TTransactionStage) {
+  return action(Constants.CAMPAIGN_SET_TRANSACTION_STAGE, {
+    transactionStage
+  })
+}
+
 
 export function setSymbol (symbol: string | null) {
   return action(Constants.CAMPAIGN_SET_SYMBOL, {

@@ -83,9 +83,8 @@ const createReclaimAndAddLinks = async ({
     claim_start: +(new Date(dateString)),
     encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
     title: `Reclaim set for ${title || `Campaign ${campaignId}`}`,
-    reclaim: true,
-    // zktls_service: zkTLSService,
-    // proof_provider: proofProvider
+    zktls_service: zkTLSService,
+    proof_provider: proofProvider
   }
 
   if (proofProvider === 'custom') {
