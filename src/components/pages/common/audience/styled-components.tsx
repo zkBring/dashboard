@@ -16,24 +16,40 @@ export const AudienceItem = styled.div<{
   align-items: center;
   flex: 1;
   border-radius: 10px;
-  background-color: ${props => props.theme.noteDefaultBackgroundColor};
-  border: 1px solid ${props => props.theme.primaryBorderColor};
-  color: ${props => props.theme.extraTextColor};
+  background-color: ${props => props.theme.audienceBackgroundColor};
+  border: 1px solid ${props => props.theme.audienceBorderColor};
+  color: ${props => props.theme.audienceTextColor};
   gap: 14px;
+  opacity: .5;
+
+  svg {
+    path {
+      fill: ${props => props.theme.audienceTextColor};
+    }
+  }
+
 
   ${props => props.disabled && css`
-    background-color: ${props => props.theme.widgetColor};
     cursor: not-allowed;
-
+    background-color: ${props => props.theme.audienceDisabledBackgroundColor};
+    border: 1px solid ${props => props.theme.audienceDisabledBorderColor};
+    color: ${props => props.theme.audienceDisabledTextColor};
   `}
 
   ${props => props.active && css`
-    background: ${props => props.theme.secondaryBackgroundColor};
-    border-color: #FFF;
+    background-color: ${props => props.theme.audienceActiveBackgroundColor};
+    border: 1px solid ${props => props.theme.audienceActiveBorderColor};
+    color: ${props => props.theme.audienceActiveTextColor};
+    opacity: 1;
+    svg {
+      path {
+        fill: ${props => props.theme.audienceActiveTextColor};
+      }
+    }
   `}
 `
 
-export const AudienceImage = styled.img`
+export const AudienceImage = styled.div`
   max-width: 40px;
 `
 

@@ -27,16 +27,14 @@ const requests = {
   getOne: (id: string | number) => {
     return dispensersApi.get(`/dispensers/${id}`, { withCredentials: true })
   },
-  mapLinks: (id: string | number, links: TDispenserLinks, linksHasEqualContents: boolean) => {
+  mapLinks: (id: string | number, links: TDispenserLinks) => {
     return dispensersApi.post(`/dispensers/${id}/upload-links`, {
-      encrypted_claim_links: links,
-      preview_setting: linksHasEqualContents ? 'token' : 'stub'
+      encrypted_claim_links: links
     }, { withCredentials: true })
   },
-  updateLinks: (id: string | number, links: TDispenserLinks, linksHasEqualContents: boolean) => {
+  updateLinks: (id: string | number, links: TDispenserLinks) => {
     return dispensersApi.put(`/dispensers/${id}/upload-links`, {
-      encrypted_claim_links: links,
-      preview_setting: linksHasEqualContents ? 'token' : 'stub'
+      encrypted_claim_links: links
     }, { withCredentials: true })
   },
   updateDispenserData: ({

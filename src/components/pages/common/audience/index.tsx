@@ -24,7 +24,9 @@ const AudienceComponent: FC<TProps> = ({
         onChange(item.value)
       }}
     >
-      <AudienceImage src={item.image} alt={item.title} /> 
+      <AudienceImage>
+        {item.image}
+      </AudienceImage> 
       <AudienceTitle>
         {item.title}
       </AudienceTitle>

@@ -249,14 +249,9 @@ const Main: FC<ReduxType> = ({
       <Title>
         Wrong network
       </Title>
-      <Contents>
-
-        <Text>
-          You are now on {defineDashboardName()}.
-        </Text>
-        {defineSwitchNetworkText()}
-
-      </Contents>
+      <Text>
+        Please, connect to Base network
+      </Text>
       {defineRedirectButton()}
     </ContainerCentered>
   }

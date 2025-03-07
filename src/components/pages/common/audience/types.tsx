@@ -1,6 +1,6 @@
 type TAudienceOption = {
   title: string
-  image: string
+  image: React.ReactNode
   value: any
   disabled?: boolean 
 }

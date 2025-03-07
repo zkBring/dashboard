@@ -6,6 +6,7 @@ import {
   Value,
   WidgetComponent
 } from './styled-components'
+import Icons from 'icons'
 
 const LinksStats: FC<TProps> = ({
   linksAmount,
@@ -15,11 +16,17 @@ const LinksStats: FC<TProps> = ({
   return <Container>
     <WidgetComponent>
       <Subtitle>Links created</Subtitle>
-      <Value>{linksAmount || 0}</Value>
+      <Value>
+        <Icons.ProfileIcon />
+        {linksAmount || 0}
+      </Value>
     </WidgetComponent>
      <WidgetComponent>
-      <Subtitle>Claims</Subtitle>
-      <Value>{sponsored ? (linksClaimed|| 0) : 'N/A'}</Value>
+      <Subtitle>Tokens claimed</Subtitle>
+      <Value>
+        <Icons.CoinIcon />
+        {sponsored ? (linksClaimed|| 0) : 'N/A'}
+      </Value>
     </WidgetComponent>
   </Container>
 }

@@ -40,10 +40,8 @@ const countProgress = (
   switch (stage) {
     case 'initial':
       return 0
-    case 'secure':
-      return 25
     case 'generate_links':
-      return 50
+      return 25
     case 'reclaim_webproofs':
       return 75
   }
@@ -53,8 +51,6 @@ const defineTitle = (
   stage: TLaunchStage
 ) => {
   switch (stage) {
-    case 'secure':
-      return 'Deploying smart contract...'
     case 'generate_links':
       return 'Preparing drop...'
     case 'reclaim_webproofs':

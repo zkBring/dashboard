@@ -11,11 +11,13 @@ import {
   momentNoOffsetWithTimeUpdate,
   momentNoOffsetGetTime,
   getNextDayData,
-  defineIfLinksHasEqualContents,
   decryptLinks,
   sleep
 } from 'helpers'
-import { TDispenser } from 'types'
+import {
+  TDispenserNew,
+  TDispenser
+} from 'types'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
@@ -77,23 +79,46 @@ const createReclaimAndAddLinks = async ({
   const dispenserTime = momentNoOffsetGetTime(+date)
   const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))
 
-  const newDispenser: TDispenser = {
+  const newDispenser: TDispenserNew = {
     encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
     multiscan_qr_id: secretKeyPair.address,
     claim_start: +(new Date(dateString)),
     encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
     title: `Reclaim set for ${title || `Campaign ${campaignId}`}`,
-    reclaim: true,
-    // zktls_service: zkTLSService,
-    // proof_provider: proofProvider
+    campaign_id: campaignId,
+
+    web_proof_provider: {
+      is_custom: proofProvider === 'custom',
+      data_source: proofProvider,
+      service: zkTLSService,
+      settings: {}
+    },
   }
 
   if (proofProvider === 'custom') {
-    newDispenser.app_id = appId
-    newDispenser.secret = secret
-    newDispenser.handle_key = handleKey
-    newDispenser.provider_id = providerId
+
+    if (!appId) {
+      return alertError('App ID is not provided')
+    }
+    newDispenser.web_proof_provider.settings.app_id = appId
+    if (!secret) {
+      return alertError('Secret is not provided')
+    }
+    newDispenser.web_proof_provider.settings.secret = secret
+    if (!handleKey) {
+      return alertError('Handle key is not provided')
+    }
+    newDispenser.web_proof_provider.settings.handle_key = handleKey
+
+    if (!providerId) {
+      return alertError('Provider ID is not provided')
+    }
+    newDispenser.web_proof_provider.settings.provider_id = providerId
   }
+
+  console.log({
+    newDispenser
+  })
 
   // create dispenser
   const createDispenserResult = await dispensersApi.create(newDispenser)
@@ -129,8 +154,7 @@ const createReclaimAndAddLinks = async ({
         dashboardKey as string
       )
 
-      const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
-      const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
+      const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped)
       if (addLinksResult.data.success) {
         const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
         dispatch(actionsDispensers.setDispensers(result.data.dispensers))

@@ -40,6 +40,7 @@ import { plausibleApi } from 'data/api'
 import {
   Breadcrumbs
 } from 'components/common'
+import Icons from 'icons'
 
 const mapStateToProps = ({
   campaign: {
@@ -104,7 +105,12 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
         handleKey,
         callback
       ))
-    }
+    },
+    resetCampaign: () => {
+      dispatch(
+        campaignAsyncActions.resetCampaign()
+      )
+    },
 
   }
 }
@@ -124,16 +130,12 @@ const proofProvidersOptions = [
   {
     title: 'X (Twitter)',
     value: 'x',
-    image: AudienceXLogo,
-  },{
-    title: 'Instagram',
-    value: 'instagram',
-    image: AudienceInstagramLogo
+    image: <Icons.XIcon />,
   }, {
     title: 'Custom',
     value: 'custom',
     disabled: true,
-    image: AudienceCustom
+    image: <Icons.TikTokIcon />
   }
 ]
 
@@ -166,8 +168,6 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   tokenStandard,
   title,
   loading,
-  // grantRole,
-  // approveERC20,
   claimPattern,
   // checkIfApproved,
   // checkIfGranted,
@@ -178,7 +178,8 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   comission: comissionPrice,
   whitelisted,
   collectionId,
-  setAudienceData
+  setAudienceData,
+  resetCampaign
 }) => {
   const [
     assetsParsed,
@@ -190,14 +191,8 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   const currentCampaign = id ? campaigns.find(campaign => campaign.campaign_id === id) : null
   const currentCampaignSponsored = currentCampaign ? currentCampaign.sponsored : defineDefaultSponsoredValue(chainId as number)
 
-  const defineRedirectUrl = () => {
-    return currentCampaign ? `/campaigns/edit/${tokenStandard}/${currentCampaign.campaign_id}/launch` : `/campaigns/new/${tokenStandard}/launch`
-  }
-
   const [ data, setData ] = useState<TLinksContent>([])
 
-
-  const [ sponsored, setSponsored ] = useState<boolean>(Boolean(currentCampaignSponsored))
   const [ handleKey, setHandleKey ] = useState<string>('')
   const [ providerID, setProviderID ] = useState<string>('')
   const [ secret, setSecret ] = useState<string>('')
@@ -205,26 +200,11 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
   const [ proofProvider, setProofProvider ] = useState<TProofProvider>('x')
   const [ zkTLSService, setZkTLSService ] = useState<TZKTLSService>('reclaim')
 
-  const nativeTokenSymbol = defineNativeTokenSymbol({ chainId })
-
-  const defineIfNextDisabled = () => {
-    return loading
-  }
-
-  // useEffect(() => {
-  //   if (!currentCampaign) {
-  //     return setApproved(false)
-  //   }
-  //   if (currentCampaign.claim_pattern === 'mint') {
-  //     return checkIfGranted()
-  //   }
-  //   if (tokenStandard === 'ERC20') {
-  //     return setApproved(false)
-  //   }
-  //   checkIfApproved()
-  // }, [])
-
   useEffect(preventPageClose(), [])
+
+  useEffect(() => {
+    resetCampaign()
+  }, [])
 
   useEffect(() => {
     if (!data || decimals === null) { return setAssetsParsedValue([]) }
@@ -233,32 +213,24 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
     setAssetsParsedValue(assets)
   }, [data])
 
-  const {
-    totalComission
-  } = countNativeTokensToSecure(
-    '0',
-    assetsParsed,
-    comissionPrice,
-    sponsored
-  )
-  
   return <Container>
     <Aside>
       <Breadcrumbs
-        items={
-          [
-            {
-              title: 'Token',
-              status: 'done'
-            }, {
-              title: 'Audience',
-              status: 'current'
-            }, {
-              title: 'Launch'
-            }
-          ]
-        }
-      />
+          items={
+            [
+              {
+                title: 'Audience',
+                status: 'current'
+              }, {
+                title: 'Token',
+              }, {
+                title: 'Drop'
+              }, {
+                title: 'Launch'
+              }
+            ]
+          }
+        />
     </Aside>
 
     <WidgetComponent title='Choose your audience'>
@@ -346,7 +318,7 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
               providerID,
               handleKey,
               () => {
-                history.push(defineRedirectUrl())
+                history.push(`/campaigns/new/ERC20/token-data`)
               }
             )
           }}

@@ -1,5 +1,5 @@
 import TransactionAside from "./transaction-aside"
-import Aside from './aside'
+import AsideWidget from './aside-widget'
 import AssetsList from './assets-list'
 import InstructionNote from './instruction-note'
 import DownloadQRPopup from './download-qr-popup'
@@ -10,6 +10,8 @@ import AttentionContainer from './attention-container'
 import InitialNote from './initial-note'
 import NewDispenserPopup from './new-dispenser-popup'
 import Audience from './audience'
+import TokenCounter from './token-counter'
+import EditableWidget from './editable-widget'
 
 import {
   Container,
@@ -19,6 +21,7 @@ import {
   WidgetTitle,
   WidgetContainer,
   AsideDivider,
+  Aside,
   TableRow,
   TableText,
   TableValue,
@@ -40,6 +43,7 @@ import {
 export {
   TransactionAside,
   Container,
+  TokenCounter,
   WidgetComponent,
   InputContainer,
   InstructionNote,
@@ -47,12 +51,13 @@ export {
   ErrorSpan,
   UploadedSpan,
   AsideContent,
+  Aside,
   BatchList,
   BatchListLabel,
   BatchListValue,
   ButtonsContainer,
   InitialNote,
-  Aside,
+  AsideWidget,
   WidgetContainer,
   Audience,
   WidgetSubtitle,
@@ -72,5 +77,6 @@ export {
   WidgetSectionSubtitle,
   TokenImage,
   ThumbnailUpload,
-  NewDispenserPopup
+  NewDispenserPopup,
+  EditableWidget
 }
