@@ -3,7 +3,6 @@ import TProps from './types'
 import {
   ReclaimContainer,
   ButtonStyled,
-  CopyContainerStyled
 } from './styled-components'
 import { RootState } from 'data/store'
 import { connect } from 'react-redux'
@@ -11,12 +10,18 @@ import { TDispenser } from 'types'
 import { DispensersActions } from 'data/store/reducers/dispensers/types'
 import { Dispatch } from 'redux'
 import {
+  copyToClipboard,
   defineClaimAppURL,
   defineDispenserAppUrl
 } from 'helpers'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
-import * as dispensersActions from 'data/store/reducers/dispensers/actions'
 import { IAppDispatch } from 'data/store'
+import {
+  Header,
+  WidgetTitleStyled,
+  WidgetComponent,
+  TextStyled
+} from '../../styled-components'
 
 const mapStateToProps = ({
   dispensers: {
@@ -60,9 +65,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<DispensersAction
       dispatch(
         asyncDispensersActions.updateReclaim({
           dispenserId,
-          // reclaimAppId,
-          // reclaimAppSecret,
-          // reclaimProviderId,
           instagramFollowId,
           successCallback: onSuccess,
           errorCallback: onError
@@ -75,12 +77,15 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<DispensersAction
 const renderMainButton = (
   reclaimUrl?: string,
 ) => {
-
   return <ButtonStyled
-    title='Launch Reclaim App'
+    title='Copy URL'
+    size='extra-small'
+    appearance='additional'
     onClick={() => {
       if (reclaimUrl) {
-        window.open(reclaimUrl, '_blank')
+        copyToClipboard({
+          value: reclaimUrl
+        })
         return 
       }
 
@@ -97,9 +102,6 @@ const Reclaim: FC<TProps & ReduxType> = ({
   reclaimId,
   dispensers,
   getDispenserData,
-  reclaimSubmit,
-  dashboardKey,
-  decryptDispenserData,
   address
 }) => {
   const dispenser: TDispenser | undefined = dispensers.find(dispenser => String(dispenser.dispenser_id) === reclaimId)
@@ -141,17 +143,19 @@ const Reclaim: FC<TProps & ReduxType> = ({
     true
   )
 
-  return <ReclaimContainer>
-    {claimURLDecrypted &&
-    <CopyContainerStyled
-      title='Reclaim Drop URL'
-      text={claimURLDecrypted as string}
-    />}
-
-    {renderMainButton(
-      claimURLDecrypted
-    )}
-  </ReclaimContainer>
+  return <WidgetComponent>
+    <Header>
+      <WidgetTitleStyled>Claim eligibilty</WidgetTitleStyled>
+    </Header>
+    <ReclaimContainer>
+      <TextStyled>
+        Users must follow @zkBring to claim. It’s verified with zkTLS Web Proofs – totally secure and trustless.
+      </TextStyled>
+      {renderMainButton(
+        claimURLDecrypted
+      )}
+    </ReclaimContainer>
+  </WidgetComponent>
 }
 
 export default connect(

@@ -97,17 +97,17 @@ const defineButton = (
 ) => {
   switch (stage) {
     case 'approve':
-      return <ButtonStyled onClick={approve} appearance='action'> 
+      return <ButtonStyled onClick={approve} appearance='action' loading={loading}>
         Approve
       </ButtonStyled>
 
     case 'launch':
-      return <ButtonStyled onClick={launch} appearance='action'>
+      return <ButtonStyled onClick={launch} appearance='action' loading={loading}>
         Launch
       </ButtonStyled>
     case 'initial':
     case 'secure':
-      return <ButtonStyled onClick={secure} appearance='action'>
+      return <ButtonStyled onClick={secure} appearance='action' loading={loading}>
         Secure
       </ButtonStyled>
       }

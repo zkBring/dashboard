@@ -32,6 +32,7 @@ import {
   TDispenserWhitelistType,
   TDispenserWhitelistItemAddress
 } from './dispenser'
+import { TDispenserNew } from './dispenser-new'
 import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
 import TCampaignNew from './campaign-new'
@@ -89,6 +90,7 @@ export {
   TStatus,
   TZerionNetworkItem,
   TDispenserStats,
+  TDispenserNew,
   TCountry,
   TMnemonicContract,
   TZerionERC20Item,

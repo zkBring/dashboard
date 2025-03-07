@@ -26,6 +26,7 @@ import Input from './input'
 import Select from './select'
 import Switcher from './switcher'
 import Stages from './stages'
+import Text from './text'
 
 export {
   OriginalSelect,
@@ -34,6 +35,7 @@ export {
   Header,
   Input,
   TextArea,
+  Text,
   Footer,
   Select,
   Loader,

@@ -7,8 +7,8 @@ export const ButtonStyled = styled(Button)`
 `
 
 export const WidgetTitle = styled.h3`
-  font-size: 22px;
-  margin: 0 0 16px;
+  font-size: 15px;
+  margin: 0 0 10px;
   color: ${props => props.theme.primaryTextColor};
 `
 
@@ -86,6 +86,6 @@ export const TitleLoader = styled(Loader)`
   }
 `
 
-export const AsideWrapper = styled.aside`
+export const AsideWrapper = styled.div`
   border-radius: 10px;
 `

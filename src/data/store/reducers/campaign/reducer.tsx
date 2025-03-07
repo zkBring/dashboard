@@ -105,8 +105,8 @@ export function newRetroDropReducer(
     case Constants.CAMPAIGN_SET_TITLE:
       return {...state, title: action.payload.title }
   
-    case Constants.CAMPAIGN_SET_TITLE:
-      return {...state, title: action.payload.title }
+    case Constants.CAMPAIGN_SET_DESCRIPTION:
+      return {...state, description: action.payload.description }
       
     case Constants.CAMPAIGN_SET_LOADING:
       return {...state, loading: action.payload.loading }

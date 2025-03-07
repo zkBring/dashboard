@@ -46,11 +46,15 @@ const themes = {
 		buttonDefaultBorderHoverColor: '#121212',
 		buttonDefaultBorderActiveColor: '#121212',
 
-		buttonAdditionalBackgroundColor: '#E4EDFF',
-		buttonAdditionalBackgroundHoverColor: '#E4EDFF',
-		buttonAdditionalTextHoverColor: '#357AFF',
-		buttonAdditionalBackgroundActiveColor: '#E4EDFF',
-		buttonAdditionalTextActiveColor: '#095AF5',
+
+		buttonAdditionalTextColor: 'rgba(255, 255, 255, .67)',
+		buttonAdditionalBackgroundColor: '#3A3A41',
+		buttonAdditionalBackgroundHoverColor: '#3A3A41',
+		buttonAdditionalTextHoverColor: 'rgba(255, 255, 255, .67)',
+		buttonAdditionalBackgroundActiveColor: '#3A3A41',
+		buttonAdditionalTextActiveColor: 'rgba(255, 255, 255, .67)',
+
+
 		buttonDangerTextColor: '#FF5252',
 
 		buttonGradient: 'linear-gradient(to right, #00B2FF 0%, #FA00FF 50%, #00B2FF 100%)',
@@ -126,8 +130,15 @@ const themes = {
 		stageNextBackgroundColor: 'transparent',
 		stageNextBorderColor: '#202022',
 		stageNextIconColor: 'rgba(188, 188, 188, .4)',
-		stageNextTextColor: 'rgba(188, 188, 188, .4)'
+		stageNextTextColor: 'rgba(188, 188, 188, .4)',
 
+		inputIconZoneBackgroundColor: '#19191A',
+
+		
+		tokenCounterBackgroundFilledColor: 'rgba(56, 150, 106, .05)',
+		tokenCounterBackgroundColor: '#1A1A1C',
+
+		dropStatusTextColor: '#38966A'
 	},
 	dark: {
 		primaryTextColor: 'red',

@@ -12,7 +12,7 @@ import {
 import { useParams } from 'react-router-dom'
 import {
   Container,
-  Aside
+  AsideWidget
 } from 'components/pages/common'
 import {
   Breadcrumbs
@@ -241,7 +241,7 @@ const CampaignsTokenData: FC<ReduxType> = ({
   
   return <>
     <Container>
-      <Aside>
+      <AsideWidget>
         <Breadcrumbs
           items={
             [
@@ -258,7 +258,7 @@ const CampaignsTokenData: FC<ReduxType> = ({
             ]
           }
         />
-      </Aside>
+      </AsideWidget>
   
       <WidgetComponentStyled title='What are you dropping?'>
         <SwitcherStyled

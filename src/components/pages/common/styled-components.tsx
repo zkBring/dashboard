@@ -45,16 +45,16 @@ export const WidgetSectionTitle = styled.h4` // main title in widget
 `
 
 export const WidgetSectionSubtitle = styled.h4` // main title in widget
-  font-size: 14px;
+  font-size: 13px;
   margin: 0 0 12px;
   color: ${props => props.theme.additionalTextColor};
 `
 
 
 export const TableText = styled.span`
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
-  color: ${props => props.theme.additionalTextColor};
+  color: ${props => props.theme.secondaryTextColor};
 `
 
 export const TableValue = styled(TableText)`
@@ -70,6 +70,11 @@ export const TableRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+
+
+export const Aside = styled.aside`
+
 `
 
 export const AsideContent = styled.div`

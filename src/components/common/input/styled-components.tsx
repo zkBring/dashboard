@@ -36,6 +36,7 @@ export const InputPrefix = styled.div`
   align-items: center;
   justify-content: cetner;
   border-right: 1px solid ${props => props.theme.primaryBorderColor};
+  background-color: ${props => props.theme.inputIconZoneBackgroundColor};
 `
 
 export const InputField = styled.input<InputFieldProps>`

@@ -83,10 +83,16 @@ import { ReactComponent as InputDocumentIcon } from './input-document-icon.svg'
 import { ReactComponent as InputDropIcon } from './input-drop-icon.svg'
 import { ReactComponent as InputProfileIcon } from './input-profile-icon.svg'
 import { ReactComponent as InputCoinIcon } from './input-coin-icon.svg'
+import { ReactComponent as CoinIcon } from './coin-icon.svg'
+import { ReactComponent as ProfileIcon } from './profile-icon.svg'
+import { ReactComponent as BringTokenIcon } from './bring-token-icon.svg'
 
 const Icons = {
   EthereumLogo,
   InputCoinIcon,
+  BringTokenIcon,
+  CoinIcon,
+  ProfileIcon,
   InputProfileIcon,
   InputDocumentIcon,
   InputDropIcon,

@@ -3,6 +3,7 @@ import { TLinksBatch, TClaimPattern } from 'types'
 
 type TCampaign = {
   title: string
+  description: string
   chain_id: number
   campaign_id: string
   campaign_number: string
@@ -14,6 +15,7 @@ type TCampaign = {
   encrypted_signer_key: string
   signer_address: string
   batches: TLinksBatch[]
+  qr_campaign: string
   creator_address: string
   created_at?: string
   claim_pattern: TClaimPattern
