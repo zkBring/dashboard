@@ -4,12 +4,7 @@ import {
   zeroChain
 } from 'configs/chains'
 import {
-  mainnet,
-  polygon,
-  sepolia,
-  base,
-  immutableZkEvm,
-  xLayer
+  base
 } from 'wagmi/chains'
 import { http } from 'wagmi'
 import { QueryClient } from '@tanstack/react-query'
@@ -33,13 +28,7 @@ const metadata = {
 }
 
 const chains = [
-  base,
-  polygon,
-  mainnet,
-  sepolia,
-  immutableZkEvm,
-  xLayer,
-  zeroChain
+  base
 ] as const
 
 const config = defaultWagmiConfig({
@@ -56,13 +45,7 @@ const config = defaultWagmiConfig({
     coinbaseWallet()
   ],
   transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-    [polygon.id]: http(),
-    [base.id]: http(),
-    [immutableZkEvm.id]: http(),
-    [xLayer.id]: http(),
-    [zeroChain.id]: http()
+    [base.id]: http()
   },
 })
 

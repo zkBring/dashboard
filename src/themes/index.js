@@ -138,7 +138,10 @@ const themes = {
 		tokenCounterBackgroundFilledColor: 'rgba(56, 150, 106, .05)',
 		tokenCounterBackgroundColor: '#1A1A1C',
 
-		dropStatusTextColor: '#38966A'
+		dropStatusTextColor: '#38966A',
+
+
+		switcherItemBackgroundColor: '#242426'
 	},
 	dark: {
 		primaryTextColor: 'red',

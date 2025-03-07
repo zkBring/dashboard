@@ -11,5 +11,6 @@ export type TProps = {
   active: string
   title?: string
   disabled?: boolean
+  className?: string
   onChange: (id: string) => void
 }

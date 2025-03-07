@@ -14,6 +14,7 @@ export const SwitcherContainer = styled.ul<{ disabled?: boolean }>`
   display: flex;
   padding: 0;
   border-radius: 8px;
+  margin: 0;
   box-sizing: border-box;
   border: 1px solid ${(props) => (props.theme && props.theme.primaryBorderColor)};
   width: 100%;
@@ -47,15 +48,14 @@ export const SwitcherItem = styled.li<{
   ${(props) =>
     props.active &&
     css`
-      background: ${(props.theme && props.theme.noteDefaultBackgroundColor)};
-      border: 1px solid ${(props.theme && props.theme.primaryHighlightColor)};
-      color: ${(props.theme && props.theme.primaryHighlightColor)};
+      background-color: ${props => props.theme.switcherItemBackgroundColor};
     `}
 
   ${(props) =>
     props.disabled &&
     css`
       cursor: not-allowed;
+      opacity: .3;
     `}
 
   ${(props) =>

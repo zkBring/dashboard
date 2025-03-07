@@ -2,9 +2,16 @@ import React, { FC } from 'react'
 import { TProps } from './types'
 import { SwitcherContainer, SwitcherItem, Container, SwitcherTitle, SwitcherLoader } from './styled-components'
 
-const Switcher: FC<TProps> = ({ options, active, onChange, disabled, title }) => {
+const Switcher: FC<TProps> = ({
+  options,
+  active,
+  onChange,
+  disabled,
+  title,
+  className
+}) => {
   return (
-    <Container>
+    <Container className={className}>
       <SwitcherTitle>{title}</SwitcherTitle>
       <SwitcherContainer disabled={disabled}>
         {options.map((option) => {

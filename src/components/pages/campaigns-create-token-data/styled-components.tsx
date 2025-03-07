@@ -53,5 +53,5 @@ export const WidgetComponentStyled = styled(WidgetComponent)`
 `
 
 export const SwitcherStyled = styled(Switcher)`
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 `

@@ -158,7 +158,6 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
   const contractUrl = defineExplorerUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
 
-
   return <Container>
     <WidgetContainer>
       <LinksStats

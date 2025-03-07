@@ -7,8 +7,7 @@ import {
   Text,
   ButtonStyled
 } from './styled-components'
-
-import Icons from 'icons'
+import DropImage from 'images/drop.png'
 
 const InitialNote: FC<TProps> = ({
   title,
@@ -18,9 +17,7 @@ const InitialNote: FC<TProps> = ({
   onClick
 }) => {
   return <Container>
-    <Image>
-      <Icons.SunnyCloudIcon />
-    </Image>
+    <Image src={DropImage} />
     <Title>
       {title}
     </Title>
