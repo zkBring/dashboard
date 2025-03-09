@@ -14,3 +14,8 @@ export const WidgetComponentStyled = styled(WidgetComponent)`
 export const TextAreaStyled = styled(TextArea)`
 
 `
+
+export const Buttons = styled.div`
+  display: flex;
+  gap: 10px;
+`

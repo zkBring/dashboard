@@ -86,9 +86,11 @@ import { ReactComponent as InputCoinIcon } from './input-coin-icon.svg'
 import { ReactComponent as CoinIcon } from './coin-icon.svg'
 import { ReactComponent as ProfileIcon } from './profile-icon.svg'
 import { ReactComponent as BringTokenIcon } from './bring-token-icon.svg'
+import { ReactComponent as DropAudienceIcon } from './drop-audience-icon.svg'
 
 const Icons = {
   EthereumLogo,
+  DropAudienceIcon,
   InputCoinIcon,
   BringTokenIcon,
   CoinIcon,

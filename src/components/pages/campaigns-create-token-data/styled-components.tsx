@@ -55,3 +55,9 @@ export const WidgetComponentStyled = styled(WidgetComponent)`
 export const SwitcherStyled = styled(Switcher)`
   margin-bottom: 35px;
 `
+
+
+export const Buttons = styled.div`
+  display: flex;
+  gap: 10px;
+`

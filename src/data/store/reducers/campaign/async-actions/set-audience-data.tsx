@@ -26,6 +26,8 @@ function setAudienceData (
     dispatch(actionsCampaign.setProofProvider(proofProvider))
 
     if (proofProvider === 'custom') {
+
+      console.log('HERE111', proofProvider)
       dispatch(actionsCampaign.setHandleKey(handleKey))
       dispatch(actionsCampaign.setAppId(appId))
       dispatch(actionsCampaign.setSecret(secret))

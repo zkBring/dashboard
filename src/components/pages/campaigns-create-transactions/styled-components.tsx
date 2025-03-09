@@ -20,4 +20,6 @@ export const ButtonStyled = styled(Button)`
 export const StagesStyled = styled(Stages)`
   padding-bottom: 30px;
   margin-bottom: 30px;
+
+  border-bottom: 1px solid ${props => props.theme.primaryBorderColor};
 `
