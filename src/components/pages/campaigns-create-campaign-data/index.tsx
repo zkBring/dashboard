@@ -2,7 +2,8 @@ import { FC, useState, useEffect } from 'react'
 import {
   InputStyled,
   WidgetComponentStyled,
-  TextAreaStyled
+  TextAreaStyled,
+  Buttons
 } from './styled-components'
 import {
   Container,
@@ -145,21 +146,31 @@ const CampaignsCreateNew: FC<ReduxType> = ({
           title='Drop description (optional)'
         />
 
-        <Button
-          appearance='action'
-          disabled={defineIfNextDisabled()}
-          onClick={() => {
-            setCampaignData(
-              title,
-              description,
-              () => {
-                history.push(`/campaigns/new/ERC20/transactions`)
-              }
-            )
-          }}
-        >
-          Next
-        </Button>
+        <Buttons>
+          <Button
+            appearance='action'
+            disabled={defineIfNextDisabled()}
+            onClick={() => {
+              setCampaignData(
+                title,
+                description,
+                () => {
+                  history.push(`/campaigns/new/ERC20/transactions`)
+                }
+              )
+            }}
+          >
+            Next
+          </Button>
+
+          <Button
+            to={`/campaigns/new/ERC20/token-data`}
+          >
+            Back
+          </Button>
+        </Buttons>
+
+        
       </WidgetComponentStyled>
     </Container>
   </>

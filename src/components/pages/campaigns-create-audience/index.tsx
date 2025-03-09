@@ -134,8 +134,7 @@ const proofProvidersOptions = [
   }, {
     title: 'Custom',
     value: 'custom',
-    disabled: true,
-    image: <Icons.TikTokIcon />
+    image: <Icons.DropAudienceIcon />
   }
 ]
 
@@ -256,6 +255,8 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
             setAppID('')
             setSecret('')
           }
+
+          console.log({ value })
           setProofProvider(value)
         }}
         value={proofProvider}

@@ -11,6 +11,7 @@ import {
 import { connect } from 'react-redux'
 import * as campaignAsyncActions from 'data/store/reducers/campaign/async-actions'
 import { useHistory } from 'react-router-dom'
+import { ethers } from 'ethers'
 import {
   TTransactionStage,
   TLinkParams,
@@ -20,23 +21,47 @@ import { useParams } from 'react-router-dom'
 import { TCallback } from './types'
 import { preventPageClose } from 'helpers'
 import Icons from 'icons'
+import {
+  TransactionsData
+} from './components'
+import { TAsset } from 'linkdrop-batch-sdk/dist/types'
 
 const mapStateToProps = ({
   campaign: {
     tokenStandard,
     transactionStage,
-    loading
+    loading,
+    assets,
+    symbol,
+    decimals
   },
 }: RootState) => ({
   tokenStandard,
   transactionStage,
-  loading
+  loading,
+  assets,
+  symbol,
+  decimals
 })
 
+const countAmounts = (
+  assets: TAsset[],
+  decimals: number
+) => {
+  const amount = ethers.BigNumber.from(assets[0].amount).mul(assets.length)
+  const comission = amount.div(1000).mul(3)
+  const totalAmount = amount.add(comission)
+
+  return {
+    amount: ethers.utils.formatUnits(amount, decimals),
+    comission: ethers.utils.formatUnits(comission, decimals),
+    totalAmount: ethers.utils.formatUnits(totalAmount, decimals)
+  }
+}
 
 const mapDispatcherToProps = (dispatch: IAppDispatch) => {
   return {
-    approve: () => dispatch(campaignAsyncActions.prelaunchTransactions.approve()),
+    approve: (totalAmount: string) => dispatch(campaignAsyncActions.prelaunchTransactions.approve(totalAmount)),
     secure: () => dispatch(campaignAsyncActions.prelaunchTransactions.secure()),
   }
 }
@@ -89,15 +114,18 @@ const defineStages = (
 
 
 const defineButton = (
+  totalAmount: string,
   stage: TTransactionStage,
   loading: boolean,
-  approve: () => void,
+  approve: (totalAmount: string) => void,
   secure: () => void,
   launch: () => void
 ) => {
   switch (stage) {
     case 'approve':
-      return <ButtonStyled onClick={approve} appearance='action' loading={loading}>
+      return <ButtonStyled onClick={() => {
+        approve(totalAmount)
+      }} appearance='action' loading={loading}>
         Approve
       </ButtonStyled>
 
@@ -108,7 +136,7 @@ const defineButton = (
     case 'initial':
     case 'secure':
       return <ButtonStyled onClick={secure} appearance='action' loading={loading}>
-        Secure
+        Deploy contract
       </ButtonStyled>
       }
 }
@@ -117,13 +145,26 @@ const CampaignsCreateTransactions: FC<ReduxType> = ({
   transactionStage,
   approve,
   secure,
-  loading
+  loading,
+  assets,
+  symbol,
+  decimals
 }) => {
 
   const history = useHistory()
   const stages = defineStages(transactionStage)
 
+  const {
+    comission,
+    amount,
+    totalAmount
+  } = countAmounts(
+    assets as TAsset[],
+    decimals as number
+  )
+
   const button = defineButton(
+    totalAmount,
     transactionStage,
     loading,
     approve,
@@ -139,6 +180,15 @@ const CampaignsCreateTransactions: FC<ReduxType> = ({
     <StagesStyled
       stages={stages}
     />
+
+    <TransactionsData
+      comission={comission}
+      amount={amount}
+      totalAmount={totalAmount}
+      symbol={symbol as string}
+    />
+
+
     {button}
   </WidgetStyled>
 }

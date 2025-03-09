@@ -7,7 +7,8 @@ import {
   TokenBalanceValue,
   Subtitle,
   WidgetComponentStyled,
-  SwitcherStyled
+  SwitcherStyled,
+  Buttons
 } from './styled-components'
 import { useParams } from 'react-router-dom'
 import {
@@ -103,13 +104,6 @@ const mapDispatcherToProps = (dispatch: IAppDispatch & Dispatch<CampaignActions>
         callback
       )
     ),
-    resetCampaign: (
-      campaingId?: string
-    ) => {
-      dispatch(
-        campaignAsyncActions.resetCampaign(campaingId)
-      )
-    },
     getERC20Contracts: () => {
       dispatch(
         userAsyncActions.getERC20Contracts()
@@ -138,7 +132,6 @@ const CampaignsTokenData: FC<ReduxType> = ({
   campaigns,
   setTokenContractData,
   setTokenData,
-  resetCampaign,
   loading,
   getERC20Contracts,
   userLoading,
@@ -177,10 +170,6 @@ const CampaignsTokenData: FC<ReduxType> = ({
     tokensPerClaim,
     setTokensPerClaim
   ] = useState<string>('0')
-
-  useEffect(() => {
-    resetCampaign(campaign?.campaign_number)
-  }, [])
 
 
   useEffect(() => {
@@ -354,22 +343,30 @@ const CampaignsTokenData: FC<ReduxType> = ({
             note='Define how many total claims are allowed for this drop.'
           />
         </SplitInputs>
-        <Button
-          appearance='action'
-          disabled={defineIfNextDisabled()}
-          onClick={() => {
-            setTokenData(
-              currentType as TTokenType,
-              totalClaims,
-              tokensPerClaim,
-              () => {
-                history.push(`/campaigns/new/ERC20/campaign-data`)
-              }
-            )
-          }}
-        >
-          Next
-        </Button>
+        <Buttons>
+          <Button
+            appearance='action'
+            disabled={defineIfNextDisabled()}
+            onClick={() => {
+              setTokenData(
+                currentType as TTokenType,
+                totalClaims,
+                tokensPerClaim,
+                () => {
+                  history.push(`/campaigns/new/ERC20/campaign-data`)
+                }
+              )
+            }}
+          >
+            Next
+          </Button>
+
+          <Button
+            to={`/campaigns/new/ERC20/audience`}
+          >
+            Back
+          </Button>
+        </Buttons>
       </WidgetComponentStyled>
     </Container>
   </>

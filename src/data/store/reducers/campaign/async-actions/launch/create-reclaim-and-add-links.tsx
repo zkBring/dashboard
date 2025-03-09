@@ -4,7 +4,7 @@ import { DispensersActions } from '../../../dispensers/types'
 import * as actionsCampaign from '../../actions'
 import { CampaignActions } from '../../types'
 import { UserActions } from '../../../user/types'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import { dispensersApi, campaignsApi } from 'data/api'
 import {
   alertError,
@@ -16,15 +16,18 @@ import {
 } from 'helpers'
 import {
   TDispenserNew,
-  TDispenser
+  TDispenser,
+  TCampaign
 } from 'types'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
+import * as campaignsActions from '../../../campaigns/actions'
+import { CampaignsActions } from '../../../campaigns/types'
 
 type TCreateReclaimArgs = {
-  dispatch: Dispatch<DispensersActions> & Dispatch<UserActions> & Dispatch<CampaignActions>
+  dispatch: Dispatch<DispensersActions | UserActions | CampaignActions | CampaignsActions> & IAppDispatch
   getState: () => RootState
   campaignId: string
   batchId: string
@@ -65,6 +68,15 @@ const createReclaimAndAddLinks = async ({
     }
   } = getState()
 
+
+  console.log({
+    appId,
+    handleKey,
+    proofProvider,
+    zkTLSService,
+    secret,
+    providerId
+  })
   const secretKeyPair = sdk?.utils.generateAccount(12, true)
   const encKeyPair = sdk?.utils.generateAccount(12, true)
   if (!secretKeyPair) { return alertError('secretKeyPair is not provided') }
@@ -79,6 +91,7 @@ const createReclaimAndAddLinks = async ({
   const dispenserTime = momentNoOffsetGetTime(+date)
   const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))
 
+  console.log('HERE2222', {proofProvider})
   const newDispenser: TDispenserNew = {
     encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
     multiscan_qr_id: secretKeyPair.address,
@@ -91,7 +104,9 @@ const createReclaimAndAddLinks = async ({
       is_custom: proofProvider === 'custom',
       data_source: proofProvider,
       service: zkTLSService,
-      settings: {}
+      settings: {
+        
+      }
     },
   }
 
@@ -160,6 +175,8 @@ const createReclaimAndAddLinks = async ({
         dispatch(actionsDispensers.setDispensers(result.data.dispensers))
 
         if (successCallback) {
+          const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
+          dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
           successCallback(
             campaignId
           )

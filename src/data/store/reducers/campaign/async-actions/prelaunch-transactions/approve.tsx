@@ -12,6 +12,7 @@ import { IAppDispatch, RootState } from 'data/store'
 import { ERC20Contract } from 'abi'
 
 const approve = (
+  totalAmount: string,
   callback?: () => void
 ) => {
 
@@ -29,6 +30,7 @@ const approve = (
         campaign: {
           assets,
           tokenAddress,
+          decimals,
           proxyContractAddress
         }
     
@@ -43,9 +45,9 @@ const approve = (
       }
     
       const amount = assets[0].amount
-      const amountOriginal = assets[0].original_amount
     
-      const amountToApprove = ethers.BigNumber.from(amount).mul(assets.length)
+      const amountToApprove = ethers.utils.parseUnits(totalAmount, decimals as number)
+
       if (!amountToApprove) {
         dispatch(campaignActions.setLoading(false))
         return alertError(`Cannot define amount of tokens to approve`)
@@ -63,7 +65,6 @@ const approve = (
       }
     
       const tokenAmount = await contractInstance.balanceOf(address)
-      const decimals = await contractInstance.decimals()
     
       console.log({ tokenAmount, decimals })
     
