@@ -14,6 +14,8 @@ export const Container = styled.div`
       border: 1px solid
         ${(props) => (props.theme && props.theme.primaryBorderColor)};
 
+
+
       & > div {
         & > div:first-child {
           // color of NOT chosen items
@@ -21,8 +23,6 @@ export const Container = styled.div`
           font-family: 'Inter', 'Helvetica Neue', sans-serif;
           font-weight: 400;
           color: ${(props) => (props.theme && props.theme.additionalTextColor)};
-
-
         }
         & > div:last-child {
           max-width: 100%;

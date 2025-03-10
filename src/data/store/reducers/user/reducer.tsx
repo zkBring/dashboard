@@ -3,8 +3,7 @@ import { Constants } from './constants'
 import chains from 'configs/chains'
 import { BigNumber } from 'ethers'
 
-const { REACT_APP_CHAINS } = process.env
-const chainsAvailable: number[] = REACT_APP_CHAINS ? JSON.parse(REACT_APP_CHAINS) : Object.keys(chains)
+const chainsAvailable: number[] = [8453]
 
 const initialState: UserState = {
   address: '',

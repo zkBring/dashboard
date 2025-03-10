@@ -42,6 +42,7 @@ type TCampaign = {
   claim_host: string
   claim_host_on: boolean
   multiple_claims_on: boolean
+  is_public: boolean
 }
 
 export default TCampaign

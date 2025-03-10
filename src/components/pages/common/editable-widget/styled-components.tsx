@@ -26,7 +26,7 @@ export const TextStyled = styled(Text)`
 `
 
 export const EditButton = styled.div`
-
+  cursor: pointer;
 `
 
 export const ShowMore = styled.span`

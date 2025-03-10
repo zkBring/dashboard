@@ -135,6 +135,21 @@ const proofProvidersOptions = [
     title: 'Custom',
     value: 'custom',
     image: <Icons.DropAudienceIcon />
+  }, {
+    title: 'Tiktok',
+    value: 'tiktok',
+    image: <Icons.TikTokIcon />,
+    disabled: true
+  }, {
+    title: 'Github',
+    value: 'github',
+    image: <Icons.GithubIcon />,
+    disabled: true
+  }, {
+    title: 'Amazon',
+    value: 'amazon',
+    image: <Icons.AmazonIcon />,
+    disabled: true
   }
 ]
 
@@ -234,7 +249,7 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
 
     <WidgetComponent title='Choose your audience'>
 
-      <SelectStyled
+      {false && <SelectStyled
         onChange={async ({ value }: { value: TZKTLSService}) => {
           setZkTLSService(value)
         }}
@@ -242,10 +257,10 @@ const CampaignsCreateAudience: FC<ReduxType> = ({
         placeholder='ZKTLS Service'
         value={selectCurrentValue(zkTLSService)}
         options={zkTLSServiceOptions}
-      />
+      />}
 
       <Text>
-        More data sources coming soon. <TextLink href="#">Suggest one</TextLink>
+        ✨ Need custom Web Proof?  <TextLink href="#">Contact one</TextLink>
       </Text>
       <AudienceStyled
         onChange={(value) => {

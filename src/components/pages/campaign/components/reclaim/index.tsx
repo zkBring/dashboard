@@ -12,7 +12,7 @@ import { Dispatch } from 'redux'
 import {
   copyToClipboard,
   defineClaimAppURL,
-  defineDispenserAppUrl
+  definePlatformAppUrl
 } from 'helpers'
 import * as asyncDispensersActions from 'data/store/reducers/dispensers/async-actions'
 import { IAppDispatch } from 'data/store'
@@ -134,13 +134,9 @@ const Reclaim: FC<TProps & ReduxType> = ({
   const claimAppURL = defineClaimAppURL(
     address
   )
-  const claimURLDecrypted = defineDispenserAppUrl(
-    claimAppURL,
+  const claimURLDecrypted = definePlatformAppUrl(
     encrypted_multiscan_qr_secret,
-    encrypted_multiscan_qr_enc_code,
-    false,
-    false,
-    true
+    encrypted_multiscan_qr_enc_code
   )
 
   return <WidgetComponent>

@@ -6,6 +6,8 @@ const Tabs: FC<TProps> = ({
   setCampagnsType,
   activeTab
 }) => {
+
+  return null
   return <TabsWrapper>
     <Tab
       onClick={() => {setCampagnsType('ACTIVE')}}
