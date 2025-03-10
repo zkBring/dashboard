@@ -1,6 +1,13 @@
 import React, { FC } from 'react'
 import { TProps } from './types'
-import { SwitcherContainer, SwitcherItem, Container, SwitcherTitle, SwitcherLoader } from './styled-components'
+import {
+  SwitcherContainer,
+  SwitcherItem,
+  Container,
+  SwitcherTitle,
+  SwitcherLoader,
+  AdditionalTag
+} from './styled-components'
 
 const Switcher: FC<TProps> = ({
   options,
@@ -30,6 +37,9 @@ const Switcher: FC<TProps> = ({
               }}
             >
               {option.loading && <SwitcherLoader />} {option.title}
+              {option.additionalTag && <AdditionalTag>
+                {option.additionalTag}
+              </AdditionalTag>}
             </SwitcherItem>
           )
         })}

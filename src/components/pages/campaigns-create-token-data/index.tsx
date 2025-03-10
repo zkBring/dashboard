@@ -135,7 +135,6 @@ const CampaignsTokenData: FC<ReduxType> = ({
   loading,
   getERC20Contracts,
   userLoading,
-  tokenAddress: appliedTokenAddress,
   contractsERC20,
   decimals,
   tokenAmount,
@@ -260,7 +259,8 @@ const CampaignsTokenData: FC<ReduxType> = ({
             {
               title: 'Soulbound NFT',
               id: 'nfts',
-              disabled: true
+              disabled: true,
+              additionalTag: 'MAYBE SOON'
             }
           ]}
           disabled={loading || userLoading}

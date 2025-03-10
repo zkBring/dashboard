@@ -55,7 +55,7 @@ export const SwitcherItem = styled.li<{
     props.disabled &&
     css`
       cursor: not-allowed;
-      opacity: .3;
+      opacity: .6;
     `}
 
   ${(props) =>
@@ -81,4 +81,16 @@ export const SwitcherTitle = styled.h3`
   font-size: 16px;
   margin: 0 0 12px;
   color: ${(props) => (props.theme && props.theme.primaryTextColor)};
+`
+
+export const AdditionalTag = styled.span`
+  border-radius: 8px;
+  line-height: 20px;
+  padding: 0 13px;
+  display: inline-block;
+  margin-left: 9px;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: ${props => props.theme.switcherTagTextColor};
+  background-color: ${props => props.theme.switcherTagBackgroundColor};
 `

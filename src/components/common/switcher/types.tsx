@@ -4,6 +4,7 @@ export type TOption = {
   active?: boolean
   disabled?: boolean
   loading?: boolean
+  additionalTag?: React.ReactNode
 }
 
 export type TProps = {
