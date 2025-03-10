@@ -1,9 +1,13 @@
 import LinksStats from './links-stats'
-import Settings from './settings'
 import Reclaim from './reclaim'
+import BringAmount from './bring-amount'
+import Status from './status'
+import EditPopup from './edit-popup'
 
 export {
   LinksStats,
-  Settings,
-  Reclaim
+  Reclaim,
+  BringAmount,
+  Status,
+  EditPopup
 }

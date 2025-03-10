@@ -7,17 +7,14 @@ import {
   Page,
   Campaigns,
   Campaign,
-  CampaignsCreateInitial,
+  CampaignsCreateTokenData,
   CampaignsCreateAudience,
   CampaignsCreateLaunch,
   Main,
-  CampaignsCreateNew,
-  CampaignDispenserGenerate,
-  ReclaimQR,
-  ReclaimQRCreate,
-  Reclaims,
+  CampaignsCreateCampaignData,
   Support,
-  About
+  About,
+  CampaignsCreateTransactions
 } from 'components/pages'
 import { connect } from 'react-redux'
 import { RootState } from 'data/store'
@@ -29,13 +26,45 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
   return <HashRouter>
     <Page>
       <Switch>
+
         <ProtectedRoute
-          path='/campaigns/new'
+          path='/campaigns/new/:type/audience'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateAudience}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/token-data'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateTokenData}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/campaign-data'
           exact={true}
           loggedIn={Boolean(address)}
           // component={CampaignsCreateLaunch}
-          component={CampaignsCreateNew}
+          component={CampaignsCreateCampaignData}
         />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/transactions'
+          exact={true}
+          loggedIn={Boolean(address)}
+          // component={CampaignsCreateLaunch}
+          component={CampaignsCreateTransactions}
+        />
+
+        <ProtectedRoute
+          path='/campaigns/new/:type/launch'
+          exact={true}
+          loggedIn={Boolean(address)}
+          component={CampaignsCreateLaunch}
+        />
+
+
 
         <Route
           path='/support'
@@ -52,101 +81,10 @@ const AppRouter: FC<ReduxType> = ({ address }) => {
         />
 
         <ProtectedRoute
-          path='/campaigns/edit/:type/:id/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateNew}
-        />
-
-        <ProtectedRoute
           path='/campaigns/:id'
           exact={true}
           loggedIn={Boolean(address)}
           component={Campaign}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/:id/dispenser/generate'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignDispenserGenerate}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/new/:type/initial'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateInitial}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/edit/:type/:id/initial'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateInitial}
-        />
-        
-        <ProtectedRoute
-          path='/campaigns/new/:type/audience'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateAudience}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/edit/:type/:id/audience'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateAudience}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/new/:type/launch'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateLaunch}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/edit/:type/:id/launch'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateLaunch}
-        />  
-
-        <ProtectedRoute
-          path='/campaigns/new/:type/generate'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateLaunch}
-        />
-
-        <ProtectedRoute
-          path='/campaigns/edit/:type/:id/generate'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={CampaignsCreateLaunch}
-        />
-
-        <ProtectedRoute
-          path='/reclaims/new'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={ReclaimQRCreate}
-        />
-
-        <ProtectedRoute
-          path='/reclaims/:id'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={ReclaimQR}
-        />
-
-        <ProtectedRoute
-          path='/reclaims'
-          exact={true}
-          loggedIn={Boolean(address)}
-          component={Reclaims}
         />
 
         <ProtectedRoute

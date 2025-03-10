@@ -23,8 +23,7 @@ import {
 } from 'comlink'
 import {
   sleep,
-  alertError,
-  defineIfLinksHasEqualContents
+  alertError
 } from 'helpers'
 import axios from 'axios'
 import * as actionsAsyncUser from '../../user/async-actions'
@@ -86,8 +85,7 @@ const addLinksToDispenser = ({
           dashboardKey as string
         )
         const apiMethod = linksCount > 0 && currentStatus === 'ACTIVE' ? dispensersApi.updateLinks : dispensersApi.mapLinks
-        const linksHasEqualContents = defineIfLinksHasEqualContents(links)
-        const result = await apiMethod(itemId, qrArrayMapped, linksHasEqualContents)
+        const result = await apiMethod(itemId, qrArrayMapped)
         
         if (result.data.success) {
           plausibleApi.invokeEvent({

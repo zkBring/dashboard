@@ -7,7 +7,7 @@ import {
   loadImage,
   alertError,
   defineQROptions,
-  defineDispenserAppUrl,
+  definePlatformAppUrl,
   defineClaimAppURL
 } from 'helpers'
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -75,13 +75,9 @@ const downloadQR = ({
   
         const decryptedQrSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey as string)
         const decryptedQrEncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey as string)
-        const claimURLDecrypted = defineDispenserAppUrl(
-          claimAppURL,
+        const claimURLDecrypted = definePlatformAppUrl(
           decryptedQrSecret,
-          decryptedQrEncCode,
-          whitelist_on,
-          dynamic,
-          reclaim
+          decryptedQrEncCode
         )
       
         const result = await qrsWorker.downloadMultiQR(

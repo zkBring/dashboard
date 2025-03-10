@@ -5,7 +5,7 @@ import { RootState } from 'data/store'
 import {
   alertError,
   defineClaimAppURL,
-  defineDispenserAppUrl
+  definePlatformAppUrl
 } from 'helpers'
 import { decrypt } from 'lib/crypto'
 import * as actionsAsyncUser from '../../user/async-actions'
@@ -59,7 +59,6 @@ const decryptDispenserData = ({
           encrypted_multiscan_qr_enc_code,
           encrypted_multiscan_qr_secret,
           whitelist_on,
-          dynamic,
           reclaim
         } = currentDispenser
         const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
@@ -67,13 +66,9 @@ const decryptDispenserData = ({
         const claimAppURL = defineClaimAppURL(
           address
         )
-        const claimURLDecrypted = defineDispenserAppUrl(
-          claimAppURL,
+        const claimURLDecrypted = definePlatformAppUrl(
           decryptedMultiscanQRSecret,
-          multiscanQREncCode,
-          Boolean(whitelist_on),
-          Boolean(dynamic),
-          Boolean(reclaim)
+          multiscanQREncCode
         )
   
         const linkKey = ethers.utils.id(multiscanQREncCode)

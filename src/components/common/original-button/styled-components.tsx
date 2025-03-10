@@ -121,7 +121,7 @@ export const Button = styled.button.attrs((props) => ({
       border: none;
       background-color: ${(props) =>
         (props.theme && props.theme.buttonAdditionalBackgroundColor)};
-      color: ${(props) => (props.theme && props.theme.primaryHighlightColor)};
+      color: ${(props) => (props.theme && props.theme.buttonAdditionalTextColor)};
 
       ${!props.disabled &&
       css`

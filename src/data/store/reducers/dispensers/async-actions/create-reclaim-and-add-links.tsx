@@ -9,7 +9,6 @@ import {
   momentNoOffsetWithTimeUpdate,
   momentNoOffsetGetTime,
   getNextDayData,
-  defineIfLinksHasEqualContents,
   decryptLinks,
   sleep
 } from 'helpers'
@@ -87,7 +86,6 @@ const createReclaimAndAddLinks = ({
           claim_start: +(new Date(dateString)),
           encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
           title,
-          dynamic: false,
           reclaim: true
         }
 
@@ -133,8 +131,7 @@ const createReclaimAndAddLinks = ({
               decryptedLinks,
               dashboardKey as string
             )
-            const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
-            const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
+            const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped)
             if (addLinksResult.data.success) {
               const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
               dispatch(actionsDispensers.setDispensers(result.data.dispensers))

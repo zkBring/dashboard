@@ -1,13 +1,23 @@
 import styled from 'styled-components'
-import { Widget, Button } from 'components/common'
+import {
+  Widget,
+  Button,
+  Text
+} from 'components/common'
 import { Note } from 'linkdrop-ui'
-import { WidgetTitle, Aside, TableValue } from 'components/pages/common'
+import {
+  WidgetTitle,
+  AsideWidget,
+  TableValue
+} from 'components/pages/common'
 
 export const WidgetTitleStyled = styled(WidgetTitle)`
-  max-width: 400px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 15px;
+  line-height: 26px;
+  margin: 0 0 10px;
+  font-weight: 400;
+  color: ${props => props.theme.primaryTextColor};
+  
 `
 
 export const Header = styled.div`
@@ -19,6 +29,7 @@ export const WidgetComponent = styled(Widget)`
   width: 100%;
   padding: 24px;
   position: relative;
+  margin-bottom: 20px;
 `
 
 export const WidgetButton = styled(Button)``
@@ -43,10 +54,11 @@ export const SecondaryTextSpan = styled.span`
   color: ${props => props.theme.additionalTextColor};
 `
 
-export const AsideStyled = styled(Aside)`
+export const AsideWidgetStyled = styled(AsideWidget)`
   margin: 0;
   background: ${props => props.theme.widgetColor};
   padding: 20px;
+  margin-bottom: 20px;
 `
 
 export const MainContent = styled.div`
@@ -78,4 +90,10 @@ export const Container = styled.div`
   display: grid;
   gap: 40px;
   grid-template-columns: 1fr 300px;
+  align-items: start;
+`
+
+
+export const TextStyled = styled(Text)`
+  margin-bottom: 20px;
 `

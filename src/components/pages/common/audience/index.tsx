@@ -9,11 +9,24 @@ import {
 
 const AudienceComponent: FC<TProps> = ({
   options,
-  className
+  value,
+  className,
+  onChange
 }) => {
   return <Audience className={className}>
-    {options.map(item => <AudienceItem disabled={item.disabled}>
-      <AudienceImage src={item.image} alt={item.title} /> 
+    {options.map(item => <AudienceItem 
+      disabled={item.disabled}
+      active={value === item.value}
+      onClick={() => {
+        if (item.disabled) {
+          return
+        }
+        onChange(item.value)
+      }}
+    >
+      <AudienceImage>
+        {item.image}
+      </AudienceImage> 
       <AudienceTitle>
         {item.title}
       </AudienceTitle>

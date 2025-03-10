@@ -68,7 +68,7 @@ const approve = (
       }
       dispatch(campaignActions.setLoading(true))
       dispatch(campaignActions.setClaimPattern('transfer'))
-      const contractInstance = await new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
+      const contractInstance = new ethers.Contract(tokenAddress, ERC20Contract.abi, signer)
       let iface = new utils.Interface(ERC20Contract.abi)
       const data = await iface.encodeFunctionData('approve', [
         proxyContractAddress, ethers.constants.MaxUint256

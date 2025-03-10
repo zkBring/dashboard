@@ -7,3 +7,5 @@ export interface MatchParams {
 export interface IProps extends RouteComponentProps<MatchParams> {
   connectWallet: () => void;
 }
+
+export type TCampaignStatus = 'paused' | 'pending' | 'active' | 'initial'

@@ -125,12 +125,12 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
   ) {
     return <>
       <InitialNote
-        title='Create Your First Campaign'
-        text="Your campaigns will be displayed here once created. You don't have any campaigns yet"
+        title='No drops yet'
+        text="Your drops will be displayed here. Launch the first one – It’s easy!"
         onClick={() => {
-          history.push('/campaigns/new')
+          history.push('/campaigns/new/ERC20/audience')
         }}
-        buttontText='New Campaign'
+        buttontText='Launch drop'
       />
     </>
   }
@@ -144,7 +144,7 @@ const CampaignsPage: FC<ReduxType & TProps> = ({
         size='extra-small'
         appearance='action'
         onClick={() => {
-          history.push('/campaigns/new')
+          history.push('/campaigns/new/ERC20/audience')
         }}
       />
     </Header>

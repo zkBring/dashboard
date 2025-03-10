@@ -32,6 +32,7 @@ import {
   TDispenserWhitelistType,
   TDispenserWhitelistItemAddress
 } from './dispenser'
+import { TDispenserNew } from './dispenser-new'
 import TLinksBatch from './links-batch'
 import TBase64File from './base64-file'
 import TCampaignNew from './campaign-new'
@@ -69,14 +70,27 @@ import { TZerionNetworkItem } from './zerion-network-item'
 import TCountry from './country'
 import { TStatus } from './status'
 import { TQRManagerItem, TQRManagerItemType } from './qr-manager-item'
+import TProofProvider from './proof_provider'
+import TZKTLSService from './zktls-service'
+import TTransactionStage from './transaction-stage'
+import {
+  TStage,
+  TStageStatus
+} from './stage'
 
 export {
   TCampaign,
+  TTransactionStage,
+  TStage,
+  TStageStatus,
+  TProofProvider,
   TQRManagerItem,
+  TZKTLSService,
   TQRManagerItemType,
   TStatus,
   TZerionNetworkItem,
   TDispenserStats,
+  TDispenserNew,
   TCountry,
   TMnemonicContract,
   TZerionERC20Item,

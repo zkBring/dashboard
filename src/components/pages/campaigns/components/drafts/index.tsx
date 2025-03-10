@@ -40,7 +40,7 @@ const defineDraftUrl = (
     case 'initial':
       return `/campaigns/new/${tokenStandard}/initial`
     default:
-      return `/campaigns/new`
+      return `/campaigns/new/ERC20/audience`
   }
 }
 

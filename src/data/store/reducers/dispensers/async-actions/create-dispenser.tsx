@@ -14,7 +14,6 @@ import { TDispenser } from 'types'
 import { encrypt } from 'lib/crypto'
 import { plausibleApi } from 'data/api'
 import * as actionsAsyncUser from '../../user/async-actions'
-import * as actionsCampaigns from '../actions'
 import * as actionsUser from '../../user/actions'
 
 type TCreateDispenserArgs = {
@@ -73,7 +72,6 @@ const createDispenser = ({
           claim_start: +(new Date(dateString)),
           encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
           title,
-          dynamic,
           reclaim,
           reclaim_app_id: reclaim_app_id || '',
           reclaim_app_secret: reclaim_app_secret || '',

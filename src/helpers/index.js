@@ -48,13 +48,12 @@ import alertError from './alert-error'
 import prepareERC20Url from './prepare-erc20-list'
 import defineIfUserHasEnoughERC20Tokens from './define-if-user-has-enough-erc20-token'
 import defineQROptions from './define-qr-options'
-import defineDispenserAppUrl from './define-dispenser-app-url'
+import definePlatformAppUrl from './define-platform-app-url'
 import defineDispenserStatus from './define-dispenser-status'
 import defineDispenserStatusName from './define-dispenser-status-name'
 import writeCampaignToLS from './write-campaign-to-ls'
 import getCampaignsFromLS from './get-campaigns-from-ls'
 import defineIfFeatureIsAvailable from './define-if-feature-is-available'
-import defineIfLinksHasEqualContents from './define-if-links-has-equal-contents'
 import defineLinkTokenType from './define-link-token-type'
 import preventPageClose from './prevent-page-close'
 import getMinterRole from './get-minter-role'
@@ -87,8 +86,10 @@ import defineCoinbaseInstance from './define-coinbase-instance'
 import defineFirstTokenIdForUser from './define-first-token-id-for-user'
 import defineLastTokenIdForUser from './define-last-token-id-for-user'
 import defineIfUserOwnsTokenInArray from './define-if-user-owns-token-in-array'
+import getBringAmount from './get-bring-amount'
 
 export {
+  getBringAmount,
   buf2hex,
   defineIfUserOwnsTokenInArray,
   defineCoinbaseInstance,
@@ -124,7 +125,6 @@ export {
   getMinterRole,
   defineNetworkIcon,
   getCampaignsFromLS,
-  defineIfLinksHasEqualContents,
   defineIfFeatureIsAvailable,
   writeCampaignToLS,
   defineDispenserStatus,
@@ -175,5 +175,5 @@ export {
   decryptLinks,
   sleep,
   metadataUrlResolve,
-  defineDispenserAppUrl
+  definePlatformAppUrl
 }

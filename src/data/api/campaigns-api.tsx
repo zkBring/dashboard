@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
 import { TLink, TCampaignNew, TCampaign } from 'types'
-
+import {
+  TGetOneCampaign,
+  TUpdateCampaign
+} from './campaigns'
 const {
   REACT_APP_SERVER_URL,
   REACT_APP_ZUPLO_API_KEY
@@ -13,18 +16,11 @@ const campaignsApi = axios.create({
   }
 })
 
-type TGetLimitsTGetOneCampaign = (
-  campaign_id: string
-) => Promise<AxiosResponse<TGetOneCampaignResponse>>
 
-type TGetOneCampaignResponse = {
-  success: boolean,
-  campaign: TCampaign
-}
 
 const requests: {
-  getOne: TGetLimitsTGetOneCampaign,
-
+  getOne: TGetOneCampaign,
+  updateCampaign: TUpdateCampaign,
   // will update later
   create: any,
   get: any,
@@ -215,7 +211,21 @@ const requests: {
     batch_id: string | number
   ) => {
     return campaignsApi.get(`/campaigns/${campaign_id}/batches/${batch_id}`, { withCredentials: true })
-  }
+  },
+  updateCampaign: (
+    campaign_id,
+    description,
+    is_public
+  ) => {
+    return campaignsApi.patch(
+      `/campaigns/${campaign_id}`,
+      {
+        description,
+        is_public
+      },
+      { withCredentials: true }
+    )
+  },
 }
 
 export default requests

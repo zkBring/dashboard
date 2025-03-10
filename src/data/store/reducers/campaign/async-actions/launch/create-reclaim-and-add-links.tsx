@@ -4,25 +4,30 @@ import { DispensersActions } from '../../../dispensers/types'
 import * as actionsCampaign from '../../actions'
 import { CampaignActions } from '../../types'
 import { UserActions } from '../../../user/types'
-import { RootState } from 'data/store'
+import { RootState, IAppDispatch } from 'data/store'
 import { dispensersApi, campaignsApi } from 'data/api'
 import {
   alertError,
   momentNoOffsetWithTimeUpdate,
   momentNoOffsetGetTime,
   getNextDayData,
-  defineIfLinksHasEqualContents,
   decryptLinks,
   sleep
 } from 'helpers'
-import { TDispenser } from 'types'
+import {
+  TDispenserNew,
+  TDispenser,
+  TCampaign
+} from 'types'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import Worker from 'worker-loader!web-workers/qrs-worker'
 import { QRsWorker } from 'web-workers/qrs-worker'
 import { wrap, Remote, proxy } from 'comlink'
+import * as campaignsActions from '../../../campaigns/actions'
+import { CampaignsActions } from '../../../campaigns/types'
 
 type TCreateReclaimArgs = {
-  dispatch: Dispatch<DispensersActions> & Dispatch<UserActions> & Dispatch<CampaignActions>
+  dispatch: Dispatch<DispensersActions | UserActions | CampaignActions | CampaignsActions> & IAppDispatch
   getState: () => RootState
   campaignId: string
   batchId: string
@@ -52,10 +57,26 @@ const createReclaimAndAddLinks = async ({
     campaign: {
       tokenAddress,
       title,
-      reclaimInstagramId
+      
+
+      appId,
+      handleKey,
+      proofProvider,
+      zkTLSService,
+      secret,
+      providerId
     }
   } = getState()
 
+
+  console.log({
+    appId,
+    handleKey,
+    proofProvider,
+    zkTLSService,
+    secret,
+    providerId
+  })
   const secretKeyPair = sdk?.utils.generateAccount(12, true)
   const encKeyPair = sdk?.utils.generateAccount(12, true)
   if (!secretKeyPair) { return alertError('secretKeyPair is not provided') }
@@ -70,15 +91,49 @@ const createReclaimAndAddLinks = async ({
   const dispenserTime = momentNoOffsetGetTime(+date)
   const dateString = momentNoOffsetWithTimeUpdate(date, Number(dispenserTime.hours.value), Number(dispenserTime.minutes.value))
 
-  const newDispenser: TDispenser = {
+  console.log('HERE2222', {proofProvider})
+  const newDispenser: TDispenserNew = {
     encrypted_multiscan_qr_secret: encryptedMultiscanQRSecret,
     multiscan_qr_id: secretKeyPair.address,
     claim_start: +(new Date(dateString)),
     encrypted_multiscan_qr_enc_code: encryptedMultiscanQREncCode,
     title: `Reclaim set for ${title || `Campaign ${campaignId}`}`,
-    dynamic: false,
-    reclaim: true
+    campaign_id: campaignId,
+
+    web_proof_provider: {
+      is_custom: proofProvider === 'custom',
+      data_source: proofProvider,
+      service: zkTLSService,
+      settings: {
+        
+      }
+    },
   }
+
+  if (proofProvider === 'custom') {
+
+    if (!appId) {
+      return alertError('App ID is not provided')
+    }
+    newDispenser.web_proof_provider.settings.app_id = appId
+    if (!secret) {
+      return alertError('Secret is not provided')
+    }
+    newDispenser.web_proof_provider.settings.secret = secret
+    if (!handleKey) {
+      return alertError('Handle key is not provided')
+    }
+    newDispenser.web_proof_provider.settings.handle_key = handleKey
+
+    if (!providerId) {
+      return alertError('Provider ID is not provided')
+    }
+    newDispenser.web_proof_provider.settings.provider_id = providerId
+  }
+
+  console.log({
+    newDispenser
+  })
 
   // create dispenser
   const createDispenserResult = await dispensersApi.create(newDispenser)
@@ -114,13 +169,14 @@ const createReclaimAndAddLinks = async ({
         dashboardKey as string
       )
 
-      const linksHasEqualContents = defineIfLinksHasEqualContents(decryptedLinks)
-      const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped, linksHasEqualContents)
+      const addLinksResult = await dispensersApi.mapLinks(createDispenserResult.data.dispenser.dispenser_id, qrArrayMapped)
       if (addLinksResult.data.success) {
         const result: { data: { dispensers: TDispenser[] } } = await dispensersApi.get()
         dispatch(actionsDispensers.setDispensers(result.data.dispensers))
 
         if (successCallback) {
+          const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
+          dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
           successCallback(
             campaignId
           )

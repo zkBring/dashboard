@@ -15,8 +15,10 @@ import updateClaimHostOn from './update-claim-host-on'
 import updateClaimHost from './update-claim-host'
 import updateMultipleClaimsOn from './update-multiple-claims-on'
 import updateArchived from './update-archived'
+import updateDescription from './update-description'
 
 export {
+  updateDescription,
   getCampaignBatches,
   updateArchived,
   updateClaimHostOn,

@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions'
 import { Constants } from './constants'
-import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern, TLaunchStage } from 'types'
+import { TTokenType, TAssetsData, TLinkContent, TLink, TClaimPattern, TLaunchStage, TZKTLSService, TProofProvider, TTransactionStage } from 'types'
 import { BigNumber } from 'ethers'
 import { CampaignState } from './types'
 
@@ -108,15 +108,52 @@ export function setLaunchStage (launchStage: TLaunchStage) {
   })
 }
 
+export function setTransactionStage (transactionStage: TTransactionStage) {
+  return action(Constants.CAMPAIGN_SET_TRANSACTION_STAGE, {
+    transactionStage
+  })
+}
+
+
 export function setSymbol (symbol: string | null) {
   return action(Constants.CAMPAIGN_SET_SYMBOL, {
     symbol
   })
 }
 
-export function setReclaimInstagramId (reclaimInstagramId: string | null) {
-  return action(Constants.CAMPAIGN_SET_RECLAIM_INSTAGRAM_ID, {
-    reclaimInstagramId
+export function setZkTLSService (zkTLSService: TZKTLSService) {
+  return action(Constants.CAMPAIGN_SET_ZK_TLS_SERVICE, {
+    zkTLSService
+  })
+}
+
+export function setProofProvider (proofProvider: TProofProvider) {
+  return action(Constants.CAMPAIGN_SET_PROOF_PROVIDER, {
+    proofProvider
+  })
+}
+
+export function setHandleKey (handleKey: string) {
+  return action(Constants.CAMPAIGN_SET_HANDLE_KEY, {
+    handleKey
+  })
+}
+
+export function setAppId (appId: string) {
+  return action(Constants.CAMPAIGN_SET_APP_ID, {
+    appId
+  })
+}
+
+export function setProviderId (providerId: string) {
+  return action(Constants.CAMPAIGN_SET_PROVIDER_ID, {
+    providerId
+  })
+}
+
+export function setSecret (secret: string) {
+  return action(Constants.CAMPAIGN_SET_SECRET, {
+    secret
   })
 }
 

@@ -18,9 +18,6 @@ import {
 } from 'helpers'
 import { Remote } from 'comlink'
 import { LinksWorker } from 'web-workers/links-worker'
-import { plausibleApi } from 'data/api'
-import { defineNetworkName } from 'helpers'
-import * as campaignsActions from '../../../campaigns/actions'
 
 const generateERC20Link = async (
   dispatch: Dispatch<CampaignActions | UserActions | CampaignsActions> & IAppDispatch,
@@ -49,6 +46,7 @@ const generateERC20Link = async (
     wallet,
     symbol,
     title,
+    description,
     proxyContractAddress,
     sponsored,
     tokenStandard,
@@ -127,6 +125,7 @@ const generateERC20Link = async (
       sdk,
       symbol,
       title: title || '',
+      description: description || '',
       token_standard: tokenStandard,
       chain_id: String(chainId),
       proxy_contract_address: proxyContractAddress,
@@ -152,8 +151,6 @@ const generateERC20Link = async (
 
       dispatch(actionsAsyncCampaigns.removeCurrentCampaignFromDrafts())
       if (callback) {
-        const campaigns: { data: { campaigns_array: TCampaign[] } } = await campaignsApi.get(chainId)
-        dispatch(campaignsActions.updateCampaigns(campaigns.data.campaigns_array))
         callback(campaign.campaign_id)
       }
 
