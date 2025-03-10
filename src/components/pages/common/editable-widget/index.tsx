@@ -47,9 +47,9 @@ const EditableWidget: FC<TProps> = ({
   return <AsideWrapper>
     <WidgetTitle>
       {title}
-      {/* <EditButton onClick={action}>
+      <EditButton onClick={action}>
         <Icons.InputPenIcon />
-      </EditButton> */}
+      </EditButton>
     </WidgetTitle>
     <TextStyled>
       {valueFormatted}

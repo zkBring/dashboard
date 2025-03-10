@@ -9,7 +9,7 @@ export const AudienceItem = styled.div<{
   disabled?: boolean
   active?: boolean
 }>`
-  padding: 21px 19px 13px;
+  padding: 21px 17px 13px;
   display: flex;
   cursor: pointer;
   flex-direction: column;
@@ -51,10 +51,13 @@ export const AudienceItem = styled.div<{
 
 export const AudienceImage = styled.div`
   max-width: 40px;
+  height: 46px;
+  display: flex;
+  align-items: start;
 `
 
 export const AudienceTitle = styled.h4`
-  font-size: 13px;
+  font-size: 12px;
   margin: 0;
   line-height: 22px;
   font-wieght: 400;

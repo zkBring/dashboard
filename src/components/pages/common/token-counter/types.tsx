@@ -3,7 +3,10 @@ import { BigNumber } from "ethers"
 type TProps = {
   value: number | BigNumber
   max: number | BigNumber
-  action?: () => void
+  action: (
+    isPublic: boolean 
+  ) => void
+  isPublic: boolean
   actionTitle?: string
   tokenSymbol: string
   tokenIcon: React.ReactNode

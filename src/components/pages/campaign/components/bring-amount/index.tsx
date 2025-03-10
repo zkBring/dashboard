@@ -13,6 +13,7 @@ import Icons from 'icons'
 import {
   TokenCounterStyled
 } from './styled-components'
+import TProps from './types'
 
 const mapStateToProps = ({
   user: { address, signer },
@@ -24,9 +25,11 @@ const mapStateToProps = ({
 type ReduxType = ReturnType<typeof mapStateToProps>
 
 
-const BringAmount: FC<ReduxType> = ({
+const BringAmount: FC<ReduxType & TProps> = ({
   address,
-  signer
+  signer,
+  isPublic,
+  action
 }) => {
   const [
     bringAmount,
@@ -69,6 +72,8 @@ const BringAmount: FC<ReduxType> = ({
       tokenSymbol='BRING'
       tokenIcon={<Icons.BringTokenIcon />}
       max={ethers.BigNumber.from('5000000')}
+      action={action}
+      isPublic={isPublic}
     />
 
   </WidgetComponent>

@@ -79,13 +79,6 @@ const defineButtons = (
       <ButtonStyled
         appearance='additional'
         size='extra-small'
-        onClick={() => archiveItem(campaign_id)}
-      >
-        <Icons.ArchiveIcon />
-      </ButtonStyled>
-      <ButtonStyled
-        appearance='additional'
-        size='extra-small'
         to={`/campaigns/${campaign_id}`}
       >
         Manage

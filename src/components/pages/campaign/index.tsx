@@ -27,17 +27,22 @@ import {
   LinksStats,
   Reclaim,
   BringAmount,
-  Status
+  Status,
+  EditPopup
 } from './components'
 import { useHistory } from 'react-router-dom'
 import {
   getCampaignBatches,
-  downloadReport
+  downloadReport,
+  updateDescription
 } from 'data/store/reducers/campaigns/async-actions'
 import * as userAsyncActions from 'data/store/reducers/user/async-actions/index'
 import { TextLink } from 'components/common'
 import { IProps, TCampaignStatus } from './types'
 import { IAppDispatch } from 'data/store'
+const {
+  REACT_APP_PLATFORM_APP
+} = process.env
 
 const mapStateToProps = ({
   campaigns: {
@@ -90,6 +95,22 @@ const mapDispatcherToProps = (dispatch: IAppDispatch) => {
           campaign_id
         )
       )
+    },
+
+    updateCampaign: (
+      campaign_id: string,
+      description: string,
+      isPublic: boolean,
+      callback?: () => void
+    ) => {
+      dispatch(
+        updateDescription(
+          campaign_id,
+          description,
+          isPublic,
+          callback
+        )
+      )
     }
   }
 }
@@ -104,6 +125,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
   match: { params },
   getCampaignBatches,
   downloadReport,
+  updateCampaign,
   signer,
   address,
   provider,
@@ -117,6 +139,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
   const [ status, setStatus ] = useState<TCampaignStatus>('initial')
 
+  const [ editPopup, setEditPopup ] = useState<boolean>(false)
 
   // @ts-ignore
   const currentCampaign = campaigns.find(campaign => campaign.campaign_id === params.id)
@@ -139,7 +162,8 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     links_claimed,
     symbol,
     created_at,
-    qr_campaign
+    qr_campaign,
+    is_public
   } = currentCampaign
 
   useEffect(() => {
@@ -153,12 +177,29 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
     init()
   }, [])
 
-
   const tokenUrl = defineExplorerUrl(Number(chain_id), `/address/${token_address || ''}`)
   const ownerUrl = defineExplorerUrl(Number(chain_id), `/address/${creator_address || ''}`)
   const contractUrl = defineExplorerUrl(Number(chain_id), `/address/${proxy_contract_address || ''}`)
 
   return <Container>
+
+    {editPopup && <EditPopup
+      initialValue={description}
+      loading={loading}
+      onUpdate={(value) => {
+        updateCampaign(
+          campaign_id,
+          value,
+          is_public,
+          () => {
+            setEditPopup(false)
+          }
+        )
+      }}
+      onClose={() => {
+        setEditPopup(false)
+      }}
+    />}
     <WidgetContainer>
       <LinksStats
         linksAmount={links_count}
@@ -166,7 +207,17 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         sponsored={sponsored}
       />
 
-      <BringAmount />
+      <BringAmount
+        isPublic={is_public}
+        action={(value) => {
+          updateCampaign(
+            campaign_id,
+            description,
+            value,
+            () => {}
+          )
+        }}
+      />
       
       <Reclaim
         reclaimId={qr_campaign}
@@ -220,9 +271,20 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
 
         <AsideButtonsContainer>
           <AsideButton
+            size='extra-small'
+            appearance='additional'
             onClick={() => downloadReport(campaign_id)}
           >
             Download full report
+          </AsideButton>
+
+          <AsideButton
+            size='extra-small'
+            target='_blank'
+            appearance='additional'
+            href={`${REACT_APP_PLATFORM_APP}/drops/${campaign_id}`}
+          >
+            Public page
           </AsideButton>
         </AsideButtonsContainer>
 
@@ -231,7 +293,9 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
       <EditableWidget
         value={description}
         title="Description"
-        action={() => {}}
+        action={() => {
+          setEditPopup(true)
+        }}
       />
 
     </Aside>
