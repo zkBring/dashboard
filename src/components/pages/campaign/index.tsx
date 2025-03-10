@@ -41,7 +41,7 @@ import { TextLink } from 'components/common'
 import { IProps, TCampaignStatus } from './types'
 import { IAppDispatch } from 'data/store'
 const {
-  REACT_APP_PLATFORM_APP
+  REACT_APP_PLATFORM_APP_URL
 } = process.env
 
 const mapStateToProps = ({
@@ -282,7 +282,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
             size='extra-small'
             target='_blank'
             appearance='additional'
-            href={`${REACT_APP_PLATFORM_APP}/drops/${campaign_id}`}
+            href={`${REACT_APP_PLATFORM_APP_URL}/drops/${campaign_id}`}
           >
             Public page
           </AsideButton>
