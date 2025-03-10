@@ -141,7 +141,10 @@ const themes = {
 		dropStatusTextColor: '#38966A',
 
 
-		switcherItemBackgroundColor: '#242426'
+		switcherItemBackgroundColor: '#242426',
+		switcherTagBackgroundColor: '#2A271F',
+		switcherTagTextColor: '#A0873C'
+
 	},
 	dark: {
 		primaryTextColor: 'red',
