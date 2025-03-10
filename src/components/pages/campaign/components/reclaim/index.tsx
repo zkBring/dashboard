@@ -134,6 +134,7 @@ const Reclaim: FC<TProps & ReduxType> = ({
   const claimAppURL = defineClaimAppURL(
     address
   )
+
   const claimURLDecrypted = definePlatformAppUrl(
     encrypted_multiscan_qr_secret,
     encrypted_multiscan_qr_enc_code

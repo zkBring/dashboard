@@ -17,6 +17,7 @@ import {
   AsideWidgetStyled
 } from '../../styled-components'
 import { connect } from 'react-redux'
+import { TCampaignStatus } from '../../types'
 import {
   Text
 } from './styled-components'
@@ -52,6 +53,22 @@ const mapStateToProps = ({
   chainId,
   approved
 })
+
+const defineStatus = (
+  status: TCampaignStatus
+) => {
+  switch (status) {
+    case 'active':
+      return 'In progress'
+    case 'initial':
+    case 'pending':
+      return 'Loading'
+    case 'paused':
+      return 'Paused'
+    default:
+      return 'In progress'
+  }
+}
 
 type ReduxType = ReturnType<typeof mapStateToProps>
 
@@ -224,9 +241,7 @@ const Status: FC<TProps & ReduxType> = ({
     options={defineOptions()}
     loading={status === 'pending' || status === 'initial'}
   >
-
-    <Text>{status}</Text>
-    
+    <Text>{defineStatus(status)}</Text> 
   </AsideWidgetStyled>
 }
 

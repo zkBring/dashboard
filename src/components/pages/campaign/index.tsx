@@ -251,7 +251,7 @@ const Campaign: FC<ReduxType & IProps & RouteComponentProps> = ({
         </TableRow>
 
         <TableRow>
-          <TableText>${symbol} address</TableText>
+          <TableText>{symbol} address</TableText>
           <TableValue>
             {tokenUrl ? <TextLink href={tokenUrl} target='_blank'>{shortenString(token_address)}</TextLink> : shortenString(token_address)}
           </TableValue>

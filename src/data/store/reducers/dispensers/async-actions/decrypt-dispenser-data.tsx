@@ -57,15 +57,12 @@ const decryptDispenserData = ({
         const {
           redirect_url,
           encrypted_multiscan_qr_enc_code,
-          encrypted_multiscan_qr_secret,
-          whitelist_on,
-          reclaim
+          encrypted_multiscan_qr_secret
         } = currentDispenser
-        const multiscanQREncCode = decrypt(encrypted_multiscan_qr_enc_code, dashboardKey)
-        const decryptedMultiscanQRSecret = decrypt(encrypted_multiscan_qr_secret, dashboardKey)
-        const claimAppURL = defineClaimAppURL(
-          address
-        )
+  
+        const multiscanQREncCode = encrypted_multiscan_qr_enc_code
+        const decryptedMultiscanQRSecret = encrypted_multiscan_qr_secret
+
         const claimURLDecrypted = definePlatformAppUrl(
           decryptedMultiscanQRSecret,
           multiscanQREncCode
